@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+	<!-- Stylesheets
+		============================================= -->
+	<link rel="shortcut icon" href="../assets/img/favicon-32.ico"/>
+	<link rel="bookmark" href="../assets/img/favicon-32.ico"/>
+	<link rel="stylesheet" href="../assets/css/bootstrap.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/font-icons.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/style.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/swiper.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/animate.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/camera.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/responsive.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/skin/index.css" type="text/css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<![endif]-->
+
+	<script type="text/javascript" src="../assets/js/web.js"></script>
+	<!-- Document Title
+		============================================= -->
+	<title>智享-DEMO-首页</title>
+</head>
+<body class="stretched" id="home">
+<div id="app" style="display: none">
+	<div id="index">
+		<div id="wrapper" class="clearfix" style="animation-duration: 1.5s; opacity: 1;">
+			<header id="header" class="sticky-header">
+				<div id="header-wrap" class="container clearfix">
+					<div class="header-top clearfix">
+						<div id="logo" class="col-md-5 nopadding">
+							<a href="index.html" class="retina-logo"><img src="../assets/img/founder_Logo@2x.png" alt="智享 Logo"></a>
+						</div>
+						<div class="col-md-7 nopadding">
+							<div class="top-menu"><a href="javascript:void(0)">登 录</a>
+								<a href="javascript:void(0)" id="top-cart"><i class="icon-shopping-cart"></i> <span>0</span></a>
+								<a href="#">English</a>
+							</div>
+
+							<!-- 搜索框组件 -->
+							<work_search_01_category_search namespace="index"></work_search_01_category_search>
+							<!-- END 搜索框组件 -->
+						</div>
+					</div>
+					<nav id="primary-menu" class="mainmenu clearfix">
+						<div class="col-md-4 nopadding"><label>资 讯</label>
+							<ul class="sf-js-enabled" style="touch-action: pan-y;">
+								<li><a href="/pages/column/42/46/list/list.html">新闻中心</a></li>
+							</ul>
+						</div>
+						<div class="col-md-4 nopadding"><label>图 书</label>
+							<ul class="sf-js-enabled" style="touch-action: pan-y;">
+								<li><a href="/pages/column/43/48/list/list.html">新 书</a></li>
+								<li><a href="/pages/column/43/49/list/list.html">热 销</a></li>
+							</ul>
+						</div>
+						<div class="col-md-4 nopadding"><label>电子书</label>
+							<ul class="sf-js-enabled" style="touch-action: pan-y;">
+								<li><a href="/pages/column/44/51/list/list.html">推荐</a></li>
+							</ul>
+						</div>
+						<div class="col-md-4 nopadding"><label>资源</label>
+							<ul class="sf-js-enabled" style="touch-action: pan-y;">
+								<li><a href="/pages/column/45/54/list/list.html">课 件</a></li>
+								<li><a href="/pages/bookcatalog.html">书目下载</a></li>
+							</ul>
+						</div>
+						<div class="col-md-4 nopadding col-last">
+							<label><a href="https://shrmms.tmall.com/" target="_blank">天猫旗舰店</a></label>
+							<ul class="sf-js-enabled" style="touch-action: pan-y;">
+								<li><a href="#">亚马逊</a></li>
+								<li><a href="#">京 东</a></li>
+								<li><a href="#">当当网</a></li>
+							</ul>
+						</div>
+					</nav>
+				</div>
+			</header>
+
+			<section class="swiper_wrapper clearfix" style="height:480px; margin-bottom:24px">
+				<ui_swiper_01_pic namespace="index"></ui_swiper_01_pic>
+			</section>
+
+			<!-- Site Content
+				============================================= -->
+			<section id="content">
+				<div class="content-wrap">
+					<div class="container clearfix">
+						<!-- 推荐推荐
+						============================================= -->
+						<div class="col-md-8 noleftpadding shuping">
+							<div class="tabs tabs-bb clearfix ui-tabs ui-widget ui-widget-content ui-corner-all" id="tab-9">
+								<ul class="tab-nav clearfix ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+									<li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-35" aria-labelledby="ui-id-19" aria-selected="false" aria-expanded="false">
+										<a href="#tabs-35" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-19">书 评</a>
+									</li>
+									<li class="hidden-phone ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-36" aria-labelledby="ui-id-20" aria-selected="false" aria-expanded="false">
+										<a href="#tabs-36" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-20">编辑推荐</a>
+									</li>
+								</ul>
+								<div class="tab-container">
+									<div class="tab-content clearfix ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-35" aria-labelledby="ui-id-19" role="tabpanel" aria-hidden="true" style="display: block;">
+                    <ui_swiper_03_pic_words namespace="index"></ui_swiper_03_pic_words>
+									</div>
+									<div class="tab-content clearfix ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-36" aria-labelledby="ui-id-20" role="tabpanel" aria-hidden="true" style="display: none;">
+                    <ui_swiper_03_pic_words namespace="index"></ui_swiper_03_pic_words>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 热卖热卖
+						============================================= -->
+						<div class="col-md-4 norightpadding hotsale">
+							<div class="tabs tabs-bb clearfix ui-tabs ui-widget ui-widget-content ui-corner-all" id="tab-9">
+
+								<ul class="tab-nav clearfix ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+									<li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-35" aria-labelledby="ui-id-19" aria-selected="false" aria-expanded="false">
+										<a>热 销</a></li>
+								</ul>
+
+								<div class="tab-container">
+									<div class="product iproduct clearfix">
+										<div class="product-image">
+											<a href="#"><img src="../assets/img/book1.png" alt="book-title"></a>
+										</div>
+										<div class="product-desc center">
+											<div class="product-title"><h4><a href="#">《日本版式设计原理》</a></h4></div>
+											<div class="product-author">作者：林林 编文，张鹿山 等绘画</div>
+											<div class="product-price"><label>定价：</label> ¥ 39.99</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section id="quicklink">
+				<div class="content-wrap">
+					<div class="container clearfix">
+						<div class="col-md-3 noleftpadding">
+							<a href="javascript:void(0)" class="button button-border button-border-thin button-light"><i class="icon-video"></i>视频专区</a>
+						</div>
+						<div class="col-md-3">
+							<a href="./courseware.html" class="button button-border button-border-thin button-light"><i class="icon-download"></i>课件专区</a>
+						</div>
+						<div class="col-md-3">
+							<a href="javascript:void(0)" class="button button-border button-border-thin button-light"><i class="icon-user"></i>作者专区</a>
+						</div>
+						<div class="col-md-3 norightpadding">
+							<a href="./eBook.html" class="button button-border button-border-thin button-light"><i class="icon-shop"></i>官方书城</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- 新书新书
+	============================================= -->
+			<section id="newbook">
+				<div class="content-wrap">
+					<div class="container clearfix">
+						<h2><img src="../assets/img/new-title.jpg"></h2>
+					</div>
+				</div>
+				<div class="newbooklist">
+					<div class="container clearfix">
+						<ui_swiper_02_small_pic namespace="index"></ui_swiper_02_small_pic>
+					</div>
+				</div>
+			</section>
+
+			<footer class="footer" style="margin-top:24px">
+				<div class="container">
+					<div class="col-md-6">版权所有：方正电子   2016-2017   |   备案序号：ICP备05032912号
+						</br>地址：北京海淀区上地五街9号  |   电话：54044520</div>
+					<div class="col-md-6 tright"><a href="#">关于我们</a>   |    <a href="#">联系我们</a>   |    <a href="#">招聘启事</a>    |    <a href="#">版权声明</a></div>
+				</div>
+			</footer>
+
+
+		</div>
+	</div>
+
+</div>
+<!-- External JavaScripts
+============================================= -->
+<script type="text/javascript" src="../assets/js/jquery.js"></script>
+<script type="text/javascript" src="../assets/js/plugins.js"></script>
+
+<!-- Footer Scripts
+============================================= -->
+<script type="text/javascript" src="../assets/js/functions.js"></script>
+<script type="text/javascript" src="../assets/config/index.js"></script>
+</body>
+</html>

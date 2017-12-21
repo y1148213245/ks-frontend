@@ -1,0 +1,72 @@
+[
+  {
+    "cascadeId": "88340",
+    "cattype": 14,
+    "id": 88340,
+    "text": "计算机",
+    "type": "cat"
+  },
+  {
+    "cascadeId": "81043",
+    "cattype": 14,
+    "id": 81043,
+    "text": "基础教育分社",
+    "type": "cat"
+  },
+  {
+    "cascadeId": "81044",
+    "cattype": 14,
+    "id": 81044,
+    "text": "高等教育",
+    "type": "cat"
+  },
+  {
+    "cascadeId": "81045",
+    "cattype": 14,
+    "id": 81045,
+    "text": "职业教育",
+    "type": "cat"
+  },
+  {
+    "cascadeId": "81046",
+    "cattype": 14,
+    "id": 81046,
+    "text": "幼儿教育",
+    "type": "cat"
+  },
+  {
+    "cascadeId": "81047",
+    "cattype": 14,
+    "id": 81047,
+    "text": "教辅",
+    "type": "cat"
+  },
+  {
+    "cascadeId": "81048",
+    "cattype": 14,
+    "id": 81048,
+    "text": "学术著作",
+    "type": "cat"
+  },
+  {
+    "cascadeId": "81674",
+    "cattype": 14,
+    "id": 81674,
+    "text": "人民社",
+    "type": "cat"
+  },
+  {
+    "cascadeId": "81675",
+    "cattype": 14,
+    "id": 81675,
+    "text": "教育社",
+    "type": "cat"
+  },
+  {
+    "cascadeId": "81720",
+    "cattype": 14,
+    "id": 81720,
+    "text": "人文社科",
+    "type": "cat"
+  }
+]

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+	<!-- Stylesheets
+		============================================= -->
+	<link rel="shortcut icon" href="../assets/img/favicon-32.ico"/>
+	<link rel="bookmark" href="../assets/img/favicon-32.ico"/>
+	<link rel="stylesheet" href="../assets/css/bootstrap.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/font-icons.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/style.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/swiper.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/animate.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/camera.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/responsive.css" type="text/css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<![endif]-->
+
+	<script type="text/javascript" src="../assets/js/web.js"></script>
+	<!-- Document Title
+	============================================= -->
+	<title>资讯</title>
+
+</head>
+<body class="stretched">
+<div id="app" style="display: none">
+	<!-- The Main Wrapper
+		============================================= -->
+	<div id="wrapper" class="clearfix">
+
+		<!-- Header
+		============================================= -->
+		<!-- Info-book
+		============================================= -->
+		<section id="title-nav" class="col_full">
+			<div class="container clearfix"><h1>动 态</h1><span>精彩资讯、不容错过</span></div>
+		</section>
+		<!-- Site Content
+		============================================= -->
+
+
+
+
+
+
+
+
+
+
+	</div>
+</div>
+<!-- External JavaScripts
+============================================= -->
+<script type="text/javascript" src="../assets/js/jquery.js"></script>
+<script type="text/javascript" src="../assets/js/plugins.js"></script>
+
+<!-- Footer Scripts
+============================================= -->
+<script type="text/javascript" src="../assets/js/functions.js"></script>
+<script type="text/javascript" src="../assets/config/index.js"></script>
+</div>
+</body>
+</html>
