@@ -1,5 +1,5 @@
 <template>
-	<div class="swiper-container ui_swiper_02_small_pic" id="smallPicDiv">
+	<div class="swiper-container ui_swiper_02_small_pic">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide" v-for="(item, index) in smallPic">
 				<div class="oc-item-small-pic">
@@ -33,8 +33,8 @@
 			</div>
 		</div>
 		<!-- 如果需要导航按钮 -->
-		<div class="swiper-button-prev" id="swiper-button-prev-smallPic"></div>
-		<div class="swiper-button-next" id="swiper-button-next-smallPic"></div>
+		<div class="swiper-button-prev swiper-button-prev-smallPic"></div>
+		<div class="swiper-button-next swiper-button-next-smallPic"></div>
 	</div>
 </template>
 <script type="text/ecmascript-6">
@@ -58,65 +58,63 @@
 			this.queryData();
 		},
 		methods: {
-			queryData: function () {
-				var obj = this;
-        Post(this.CONFIG.url, this.CONFIG.params || {
-							conditions: "[{pub_resource_type:'BOOK'}]",
-							orderBy: "BOOK_PUBDATE desc",
-							pageNo: "1",
-							pageSize: "15",
-							searchText: null
-						}).then((rep) => {
-          var datas = rep.data.result;
-          var loadDatas = [];
-          var message = {};
-          for (var i = 0; i < datas.length; i++) {
-            var entry = {
-              bookName: datas[i].pub_resource_name || '暂无书名',
-              bookPrice: datas[i].BOOK_PRICE || '暂无价格',
-              bookAuthor: datas[i].BOOK_SYS_AUTHORS || '暂无作者',
-              pubId: datas[i].id || 0,
-              contentType: datas[i].pub_content_type || 0,
-              bookUrl: datas[i].pub_picBig || ""
-            };
-            loadDatas.push(entry)
-          }
-          ;
-          obj.smallPic = loadDatas;
-          obj.$nextTick(obj.initSwiper);
-				})
-			},
-			initSwiper: function () {
-				var obj = this;
-				if (!obj.swiperInitFlag) {
-					obj.swiperInitFlag = true
-					new Swiper(obj.$el, {
-						slidesPerView: 4,
-						spaceBetween: 30,
-						preventClicksPropagation: true,
-            observer:true,
-            observeParents:true,
-						pagination: {
-							el: obj.$el.getElementsByClassName('swiper-pagination'),
-							clickable: true,
-						},
-						navigation: {
-							nextEl: obj.$el.getElementsByClassName('swiper-button-next'),
-							prevEl: obj.$el.getElementsByClassName('swiper-button-prev'),
-						},
-					})
+          queryData: function () {
+            Post(this.CONFIG.url, this.CONFIG.params || {
+                      conditions: "[{pub_resource_type:'BOOK'}]",
+                      orderBy: "BOOK_PUBDATE desc",
+                      pageNo: "1",
+                      pageSize: "15",
+                      searchText: null
+                    }).then((rep) => {
+              var datas = rep.data.result;
+              var loadDatas = [];
+              var message = {};
+              for (var i = 0; i < datas.length; i++) {
+                var entry = {
+                  bookName: datas[i].pub_resource_name || '暂无书名',
+                  bookPrice: datas[i].BOOK_PRICE || '暂无价格',
+                  bookAuthor: datas[i].BOOK_SYS_AUTHORS || '暂无作者',
+                  pubId: datas[i].id || 0,
+                  contentType: datas[i].pub_content_type || 0,
+                  bookUrl: datas[i].pub_picBig || ""
+                };
+                loadDatas.push(entry);
+              };
+              this.smallPic = loadDatas;
+              this.$nextTick(this.initSwiper);
+            })
+          },
+          initSwiper: function () {
+            var obj = this;
+            if (!obj.swiperInitFlag) {
+              obj.swiperInitFlag = true
+              new Swiper(obj.$el, {
+                slidesPerView: 4,
+                spaceBetween: 30,
+                preventClicksPropagation: true,
+                observer: true,
+                observeParents: true,
+                pagination: {
+                  el: obj.$el.getElementsByClassName('swiper-pagination'),
+                  clickable: true,
+                },
+                navigation: {
+                  nextEl: obj.$el.getElementsByClassName('swiper-button-next'),
+                  prevEl: obj.$el.getElementsByClassName('swiper-button-prev'),
+                },
+              })
 
-				}
-			}
+            }
+          }
 		}
 	}
 </script>
 
 <style>
-#swiper-button-prev-smallPic{
+.swiper-button-prev-smallPic{
   top:35%
 }
-#swiper-button-next-smallPic{
+.swiper-button-next-smallPic{
   top:35%
 }
 .index_smallPic_img{

@@ -1,5 +1,5 @@
 <template>
-  <div class="swiper-container ui_swiper_03_pic_words" id="picWordsDiv">
+  <div class="swiper-container ui_swiper_03_pic_words">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="(item, index) in picWords">
         <div class="slide">
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="swiper-pagination" id="pic_word_pagionation"></div>
+    <div class="swiper-pagination pic_word_pagionation"></div>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -56,7 +56,6 @@
   },
   methods: {
     queryData: function () {
-      var obj = this;
       Post(this.CONFIG.url, this.CONFIG.params || {
           conditions: "[{pub_resource_type:'BOOK'}]",
           orderBy: null,
@@ -79,8 +78,8 @@
           loadDatas.push(entry)
         }
         ;
-        obj.picWords = loadDatas;
-        obj.$nextTick(obj.initSwiper);
+        this.picWords = loadDatas;
+        this.$nextTick(this.initSwiper);
       })
     },
     initSwiper: function () {
@@ -105,21 +104,21 @@
 </script>
 
 <style>
-  #pic_word_pagionation > .swiper-pagination-bullet {
+  .pic_word_pagionation > .swiper-pagination-bullet {
     background: #d38391;
   }
 
-  #pic_word_pagionation > .swiper-pagination-bullet-active {
-    background: #ae0f2b !important;;
+  .pic_word_pagionation > .swiper-pagination-bullet-active {
+    background: #ae0f2b !important;
   }
 
-  #pic_word_pagionation {
+  .pic_word_pagionation {
 
-    width: auto;
-    display: inline-block !important;
+    width: auto!important;
+    display: inline-block;
     display: inline;
     float: right;
-    position: inherit !important;;
+    position: inherit;
   }
 
   .testi-image, .testi-image a, .testi-image img, .testi-image i {
