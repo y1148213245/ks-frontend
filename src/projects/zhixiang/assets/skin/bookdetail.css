@@ -1,0 +1,145 @@
+/*************************** START 相关图书 ******************************/
+h1, h2, h3, h4, h5, h6{
+  margin: 0 0 8px 0;
+}
+.book-board{
+  border: 1px solid #dcdcdc;
+  padding: 10px;
+}
+.book-board .oc-item{
+  border-top: 1px dotted #dcdcdc;
+  margin-top: 12px;
+  padding-top: 12px;
+}
+.book-board .product-image{
+  width: 100px;
+  display: inline-block;
+  float: left;
+}
+img{
+  max-width: 100%;
+}
+.product-author{
+  font-size: 12px;
+  color: #7F7F7F;
+}
+.product-price{
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+.product-price label{
+  font-weight: 400;
+  font-size: 90%;
+  color: #7F7F7F;
+}
+/**{*/
+  /*box-sizing: border-box;*/
+/*}*/
+/*.comment-box h3, .comment-related h3{*/
+  /*padding: 16px 0px;*/
+  /*border-top: 1px solid #7f7f7f;*/
+/*}*/
+/*h3{*/
+  /*font-size: 18px;*/
+/*}*/
+/*h1, h2, h3, h4, h5, h6{*/
+  /*color: #4A4A4A;*/
+  /*font-weight: 600;*/
+  /*line-height: 1.5;*/
+  /*margin: 0 0 8px 0;*/
+/*}*/
+/*.comment-related .shuping-item{*/
+  /*padding: 10px;*/
+  /*height: 120px;*/
+  /*margin-top: 0px;*/
+/*}*/
+/*.shuping-item img{*/
+  /*width: 100px;!important;*/
+  /*height: 100px;!important;*/
+/*}*/
+/*.shuping-item{*/
+  /*border: 1px solid #DCDCDC;*/
+  /*margin: 15px 0px;*/
+/*}*/
+/*.comment-related .product.iproduct{*/
+  /*width: 100px;*/
+  /*height: 100px;*/
+  /*text-align: left;*/
+/*}*/
+/*.shuping-item .product.iproduct{*/
+  /*float: left;*/
+  /*margin-right: 10px;*/
+/*}*/
+/*.product.iproduct{*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+/*}*/
+/*.product{*/
+  /*position: relative;*/
+/*}*/
+/*.testi-content{*/
+  /*position: relative;*/
+  /*overflow: hidden;*/
+/*}*/
+/*.iproduct .product-image, .iproduct .product-image a, .iproduct .product-image img{*/
+  /*height: auto;*/
+/*}*/
+/*.product-image{*/
+  /*position: relative;*/
+  /*width: 100%;*/
+  /*height: auto;*/
+  /*overflow: hidden;*/
+/*}*/
+/*body:not(.device-touch):not(.device-xs):not(.device-xxs) .product-image > a{*/
+  /*transition: all .5s ease;*/
+/*}*/
+/*.product-image > a, .product-image .slide a, .product-image img{*/
+  /*width: 100%;*/
+/*}*/
+/*a{*/
+  /*text-decoration: none !important;*/
+  /*color: #AE0F29;*/
+/*}*/
+/*.product-image > a, .product-image .slide a, .product-image img{*/
+  /*display: block;*/
+/*}*/
+/*a img{*/
+  /*border: none;*/
+/*}*/
+/*.product-title{*/
+  /*margin-bottom: 7px;*/
+/*}*/
+/*h4{*/
+  /*font-weight: 600;*/
+  /*font-size: 16px;*/
+/*}*/
+/*h1, h2, h3, h4, h5, h6{*/
+  /*color: #4A4A4A;*/
+  /*font-weight: 600;*/
+  /*line-height: 1.5;*/
+  /*margin: 0 0 8px 0;*/
+/*}*/
+/*.product-author{*/
+  /*font-size: 12px;*/
+  /*color: #7F7F7F;*/
+/*}*/
+/*.product-price{*/
+  /*font-size: 14px;*/
+  /*font-weight: 600;*/
+  /*margin-bottom: 4px;*/
+  /*color: #000;*/
+/*}*/
+/*.product-price label{*/
+  /*font-weight: 400;*/
+  /*font-size: 90%;*/
+  /*color: #7F7F7F;*/
+/*}*/
+/*label{*/
+  /*display: inline-block;*/
+  /*max-width: 100%;*/
+  /*margin-bottom: 5px;*/
+  /*font-weight: bold;*/
+  /*cursor: default;*/
+/*}*/
+/*************************** END 相关图书 ******************************/
