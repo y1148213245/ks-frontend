@@ -4,7 +4,7 @@
 const dev = {
   swiper: {
     pic_word_03: {
-      url: '/data/swiper_03_pic_words.json',
+      url: './data/swiper_03_pic_words.json',
     }
   }
 }

@@ -4,7 +4,7 @@
 const dev = {
 	swiper: {
     smallPic_02: {
-			url: '/data/swiper_02_smallPic_list.json',
+			url: './data/swiper_02_smallPic_list.json',
       picLinkUrl:"/pages/bookDetail/bookDetail.html?pubId="
 		}
 	}
@@ -21,7 +21,7 @@ const prod = {
         pageSize: "15",
         searchText: null
 			},
-      picLinkUrl:"/pages/bookDetail/bookDetail.html?pubId="
+      picLinkUrl:"./pages/bookDetail/bookDetail.html?pubId="
 		}
 	}
 };

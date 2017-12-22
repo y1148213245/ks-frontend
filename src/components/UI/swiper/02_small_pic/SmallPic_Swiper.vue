@@ -38,7 +38,7 @@
 	</div>
 </template>
 <script type="text/ecmascript-6">
-	import SWIPER_SAMLLPIC from "projectConfig";
+	import PROJECT_CONFIG from "projectConfig";
 	import Swiper from 'swiper';
   import {Post} from "@common";
 
@@ -54,7 +54,7 @@
 			}
 		},
 		mounted: function () {
-			this.CONFIG = this.namespace ? SWIPER_SAMLLPIC[this.namespace].swiper.smallPic_02 : SWIPER_SAMLLPIC.swiper.smallPic_02;
+			this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].swiper.smallPic_02 : PROJECT_CONFIG.swiper.smallPic_02;
 			this.queryData();
 		},
 		methods: {

@@ -34,7 +34,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import SWIPER_PIC_WORDS from "projectConfig";
+  import PROJECT_CONFIG from "projectConfig";
   import Swiper from 'swiper';
   import {Post} from "@common";
 
@@ -50,7 +50,7 @@
     }
   },
   mounted: function () {
-    this.CONFIG = this.namespace ? SWIPER_PIC_WORDS[this.namespace].swiper.pic_word_03 : SWIPER_PIC_WORDS.swiper.pic_word_03;
+    this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].swiper.pic_word_03 : PROJECT_CONFIG.swiper.pic_word_03;
 
     this.queryData();
   },
