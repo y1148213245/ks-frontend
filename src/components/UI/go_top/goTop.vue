@@ -1,5 +1,5 @@
 <template>
-  <div id="gotoTop">
+  <div id="gotoTop" class="ui_go_top">
     <section id="vqrcode">
       <div class="icon-qrcode">
         <div class="qrcode">
