@@ -1,0 +1,75 @@
+{
+  "success": true,
+  "code": null,
+  "message": "Success",
+  "errorMessage": null,
+  "list": null,
+  "data": [
+    {
+      "columnType": "0",
+      "code": "",
+      "name": "新闻中心",
+      "id": 42,
+      "big_pic": null,
+      "contentType": 93,
+      "parentId": 0,
+      "url": "",
+      "template": "./news.html"
+    },
+    {
+      "columnType": "1",
+      "code": "",
+      "name": "课件",
+      "id": 42,
+      "big_pic": null,
+      "contentType": 93,
+      "parentId": 0,
+      "url": "",
+      "template": "./news.html"
+    },
+    {
+      "columnType": "1",
+      "code": "",
+      "name": "书目下载",
+      "id": 42,
+      "big_pic": null,
+      "contentType": 93,
+      "parentId": 0,
+      "url": "",
+      "template": "./news.html"
+    },
+    {
+      "columnType": "2",
+      "code": "",
+      "name": "新书",
+      "id": 42,
+      "big_pic": null,
+      "contentType": 93,
+      "parentId": 0,
+      "url": "",
+      "template": "./news.html"
+    },
+    {
+      "columnType": "2",
+      "code": "",
+      "name": "热销",
+      "id": 42,
+      "big_pic": null,
+      "contentType": 93,
+      "parentId": 0,
+      "url": "",
+      "template": "./news.html"
+    },
+    {
+      "columnType": "3",
+      "code": "",
+      "name": "推荐",
+      "id": 42,
+      "big_pic": null,
+      "contentType": 93,
+      "parentId": 0,
+      "url": "",
+      "template": "./news.html"
+    }
+    ]
+}

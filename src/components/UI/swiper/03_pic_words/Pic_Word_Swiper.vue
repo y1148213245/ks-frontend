@@ -36,7 +36,7 @@
 <script type="text/ecmascript-6">
   import PROJECT_CONFIG from "projectConfig";
   import Swiper from 'swiper';
-  import {Post} from "@common";
+  import {Post,DrawImage} from "@common";
 
   export default {
     name: "ui_swiper_03_pic_words",

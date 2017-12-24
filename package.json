@@ -10,6 +10,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "jquery": "^3.2.1",
+    "qrcode": "^1.0.0",
     "vue": "^2.5.2",
     "vue-bus": "^1.0.0"
   },
