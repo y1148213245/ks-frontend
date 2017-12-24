@@ -29,7 +29,7 @@
 	</div>
 </template>
 <script type="text/ecmascript-6">
-	import {Post} from "@common"
+	import {Post,DrawImage} from "@common"
 	import PROJECT_CONFIG from "projectConfig";
 	/*import {mapGetters, mapActions} from 'vuex';*/
 

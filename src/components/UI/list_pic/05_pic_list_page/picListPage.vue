@@ -1,5 +1,5 @@
 <template>
-  <div class="norightpadding books-catergory">
+  <div class="norightpadding books-catergory ui_pic_list_05">
     <div class="all_article">
       <article class="col-md-4 clearfix" v-for="item in bookRecommendList">
         <div class="product iproduct clearfix">
@@ -26,10 +26,11 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-	import {Post} from "@common";
+	import {Post,DrawImage} from "@common";
 	import PROJECT_CONFIG from "projectConfig";
 	import vpage from "../../pagination/pagination.vue";
 	import "bootstrap/dist/css/bootstrap.min.css";
+
 
 	export default {
 		name: "ui_list_pic_05",
@@ -52,50 +53,36 @@
 		},
 		methods: {
 			queryPicListPage: function (param) {
-				var conditions_first_part = "[{pub_resource_type:'BOOK'},{pub_status:'1'}";
-				var conditions_second_part = "{pub_col_id:51}]";
+				var conditions = "[{pub_resource_type:"+ this.CONFIG.pub_resource_type +"},"
+                        +"{pub_status:"+ this.CONFIG.pub_status +"},"
+                        +"{pub_col_id:"+ this.CONFIG.pub_col_id +"}"
 				if (typeof (param) == "object") {
 					//点击分页
 					this.CONFIG.params.pageNo = param.pageNo;
 					this.CONFIG.params.pageSize = param.pageSize;
-				} else {
-					if (param == "-1" || param == undefined) {
-						//点击左侧列表的全部分类
-						var string = conditions_first_part + "," + conditions_second_part;
-						this.CONFIG.params.conditions = string;
-					} else {
-						//点击每个分类
-						var string = "{BOOK_BOOK_CASCADID:" + param + ",op:'lk'}";
-						string = conditions_first_part + "," + string + "," + conditions_second_part;
-						this.CONFIG.params.conditions = string;
-					}
+				}else {
+          this.CONFIG.params.conditions =(param == "-1")?conditions+"]": conditions +",{BOOK_BOOK_CASCADID:" + param + ",op:'lk'}]";
 				}
-				var obj = this;
 				Post(this.CONFIG.url, this.CONFIG.params).then((rep) => {
 					var datas = rep.data.result;
 					var loadDatas = [];
-					for (var i = 0; i < datas.length; i++) {
-						var entry = {
-							bookName: datas[i].prod_name || '暂无书名',
-							// bookPrice: datas[i].BOOK_PRICE || '0',
-							ebookPrice: datas[i].prod_member_price || '0',
-							bookAuthor: datas[i].BOOK_SYS_AUTHORS || '暂无作者',
-							pubId: datas[i].id || 0,
-							contentType: datas[i].pub_content_type || 0,
-							pub_col_id: datas[i].pub_col_id || 51,
-							bookUrl: datas[i].pub_picBig || ""
+					if(datas && datas instanceof Array && datas.length>0){
+						for (var i = 0; i < datas.length; i++) {
+							var entry = {
+								bookName: datas[i].prod_name || '暂无书名',
+								ebookPrice: datas[i].prod_member_price || '0',
+								bookAuthor: datas[i].BOOK_SYS_AUTHORS || '暂无作者',
+								pubId: datas[i].id || 0,
+								contentType: datas[i].pub_content_type || 0,
+								pub_col_id: datas[i].pub_col_id || 51,
+								bookUrl: datas[i].pub_picBig || ""
+							};
+							loadDatas.push(entry)
 						};
-						loadDatas.push(entry)
-					};
-					obj.bookRecommendList = loadDatas;
-					var message = {
-						pageSize: rep.data.pageSize,
-						totalCount: rep.data.totalCount
-					}
-					obj.pageMessage = message;
-					obj.totalCount = message.totalCount
+						this.bookRecommendList = loadDatas;
+						this.totalCount = rep.data.totalCount;
+          }
 				})
-
 			},
 			paging: function ({pageNo, pageSize}) {
 				var param = {
@@ -104,25 +91,8 @@
 				};
 				this.queryPicListPage(param);
 			},
-      DrawImage:function(ImgD,iwidth,iheight){
-	      var image=new Image();
-	      image.src=ImgD.src;
-
-	      if(image.width>0 && image.height>0){
-		      flag=true;
-		      if(image.width/image.height>= iwidth/iheight){
-			      // 宽度优先，高度缩放
-			      ImgD.style.width=iwidth + 'px';
-			      ImgD.style.height=(image.height*iwidth)/image.width+ 'px';
-		      }else{
-			      // 高度优先，宽度适应
-			      ImgD.style.height=iheight+ 'px';
-			      ImgD.style.width=(image.width*iheight)/image.height + 'px';
-		      }
-	      }
-      },
 			toInfo:function(item){
-				window.location.href = "/pages/bookdetail.html?pubId="+item.pubId+"&contentType="+item.contentType+"&columnId="+item.pub_col_id
+				window.location.href = "../pages/bookdetail.html?pubId="+item.pubId+"&contentType="+item.contentType+"&columnId="+item.pub_col_id
 			}
 		}
 	}

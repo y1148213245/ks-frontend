@@ -7,9 +7,8 @@
 	</div>
 </template>
 <script type="text/ecmascript-6">
-	import {get, post} from 'axios';
 	import UI_SWIPER_01_PIC from "projectConfig";
-  import {Post} from "@common";
+	import {Post} from "@common";
 
 	export default {
 		name: "ui_swiper_01_pic",
@@ -17,18 +16,17 @@
 		props: ["namespace"],
 		data: function () {
 			return {
-        CONFIG: null,
+				CONFIG: null,
 				picList: []
 			}
 		},
 		created: function () {
-			//this.SWIPER_PIC = this.namespace ? CONFIG[this.namespace].swiper.pic_01 : CONFIG.swiper.pic_01;
-      this.CONFIG = this.namespace ? UI_SWIPER_01_PIC[this.namespace].swiper.pic_01 : UI_SWIPER_01_PIC.swiper.pic_01;
+			this.CONFIG = this.namespace ? UI_SWIPER_01_PIC[this.namespace].swiper.pic_01 : UI_SWIPER_01_PIC.swiper.pic_01;
 			this.queryData();
 		},
 		methods: {
 			queryData: function () {
-        Post(this.CONFIG.url, this.CONFIG).then((rep) => {
+				Post(this.CONFIG.url, this.CONFIG).then((rep) => {
 					var data = rep.data.result;
 					if (data && data instanceof Array && data.length > 0) {
 						this.picList = data;

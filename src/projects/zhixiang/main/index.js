@@ -15,6 +15,7 @@ import ScanVues from "@common/ScanVues";
 
 import store from "./store.js";
 
+
 import VueBus from "vue-bus";  // 通过 cnpm install vue-bus安装
 
 
