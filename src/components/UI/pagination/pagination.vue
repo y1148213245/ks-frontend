@@ -17,14 +17,18 @@
 	{
 		totalCount:''
 	}
-	-----
+
 	excuteFunction函数预传参类型
 	function({pageNum,pageSize}){}  /**pageNum 页码 ， pageSize 每页容量**/
 -->
 <script type="text/ecmascript-6">
   export default {
-    name: 'paging',
+    name: 'ui_pagination',
+    reused: true,
     props: {
+      namespace: {
+        default: '',
+      },
       pageMessage: {
         default: '',
       },

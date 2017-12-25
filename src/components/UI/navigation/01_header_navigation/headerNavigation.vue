@@ -1,6 +1,6 @@
 <template>
     <div class="ui_navigation_01_header_navigation">
-        <nav class="mainmenu clearfix">
+        <nav class="mainmenu clearfix primary-menu-navigation">
             <div class="col-md-4 nopadding" v-for="(navigationWord,index) in navigationTitleWordList">
                 <template v-if="navigationWord.type && navigationWord.type =='shopLink'">
                     <label class="navigation_label">

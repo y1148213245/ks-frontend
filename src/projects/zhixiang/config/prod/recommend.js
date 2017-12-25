@@ -13,6 +13,9 @@ export default {
         pageNo: "1",
         pageSize: "15",
       },
+	    pub_resource_type:"'BOOK'",
+	    pub_status:"'1'",
+	    pub_col_id:51,
       picLinkUrl: "",
       broadcastName: 'queryClassificationList'
     },

@@ -21,14 +21,13 @@
     </div>
     <!-- pagearea
    ============================================= -->
-    <vpage :pageMessage="{totalCount: this.totalCount - 0 || 0}"
-           :excuteFunction="paging"></vpage>
+    <ui_pagination :pageMessage="{totalCount: this.totalCount - 0 || 0}"
+           :excuteFunction="paging"></ui_pagination>
   </div>
 </template>
 <script type="text/ecmascript-6">
 	import {Post,DrawImage} from "@common";
 	import PROJECT_CONFIG from "projectConfig";
-	import vpage from "../../pagination/pagination.vue";
 	import "bootstrap/dist/css/bootstrap.min.css";
 
 
@@ -43,9 +42,6 @@
 				totalCount: '0',
 				pageMessage: null
 			}
-		},
-		components: {
-			vpage
 		},
 		created(){
 			this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_05;

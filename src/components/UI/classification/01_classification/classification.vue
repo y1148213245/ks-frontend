@@ -1,13 +1,13 @@
 <!--左侧分类导航栏组件-->
 <template>
-  <div class="classificationWrapper">
-    <ul>
+  <div class="ui_classification_01">
+    <ul class="classificationWrapper">
       <li class="active">
-        <a href="javascript:void(0)" @click="toClassify(-1)">全部分类</a>
+        <a class="allSort" href="javascript:void(0)" @click="toClassify(-1)">全部分类</a>
       </li>
-      <template v-for="item in classificationList">
-        <li>
-          <a href="javascript:void(0)" @click="toClassify(item.cascadeId)">{{item.text}}</a>
+      <template class="sortNameWrapper" v-for="item in classificationList">
+        <li class="sortName">
+          <a class="curSort" href="javascript:void(0)" @click="toClassify(item.cascadeId)">{{item.text}}</a>
         </li>
       </template>
   </ul>
@@ -38,8 +38,7 @@ export default {
   methods: {
     queryClassificationList(param) {
       // 书籍分类列表查询
-      var _this = this;
-      Get(this.CONFIG.url, this.CONFIG).then(rep => {
+      Get(this.CONFIG.url, {params: this.CONFIG.params}).then(rep => {
         var datas = rep.data;
         var ebookCategory = [];
         if (datas && datas instanceof Array && datas.length > 0) {
@@ -54,7 +53,7 @@ export default {
             ebookCategory.push(entry);
           }
         }
-        _this.classificationList = ebookCategory;
+        this.classificationList = ebookCategory;
       });
     },
     toClassify(cascadeId) {

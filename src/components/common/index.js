@@ -7,8 +7,6 @@ import readProd from "@project/config/index.js";
 var Post = readProd || (process.env.NODE_ENV === 'production') ? post : get;
 
 function DrawImage(ImgD,iwidth,iheight){
-	console.info(ImgD);
-	return;
 	var image=new Image();
 	image.src=ImgD.src;
 

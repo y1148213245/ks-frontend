@@ -1,6 +1,6 @@
 <!-- 书目下载组件 -->
 <template>
-    <div class="category-new col-md-8 noleftpadding kejianbox kejian-newlist">
+    <div class="ui_listPic_01 category-new col-md-8 noleftpadding kejianbox kejian-newlist">
       <template v-for="item in bookcatalogList">
         <article class="entry clearfix">
           <div class="entry-image">
@@ -17,14 +17,13 @@
         </article>
       </template>
 
-      <vpage :pageMessage="{totalCount: this.bookcatalogList &&  this.bookcatalogList.length - 0 || 0}" :excuteFunction="paging"></vpage>
+      <ui_pagination :pageMessage="{totalCount: this.bookcatalogList &&  this.bookcatalogList.length - 0 || 0}" :excuteFunction="paging" namespace="pagination"></ui_pagination>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
   import {Post} from "@common";
   import PROJECT_CONFIG from "projectConfig";
-  import vpage from "../../pagination/pagination.vue";
   import "bootstrap/dist/css/bootstrap.min.css";
 
   export default {
@@ -41,17 +40,14 @@
       this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].list_pic.pic_list_download_02 : PROJECT_CONFIG.bookcatalog.list_pic.pic_list_download_02;
       this.queryBookcatalogList();
     },
-    components: {
-      vpage
-    },
     methods: {
       queryBookcatalogList(param) {  // 数目下载列表查询
+        let paramsObj = Object.assign({}, this.CONFIG.params);
         if (param) {
-          this.CONFIG.params.pageNo = param.pageNo;
-          this.CONFIG.params.pageSize = param.pageSize;
+          paramsObj.pageNo = param.pageNo;
+          paramsObj.pageSize = param.pageSize;
         }
-        var _this = this;
-        Post(this.CONFIG.url, this.CONFIG.params).then((rep) => {
+        Post(this.CONFIG.url, paramsObj).then((rep) => {
           var data = rep.data.result;
           if (data && data instanceof Array && data.length > 0) {
             var datas = rep.data.result;
@@ -74,8 +70,8 @@
                 }
               }
             }
-            _this.bookcatalogList = loadDatas;  // 数目下载列表
-            /*_this.totalCount = rep.data.totalCount;  // 总条数*/
+            this.bookcatalogList = loadDatas;  // 数目下载列表
+            /*this.totalCount = rep.data.totalCount;  // 总条数*/
           }
         })
       },

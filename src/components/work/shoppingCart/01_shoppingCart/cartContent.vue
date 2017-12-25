@@ -1880,7 +1880,6 @@ export default {
       }
     },
     commitOrder: function() {
-      var url = type.API_CONFIG.baseURL;
       var _this = this;
       var temp = [];
       this.selectedOrderList.forEach(function(item) {
@@ -1992,7 +1991,7 @@ export default {
                 // 支付宝支付
                 loadingTag.close();
                 window.open(
-                  url +
+                  BASE_URL +
                     "/epay/getPayForm.do?orderId=" +
                     argus.orderId +
                     "&loginName=" +
@@ -2006,7 +2005,7 @@ export default {
 
                 axios
                   .get(
-                    url +
+                    BASE_URL +
                       "/epay/getPayForm.do?orderId=" +
                       argus.orderId +
                       "&loginName=" +
