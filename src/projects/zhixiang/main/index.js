@@ -2,11 +2,9 @@ import Vue from 'vue';
 import './filter';
 //element ui
 import ElementUI from 'element-ui'
-//import 'element-ui/lib/theme-default/index.css'
 import 'element-ui/lib/theme-chalk/index.css'
 
 import VueOccupy from 'vue-occupy'
-//import VueAwesomeSwiper from 'vue-awesome-swiper'
 
 // require styles
 import 'swiper/dist/css/swiper.css'
@@ -17,10 +15,6 @@ import store from "./store.js";
 
 
 import VueBus from "vue-bus";  // 通过 cnpm install vue-bus安装
-
-
-//Vue.use(VueAwesomeSwiper, /* { default global options } */)
-
 
 Vue.use(VueOccupy);
 Vue.use(ElementUI);

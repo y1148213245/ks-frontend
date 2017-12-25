@@ -24,7 +24,6 @@
 <script type="text/ecmascript-6">
   import {Post} from "@common";
   import PROJECT_CONFIG from "projectConfig";
-  import "bootstrap/dist/css/bootstrap.min.css";
 
   export default {
     name: "ui_list_pic_02",

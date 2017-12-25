@@ -15,7 +15,7 @@
                         {{navigationWord.name}}
                     </label>
                     <ul class="sf-js-enabled" style="touch-action: pan-y;">
-                        <li  v-for="nav in navList" v-if="nav.columnType == navigationWord.columnType" class="li_header_navigation"><a class="a1_header_navigation" :href="nav.template">{{nav.name}}</a></li>
+                        <li  v-for="nav in navList" v-if="nav.columnType == navigationWord.columnType" class="li_header_navigation"><a class="a1_header_navigation" :href="nav.template+'?col_id='+nav.id">{{nav.name}}</a></li>
                     </ul>
                 </template>
             </div>

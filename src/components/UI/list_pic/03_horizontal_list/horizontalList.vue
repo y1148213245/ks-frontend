@@ -29,14 +29,14 @@
 	</div>
 </template>
 <script type="text/ecmascript-6">
-	import {Post,DrawImage} from "@common"
+	import {Post, DrawImage} from "@common"
 	import PROJECT_CONFIG from "projectConfig";
 	/*import {mapGetters, mapActions} from 'vuex';*/
 
 	export default {
 		name: "ui_list_pic_03",
 		reused: true,
-		props: ["catalog_info", "namespace"],
+		props: ["catalog_info", "namespace", "colid"],
 		data: function () {
 			return {
 				CONFIG: null,
@@ -48,11 +48,11 @@
 			this.queryItemList(1);
 		},
 		/*computed: {
-			...mapGetters('user', {
-				member: getterTypes.MEMBER_DATA,
-				isLogin: getterTypes.MEMBER_ISLOGIN
-			})
-		},*/
+		 ...mapGetters('user', {
+		 member: getterTypes.MEMBER_DATA,
+		 isLogin: getterTypes.MEMBER_ISLOGIN
+		 })
+		 },*/
 		methods: {
 			queryItemList: function (pageNo) {
 				var param = {};
@@ -60,9 +60,11 @@
 						this.CONFIG.queryItemList.param,
 						{
 							pageNo: pageNo + "",
-							conditions: this.CONFIG.queryItemList.param.conditions.replace(/#\{cascadeId\}/g, this.catalog_info.cascadeId)
+							conditions: this.CONFIG.queryItemList.param.conditions
+									.replace(/#\{cascadeId\}/g, this.catalog_info.cascadeId)
 						});
 
+				console.info(param)
 				Post(this.CONFIG.queryItemList.url, param).then((response) => {
 					if (response.data && response.data.result && response.data.result instanceof Array) {
 						this.recommendList = response.data.result;
@@ -71,7 +73,6 @@
 					//    alert(error);
 				});
 			},
-
 			//详情页
 			toBookDetail(pubId, contentType, colId){
 				window.location.href = this.CONFIG.toBookDetailUrl + "?pubId=" + pubId + "&contentType=" + contentType + "&columnId=" + colId;

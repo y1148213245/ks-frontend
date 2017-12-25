@@ -1,12 +1,13 @@
 <template>
 	<div>
 		<template v-for="item in categoryList">
-			<slot :item="item">{{item}}</slot>
+			<slot :item="item" >{{item}}</slot>
 		</template>
 	</div>
 </template>
 <script type="text/ecmascript-6">
 	import axios from "axios";
+	import URL from "url";
 	import CONFIG from "projectConfig";
 
 	export default {
@@ -15,10 +16,10 @@
 		props: ["namespace"],
 		data: function () {
 			return {
-				categoryList: []
+				categoryList: [],
 			}
 		},
-		mounted: function () {
+		created: function () {
 			this.CATA_CONFIG = CONFIG[this.namespace].components.categoryList;
 			this.queryCategory();
 		},

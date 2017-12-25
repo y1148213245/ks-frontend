@@ -3,7 +3,7 @@
  * 购物车组件
  */
 
-export default {
+/* export default {
   name: "shoppingCart",
   shoppingCart: {
     shoppingCart_01: {
@@ -11,4 +11,4 @@ export default {
       picLinkUrl: ''
     }
   }
-};
+}; */

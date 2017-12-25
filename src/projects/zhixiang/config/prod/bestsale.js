@@ -8,7 +8,7 @@ export default {
 	list_pic: {
 		horizontal_list_03: {
 			queryItemList: {
-				url: 'http://172.19.57.153:9092/spc-portal-web/spc/cms/publish/list.do',
+				url: BASE_URL + '/spc/cms/publish/list.do',
 				param: {
 					conditions: '[{pub_resource_type:"BOOK"},{pub_col_id:"49"},{pub_status:"1"},{BOOK_BOOK_CASCADID:"#{cascadeId}",op:"lk"},{pub_site_id:"' + SITE_CONFIG.siteId + '"}]',
 					orderBy: "pub_a_order asc pub_lastmodified desc id asc",
@@ -20,7 +20,7 @@ export default {
 			toBookDetailUrl:"./bookdetail.html",
 			moreType:{
 				url: "./recommend.html",
-				pubColId: 49,
+				pubColId: 48,
 				type: "selling"
 			}
 		}

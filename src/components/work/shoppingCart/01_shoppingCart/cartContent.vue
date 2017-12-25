@@ -1,3 +1,4 @@
+// 购物车组件
 <template>
   <div class="shoppingCartWrapper">
     <div id="cartWrapper" class="main_car" v-show="showItem == 'showCartWrapper'">
@@ -218,10 +219,9 @@
           <ul class="addressWrapper">
             <el-radio-group v-model="selectedAddress">
               <li v-for="(address, index) in addressList" type="none">
-                <el-radio :label="index">
+                <el-radio :label="index" @change="selectAddress(address)">
                   <span v-text="address.contactor"></span><span>，</span>
-                  <span
-                    @click.stop="selectAddress(address)">{{ '' + address.province + address.city + address.county + address.address}} </span><span>，</span>
+                  <span>{{ '' + address.province + address.city + address.county + address.address}} </span><span>，</span>
                   <span v-text="address.phone"></span>
                 </el-radio>
               </li>
@@ -508,10 +508,12 @@
 import Vue from "vue";
 import * as type from "../common/config.js";
 import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
 import moment from "moment";
+import $ from "jquery";
 
 export default {
-  name: "work_shoppingcart_01",
+  name: "work_shoppingcart_01_cart",
   reused: true,
   props: ["namespace"],
   mounted: function() {
@@ -527,15 +529,15 @@ export default {
       // 购物车列表页面 即 结算页面
       this.showItem = "showCartWrapper";
     }
-    this.$store.dispatch("shoppingcart/" + type.GET_PAYMENT); // 支付方式
-    this.$store.dispatch("shoppingcart/" + type.GET_DELIVERY); // 物流运输方式
+    this.$store.dispatch("shoppingcart/" + type.GET_PAYMENT);   // 获取支付方式
+    this.$store.dispatch("shoppingcart/" + type.GET_DELIVERY);  // 获取物流运输方式
 
     this.priceInfo();
 
-    $(window).scroll(function(event) {
+    $(window).scroll(function(event) {  // 监控滚动条 控制下方结算按钮要始终在可视区域
       if ($(".normalClearing").length > 0) {
         var clientHeight = $(window)[0].innerHeight; // 屏幕可视高度
-        var scrollTop = $(window).scrollTop(); // 元素距离窗口最上边的高度
+        var scrollTop = $(window).scrollTop();       // 元素距离窗口最上边的高度
         _this.toogleFixed(_this.elementTop, clientHeight, scrollTop);
       }
     });
@@ -554,17 +556,17 @@ export default {
     return {
       showItem: "showCartWrapper",
       selectedAll: false, // 是否全选状态：默认不全选
-      totalMoney: 0, // 总金额
-      totalNum: 0, // 总数量
-      saveAmount: 0, // 节省总金额
+      totalMoney: 0,      // 总金额
+      totalNum: 0,        // 总数量
+      saveAmount: 0,      // 节省总金额
       selectedProductList: {}, // c:减金额
       selectedProductListArray: [],
-      freeFreight: false, // 是否免运费状态：默认不免运费
-      sendPoints: 0, // 送积分
+      freeFreight: false,   // 是否免运费状态：默认不免运费
+      sendPoints: 0,        // 送积分
       orderProductList: [], // 订单商品列表 从购物车页面带到订单页面
-      priceChangeList: [],
+      priceChangeList: [],  // 价格变更信息列表
       showFixedClearing: false,
-      showZeroTips: false,
+      showZeroTips: false,  // 提示要选择至少一件商品的框框
       /*提交订单页*/
       addressDialog: false, // 地址选择模态弹框
       addAddressDialog: false, // 新增地址模态弹框
@@ -749,7 +751,7 @@ export default {
       var _this = this;
       var params = {
         param: {
-          loginName: _this.member.loginName,
+          loginName: this.member.loginName,
           productId: product.productId,
           activityId: event.target.value
         },
@@ -757,7 +759,7 @@ export default {
           if (this.changeActivity) {
             _this.$store.dispatch(
               "shoppingcart/" + type.QUERY_SHOPPING_CART,
-              _this.member.loginName
+              {param:{loginName: _this.member.loginName}}
             );
             window.location.reload();
           } else {
@@ -789,10 +791,12 @@ export default {
           var scrollTop; // 元素距离窗口最上边的高度
 
           _this.$nextTick(function() {
-            _this.elementTop = $($(".normalClearing")[0]).offset().top;
-            clientHeight = $(window)[0].innerHeight;
-            scrollTop = $(window).scrollTop();
-            _this.toogleFixed(_this.elementTop, clientHeight, scrollTop);
+            if($(".normalClearing").length > 0) {
+              _this.elementTop = $($(".normalClearing")[0]).offset().top;
+              clientHeight = $(window)[0].innerHeight;
+              scrollTop = $(window).scrollTop();
+              _this.toogleFixed(_this.elementTop, clientHeight, scrollTop);
+            }
           });
         }
       };
@@ -870,7 +874,7 @@ export default {
               });
               _this.$store.dispatch(
                 "shoppingcart/" + type.QUERY_SHOPPING_CART,
-                _this.member.loginName
+                {param:{loginName: _this.member.loginName}}
               );
             } else {
               _this.$message({
@@ -1250,7 +1254,7 @@ export default {
           }
           _this.$store.dispatch(
             "shoppingcart/" + type.QUERY_SHOPPING_CART,
-            _this.member.loginName
+            {param:{loginName: _this.member.loginName}}
           );
         }
       };
@@ -1268,7 +1272,7 @@ export default {
               // 删除成功以后再重新load购物车数据
               _this.$store.dispatch(
                 "shoppingcart/" + type.QUERY_SHOPPING_CART,
-                _this.member.loginName
+                {param:{loginName: _this.member.loginName}}
               );
               _this.$message({
                 type: "success",
@@ -1306,7 +1310,7 @@ export default {
                   // 删除成功以后再重新load购物车数据
                   _this.$store.dispatch(
                     "shoppingcart/" + type.QUERY_SHOPPING_CART,
-                    _this.member.loginName
+                    {param:{loginName: _this.member.loginName}}
                   );
                   _this.$message({
                     type: "success",
@@ -1619,7 +1623,6 @@ export default {
       this.tempAddress.city = address.city;
       this.tempAddress.county = address.county;
       this.tempAddress.address = address.address;
-      /*this.tempAddress.detail = address.province + address.city + address.county + address.address;*/
       this.tempAddress.phone = address.phone;
     },
     confirmAdd: function(flag) {
@@ -1858,7 +1861,7 @@ export default {
     selectOtherAddress: function() {
       var len = this.addressList.length;
       for (var i = 0; i < len; i++) {
-        if (this.addressList[i].isDefault === "1") {
+        if (this.addressList[i].isDefault.id === this.defaultAddress.id) {
           this.selectedAddress = i;
         }
       }
@@ -1915,7 +1918,7 @@ export default {
       }
       var params = {
         param: {
-          balanceAmount: this.$store.state.page.common.shoppingcart.rmbCoin, // 使用虚拟币抵扣金额
+          balanceAmount: this.rmbCoin, // 使用虚拟币抵扣金额
           createTime: null,
           deliveryAddress: this.defaultAddress
             ? this.defaultAddress.province +
@@ -2003,8 +2006,7 @@ export default {
               } else if (_this.payMethod === "0") {
                 // 微信支付
 
-                axios
-                  .get(
+                axios.get(
                     BASE_URL +
                       "/epay/getPayForm.do?orderId=" +
                       argus.orderId +
@@ -2023,7 +2025,7 @@ export default {
                       response.data.indexOf("</div>")
                     );
                     window.location.href =
-                      "../shoppingCart/QRcode.html?data=" +
+                      "../pages/QRcode.html?data=" +
                       data +
                       "&orderCode=" +
                       orderCode;
@@ -2033,13 +2035,13 @@ export default {
               window.history.pushState(
                 null,
                 null,
-                "../errorPage/errorPage.html"
+                "../pages/errorPage.html"
               ); // 添加历史记录
             } else {
               // 不需要跳转支付页面 实付金额为0
               loadingTag.close();
               window.location.href =
-                "../shoppingCart/commitOrder.html#/commitOrder/" +
+                "../pages/commitOrder.html#/commitOrder/" +
                 _this.commitInfo.orderCode +
                 "/" +
                 _this.commitInfo.status +
@@ -2243,6 +2245,9 @@ input[type="number"] {
   background-color: #f4f4f4;
   color: #323232;
 }
+#cartWrapper .cart-item-list .quantity a:hover {
+  text-decoration: none;
+}
 
 #productListWrapper .cart-item-list .ebookWrapper .quantity a {
   cursor: not-allowed;
@@ -2398,12 +2403,11 @@ input[type="number"] {
 #clearingWrapper .clearing {
   float: right;
   position: relative;
-  height: 100%;
-  overflow: hidden;
 }
 
 #clearingWrapper .clearing button {
   border-radius: 0px;
+  height: 100%;
 }
 
 #clearingWrapper .clearing span {

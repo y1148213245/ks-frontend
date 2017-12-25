@@ -49,10 +49,9 @@
 </template>
 
 <script>
-	import {Post,DrawImage} from "@common";
+	import {Post} from "@common";
 	import PROJECT_CONFIG from "projectConfig";
 	import vpage from "../../pagination/pagination.vue";
-//	import "bootstrap/dist/css/bootstrap.min.css";
 
 
 	export default {
@@ -73,11 +72,14 @@
     },
     methods:{
       getNewCenterData:function (param) {
+	      let paramsObj = Object.assign({}, this.CONFIG.params);
         if(param){
-	        this.CONFIG.params.pageNo = param.pageNo;
-	        this.CONFIG.params.pageSize = param.pageSize;
+	        paramsObj.pageNo = param.pageNo;
+	        paramsObj.pageSize = param.pageSize;
         }
-	      Post(this.CONFIG.url, this.CONFIG.params).then((rep) => {
+	      debugger;
+	      Post(this.CONFIG.url, paramsObj).then((rep) => {
+
 		      var datas = rep.data.result;
 		      var loadDatas = [];
 		      if(datas&& datas instanceof Array && datas.length>0){

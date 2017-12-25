@@ -182,7 +182,9 @@ var mutations = {
   setMember: (state, member) => state.member = member,
   [type.QUERY_SHOPPING_CART]: (state, datas) => {
     state.productList = datas.productList;
-    datas.myCallBack();
+    if(datas.myCallBack && datas.myCallBack instanceof Function) {
+      datas.myCallBack();
+    }
   },
   [type.DELETE_CART_PRODUCT]: (state, datas) => {
     state.deleteStatus = datas.deleteStatus;

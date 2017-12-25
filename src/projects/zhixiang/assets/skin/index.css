@@ -59,5 +59,11 @@
   padding-left: 18px;
   color: #AE0F29;
 }
+.primary-menu-navigation div label a{
+  color: #AE0F29;
+}
+.primary-menu-navigation div label{
+  color:#4A4A4A;
+}
 /*END页面头部导航*/
 /******************* END Stylesheets **********************/

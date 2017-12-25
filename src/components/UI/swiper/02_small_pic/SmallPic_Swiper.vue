@@ -11,8 +11,7 @@
 							</a>
 							<div class="product-overlay-small-pic">
 								<a  class="item-quick-view-small-pic w225" :href="(CONFIG.picLinkUrl)+(smallPic && smallPic[index] && smallPic[index].pubId)+'&contentType='+(smallPic && smallPic[index] && smallPic[index].contentType)+'&columnId=51'">
-									<!--<i class="icon-zoom-in21-small-pic"></i>-->
-									<span class="item-quick-view-word"> 查看详情</span>
+									<span class="item-quick-view-word"><i class="icon-zoom-in2 icon-zoom-in2_small_pic"></i> 查看详情</span>
 								</a>
 							</div>
 						</div>
@@ -40,7 +39,7 @@
 <script type="text/ecmascript-6">
 	import PROJECT_CONFIG from "projectConfig";
 	import Swiper from 'swiper';
-  import {Post} from "@common";
+    import {Post} from "@common";
 
 	export default {
 		name: "ui_swiper_02_small_pic",
@@ -117,14 +116,6 @@
 .swiper-button-next-smallPic{
   top:35%
 }
-.index_smallPic_img{
-  display: inline-block!important;
-}
-.product{
-  width: auto!important;
-}
-
-
 
 .oc-item-small-pic{
   width:auto;
@@ -181,14 +172,6 @@
   background-color: #AE0F29;
   text-align: center;
 }
-.icon-zoom-in-small-pic{
-  position: relative;
-  top: 1px;
-  font-size: 14px;
-  vertical-align: middle;
-  margin-right: 3px;
-}
-
 .item-quick-view-word{
   position: relative;
   top: 1px;
@@ -232,6 +215,10 @@
 .product-price-small-pic > labell{
   font-weight: 400;
   font-size: 90%;
+  color: #7F7F7F;
+}
+.product-price-word-small-pic{
+  font-size: 12px;
   color: #7F7F7F;
 }
 </style>

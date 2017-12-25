@@ -28,7 +28,6 @@
 <script type="text/ecmascript-6">
 	import {Post,DrawImage} from "@common";
 	import PROJECT_CONFIG from "projectConfig";
-	import "bootstrap/dist/css/bootstrap.min.css";
 
 
 	export default {
@@ -49,17 +48,18 @@
 		},
 		methods: {
 			queryPicListPage: function (param) {
-				var conditions = "[{pub_resource_type:"+ this.CONFIG.pub_resource_type +"},"
+				let conditions = "[{pub_resource_type:"+ this.CONFIG.pub_resource_type +"},"
                         +"{pub_status:"+ this.CONFIG.pub_status +"},"
-                        +"{pub_col_id:"+ this.CONFIG.pub_col_id +"}"
+                        +"{pub_col_id:"+ this.CONFIG.pub_col_id +"}";
+				let paramsObj = Object.assign({}, this.CONFIG.params);
 				if (typeof (param) == "object") {
 					//点击分页
-					this.CONFIG.params.pageNo = param.pageNo;
-					this.CONFIG.params.pageSize = param.pageSize;
+					paramsObj.pageNo = param.pageNo;
+					paramsObj.pageSize = param.pageSize;
 				}else {
           this.CONFIG.params.conditions =(param == "-1")?conditions+"]": conditions +",{BOOK_BOOK_CASCADID:" + param + ",op:'lk'}]";
 				}
-				Post(this.CONFIG.url, this.CONFIG.params).then((rep) => {
+				Post(this.CONFIG.url, paramsObj).then((rep) => {
 					var datas = rep.data.result;
 					var loadDatas = [];
 					if(datas && datas instanceof Array && datas.length>0){

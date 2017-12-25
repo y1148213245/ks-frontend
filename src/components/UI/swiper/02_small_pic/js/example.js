@@ -21,7 +21,7 @@ const prod = {
         pageSize: "15",
         searchText: null
 			},
-      picLinkUrl:"./pages/bookDetail/bookDetail.html?pubId="
+      picLinkUrl:"./bookdetail.html?pubId="
 		}
 	}
 };
