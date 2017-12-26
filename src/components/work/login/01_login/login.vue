@@ -1,7 +1,7 @@
 <template>
     <el-row>
         <el-col :span="24">
-            <slot name="content" ></slot>
+            <slot name="content" :login="login"></slot>
         </el-col>
     </el-row>
 </template>

@@ -7,21 +7,24 @@
           <div class="acctitle">
             <i class="acc-closed icon-lock3"></i>
             <i class="acc-open icon-unlock"></i>登 录</div>
-
-          <div class="acc_content clearfix">
-            <el-form :model="member" :rules="loginRules" ref="member">
-              <el-form-item label="邮 箱" prop="loginName">
-                <el-input type="text" v-model="member.loginName" auto-complete="off" placeholder="请输入邮箱"></el-input>
-              </el-form-item>
-              <el-form-item label="密 码" prop="password">
-                <el-input type="password" v-model="member.password" auto-complete="off" placeholder="请输入密码"></el-input>
-              </el-form-item>
-            </el-form>
-            <div class="col_full nobottommargin">
-              <el-button type="primary" @click="submitLoginForm('member')" class="button nomargin" id="login-form-submit">提交</el-button>
-              <el-button type="text" @click="backMain" class="fright">忘记密码?</el-button>
-            </div>
-          </div>
+          <work_login_01 :member="member">
+            <template slot="content" slot-scope="props">
+              <div class="acc_content clearfix">
+                <el-form :model="member" :rules="loginRules" ref="member">
+                  <el-form-item label="邮 箱" prop="loginName">
+                    <el-input type="text" v-model="member.loginName" auto-complete="off" placeholder="请输入邮箱"></el-input>
+                  </el-form-item>
+                  <el-form-item label="密 码" prop="password">
+                    <el-input type="password" v-model="member.password" auto-complete="off" placeholder="请输入密码"></el-input>
+                  </el-form-item>
+                </el-form>
+                <div class="col_full nobottommargin">
+                  <el-button type="primary" @click="submitLoginForm(props.login)" class="button nomargin" id="login-form-submit">提交</el-button>
+                  <el-button type="text" @click="backMain" class="fright">忘记密码?</el-button>
+                </div>
+              </div>  
+            </template>
+          </work_login_01>
           <!-- END 登陆 -->
           <!-- 注册 -->
           <div class="acctitle">
@@ -197,35 +200,14 @@ export default {
   },
 
   methods: {
-    login: function() {
-      this.$store.dispatch("user/" + actionTypes.MEMBER_LOGIN, {
-        member: this.$data.member,
-        cb: function() {
-          locationUtils.redirectToServ();
-        },
-        loginErr: this.loginValid,
-        loginFreeze: this.loginFreeze
-      });
-    },
-    loginValid: function() {
-      this.$message({
-        type: "error",
-        message: "账号或密码错误"
-      });
-    },
-    loginFreeze: function() {
-      this.$message({
-        type: "error",
-        message: "账号已被冻结，请联系管理员"
-      });
-    },
     backMain() {
-      this.$router.push("retrievePassword");
+      // this.$router.push("retrievePassword");
     },
-    submitLoginForm(member) {
+    submitLoginForm(login) {
+      /* 登陆 */
       this.$refs.member.validate(valid => {
-        if (valid) {
-          this.login();
+        if (valid && login instanceof Function) {
+          login();
         } else {
           return false;
         }
@@ -287,8 +269,44 @@ export default {
       this.code = "";
       let codeLength = 4;
       let checkCode = document.getElementById("code");
-      let random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-        'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+      let random = new Array(
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z"
+      );
       for (let i = 0; i < codeLength; i++) {
         let index = Math.floor(Math.random() * 36);
         this.code += random[index];
@@ -321,6 +339,6 @@ export default {
   font-weight: bold;
   border: 0;
   letter-spacing: 2px;
-  color: #33938D;
+  color: #33938d;
 }
 </style>

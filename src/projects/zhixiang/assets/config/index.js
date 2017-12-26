@@ -2,7 +2,7 @@
  * Created by codingnuts on 2017/12/14.
  */
 
-var BASE_URL = "http://172.19.57.153:9092/spc-portal-web/";
+var BASE_URL = "http://172.19.57.153:80/portal/api/";
 
 var SITE_CONFIG = {
 	siteId: 1,
