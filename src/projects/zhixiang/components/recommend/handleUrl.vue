@@ -12,6 +12,7 @@
 		mounted: function () {
 			var query = URL.parse(document.URL, true).query;
 			this.$bus.$emit("toClassification", query.cascadeId);
+      this.$bus.$emit("hotbook");
 		}
 	}
 </script>

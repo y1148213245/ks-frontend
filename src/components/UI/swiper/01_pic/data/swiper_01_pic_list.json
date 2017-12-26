@@ -40,13 +40,13 @@
       "pub_content_type": "125",
       "pub_click_num": 0,
       "EDITOR_RESOURCE_NAME": "而我热无",
-      "pub_picSmall": "http://172.19.57.153:9099/webdata/2017/12/8/144Y1LW51ZSH72033937_s.jpg",
-      "pub_picMiddle": "http://172.19.57.153:9099/webdata/2017/12/8/144Y1LW51ZSH72033937_m.jpg"
+      "pub_picSmall": "/data/ui_swiper_01_pic_slide1.jpg",
+      "pub_picMiddle": "/data/ui_swiper_01_pic_slide2.jpg"
     },
     {
       "EDITOR_SYS_TOPIC": "5",
       "pub_is_eb": 0,
-      "pub_picBig": "http://172.19.57.153:9099/webdata/2017/12/8/144Y1LW51ZSH72033937.jpg",
+      "pub_picBig": "/data/ui_swiper_01_pic_slide1.jpg",
       "pub_created": 1512979197000,
       "pub_sales_num": 0,
       "pub_col_name": "编辑",
@@ -74,8 +74,8 @@
       "pub_content_type": "125",
       "pub_click_num": 0,
       "EDITOR_RESOURCE_NAME": "而我热无",
-      "pub_picSmall": "http://172.19.57.153:9099/webdata/2017/12/8/144Y1LW51ZSH72033937_s.jpg",
-      "pub_picMiddle": "http://172.19.57.153:9099/webdata/2017/12/8/144Y1LW51ZSH72033937_m.jpg"
+      "pub_picSmall": "/data/ui_swiper_01_pic_slide1.jpg",
+      "pub_picMiddle": "/data/ui_swiper_01_pic_slide2.jpg"
     },
     {
       "EDITOR_SYS_TOPIC": "5",
@@ -108,8 +108,8 @@
       "pub_content_type": "125",
       "pub_click_num": 0,
       "EDITOR_RESOURCE_NAME": "而我热无",
-      "pub_picSmall": "http://172.19.57.153:9099/webdata/2017/12/8/144Y1LW51ZSH72033937_s.jpg",
-      "pub_picMiddle": "http://172.19.57.153:9099/webdata/2017/12/8/144Y1LW51ZSH72033937_m.jpg"
+      "pub_picSmall": "/data/ui_swiper_01_pic_slide1.jpg",
+      "pub_picMiddle": "/data/ui_swiper_01_pic_slide2.jpg"
     }
 
   ],

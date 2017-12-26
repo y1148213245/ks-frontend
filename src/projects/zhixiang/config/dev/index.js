@@ -12,10 +12,16 @@ export default {
 		},
     smallPic_02: {
       url: '/data/swiper_02_smallPic_list.json',
-      picLinkUrl:"./bookdetail.html?pubId="
+      picLinkUrl:"./bookdetail.html?pubId=",
+			columnId:"51"
     },
     pic_word_03: {
       url: '/data/swiper_03_pic_words.json',
     }
+	},
+	indexBestSale: {
+		url: '/data/components_index_bestsale.json',
+		picLinkUrl:"./bookdetail.html?pubId=",
+		columnId:"51"
 	}
 };

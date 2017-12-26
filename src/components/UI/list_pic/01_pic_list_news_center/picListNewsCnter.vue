@@ -77,7 +77,6 @@
 	        paramsObj.pageNo = param.pageNo;
 	        paramsObj.pageSize = param.pageSize;
         }
-	      debugger;
 	      Post(this.CONFIG.url, paramsObj).then((rep) => {
 
 		      var datas = rep.data.result;
@@ -142,14 +141,13 @@
     box-sizing: border-box;
   }
   .container {
+    margin-bottom:10px;
     margin-right: auto;
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
   }
-  @media (min-width: 1200px).container {
-    width: 1170px;
-  }
+
   .news-feature {
     margin-top: 24px;
   }
@@ -209,15 +207,6 @@
   }
   p {
     margin: 0 0 10px;
-  }
-
-  .heading-block {
-    float: left;
-    padding-left: 10px;
-  }
-
-  .news-thumb a {
-    float: left;
   }
 
 </style>

@@ -1,0 +1,38 @@
+/************************** START 搜索结果页 头部 **************************/
+#title-nav{
+  height: 160px;
+  background: #E6E6E6;
+}
+.col_full{
+  clear: both;
+  float: none;
+  width: 100%;
+  margin-right: 0;
+  margin-bottom: 12px;
+}
+.postcontent, .sidebar, .col_full, .col_half, .col_one_third, .col_two_third, .col_three_fourth, .col_one_fourth, .col_one_fifth, .col_two_fifth, .col_three_fifth, .col_four_fifth, .col_one_sixth, .col_five_sixth{
+  display: block;
+  position: relative;
+  margin-right: 4%;
+  margin-bottom: 50px;
+  float: left;
+}
+#title-nav h1{
+  font-weight: normal;
+  margin-top: 60px;
+  padding-right: 16px;
+  border-right: 1px solid #979797;
+  margin-right: 16px;
+  display: inline-block;
+  line-height: 1em;
+}
+h1{
+  font-size: 36px;
+}
+#title-nav span, .news-detail span{
+  color: #7F7F7F;
+}
+.icon-search3:before{
+  content: "\e6be";
+}
+/************************** END 搜索结果页 头部 **************************/

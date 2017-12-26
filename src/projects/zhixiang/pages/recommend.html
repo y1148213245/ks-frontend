@@ -11,6 +11,7 @@
         ============================================= -->
   <link rel="stylesheet" href="../assets/css/font-icons.css" type="text/css"/>
   <link rel="stylesheet" href="../assets/css/bootstrap.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/css/style.css" type="text/css"/>
   <link rel="stylesheet" href="../assets/skin/recommend.css" type="text/css"/>
   <script type="text/javascript" src="../assets/config/index.js"></script>
   <script type="text/javascript" src="../assets/js/web.js"></script>
@@ -26,11 +27,14 @@
 
 <body class="stretched">
 <div id="app" style="display: none">
+
   <components_recommend_handleurl></components_recommend_handleurl>
   <!-- The Main Wrapper
       ============================================= -->
   <div id="wrapper" class="clearfix">
-
+    <!---------------------------------页头导航组件--------------------------->
+    <header_component></header_component>
+    <!---------------------------------页头导航组件--------------------------->
     <!-- Site Content
       ============================================= -->
     <section id="content">
@@ -44,27 +48,33 @@
             <!-- END 左侧分类导航组件 -->
             <!--start 图书热卖榜组件-->
             <h3>图书热卖榜</h3>
-            <ui_list_pic_04 namespace="recommend" usepost="true"></ui_list_pic_04>
+            <ui_list_pic_04 namespace="recommend"></ui_list_pic_04>
             <!--end 图书热卖榜组件-->
 
-            <!--<div class="ad-box">
-                          <a href="#"><img src="img/ad1.jpeg" alt="ad-title"></a>
-                          <a href="#"><img src="img/ad2.jpeg" alt="ad-title"></a>
-                      </div>-->
-          </div>
+              <!--<div class="ad-box">
+							<a href="#"><img src="img/ad1.jpeg" alt="ad-title"></a>
+							<a href="#"><img src="img/ad2.jpeg" alt="ad-title"></a>
+						</div>-->
+            </div>
           <!-- 图书列表
           ============================================= -->
+          <!--===========================右侧电子书图书列表===========================-->
           <div class="col-md-9 norightpadding books-catergory">
             <ui_list_pic_05 namespace="recommend"></ui_list_pic_05>
           </div>
+          <!--===========================END右侧电子书图书列表===========================-->
         </div>
       </div>
     </section>
+    <!---------------------------------页脚导航组件--------------------------->
+    <footer_component></footer_component>
+    <!---------------------------------页脚导航组件--------------------------->
 
   </div>
   <!-- Go To Top
-  ============================================= -->
+  <!--置顶关注组件-->
   <ui_go_top></ui_go_top>
+  <!--END置顶关注组件-->
 </div>
 </body>
 

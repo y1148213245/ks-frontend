@@ -15,7 +15,7 @@
                         {{navigationWord.name}}
                     </label>
                     <ul class="sf-js-enabled" style="touch-action: pan-y;">
-                        <li  v-for="nav in navList" v-if="nav.columnType == navigationWord.columnType" class="li_header_navigation"><a class="a1_header_navigation" :href="nav.template+'?col_id='+nav.id">{{nav.name}}</a></li>
+                        <li  v-for="nav in navList" v-if="nav.columnType == navigationWord.columnType" class="li_header_navigation"><a class="a1_header_navigation" :href="nav.template">{{nav.name}}</a></li>
                     </ul>
                 </template>
             </div>
@@ -25,7 +25,7 @@
 
 <script type="text/ecmascript-6">
     import PROJECT_CONFIG from "projectConfig";
-    import {Post} from "@common";
+    import {Get} from "@common";
     export default {
         name: "ui_navigation_01_header_navigation",
         reused: true,
@@ -44,7 +44,7 @@
     },
     methods:{
         initNavigation:function(){
-            Post(this.CONFIG.url).then((rep) => {
+            Get(this.CONFIG.url).then((rep) => {
                 this.navList = rep.data.data;
             });
         }

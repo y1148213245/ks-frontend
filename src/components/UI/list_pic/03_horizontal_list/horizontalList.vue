@@ -4,8 +4,8 @@
 			<h3>{{catalog_info.text}}</h3>
 			<a href="javascript:void(0)" @click="moreType(catalog_info.cascadeId)" class="more">更多 >></a>
 		</div>
-		<template v-for="(recommend,rec_index) in recommendList" v-if="rec_index<4">
-			<article class="col-md-3 nopadding">
+		<template v-for="(recommend,rec_index) in recommendList" v-if="rec_index < listNum" v-show="showList">
+			<article class="nopadding" :class="rec_index == 0 ? firstClass : listClass">
 				<div class="product iproduct clearfix">
 					<div class="product-image">
 						<a class="tuijian_list_imgBox" href="javascript:void(0)" @click="toBookDetail(recommend.id,recommend.pub_content_type,recommend.pub_col_id)">
@@ -40,11 +40,17 @@
 		data: function () {
 			return {
 				CONFIG: null,
-				recommendList: []
+				recommendList: [],
+				listNum : 4,
+				listClass: "col-md-3",
+				firstClass: "col-md-3",
+				showList: false
 			};
 		},
 		mounted: function () {
 			this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.horizontal_list_03;
+
+			this.ajustColumnStyle(this.CONFIG.styleType);
 			this.queryItemList(1);
 		},
 		/*computed: {
@@ -54,6 +60,18 @@
 		 })
 		 },*/
 		methods: {
+			ajustColumnStyle: function (styleType) {
+				if(styleType === "show4"){
+					this.listNum = 4;
+					this.firstClass = "col-md-3";
+					this.listClass = "col-md-3";
+				} else if(styleType === "show5"){
+					this.listNum = 5;
+					this.firstClass = "col-md-4";
+					this.listClass = "col-md-2";
+				}
+				this.showList = true;
+			},
 			queryItemList: function (pageNo) {
 				var param = {};
 				Object.assign(param,

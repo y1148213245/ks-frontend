@@ -22,7 +22,8 @@ export default {
 				url: "./recommend.html",
 				pubColId: 49,
 				type: "selling"
-			}
+			},
+			styleType: "show4"
 		}
 	},
 	components: {

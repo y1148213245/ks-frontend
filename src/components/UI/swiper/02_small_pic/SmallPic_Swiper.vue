@@ -10,7 +10,7 @@
                 <img class="index_smallPic_img-small-pic" :src="smallPic && smallPic[index] && smallPic[index].bookUrl"  alt="暂无封面">
 							</a>
 							<div class="product-overlay-small-pic">
-								<a  class="item-quick-view-small-pic w225" :href="(CONFIG.picLinkUrl)+(smallPic && smallPic[index] && smallPic[index].pubId)+'&contentType='+(smallPic && smallPic[index] && smallPic[index].contentType)+'&columnId=51'">
+								<a  class="item-quick-view-small-pic w225" :href="(CONFIG.picLinkUrl)+(smallPic && smallPic[index] && smallPic[index].pubId)+'&contentType='+(smallPic && smallPic[index] && smallPic[index].contentType)+'&columnId='+CONFIG.columnId">
 									<span class="item-quick-view-word"><i class="icon-zoom-in2 icon-zoom-in2_small_pic"></i> 查看详情</span>
 								</a>
 							</div>
@@ -18,7 +18,7 @@
 						<div class="product-desc-small-pic center">
 							<div class="product-title-small-pic">
 								<h3 class="product-title-h3-small-pic">
-									<a class="product-title-h3-a-small-pic" :href="(CONFIG.picLinkUrl)+(smallPic && smallPic[index] && smallPic[index].pubId)+'&contentType='+(smallPic && smallPic[index] && smallPic[index].contentType)+'&columnId=51'">{{smallPic && smallPic[index] && smallPic[index].bookName}}</a>
+									<a class="product-title-h3-a-small-pic" :href="(CONFIG.picLinkUrl)+(smallPic && smallPic[index] && smallPic[index].pubId)+'&contentType='+(smallPic && smallPic[index] && smallPic[index].contentType)+'&columnId'+CONFIG.columnId">{{smallPic && smallPic[index] && smallPic[index].bookName}}</a>
 								</h3>
 							</div>
 							<div class="product-author-small-pic">作者：{{smallPic && smallPic[index] && smallPic[index].bookAuthor}}</div>

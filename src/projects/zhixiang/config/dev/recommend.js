@@ -16,7 +16,7 @@ export default {
 			broadcastName: 'queryClassificationList'
 		},
     list_pic_04_pic_list: {
-      url: '/data/list_pic_04_pic_list.json',
+      url: './data/list_pic_04_pic_list.json',
       picLinkUrl: ''
     }
 	},

@@ -11,7 +11,7 @@
 <script>
 
 	export default {
-		name: 'zhixiang_components_project_footer',
+		name: 'footer_component',
 		reused: true,
 	}
 </script>

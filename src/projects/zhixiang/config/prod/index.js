@@ -29,7 +29,8 @@ export default {
         pageSize: "15",
         searchText: null
       },
-      picLinkUrl:"./bookdetail.html?pubId="
+      picLinkUrl:"./bookdetail.html?pubId=",
+      columnId:"51"
     },
     pic_word_03: {
       url: BASE_URL+'/spc/cms/publish/list.do',
@@ -41,5 +42,17 @@ export default {
         searchText: null
       }
     }
-	}
+	},
+  indexBestSale: {
+    url: BASE_URL+'/spc/cms/publish/list.do',
+    params: {
+      conditions: "[{pub_resource_type:'BOOK'}]",
+      orderBy:  null,
+      pageNo: "1",
+      pageSize: "15",
+      searchText: null
+    },
+    picLinkUrl:"./bookdetail.html?pubId=",
+    columnId:"51"
+  }
 };

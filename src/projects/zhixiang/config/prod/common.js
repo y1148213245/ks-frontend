@@ -6,7 +6,7 @@ export default {
 	name: "common",
 	search: {
 		Category_Search: {
-			searchHrefPage: "./searchResult.html"
+			searchHrefPage: "./searchresult.html"
 		}
 	},
 	navigation:{
