@@ -3,31 +3,31 @@
 		<div class="swiper-wrapper">
 			<div class="swiper-slide" v-for="(item, index) in smallPic">
 				<div class="oc-item-small-pic">
-					<div class="product-small-pic">
-						<div class="product-image-small-pic">
-							<a class="index_smallPic_imgBox-small-pic">
-                <span class="index_smallPic_span-img-small-pic"></span>
-                <img class="index_smallPic_img-small-pic" :src="smallPic && smallPic[index] && smallPic[index].bookUrl"  alt="暂无封面">
-							</a>
-							<div class="product-overlay-small-pic">
-								<a  class="item-quick-view-small-pic w225" :href="(CONFIG.picLinkUrl)+(smallPic && smallPic[index] && smallPic[index].pubId)+'&contentType='+(smallPic && smallPic[index] && smallPic[index].contentType)+'&columnId='+CONFIG.columnId">
-									<span class="item-quick-view-word"><i class="icon-zoom-in2 icon-zoom-in2_small_pic"></i> 查看详情</span>
-								</a>
-							</div>
-						</div>
-						<div class="product-desc-small-pic center">
-							<div class="product-title-small-pic">
-								<h3 class="product-title-h3-small-pic">
-									<a class="product-title-h3-a-small-pic" :href="(CONFIG.picLinkUrl)+(smallPic && smallPic[index] && smallPic[index].pubId)+'&contentType='+(smallPic && smallPic[index] && smallPic[index].contentType)+'&columnId'+CONFIG.columnId">{{smallPic && smallPic[index] && smallPic[index].bookName}}</a>
-								</h3>
-							</div>
-							<div class="product-author-small-pic">作者：{{smallPic && smallPic[index] && smallPic[index].bookAuthor}}</div>
-							<div class="product-price-small-pic">
-								<label class="product-price-word-small-pic">定价：</label>
-								¥{{smallPic && smallPic[index] && smallPic[index].bookPrice}}
-							</div>
-						</div>
-					</div>
+                  <div class="product iproduct clearfix">
+                    <div class="product-image">
+                      <a class="index_newBook_imgBox" style="display:table-cell;width:225px;height:225px;vertical-align:middle;">
+                        <img class="index_newBook_img" :src="smallPic && smallPic[index] && smallPic[index].bookUrl"  alt="暂无封面" style="vertical-align:middle;">
+                      </a>
+                      <div class="product-overlay">
+                        <a  class="item-quick-view w225" :href="(CONFIG.picLinkUrl)+(smallPic && smallPic[index] && smallPic[index].pubId)+'&contentType='+(smallPic && smallPic[index] && smallPic[index].contentType)+'&columnId='+CONFIG.columnId">
+                          <i class="icon-zoom-in2"></i>
+                          <span> 查看详情</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="product-desc center">
+                      <div class="product-title">
+                        <h3 class="product-title-h3-small-pic1">
+                          <a class="product-title-h3-a-small-pic1" :href="(CONFIG.picLinkUrl)+(smallPic && smallPic[index] && smallPic[index].pubId)+'&contentType='+(smallPic && smallPic[index] && smallPic[index].contentType)+'&columnId'+CONFIG.columnId">{{smallPic && smallPic[index] && smallPic[index].bookName}}</a>
+                        </h3>
+                      </div>
+                      <div class="product-author">作者：{{smallPic && smallPic[index] && smallPic[index].bookAuthor}}</div>
+                      <div class="product-price">
+                        <label class="product-price1">定价：</label>
+                        ¥{{smallPic && smallPic[index] && smallPic[index].bookPrice}}
+                      </div>
+                    </div>
+                  </div>
 				</div>
 			</div>
 		</div>
@@ -116,7 +116,6 @@
 .swiper-button-next-smallPic{
   top:35%
 }
-
 .oc-item-small-pic{
   width:auto;
   display:inline-block !important;
@@ -127,98 +126,9 @@
   height: 46px;
   display: block;
 }
-
-
-.product-image-small-pic{
-  width: 225px;
-  height: 225px;
-}
-.index_smallPic_imgBox-small-pic{
-  display:block;
-  width: 225px!important;
-  height: 225px!important;
-}
-.index_smallPic_img-small-pic{
-  width: 225px;
-  height:140px;
-  display: inline-block;
-  vertical-align: middle;
-}
-.index_smallPic_span-img-small-pic{
-  height:42px;
-  display:inline-block;
-  vertical-align:middle;
-}
-
-.product-overlay-small-pic{
-  position:absolute;
-  left:0px;
-  top:225px;
-  width: 225px;
-  height: 0px;
-  display: none;
-}
-.item-quick-view-word{
-  display: inline-block;
-  width: 225px;
-  height: 46px;
-}
-.item-quick-view-small-pic{
-  display: block;
-  float: left;
-  width: 100%;
-  font-size: 13px;
-  color: #fff;
-  background-color: #AE0F29;
-  text-align: center;
-}
-.item-quick-view-word{
-  position: relative;
-  top: 1px;
-  font-size: 14px;
-  vertical-align: middle;
-  margin-right: 3px;
-  line-height: 44px;
-  vertical-align: middle;
-}
-.product-desc-small-pic{
-  text-align :center;
-  padding: 10px 0;
-  font-size: 14px;
-}
-
-
-
-.product-title-small-pic{
-  margin-bottom: 7px;
-  box-sizing: border-box;
-
-}
-.product-title-h3-small-pic{
-  margin: 0;
-  font-size: 18px;
-  font-weight: normal;
-}
-.product-title-h3-a-small-pic{
-  color: #333;
-}
-.product-author-small-pic{
-  font-size: 12px;
-  color: #7F7F7F;
-}
-.product-price-small-pic{
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  color: #000;
-}
 .product-price-small-pic > labell{
   font-weight: 400;
   font-size: 90%;
-  color: #7F7F7F;
-}
-.product-price-word-small-pic{
-  font-size: 12px;
   color: #7F7F7F;
 }
 </style>

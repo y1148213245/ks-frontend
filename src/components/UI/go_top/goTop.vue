@@ -1,6 +1,6 @@
 <template>
-  <div id="gotoTop" class="ui_go_top">
-    <section id="vqrcode">
+  <div class="ui_go_top">
+    <section class="vqrcode">
       <div class="icon-qrcode">
         <div class="qrcode">
           <div class="col-md-6"><img src="./assets/img/qrcode-wchat.jpg" alt="微信二维码"><span>微信扫一扫关注我们的公众号</span></div>
@@ -27,24 +27,25 @@
 </script>
 
 <style>
-  #gotoTop{
+  .ui_go_top{
     height: 81px;
-    display: block;
+    display: inline-block;
     z-index: 299;
-    position: fixed;
+    position: absolute;
     top: auto;
     left: auto;
     right: 30px;
-    bottom: 50px;
+    bottom: 10%;
+    /* box-sizing: border-box; */
   }
-  body:not(.device-touch) #gotoTop .icon-angle-up, body:not(.device-touch) #gotoTop .icon-qrcode{
+  body:not(.device-touch) .ui_go_top .icon-angle-up, body:not(.device-touch) .ui_go_top .icon-qrcode{
     -webkit-transition: background-color .2s linear;
   }
-  #gotoTop .icon-qrcode{
+  .ui_go_top .icon-qrcode{
     margin-bottom: 1px;
     position: relative;
   }
-  #gotoTop .icon-angle-up, #gotoTop .icon-qrcode{
+  .ui_go_top .icon-angle-up, .ui_go_top .icon-qrcode{
     display: block;
     width: 40px;
     height: 40px;
@@ -57,7 +58,7 @@
     cursor: pointer;
     border-radius: 0px;
   }
-  #gotoTop .icon-qrcode .qrcode{
+  .ui_go_top .icon-qrcode .qrcode{
     position: absolute;
     right: 30px;
     bottom: 30px;
@@ -83,8 +84,8 @@
   .icon-angle-up:before{
     content: "\e7a6";
   }
-  #gotoTop .icon-qrcode:hover .qrcode{display: block}
-  .stretched #gotoTop { bottom: 30px; }
+  .ui_go_top .icon-qrcode:hover .qrcode{display: block}
+  .stretched .ui_go_top { bottom: 30px; }
 
-  #gotoTop .icon-angle-up:hover,#gotoTop .icon-qrcode:hover { background-color: #AE0F29; }
+  .ui_go_top .icon-angle-up:hover,.ui_go_top .icon-qrcode:hover { background-color: #AE0F29; }
 </style>

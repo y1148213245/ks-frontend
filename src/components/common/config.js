@@ -9,6 +9,7 @@ var requireContext = readProd || (process.env.NODE_ENV === 'production') ?  requ
 var _configs = ScanConfigs(requireContext);
 
 var CONFIG = (function () {
-	return Object.assign({}, _configs, $_$ || {})
+	return Object.assign({}, _configs, typeof $_$ !== "undefined"? $_$ : {})
 })();
+
 export default CONFIG ;
