@@ -29,31 +29,12 @@
 </head>
 <body class="stretched" id="home">
 <div id="app" style="display: none">
+
 	<div id="index">
 		<div id="wrapper" class="clearfix" style="animation-duration: 1.5s; opacity: 1;">
-			<header id="header" class="sticky-header">
-				<div id="header-wrap" class="container clearfix">
-					<div class="header-top clearfix">
-						<div id="logo" class="col-md-5 nopadding">
-							<a href="index.html" class="retina-logo"><img src="../assets/img/founder_Logo@2x.png" alt="智享 Logo"></a>
-						</div>
-						<div class="col-md-7 nopadding">
-							<div class="top-menu"><a href="javascript:void(0)">登 录</a>
-								<a href="javascript:void(0)" id="top-cart"><i class="icon-shopping-cart"></i> <span>0</span></a>
-								<a href="#">English</a>
-							</div>
-
-							<!-- 搜索框组件 -->
-							<work_search_01_category_search namespace="index"></work_search_01_category_search>
-							<!-- END 搜索框组件 -->
-						</div>
-					</div>
-					<!-- 导航组件 -->
-					<ui_navigation_01_header_navigation namespace="common"></ui_navigation_01_header_navigation>
-					<!-- END 导航组件 -->
-				</div>
-			</header>
-
+			<!------------------------头部导航组件-------------------------------------->
+      <zhixiang_components_project_header namespace="common"></zhixiang_components_project_header>
+      <!------------------------END 头部导航组件-------------------------------------->
 			<section class="swiper_wrapper clearfix" style="height:480px; margin-bottom:24px">
 				<ui_swiper_01_pic namespace="index"></ui_swiper_01_pic>
 			</section>
@@ -148,14 +129,10 @@
 					</div>
 				</div>
 			</section>
-			<footer class="footer" style="margin-top:24px">
-				<div class="container">
-					<div class="col-md-6">版权所有：方正电子   2016-2017   |   备案序号：ICP备05032912号
-						</br>地址：北京海淀区上地五街9号  |   电话：54044520</div>
-					<div class="col-md-6 tright"><a href="#">关于我们</a>   |    <a href="#">联系我们</a>   |    <a href="#">招聘启事</a>    |    <a href="#">版权声明</a></div>
-				</div>
-			</footer>
 
+      <!---------------------------------页脚导航组件--------------------------->
+      <zhixiang_components_project_footer></zhixiang_components_project_footer>
+      <!---------------------------------页脚导航组件--------------------------->
 
 		</div>
 	</div>

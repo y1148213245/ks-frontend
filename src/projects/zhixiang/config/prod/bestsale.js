@@ -20,7 +20,7 @@ export default {
 			toBookDetailUrl:"./bookdetail.html",
 			moreType:{
 				url: "./recommend.html",
-				pubColId: 48,
+				pubColId: 49,
 				type: "selling"
 			}
 		}

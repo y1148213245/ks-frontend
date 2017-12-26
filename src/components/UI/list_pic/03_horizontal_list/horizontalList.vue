@@ -44,7 +44,7 @@
 			};
 		},
 		mounted: function () {
-			this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].list_pic.horizontal_list_03 : PROJECT_CONFIG.list_pic.horizontal_list_03;
+			this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.horizontal_list_03;
 			this.queryItemList(1);
 		},
 		/*computed: {
@@ -64,7 +64,6 @@
 									.replace(/#\{cascadeId\}/g, this.catalog_info.cascadeId)
 						});
 
-				console.info(param)
 				Post(this.CONFIG.queryItemList.url, param).then((response) => {
 					if (response.data && response.data.result && response.data.result instanceof Array) {
 						this.recommendList = response.data.result;

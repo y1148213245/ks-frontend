@@ -21,6 +21,7 @@
 		},
 		created: function () {
 			this.CATA_CONFIG = CONFIG[this.namespace].components.categoryList;
+
 			this.queryCategory();
 		},
 		methods: {

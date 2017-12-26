@@ -16,4 +16,5 @@ export const QUERY_VIRTUAL_COIN = 'QUERY_VIRTUAL_COIN';    // 查询用户虚拟
 export const GET_RMB_COIN = 'GET_RMB_COIN';                // 虚拟币兑换人民币
 export const CHANGE_ACTIVITY = 'CHANGE_ACTIVITY';          // 更换活动
 export const QUERY_COUPONS = 'QUERY_COUPONS';              // 查询优惠券列表
+export const API_CONFIG = 'API_CONFIG';
 /***** END 购物车组件 *****/
