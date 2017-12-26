@@ -7,24 +7,28 @@
           <div class="acctitle">
             <i class="acc-closed icon-lock3"></i>
             <i class="acc-open icon-unlock"></i>登 录</div>
-          <work_login_01 :member="member">
-            <template slot="content" slot-scope="props">
+            <!-- 登陆接口组件 -->
+          
               <div class="acc_content clearfix">
-                <el-form :model="member" :rules="loginRules" ref="member">
-                  <el-form-item label="邮 箱" prop="loginName">
-                    <el-input type="text" v-model="member.loginName" auto-complete="off" placeholder="请输入邮箱"></el-input>
-                  </el-form-item>
-                  <el-form-item label="密 码" prop="password">
-                    <el-input type="password" v-model="member.password" auto-complete="off" placeholder="请输入密码"></el-input>
-                  </el-form-item>
-                </el-form>
-                <div class="col_full nobottommargin">
-                  <el-button type="primary" @click="submitLoginForm(props.login)" class="button nomargin" id="login-form-submit">提交</el-button>
-                  <el-button type="text" @click="backMain" class="fright">忘记密码?</el-button>
-                </div>
+                <work_login_01 :member="member">
+                  <template slot="content" slot-scope="props">
+                    <el-form :model="member" :rules="loginRules" ref="member">
+                      <el-form-item label="邮 箱" prop="loginName">
+                        <el-input type="text" v-model="member.loginName" auto-complete="off" placeholder="请输入邮箱"></el-input>
+                      </el-form-item>
+                      <el-form-item label="密 码" prop="password">
+                        <el-input type="password" v-model="member.password" auto-complete="off" placeholder="请输入密码"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <div class="col_full nobottommargin">
+                      <el-button type="primary" @click="submitLoginForm(props.login)" class="button nomargin" id="login-form-submit">提交</el-button>
+                      <el-button type="text" @click="backMain" class="fright">忘记密码?</el-button>
+                    </div>
+                  </template>
+                </work_login_01>
               </div>  
-            </template>
-          </work_login_01>
+          
+          <!-- END 登陆接口组件 -->
           <!-- END 登陆 -->
           <!-- 注册 -->
           <div class="acctitle">
