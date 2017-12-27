@@ -6,7 +6,7 @@
     </el-row>
 </template>
 <script type="text/ecmascript-6">
-import * as type from '../common/constConfig.js';
+import * as type from "../common/constConfig.js";
 
 export default {
   name: "work_login_01",
@@ -15,8 +15,12 @@ export default {
     loginSuccessCallback: Function /* 登陆成功回调 */,
     member: {
       /* 登陆信息对象 */
-      type: Object,
-      required: true,
+      type: Object /* 类型限制 */,
+      required: true /* 必传 */,
+      validator(val) {
+        /* 值校验 */
+        return val["loginName"] && val["password"];
+      },
       default() {
         return {
           loginName: "" /* 登陆名 */,
@@ -28,7 +32,7 @@ export default {
   methods: {
     login() {
       //console.log(this.member);
-      this.$store.dispatch('login_01/'+type.LOGIN, {
+      this.$store.dispatch("login_01/" + type.LOGIN, {
         member: this.member,
         cb: this.loginSuccessCallback,
         /* cb() {                          //老智享成功callback函数
