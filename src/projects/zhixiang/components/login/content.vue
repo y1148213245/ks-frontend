@@ -7,10 +7,10 @@
           <div class="acctitle">
             <i class="acc-closed icon-lock3"></i>
             <i class="acc-open icon-unlock"></i>登 录</div>
+            
             <!-- 登陆接口组件 -->
-          
               <div class="acc_content clearfix">
-                <work_login_01 :member="member">
+                <work_login_01 :member="testmember">
                   <template slot="content" slot-scope="props">
                     <el-form :model="member" :rules="loginRules" ref="member">
                       <el-form-item label="邮 箱" prop="loginName">
@@ -27,9 +27,9 @@
                   </template>
                 </work_login_01>
               </div>  
-          
-          <!-- END 登陆接口组件 -->
-          <!-- END 登陆 -->
+            <!-- END 登陆接口组件 -->
+            <!-- END 登陆 -->
+
           <!-- 注册 -->
           <div class="acctitle">
             <i class="acc-closed icon-user4"></i>
@@ -183,7 +183,10 @@ export default {
         loginName: "",
         password: ""
       },
-
+      testmember: {
+        loginname: "",
+        password: ""
+      },
       ruleForm: {
         email: "",
         pass: "",

@@ -52,11 +52,6 @@
         /*commitStatus: true,*/
       }
     },
-    computed: {
-      ...mapGetters({
-        /*commitInfo: 'shoppingCart/getCommitInfo', */   // 获取订单号
-      })
-    },
     methods: {
       viewMyOrder: function () {
         window.location.href = '../personalCenter/personalCenter.html';  // 虚拟币订单需要跳转到我的账号

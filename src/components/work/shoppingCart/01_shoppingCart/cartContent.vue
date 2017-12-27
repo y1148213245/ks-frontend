@@ -213,73 +213,12 @@
     </div>
     <div id="orderWrapper" class="main_car" v-show="showItem == 'showOrderWrapper'">
       <div class="container">
-        <!--选择收货地址弹框-->
-        <el-dialog title="选择收货地址" :visible.sync="addressDialog" :close-on-press-escape="false"
-                   :close-on-click-modal="false">
-          <ul class="addressWrapper">
-            <el-radio-group v-model="selectedAddress">
-              <li v-for="(address, index) in addressList" type="none">
-                <el-radio :label="index" @change="selectAddress(address)">
-                  <span v-text="address.contactor"></span><span>，</span>
-                  <span>{{ '' + address.province + address.city + address.county + address.address}} </span><span>，</span>
-                  <span v-text="address.phone"></span>
-                </el-radio>
-              </li>
-            </el-radio-group>
-          </ul>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="confirmAdd(false)">取 消</el-button>
-            <el-button type="primary" @click="confirmAdd(true)">确 定</el-button>
-          </div>
-        </el-dialog>
-        <!--新增收货地址弹框-->
-        <el-dialog title="新增收货地址" :visible.sync="addAddressDialog" class="newAddAddress" :close-on-press-escape="false"
-                   :close-on-click-modal="false" :before-close="newAddAddressClose">
-          <div class="newWrapper">
-            <div>收货人：</div>
-            <input id="s_contactor" type="text" maxlength="40" v-model="newAddAddress.contactor"
-                   @blur="checkContactor()">
-            <span class="warningInfo" v-if="emptyContactor">请填写收货人</span>
-          </div>
-          <div class="newWrapper">
-            <div>收货地区：</div>
-            <div class="selectPCC">
-              <select id="s_province" name="s_province"></select>  
-              <select id="s_city" name="s_city"></select>  
-              <select id="s_county" name="s_county"></select>
-            </div>
-            <span class="warningInfo" v-if="emptyPCC">请完整的省市信息</span>
-          </div>
-          <div class="newWrapper">
-            <div>详细地址：</div>
-            <input id="s_address" type="text" v-model="newAddAddress.address" @blur="checkDetail()">
-            <span class="warningInfo" v-if="emptyDetail">请填写详细地址</span>
-          </div>
-          <div class="newWrapper">
-            <div>联系电话：</div>
-            <input id="s_phone" type="number" v-model="newAddAddress.phone" @blur="checkPhone()"
-                   @keypress="checkNumberType($event)" maxlength="11">
-            <span class="warningInfo" v-if="emptyPhone">请填写联系电话</span>
-          </div>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="confirmNewAdd(false)">取 消</el-button>
-            <el-button type="primary" @click="confirmNewAdd(true)">确 定</el-button>
-          </div>
-        </el-dialog>
-        <div class="address" v-show="allEbook === false || needInvoice === '1'">
-          <div class="infoHead">收货地址</div>
-          <div class="orderContent" :class="{oneline: defaultAddress === null}">
-            <span v-if="addressList.length == 0">暂无可选地址，您需要新增地址。</span>
-            <div class="addressInfo" v-if="defaultAddress !== null">
-              <!--没有默认地址 就证明一条地址都没有-->
-              <span>{{defaultAddress.contactor}}</span>
-              <span>{{defaultAddress.province + defaultAddress.city + defaultAddress.county + defaultAddress.address}}</span>
-              <span>{{defaultAddress.phone}}</span>
-            </div>
-            <a href="javascript:void(0)" @click="selectOtherAddress()" v-if="addressList.length > 0">选择其他收货地址</a>
-            <a href="javascript:void(0)" @click="addNewAddress()">新增地址</a>
-          </div>
-        </div>
+
+        <!-- 收货地址组件 -->
+        <!-- 需要发票 (needInvoice === '1') 或者 || 不全是电子书 (allEbook === false) 才显示收货地址组件 -->
+        <work_shoppingcart_01_components_address namespace="address" @deliveryAddress="getDeliveryAddress"></work_shoppingcart_01_components_address>
+        <!-- END 收货地址组件 -->
+
         <!--选择发票类型弹框-->
         <el-dialog title="选择发票类型" :visible.sync="invoiceDialog" class="invoiceWrapper" :close-on-press-escape="false"
                    :close-on-click-modal="false" :before-close="invoiceWrapperClose">
@@ -303,34 +242,34 @@
           </div>
           <div class="taxInvoice invoiceCon" v-if="curInvoice.invoiceType == '增值税发票'">
             <div>
-              <span>单位名称：</span>
+              <span class="invoiceInfo"><span style="color: red;">* </span>单位名称：</span>
               <input id="receiptTitle" type="text" v-model="curInvoice.receiptTitle" @blur="checkReceiptTitle()">
               <span class="warningInfo" v-if="receiptTitle">请填写单位名称</span>
             </div>
             <div>
-              <span>纳税人识别码：</span>
+              <span class="invoiceInfo"><span style="color: red;">* </span>纳税人识别码：</span>
               <input id="taxpayerCode" type="text" v-model="curInvoice.taxpayerCode" @blur="checkTaxpayerCode()"
                      @keypress="checkTaxPayer($event)" maxlength="20">
               <span class="warningInfo" v-if="taxpayerCode">请填写纳税人识别号</span>
             </div>
             <div>
-              <span>注册地址：</span>
+              <span class="invoiceInfo"><span style="color: red;">* </span>注册地址：</span>
               <input id="companyAddress" type="text" v-model="curInvoice.companyAddress" @blur="checkCompanyAddress()">
               <span class="warningInfo" v-if="companyAddress">请填写注册地址</span>
             </div>
             <div>
-              <span>注册电话：</span>
+              <span class="invoiceInfo"><span style="color: red;">* </span>注册电话：</span>
               <input id="companyPhone" type="number" v-model="curInvoice.companyPhone" @blur="checkCompanyPhone()"
                      @keypress="checkNumberTypes($event)">
               <span class="warningInfo" v-if="companyPhone">请填写注册电话</span>
             </div>
             <div>
-              <span>开户银行：</span>
+              <span class="invoiceInfo"><span style="color: red;">* </span>开户银行：</span>
               <input id="bankName" type="text" v-model="curInvoice.bankName" @blur="checkBankName()">
               <span class="warningInfo" v-if="bankName">请填写开户银行</span>
             </div>
             <div>
-              <span>银行账户：</span>
+              <span class="invoiceInfo"><span style="color: red;">* </span>银行账户：</span>
               <input id="bankAccount" type="number" v-model="curInvoice.bankAccount" @blur="checkBankAccount()"
                      @keypress="checkAccountType($event)" maxlength="21">
               <span class="warningInfo" v-if="bankAccount">请填写银行账户</span>
@@ -568,41 +507,11 @@ export default {
       showFixedClearing: false,
       showZeroTips: false,  // 提示要选择至少一件商品的框框
       /*提交订单页*/
-      addressDialog: false, // 地址选择模态弹框
-      addAddressDialog: false, // 新增地址模态弹框
-      newAddAddress: {
-        // 最新地址信息
-        /*loginName: this.member.loginName,*/
-        contactor: "",
-        phone: "",
-        province: "",
-        city: "",
-        county: "",
-        address: "",
-        post: "",
-        createTime: null,
-        updateTime: null,
-        id: 0,
-        isDefault: "0"
-      },
-      emptyContactor: false,
-      emptyDetail: false,
-      emptyPhone: false,
       invoiceDialog: false,
-      emptyPCC: false,
       selectedInvoice: 1,
       coupons: "",
       payWay: 0,
       payMethod: "0", // 支付方式 0 微信支付 1 支付宝支付
-      selectedAddress: 0,
-      tempAddress: {
-        contactor: "",
-        province: "",
-        city: "",
-        county: "",
-        address: "",
-        phone: ""
-      },
       selectedDelivery: {},
       selectedOrderList: [],
       curInvoice: {
@@ -638,7 +547,6 @@ export default {
       bankAccount: false,
       allEbook: true, // 只有电子书的时候不显示收货地址和快递信息,默认都是电子书
       allBook: true, // 全部都是纸质书 优惠码需要使用
-      /*couponsCheckFixed: 0,  // 优惠码价值*/
       needInvoice: "0", // 是否需要发票： 1 是    0 否  默认不需要发票
       activityValue: "",
       bookTotalMoney: 0, // 纸质书总价
@@ -660,8 +568,6 @@ export default {
       productList: "shoppingcart/getProductList", // 获取购物车商品列表
       deleteStatus: "shoppingcart/getDeleteStatus", // 删除商品状态
       favoriteStatus: "shoppingcart/getFavoriteStatus", // 添加收藏状态
-      addressList: "shoppingcart/getAddressList", // 获取用户地址列表
-      defaultAddress: "shoppingcart/getDefaultAddress", // 获取用户默认地址
       orderList: "shoppingcart/getOrderList", // 获取订单商品列表
       orderDetail: "shoppingcart/getOrderDetail", // 获取订单详情：总价 总数 节省 运费 积分
       paymentList: "shoppingcart/getPaymentList", // 获取支付方式
@@ -736,6 +642,10 @@ export default {
     }
   },
   methods: {
+    getDeliveryAddress(data) {
+      console.log("====================");
+      console.log(data);
+    },
     showDelivery() {
       this.$refs.delivery_button.className = "btn-group open";
       this.$refs.delivery_expanded.attributes[3].value = true;
@@ -801,14 +711,6 @@ export default {
         }
       };
       this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, params); // 购物车商品列表
-      this.$store.dispatch(
-        "shoppingcart/" + type.QUERY_ORDER_ADDRESS,
-        this.member.loginName
-      ); // 收货地址列表
-      this.$store.dispatch(
-        "shoppingcart/" + type.QUERY_DEFAULT_ADDRESS,
-        this.member.loginName
-      ); // 默认地址
       this.$store.dispatch(
         "shoppingcart/" + type.QUERY_VIRTUAL_COIN,
         this.member.loginName
@@ -1617,131 +1519,6 @@ export default {
         JSON.parse(window.sessionStorage.getItem("recordOrderDetail"))
           .saveAmount + this.couponSaveMoney;
     },
-    selectAddress: function(address) {
-      this.tempAddress.contactor = address.contactor;
-      this.tempAddress.province = address.province;
-      this.tempAddress.city = address.city;
-      this.tempAddress.county = address.county;
-      this.tempAddress.address = address.address;
-      this.tempAddress.phone = address.phone;
-    },
-    confirmAdd: function(flag) {
-      this.addressDialog = false;
-      if (flag) {
-        // 选择确定才更改所选地址 否则不改变所选地址
-        var tempAdd = this.tempAddress.contactor
-          ? JSON.parse(JSON.stringify(this.tempAddress))
-          : JSON.parse(JSON.stringify(this.defaultAddress));
-        this.defaultAddress.contactor = tempAdd.contactor;
-        this.defaultAddress.province = tempAdd.province;
-        this.defaultAddress.city = tempAdd.city;
-        this.defaultAddress.county = tempAdd.county;
-        this.defaultAddress.address = tempAdd.address;
-        this.defaultAddress.phone = tempAdd.phone;
-      }
-    },
-    confirmNewAdd: function(flag) {
-      // 点击确定/取消添加地址按钮
-      var _this = this;
-      if (flag) {
-        // 点击确定
-        if ($("#s_contactor").val() === "") {
-          // 收件人为空
-          this.emptyContactor = true;
-          return false;
-        } else if (
-          $("#s_province").val() === "省份" ||
-          $("#s_city").val() === "地级市" ||
-          $("#s_county").val() === "市、县级市"
-        ) {
-          // 省市区没有选择或者没有选择完全
-          this.emptyPCC = true;
-          return false;
-        } else if ($("#s_address").val() === "") {
-          // 详细地址为空
-          this.emptyDetail = true;
-          this.emptyPCC = false;
-          return false;
-        } else if ($("#s_phone").val() === "") {
-          // 联系方式为空
-          this.emptyPhone = true;
-          this.emptyPCC = false;
-          return false;
-        } else {
-          // 都不为空
-          this.emptyPCC = false;
-          var requestParams = {
-            param: {
-              loginName: this.member.loginName,
-              contactor: $("#s_contactor").val(),
-              phone: $("#s_phone").val(),
-              province: $("#s_province").val(),
-              city: $("#s_city").val(),
-              county: $("#s_county").val(),
-              address: $("#s_address").val(),
-              post: this.newAddAddress.post,
-              createTime: this.newAddAddress.createTime,
-              updateTime: this.newAddAddress.updateTime,
-              id: this.newAddAddress.id,
-              isDefault: this.newAddAddress.isDefault
-            },
-            myCallback: function() {
-              if (this.addStatus) {
-                _this.$store.dispatch(
-                  "shoppingcart/" + type.QUERY_DEFAULT_ADDRESS,
-                  _this.member.loginName
-                );
-                _this.$store.dispatch(
-                  "shoppingcart/" + type.QUERY_ORDER_ADDRESS,
-                  _this.member.loginName
-                );
-              } else {
-                _this.$message({
-                  type: "error",
-                  message: "新增地址失败"
-                });
-              }
-            }
-          };
-          this.$store.dispatch(
-            "shoppingcart/" + type.ADD_ORDER_ADDRESS,
-            requestParams
-          );
-          this.addAddressDialog = false;
-        }
-      }
-      this.newAddAddressClose();
-    },
-    newAddAddressClose: function() {
-      this.addAddressDialog = false;
-      this.newAddAddress.contactor = ""; // 点击取消的时候初始化数据
-      this.newAddAddress.phone = "";
-      this.newAddAddress.province = "";
-      this.newAddAddress.city = "";
-      this.newAddAddress.county = "";
-      this.newAddAddress.address = "";
-    },
-    checkContactor: function() {
-      // 联系人失去焦点校验
-      this.emptyContactor = $("#s_contactor").val() === "" ? true : false;
-    },
-    checkDetail: function() {
-      // 详细地址失去焦点校验
-      this.emptyDetail = $("#s_address").val() === "" ? true : false;
-    },
-    checkPhone: function() {
-      // 联系方式失去焦点校验
-      this.emptyPhone = $("#s_phone").val() === "" ? true : false;
-    },
-    checkNumberType: function(event) {
-      // 联系号码不得超过11位
-      if (!String.fromCharCode(event.keyCode).match(/\d/)) {
-        event.preventDefault();
-      }
-      if ($("#s_phone").val().length > 10) {
-        event.preventDefault();
-      }
-    },
     checkNumberTypes: function(event) {
       // 联系号码不得超过11位
       if (!String.fromCharCode(event.keyCode).match(/\d/)) {
@@ -1771,10 +1548,6 @@ export default {
       ) {
         event.preventDefault();
       }
-      /*if($('#taxpayerCode').val().match(/\u4e00-\u9fa5/ig)) {  // 不能输中文
-          console.log('CH');
-          event.preventDefault();
-        }*/
     },
     selectInvoice: function() {
       this.invoiceDialog = true;
@@ -2025,7 +1798,7 @@ export default {
                       response.data.indexOf("</div>")
                     );
                     window.location.href =
-                      "../pages/QRcode.html?data=" +
+                      "../pages/qrcode.html?data=" +
                       data +
                       "&orderCode=" +
                       orderCode;
@@ -2035,13 +1808,13 @@ export default {
               window.history.pushState(
                 null,
                 null,
-                "../pages/errorPage.html"
+                "../pages/errorpage.html"
               ); // 添加历史记录
             } else {
               // 不需要跳转支付页面 实付金额为0
               loadingTag.close();
               window.location.href =
-                "../pages/commitOrder.html#/commitOrder/" +
+                "../pages/commitorder.html#/commitOrder/" +
                 _this.commitInfo.orderCode +
                 "/" +
                 _this.commitInfo.status +
@@ -2579,27 +2352,6 @@ input[type="number"] {
   padding-left: 28px;
 }
 
-#orderWrapper .address .orderContent {
-  height: 100px;
-}
-
-#orderWrapper .address .oneline {
-  line-height: 100px;
-}
-
-#orderWrapper .address .orderContent a:last-child {
-  float: right;
-}
-
-#orderWrapper .address .addressInfo {
-  height: 55px;
-  line-height: 70px;
-}
-
-#orderWrapper .address .addressInfo span {
-  margin-right: 20px;
-}
-
 #orderWrapper .chooseInvoice {
   height: 50px;
   padding-left: 28px;
@@ -2671,15 +2423,6 @@ input[type="number"] {
   border: 1px solid #ddd;
 }
 
-/*#orderWrapper .orderFooter .commitOrder {
-    width: 100px;
-    height: 50px;
-    line-height: 50px;
-    background-color: #ffa31a;
-    text-align: center;
-    color: #ffffff;
-  }*/
-
 #orderWrapper .orderFooter .commitOrder {
   cursor: pointer;
   float: right;
@@ -2734,55 +2477,6 @@ input[type="number"] {
   font-weight: bold;
 }
 
-#orderWrapper .addressWrapper li {
-  height: 30px;
-  line-height: 30px;
-}
-
-#orderWrapper .addressWrapper .el-radio-group {
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-#orderWrapper .newAddAddress .el-dialog__body {
-  padding: 16px 80px;
-}
-
-#orderWrapper .newAddAddress .newWrapper {
-  margin-bottom: 10px;
-}
-
-#orderWrapper .newAddAddress .newWrapper .selectPCC {
-  display: inline-block;
-  margin-top: 5px;
-}
-
-#orderWrapper .newAddAddress .newWrapper select {
-  min-width: 100px;
-  height: 30px;
-  line-height: 30px;
-  padding-left: 5px;
-  border: 1px solid #bfcbd9;
-  margin-right: 10px;
-}
-
-.newAddAddress .el-dialog__body .newWrapper input {
-  width: 80%;
-  height: 30px;
-  line-height: 30px;
-  padding-left: 5px;
-  border: 1px solid #bfcbd9;
-  margin-top: 5px;
-}
-
-#orderWrapper .warningInfo {
-  font-size: 12px;
-  color: #ff4949;
-  text-align: left !important;
-}
-
 #orderWrapper .invoiceWrapper .el-dialog {
   height: 400px;
 }
@@ -2827,7 +2521,7 @@ input[type="number"] {
   margin-bottom: 20px;
 }
 
-#orderWrapper .invoiceWrapper .taxInvoice span {
+#orderWrapper .invoiceWrapper .taxInvoice .invoiceInfo {
   display: inline-block;
   width: 110px;
   text-align: right;

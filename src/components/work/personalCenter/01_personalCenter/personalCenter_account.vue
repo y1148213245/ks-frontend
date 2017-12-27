@@ -1255,7 +1255,7 @@
             };
             if (_this.payMethod === "1") {         // 支付宝支付
               window.open(url + '/epay/getVirtualCoinPayForm.do?price=' + this.value + '&loginName=' + this.account.loginName + '&payMethodId=' + this.payWay + '&siteId=' + this.siteId, '_self');
-              window.history.pushState(null, null, '../errorPage/errorPage.html'); // 添加历史记录
+              window.history.pushState(null, null, '../errorPage/errorpage.html'); // 添加历史记录
             } else if (_this.payMethod === "0") {  // 微信支付
               axios.get(url + '/epay/getVirtualCoinPayForm.do?price=' + this.value + '&loginName=' + this.account.loginName + '&payMethodId=' + this.payWay + '&siteId=' + this.siteId).then(function(response) {
                 var data = response.data.substring(response.data.indexOf('<a>') + 3, response.data.indexOf('</a>'));
@@ -1263,8 +1263,6 @@
                 window.location.href = '../shoppingCart/QRcode.html?data=' + data + '&orderCode=' + orderCode;
               })
             }
-            /*window.open(url + '/epay/getVirtualCoinPayForm.do?price=' + this.value + '&loginName=' + this.account.loginName + '&payMethodId=' + this.payWay + '&siteId=' + this.siteId, '_self');
-            window.history.pushState(null, null, '../errorPage/errorPage.html'); // 添加历史记录*/
           })
           .catch(err => {
             console.log(err);

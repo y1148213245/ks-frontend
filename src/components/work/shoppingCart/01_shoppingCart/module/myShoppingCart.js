@@ -23,7 +23,7 @@ var state = {
   },
   addressList: [],    // 收获地址
   addStatus: false,
-  defaultAddress: {}, // 默认收获地址
+  defaultAddress: [], // 默认收获地址
   checkStatus: {      // 优惠码校验
     price: 0,
     type: ''
@@ -63,7 +63,7 @@ var getters = {
 var actions = {
   /*查询账户信息*/
   queryUser({commit},param){
-    commit('setMember', {loginName: 'song@163.com'});
+    commit('setMember', {loginName: 'asdasd'});
     param.loadCallBack();
     /*登陆验证*/
     /* loginApi.keepSession().then(function(rep) {

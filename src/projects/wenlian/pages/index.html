@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>首页</title>
+  <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/index.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/bookStyle.css">
+
+  <script type="text/javascript" src="../assets/js/jquery.js"></script>
+  <script type="text/javascript" src="../assets/js/sl.js"></script>
+  <script type="text/javascript" src="../assets/js/web.js"></script>
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".all_class").click(function () {
+        $(this).toggleClass("open");
+        $(".all_class_detail").slideToggle();
+      });
+    });
+  </script>
+
+</head>
+
+<body id="home">
+<div id="app" style="display: none">
+  <!--头-->
+  <components_common_header :col_loading_num='999'></components_common_header>
+  <!--头end-->
+</div>
+
+<!--分享js,需放在最后面-->
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!--分享js,需放在最后面-
+<!--尾部-->
+</body>
+</html>
