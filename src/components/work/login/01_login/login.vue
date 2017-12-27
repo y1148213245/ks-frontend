@@ -19,7 +19,7 @@ export default {
       required: true /* 必传 */,
       validator(val) {
         /* 值校验 */
-        return val["loginName"] && val["password"];
+        return val.hasOwnProperty('loginName') && val.hasOwnProperty('password');
       },
       default() {
         return {

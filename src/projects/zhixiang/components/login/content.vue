@@ -10,7 +10,7 @@
             
             <!-- 登陆接口组件 -->
               <div class="acc_content clearfix">
-                <work_login_01 :member="testmember">
+                <work_login_01 :member="member">
                   <template slot="content" slot-scope="props">
                     <el-form :model="member" :rules="loginRules" ref="member">
                       <el-form-item label="邮 箱" prop="loginName">
@@ -181,10 +181,6 @@ export default {
       code: "",
       member: {
         loginName: "",
-        password: ""
-      },
-      testmember: {
-        loginname: "",
         password: ""
       },
       ruleForm: {
