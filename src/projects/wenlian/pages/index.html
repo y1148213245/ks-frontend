@@ -11,6 +11,7 @@
   <script type="text/javascript" src="../assets/js/jquery.js"></script>
   <script type="text/javascript" src="../assets/js/sl.js"></script>
   <script type="text/javascript" src="../assets/js/web.js"></script>
+
   <script type="text/javascript" src="../assets/config/index.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
@@ -26,8 +27,11 @@
 <body id="home">
 <div id="app" style="display: none">
   <!--头-->
-  <components_common_header :col_loading_num='999'></components_common_header>
+  <components_common_header namespace="header" :col_loading_num='999'></components_common_header>
   <!--头end-->
+  <!--热销排行-->
+  <ui_list_pic_06_book_list namespace="common"></ui_list_pic_06_book_list>
+  <!--END热销排行-->
 </div>
 
 <!--分享js,需放在最后面-->

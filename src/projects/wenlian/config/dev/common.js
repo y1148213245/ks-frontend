@@ -49,5 +49,12 @@ export default {
 			],
 			url: '/data/snavigation_01_headerNavigation.json'
 		}
+	},
+	list_pic:{
+		picListBook:{
+			url:"/data/ui_list_pic_06.json",
+			number:4,
+			href:"./bookDetail.html?pubId="
+		}
 	}
 }

@@ -40,7 +40,8 @@ export default {
         pageNo:  "1",
         pageSize: "15",
         searchText: null
-      }
+      },
+      herf:"./bookDetail.html?pubId="
     }
 	},
   indexBestSale: {

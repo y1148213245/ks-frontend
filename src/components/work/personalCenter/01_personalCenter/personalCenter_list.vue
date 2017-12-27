@@ -505,7 +505,7 @@ export default {
               if (payMethod === "1") {         // 支付宝支付
                 loading.close();
                 window.open(url + '/epay/getPayForm.do?orderId=' + argus.orderId + '&loginName=' + _this.member.loginName + '&payMethodId=' + argus.payMethodId, '_self');
-                window.history.pushState(null, null, '../errorPage/errorPage.html'); // 添加历史记录
+                window.history.pushState(null, null, '../errorPage/errorpage.html'); // 添加历史记录
               } else if (payMethod === "0") {  // 微信支付
                 axios.get(url + '/epay/getPayForm.do?orderId=' + argus.orderId + '&loginName=' + _this.member.loginName + '&payMethodId=' + argus.payMethodId).then(function(response) {
                   loading.close();

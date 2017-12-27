@@ -9,7 +9,7 @@ export default {
   queryShoppingCart(param, cb) {
     /*let loading = Vue.prototype.$loading({ text: "数据加载中..." });*/
     var stamp = new Date().getTime();
-    axios.get(BASE_URL + 'cart/getCartAndActivity.do?loginName=' + param.loginName + '&siteId=' + 2 + '&timeStamp=' + stamp).then(function (response) {
+    axios.get(BASE_URL + 'cart/getCartAndActivity.do?loginName=' + param.loginName + '&siteId=' + SITE_CONFIG.siteId + '&timeStamp=' + stamp).then(function (response) {
       if (cb && cb instanceof Function) {
         /*loading.close();*/
         var len = response.data.data.content.length;

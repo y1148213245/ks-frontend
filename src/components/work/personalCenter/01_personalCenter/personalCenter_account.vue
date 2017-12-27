@@ -1260,7 +1260,7 @@
               axios.get(url + '/epay/getVirtualCoinPayForm.do?price=' + this.value + '&loginName=' + this.account.loginName + '&payMethodId=' + this.payWay + '&siteId=' + this.siteId).then(function(response) {
                 var data = response.data.substring(response.data.indexOf('<a>') + 3, response.data.indexOf('</a>'));
                 var orderCode = response.data.substring(response.data.indexOf('<div>') + 5, response.data.indexOf('</div>'));
-                window.location.href = '../shoppingCart/QRcode.html?data=' + data + '&orderCode=' + orderCode;
+                window.location.href = '../qrcode.html?data=' + data + '&orderCode=' + orderCode;
               })
             }
           })

@@ -12,7 +12,7 @@
             <div class="product-title">
               <h3>
                 <a
-                  :href="'/pages/bookDetail/bookDetail.html?pubId='+(picWords && picWords[index] && picWords[index].pubId)+'&contentType='+(picWords && picWords[index] && picWords[index].contentType)+'&columnId=51'">
+                  :href="(CONFIG && CONFIG.herf)+(picWords && picWords[index] && picWords[index].pubId)+'&contentType='+(picWords && picWords[index] && picWords[index].contentType)+'&columnId=51'">
                   {{picWords && picWords[index] && picWords[index].bookName}}
                 </a>
               </h3>

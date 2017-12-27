@@ -5,6 +5,7 @@ const dev = {
   swiper: {
     pic_word_03: {
       url: './data/swiper_03_pic_words.json',
+      herf:"./bookDetail.html?pubId="
     }
   }
 }
@@ -19,7 +20,8 @@ const prod = {
         pageNo:  "1",
         pageSize: "15",
         searchText: null
-      }
+      },
+      herf:"./bookDetail.html?pubId="
     }
   }
 };

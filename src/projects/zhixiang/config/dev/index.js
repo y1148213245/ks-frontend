@@ -17,6 +17,7 @@ export default {
     },
     pic_word_03: {
       url: '/data/swiper_03_pic_words.json',
+			herf:"./bookDetail.html?pubId="
     }
 	},
 	indexBestSale: {

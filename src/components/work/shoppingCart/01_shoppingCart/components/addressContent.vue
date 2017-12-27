@@ -1,10 +1,10 @@
 <!-- 购物车 收货地址组件 created by song 2017/12/26 -->
 <template>
-    <div class="addressWrapper">
+    <div class="work_shoppingcart_01_address">
         <div class="address">
             <div class="infoHead">收货地址</div>
             <div class="orderContent" :class="{oneline: showAddress === null}">
-                <div class="addressInfo" v-if="showAddress !== null">
+                <div class="addressInfo" v-if="showAddress && showAddress !== null">
                     <!--没有默认地址 就证明一条地址都没有-->
                     <span>{{showAddress.contactor}}</span>
                     <span>{{showAddress.province + showAddress.city + showAddress.county + showAddress.address}}</span>
@@ -89,7 +89,7 @@
                 addressDialog: false,       // 地址选择模态弹框  默认关闭
                 addAddressDialog: false,    // 新增地址模态弹框  默认关闭
                 tempAddress: {},            // 存放选择收货地址弹窗里当前选中的地址
-                showAddress: {},            // 当前显示的地址
+                showAddress: {},            // 当前显示的地址 即当前选择的地址
                 emptyContactor: false,      // 收货人是否为空    默认不为空
                 emptyDetail: false,         // 详细地址是否为空  默认不为空
                 emptyPhone: false,          // 联系电话是否为空  默认不为空
@@ -202,7 +202,7 @@
                 }
                 this.addAddressDialog = false;
             },
-            newAddAddressClose() {  // 点击取消/确定/右上角x号的时候都会触发 要初始化数据
+            newAddAddressClose() {  // 点击取消/确定/右上角x号的时候都会触发 要初始化数据 因为 elementUI 弹窗会记录上一次写入的值
                 $("#s_contactor").val('');
                 $("#s_address").val('');
                 $("#s_phone").val('');
@@ -224,27 +224,22 @@
                 if ($("#s_phone").val().length > 10) {
                     event.preventDefault();
                 }
-                // var myReg = /.*\D.*/;
-                // if (myReg.test($("#s_phone").val()) || myReg.test(event.key)) {
-                //     event.preventDefault();
-                // }
             },
         },
         watch: {  // 监控当前选中的地址 要将地址信息传给父组件 
             defaultAddress() {
                 this.showAddress = this.defaultAddress;
-                console.log("emit");
                 this.$emit('deliveryAddress', this.showAddress);
             }
         }
     };
 </script>
 <style>
-    .addressWrapper .address a {
+    .work_shoppingcart_01_address .address a {
         color: #20a0ff;
     }
 
-    .addressWrapper .address .infoHead {
+    .work_shoppingcart_01_address .address .infoHead {
         width: 100%;
         height: 36px;
         line-height: 36px;
@@ -252,60 +247,60 @@
         background-color: #f6f6f6;
     }
 
-    .addressWrapper .address .orderContent {
+    .work_shoppingcart_01_address .address .orderContent {
         height: 100px;
         padding-left: 28px;
     }
 
-    .addressWrapper .address .oneline {
+    .work_shoppingcart_01_address .address .oneline {
         line-height: 80px;
     }
 
-    .addressWrapper .address .orderContent a:last-child {
+    .work_shoppingcart_01_address .address .orderContent a:last-child {
         float: right;
     }
     
-    .addressWrapper .address .addressInfo {
+    .work_shoppingcart_01_address .address .addressInfo {
         height: 55px;
         line-height: 70px;
     }
 
-    .addressWrapper .address .addressInfo span {
+    .work_shoppingcart_01_address .address .addressInfo span {
         margin-right: 20px;
     }
 
-    .addressWrapper .newWrapper .warningInfo {
+    .work_shoppingcart_01_address .newWrapper .warningInfo {
         font-size: 12px;
         color: #ff4949;
         text-align: left !important;
     }
 
-    .addressWrapper .addressUlCon li {
+    .work_shoppingcart_01_address .addressUlCon li {
         height: 30px;
         line-height: 30px;
     }
 
-    .addressWrapper .addressUlCon .el-radio-group {
+    .work_shoppingcart_01_address .addressUlCon .el-radio-group {
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
 
-    .addressWrapper .newAddAddress .el-dialog__body {
+    .work_shoppingcart_01_address .newAddAddress .el-dialog__body {
         padding: 16px 80px;
     }
 
-    .addressWrapper .newAddAddress .newWrapper {
+    .work_shoppingcart_01_address .newAddAddress .newWrapper {
         margin-bottom: 10px;
     }
 
-    .addressWrapper .newAddAddress .newWrapper .selectPCC {
+    .work_shoppingcart_01_address .newAddAddress .newWrapper .selectPCC {
         display: inline-block;
         margin-top: 5px;
     }
 
-    .addressWrapper .newAddAddress .newWrapper select {
+    .work_shoppingcart_01_address .newAddAddress .newWrapper select {
         min-width: 100px;
         height: 30px;
         line-height: 30px;
@@ -314,7 +309,7 @@
         margin-right: 10px;
     }
 
-    .addressWrapper .el-dialog__body .newWrapper input {
+    .work_shoppingcart_01_address .el-dialog__body .newWrapper input {
         width: 80%;
         height: 30px;
         line-height: 30px;

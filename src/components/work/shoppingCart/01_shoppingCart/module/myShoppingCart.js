@@ -63,7 +63,7 @@ var getters = {
 var actions = {
   /*查询账户信息*/
   queryUser({commit},param){
-    commit('setMember', {loginName: 'asdasd'});
+    commit('setMember', {loginName: 'song@163.com'});
     param.loadCallBack();
     /*登陆验证*/
     /* loginApi.keepSession().then(function(rep) {
