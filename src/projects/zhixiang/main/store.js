@@ -3,7 +3,7 @@
  */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import ScanStores from "@common/ScanStores";
+import ScanStores from "@common/scans/ScanStores";
 
 Vue.use(Vuex);
 

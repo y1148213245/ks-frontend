@@ -3,7 +3,7 @@
         <h6 class="sale_top_title f16">热销排行</h6>
         <div class="sale_top_list">
             <div class="data_column_block_picListBook" name="data_column_block">
-                <dl class="sale_top_con cl" v-for="(entry,index) in list" v-if="index<(CONFIG.number || 4)">
+                <dl class="sale_top_con cl" v-for="(entry,index) in list" v-if="index<(number || 4)">
                     <dt class="fl">
                         <a :href="(CONFIG && CONFIG.href)+entry.id" class="hotsellrank_ofbook_list_imgBox">
                             <img class="hotsellrank_ofbook_list_img" :src="entry && entry.pub_picBig" onload="DrawImage(this,63,84)" alt="暂无封面"/>
@@ -29,12 +29,11 @@
     export default {
         name:"ui_list_pic_06_book_list",
         reused: true,
-        props: ["namespace"],
+        props: ["namespace","number"],
         data ()
     {
         return {
             list: [],
-            totalCount: 0,
             CONFIG:null,
         }
     },
@@ -53,7 +52,6 @@
                         searchText: ""
                     }).then((rep) => {
                 this.list = rep.data.result;
-                this.totalCount = rep.data.totalCount;
             });
         }
      }

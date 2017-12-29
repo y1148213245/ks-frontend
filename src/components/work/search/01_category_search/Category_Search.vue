@@ -21,7 +21,6 @@
 	import URL from 'url';
 	import PROJECT_CONFIG from "projectConfig";
 
-	var CONFIG = PROJECT_CONFIG.common.search.Category_Search;
 
 	export default {
 		name: "work_search_01_category_search",
@@ -30,10 +29,12 @@
 		data(){
 			return {
 				searchText: '',
-				category: '0'
+				category: '0',
+				CONFIG: null
 			}
 		},
 		mounted: function () {
+			this.CONFIG = PROJECT_CONFIG.common.search.Category_Search;
 			var query = URL.parse(document.URL, true).query;
 			if (JSON.stringify(query) != "{}") {
 				this.searchText = query.searchText || '';
@@ -42,7 +43,7 @@
 		},
 		methods: {
 			toSearch(e) {
-				window.location.href = CONFIG.searchHrefPage + "?searchText=" + this.searchText + "&category=" + this.category;
+				window.location.href = this.CONFIG.searchHrefPage + "?searchText=" + this.searchText + "&category=" + this.category;
 			},
 		}
 	};

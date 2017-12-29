@@ -6,10 +6,11 @@
           <a href="index.html" class="retina-logo"><img src="../../assets/img/founder_Logo@2x.png" alt="智享 Logo"></a>
         </div>
         <div class="col-md-7 nopadding">
-          <div class="top-menu"><a href="../pages/shoppingcart.html">登 录</a>
-            <a href="javascript:void(0)" class="top-cart"><i class="icon-shopping-cart"></i> <span>0</span></a>
+          <!--<div class="top-menu"><a href="javascript:void(0)">登 录</a>
+            <a class="top-cart" href="./pages/shoppingcart.html"><i class="icon-shopping-cart"></i> <span>0</span></a>
             <a class="top-menu-a2" href="#">English</a>
-          </div>
+          </div>-->
+          <components_common_user namespace="common"></components_common_user>
           <!-- 搜索框组件 -->
           <work_search_01_category_search namespace="common"></work_search_01_category_search>
           <!-- END 搜索框组件 -->

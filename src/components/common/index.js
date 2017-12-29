@@ -1,27 +1,19 @@
 /**
  * Created by codingnuts on 2017/12/19.
  */
-import {post, get} from 'axios';
+import axios from 'axios';
 import readProd from "@project/config/index.js";
+import ValidateRules from "./utils/ValidateRules";
+import vv from "./utils/vv";
+import DrawImage from "./utils/DrawImage";
+import CreateCode from "./utils/CreateCode";
 
-var Post = readProd || (process.env.NODE_ENV === 'production') ? post : get;
+var _axios = axios.create({
+	timeout: 10000,
+	withCredentials: true
+});
+var Get = _axios.get;
+var Post = readProd || (process.env.NODE_ENV === 'production') ? _axios.post : _axios.get;
 
-function DrawImage(ImgD,iwidth,iheight){
-	var image=new Image();
-	image.src=ImgD.src;
 
-	if(image.width>0 && image.height>0){
-		flag=true;
-		if(image.width/image.height>= iwidth/iheight){
-			// 宽度优先，高度缩放
-			ImgD.style.width=iwidth + 'px';
-			ImgD.style.height=(image.height*iwidth)/image.width+ 'px';
-		}else{
-			// 高度优先，宽度适应
-			ImgD.style.height=iheight+ 'px';
-			ImgD.style.width=(image.width*iheight)/image.height + 'px';
-		}
-	}
-}
-
-export {get as Get, Post,DrawImage};
+export {Get, Post, DrawImage, ValidateRules, CreateCode, vv};

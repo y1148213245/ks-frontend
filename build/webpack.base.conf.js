@@ -39,6 +39,7 @@ module.exports = {
       '@': resolve('src'),
       '@common': resolve("src/components/common"),
       '@config': resolve("src/config"),
+      '@work': resolve("src/components/work"),
       'projectConfig': "@common/config.js",//resolve('src/projects/' + baseConfig.concurrentProject + "/config/index.js"),
       '@project': resolve('src/projects/' + baseConfig.concurrentProject)
     }

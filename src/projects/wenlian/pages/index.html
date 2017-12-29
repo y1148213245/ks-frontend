@@ -25,15 +25,83 @@
 </head>
 
 <body id="home">
-<div id="app" style="display: none">
-  <!--头-->
-  <components_common_header namespace="header" :col_loading_num='999'></components_common_header>
-  <!--头end-->
-  <!--热销排行-->
-  <ui_list_pic_06_book_list namespace="common"></ui_list_pic_06_book_list>
-  <!--END热销排行-->
-</div>
 
+
+<div id="app"> <!--id="wl"-->
+  <div id="wl_header" class="header">
+    <!--头-->
+  <components_common_header namespace="header" :col_loading_num='999'></components_common_header>
+    <!--头end-->
+    <div class="header_top3 cl">
+      <div class="wrap" style="position: relative;">
+        <div class="all_class f16 color_fff fl open off"><span class="all_class_bg pl30">全部分类</span></div>
+        <div class="all_class_detail">
+          <div class="con"></div>
+          <div class="con-all" style="display: none;"></div>
+          <!----></div>
+        <div class="nav fr"><a href="javascript:void(0)" class="on"></a><a href="javascript:void(0)" class=""></a><a
+                href="javascript:void(0)" class=""></a><a href="javascript:void(0)" class=""></a></div>
+      </div>
+    </div>
+  </div>
+  <div id="advert" class="gz_001">
+    <div class="advertCon">
+      <div name="data_column_block"><a class="gz_001" style="display: block;"><img></a></div>
+    </div>
+  </div>
+  <div class="main">
+    <div id="carousel" class="jdt">
+      <div data-v-0ca8a61f="" id="focus001" class="carouselCon focus1">
+        <div data-v-0ca8a61f="" name="data_column_block">
+          <ul data-v-0ca8a61f=""></ul>
+        </div>
+      </div>
+    </div>
+    <div class="main_left fl">
+      <div name="data_column_block">
+        <div class="index_jpts">
+          <div class="highQualityCon">
+            <div class="index_jpts_head"><h3><span class="index_jpts_name fl f18 color_7e7">精品图书</span> <span
+                    class="more fr pt20 f12"><a href="../book/bookList.html?colId=59" class="color_727">MORE+</a></span>
+            </h3></div>
+          </div>
+          <div class="index_jpts_t cl"></div>
+          <ui_list_pic_09_book_show namespace="index"></ui_list_pic_09_book_show>
+        </div>
+      </div>
+      <!-----------------------热门书籍-------------------------------->
+      <div id="popular" class="hot_book cl">
+        <div class="popularCon">
+          <h3><span class="hot_book_name fl f18 color_7e7">热门书籍</span><span class="more fr pt20 f12"><a
+                  href="../book/bookList.html?colId=57" class="color_727">MORE+</a></span></h3>
+          <ui_list_pic_o7_popular_book namespace="common"></ui_list_pic_o7_popular_book>
+        </div>
+      </div>
+      <!-----------------------END 热门书籍-------------------------------->
+    </div>
+    <div class="fr">
+      <!--热销排行-->
+      <ui_list_pic_06_book_list namespace="common" number = "4"></ui_list_pic_06_book_list>
+      <!--END热销排行-->
+      <!--编辑-->
+      <ui_list_pic_08_editor namespace="common" :show_more="true"></ui_list_pic_08_editor>
+      <!--END编辑-->
+    </div>
+    <div data-v-9826fd5c="" class="zzzs cl">
+      <div data-v-9826fd5c="" name="data_column_block"><h3 data-v-9826fd5c=""><span data-v-9826fd5c=""
+                                                                                    class="zzzs_name fl f18 color_7e7">作者展示</span><span
+              data-v-9826fd5c="" class="more fr pt20 f12"><a data-v-9826fd5c="" href="../authorList/authorList.html"
+                                                             class="color_727">MORE+</a></span></h3>
+
+        <div data-v-9826fd5c="" class="zzzs_list cl">
+          <ul data-v-9826fd5c=""></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="wl_footer" class="footer f14"><p>地址：北京市朝阳区农展馆南里10号 邮编：100125</p>
+    <p>版权所有： 中国文联出版社</p></div>
+</div>
 <!--分享js,需放在最后面-->
 <script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
 <!--分享js,需放在最后面-

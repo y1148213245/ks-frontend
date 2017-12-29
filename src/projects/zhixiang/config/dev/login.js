@@ -9,6 +9,9 @@ export default {
   login: {
     work_login_01: {
       loginUrl: "login.do"
+    },
+    work_login_02: {
+      loginUrl: "login.do"
     }
   }
 };

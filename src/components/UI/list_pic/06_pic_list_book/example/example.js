@@ -4,8 +4,7 @@
 const dev = {
 	picListBook:{
 		url:"/data/ui_list_pic_06.json",
-		number:2,
-		href:"../bookDetail/bookDetail.html?pubId="
+		href:"./bookDetail.html?pubId="
 	}
 };
 
@@ -20,7 +19,6 @@ const prod = {
 			pageSize: "4",
 			searchText: ""
 		},
-		number:4,
 		href:"./bookDetail.html?pubId="
 	}
 };
