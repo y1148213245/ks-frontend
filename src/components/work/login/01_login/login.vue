@@ -7,6 +7,7 @@
 </template>
 <script type="text/ecmascript-6">
 import * as type from "../common/constConfig.js";
+import PROJECT_CONFIG from "projectConfig";
 
 export default {
   name: "work_login_01",
@@ -19,7 +20,9 @@ export default {
       required: true /* 必传 */,
       validator(val) {
         /* 值校验 */
-        return val.hasOwnProperty('loginName') && val.hasOwnProperty('password');
+        return (
+          val.hasOwnProperty("loginName") && val.hasOwnProperty("password")
+        );
       },
       default() {
         return {
@@ -27,29 +30,32 @@ export default {
           password: "" /* 密码 */
         };
       }
+    },
+    namespace: {
+      type: String,
+      required: true
     }
   },
+  data() {
+    return {
+      projectConfig: null
+    };
+  },
+  mounted() {
+    this.initConfig();
+  },
   methods: {
+    initConfig() {
+      this.projectConfig = PROJECT_CONFIG[this.namespace].login.work_login_01;
+    },
     login() {
       //console.log(this.member);
       this.$store.dispatch("login_01/" + type.LOGIN, {
         member: this.member,
         cb: this.loginSuccessCallback,
-        /* cb() {                          //老智享成功callback函数
-          //locationUtils.redirectToServ();
-          var url = document.referrer;
-          if (
-            url.indexOf("register.html") >= 0 ||
-            url.indexOf("register_success.html") >= 0 ||
-            url.indexOf("forgetPassword.html") >= 0
-          ) {
-            window.location.href = "../index/index.html";
-          } else if (url.indexOf("register.html") == -1) {
-            window.history.back();
-          }
-        }, */
         loginErr: this.loginValid,
-        loginFreeze: this.loginFreeze
+        loginFreeze: this.loginFreeze,
+        url: this.projectConfig.loginUrl
       });
     },
     loginValid() {

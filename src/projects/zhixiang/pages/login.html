@@ -6,7 +6,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-  <link rel="stylesheet" href="../assets/css/font-icons.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/css/font-icons.css" type="text/css" />
   <!-- Stylesheets
         ============================================= -->
   <link rel="stylesheet" href="../assets/skin/login.css" type="text/css" />
@@ -20,6 +20,13 @@
     ============================================= -->
   <title>登陆</title>
   <style>
+    .login_container {
+      width: 1200px;
+      margin-right: auto;
+      margin-left: auto;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
   </style>
 
 </head>
@@ -28,11 +35,14 @@
   <div id="app">
     <!-- title -->
     <section id="title-nav" class="col_full">
-      <div class="container clearfix"><h1>登录 / 注册</h1><span>更多会员福利哦</span></div>
+      <div class="login_container clearfix">
+        <h1>登录 / 注册</h1>
+        <span>更多会员福利哦</span>
+      </div>
     </section>
 
     <!-- 登陆组件 -->
-    <components_login_content></components_login_content>
+    <components_login_content namespace="login"></components_login_content>
     <!-- END 登陆组件 -->
   </div>
 

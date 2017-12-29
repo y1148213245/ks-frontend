@@ -1,16 +1,16 @@
 <template>
    <section id="content">
     <div class="content-wrap">
-      <div class="container clearfix">
+      <div class="scoped_container clearfix">
         <div class="accordion accordion-lg divcenter nobottommargin clearfix" style="max-width: 550px;">
           <!-- 登陆 -->
           <div class="acctitle">
             <i class="acc-closed icon-lock3"></i>
             <i class="acc-open icon-unlock"></i>登 录</div>
             
-            <!-- 登陆接口组件 -->
               <div class="acc_content clearfix">
-                <work_login_01 :member="member">
+                <!-- 登陆接口组件 -->
+                <work_login_01 :member="member" :login-success-callback="loginSuccessCallback" :namespace="namespace">
                   <template slot="content" slot-scope="props">
                     <el-form :model="member" :rules="loginRules" ref="member">
                       <el-form-item label="邮 箱" prop="loginName">
@@ -26,8 +26,8 @@
                     </div>
                   </template>
                 </work_login_01>
+                <!-- END 登陆接口组件 -->
               </div>  
-            <!-- END 登陆接口组件 -->
             <!-- END 登陆 -->
 
           <!-- 注册 -->
@@ -67,11 +67,19 @@
   </section>
 </template>
 <script>
+import PROJECT_CONFIG from "projectConfig";
 export default {
   name: "components_login_content",
   reused: true,
+  props: {
+    namespace: {
+      type: String,
+      required: true
+    }
+  },
   mounted: function() {
     this.createCode();
+    this.initConfig();
   },
   data() {
     let validateLogin = (rule, value, callback) => {
@@ -178,6 +186,7 @@ export default {
     };
 
     return {
+      projectConfig: null,
       code: "",
       member: {
         loginName: "",
@@ -203,6 +212,10 @@ export default {
   },
 
   methods: {
+    initConfig() {
+      this.projectConfig =
+        PROJECT_CONFIG[this.namespace].login.components_login_content;
+    },
     backMain() {
       // this.$router.push("retrievePassword");
     },
@@ -216,7 +229,32 @@ export default {
         }
       });
     },
-    submitForm(ruleForm) {
+    loginSuccessCallback() {
+      var url = document.referrer;
+      if (this.projectConfig) {
+        if (this.projectConfig["loginSuccessHref"]) {
+          window.location.href = this.projectConfig["loginSuccessHref"];
+        } else { 
+          let loginSuccessDontHrefPage = this.projectConfig["loginSuccessDontHrefPage"];
+          if (loginSuccessDontHrefPage) {
+            let dont = loginSuccessDontHrefPage["dont"];
+            let to = loginSuccessDontHrefPage["to"];
+              if(dont && to && dont instanceof Array){
+                  for (let i = 0,len = dont.length; i < len; i++) {
+                    let htmlName = dont[i];
+                    if (url.indexOf(htmlName) >= 0) {
+                      window.location.href = to;
+                       return
+                    }
+                  }
+              }
+          }else{
+            window.history.back();
+          }
+        }
+      }
+    },
+     submitForm(ruleForm) {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           console.log("submit!");
@@ -325,6 +363,13 @@ export default {
 };
 </script>
 <style scoped>
+.scoped_container {
+  width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
 .captcha input {
   display: inline-block;
   border-radius: 3px;

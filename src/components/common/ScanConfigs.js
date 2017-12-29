@@ -4,6 +4,7 @@
 function ScanConfigs (requireContext) {
 	var map = {};
 	requireContext.keys().map(requireContext).forEach(function (item) {
+		console.log(item);
 		if (!item.default) return;
 		map[item.default.name] = item.default
 	});
