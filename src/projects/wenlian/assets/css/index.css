@@ -30,14 +30,14 @@
 /*精品图书*/
 .index_jpts{ border-top:2px solid #da0b2d; padding-left:20px; width:940px; overflow:hidden; margin-bottom:48px; }
 .index_jpts  h3,.hot_book h3,.zzzs h3 { font-weight:normal;line-height:25px; height:25px; }
-.index_jpts  .more {}
+.index_jpts  .more {cursor: hand}
 .index_jpts .index_jpts_name { padding:15px 0 0px 30px;background-position: -2px -92px; }
 .index_jpts .index_jpts_t {  padding-top:30px;}
 .index_jpts .index_jpts_t .pic { box-shadow: 0px 0px 15px #cecece;}
 .index_jpts .index_jpts_t  dl { background:url(../img/jpts_pic_003.png) no-repeat; height:215px; width:457px;position:relative;}
 .index_jpts .index_jpts_t  dl .pic { position:absolute; top:-10px; left:20px;}
 .index_jpts .index_jpts_t  dd p { width:260px;}
-.index_jpts .index_jpts_t  dd p.title{ font-size:16px;padding:30px 0 15px 0;}
+.index_jpts .index_jpts_t  dd p.title{ font-size:16px;padding:30px 0 15px 0;cursor: pointer;}
 .index_jpts .index_jpts_t  dd p.title a {color:#353535; }
 .index_jpts .index_jpts_t  dd p.zhaiyao{  color:#797979; line-height:20px; }
 .index_jpts .index_jpts_t  dd p.shoucang{ color:#898989;background-position:-4px -178px;height:25px; line-height:25px; padding-left:20px; margin-top:20px;}

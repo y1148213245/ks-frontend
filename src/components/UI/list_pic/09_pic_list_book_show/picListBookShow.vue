@@ -31,7 +31,7 @@
     export default {
         name:"ui_list_pic_09_book_show",
         reused: true,
-        props: ["namespace"],
+        props: ["namespace","bookShow"],
         data: function () {
             return {
                 CONFIG:null,
@@ -44,16 +44,20 @@
         },
         methods:{
             queryData:function(){
-                Post(this.CONFIG.url, this.CONFIG.params || {
-                            conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
-                            groupBy: "pub_resource_id",
-                            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
-                            pageNo: "1",
-                            pageSize: "15",
-                            searchText: ""
-                        }).then((rep)=>{
-                    this.list = rep.data.result;
-                });
+	            if(this.bookShow && this.bookShow instanceof Array && this.bookShow.length>0){
+		            this.list = this.bookShow;
+	            }else {
+		            Post(this.CONFIG.url, this.CONFIG.params || {
+				            conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
+				            groupBy: "pub_resource_id",
+				            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+				            pageNo: "1",
+				            pageSize: "15",
+				            searchText: ""
+			            }).then((rep) => {
+			            this.list = rep.data.result;
+		            });
+	            }
             },
             shidu: function (bookId, readType, bookName) {
                 var url = this.CONFIG.href  + bookId + '&readType=' + readType + '&bookName=' + bookName;

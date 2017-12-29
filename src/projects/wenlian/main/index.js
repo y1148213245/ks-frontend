@@ -9,7 +9,7 @@ import VueOccupy from 'vue-occupy'
 // require styles
 import 'swiper/dist/css/swiper.css'
 
-import ScanVues from "@common/ScanVues";
+import ScanVues from "@common/scans/ScanVues";
 
 import store from "./store.js";
 
