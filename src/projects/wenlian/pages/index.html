@@ -30,29 +30,10 @@
 
   <div id="app">
     <!--id="wl"-->
-    <div id="wl_header" class="header">
-      <!--头-->
-      <components_common_header namespace="header" :col_loading_num='999'></components_common_header>
-      <!--头end-->
-      <div class="header_top3 cl">
-        <div class="wrap" style="position: relative;">
-          <div class="all_class f16 color_fff fl open off">
-            <span class="all_class_bg pl30">全部分类</span>
-          </div>
-          <div class="all_class_detail">
-            <div class="con"></div>
-            <div class="con-all" style="display: none;"></div>
-            <!---->
-          </div>
-          <div class="nav fr">
-            <a href="javascript:void(0)" class="on"></a>
-            <a href="javascript:void(0)" class=""></a>
-            <a href="javascript:void(0)" class=""></a>
-            <a href="javascript:void(0)" class=""></a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--头-->
+    <components_common_header namespace="header"></components_common_header>
+    <!--头end-->
+
     <div id="advert" class="gz_001">
       <div class="advertCon">
         <div name="data_column_block">
@@ -102,13 +83,14 @@
           <h3>
             <span class="zzzs_name fl f18 color_7e7">作者展示</span>
             <span class="more fr pt20 f12">
-              <a href="../authorList/authorList.html" class="color_727">MORE+</a>
+              <a href="javascript:location.href=$_$.indexPage.authorMoreHref" class="color_727">MORE+</a>
             </span>
           </h3>
+
           <div class="zzzs_list cl">
-            <!-----------------------作者列表-------------------------------->
-            <ui_list_pic_11></ui_list_pic_11>
-            <!-----------------------END 作者列表-------------------------------->
+            <!-----------------------作者展示-------------------------------->
+            <ui_list_pic_11 namespace="index"></ui_list_pic_11>
+            <!-----------------------END 作者展示-------------------------------->
           </div>
         </div>
       </div>

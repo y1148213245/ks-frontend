@@ -36,7 +36,17 @@ export default {
       colId: 59
     },
     list_pic_11: {
-      url: BASE_URL + '/spc/cms/publish/list.do'
+      url: BASE_URL + '/spc/cms/publish/list.do',
+      param: {
+        conditions: "[{pub_col_id:'116'},{pub_status:'1'}]",
+        groupBy: "pub_resource_id",
+        orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+        pageNo: "1",
+        pageSize: "15",
+        searchText: ""
+      },
+      detailHref:'',
+      colId: 116,
     }
 
   }

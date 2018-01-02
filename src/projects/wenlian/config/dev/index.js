@@ -19,7 +19,8 @@ export default {
       colId: 59
     },
     list_pic_11: {
-      url: '/data/ui_pic_list_11.json',
+      url: '/data/ui_list_pic_11.json',
+      detailHref:'',
     }
   }
 }

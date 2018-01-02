@@ -19,4 +19,7 @@ var $_$ = {
    }
    }
    }*/
+   indexPage:{
+     authorMoreHref:'./index.html'
+   }
 };
