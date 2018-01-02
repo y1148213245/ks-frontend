@@ -18,9 +18,21 @@
     export default {
         name: "ui_go_top",
         reused:true,
+        mounted:function(){
+          var obj = this;
+          window.addEventListener("scroll",obj.scrollEvent);
+          },
         methods:{
           toTop:function(){
             $('body,html').animate({scrollTop: 0}, 500);
+          },
+          scrollEvent:function(){
+            var obj = this.$el;
+              if( document.documentElement.scrollTop > 450 ) {
+                $(obj).fadeIn();
+              } else {
+                $(obj).fadeOut();
+              }
           }
         }
     }
@@ -29,14 +41,13 @@
 <style>
   .ui_go_top{
     height: 81px;
-    display: inline-block;
+    display: none;
     z-index: 299;
-    position: absolute;
+    position: fixed;
     top: auto;
     left: auto;
     right: 30px;
-    bottom: 10%;
-    /* box-sizing: border-box; */
+    bottom: 50px;
   }
   body:not(.device-touch) .ui_go_top .icon-angle-up, body:not(.device-touch) .ui_go_top .icon-qrcode{
     -webkit-transition: background-color .2s linear;
