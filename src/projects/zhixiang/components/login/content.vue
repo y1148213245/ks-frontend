@@ -77,11 +77,11 @@ export default {
       required: true
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.createCode();
     this.initConfig();
   },
-  data() {
+  data () {
     let validateLogin = (rule, value, callback) => {
       if (value === " " || value === "") {
         callback(new Error("请输入邮箱"));
@@ -212,14 +212,14 @@ export default {
   },
 
   methods: {
-    initConfig() {
+    initConfig () {
       this.projectConfig =
         PROJECT_CONFIG[this.namespace].login.components_login_content;
     },
-    backMain() {
+    backMain () {
       // this.$router.push("retrievePassword");
     },
-    submitLoginForm(login) {
+    submitLoginForm (login) {
       /* 登陆 */
       this.$refs.member.validate(valid => {
         if (valid && login instanceof Function) {
@@ -229,70 +229,70 @@ export default {
         }
       });
     },
-    loginSuccessCallback() {
+    loginSuccessCallback () {
       var url = document.referrer;
       if (this.projectConfig) {
         if (this.projectConfig["loginSuccessHref"]) {
           window.location.href = this.projectConfig["loginSuccessHref"];
-        } else { 
+        } else {
           let loginSuccessDontHrefPage = this.projectConfig["loginSuccessDontHrefPage"];
           if (loginSuccessDontHrefPage) {
             let dont = loginSuccessDontHrefPage["dont"];
             let to = loginSuccessDontHrefPage["to"];
-              if(dont && to && dont instanceof Array){
-                  for (let i = 0,len = dont.length; i < len; i++) {
-                    let htmlName = dont[i];
-                    if (url.indexOf(htmlName) >= 0) {
-                      window.location.href = to;
-                       return
-                    }
-                  }
+            if (dont && to && dont instanceof Array) {
+              for (let i = 0, len = dont.length; i < len; i++) {
+                let htmlName = dont[i];
+                if (url.indexOf(htmlName) >= 0) {
+                  window.location.href = to;
+                  return
+                }
               }
-          }else{
+            }
+          } else {
             window.history.back();
           }
         }
       }
     },
-     submitForm(ruleForm) {
+    submitForm (ruleForm) {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           console.log("submit!");
           let url = type.API_CONFIG.baseURL;
           this.$axios
             .post(
-              url +
-                "/user/registerSys.do?loginName=" +
-                this.ruleForm.email +
-                "&passWord=" +
-                this.ruleForm.checkPass
+            url +
+            "/user/registerSys.do?loginName=" +
+            this.ruleForm.email +
+            "&passWord=" +
+            this.ruleForm.checkPass
             )
             .then(
-              response => {
-                this.Idata = response.data;
-                if (this.Idata.result == 1) {
-                  this.$message({
-                    type: "success",
-                    message: "注册成功,请登录"
-                  });
-                  window.setTimeout(function() {
-                    window.location.href = "../login/login.html";
-                  }, 3000);
-                } else if (this.Idata.result == 0) {
-                  this.$message({
-                    type: "info",
-                    message: "注册失败" + this.Idata.error.errorMsg
-                  });
-                } else {
-                  this.$message({
-                    type: "info",
-                    message: "注册失败，请重试"
-                  });
-                }
-              },
-              error => {
-                console.log(error);
+            response => {
+              this.Idata = response.data;
+              if (this.Idata.result == 1) {
+                this.$message({
+                  type: "success",
+                  message: "注册成功,请登录"
+                });
+                window.setTimeout(function () {
+                  window.location.href = "../login/login.html";
+                }, 3000);
+              } else if (this.Idata.result == 0) {
+                this.$message({
+                  type: "info",
+                  message: "注册失败" + this.Idata.error.errorMsg
+                });
+              } else {
+                this.$message({
+                  type: "info",
+                  message: "注册失败，请重试"
+                });
               }
+            },
+            error => {
+              console.log(error);
+            }
             );
         } else {
           console.log("error submit!!");
@@ -300,54 +300,17 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$nextTick(function() {
+    resetForm (formName) {
+      this.$nextTick(function () {
         this.$refs[formName].resetFields();
       });
     },
 
-    createCode() {
-      this.code = "";
+    createCode () {
+      this.code = '';
       let codeLength = 4;
       let checkCode = document.getElementById("code");
-      let random = new Array(
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z"
-      );
+      let random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
       for (let i = 0; i < codeLength; i++) {
         let index = Math.floor(Math.random() * 36);
         this.code += random[index];
@@ -355,7 +318,7 @@ export default {
       checkCode.value = this.code;
     },
 
-    refresh() {
+    refresh () {
       this.code = "";
       this.createCode();
     }
