@@ -58,8 +58,7 @@
       relativebook: function (param) {
         var url = this.CONFIG.url;
         if (url.indexOf("related") !== -1) {
-          url = url + "?size=3&pubId=" + param;
-          Get(url).then((rep) => {
+          Get(url,{"params":{"size":3,"pubId":param}}).then((rep) => {
             var data = rep.data.data.bookcat;
             var hasData = data && Object.prototype.toString.call(data) === "[object Array]" && data.length > 0 ? true : false;
             if (hasData) {

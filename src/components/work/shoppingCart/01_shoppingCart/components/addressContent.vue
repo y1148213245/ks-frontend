@@ -71,15 +71,25 @@
   </div>
 </template>
 <script>
-import * as type from "../../common/config.js";
+import * as type from "@work/shoppingCart/common/interfaces.js";
+import * as interfaces from "@work/login/common/interfaces.js";
 import { mapGetters, mapActions } from "vuex";
 import $ from "jquery";
 export default {
   name: "work_shoppingcart_01_components_address",
   reused: true,
   props: ["namespace"],
-  data() {
+  created: function () {
+    this.getMemberInfo().then((member) => {
+      this.member.loginName = member.loginName;
+      this.loadCallBack();
+    });
+  },
+  data () {
     return {
+      member: {
+        loginName: ''
+      },
       selectedAddress: 0, // 模态弹框选中地址  默认选中第一个
       addressDialog: false, // 地址选择模态弹框  默认关闭
       addAddressDialog: false, // 新增地址模态弹框  默认关闭
@@ -93,19 +103,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      member: "shoppingcart/getMember", // 在vuex里面获取用户信息
+      // member: "shoppingcart/getMember", // 在vuex里面获取用户信息
       addressList: "shoppingcart/getAddressList", // 获取用户地址列表
       defaultAddress: "shoppingcart/getDefaultAddress" // 获取用户默认地址
     })
   },
-  mounted() {
-    this.$store.dispatch("shoppingcart/queryUser", {
+  mounted () {
+    /* this.$store.dispatch("shoppingcart/queryUser", {
       // 先去vuex获取一下用户信息
       loadCallBack: this.loadCallBack
-    });
+    }); */
   },
   methods: {
-    loadCallBack() {
+    ...mapActions("login_02", {
+      getMemberInfo: interfaces.ACTION_KEEP_SESSION
+    }),
+    loadCallBack () {
       this.$store.dispatch(
         "shoppingcart/" + type.QUERY_ORDER_ADDRESS,
         this.member.loginName
@@ -115,7 +128,7 @@ export default {
         this.member.loginName
       ); // 查询默认收货地址
     },
-    selectOtherAddress() {
+    selectOtherAddress () {
       // 选择其他收货地址
       var len = this.addressList.length;
       for (var i = 0; i < len; i++) {
@@ -125,13 +138,13 @@ export default {
       }
       this.addressDialog = true;
     },
-    addNewAddress: function() {
+    addNewAddress: function () {
       // 新增地址
       this.addAddressDialog = true;
       initDom();
 
-      function initDom() {
-        setTimeout(function() {
+      function initDom () {
+        setTimeout(function () {
           if (document.getElementById("s_province")) {
             //解决弹框出来的时候DOM可能还没有加载完成问题
             _init_area(document);
@@ -141,11 +154,11 @@ export default {
         }, 50);
       }
     },
-    selectAddress: function(address) {
+    selectAddress: function (address) {
       // 在模态弹窗中选中某个地址
       this.tempAddress = JSON.parse(JSON.stringify(address));
     },
-    confirmAdd: function(flag) {
+    confirmAdd: function (flag) {
       // 确认/取消添加收货地址
       this.addressDialog = false;
       if (flag) {
@@ -154,7 +167,7 @@ export default {
         this.$emit("deliveryAddress", this.showAddress);
       }
     },
-    confirmNewAdd: function(flag) {
+    confirmNewAdd: function (flag) {
       // 确认/取消新增地址
       var _this = this;
       if (flag) {
@@ -199,7 +212,7 @@ export default {
               id: 0,
               isDefault: "0"
             },
-            myCallback: function() {
+            myCallback: function () {
               if (this.addStatus) {
                 _this.$message({
                   type: "success",
@@ -229,26 +242,26 @@ export default {
       }
       this.addAddressDialog = false;
     },
-    newAddAddressClose() {
+    newAddAddressClose () {
       // 点击取消/确定/右上角x号的时候都会触发 要初始化数据 因为 elementUI 弹窗会记录上一次写入的值
       $("#s_contactor").val("");
       $("#s_address").val("");
       $("#s_phone").val("");
     },
-    checkContactor: function() {
+    checkContactor: function () {
       // 联系人失去焦点校验
       this.emptyContactor = $("#s_contactor").val() === "" ? true : false;
     },
-    checkDetail: function() {
+    checkDetail: function () {
       // 详细地址失去焦点校验
       this.emptyDetail = $("#s_address").val() === "" ? true : false;
     },
-    checkPhone: function() {
+    checkPhone: function () {
       // 联系方式失去焦点校验
       this.emptyPhone = $("#s_phone").val() === "" ? true : false;
     },
     // 后续改成输入完之后再校验 不实时校验
-    checkNumberType: function(event) {
+    checkNumberType: function (event) {
       // 联系号码格式校验 只能是数字 并且不能超过11位 ??? input type="number" 踩坑
       if (!String.fromCharCode(event.keyCode).match(/\d/)) {
         // 控制只能输入数字
@@ -261,7 +274,7 @@ export default {
   },
   watch: {
     // 监控当前选中的地址 要将地址信息传给父组件
-    defaultAddress() {
+    defaultAddress () {
       this.showAddress = this.defaultAddress;
       this.$emit("deliveryAddress", this.showAddress);
     }

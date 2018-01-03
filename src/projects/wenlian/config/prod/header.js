@@ -6,11 +6,11 @@ export default {
   common: {
     header: {
       queryMember: {
-        url: '../data/common_header_member.json',
+        url: '../data/common_header.json',
         param: {}
       },
       queryNavCols: {
-        url: '../data/common_header_navcol.json',
+        url: '../spc/cms/col/getAllColBySiteId.do',
         param: {
           siteId: 2,
           chId: 0

@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming
  * @Date: 2017-12-26 09:23:33
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2017-12-27 10:51:05
+ * @Last Modified by: song
+ * @Last Modified time: 2018/01/02 13:37:22
  */
 
 import * as interfaces from "../common/interfaces.js";
@@ -12,12 +12,14 @@ let timer = null;
 
 let state = {
 	CONFIG: null,
-	member: {} //用户信息
+	member: {},  //用户信息
+	cartTotalAmount: 0, // 购物车商品总数
 };
 
 let getters = {
 	[interfaces.GET_MEMBER]: state => state.member,
-	[interfaces.GET_MEMBER_ISLOGIN]: (state)=> state.member['loginName']
+	[interfaces.GET_MEMBER_ISLOGIN]: (state) => state.member['loginName'],
+	[interfaces.GET_TOTAL_AMOUNT]: (state) => state.cartTotalAmount,
 };
 
 let mutations = {
@@ -48,6 +50,9 @@ let actions = {
 	},
 	[interfaces.ACTION_LOGOUT]: function () {
 		return Get( BASE_URL + '/logout.do');
+	},
+	getTotalAmount({commit, state}, amount) {
+		state.cartTotalAmount = amount;
 	}
 	
 };

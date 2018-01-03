@@ -94,20 +94,20 @@ export default {
 }
 .author_imgBox {
   position: relative;
-  display: block !important;
-  width: 172px !important;
-  height: 246px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 246px !important;
+  display: block;
+  width: 172px;
+  height: 246px;
+  margin: 0;
+  padding: 0;
+  line-height: 246px;
 }
 .author_img {
   position: absolute;
   top: 50%;
   left: 50%;
   display: inline-block;
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 0;
   transform: translate(-50%, -50%);
   text-align: center;
   /*box-shadow: 0 0 2px black;*/

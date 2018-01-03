@@ -71,6 +71,9 @@ a {
   font-size: 13px;
   padding-left: 12px;
 }
+p, pre, ul, ol, dl, dd, blockquote, address, table, fieldset, form{
+  margin-bottom: 30px;
+}
 
 
 /***************** END 左侧分类导航栏组件 *****************/
@@ -83,7 +86,7 @@ a {
 }
 
 .product.iproduct {
-  border: 1px solid #DCDCDC;
+  /*border: 1px solid #DCDCDC;*/
 }
 
 a {
@@ -146,6 +149,15 @@ label {
 
 .product-image a img {
   color: #AE0F29;
+}
+h3{
+  font-size: 18px;
+}
+h1, h2, h3, h4, h5, h6{
+  color: #4A4A4A;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 0 8px 0;
 }
 
 

@@ -9,7 +9,12 @@
   <!-- Stylesheets
         ============================================= -->
   <link rel="stylesheet" href="../assets/css/font-icons.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/css/bootstrap.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/css/swiper.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/css/animate.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/css/style.css" type="text/css"/>
   <link rel="stylesheet" href="../assets/skin/searchresult.css" type="text/css"/>
+  <script type="text/javascript" src="../assets/js/jquery.js"></script>
   <script type="text/javascript" src="../assets/config/index.js"></script>
   <script type="text/javascript" src="../assets/js/web.js"></script>
   <!--[if lt IE 9]>
@@ -19,10 +24,14 @@
 
   <!-- Document Title
 	============================================= -->
-  <title>搜索结果</title>
+  <title>检索结果</title>
 </head>
 <body>
-<div id="app">
+<div id="app" style="display: none">
+  <!---------------------------------页头导航组件--------------------------->
+  <header_component></header_component>
+  <!---header------------------------------页头导航组件--------------------------->
+
   <components_searchresult_handleurl></components_searchresult_handleurl>
   <!-- Info-book
       ============================================= -->
@@ -39,14 +48,65 @@
                ============================================= -->
         <div class="col-md-3 norightpadding  side-catergory side-search">
 
-          <!--<vrecom></vrecom>-->
-          <!-- #ad-->
-          <!--<vad></vad>-->
+          <div class="title-block" style="margin:0px">
+            <h4>推荐图书</h4></div>
+          <div class="fslider testimonial book-tuijian" data-animation="fade" data-arrows="false">
+            <div class="flexslider">
+              <div class="slider-wrap">
+                <!-- #slide item -->
+                <div class="slide">
+                  <div class="testi-image">
+                    <a href="#"><img src="../assets/img/book1.png" alt="Customer Testimonails"></a>
+                  </div>
+                  <div class="testi-content">
+                    <div class="product-title">
+                      <h5><a href="#">《日本版式设计原理》</a></h5></div>
+                    <div class="product-author">作者：林林 编文，张鹿山 等绘画</div>
+                  </div>
+                </div>
+                <div class="slide">
+                  <div class="testi-image">
+                    <a href="#"><img src="../assets/img/book2.png" alt="Customer Testimonails"></a>
+                  </div>
+                  <div class="testi-content">
+                    <div class="product-title">
+                      <h5><a href="#">《日本版式设计原理》</a></h5></div>
+                    <div class="product-author">作者：林林 编文，张鹿山 等绘画</div>
+                  </div>
+                </div>
+                <div class="slide">
+                  <div class="testi-image">
+                    <a href="#"><img src="../assets/img/book3.png" alt="Customer Testimonails"></a>
+                  </div>
+                  <div class="testi-content">
+                    <div class="product-title">
+                      <h5><a href="#">《日本版式设计原理》</a></h5></div>
+                    <div class="product-author">作者：林林 编文，张鹿山 等绘画</div>
+                  </div>
+                </div>
+                <!-- #slide item end -->
+              </div>
+            </div>
+          </div>
+           <!--#ad-->
+          <div class="ad-box">
+            <a href="#"><img src="../assets/img/ad1.jpeg" alt="ad-title"></a>
+            <a href="#"><img src="../assets/img/ad2.jpeg" alt="ad-title"></a>
+          </div>
         </div>
       </div>
     </div>
   </section>
+  <!---------------------------------页脚导航组件--------------------------->
+  <footer_component></footer_component>
+  <!---------------------------------页脚导航组件--------------------------->
   <!-- #content end -->
 </div>
 </body>
+<script type="text/javascript" src="/assets/js/jquery.js"></script>
+<script type="text/javascript" src="/assets/js/plugins.js"></script>
+
+<!-- Footer Scripts
+  ============================================= -->
+<script type="text/javascript" src="/assets/js/functions.js"></script>
 </html>

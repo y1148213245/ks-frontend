@@ -15,3 +15,7 @@ export const ACTION_LOGOUT = 'logout'; //获取用户
 /********************************* REGISTER *************************************/
 
 export const ACTION_REGISTER = 'doRegister';  // 注册
+
+/********************************* cart *************************************/
+export const GET_TOTAL_AMOUNT = 'getTotalAmount'; // 获取购物车列表商品总数
+

@@ -54,7 +54,23 @@
       <div class="wrap" style="position: relative;">
         <div class="all_class f16 color_fff fl open off"><span class="all_class_bg pl30">全部分类</span></div>
         <div class="all_class_detail">
-          <div class="con"></div>
+          <div class="con">
+            <dl v-for="(entry, index) in (navCategory || 0)" :class="{jishu:index%2==0}">
+              <dt>
+                <a :href="getUrl(entry.id)" class="one_title f14" v-text="entry.text"></a>
+              </dt>
+              <dd class="two_title">
+                <template v-for="(sub_entry,index) in entry.children">
+                  <template v-if="index+1!=entry.children.length">
+                    <a :href="getUrl(sub_entry.cascadeId)" v-text="sub_entry.text"></a><span>|</span>
+                  </template>
+                  <template v-else="index+1!=entry.children.length">
+                    <a :href="getUrl(sub_entry.cascadeId)" v-text="sub_entry.text"></a>
+                  </template>
+                </template>
+              </dd>
+            </dl>
+          </div>
           <div class="con-all" style="display: none;"></div>
         </div>
         <div class="nav fr">
@@ -75,30 +91,51 @@
   export default{
     name: 'components_common_header',
     reused: true,
-    props: ["namespace"],
+    props: ['namespace', {colLoadingNum: {default: 5}}, {colId: {default: ''}}],
     data: function () {
       return {
+        /* API配置 */
         CONFIG: null,
+        /* 用户信息 */
         member: {},
+        /* 购物车商品数量 */
         cartTotalAmount: 0,
+        /* 检索词 */
+        searchText: '',
+        /* 热门搜索词 */
         hotWords: [{SYS_TOPIC: '明星大侦探'}, {SYS_TOPIC: '今日说法'}, {SYS_TOPIC: '名侦探柯南'}, {SYS_TOPIC: '白夜行'}, {SYS_TOPIC: '飘'}],
+        /* 列表条件？ */
         conditions: "[{pub_col_id:'115'}]",
+        /* 列表排序？ */
         orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+        /* 图书列表页URL */
+        bookListUrl: "/page/bookList.html",
+        /* 分类导航 */
+        navCategory: [],
       }
     },
     mounted: function () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].common.header;
       this.queryMember();
+      this.queryNavCol();
     },
     methods: {
       queryMember: function () {
-        Get(this.CONFIG.queryMember.url, {}).then((response => {
+        Get(this.CONFIG.queryMember.url, {}).then(response => {
           if (response.data && response.data.loginName) {
             this.member = response.data;
           } else {
             alert('请登录！');
           }
-        }));
+        });
+      },
+      queryNavCol: function () {
+        Get(this.CONFIG.queryNavCols.url, {siteId: 2, chId: 0}).then(response => {
+          if (response.data && response.data.length) {
+            this.navCategory = response.data;
+            console.log(this.navCategory);
+          }
+        });
       },
       doLogout: function () {
         this.member = {};
@@ -106,6 +143,9 @@
       },
       doLogin: function () {
         this.queryMember();
+      },
+      getUrl(id){
+        return this.colId ? (this.bookListUrl + '?cascadeId=' + id + '&colId=' + this.colId) : ( this.bookListUrl + '?cascadeId=' + id);
       },
       goToCart: function () {
         if (this.member.loginName) {

@@ -47,93 +47,83 @@
           getSearchResult:function(params){
             let namespace=this.namespace;
             let CONFIG=PROJECT_CONFIG[namespace].search.search_result_title_03;
-            Object.assign(CONFIG.params,params);
+            var param=null;
+            if(params.category !== '0'){
+              param={
+                conditions: "[{pub_resource_type:'"+params.category+"'},{pub_site_id:'1'}]",
+                searchText:params.searchText
+              }
+            }else{
+              param={
+                searchText:params.searchText
+              }
+            }
+            Object.assign(CONFIG.params,param);
             Post(CONFIG.url,CONFIG.params).then((req) => {
-              console.log(req);
               let data = req.data.result;
               if(data && data instanceof Array && data.length>0){
-                this.resultList=this.getData(data);
+                this.resultList=this.getData(data,params);
               }
             })
           },
-          getData:function(data){
-            let loadDatas = [];
+          getData:function(datas,param){
+            var loadDatas = [];
             switch(param.category) {
               case 'book': // 图书
               {
                 for(var i = 0; i < datas.length; i++) {
-                  var entry = {
-                    bookName: datas[i].pub_resource_name || '暂无书名',
-                    bookAuthor: datas[i].BOOK_SYS_AUTHORS || '暂无作者',
-                    bookContent: datas[i].BOOK_SYNOPSIS || '暂无简介',
-                    pubId: datas[i].id || 0,
-                    contentType: datas[i].pub_content_type || 0,
-                    pub_col_id: datas[i].pub_col_id || 51,
-                    pub_col_name: datas[i].pub_col_name || "",
-                    bookUrl: datas[i].pub_picBig || "",
-                    bookContbookUrl:'图书',
-                    dataType:1
-                  };
-                  loadDatas.push(entry)
+                  loadDatas.push(this.getBook(datas[i]));
                 };
                 break;
               }
               case 'information': // 资讯
               {
                 for(var i = 0; i < datas.length; i++) {
-                  var entry = {
-                    bookName: datas[i].information_SYS_TOPIC || '暂无资讯名',
-                    bookAuthor: datas[i].information_SYS_AUTHORS || '暂无作者',
-                    bookContent: datas[i].information_a_abstract || '暂无简介',
-                    pubId: datas[i].id || 0,
-                    contentType: datas[i].pub_content_type || 0,
-                    pub_col_id: datas[i].pub_col_id || 51,
-                    pub_col_name: datas[i].pub_col_name || "",
-                    bookUrl: datas[i].pub_picBig || "",
-                    bookContbookUrl:'资讯',
-                    dataType: 2
-                  };
-                  loadDatas.push(entry)
+                  loadDatas.push(this.getInformation(datas[i]));
                 };
                 break;
               }
               default:  // 全部
               {
                 for(var i = 0; i < datas.length; i++) {
-                  var entry;
                   if (datas[i].pub_resource_type === "BOOK") {  // 图书
-                    entry = {
-                      bookName: datas[i].pub_resource_name || '暂无名称',
-                      bookAuthor: datas[i].BOOK_SYS_AUTHORS || '暂无作者',
-                      bookContent: datas[i].BOOK_SYNOPSIS || '暂无简介',
-                      pubId: datas[i].id || 0,
-                      contentType: datas[i].pub_content_type || 0,
-                      pub_col_id: datas[i].pub_col_id || 51,
-                      pub_col_name: datas[i].pub_col_name || "",
-                      bookUrl: datas[i].pub_picBig || "",
-                      bookContbookUrl:'图书',
-                      dataType: 1
-                    };
+                    loadDatas.push(this.getBook(datas[i]));
                   } else if (datas[i].pub_resource_type === "information") { // 资讯
-                    entry = {
-                      bookName: datas[i].information_SYS_TOPIC || '暂无资讯名',
-                      bookAuthor: datas[i].information_SYS_AUTHORS || '暂无作者',
-                      bookContent: datas[i].information_a_abstract || '暂无简介',
-                      pubId: datas[i].id || 0,
-                      contentType: datas[i].pub_content_type || 0,
-                      pub_col_id: datas[i].pub_col_id || 51,
-                      pub_col_name: datas[i].pub_col_name || "",
-                      bookUrl: datas[i].pub_picBig || "",
-                      bookContbookUrl:'资讯',
-                      dataType: 2
-                    }
+                    loadDatas.push(this.getInformation(datas[i]));
                   }
-                  loadDatas.push(entry)
                 };
                 break;
               }
             }
             return loadDatas;
+          },
+          getBook:function(datas){
+            return {
+              bookAuthor: datas.BOOK_SYS_AUTHORS || '暂无作者',
+              bookContent: datas.BOOK_SYNOPSIS || '暂无简介',
+              bookName: datas.pub_resource_name || '暂无书名',
+              bookContbookUrl:'图书',
+              dataType:1,
+              pubId: datas.id || 0,
+              contentType: datas.pub_content_type || 0,
+              pub_col_id: datas.pub_col_id || 51,
+              pub_col_name: datas.pub_col_name || "",
+              bookUrl: datas.pub_picBig || ""
+            };
+          },
+          getInformation:function(datas){
+            return {
+              bookName: datas.information_SYS_TOPIC || '暂无资讯名',
+              bookAuthor: datas.information_SYS_AUTHORS || '暂无作者',
+              bookContent: datas.information_a_abstract || '暂无简介',
+              bookContbookUrl:'资讯',
+              dataType: 2,
+              pubId: datas.id || 0,
+              contentType: datas.pub_content_type || 0,
+              pub_col_id: datas.pub_col_id || 51,
+              pub_col_name: datas.pub_col_name || "",
+              bookUrl: datas.pub_picBig || ""
+            };
           }
         }
     }

@@ -5,7 +5,7 @@
 				<div class="input-group-addon search-categories">
 					<select name="category" id="product_cat" v-model="category">
 						<option value="0" selected="">全 部</option>
-						<option class="level-0" value="book">图 书</option>
+						<option class="level-0" value="BOOK">图 书</option>
 						<option class="level-0" value="information">资 讯</option>
 					</select>
 				</div>
@@ -20,7 +20,6 @@
 <script type="text/ecmascript-6">
 	import URL from 'url';
 	import PROJECT_CONFIG from "projectConfig";
-
 
 	export default {
 		name: "work_search_01_category_search",

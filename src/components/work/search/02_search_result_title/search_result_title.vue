@@ -24,7 +24,18 @@
           getSearchResult:function(params){
             let namespace=this.namespace;
             let CONFIG=PROJECT_CONFIG[namespace].search.search_result_title_02;
-            Object.assign(CONFIG.params,params);
+            var param=null;
+            if(params.category !== '0'){
+              param={
+                conditions: "[{pub_resource_type:'"+params.category+"'},{pub_site_id:'1'}]",
+                searchText:params.searchText
+              }
+            }else{
+              param={
+                searchText:params.searchText
+              }
+            }
+            Object.assign(CONFIG.params,param);
             Post(CONFIG.url,CONFIG.params).then((req) => {
               this.resultList=req.data;
               Object.assign(this.resultList,params);

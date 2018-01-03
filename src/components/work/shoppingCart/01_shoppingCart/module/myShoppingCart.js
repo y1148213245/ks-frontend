@@ -1,10 +1,10 @@
-import * as type from '../../common/config.js';
+import * as type from '../../common/interfaces.js';
 import api from '../api/shoppingCartApi.js';
 // import loginApi from 'api/wl/loginApi.js';
 
 // 数据 相当于database
 var state = {
-  member:{},           //用户信息
+  // member:{},           //用户信息
   productList: {},     // 购物车商品列表
   totalCount: 0,       // 购物车总数
   deleteStatus: false,
@@ -40,7 +40,7 @@ var state = {
 
 // 对外暴露数据
 var getters = {
-  getMember: (state) => state.member,
+  // getMember: (state) => state.member,
   getProductList: (state) => state.productList,
   getTotalCount: (state) => state.totalCount,
   getDeleteStatus: (state) => state.deleteStatus,
@@ -62,19 +62,18 @@ var getters = {
 
 var actions = {
   /*查询账户信息*/
-  queryUser({commit},param){
+  /*queryUser({commit},param){
     commit('setMember', {loginName: 'song@163.com'});
     param.loadCallBack();
-    /*登陆验证*/
-    /* loginApi.keepSession().then(function(rep) {
+     loginApi.keepSession().then(function(rep) {
       if(rep.data && rep.data.status == 'ok' && rep.data['member']) {
         commit('setMember',rep.data['member']);
         param.loadCallBack();
       } else {
         alert('请您先登录~');
       }
-    }); */
-  },
+    }); 
+  },*/
   /* [type.QUERY_SHOPPING_CART](storex, loginName) {
     api.queryShoppingCart(loginName, ({productList, totalCount}) => {
       storex.commit(type.QUERY_SHOPPING_CART, productList);
@@ -82,11 +81,14 @@ var actions = {
     });
   }, */
 
-  [type.QUERY_SHOPPING_CART]({commit}, params) {
-    api.queryShoppingCart(params.param, ({productList, totalCount}) => commit(type.QUERY_SHOPPING_CART, {
-      productList: productList,
-      myCallBack: params.myCallback
-    }));
+  [type.QUERY_SHOPPING_CART](storex, params) {
+    api.queryShoppingCart(params.param, ({productList, totalCount}) => {
+      storex.commit(type.QUERY_SHOPPING_CART, {
+        productList: productList,
+        myCallBack: params.myCallback
+      });
+      storex.rootState.login_02.cartTotalAmount = totalCount;
+    });
   },
 
   [type.DELETE_CART_PRODUCT]({commit, dispatch}, params) {

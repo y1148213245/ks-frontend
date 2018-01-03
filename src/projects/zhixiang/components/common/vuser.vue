@@ -1,11 +1,11 @@
 <template>
 	<div class="top-menu">
-		<a v-if="isLogin" href="./personalCenter.html">{{member.loginName}}</a>
+		<a v-if="isLogin" href="./personalcenter.html">{{member.loginName}}</a>
 		<a v-else href="./login.html">登 录</a>
 		<a href="javascript:void(0)" @click="goShoppingCart()" id="top-cart">
 			<i class="icon-shopping-cart"></i>
 			<span v-if="isLogin">
-        <span v-text="cartTotalAmount"></span>
+        <span v-text="recordTotalAmount"></span>
       </span>
 			<span v-else>0</span>
 		</a>
@@ -18,6 +18,7 @@
 	import Vue from 'vue';
 	import {mapGetters, mapActions} from 'vuex';
 	import * as interfaces from "@work/login/common/interfaces.js";
+	import * as type from "@work/shoppingCart/common/interfaces.js";
 	/*import {getterTypes} from '../modules/types'
 	 import {actionTypes} from '../modules/types'
 	 import locationUtils from 'components/utils/locationUtils';
@@ -27,15 +28,39 @@
 		name: "components_common_user",
 		reused: true,
 		props: ["namespace"],
+		data: function() {
+			return {
+				recordTotalAmount: 0,
+			}
+		},
 		created: function () {
 			this.getMemberInfo().then((member) => {
-				console.info(member)
+				// console.info(member);
+				var params = {
+					param: {
+						loginName: member.loginName
+					},
+					myCallback: () => {
+						let tempLength = 0;
+						for (var i = 0; i < this.productList.length; i++) {
+							for (var j = 0; j < this.productList[i].list.length; j++) {
+							tempLength += this.productList[i].list[j].nums;
+							}
+						}
+						this.recordTotalAmount = tempLength;
+					}
+				}
+				this.$store.dispatch('shoppingcart/' + type.QUERY_SHOPPING_CART, params);
 			});
 		},
 		computed: {
 			...mapGetters("login_02", {
 				isLogin: interfaces.GET_MEMBER_ISLOGIN,
 				member: interfaces.GET_MEMBER
+			}),
+			...mapGetters({
+				productList: "shoppingcart/getProductList",        // 获取购物车商品列表
+				cartTotalAmount: "login_02/getTotalAmount",        // 获取购物车商品总数量
 			})
 		},
 		methods: {
@@ -50,36 +75,24 @@
 				});
 			},
 			goShoppingCart: function () {
-				/*if (this.isLogin) {
-				 window.location.href = "/pages/shoppingCart/shoppingCart.html"
-				 } else {
-				 alert('请登录');
-				 }*/
+				if (this.isLogin) {
+					window.location.href = "./shoppingcart.html"
+				} else {
+					this.$alert('请您先登录！', '系统提示', {
+						confirmButtonText: '确定',
+						callback: action => { 
+							// console.log(action);
+							}
+						});
+				}
 			}
 		},
 		watch: {
-			/*member: function (newValue, oldValue) {
-			 if (newValue.loginName !== oldValue.loginName) {
-			 this.$store.dispatch('page/common/shoppingcart/' + type.QUERY_SHOPPING_CART, newValue.loginName);
-			 }
-			 },*/
-			/*cartTotalAmount: function (newValue, oldValue) {
-			 if (newValue !== oldValue) {
-			 this.recordTotalAmount = newValue;
-			 }
+			cartTotalAmount: function (newValue, oldValue) {
+				if (newValue !== oldValue) {
+					this.recordTotalAmount = newValue;
+				}
 			 },
-			 productList: function (newValue, oldValue) {
-			 if (newValue !== oldValue) {
-			 var len = newValue.length;
-			 var tempLen = 0;
-			 for (var i = 0; i < len; i++) {
-			 for (var j = 0; j < newValue[i].list.length; j++) {
-			 tempLen += newValue[i].list[j].nums;
-			 }
-			 }
-			 this.recordTotalAmount = tempLen;
-			 }
-			 }*/
 		}
 	}
 </script>
