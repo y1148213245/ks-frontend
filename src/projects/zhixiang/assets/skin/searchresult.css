@@ -43,4 +43,21 @@ h1{
   float: none;
   margin-right: 0;
   margin-bottom: 12px;
+
+}
+.work_search_02{
+  height: 160px;
+  background: #E6E6E6;
+}
+.work_search_02 h1{
+  font-weight: normal;
+  margin-top: 60px;
+  padding-right: 16px;
+  border-right: 1px solid #979797;
+  margin-right: 16px;
+  display: inline-block;
+  line-height: 1em;
+}
+.work_search_02 span{
+  color:#7F7F7F;
 }

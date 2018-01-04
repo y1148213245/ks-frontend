@@ -1,0 +1,492 @@
+<!-- 图书详情页组件 created by song 2018/1/2 -->
+<template>
+  <section id="info-book" class="col_full">
+    <div class="container clearfix book-detail">
+      <div class="col-md-4  noleftpadding">
+        <!-- Product Single - Gallery
+                ============================================= -->
+        <div class="product-image">
+          <div class="fslider" data-pagi="false" data-arrows="false" data-thumbs="true">
+            <div class="flexslider">
+              <div class="slider-wrap" data-lightbox="gallery">
+
+                <div class="slide" :data-thumb="bookInfo.bigPic">
+                  <a class="book_list_imgBox" :href="bookInfo.bigPic" title="Pink Printed Dress - Front View">
+                    <img class="book_list_img" :src="bookInfo.bigPic" onload="DrawImage(this,410,280)" alt="暂无封面">
+                  </a>
+                </div>
+                <div class="slide" :data-thumb="bookInfo.bigPic">
+                  <a class="book_list_imgBox" :href="bookInfo.bigPic" title="Pink Printed Dress - Side View">
+                    <img class="book_list_img" :src="bookInfo.bigPic" onload="DrawImage(this,410,280)" alt="暂无封面">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sale-flash">热销!</div>
+        </div><!-- Product Single - Gallery End -->
+      </div>
+      <div class="col-md-8 norightpadding" style="position: unset;">
+
+        <ol class="breadcrumb">
+          <li>你的位置：<a href="/pages/index/index.html">首 页</a></li>
+          <li><a @click="toSecond(bookInfo.colId)" id="second" v-text="colName || ''"></a></li>
+        </ol>
+        <h1></h1>
+        <ul>
+          <h3>{{bookInfo.resourceName || ''}}</h3>
+          <li><label>作者：</label>{{bookInfo.author || ''}}</li>
+          <li><label>主编：</label>{{bookInfo.BOOK_MAJOR_EDITOR || ''}}</li>
+          <li><label>ISBN编号:</label> {{bookInfo.isbn || ''}}</li>
+        </ul>
+
+        <div v-if="bookInfo.contentType == 91">
+          <div class="product-price">
+            <label>纸书售价：</label>
+            <span style="text-decoration: line-through; margin-right: 16px;">¥ {{bookInfo.bookPrice | formatMoney}}</span>
+            <label>会员价：</label>
+            <span>¥ {{bookInfo.memberPrice | formatMoney}}</span>
+          </div>
+          <div v-if="bookInfo.relBook">
+            <div class="product-price">
+              <label>电子书售价：</label>
+              <span
+                style="text-decoration: line-through; margin-right: 16px;">¥ {{bookInfo.relBook.ebPrice | formatMoney}}</span>
+              <label>会员价：</label>
+              <span>¥ {{bookInfo.relBook.memberPrice | formatMoney}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div v-else-if="bookInfo.contentType == 94">
+          <div v-if="bookInfo.relBook">
+            <div class="product-price">
+              <label>纸书售价：</label>
+              <span
+                style="text-decoration: line-through; margin-right: 16px;">¥ {{bookInfo.relBook.bookPrice | formatMoney}}</span>
+              <label>会员价：</label>
+              <span>¥ {{bookInfo.relBook.memberPrice | formatMoney}}</span>
+            </div>
+          </div>
+          <div class="product-price">
+            <label>电子书售价：</label>
+            <span style="text-decoration: line-through; margin-right: 16px;">¥ {{bookInfo.ebPrice | formatMoney}}</span>
+            <label>会员价：</label>
+            <span>¥ {{bookInfo.memberPrice | formatMoney}}</span>
+          </div>
+        </div>
+        <!-- <detailcoupons :oneBookDetailInfo="bookInfo"></detailcoupons> -->
+
+        <!-- Product Single - Quantity & Cart Button
+                ============================================= -->
+        <form class="cart nobottommargin clearfix" method="post" enctype='multipart/form-data'>
+          <div class="quantity clearfix">
+            <input id="reduce" type="button" value="-" class="minus" @click="bookCount(-1)">
+            <input id="book_num" type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty"
+                   size="4" @keypress="checkNumber($event)" v-on:input="changeQuantity()"/>
+            <input id="add" type="button" value="+" class="plus" @click="bookCount(1)">
+          </div>
+          <div v-if="bookInfo.contentType == 91">
+            <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.contentType)"><i
+              class="icon-shopping-cart"></i>纸书加入购物车
+            </button>
+            <div v-if="bookInfo.relBook" class="ebookClass">
+              <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.relBook.contentType)"><i
+                class="icon-shopping-cart"></i>电子书加入购物车
+              </button>
+            </div>
+            <div v-if="bookInfo.relBook" class="shiduClass">
+              <a v-if="bookInfo.bookFreeDownLoadPath.length ==0 " target="_blank" href="javascript:void(0)"
+                 class="add-to-cart button nomargin" style="background-color: #444;cursor:default"><i
+                class="icon-newspaper"></i>电子书试读</a>
+              <a v-if="bookInfo.bookFreeDownLoadPath.length !=0 " target="_blank" href="javascript:void(0)"
+                 @click="shidu(bookInfo.resourceId,0,bookInfo.resourceName)" class="add-to-cart button nomargin"><i
+                class="icon-newspaper"></i>电子书试读</a>
+            </div>
+          </div>
+
+          <div v-else-if="bookInfo.contentType == 94">
+            <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.contentType)"><i
+              class="icon-shopping-cart"></i>电子书加入购物车
+            </button>
+            <div class="ebookCart">
+              <a v-if="bookInfo.bookFreeDownLoadPath.length ==0 " target="_blank" href="javascript:void(0)"
+                 class="add-to-cart button nomargin" style="background-color: #444;cursor:default"><i
+                class="icon-newspaper"></i>电子书试读</a>
+              <a v-if="bookInfo.bookFreeDownLoadPath.length !=0 " target="_blank" href="javascript:void(0)"
+                 @click="shidu(bookInfo.resourceId,0,bookInfo.resourceName)" class="add-to-cart button nomargin"><i
+                class="icon-newspaper"></i>电子书试读</a>
+            </div>
+            <div v-if="bookInfo.relBook" class="bookCart">
+              <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.relBook.contentType)"><i
+                class="icon-shopping-cart"></i>纸书加入购物车
+              </button>
+            </div>
+          </div>
+
+
+        </form><!-- Product Single - Quantity & Cart Button End -->
+        <div v-if="bookInfo.contentType == 91">
+          <div class="colleact1">
+
+            <div v-if="member.loginName">
+
+              <div v-if="bookInfo.isCollect == '1'">
+                <span class="scStyle cure"></span>
+                <a href="javascript:void(0)" @click="collectOrLike('0',bookInfo.contentType)">收 藏</a>
+              </div>
+              <div v-else-if="bookInfo.isCollect == '0' || bookInfo.isCollect == null">
+                <span class="scStyle"></span>
+                <a href="javascript:void(0)" @click="collectOrLike('0',bookInfo.contentType)">收 藏</a>
+              </div>
+            </div>
+            <div v-else-if="member.loginName == undefined">
+              <span class="scStyle"></span>
+              <a href="javascript:void(0)" @click="collectOrLike('0',bookInfo.contentType)">收 藏</a>
+            </div>
+          </div>
+
+          <div class="like1">
+            <div v-if="member.loginName">
+              <div v-if="bookInfo.isLike == '1'">
+                <span class="likeStyle cure"></span>
+                <a @click="collectOrLike('1',bookInfo.contentType)">点赞</a>
+              </div>
+              <div v-else-if="bookInfo.isLike == '0' || bookInfo.isLike == null">
+                <span class="likeStyle"></span>
+                <a @click="collectOrLike('1',bookInfo.contentType)">点赞</a>
+              </div>
+            </div>
+            <div v-else-if="member.loginName == undefined">
+              <span class="likeStyle"></span>
+              <a @click="collectOrLike('1',bookInfo.contentType)" class="">点赞</a>
+            </div>
+          </div>
+
+          <div v-if="member.loginName == undefined">
+            <div class="share1">
+              <div class="bshare-custom">
+                <a title="分享到" href="javascript:;" id="bshare-shareto"
+                   class="bshare-more" style=" line-height: 24px; font-size: 12px;">
+                  <span style="color: #ae0f29"><i class="icon-share shareRight"></i>分享</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div v-else-if="member.loginName">
+            <div class="share1">
+              <div class="bshare-custom">
+                <a title="分享到" href="javascript:;" id="bshare-shareto"
+                   class="bshare-more" style=" line-height: 24px; font-size: 12px;">
+                  <span style="color: #ae0f29"><i class="icon-share shareRight"></i>分享</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div v-else-if="bookInfo.contentType == 94">
+          <div class="colleact1">
+            <div v-if="member.loginName">
+              <div v-if="bookInfo.isCollect == '1'">
+                <span class="scStyle cure"></span>
+                <a @click="collectOrLike('0',bookInfo.contentType)">收 藏</a>
+              </div>
+              <div v-else-if="bookInfo.isCollect == '0' || bookInfo.isCollect == null">
+                <span class="scStyle"></span>
+                <a @click="collectOrLike('0',bookInfo.contentType)">收 藏</a>
+              </div>
+            </div>
+            <div v-else-if="member.loginName == undefined">
+              <span class="scStyle"></span>
+              <a @click="collectOrLike('0',bookInfo.contentType)">收 藏</a>
+            </div>
+          </div>
+
+          <div class="like1">
+            <div v-if="member.loginName">
+              <div v-if="bookInfo.isLike == '1'">
+                <span class="likeStyle cure"></span>
+                <a @click="collectOrLike('1',bookInfo.contentType)">点赞</a>
+              </div>
+              <div v-else-if="bookInfo.isLike == '0' || bookInfo.isLike == null">
+                <span class="likeStyle"></span>
+                <a @click="collectOrLike('1',bookInfo.contentType)">点赞</a>
+              </div>
+            </div>
+            <div v-else-if="member.loginName == undefined">
+              <span class="likeStyle"></span>
+              <a @click="collectOrLike('1',bookInfo.contentType)">点赞</a>
+            </div>
+          </div>
+
+
+          <div v-if="member.loginName == undefined">
+            <div class="share2">
+              <div class="bshare-custom">
+                <a title="分享到" href="javascript:;" id="bshare-shareto"
+                   class="bshare-more" style=" line-height: 24px; font-size: 12px;">
+                  <span style="color: #ae0f29"><i class="icon-share shareRight"></i>分享</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div v-else-if="member.loginName">
+            <div class="share2">
+              <div class="bshare-custom">
+                <a title="分享到" href="javascript:;" id="bshare-shareto"
+                   class="bshare-more" style=" line-height: 24px; font-size: 12px;">
+                  <span style="color: #ae0f29"><i class="icon-share shareRight"></i>分享</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+import { mapGetters, mapActions } from "vuex";
+import * as interfaces from "@work/login/common/interfaces.js";
+import * as type from "@work/bookDetail/common/interfaces.js";
+import URL from "url";
+
+export default {
+  name: "work_bookdetail_01_content",
+  reused: true,
+  props: ['namespace'],
+  data () {
+    return {
+      modalStatus: false,
+      "contentType": 91,  //赋值属性，页面可以调用
+      columnId: '',
+      colName: '',
+      pubId: '',
+    };
+  },
+  created: function () {
+    this.getMemberInfo().then((member) => {
+      var params = {
+        loginName: this.isLogin ? this.isLogin : '',
+        pubId: this.pubId,
+      };
+      this.$store.dispatch('bookDetail/' + type.BOOK_DETAIL, params);
+      this.$store.dispatch('bookDetail/' + type.CART_NUMS, params.loginName);
+    });
+  },
+  mounted () {
+    var param = URL.parse(window.location.href, true).query;
+    this.contentType = param.contentType;   // 书的类型
+    this.columnId = param.columnId;         // 栏目id
+    this.colName = param.columnName;           // 栏目名称
+    this.pubId = param.pubId;                // pubId
+  },
+  computed: {
+    ...mapGetters("login_02", {
+      isLogin: interfaces.GET_MEMBER_ISLOGIN,
+      member: interfaces.GET_MEMBER
+    }),
+    ...mapGetters({
+      bookInfo: 'bookDetail/bookDetailInfo',
+      getCartAmount: 'bookDetail/getCartAmount',
+      getTotalAmount: "login_02/getTotalAmount",        // 获取购物车商品总数量
+    }),
+  },
+  methods: {
+    ...mapActions("login_02", {
+      getMemberInfo: interfaces.ACTION_KEEP_SESSION
+    }),
+    toSecond (colId) {
+      window.location.href = $_$.columnType[colId].url;
+    },
+    cart (contentType) { //加入购物车
+      var loginName = this.member.loginName;
+      if (loginName == undefined || loginName == '') {
+        this.$alert('请您先登录！', "系统提示", {
+          confirmButtonText: "确定"
+        });
+        return;
+      }
+
+      addCart(contentType, this, loginName);
+    },
+    bookCount (val) {
+      var number = $("#book_num");
+      if (val > 0) {
+        if (number.val() >= 200) { // 防止加过200
+          number.val(200);
+          this.$alert('商品数量不能大于200', '系统提示', {
+            confirmButtonText: '确定'
+          });
+          return false;
+        }
+        number.val(parseInt(number.val()) + 1);
+      } else if (val < 0) {
+        if (parseInt(number.val()) == 1) {
+          return;
+        } else {
+          number.val(parseInt(number.val()) - 1);
+        }
+      }
+    },
+    //收藏or点赞
+    collectOrLike (operateTypeValue, contentType) {
+      var _this = this;
+      var loginName = this.member.loginName;
+      if (loginName == undefined || loginName == '') {
+        this.$alert('请您先登录！', "系统提示", {
+          confirmButtonText: "确定"
+        });
+        return;
+      }
+      var params = {
+        param: {
+          loginName: loginName,
+          productId: this.bookInfo.productId,
+          pubId: this.bookInfo.pubId,
+          operateType: operateTypeValue,
+          resId: this.bookInfo.resourceId,
+          contentType: contentType
+        },
+
+        myCallback: function () {
+          if (this.collectOrLikeInfo == "1") {
+            if (this.message.code === '00') {
+              _this.$message({
+                message: this.message.msg,
+                type: 'success'
+              })
+            } else if (this.message.code === '11') {
+              _this.$message({
+                message: this.message.msg,
+                type: 'success'
+              });
+            } else if (this.message.code === '000') {
+              _this.$message({
+                message: this.message.msg,
+                type: 'success'
+              });
+            } else if (this.message.code === '111') {
+              _this.$message({
+                message: this.message.msg,
+                type: 'success'
+              });
+            }
+            _this.$store.dispatch('bookDetail/' + type.BOOK_DETAIL, {
+              pubId: params.param.pubId,
+              loginName: params.param.loginName
+            });
+          }
+        }
+      }
+      this.$store.dispatch('bookDetail/' + type.COLLECT_OR_LIKE, params);
+    },
+  },
+  filters: {
+    formatMoney: function (val) {
+      if (val !== null && val !== undefined) {
+        return Number(val).toFixed(2);
+      } else {
+        return "暂无定价";
+      }
+    }
+  },
+  watch: {
+  }
+}
+
+function addCart (contentType, this_value, loginName) {
+  var _this = this_value;
+  var isEb, pubId, colId, number;
+  //图书详情页加购物车
+  if (_this.columnId == "48" || _this.columnId == "49") {
+    if (contentType == '91') {  //图书详情页纸书加购物车
+      isEb = _this.bookInfo.isEb;
+      pubId = _this.bookInfo.pubId;
+      colId = _this.bookInfo.colId; //栏目id
+      number = $("#book_num").val();
+    }
+    if (contentType == '94') {  //图书详情页电子书加购物车
+      isEb = _this.bookInfo.relBook.isEb;
+      pubId = _this.bookInfo.relBook.pubId;
+      colId = _this.bookInfo.relBook.colId; //栏目id
+      number = $("#book_num").val();
+      if (number > "1") {
+        alert("电子书加购物车只能加一本");
+        return;
+      } else {
+        number = "1";
+      }
+
+    }
+  }
+
+  //电子书详情页加购物车
+  if (_this.columnId == "51") {
+    if (contentType == '94') {  //电子书详情页电子书加购物车
+
+      isEb = _this.bookInfo.isEb;
+      pubId = _this.bookInfo.pubId;
+      colId = _this.bookInfo.colId; //栏目id
+      number = $("#book_num").val();
+      if (number > "1") {
+        alert("电子书加购物车只能加一本");
+        return;
+      } else {
+        number = "1";
+      }
+
+    }
+    if (contentType == '91') { //电子书详情页纸书加购物车
+      isEb = _this.bookInfo.relBook.isEb;
+      pubId = _this.bookInfo.relBook.pubId;
+      colId = _this.bookInfo.relBook.colId; //栏目id
+      number = $("#book_num").val();
+    }
+  }
+
+  if (isEb == "0") {
+    alert("无价格，不是图书，不可加购物车");
+    return;
+  }
+
+  var params = {
+    param: {
+      loginName: loginName,
+      pubId: pubId,
+      colId: colId, //栏目id
+      number: number,
+      siteId: SITE_CONFIG.siteId
+    },
+    myCallback: function () {
+      if (this.addCartInfo === '1') {
+        _this.$message({
+          message: this.cartMessage,
+          type: 'success'
+        });
+        //原有的购物车数量
+        var num = _this.getCartAmount;
+        _this.$store.dispatch("login_02/getTotalAmount", parseInt(number) + num);  //详情页气泡上购物车数量
+      }
+      if (this.addCartInfo === '0') {
+        _this.$message({
+          message: this.cartMessage,
+          type: 'error'
+        })
+      }
+    }
+  }
+  _this.$store.dispatch('bookDetail/' + type.ADD_CART, params);
+
+}
+</script>
+<style scoped>
+
+</style>

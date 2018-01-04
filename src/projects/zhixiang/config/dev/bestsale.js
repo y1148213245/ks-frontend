@@ -21,7 +21,8 @@ export default {
 			moreType:{
 				url: "./recommend.html",
 				pubColId: 49,
-				type: "selling"
+				// type: "selling"
+				colName: ''
 			},
 			styleType: "show4"
 		}

@@ -61,26 +61,6 @@ var getters = {
 };
 
 var actions = {
-  /*查询账户信息*/
-  /*queryUser({commit},param){
-    commit('setMember', {loginName: 'song@163.com'});
-    param.loadCallBack();
-     loginApi.keepSession().then(function(rep) {
-      if(rep.data && rep.data.status == 'ok' && rep.data['member']) {
-        commit('setMember',rep.data['member']);
-        param.loadCallBack();
-      } else {
-        alert('请您先登录~');
-      }
-    }); 
-  },*/
-  /* [type.QUERY_SHOPPING_CART](storex, loginName) {
-    api.queryShoppingCart(loginName, ({productList, totalCount}) => {
-      storex.commit(type.QUERY_SHOPPING_CART, productList);
-      storex.rootState.page.member.login.cartTotalAmount = totalCount;
-    });
-  }, */
-
   [type.QUERY_SHOPPING_CART](storex, params) {
     api.queryShoppingCart(params.param, ({productList, totalCount}) => {
       storex.commit(type.QUERY_SHOPPING_CART, {
