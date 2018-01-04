@@ -120,12 +120,13 @@ export default {
         this.action_checkUserInfo(params).then((resp) => {
           let checkStatus = resp.data.result;
           this.firstcallback(checkStatus);
+          if (checkStatus == 0) {
+            callback(new Error());
+          } else {
+            callback();
+          }
         }); /* 检查用户信息 */
-        if (this.cheStatus == 0) {
-          callback(new Error());
-        } else {
-          callback();
-        }
+
       } else {
         if (this.ruleForm.checkPass !== "") {
           this.$refs.ruleForm.validateField("checkPass");

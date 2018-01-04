@@ -22,5 +22,10 @@ export default {
       url: '/data/ui_list_pic_11.json',
       detailHref:'',
     }
+  },
+  swiper:{
+    pic_noWords_04:{
+      url:"/data/swiper_04_noWords_list.json"
+  }
   }
 }

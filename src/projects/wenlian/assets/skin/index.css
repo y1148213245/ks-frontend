@@ -1,0 +1,11 @@
+/************start 头部轮播图**************/
+.ui_swiper_04_pic_nowords .swiper-container{
+  height: 200px;
+}
+.ui_swiper_04_pic_nowords .swiper-wrapper{
+  height: 180px;
+}
+.ui_swiper_04_pic_nowords .testi-image{
+  text-align: center;
+}
+/************end 头部轮播图**************/

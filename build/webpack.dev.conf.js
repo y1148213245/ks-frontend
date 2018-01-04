@@ -39,7 +39,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    }
+    },
+    openPage: 'pages/index.html',
   },
   plugins: [
     new webpack.DefinePlugin({

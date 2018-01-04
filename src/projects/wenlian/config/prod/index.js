@@ -49,5 +49,18 @@ export default {
       colId: 116,
     }
 
+  },
+  swiper:{
+    pic_noWords_04:{
+      url:'http://172.19.57.153/portal/api/spc/cms/publish/list.do',
+      params:{
+        conditions : "[{pub_col_id:'83'}]",
+        groupBy : "pub_resource_id",
+        orderBy : "pub_a_order asc pub_lastmodified desc id asc",
+        pageNo : "1",
+        pageSize : "16",
+        searchText : ""
+  }
+    }
   }
 }

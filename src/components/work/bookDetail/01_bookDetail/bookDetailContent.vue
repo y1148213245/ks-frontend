@@ -75,7 +75,7 @@
             <span>¥ {{bookInfo.memberPrice | formatMoney}}</span>
           </div>
         </div>
-        <!-- <detailcoupons :oneBookDetailInfo="bookInfo"></detailcoupons> -->
+        <work_01_bookdetail_coupons :oneBookDetailInfo="bookInfo" namespace="bookdetail"></work_01_bookdetail_coupons>
 
         <!-- Product Single - Quantity & Cart Button
                 ============================================= -->

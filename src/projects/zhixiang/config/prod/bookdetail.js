@@ -19,5 +19,14 @@ export default {
         picLinkUrl: ""
       }
     }
+  },
+  common: {
+    get_coupons_02: { // 领取优惠券
+      url: BASE_URL + "user/pickCoupons.do",
+      params: {
+        loginName: "",
+        couponId: ""
+      }
+    }
   }
 };
