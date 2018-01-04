@@ -280,9 +280,11 @@ export default {
       antion_register_byMobile: interfaces.ACTION_REGISTER_MOBILE,
     })
     ,
+    /* 检查用户信息后回调 */
     firstcallback (cheStatus) {
       this.cheStatus = cheStatus;
     },
+    /* 下一步 */
     toNext (ruleForm) {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
@@ -296,8 +298,8 @@ export default {
         }
       });
     },
+    /* 发送手机验证码 */
     getCode (mobileNum) {
-
       if (mobileNum === "") {
         loading.close();
         this.$message({
@@ -324,7 +326,8 @@ export default {
     MobileCallback (sendStatus, cbSendNum) {
       this.cbSendNum = cbSendNum;
     },
-    submitFormM (ruleFormM) {/* 绑定手机号注册 */
+    /* 绑定手机号注册 */
+    submitFormM (ruleFormM) {
       this.$refs.ruleFormM.validate(valid => {
 
         if (valid) {
@@ -348,6 +351,7 @@ export default {
         }
       });
     },
+    /* 绑定手机号注册回调 */
     Mcallback (MStatus, response) {
       if (MStatus == 0) {
         this.$message({
@@ -373,7 +377,8 @@ export default {
         }
       });
     },
-    submitFormE (e, ruleFormE) {/* 绑定邮箱注册 */
+    /* 绑定邮箱注册 */
+    submitFormE (e, ruleFormE) {
       this.$refs.ruleFormE.validate(valid => {
 
         if (valid) {
@@ -401,6 +406,7 @@ export default {
         }
       });
     },
+    /* 注册回调 */
     Ecallback (EStatus, rep) {
       if (EStatus == 0) {
         this.$message({
@@ -411,12 +417,13 @@ export default {
         this.isMailsend = true;
       }
     },
+    /* 创建验证码 */
     createCode () {
       let checkCode = document.getElementById("code");
       this.code = CreateCode();
       checkCode.value = this.code;
     },
-
+    /* 刷新 */
     refresh () {
       this.code = "";
       this.createCode();
