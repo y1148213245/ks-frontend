@@ -4,7 +4,7 @@
       class="paging_content_layout"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="1"
+      :current-page="currentPage"
       :page-sizes="pageSizes"
       :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
@@ -26,6 +26,9 @@
     name: 'ui_pagination',
     reused: true,
     props: {
+      currentPage:{
+        default:1
+      },
       namespace: {
         default: '',
       },
