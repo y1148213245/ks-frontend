@@ -113,6 +113,10 @@ var PAGE_PATH = path.resolve(__dirname, '../src/projects/' + projectConfig.concu
 // 与上面的多页面入口配置相同，读取pages文件夹下的对应的html后缀文件，然后放入数组中
 exports.htmlPlugin = function () {
 	let entryHtml = glob.sync(PAGE_PATH + '/**/*.html');
+
+	//*********添加组件库
+	entryHtml.push(path.resolve(__dirname, '../src/projects/zjk.html'));
+
 	let arr = [];
 	entryHtml.forEach((filePath) => {
 		let _path = 'pages/' + path.basename(filePath);
@@ -139,7 +143,7 @@ exports.htmlPlugin = function () {
 			})
 		}
 		arr.push(new HtmlWebpackPlugin(conf))
-	})
+	});
 	return arr
 }
 

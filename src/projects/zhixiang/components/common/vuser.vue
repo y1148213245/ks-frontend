@@ -80,7 +80,7 @@
 				} else {
 					this.$alert('请您先登录！', '系统提示', {
 						confirmButtonText: '确定',
-						callback: action => { 
+						callback: action => {
 							// console.log(action);
 							}
 						});
@@ -96,3 +96,21 @@
 		}
 	}
 </script>
+<style>
+  #top-cart  > span {
+    display: block;
+    position: absolute;
+    top: -7px;
+    left: auto;
+    right: -16px;
+    font-size: 10px;
+    color: #FFF;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    background-color: #AE0F29;
+    border-radius: 50%;
+  }
+</style>

@@ -487,6 +487,248 @@ function addCart (contentType, this_value, loginName) {
 
 }
 </script>
-<style scoped>
+<style>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.book_list_imgBox {
+  display: block !important;
+  width: 410px !important;
+  height: 280px !important;
+  line-height: 280px !important;
+  text-align: center !important;
+}
+
+.book_list_img {
+  display: inline-block !important;
+}
+
+#info-book {
+  background: #f8f8f8;
+  padding: 18px 0px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.sale-flash {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 6px 10px;
+  background-color: #ae0f29;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  z-index: 5;
+}
+
+.sale-flash.out-of-stock {
+  background-color: #777;
+}
+
+.norightpadding {
+  padding-right: 0 !important;
+}
+
+.breadcrumb {
+  padding: 8px 15px;
+  margin-bottom: 20px;
+  list-style: none;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.book-detail .product-price {
+  font-size: 16px;
+}
+
+.product-price {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #000;
+}
+
+p,
+pre,
+ul,
+ol,
+dl,
+dd,
+blockquote,
+address,
+table,
+fieldset,
+form {
+  margin-bottom: 30px;
+  padding-left: 0px;
+}
+
+#info-book .breadcrumb {
+  padding: 0px 0px 8px 0px;
+  border-bottom: 1px solid #e6e6e6;
+  font-size: 12px;
+  background: none;
+}
+
+.cart {
+  border: 1px solid #ddd;
+}
+
+.nobottommargin {
+  margin-bottom: 0 !important;
+}
+/* 按钮 */
+#info-book .button {
+  margin: 24px 0px;
+}
+
+body:not(.device-touch) .button {
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.button {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  white-space: nowrap;
+  padding: 0 22px;
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #ae0f29;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.nomargin {
+  margin: 0 !important;
+}
+
+.flex-control-nav.flex-control-thumbs {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 2px -2px -2px 0;
+    height: 75px;
+}
+
+.flex-control-nav {
+    position: absolute;
+    z-index: 10;
+    text-align: center;
+    top: 14px;
+    right: 10px;
+    margin: 0;
+}
+
+.slider-wrap, .flex-control-nav, .flex-direction-nav {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: none;
+}
+
+/* ----------------------------------------------------------------
+	books&detail
+-----------------------------------------------------------------*/
+#info-book .book-detail .bigimgbox {
+  float: left;
+  width: 100%;
+  height: auto;
+}
+
+#info-book .book-detail .bigimgbox img {
+  width: 100%;
+}
+
+.book-detail ul li {
+  list-style: none;
+  font-size: 12px;
+  color: #666;
+}
+
+.book-detail .cart {
+  padding: 18px 0px;
+  border-bottom: 1px solid #e6e6e6;
+  border-top: 1px solid #e6e6e6;
+}
+
+.book-detail .product-price {
+  font-size: 16px;
+}
+
+.quantity {
+  float: left;
+  margin-right: 30px;
+}
+
+.quantity .qty {
+  float: left;
+  width: 50px;
+  height: 40px;
+  line-height: 40px;
+  border: 0;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  background-color: #eee;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.quantity .plus,
+.quantity .minus {
+  display: block;
+  float: left;
+  cursor: pointer;
+  border: 0px transparent;
+  padding: 0;
+  width: 36px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #eee;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.2s linear;
+  -webkit-transition: background-color 0.2s linear;
+  -o-transition: background-color 0.2s linear;
+}
+
+.quantity .plus:hover,
+.quantity .minus:hover {
+  background-color: #ddd;
+}
+
+.quantity .qty:focus,
+.quantity .plus:focus,
+.quantity .minus:focus {
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+/* .single-product .add-to-cart.button {
+  height: 40px;
+  line-height: 40px;
+} */
+
+#info-book .btn-link .button {
+  margin-right: 24px;
+}
 
 </style>

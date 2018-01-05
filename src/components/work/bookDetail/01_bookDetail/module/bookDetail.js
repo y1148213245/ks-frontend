@@ -47,9 +47,6 @@ var actions = {
       var docID = bookDetailInfo.resourceId;
       var introductionParam = { doclibCod: "BOOK", docID: docID }
       dispatch(type.BOOK_INTRODUCTION, introductionParam); //图书简介
-
-      // dispatch(type.RELATE_BOOK, bookDetailInfo.pubId); //相关图书
-
     });
   },
 
@@ -105,11 +102,6 @@ var actions = {
     })
   },
 
-  /* [type.RELATE_BOOK]({ commit }, params) {
-    api.viewRelateBook(params, ({ relateBook }) => {
-      commit(type.RELATE_BOOK, relateBook);
-    })
-  }, */
   [type.CART_NUMS]({ commit }, loginName) {
     api.viewCarts(loginName, ({ carts }) => {
       commit(type.CART_NUMS, carts);
@@ -149,10 +141,6 @@ var mutations = {
     state.bookIntroduction = bookIntroduction
   },
 
-  /* [type.RELATE_BOOK]: (state, relateBook) =>
-  {
-    state.relateBook = relateBook
-  }, */
   [type.CART_NUMS]: (state, carts) =>
   {
     state.getCartAmount = carts

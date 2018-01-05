@@ -26,4 +26,7 @@
   .footer .container{border-top:2px solid #7F7F7F;padding: 16px 0px 24px 0px;}
   .tright a{color:#AE0F29;}
   .tright a:hover{color: #000;}
+  .tright{
+    text-align: right !important;
+  }
 </style>

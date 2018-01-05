@@ -131,7 +131,6 @@ const webpackConfig = merge(baseWebpackConfig, {
   ].concat(utils.htmlPlugin())
 })
 
-console.info(path.join(__dirname, "../dist"))
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
 

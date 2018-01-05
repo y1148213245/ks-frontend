@@ -20,14 +20,18 @@
   border-radius: 50%;
 }
 /********************** end 头部 ************************/
-/************start 头部轮播图**************/
-.ui_swiper_04_pic_nowords .swiper-container{
-  height: 200px;
+/********************* start 左侧导航 *******************/
+.all_class_detail{
+  display: block;
+  padding-top: 0px;
+  background: #fff;
+  width: 222px;
+  position: absolute;
+  top: 41px;
+  left: 0px;
+  box-shadow: 0px 0px 8px #e7e7e7;
+  z-index: 9;
 }
-.ui_swiper_04_pic_nowords .swiper-wrapper{
-  height: 180px;
+.header .two_title span:last-child{
+  visibility: hidden;
 }
-.ui_swiper_04_pic_nowords .testi-image{
-  text-align: center;
-}
-/************end 头部轮播图**************/

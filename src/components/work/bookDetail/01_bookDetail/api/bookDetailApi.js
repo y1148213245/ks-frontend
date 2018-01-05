@@ -148,19 +148,6 @@ export default {
   },
 
   /**
-   * 相关图书
-   * @param pubId
-   * @param cb
-   */
-  viewRelateBook(pubId, cb) {
-    var url = BASE_URL + "spc/cms/publish/related.do?pubId=" + pubId + "&size=3";
-    axios.get(url).then(function (response) {
-      if (cb && cb instanceof Function)
-        cb({ relateBook: response.data.data });
-    })
-  },
-
-  /**
    * 查询图书简介
    * @param params
    * @param cb

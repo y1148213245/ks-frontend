@@ -86,57 +86,16 @@
     border-radius: 0;}
   .search-area .search-area-select {
     line-height: 27px; }
-/*********************头部导航部分*************/
-  .primary-menu-navigation div.col-md-4{margin: 4px 0px 8px;line-height: 16px}
-  .primary-menu-navigation div label{font-size: 18px;font-weight: bold;margin-right: 8px;letter-spacing: 3px;}
-  .primary-menu-navigation div ul{display: inline-block;margin: 0px}
-  .primary-menu-navigation div ul>li{list-style: none;display: inline-block;}
-  .primary-menu-navigation div ul>li.sub-menu{position: relative}
-  .primary-menu-navigation div ul>li a{color: #7f7f7f;padding: 0px 10px 0px 8px;border-right: 1px solid #ACACAC;}
-  .primary-menu-navigation div ul>li a:hover{color:#AE0F29 }
-  .primary-menu-navigation div ul>li.menu-active a{color:#AE0F29;cursor: default}
-  .primary-menu-navigation div ul>li:last-child a{border-right: 0px}
-  .primary-menu-navigation div.nav-special label a{padding: 0px 10px 0px 8px;border-left: 1px solid #ACACAC;}
-  .primary-menu-navigation div.nav-special label a:first-child{border-left:none;padding-left: 0px}
-  .primary-menu-navigation ul ul{
-    display: none;
-    position: absolute;
-    width: 120px;
-    background-color: #FFF;
-    box-shadow: 0px 13px 42px 11px rgba(0, 0, 0, 0.05);
-    border-top: 0px solid #AE0F29;
-    height: auto;
-    z-index: 199;
-    top:20px;
-    left: 0;
-    margin: 0;
+
+  .nopadding{
+    padding: 0 !important;
   }
-  .primary-menu-navigation ul ul li, .side-catergory ul>li{
-    list-style: none;
-    float: none;
-    margin: 0;
-    display: block;
-    border-top: 1px solid #F8F8F8;
+  a img{
+    border: none;
   }
-  .primary-menu-navigation ul ul li:first-child { border-top: 0; }
-  .primary-menu-navigation ul ul li > a,.side-catergory ul>li a {
-    font-size: 13px;
-    font-weight: normal;
-    color: #666;
-    display: block;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    border: 0;
-    letter-spacing: 0;
-    font-family: 'Lato', sans-serif;
-    -webkit-transition: all .2s ease-in-out;
-    -o-transition: all .2s ease-in-out;
-    transition: all .2s ease-in-out;
-  }
-  .primary-menu-navigation ul ul li > a i { vertical-align: middle; }
-  .primary-menu-navigation ul ul li:hover > a{
-    background-color: #F9F9F9;
-    padding-left: 18px;
-    color: #AE0F29;
-  }
+  #top-cart{
+   margin-right: 16px;
+   position: relative;
+   font-size: 13px;
+}
 </style>

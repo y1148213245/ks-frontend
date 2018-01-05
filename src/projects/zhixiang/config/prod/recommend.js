@@ -23,6 +23,7 @@ export default {
       url: BASE_URL + "spc/cms/publish/list.do",
       params: {
         conditions: "[{pub_resource_type:'BOOK'}]",
+        groupBy: "pub_resource_id",
         orderBy: "pub_sales_num desc",
         pageNo: "1",
         pageSize: "8",

@@ -11,7 +11,7 @@
     mounted: function () {
       var query = URL.parse(document.URL, true).query;
       this.$bus.$emit("relativebook", query.pubId);
-      // this.$bus.$emit("historylist", query.contentType);
+      this.$bus.$emit("historylist", query.contentType);
     }
   }
 </script>

@@ -4,9 +4,10 @@ export default {
     list_pic_04_pic_list: {
       relativebook: {
         // http://172.19.57.153:9092/spc-portal-web/spc/cms/publish/related.do?pubId=1587&size=3
-        url: BASE_URL + "/spc/cms/publish/related.do",
+        url: BASE_URL + "spc/cms/publish/related.do",
         params: {
-          size:3
+          size:3,
+          pubId:''
         },
         picLinkUrl: ""
       },
