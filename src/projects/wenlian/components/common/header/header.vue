@@ -190,12 +190,12 @@ export default {
             }
           }
         }
-        var colId = URL.parse(document.URL, true).query.colId;
+        /* var colId = URL.parse(document.URL, true).query.colId;
         if (!colId) {
           window.location.search = 'colId=' + this.navColArray[0].id;
         } else {
           this.showColId = colId;
-        }
+        } */
       });
     },
     toSub (sub) {  // 二级菜单

@@ -3,40 +3,48 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>我的购物车</title>
+  <title>图书详情</title>
   <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
   <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
   <link type="text/css" rel="stylesheet" href="../assets/css/login.css">
-  <link rel="stylesheet" href="../assets/css/bootstrap.css" type="text/css"/>
-  <link type="text/css" rel="stylesheet" href="../../assets/css/cartTable.css">
-
-   <!-- 图片尺寸处理js -->
-   <script type="text/javascript" src="../assets/js/web.js"></script>
-   <!-- END 图片尺寸处理js -->
-  <script type="text/javascript" src="../assets/js/jquery.js"></script>
+  <!-- 图书详情 -->
+  <link type="text/css" rel="stylesheet" href="../assets/css/book.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/bookStyle.css">
+  <!--  END 图书详情 -->
   <script type="text/javascript" src="../assets/config/index.js"></script>
+  <script type="text/javascript" src="../assets/js/web.js"></script>
   <script type="text/javascript">
   </script>
 
 </head>
 
 <body id="home">
-
   <div id="app">
     <!--id="wl"-->
     <!--头-->
     <components_common_header namespace="header"></components_common_header>
     <!--头end-->
     
-    <!-- 我的购物车组件 -->
-    <work_shoppingcart_01_cart namespace="shoppingCart"></work_shoppingcart_01_cart>
-    <!-- END 我的购物车组件 -->
+    <div class="main" style="overflow: hidden">
+        <!--左部分-->
+        <div class="main_left_1 fl">
+    
+          <!-- 图书详情组件 -->
+          <work_bookdetail_02_content namespace="bookdetail"></work_bookdetail_02_content>
+          <!-- END 图书详情组件 -->
+        
+      </div>
+    </div>
 
     <div id="wl_footer" class="footer f14">
       <p>地址：北京市朝阳区农展馆南里10号 邮编：100125</p>
       <p>版权所有： 中国文联出版社</p>
     </div>
   </div>
+
+<!--分享js,需放在最后面-->
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!--分享js,需放在最后面-->
 </body>
 
 </html>

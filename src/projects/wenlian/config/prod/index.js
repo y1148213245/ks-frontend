@@ -15,7 +15,7 @@ export default {
         searchText: ""
       },
       href: "./read.jsp?bookId=",
-      bookDetail: "./bookDetail.html?pubId=",
+      bookDetail: "./bookdetail.html?pubId=",
       beginPicIndex: 2,
       finishPicIndex: 8,
       colId: 59
@@ -32,7 +32,7 @@ export default {
       },
       baseURL: "http://172.19.57.153/portal/reader",
       href: "./bookList.html?colId=",
-      bookDetail: "./bookDetail.html?pubId=",
+      bookDetail: "./bookdetail.html?pubId=",
       colId: 59
     },
     list_pic_11: {

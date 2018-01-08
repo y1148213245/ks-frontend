@@ -63,13 +63,13 @@
               bookDetailInfoList:[]
             }
         },
-        computed:function(){
+        computed:{
 
         },
         created:function(){
 
         },
-        methods:function(){
+        methods:{
 
         }
     }
