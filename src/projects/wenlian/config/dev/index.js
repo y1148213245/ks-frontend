@@ -23,9 +23,12 @@ export default {
       detailHref:'',
     }
   },
-  swiper:{
-    pic_noWords_04:{
-      url:"/data/swiper_04_noWords_list.json"
+  swiper: {
+    pic_noWords_04: {
+      url: "/data/swiper_04_noWords_list.json"
+    },
+    pic_advert_05: {
+      url: "/data/swiper_05_advert.json"
   }
   }
 }

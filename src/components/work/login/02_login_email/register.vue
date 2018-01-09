@@ -30,15 +30,14 @@
 	import {ValidateRules, CreateCode} from "@common";
 	import * as interfaces from "@work/login/common/interfaces.js";
 	import {mapActions} from "vuex";
-
+	import PROJECT_CONFIG from "projectConfig";
 	import URL from "url";
 
 	export default {
 		name: "work_login_02_register",
 		reused: true,
-		mounted: function () {
-			this.createCode();
-		},
+    props:["namespace"],
+
 		data() {
 			var validatePass3 = (rule, value, callback) => {
 				if (value === "") {
@@ -69,6 +68,7 @@
 				}
 			};
 			return {
+				PROJECT:null,
 				ruleForm: {
 					email: "",
 					pass: "",
@@ -83,11 +83,16 @@
 				}
 			};
 		},
+		mounted: function () {
+			this.createCode();
+      this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_login_02;
+		},
 		methods: {
 			...mapActions("login_02", {
 				register: interfaces.ACTION_REGISTER
 			}),
 			submitRegisterForm() {
+				var obj = this;
 				this.register({loginName: this.ruleForm.email, password: this.ruleForm.checkPass})
 						.then(response => {
 									var _data = response.data;
@@ -97,7 +102,7 @@
 											message: "注册成功,请登录"
 										});
 										window.setTimeout(function () {
-											window.location.href = "./login.html";
+											window.location.href = obj.PROJECT.toLoginPages;
 										}, 3000);
 									} else if (_data.result == 0) {
 										this.$message({

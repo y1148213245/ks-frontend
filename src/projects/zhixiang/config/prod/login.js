@@ -2,19 +2,23 @@
  * @Author: yan.chaoming 
  * @Date: 2017-12-25 18:29:13 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2017-12-28 17:25:54
  */
 export default {
   name: 'login',
   login: {
     work_login_01: {
       loginUrl: BASE_URL + 'login.do',
-    }
   },
-  components: {
-    components_login_content: {
-			loginSuccessHref: './index.html',
-			loginSuccessDontHrefPage: ['register.html','register_success.html'],
+		work_login_02: {
+			loginUrl: BASE_URL + "login.do",
+			toMainPages:"./index.html",
+			toLoginPages:"./login.html",
+			findPassword:{
+				findPasswordUrl:BASE_URL + "user/findPassword.do?email=",
+				setPasswordUrl:BASE_URL + "user/setPassword1.do?email=",
+				href:"../pages/login.html"
+			},
+
 		}
   }
 };

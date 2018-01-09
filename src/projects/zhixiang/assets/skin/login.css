@@ -12,6 +12,123 @@
 /* ----------------------------------------------------------------
 	Basic
 -----------------------------------------------------------------*/
+/************************忘记密码***********************/
+.el-collapse,.el-collapse-item__header{
+  border:none !important;
+}
+.icon-unlock:before,.icon-lock3:before,.icon-user4:before,.icon-ok-sign:before{
+  font-size: 24px!important;
+}
+.el-collapse-item .el-collapse-item__header .el-collapse-item__arrow{
+  display: none !important;
+}
+.el-collapse-item{
+  line-height: 44px!important;
+  font-weight: 400!important;
+  width: 550px!important;
+  margin: 6px 347px!important;
+  border-bottom:1px dotted #DDD;
+}
+.el-collapse-item__header{
+  margin-left: 36px!important;
+  margin-top: -52px!important;
+}
+.el-collapse-item__header{
+  font-size:23px!important;
+}
+i.el-collapse-item__arrow .el-icon-arrow-right{
+  display: none !important;
+}
+
+
+
+.el-step__title{
+  font-size: 14px !important;
+}
+.el-step__icon{
+  background-color: rgb(217, 193, 191) !important;
+}
+.el-step__head.is-process.el-step__icon{
+  background-color: rgb(217, 193, 191) !important;
+}
+.el-step__title.is-success {
+  font-weight: 700 !important;
+  color: #13ce66 !important;
+}
+/*.el-step__head.is-success .el-step__icon .is-text{*/
+  /*background-color:#13ce66 !important;*/
+/*}*/
+.is-success .el-step__icon {
+  border-color: #13ce66 !important;
+  background-color: #13ce66 !important;
+  color: white;
+}
+/*.is-success.el-step__icon-inner .is-status .el-icon-check{*/
+  /*color: #fff !important;*/
+/*}*/
+.is-success .el-step__line{
+  background-color: #13ce66 !important;
+}
+.el-step__title.is-success el-step__icon is-text{
+  background-color: #13ce66 !important;
+}
+
+.el-step__head.is-process {
+  color: #fff !important;
+  border-color: rgb(217, 193, 191) !important;
+}
+.el-step__title.is-process {
+  color: rgb(106, 77, 72) !important;
+
+}
+.el-step__line {
+  display: inline-block;
+  position: absolute;
+  border-color: inherit;
+  background-color: rgb(217, 193, 191) !important;
+}
+.el-step__head.is-wait {
+  font-weight: 400!important;
+  color: #fff !important;
+  border-color: rgb(217, 193, 191) !important;
+}
+.el-step__title.is-wait {
+  font-weight: 400!important;
+  color: rgb(190, 157, 151)!important;
+}
+.el-button--primary {
+  color: #fff!important;
+  background-color: #AE0F29!important;
+  border-color: #AE0F29!important;
+}
+.el-button--default {
+  color: #fff!important;
+  background-color: #AE0F29!important;
+  border-color: #AE0F29!important;
+}
+.el-button--text{
+  color: #AE0F29!important;
+}
+.el-input__inner{
+  color: rgb(61, 34, 31)!important;
+  border: 1px solid rgb(217, 193, 191)!important;
+}
+.el-input__inner:hover {
+  border-color: rgb(165, 136, 131)!important;
+}
+
+.el-form-item.is-error .el-input__inner{
+  border-color: #f56c6c!important;
+}
+.el-step.is-horizontal{
+  width: 120px!important;
+  margin-right: 0px!important;
+}
+.button{
+  color
+
+  background-color: #AE0F29!important;
+}
 
 dl, dt, dd, ol, ul, li {
 	margin: 0;

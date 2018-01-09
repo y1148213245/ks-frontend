@@ -19,12 +19,15 @@
 	import * as interfaces from "@work/login/common/interfaces.js";
 	import {mapActions} from "vuex";
 	import URL from "url";
+	import PROJECT_CONFIG from "projectConfig";
 
 	export default {
 		name: "work_login_02_login",
 		reused: true,
+    props:["namespace"],
 		data() {
 			return {
+				PROJECT:null,
 				member: {
 					loginName: "",
 					password: ""
@@ -35,12 +38,18 @@
 				}
 			};
 		},
+    mounted:function () {
+      this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_login_02;
+    },
 		methods: {
 			...mapActions("login_02", {
 				login: interfaces.ACTION_LOGIN,
 			}),
 			backMain() {
-				window.location.href = "./index.html";
+//				window.location.href = "./index.html";
+        $(".box").css("display","block");
+        $("#title-nav").css("display","none");
+        $("#content").css("display","none");
 			},
 			submitLoginForm() {
 				/* 登陆 */
@@ -61,7 +70,7 @@
 								if (url && url.indexOf("login.html") == -1) {
 									window.location.href = url;
 								} else {
-									window.location.href = "./index.html";
+									window.location.href = this.PROJECT.toMainPages;
 								}
 							}
 						});

@@ -5,8 +5,13 @@
     <title>Title</title>
     <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
     <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/book.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/bookStyle.css">
     <link type="text/css" rel="stylesheet" href="../assets/skin/booklist.css">
+  <script type="text/javascript" src="../assets/js/jquery.js"></script>
     <script type="text/javascript" src="../assets/config/index.js"></script>
+  <script type="text/javascript" src="../assets/js/web.js"></script>
+  <script type="text/javascript" src="../assets/js/jquery_03.js"></script>
 </head>
 <body>
 <div id="app">
@@ -15,11 +20,16 @@
   <!--头end-->
   <div class="main">
     <div class="main_left fl">
-      <div class="book_jdt fr">
-        <div>
-          <!--start 轮播-->
-          <ui_list_pic_12></ui_list_pic_12>
-          <!--end 轮播-->
+      <div class="book_jdt fr" style="margin-left: 223px;margin-top: 23px;">
+        <div class="id_flash" style="height: 100%">
+          <div class="top" style="height: 100%;overflow: hidden">
+            <!--start 轮播-->
+            <pic_info_list_12 namespace="booklist"></pic_info_list_12>
+            <!--end 轮播-->
+            <!--start 图书列表-->
+            <star_pic_info_13 namespace="booklist"></star_pic_info_13>
+            <!--end 图书列表-->
+          </div>
         </div>
       </div>
     </div>

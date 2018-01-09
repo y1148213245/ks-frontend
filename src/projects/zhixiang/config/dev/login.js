@@ -8,10 +8,17 @@ export default {
   name: "login",
   login: {
     work_login_01: {
-      loginUrl: "login.do"
+      loginUrl: "login.do",
     },
     work_login_02: {
-      loginUrl: "login.do"
+      loginUrl: "login.do",
+	    toMainPages:"./index.html",
+	    toLoginPages:"./login.html",
+	    findPassword:{
+		    findPasswordUrl:BASE_URL + "user/findPassword.do?email=",
+		    setPasswordUrl:BASE_URL + "user/setPassword1.do?email=",
+		    href:"../pages/login.html"
+	    },
     }
   }
 };

@@ -2,28 +2,21 @@
 	<section id="content">
 		<div class="content-wrap">
 			<div class="container clearfix">
-				<div class="accordion accordion-lg divcenter nobottommargin clearfix" style="max-width: 550px;">
-					<!-- 登陆 -->
-					<div class="acctitle">
-						<i class="acc-closed icon-lock3"></i>
-						<i class="acc-open icon-unlock"></i>登 录
-					</div>
-					<div class="acc_content clearfix">
-						<work_login_02_login></work_login_02_login>
-					</div>
-					<!-- END 登陆 -->
 
-					<!-- 注册 -->
-					<div class="acctitle">
-						<i class="acc-closed icon-user4"></i>
-						<i class="acc-open icon-ok-sign"></i>未注册? 创建账号
-					</div>
-					<div class="acc_content clearfix">
-						<work_login_02_register></work_login_02_register>
-					</div>
-					<!-- END 注册 -->
-				</div>
-			</div>
+        <el-collapse v-model="activeNames" accordion  @change="change">
+          <el-collapse-item title="登 录" :class="isShow?'icon-lock3':'icon-unlock'" name="1" >
+            <div class="acc_content clearfix">
+              <work_login_02_login :namespace = "namespace"></work_login_02_login>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="未注册? 创建账号" :class="isOpen ?'icon-user4':'icon-ok-sign'" name="2" >
+            <div class="acc_content clearfix">
+              <work_login_02_register :namespace = "namespace"></work_login_02_register>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+
+      </div>
 		</div>
 	</section>
 </template>
@@ -31,9 +24,24 @@
 	export default {
 		name: "components_login_login",
 		reused: true,
+    props:["namespace"],
+		data() {
+			return {
+				activeNames: ['1'],
+        isShow:false,
+        isOpen:true,
+			};
+		},
+		methods:{
+			change:function () {
+        this.isShow =!(this.isShow );
+				this.isOpen =!(this.isOpen );
+			},
+    }
 	};
 </script>
 <style scoped>
+
 	.captcha input {
 		display: inline-block;
 		border-radius: 3px;
@@ -53,4 +61,7 @@
 		letter-spacing: 2px;
 		color: #33938d;
 	}
+  .el-collapse-item.is-active .el-collapse-item__header .el-collapse-item__arrow{
+    display: none !important;
+  }
 </style>

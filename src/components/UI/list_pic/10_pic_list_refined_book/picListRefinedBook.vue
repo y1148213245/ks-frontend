@@ -10,7 +10,7 @@
         <p class="title" :title="book.pub_resource_name">
           <a @click="toDetailPage(book.id)"><span v-text="book.pub_resource_name"></span></a>
         </p>
-        <p class="f14"><span class="jp_zz">作者111：</span><span v-text="book.BOOK_SYS_AUTHORS"
+        <p class="f14"><span class="jp_zz">作者：</span><span v-text="book.BOOK_SYS_AUTHORS"
                                                            :title="book.BOOK_SYS_AUTHORS"
                                                            class="jp_zz"></span></p>
         <p class="zhaiyao zhaiyao_jp_text" v-text="book.BOOK_SYNOPSIS" :title="book.BOOK_SYNOPSIS"></p>

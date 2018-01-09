@@ -35,3 +35,11 @@
 .header .two_title span:last-child{
   visibility: hidden;
 }
+
+.jianjie{
+  width: 455px;
+  font-size: 10px;
+  line-height: 18px;
+  padding-top: 24px;
+  overflow: hidden;
+}
