@@ -1,3 +1,12 @@
+// 相关图书
+import component from "../picList.vue";
+
+const name = component.name;
+
+const title = "相关图书组件";
+
+const description = `相关图书`;
+
 const dev = {
   list_pic: {
     pic_list_04: {
@@ -21,3 +30,5 @@ const prod = {
     }
   }
 };
+
+export {name, title, dev, prod, description};

@@ -290,6 +290,7 @@
 .all_class_tz dl{ padding:10px 17px;}
 .all_class_tz dd{ line-height:22px;}
 .all_class_tz dd span { padding:0px 8px;}
-.all_class_tz dl.jishu {background:#f5f5f5; padding:10px 17px;}
+/*.all_class_tz dl.jishu {background:#f5f5f5; padding:10px 17px;}*/
+.all_class_tz dl:nth-child(even) {background:#f5f5f5; padding:10px 17px;}
 .all_class_tz .one_title{ color:#545454;}
 .all_class_tz .two_title a{ color:#9a9a9a;}

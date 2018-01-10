@@ -1,6 +1,17 @@
 /**
  * Created by ma.jw on 2017/12/15.
+ * 精品图书 带评星的精品图书
  */
+
+import component from "../picListBookShow.vue";
+
+
+const name = component.name;
+
+const title = "精品图书组件";
+
+const description = `精品图书列表`;
+
 const dev = {
   picListBookShow:{
     url:"/data/ui_pic_list_09.json",
@@ -30,3 +41,5 @@ const prod = {
     colId:59
   }
 };
+
+export {name, title, dev, prod, description};

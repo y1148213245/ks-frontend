@@ -7,12 +7,9 @@ import component from "../downloadList.vue";
 
 const name = component.name;
 
-const description = `
-	下载啊下载啊
-	ghjkgjh
-	hkjhk
-	vhjgj
-`;
+const title = "书目下载组件";
+
+const description = `书目下载`;
 
 const dev = {
 	list_pic: {
@@ -26,7 +23,7 @@ const dev = {
 const prod = {
 	list_pic: {
 		pic_list_download_02: {
-			url: 'http://172.19.57.153:9092/spc-portal-web/spc/cms/publish/list.do',
+			url: BASE_URL + 'spc/cms/publish/list.do',
 			params: {
 				conditions: "[{information_a_type:0},{pub_col_id:'56'}]",   // 数目下载栏目id=56
 				orderBy: 'pub_a_order asc pub_lastmodified desc',
@@ -39,7 +36,7 @@ const prod = {
 	}
 };
 
-export {name, dev, prod, description};
+export {name, title, dev, prod, description};
 
 
 

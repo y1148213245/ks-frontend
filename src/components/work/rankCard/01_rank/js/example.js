@@ -3,7 +3,17 @@
  * @Date: 2018-01-05 15:51:44 
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-01-05 16:12:44
+ * 排序组件
  */
+import component from "../rank.vue";
+
+
+const name = component.name;  // 组件标签名
+
+const title = "排序组件";  // 组件title
+
+const description = `排序，综合排序、按人气、按最新排序`;  // 组件描述信息
+
 
 const dev = {
   rankCard: {
@@ -34,3 +44,5 @@ const prod = {
 
   }
 };
+
+export {name, title, dev, prod, description};

@@ -1,33 +1,18 @@
 <template>
-  <div class="star_pic_info_13" style="float: right;height: 100%;width: 200px;">
-    <ul class="">
-      <li class="" v-for="(getEb,index) in getQueryEbook" style="margin-top: 10px">
-        <img class="" onload="DrawImage(this,75,97)" :src="getEb.pub_picBig"
-             @click="toBookDetail(getEb.id)" alt="暂无图片" style="line-height:90px;text-align:center;cursor: pointer;">
-        <div style="float: right;width: 120px;height: 100%;">
-          <a target="_blank" href="javascript:void(0)" @click="toBookDetail(getEb.id)"
-                 v-text="getEb.pub_resource_name" class=""></a>
-          <div v-text="getEb.BOOK_SYS_AUTHORS" class="" style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin-top: 5px"></div>
-          <div class="">
-            <el-rate v-model="getEb.pub_star_num" :show-text="false" :max="5" disabled
-                     disabled-void-color="#c1c1c0"></el-rate>
+  <div class="star_pic_info_13">
+    <ul class="list">
+      <li class="item" v-for="(getEb,index) in getQueryEbook">
+        <img class="img" onload="DrawImage(this,75,97)" :src="getEb.pub_picBig" @click="toBookDetail(getEb.id)" alt="暂无图片">
+        <div class="text">
+          <a target="_blank" href="javascript:void(0)" @click="toBookDetail(getEb.id)" v-text="getEb.pub_resource_name"></a>
+          <div v-text="getEb.BOOK_SYS_AUTHORS" class="author"></div>
+          <div class="num">
+            <el-rate v-model="getEb.pub_star_num" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
           </div>
-          <div><font color="#dd2a48">￥{{getEb.BOOK_EB_PRICE | filterFun}}</font></div>
+          <div><font class="price">￥{{getEb.BOOK_EB_PRICE | filterFun}}</font></div>
         </div>
       </li>
     </ul>
-    <!--<div class="" style="float: right;width: 150px;height: 100%;">-->
-      <!--<dl v-for="(getEb,index) in getQueryEbook" v-if="index < 4">-->
-        <!--<dt><a target="_blank" href="javascript:void(0)" @click="toBookDetail(getEb.id)"-->
-               <!--v-text="getEb.pub_resource_name" class=""></a></dt>-->
-        <!--<dd v-text="getEb.BOOK_SYS_AUTHORS" class=""></dd>-->
-        <!--<dd class="">-->
-          <!--<el-rate v-model="getEb.pub_star_num" :show-text="false" :max="5" disabled-->
-                   <!--disabled-void-color="#c1c1c0"></el-rate>-->
-        <!--</dd>-->
-        <!--<dd><font color="#dd2a48">￥{{getEb.BOOK_EB_PRICE | filterFun}}</font></dd>-->
-      <!--</dl>-->
-    <!--</div>-->
   </div>
 </template>
 

@@ -3,8 +3,17 @@
  * @Date: 2018-01-08 16:21:31 
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-01-08 17:13:45
+ * 作者列表
  */
+ 
+import component from "../picList.vue";
 
+
+const name = component.name;
+
+const title = "作者列表组件";
+
+const description = `作者列表`;
 
 const dev = {
 	list_pic: {
@@ -32,3 +41,5 @@ const prod = {
 		pageSizes:[10,20,50,100],
 	}}
 }
+
+export {name, title, dev, prod, description};

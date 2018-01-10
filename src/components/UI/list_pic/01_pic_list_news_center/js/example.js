@@ -1,6 +1,16 @@
 /**
  * Created by ma.jw on 2017/12/22.
+ * 新闻中心 资讯列表
  */
+
+import component from "../picListNewsCnter.vue";
+
+const name = component.name;  // 组件标签名
+
+const title = "资讯列表组件";  // 组件title
+
+const description = `资讯列表`;  // 组件描述信息
+
 const dev = {
 	list_pic: {
 		ui_list_pic_01: {
@@ -22,3 +32,5 @@ const prod = {
 		}
 	}
 };
+
+export {name, title, description, dev, prod};

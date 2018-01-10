@@ -3,7 +3,17 @@
  * @Date: 2018-01-02 13:56:35 
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-01-03 08:56:56
+ * 作者展示
  */
+
+import component from "../picListAuthor.vue";
+
+
+const name = component.name;
+
+const title = "作者展示组件";
+
+const description = `作者展示`;
 
 const  dev = {
 	list_pic_11:{
@@ -28,3 +38,5 @@ const prod = {
 		colId:116
 	}
 }
+
+export {name, title, dev, prod, description};

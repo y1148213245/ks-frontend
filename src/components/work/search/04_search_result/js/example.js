@@ -3,7 +3,18 @@
  * @Date: 2018-01-04 16:44:27 
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-01-05 13:34:55
+ * 搜索结果列表
  */
+ 
+import component from "../searchResult.vue";
+
+
+const name = component.name;  // 组件标签名
+
+const title = "搜索结果列表组件";  // 组件title
+
+const description = `搜索结果列表`;  // 组件描述信息
+
 const dev = {
   search: {
     search_result_04: {
@@ -28,3 +39,5 @@ const prod = {
     }
   }
 };
+
+export {name, title, dev, prod, description};

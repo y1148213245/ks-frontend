@@ -50,6 +50,15 @@
       </dd>
     </dl>
   </div>
+  <!--图书其他内容-->
+  <div class="book_detail_qt  mt15 pl15 cl">
+    <div class="book_detail_01 f16 color_626 mb20 line-h35 pt10 pb10 ml20">
+      <p><span>出版时间：{{bookInfo.pubTime | formatDate}}</span><span>ISBN：{{bookInfo.isbn}}</span><span>版次：{{bookInfo.bookVersion}}</span><span>页数：{{bookInfo.pageNums}}</span>
+      </p>
+      <p><span>字数：{{bookInfo.bookWords}}</span></p>
+    </div>
+  </div>
+    <!--图书其他内容-->
   </div>
 </template>
 

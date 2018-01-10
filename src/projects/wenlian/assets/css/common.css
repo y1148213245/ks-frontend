@@ -11,6 +11,12 @@
 .index_jpts_t  dd span.shoucang {
   background:url(../img/bg_001.png) no-repeat;
 }
+.header_top3 .wrap{
+  position: relative;
+}
+.header_top3 .con-all{
+  display:none;
+}
 .header .header_top1 .login_img { background-position: -1px 1px;}
 .header .header_top1 .download_app{ background-position: -6px -14px;}
 .header .header_top3 .all_class {width:222px; border-right:1px solid #908f8f;position:relative; cursor:pointer;}
@@ -46,7 +52,8 @@
 .all_class_detail dd{ line-height:22px;}
 .all_class_detail dd span { padding:0px 8px;}
 /* .all_class_detail dl.jishu {background:#f5f5f5; padding:12px 17px;} */
-.all_class_detail dl.jishu {background:#f5f5f5; padding:5.5px 17px;}
+/*.all_class_detail dl.jishu {background:#f5f5f5; padding:5.5px 17px;}*/
+.all_class_detail dl:nth-child(even) {background:#f5f5f5; padding:5.5px 17px;}
 .all_class_detail .one_title{ color:#545454;}
 .all_class_detail .two_title a{ color:#9a9a9a;}
 

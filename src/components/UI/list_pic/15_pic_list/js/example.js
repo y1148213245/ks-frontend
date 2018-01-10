@@ -3,8 +3,16 @@
  * @Date: 2018-01-08 16:21:31 
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-01-08 18:05:37
+ * 编辑列表
  */
 
+import component from "../picList.vue";
+
+const name = component.name;
+
+const title = "编辑列表组件";
+
+const description = `编辑列表`;
 
 const dev = {
 	list_pic: {
@@ -31,3 +39,5 @@ const prod = {
 		contributeBaseUrl:'',
 	}}
 }
+
+export {name, title, dev, prod, description};

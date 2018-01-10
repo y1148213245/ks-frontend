@@ -1,6 +1,17 @@
 /**
  * Created by ma.jw on 2017/12/15.
+ * 热销排行
  */
+
+import component from "../picListBook.vue";
+
+
+const name = component.name;
+
+const title = "热销排行组件";
+
+const description = `热销排行`;
+
 const dev = {
 	picListBook:{
 		url:"/data/ui_list_pic_06.json",
@@ -22,3 +33,5 @@ const prod = {
 		href:"./bookDetail.html?pubId="
 	}
 };
+
+export {name, title, dev, prod, description};

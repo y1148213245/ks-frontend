@@ -1,6 +1,16 @@
 /**
  * Created by codingnuts on 2017/12/12.
  */
+
+import component from "../headerNavigation.vue";
+
+
+const name = component.name;  // 组件标签名
+
+const title = "导航组件";  // 组件title
+
+const description = `导航`;  // 组件描述信息
+
 const dev = {
   navigation:{
     headerNavigation_01:{
@@ -88,3 +98,5 @@ const prod = {
     }
   }
 };
+
+export {name, title, dev, prod, description};

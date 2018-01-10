@@ -5,6 +5,14 @@
  * @Last Modified time: 2017-12-26 13:19:30
  */
 
+/* import component from "../login.vue";
+
+const name = component.name;  // 组件标签名
+
+const title = "登录组件";  // 组件title
+
+const description = `登录组件`;  // 组件描述信息 */
+
 const dev = {
 	name:'login',
 	login: {
@@ -22,3 +30,5 @@ const prod = {
 		}
 	}
 };
+
+/* export {name, title, dev, prod, description}; */

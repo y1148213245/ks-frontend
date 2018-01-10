@@ -1,6 +1,16 @@
 /**
  * Created by codingnuts on 2017/12/12.
  */
+
+import component from "../Pic_Swiper.vue";
+
+
+const name = component.name;  // 组件标签名
+
+const title = "轮播图组件";  // 组件title
+
+const description = `轮播图`;  // 组件描述信息
+
 const dev = {
 	swiper: {
 		pic_01: {
@@ -27,3 +37,5 @@ const prod = {
 		}
 	}
 };
+
+export {name, title, dev, prod, description};

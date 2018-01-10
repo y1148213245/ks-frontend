@@ -1,37 +1,29 @@
 <template>
-  <div class="swiper-container pic_info_list_12" style="float: left;width: 460px;height: 100%">
+  <div class="swiper-container pic_info_list_12">
     <div class="swiper-wrapper">
       <div class="swiper-slide" :style="{background: '#f4f7f9'}" v-for="(bookDetailInfo,ind) in bookDetailInfoList"> <!--这个背景颜色是解决图片，文字重叠的效果的-->
-        <dl class="l_big fl" style="width: 100%">
+        <dl class="l_big fl">
           <dt class="fl">
-            <a target="_blank" href="javascript:void(0)" @click="toBookDetail(bookDetailInfo.pubId)"
-               style="width: 186px;height: 248px;">
-              <img onload="DrawImage(this,186,248)" alt="暂无图片" :src="bookDetailInfo && bookDetailInfo.bigPic"
-                   style="float: left;text-align: center;line-height: 230px;">
+            <a class="swiper-a" target="_blank" href="javascript:void(0)" @click="toBookDetail(bookDetailInfo.pubId)">
+              <img class="swiper-img" onload="DrawImage(this,186,248)" alt="暂无图片" :src="bookDetailInfo && bookDetailInfo.bigPic">
             </a>
           </dt>
           <dd class="fl pl20">
-            <p class="title f16"><a href="javascript:void(0)" @click="toBookDetail(bookDetailInfo.pubId)"
-                                    v-text="bookDetailInfo && bookDetailInfo.resourceName"></a></p>
-            <!--<p class="xing starStyle">-->
-              <!--<el-rate v-model="bookDetailInfo.starNum" :show-text="false" :max="5" disabled-->
-                       <!--disabled-void-color="#c1c1c0" v-if="bookDetailInfo && bookDetailInfo.starNum"></el-rate>-->
-            <!--</p>-->
-            <p class="author f14 book_chuban_text">作者：<span v-text="bookDetailInfo && bookDetailInfo.author | not-available"></span></p>
-            <p class="banquan book_chuban_text"> 出版社：{{bookDetailInfo && bookDetailInfo.bookCopyright | not-available}}</p>
+            <p class="title f16"><a href="javascript:void(0)" @click="toBookDetail(bookDetailInfo.pubId)" v-text="bookDetailInfo && bookDetailInfo.resourceName"></a></p>
+            <p class="author f14 book_chuban_text">作者：<span v-text="bookDetailInfo && bookDetailInfo.author | notAvailable"></span></p>
+            <p class="banquan book_chuban_text"> 出版社：{{bookDetailInfo && bookDetailInfo.bookCopyright | notAvailable}}</p>
             <p class="chuban"> 出版时间：{{bookDetailInfo && bookDetailInfo.pubTime | formatDate}}</p>
             <p class="price f16">￥{{bookDetailInfo && bookDetailInfo.memberPrice | filterFun}}<span>￥{{bookDetailInfo && bookDetailInfo.ebPrice | filterFun}}</span>
             </p>
-            <p class="reader"><a target="_blank" href="javascript:void(0)"
-                                 @click="shidu(bookDetailInfo && bookDetailInfo.resourceId,0,bookDetailInfo && bookDetailInfo.resourceName)">免费试读</a>
+            <p class="reader">
+              <a target="_blank" href="javascript:void(0)" @click="shidu(bookDetailInfo && bookDetailInfo.resourceId,0,bookDetailInfo && bookDetailInfo.resourceName)">免费试读</a>
             </p>
           </dd>
         </dl>
         <div>
         <div class="jianjie" v-html="jianjie(bookIntroductions[ind])"></div>
         </div>
-
-        <a href="./bookList.html?colId=130" class="more" style="position: absolute;right: 10px;bottom: 10px;color: #c50000;font-size: 10px;">查看全部></a>
+        <a href="javascript:;" @click="viewAll()" class="more">查看全部></a>
       </div>
     </div>
   </div>
@@ -39,7 +31,7 @@
 <script>
   import {Get, Post} from "@common";
   import PROJECT_CONFIG from "projectConfig";
-  // import Swiper from 'swiper';
+  import Swiper from 'swiper';
 
   export default {
     name: "pic_info_list_12",
@@ -57,6 +49,10 @@
       this.$bus.$on("setIntroductions", this.getIntroductions); //图书详情页简介
     },
     methods: {
+      viewAll:function(){
+        let url="./bookList.html?colId=130";
+        window.location.href = url;
+      },
       getBookInfo: function (param) {
         let bookInfo = [];
         let bookParam = Object.assign({}, this.CONFIG.params);
@@ -114,15 +110,16 @@
         })
       },
       initSwiper: function () {
-        // new Swiper(".swiper-container", {
-        //   autoplay: true,
-        //   loop: true,
-        //   delay: 10,
-        // })
-        var mydom = $('.swiper-slide');
-        mydom.soChange({
-          thumbObj: '#change_4 .ul_change_a1 li'
+        new Swiper(".swiper-container", {
+          autoplay: true,
+          loop: true,
+          delay: 10,
+          effect : 'fade'
         })
+        // var mydom = $('.swiper-slide');
+        // mydom.soChange({
+        //   thumbObj: '#change_4 .ul_change_a1 li'
+        // })
       },
       toBookDetail:function(pubId){
         //详情页

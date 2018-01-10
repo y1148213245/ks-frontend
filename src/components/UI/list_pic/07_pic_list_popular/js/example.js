@@ -1,6 +1,17 @@
 /**
  * Created by ma.jw on 2017/12/27.
+ * 热门书籍
  */
+
+ 
+import component from "../popularBook.vue";
+
+
+const name = component.name;
+
+const title = "热门书籍组件";
+
+const description = `热门书籍`;
 
 const dev ={
 	popularBook:{
@@ -25,4 +36,6 @@ const prod = {
 		href:"../bookDetail/bookDetail.html?pubId="
 	}
 }
+
+export {name, title, dev, prod, description};
 

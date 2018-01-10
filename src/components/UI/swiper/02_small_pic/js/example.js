@@ -1,6 +1,16 @@
 /**
  * Created by codingnuts on 2017/12/12.
  */
+
+import component from "../SmallPic_Swiper.vue";
+
+
+const name = component.name;  // 组件标签名
+
+const title = "图书轮播组件";  // 组件title
+
+const description = `图书轮播，手动轮播`;  // 组件描述信息
+
 const dev = {
 	swiper: {
     smallPic_02: {
@@ -27,3 +37,5 @@ const prod = {
 		}
 	}
 };
+
+export {name, title, dev, prod, description};

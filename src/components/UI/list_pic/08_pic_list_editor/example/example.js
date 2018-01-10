@@ -1,6 +1,15 @@
 /**
  * Created by ma.jw on 2017/12/15.
  */
+import component from "../picListEditor.vue";
+
+
+const name = component.name;
+
+const title = "编辑组件";
+
+const description = `编辑`;
+
 const dev = {
   picListEditor:{
     url:"/data/ui_list_pic_08.json",
@@ -24,3 +33,5 @@ const prod = {
     locationHref:"authorDetail.html?pubId="
   }
 };
+
+export {name, title, dev, prod, description};

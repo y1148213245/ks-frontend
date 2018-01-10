@@ -53,28 +53,20 @@
     </div>
 
     <div class="header_top3 cl">
-      <div class="wrap" style="position: relative;">
+      <div class="wrap">
         <div class="all_class f16 color_fff fl open off"><span class="all_class_bg pl30">全部分类</span></div>
         <div class="all_class_detail">
           <div class="con">
-            <dl v-for="(entry, index) in navCategory" :class="{jishu:index%2==0}">
-              <dt>
-                <a :href="'../book/bookList.html?cascadeId='+entry.id" class="one_title f14" v-text="entry.text"></a>
-              </dt>
+            <dl v-for="(entry,index) in (navCategory || 0)" v-show="index<col_loading_num">
+              <dt><a href="javascript:;"  @click="getUrl(entry.id)" class="one_title f14" v-text="entry.text"></a></dt>
               <dd class="two_title">
                 <template v-for="(sub_entry,index) in entry.children">
-                  <template v-if="index+1!=entry.children.length">
-                    <!--:href="../book/bookList.html?cascadeId="entry.id+"~"+sub_entry.cascadeId-->
-                    <a  v-text="sub_entry.text"></a><span>|</span>
-                  </template>
-                  <!--<template v-else="index+1!=entry.children.length">-->
-                    <!--<a :href="getUrl(sub_entry.cascadeId)" v-text="sub_entry.text"></a>-->
-                  <!--</template>-->
+                    <a href="javascript:;" @click="getUrl(sub_entry.cascadeId)" v-text="sub_entry.text"></a><span>|</span>
                 </template>
               </dd>
             </dl>
           </div>
-          <div class="con-all" style="display: none;"></div>
+          <a v-if="col_loading_num!=999" class="expend fr color_727 f14" @click="bindShowAll()" href="javascript:;"><span>显示全部</span><i class="i-incline-down ml05"></i></a>
         </div>
         <div class="nav fr">
 				<a href="javascript:void(0)" v-for="(sub,index) in navColArray" v-text="sub.title" :key="index" @click="toSub(sub)" :class="{'on': showColId == sub.id}"></a>
@@ -97,9 +89,6 @@ export default {
   // props: ['namespace', { colLoadingNum: { default: 5 } }, { colId: { default: '' } }],
   props: {
     namespace: String,
-    colLoadingNum: {
-      default: 5
-    },
     colId: {
       default: String
     }
@@ -119,6 +108,7 @@ export default {
       navColArray: [],  // 栏目导航
       hotWordList: [],  // 热门搜索关键词
       showColId: "",
+      col_loading_num:5
     }
   },
   computed: {
@@ -154,12 +144,15 @@ export default {
     this.queryHotWord();      // 查询热门搜索关键词
     this.queryNavCols();      // 查询栏目导航
     this.queryNavCategory();  // 左侧图书分类导航
-
   },
   methods: {
     ...mapActions("login_02", {  // 取用户信息
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
+    bindShowAll:function(){
+      //更多分类
+      this.col_loading_num = this.col_loading_num === 5 ? this.navCategory.length+1 : 5;
+    },
     queryHotWord: function () {
       var maxNum = this.CONFIG.queryHotWord.num; // 控制最多显示数量
       Post(this.CONFIG.queryHotWord.url, this.CONFIG.queryHotWord.params).then((rep) => {
@@ -225,6 +218,10 @@ export default {
     goToSearchResultByHW (name) {
       window.location.href = 'search.html?searchText=' + name + "#"
     },
+    getUrl:function(id){
+      window.location.href='../book/bookList.html?cascadeId='+id;
+
+    }
   },
   watch: {
     cartTotalAmount: function (newValue, oldValue) {

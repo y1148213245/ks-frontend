@@ -1,6 +1,17 @@
 /**
  * Created by ma.jw on 2017/12/15.
+ * 电子书 推荐栏目
  */
+
+import component from "../picListPage.vue";
+
+
+const name = component.name;
+
+const title = "图书列表组件";
+
+const description = `图书列表`;
+
 const dev = {
 	list_pic: {
 		ui_list_pic_05: {
@@ -22,3 +33,5 @@ const prod = {
 		}
 	}
 };
+
+export {name, title, dev, prod, description};

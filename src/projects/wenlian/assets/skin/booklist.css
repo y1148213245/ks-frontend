@@ -35,7 +35,6 @@
 .header .two_title span:last-child{
   visibility: hidden;
 }
-
 .jianjie{
   width: 455px;
   font-size: 10px;
@@ -43,3 +42,48 @@
   padding-top: 24px;
   overflow: hidden;
 }
+/********************* end 左侧导航 *******************/
+/*********************star 推荐************************/
+.pic_info_list_12{
+  float: left;
+  width: 460px;
+  height: 100%
+}
+.pic_info_list_12 .l_big{
+  width: 100%
+}
+.pic_info_list_12 .swiper-a{
+  width: 186px;
+  height: 248px;
+}
+.pic_info_list_12 .swiper-img{
+  float: left;
+  text-align: center;
+  line-height: 230px;
+}
+.pic_info_list_12 .swiper-wrapper .more{
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  color: #c50000;
+  font-size: 10px;
+}
+.star_pic_info_13{
+  float: right;height: 100%;width: 200px;
+}
+.star_pic_info_13 .item{
+  margin-top: 10px
+}
+.star_pic_info_13 .img{
+  line-height:90px;text-align:center;cursor: pointer;
+}
+.star_pic_info_13 .text{
+  float: right;width: 120px;height: 100%;
+}
+.star_pic_info_13 .author{
+  width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin-top: 5px
+}
+.star_pic_info_13 .price{
+  color:#dd2a48
+}
+/*********************end 推荐*********************/

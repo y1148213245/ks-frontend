@@ -1,6 +1,18 @@
 /**
  * Created by ma.jw on 2017/12/29.
+ * 精品图书  不带评星的精品图书
  */
+
+ 
+import component from "../picListRefinedBook.vue";
+
+
+const name = component.name;
+
+const title = "精品图书组件";
+
+const description = `精品图书列表`;
+
 const  dev = {
 	picListRefinedBook:{
 		url: "/data/ui_list_pic_10.json",
@@ -26,3 +38,5 @@ const prod = {
 		colId:59
 	}
 }
+
+export {name, title, dev, prod, description};
