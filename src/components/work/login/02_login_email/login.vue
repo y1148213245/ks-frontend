@@ -55,7 +55,7 @@
 				/* 登陆 */
 				this.$refs.member.validate(valid => {
 					if (valid) {
-						this.login(this.member).then((rep) => {
+						this.login({member:this.member}).then((rep) => {
 							//如果data == ""的时候，为登录失败
 							if (!rep.data) {
 								this.loginValid();

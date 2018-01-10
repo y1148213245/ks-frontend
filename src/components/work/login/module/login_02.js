@@ -2,11 +2,11 @@
  * @Author: yan.chaoming
  * @Date: 2017-12-26 09:23:33
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-03 17:09:25
+ * @Last Modified time: 2018-01-09 17:21:27
  */
 
 import * as interfaces from "../common/interfaces.js";
-import {Get, Post} from "@common";
+import {Get, Post,_axios} from "@common";
 
 let timer = null;
 
@@ -32,10 +32,17 @@ let mutations = {
 };
 
 let actions = {
-	[interfaces.ACTION_LOGIN]({commit}, member) {
-		return Post(BASE_URL + "login.do", member).then(function (rep) {
-			if (rep.data && (rep.data.checkStatus == "1" || rep.data.checkStatus == 1)) {
-				commit("updateMember", rep.data);
+	[interfaces.ACTION_LOGIN]({commit}, params) {
+		return Post(BASE_URL + "login.do", params.member).then(function (rep) {
+			let datas = rep.data
+			if (datas.data && (datas.data.checkStatus == "1" || datas.data.checkStatus == 1)) {
+				commit("updateMember", datas.data);
+				console.log(datas.token);
+				if (params.isAutomaticLogin) {
+					window.localStorage.setItem('token',datas.token);
+				}else{
+					sessionStorage.setItem('token',datas.token)
+				}
 			}
 			return rep;
 		});
@@ -70,9 +77,10 @@ let actions = {
 };
 
 var keepSession = function (commit) {
-	return Get(BASE_URL + 'keepSession.do')
+	return Get(BASE_URL + 'checkToken.do')
 		.then(function (rep) {
-			var _member = rep.data['member'] || {};
+			let datas = rep.data;
+			let _member = datas.data || {};
 			commit("updateMember", _member);
 			return _member
 		});

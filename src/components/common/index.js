@@ -13,8 +13,24 @@ var _axios = axios.create({
 	timeout: 10000,
 	withCredentials: true
 });
+_axios.defaults.headers.token = getToken();
+
 var Get = _axios.get;
 var Post = readProd || (process.env.NODE_ENV === 'production') ? _axios.post : _axios.get;
 
 
-export {Get, Post, DrawImage, ValidateRules, CreateCode, vv, CookieUtils};
+export { Get, Post, DrawImage, ValidateRules, CreateCode, vv, CookieUtils ,_axios};
+
+function getToken () {
+	let session = sessionStorage;
+	let local = localStorage;
+
+	let token = session.getItem('token');
+	if(!token){
+		token = local.getItem('token');
+		if (!token) {
+			token = '';
+		}
+	}
+	return token;
+}

@@ -44,7 +44,7 @@ export default {
       action_login: interfaces.ACTION_LOGIN,
     }),
     login: function () {
-      this.action_login(this.member).then((rep) => {
+      this.action_login({member:this.member}).then((rep) => {
         if (!rep.data) {
           this.loginValid();
         } else if (rep.data.checkStatus == 0 || rep.data.checkStatus == "0") {
