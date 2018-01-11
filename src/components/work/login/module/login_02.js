@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2017-12-26 09:23:33
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-09 17:21:27
+ * @Last Modified time: 2018-01-10 18:41:04
  */
 
 import * as interfaces from "../common/interfaces.js";
@@ -37,7 +37,6 @@ let actions = {
 			let datas = rep.data
 			if (datas.data && (datas.data.checkStatus == "1" || datas.data.checkStatus == 1)) {
 				commit("updateMember", datas.data);
-				console.log(datas.token);
 				if (params.isAutomaticLogin) {
 					window.localStorage.setItem('token',datas.token);
 				}else{
@@ -77,7 +76,7 @@ let actions = {
 };
 
 var keepSession = function (commit) {
-	return Get(BASE_URL + 'checkToken.do')
+	return Get(BASE_URL + 'keepSession.do')
 		.then(function (rep) {
 			let datas = rep.data;
 			let _member = datas.data || {};

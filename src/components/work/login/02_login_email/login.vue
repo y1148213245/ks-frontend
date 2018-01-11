@@ -57,22 +57,22 @@
 					if (valid) {
 						this.login({member:this.member}).then((rep) => {
 							//如果data == ""的时候，为登录失败
-							if (!rep.data) {
-								this.loginValid();
-							} else if (rep.data.checkStatus == 0 || rep.data.checkStatus == "0") {
-								this.$message({
-									type: "error",
-									message: "账号已被冻结，请联系管理员"
-								});
-							} else {
-								let query = URL.parse(document.URL, true).query;
-								let url = query["service"];
-								if (url && url.indexOf("login.html") == -1) {
-									window.location.href = url;
-								} else {
-									window.location.href = this.PROJECT.toMainPages;
-								}
-							}
+							// if (!rep.data) {
+							// 	this.loginValid();
+							// } else if (rep.data.checkStatus == 0 || rep.data.checkStatus == "0") {
+							// 	this.$message({
+							// 		type: "error",
+							// 		message: "账号已被冻结，请联系管理员"
+							// 	});
+							// } else {
+							// 	let query = URL.parse(document.URL, true).query;
+							// 	let url = query["service"];
+							// 	if (url && url.indexOf("login.html") == -1) {
+							// 		window.location.href = url;
+							// 	} else {
+							// 		window.location.href = this.PROJECT.toMainPages;
+							// 	}
+							// }
 						});
 					}
 				});
