@@ -1,16 +1,16 @@
 <!--  -->
 <template>
-  <div class="main_login_con fr">
-    <div class="color_c50 f18 line-h35 main_login_con_title">登录</div>
-    <input type="text" class="login_k mt25 color_939" v-model="member.loginName" placeholder="请输入用户名"/>
-    <input type="password" class="password_k mt25 color_939" v-model="member.password" placeholder="请输入密码"/>
-    <div class="mt15">
-      <input type="checkbox" value="" class="login_zddl" />自动登录
-      <a href="../login/forgetPassword.html" class="fr color_c50">忘记密码</a>
+  <div class="login_03_content">
+    <div class="login_03_titlebox">登录</div>
+    <input type="text" class="login_03_userinput" v-model="member.loginName" placeholder="请输入用户名"/>
+    <input type="password" class="login_03_password" v-model="member.password" placeholder="请输入密码"/>
+    <div class="login_03_box_01">
+      <input type="checkbox" value="" class="login_03_box_01_checkbox" />自动登录
+      <a href="../login/forgetPassword.html" class="login_03_box_01_forgetpassword">忘记密码</a>
     </div>
-    <div class="mt30"><input type="button" id="login-form-submit" value="登录" class="login_btn" @click="login"/></div>
-    <div class="mt15 f14 color_a6a">还没有账号？
-      <a href="./register.html" class="fr color_c50">立即注册</a>
+    <div class="login_03_box_02"><input type="button" id="login-form-submit" value="登录" class="login_03_box_02_button" @click="login"/></div>
+    <div class="login_03_box_03">还没有账号？
+      <a href="./register.html" class="login_03_box_03_register">立即注册</a>
     </div>
   </div>
 </template>
@@ -44,7 +44,7 @@ export default {
       action_login: interfaces.ACTION_LOGIN,
     }),
     login: function () {
-      this.action_login({member:this.member}).then((rep) => {
+      this.action_login({ member: this.member }).then((rep) => {
         if (!rep.data) {
           this.loginValid();
         } else if (rep.data.checkStatus == 0 || rep.data.checkStatus == "0") {
@@ -80,6 +80,91 @@ export default {
 }
 
 </script>
-<style scoped>
+<style>
+.login_03_content {
+  width: 354px;
+  height: 358px;
+  padding: 15px 30px;
 
+  /* box-shadow: 0 0 10px #e5e5e5;
+  background: #fff; */
+}
+.login_03_titlebox {
+  line-height: 35px;
+  border-bottom-width: 1px;
+
+  /* font-size: 18px; */
+  /* border-bottom-style: solid;
+  border-bottom-color: #cccccc; */
+}
+.login_03_userinput,
+.login_03_password {
+  display: inline-block;
+  margin-top: 25px;
+  width: 310px;
+  height: 40px;
+  border-width: 1px;
+  padding-left: 40px;
+  vertical-align: middle;
+
+  /* border-style: solid;
+  border-color: #e0e0e0;
+  color: #939393;
+  background-color: transparent;
+  outline: none; */
+  /* background: url(../img/bg_10.png) no-repeat; */
+  /* background-position: -574px -93px; */
+}
+.login_03_password {
+}
+input:focus.login_03_userinput,
+input:focus.login_03_password {
+  border-width: 1px;
+
+  /* border-style: solid;
+  border-color: #bf3636;
+  outline-color: #bf3636;
+  color: #bf3636; */
+}
+
+.login_03_box_01 {
+  margin-top: 15px;
+}
+.login_03_box_01_checkbox {
+  margin-bottom: 2px;
+  vertical-align: middle;
+}
+.login_03_box_01_forgetpassword {
+  float: right;
+
+  /* color: #c50000; */
+}
+.login_03_box_02 {
+  margin-top: 30px;
+}
+.login_03_box_02_button {
+  border: 0px;
+  line-height: 42px;
+  height: 42px;
+  width: 350px;
+
+  /* border-radius: 5px;
+  background: #c50000;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer; */
+}
+
+.login_03_box_03 {
+  margin-top: 15px;
+
+  /* color: #a6a6a6;
+  font-size: 14px; */
+}
+.login_03_box_03_register {
+  float: right;
+
+  /* color: #c50000; */
+}
 </style>

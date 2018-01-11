@@ -4,9 +4,9 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>首页</title>
-  <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/login.css">
+  <!-- <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/common.css"> -->
+  <link type="text/css" rel="stylesheet" href="../assets/skin/login.css">
 
   <script type="text/javascript" src="../assets/js/jquery.js"></script>
   <script type="text/javascript" src="../assets/js/sl.js"></script>
@@ -15,7 +15,27 @@
   <script type="text/javascript" src="../assets/config/index.js"></script>
   <script type="text/javascript">
   </script>
+  <style>
+    .main_login {
+      background-image: url("../assets/img/login_bg.jpg");
+      background-position: center top;
+      background-repeat: no-repeat;
+      height: 669px;
+      margin-left: auto;
+      margin-right: auto;
+      visibility: visible;
+      width: 100%;
+    }
 
+    .login_container {
+      width: 1200px;
+      margin: 0 auto;
+    }
+    .login_position{
+      margin-top: 105px;
+      float: right;
+    }
+  </style>
 </head>
 
 <body id="home">
@@ -28,8 +48,8 @@
     <!--头end-->
     <div class="main">
       <div class="main_login">
-        <div style="width:1200px; margin:0 auto;">
-          <work_login_03_login></work_login_03_login>
+        <div class="login_container">
+          <work_login_03_login class="login_position"></work_login_03_login>
         </div>
       </div>
     </div>
