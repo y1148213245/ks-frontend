@@ -3,13 +3,14 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>图书详情</title>
+  <title>商品详情</title>
   <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
   <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
   <link type="text/css" rel="stylesheet" href="../assets/css/login.css">
   <!-- 图书详情 -->
   <link type="text/css" rel="stylesheet" href="../assets/css/book.css">
   <link type="text/css" rel="stylesheet" href="../assets/css/bookStyle.css">
+  <link type="text/css" rel="stylesheet" href="../assets/skin/bookdetail.css">
   <!--  END 图书详情 -->
   <script type="text/javascript" src="../assets/config/index.js"></script>
   <script type="text/javascript" src="../assets/js/web.js"></script>
@@ -34,10 +35,23 @@
           <!-- END 图书详情组件 -->
           
           <!-- 图书相关信息组件  -->
-          <work_bookdetail_02_bookrelatedinfo></work_bookdetail_02_bookrelatedinfo>
-          <!--END 图书相关信息组件 -->
-        
-      </div>
+          <work_bookdetail_02_bookrelatedinfo namespace="bookdetail"></work_bookdetail_02_bookrelatedinfo>
+          <!-- END 图书相关信息组件 -->
+
+          <!-- 图书评论组件 -->
+          <work_bookreview_01 namespace="bookdetail"></work_bookreview_01>
+          <!-- END 图书评论组件 -->
+        <!-- END 左部分-->
+        </div>
+
+        <!--右部分-->
+        <div class="main_right_1 fr">
+            <!-- 浏览历史组件 -->
+            <ui_list_pic_06_book_list namespace="common" number="4" modulename="historyrecord"></ui_list_pic_06_book_list>
+            <!-- END 浏览历史组件 -->
+        </div>
+        <!--END 右部分-->
+
     </div>
 
     <div id="wl_footer" class="footer f14">
@@ -49,6 +63,7 @@
 <!--分享js,需放在最后面-->
 <script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
 <!--分享js,需放在最后面-->
+
 </body>
 
 </html>

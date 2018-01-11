@@ -1,0 +1,28 @@
+.wenlian_common_authod_detail .tubiao{
+  border-left: 2px solid #ca0000;
+  font-size: 14px;
+  margin-right: 10px;
+}
+.wenlian_common_authod_detail .book_imgBox{
+  position: relative;
+  display: block!important;
+  width: 116px!important;
+  height: 200px!important;
+  margin: 0!important;
+  padding: 0!important;
+  line-height: 200px!important;
+}
+.wenlian_common_authod_detail .scoped_title{
+  display: inline-block;
+  max-width: 200px;
+  line-height: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.wenlian_common_authod_detail .zzxq_rwjs_con{
+  position: relative;
+}
+.wenlian_common_authod_detail .zzxq_detail{
+  overflow:visible;
+}

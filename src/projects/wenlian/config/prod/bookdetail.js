@@ -34,6 +34,32 @@ export default {
       buyBookUrl: 'http://book.dangdang.com/', // 购买纸书 跳转至当当网首页
       probationUrl: '/ebook/read.jsp',         //试读地址
     }
+  },
+  bookreview: {
+    bookreview_01: {
+      queryComments: {  // 查询评论
+        url: BASE_URL + 'comment/comments.do',
+        params: {
+          pubId: "",
+          pageIndex: 1,
+          pageSize: 15,
+          siteId: SITE_CONFIG.siteId,
+        }
+      },
+      addComment: {  // 添加评论
+        url: BASE_URL + 'comment/addComment.do',
+        params: {
+          pubId: "",
+          loginName: "",
+          content: "",
+          starNum: 0,
+          deviceName: "pc",  // 设备类型
+          colId: "",
+          siteId: SITE_CONFIG.siteId,
+          type: "1",
+          parentId: "0",
+        }
+      }
+    }
   }
-  
 };

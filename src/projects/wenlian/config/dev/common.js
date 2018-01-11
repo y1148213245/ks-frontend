@@ -22,11 +22,11 @@ export default {
 		popularBook:{
 			url:"/data/ui_list_pic_07.json",
 			number:15,
-			href:"../bookDetail/bookDetail.html?pubId="
+			href:"./bookDetail.html?pubId="
 		},
 		refinedBook:{
 			url:"/data/ui_list_pic_10.json",
-			href:"../bookDetail/bookDetail.html?pubId=",
+			href:"./bookDetail.html?pubId=",
 			pubId:59
 		}
 	}

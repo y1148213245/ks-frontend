@@ -57,7 +57,7 @@
                     <div class="cart-item-title">
                       <div class="item-name">
                         <a
-                          v-bind:href="'../bookDetail/bookDetail.html?pubId=' + product.pubId + '&contentType=' + bookTypeTag + '&columnId=' + product.colId">{{product.productName}}</a>
+                          v-bind:href="'./bookDetail.html?pubId=' + product.pubId + '&contentType=' + bookTypeTag + '&columnId=' + product.colId">{{product.productName}}</a>
                       </div>
                       <div class="author">
                         <span>作者：</span>
@@ -123,7 +123,7 @@
                     <div class="cart-item-title">
                       <div class="item-name">
                         <a
-                          v-bind:href="'../bookDetail/bookDetail.html?pubId=' + product.pubId + '&contentType=' + ebookTypeTag + '&columnId=' + product.colId">{{product.productName}}</a><span> (电子书)</span>
+                          v-bind:href="'./bookDetail.html?pubId=' + product.pubId + '&contentType=' + ebookTypeTag + '&columnId=' + product.colId">{{product.productName}}</a><span> (电子书)</span>
                       </div>
                       <div class="author">
                         <span>作者：</span>

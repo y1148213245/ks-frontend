@@ -51,6 +51,7 @@
 import { mapGetters, mapActions, mapState } from 'vuex';
 import moment from "moment";
 import Vue from 'vue';
+import $ from 'jquery';
 
 export default {
   name: "work_bookdetail_02_bookrelatedinfo",

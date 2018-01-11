@@ -17,7 +17,7 @@ const dev ={
 	popularBook:{
 		url:"/data/ui_list_pic_07.json",
 		number:15,
-		href:"../bookDetail/bookDetail.html?pubId="
+		href:"./bookDetail.html?pubId="
 	}
 }
 
@@ -33,7 +33,7 @@ const prod = {
 			searchText: "",
 		},
 		number:15,
-		href:"../bookDetail/bookDetail.html?pubId="
+		href:"./bookDetail.html?pubId="
 	}
 }
 

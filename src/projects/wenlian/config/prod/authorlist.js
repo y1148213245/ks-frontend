@@ -1,6 +1,6 @@
 /*
- * @Author: yan.chaoming 
- * @Date: 2018-01-08 16:26:20 
+ * @Author: yan.chaoming
+ * @Date: 2018-01-08 16:26:20
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-01-08 17:13:25
  */
@@ -18,7 +18,7 @@ export default {
 				pageSize: '10',
 				searchText: ''
 			},
-			toDetailHref:'./detail.html?pubId=',
+			toDetailHref:'./authordetail.html?pubId=',
 			pageSizes:[10,20,50,100],
 		}
 	}
