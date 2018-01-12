@@ -9,6 +9,21 @@ var SITE_CONFIG = {
   chId: 0
 };
 
+//面包屑
+var CRUMB_TYPE = [{
+  name: 'author',
+  title: '作者详情',
+}, {
+  name: 'editor',
+  title: '编辑详情',
+}];
+
+var GO_CONTRIBUTE={
+  // baseURL:'http://172.19.36.42:8080/wenlian/ssoWenlianLogin.do?'   //去投稿
+  //  baseURL:'http://172.19.36.67:8080/wenlian/ssoWenlianLogin.do?',  //去投稿
+  baseURL: 'http://192.168.6.21:8080/wenlian/ssoWenlianLogin.do?'// 文联现场投稿地址
+};
+
 var $_$ = {
   /*index: {
    swiper: {

@@ -224,7 +224,7 @@
         window.location.href = 'search.html?searchText=' + name + "#"
       },
       getUrl: function (id) {
-        window.location.href = '../book/bookList.html?cascadeId=' + id;
+        window.location.href = './booklist.html?cascadeId=' + id;
 
       }
     },
@@ -240,4 +240,6 @@
 <style>
 
 </style>
+
+
 

@@ -1,10 +1,10 @@
-// 法律声明组件
+// 编辑展示
 <template>
-  <div>法律声明组件</div>
+  <div>编辑展示</div>
 </template>
 <script type="text/ecmascript-6">
   export default{
-    name: 'work_author_service_legal_notices',
+    name: 'work_author_service_editor_shows',
     reused: true,
     props: ['namespace', 'col'],
     data: function () {

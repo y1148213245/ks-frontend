@@ -83,7 +83,8 @@ export default {
       })
     },
     toDetail (id) {
-      window.location.href = this.projectConfig.toDetailHref + id;
+      // window.location.href = this.projectConfig.toDetailHref + id;
+      window.location.href="./authordetail.html?pubId=2980&currentType=editor";
     }
   }
 }

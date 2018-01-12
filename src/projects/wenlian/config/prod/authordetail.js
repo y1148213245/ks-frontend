@@ -15,7 +15,7 @@ export default {
         pageNo:"1",
         pageSize:"4",
         searchText:""
-      }
+      },
     }
   },
   toDetailAddress:{

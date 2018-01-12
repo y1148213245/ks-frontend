@@ -1,8 +1,21 @@
 // 征稿启事组件
 <template>
-
+  <div>征稿启事组件</div>
 </template>
-Assertion failed: pkt->duration && !st->cur_dts, file libavformat/utils.c, line 634
+<script type="text/ecmascript-6">
+  export default{
+    name: 'work_author_service_call_for_papers',
+    reused: true,
+    props: ['namespace', 'col'],
+    data: function () {
+      return {}
+    },
+    created: function () {
 
-This application has requested the Runtime to terminate it in an unusual way.
-Please contact the application's support team for more information.
+    },
+    mounted: function () {
+
+    },
+    methods: {}
+  }
+</script>

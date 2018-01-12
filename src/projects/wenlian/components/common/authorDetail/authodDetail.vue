@@ -27,6 +27,8 @@
 <script>
     import PROJECT_CONFIG from "projectConfig";
     import {Get,Post} from "@common";
+    import { mapGetters } from "vuex";
+    import * as interfaces from "@work/login/common/interfaces.js";
     export default {
         name: "wenlian_common_authod_detail",
         reused:true,
@@ -40,6 +42,11 @@
         created:function(){
           this.$bus.$on(this.namespace,this.getAuthorInfo);
         },
+        computed: {
+          ...mapGetters("login_02", {
+            member: interfaces.GET_MEMBER // 获取用户信息
+          })
+        },
         methods:{
           getAuthorInfo:function(param){
             let CONFIG=PROJECT_CONFIG[this.namespace].components.common;
@@ -49,8 +56,21 @@
               if(data){
                 data.currentType=param.currentType;
                 this.authorInfo=data;
+                this.$bus.$emit("setCrumbs",param.currentType);
               }
             })
+          },
+          goContribute() {
+            if (!this.member.loginName) {
+              this.$message({
+                  message: '请登录,登录完了才能投稿~',
+                  type: 'warning'
+               });
+              window.location.href = "./login.html";
+              return;
+            }
+            var url = GO_CONTRIBUTE.baseURL + "authorName=" + this.member.loginName;
+            window.open(url);
           }
         }
     }

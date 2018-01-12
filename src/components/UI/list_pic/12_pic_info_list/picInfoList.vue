@@ -10,7 +10,7 @@
           </dt>
           <dd class="fl pl20">
             <p class="title f16"><a href="javascript:void(0)" @click="toBookDetail(bookDetailInfo.pubId)" v-text="bookDetailInfo && bookDetailInfo.resourceName"></a></p>
-            <p class="author f14 book_chuban_text">作者：<span v-text="bookDetailInfo && bookDetailInfo.author | notAvailable"></span></p>
+            <p class="author f14 book_chuban_text">作者：<span v-text="bookDetailInfo && bookDetailInfo.author"></span></p>
             <p class="banquan book_chuban_text"> 出版社：{{bookDetailInfo && bookDetailInfo.bookCopyright | notAvailable}}</p>
             <p class="chuban"> 出版时间：{{bookDetailInfo && bookDetailInfo.pubTime | formatDate}}</p>
             <p class="price f16">￥{{bookDetailInfo && bookDetailInfo.memberPrice | filterFun}}<span>￥{{bookDetailInfo && bookDetailInfo.ebPrice | filterFun}}</span>
@@ -132,11 +132,13 @@
         window.open(url);
       },
       jianjie:function(value){
-        var str = value.replace(/<[^>]+>/g,"");//去掉所有的html标记
-        if(str.length-1 < 35) {
-          return str;
-        }else{
-          return str.substring(0,280)+"...";
+        if(value){
+          var str = value.replace(/<[^>]+>/g,"");//去掉所有的html标记
+          if(str.length-1 < 35) {
+            return str;
+          }else{
+            return str.substring(0,280)+"...";
+          }
         }
       }
     }
