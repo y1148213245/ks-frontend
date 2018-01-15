@@ -1,41 +1,43 @@
 <!--  -->
 <template>
 <section>
- <div class="zhuce" v-if="step==1">
-    <div class="zhuce_name">
-      <span class="mingcheng f16 color_c50 ml30">新用户注册</span>
+ <div class="register_02_register" v-if="step==1">
+    <div class="register_02_register_titlebox">
+      <span class="register_02_register_title">新用户注册</span>
     </div>
-    <form id="register-form" name="register-form" class="zhuce_con" action="#" >
-      <div class="zhuce_con_1" style="padding:50px 0 0 60px;">
+    <form id="register-form" name="register-form" class="register_02_register_form" action="#" >
+      <div class="register_02_register_form_box">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-            <el-form-item prop="loginName" class="zhuce_con1_ymh mt30 ml23">
-            <i class="yhm_01 mr10"></i><span class="yhm_02 f14 color_727 mr15">用户名:</span><el-input type="text"  v-model="ruleForm.loginName" placeholder="支持6~16位数字、字母、下划线"  style="width:235px;height:35px;"></el-input>
-            <div v-show="this.cheStatus==0" class="el-form-item__error">很抱歉，用户名已存在</div>
-            <div v-show="this.cheStatus==1" class="el-form-item__error" style="color:green" >恭喜您!可以使用</div>
+            <el-form-item prop="loginName" class="register_02_register_form_box_usernamebox">
+              <i class="register_02_register_form_box_usernamebox_icon"></i><span class="register_02_register_form_box_usernamebox_label">用户名:</span><el-input type="text"  v-model="ruleForm.loginName" placeholder="支持6~16位数字、字母、下划线" class="register_02_register_form_box_usernamebox_input" style="height:20px" ></el-input>
+              <div v-show="this.cheStatus==0" class="el-form-item__error">很抱歉，用户名已存在</div>
+              <div v-show="this.cheStatus==1" class="el-form-item__error" style="color:green" >恭喜您!可以使用</div>
             </el-form-item>
-            <el-form-item prop="pass" class="zhuce_con2_szxmm mt30">
-              <i class="szxmm_01 mr05"></i><span class="szxmm_02 f14 color_727 mr15">设置新密码:</span><el-input type="password" v-model="ruleForm.pass" placeholder="密码支持6-16位字符" style="width:235px;height:35px;"></el-input>
+
+            <el-form-item prop="pass" class="register_02_register_form_box_passwordbox">
+              <i class="register_02_register_form_box_passwordbox_icon"></i><span class="register_02_register_form_box_passwordbox_label">设置新密码:</span><el-input type="password" v-model="ruleForm.pass" placeholder="密码支持6-16位字符" class="register_02_register_form_box_passwordbox_input"></el-input>
             </el-form-item>
-            <el-form-item prop="checkPass" class="zhuce_con3_qrmm mt30" style="margin-bottom:0px;">
-             <i class="qrmm_01 mr18"></i><span class="qrmm_02 f14 color_727 mr15">确认密码:</span><el-input type="password" v-model="ruleForm.checkPass" placeholder="请再次输入密码" style="width:235px;height:35px;"></el-input>
+
+            <el-form-item prop="checkPass" class="register_02_register_form_box_confirm-password-box">
+             <i class="register_02_register_form_box_confirm-password-box_icon"></i><span class="register_02_register_form_box_confirm-password-box_label">确认密码:</span><el-input type="password" v-model="ruleForm.checkPass" placeholder="请再次输入密码" class="register_02_register_form_box_confirm-password-box_input"></el-input>
             </el-form-item>
+
             <el-form-item prop="captcha" >
-              <div class="zhuce_con_yzm mt30 ml23">
-                <i class="yzm_01 mr08"></i>
-                <span class="yzm_02 f14 color_727 mr15">验证码:</span>
-                <el-input type="text" v-model="ruleForm.captcha" placeholder="请输入验证码" id="input"  style="width:117px;"></el-input>
+              <div class="register_02_register_form_box_validate-code-box" >
+                <i class="register_02_register_form_box_validate-code-box_icon"></i>
+                <span class="register_02_register_form_box_validate-code-box_label">验证码:</span>
+                <el-input type="text" v-model="ruleForm.captcha" placeholder="请输入验证码" id="input"  class="register_02_register_form_box_validate-code-box_input"></el-input>
                 <input type="button" id="code" @click="createCode"/>
                 <el-button type="text" @click="refresh">
                   <span class="yzm_04"></span>
-                  <a href="javascript:void(0)"  class="color_c50" style="font-size:12px;">换一张</a>
-                  <i class="yzm_05">刷新</i>
+                  <a href="javascript:void(0)"  class="register_02_register_form_box_validate-code-box_change-picture">换一张</a>
+                  <i class="register_02_register_form_box_validate-code-box_change-icon">刷新</i>
                 </el-button>
               </div>
             </el-form-item>
           </el-form>
-          <div class="col_full nobottommargin">
-            <div class="ml23"><input type="button" class="zhuce_xyb f14 color_fff" value="下一步" @click="toNext"/></div>
-          </div>
+          <div class="register_02_register_next-box"><input type="button" class="register_02_register_next-box_button" value="下一步" @click="toNext"/></div>
+          
       </div>
     </form>
   </div>
@@ -439,6 +441,188 @@ export default {
 }
 
 </script>
+<style>
+.register_02_register {
+  margin: 44px auto 55px auto;
+  width: 748px;
+  padding-bottom: 80px;
+  border-width: 1px;
+  overflow: hidden;
+
+  border-style: solid;
+  border-color: #d9d9d9;
+  background-color: #fff;
+}
+.register_02_register_titlebox {
+  margin: 0 18px 0 18px;
+  height: 70px;
+  line-height: 70px;
+  border-bottom-width: 1px;
+
+  border-bottom-style: solid;
+  border-bottom-color: #bfbfbf;
+}
+.register_02_register_title {
+  display: inline-block;
+  margin-left: 30px;
+  padding: 0px 6px;
+  height: 68px;
+  line-height: 68px;
+  border-bottom-width: 5px;
+
+  border-bottom-style: solid;
+  border-bottom-color: #c50000;
+  color: #c50000;
+  font-size: 16px;
+}
+.register_02_register_form {
+  width: 480px;
+  margin: 0 auto;
+}
+.register_02_register_form_box {
+  padding: 50px 0px 0px 60px;
+}
+.register_02_register_form_box_usernamebox {
+  margin-top: 30px;
+  margin-left: 23px;
+  margin-bottom: 22px;
+}
+.register_02_register_form_box_usernamebox_icon {
+  display: inline-block;
+  margin-right: 10px;
+  height: 18px;
+  width: 15px;
+  vertical-align: middle;
+  text-indent: -9999px;
+
+  font-style: normal;
+  background-position: -5px -142px;
+  /* background: url(../img/bg_10.png) no-repeat; */
+}
+.register_02_register_form_box_usernamebox_label {
+  margin-right: 15px;
+
+  color: #727272;
+  font-size: 14px;
+}
+.register_02_register_form_box_usernamebox_input {
+  width: 235px;
+  height: 35px;
+}
+
+.register_02_register_form_box_passwordbox {
+  margin-bottom: 22px;
+  margin-top: 30px;
+}
+.register_02_register_form_box_passwordbox_icon {
+  display: inline-block;
+  margin-right: 5px;
+  height: 16px;
+  width: 15px;
+  vertical-align: middle;
+  text-indent: -9999px;
+
+  background-position: -8px -324px;
+  /* background: url(../img/bg_10.png) no-repeat; */
+  font-style: normal;
+}
+.register_02_register_form_box_passwordbox_label {
+  margin-right: 15px;
+
+  color: #727272;
+  font-size: 14px;
+}
+.register_02_register_form_box_passwordbox_input {
+  width: 235px;
+  height: 35px;
+}
+
+.register_02_register_form_box_confirm-password-box {
+  margin-bottom: 0px;
+  margin-top: 30px;
+}
+.register_02_register_form_box_confirm-password-box_icon {
+  display: inline-block;
+  margin-right: 18px;
+  height: 18px;
+  width: 17px;
+  vertical-align: middle;
+  text-indent: -9999px;
+
+  background-position: -8px -354px;
+  /* background: url(../img/bg_10.png) no-repeat; */
+  font-style: normal;
+}
+.register_02_register_form_box_confirm-password-box_label {
+  margin-right: 15px;
+
+  color: #727272;
+  font-size: 14px;
+}
+.register_02_register_form_box_confirm-password-box_input {
+  width: 235px;
+  height: 35px;
+}
+.register_02_register_form_box_validate-code-box {
+  margin-left: 16px;
+  margin-top: 30px;
+}
+.register_02_register_form_box_validate-code-box_icon {
+  display: inline-block;
+  margin-right: 8px;
+  height: 18px;
+  width: 17px;
+  vertical-align: middle;
+  text-indent: -9999px;
+
+  /* background: url(../img/bg_10.png) no-repeat; */
+  background-position: -7px -176px;
+  font-style: normal;
+}
+.register_02_register_form_box_validate-code-box_label {
+  margin-right: 15px;
+
+  color: #727272;
+  font-size: 14px;
+}
+.register_02_register_form_box_validate-code-box_input {
+  width: 117px;
+}
+.register_02_register_form_box_validate-code-box_change-picture {
+  font-size: 12px;
+  font-size: 12px;
+  text-decoration: none;
+}
+.register_02_register_form_box_validate-code-box_change-icon {
+  display: inline-block;
+  height: 15px;
+  width: 15px;
+  vertical-align: middle;
+  text-indent: -9999px;
+
+  background-position: -5px -380px;
+  /* background: url(../img/bg_10.png) no-repeat; */
+  font-style: normal;
+}
+.register_02_register_next-box {
+  margin-left: 23px;
+}
+.register_02_register_next-box_button {
+  margin-left: 85px;
+  margin-top: 20px;
+  width: 88px;
+  height: 30px;
+  line-height: 30px;
+  border: 0px;
+
+  cursor: pointer;
+  background-color: #c50000;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+</style>
+
 <style scoped>
 #code {
   width: 90px;
