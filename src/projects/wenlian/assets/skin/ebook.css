@@ -1,3 +1,63 @@
+.header .header_top3{
+  height: 41px;
+  line-height: 41px;
+  background-color: #515151;
+}
+.header_top3 .wrap{
+  position: relative;
+}
+.wrap{
+  width: 1200px;
+  margin: 0 auto;
+}
+.header .header_top3 .all_class{
+  width: 222px;
+  border-right: 1px solid #908f8f;
+  position: relative;
+  cursor: pointer;
+}
+.header .header_top3 .all_class_bg{
+  background-position: -2px -85px;
+  height: 25px;
+  /*background: url(../img/bg_001.png) no-repeat;*/
+}
+.header .header_top3 .open:after{
+  top: 18px;
+  content: ' ';
+  position: absolute;
+  top: 41%;
+  right: 18px;
+  width: 17px;
+  height: 10px;
+  background: url(../img/xia.png) no-repeat;
+}
+.header .header_top3 .off:after{
+  content: '';
+  position: absolute;
+  top: 32%;
+  right: 18px;
+  width: 17px;
+  height: 10px;
+  background: url(../img/shang.png) no-repeat;
+}
+.all_class_detail dl{
+  padding: 5.88px 17px;
+}
+.all_class_detail dl:nth-child(even){
+  background: #f5f5f5;
+  padding: 5.5px 17px;
+}
+.nav{
+  width: 855px;
+  margin: 0 auto;
+}
+.nav a{
+  width: 155px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  display: inline-block;
+}
 /********************** start 头部 ************************/
 .cartIcon{
   position: relative;
@@ -84,9 +144,37 @@
   float: right;width: 120px;height: 100%;
 }
 .star_pic_info_13 .author{
-  width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin-top: 5px
+  width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;
 }
 .star_pic_info_13 .price{
   color:#dd2a48
+}
+.book_jdt{
+  border: 1px solid #e0dfde;
+  width: 695px;
+  padding: 20px 20px 10px 20px;
+  overflow: hidden;
+  background: #f4f7f9;
+  margin-bottom: 34px;
+  height: 425px;
+  margin-left: 223px;
+  margin-top: 30px;
+}
+.book_jdt .id_flash{
+  height: 100%
+}
+.book_jdt .id_flash .top{
+  clear: both;
+  position: relative;height: 100%;overflow: hidden
+}
+.pic_info_list_12{
+  float: left;
+  width: 460px;
+  height: 100%;
+}
+.book_jdt .id_flash a{
+  color: #000;
+  overflow: hidden;
+  text-decoration: none;
 }
 /*********************end 推荐*********************/

@@ -75,7 +75,7 @@
       },
       detailUrl: {
         type: String,
-        default: '../book/bookDetail.html'
+        default: '../book/bookdetail.html'
       }
     },
     created() {

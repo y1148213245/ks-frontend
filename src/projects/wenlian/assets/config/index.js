@@ -23,6 +23,10 @@ var GO_CONTRIBUTE={
   //  baseURL:'http://172.19.36.67:8080/wenlian/ssoWenlianLogin.do?',  //去投稿
   baseURL: 'http://192.168.6.21:8080/wenlian/ssoWenlianLogin.do?'// 文联现场投稿地址
 };
+var READ_CONFIG = {
+  baseURL: 'http://172.19.57.153:80/portal/spc-reader',
+  // baseURL: 'http://12.0.0.2:8944/spc-reader',//协和现场服务器
+};
 
 var $_$ = {
   /*index: {

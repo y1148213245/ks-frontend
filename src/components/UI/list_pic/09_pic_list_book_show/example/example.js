@@ -16,7 +16,7 @@ const dev = {
   picListBookShow:{
     url:"/data/ui_pic_list_09.json",
     href:"./bookList.html?colId=",
-    bookDetail:"./bookDetail.html?pubId=",
+    bookDetail:"./bookdetail.html?pubId=",
     beginPicIndex:2,
     finishPicIndex:8,
     colId:59
@@ -35,7 +35,7 @@ const prod = {
       searchText: ""
     },
     href:"./read.jsp?bookId=",
-    bookDetail:"./bookDetail.html?pubId=",
+    bookDetail:"./bookdetail.html?pubId=",
     beginPicIndex:2,
     finishPicIndex:8,
     colId:59

@@ -4,10 +4,179 @@
  */
 
 
+/********************** start 图书详情组件 ************************/
+
+.work_bookdetail_02_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.work_bookdetail_02_skin .navigation {
+  border-bottom-style: solid;
+  border-bottom-color: #c50000;
+}
+
+.work_bookdetail_02_skin .navigation .curPositionFixed {
+  color: #9b9b9b;
+}
+
+.work_bookdetail_02_skin .navigation .curPositionUnfixed {
+  color: #626262;
+}
+
+.work_bookdetail_02_skin .navigation .indexPage {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.work_bookdetail_02_skin .navigation .ebookPage {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailInfo .bookDetailImg {
+  border-style: solid;
+  border-color: #888888;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .titleCon {
+  font-size: 20px;
+  color: #424242;
+  border-bottom-style: dashed;
+  border-bottom-color: #e5e5e5;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .titleCon .collectOperation {
+  background-image: url(../img/bg_005.png);
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .titleCon .likeOperation {
+  background-image: url(../img/bg_10.png);
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .price {
+  background: #f7f7f7;
+  font-size: 14px;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .price .newPrice {
+  font-size: 30px;
+  color: #ca0000;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .price .oldPrice {
+  text-decoration: line-through;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .promotion .fullcut {
+  background: #fdd000;
+  color: #fff;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .promotion .fullcutInfo {
+  color: #7d7d7d;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .paperPrice {
+  color: #7e7e7e;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .buyBook {
+  background: #fdd000;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .buyBook a {
+  color: #fff;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .otherOpertion {
+  font-size: 14px;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .probation {
+  color: #fff;
+  background: #c50000;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .notProbation {
+  background: #444;
+  cursor: not-allowed;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .opertionIcon {
+  background-image: url(../img/bg_10.png);
+  cursor: pointer;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .promotion .cx_01_on {
+  border-style: solid;
+  border-color: red;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .addCart {
+  border-style: solid;
+  border-color: #e13652;
+  color: #c50000;
+}
+
+.work_bookdetail_02 .otherInfoWrapper .otherInfo {
+  border-style: dashed;
+  border-color: #c0c0c0;
+  color: #626262;
+  font-size: 16px;
+}
+
+
+
+
+
+/********************** end 图书详情组件 ************************/
+
+
 /********************** start 评论组件 ************************/
+
 
 /* .book_detail_pinglun .book_detail_pinglun_name span {
   background: url(../img/bg_008.png) no-repeat;
 } */
 
+
 /********************** end 评论组件 ************************/
+
+
+/********************** start 相关图书组件 ************************/
+
+.ui_list_pic_16_skin {
+  background: #fff;
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.ui_list_pic_16_skin .title {
+  background: #c50000;
+  color: #fff;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.ui_list_pic_16_skin .listWrapper {
+  border-style: solid;
+  border-color: #f8f8f8;
+}
+
+.ui_list_pic_16_skin .listCon {
+  border-bottom-style: dotted;
+  border-bottom-color: #33373e;
+}
+
+.ui_list_pic_16_skin .listCon .listDd {
+  color: #7a7a7a;
+}
+
+
+
+
+
+/********************** end 相关图书组件 ************************/

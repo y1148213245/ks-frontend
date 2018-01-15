@@ -12,7 +12,7 @@ export default {
 	list_pic:{
 		picListBook:{
 			url:"/data/ui_list_pic_06.json",
-			href:"./bookDetail.html?pubId="
+			href:"./bookdetail.html?pubId="
 		},
 		picListEditor:{
 			url:"/data/ui_list_pic_08.json",
@@ -22,11 +22,11 @@ export default {
 		popularBook:{
 			url:"/data/ui_list_pic_07.json",
 			number:15,
-			href:"./bookDetail.html?pubId="
+			href:"./bookdetail.html?pubId="
 		},
 		refinedBook:{
 			url:"/data/ui_list_pic_10.json",
-			href:"./bookDetail.html?pubId=",
+			href:"./bookdetail.html?pubId=",
 			pubId:59
 		}
 	}

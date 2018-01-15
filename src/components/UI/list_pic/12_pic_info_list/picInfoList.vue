@@ -10,6 +10,11 @@
           </dt>
           <dd class="fl pl20">
             <p class="title f16"><a href="javascript:void(0)" @click="toBookDetail(bookDetailInfo.pubId)" v-text="bookDetailInfo && bookDetailInfo.resourceName"></a></p>
+            <p class="xing starStyle">
+              <el-rate v-model="bookDetailInfo.starNum" :show-text="false" :max="5" disabled
+                       disabled-void-color="#c1c1c0" v-if="bookDetailInfo && bookDetailInfo.pub_star_num != 0"></el-rate>
+
+            </p>
             <p class="author f14 book_chuban_text">作者：<span v-text="bookDetailInfo && bookDetailInfo.author"></span></p>
             <p class="banquan book_chuban_text"> 出版社：{{bookDetailInfo && bookDetailInfo.bookCopyright | notAvailable}}</p>
             <p class="chuban"> 出版时间：{{bookDetailInfo && bookDetailInfo.pubTime | formatDate}}</p>
@@ -34,7 +39,7 @@
   import Swiper from 'swiper';
 
   export default {
-    name: "pic_info_list_12",
+    name: "ui_pic_info_list_12",
     reused: true,
     props: ["namespace"],
     data: function () {
@@ -126,9 +131,9 @@
         let url = "./bookdetail.html?pubId="+pubId;
         window.location.href = url;
       },
-      //TODO 试读页
       shidu:function(bookId,readType,bookName){
-        var url = type.READ_CONFIG.baseURL+'/ebook/read.jsp?bookId='+bookId+'&readType='+readType+'&bookName='+bookName;
+        console.log(bookId,readType,bookName);
+        var url = READ_CONFIG.baseURL+'/ebook/read.jsp?bookId='+bookId+'&readType='+readType+'&bookName='+bookName;
         window.open(url);
       },
       jianjie:function(value){

@@ -16,7 +16,25 @@
   <script type="text/javascript" src="../assets/js/web.js"></script>
   <script type="text/javascript">
   </script>
+  <style>
+    .bookDetailWrapper {
+      width: 1200px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
 
+    .bookDetailWrapper .wrapperLeft{
+      width: 920px;
+      padding: 0px 20px 15px 20px;
+      overflow: hidden;
+      background: #fff;
+      float: left;
+    }
+
+    .bookDetailWrapper .wrapperRight{
+      float: right;
+    }
+  </style>
 </head>
 
 <body id="home">
@@ -26,9 +44,9 @@
     <components_common_header namespace="header"></components_common_header>
     <!--头end-->
     
-    <div class="main" style="overflow: hidden">
+    <div class="bookDetailWrapper">
         <!--左部分-->
-        <div class="main_left_1 fl">
+        <div class="wrapperLeft">
     
           <!-- 图书详情组件 -->
           <work_bookdetail_02_content namespace="bookdetail"></work_bookdetail_02_content>
@@ -45,10 +63,14 @@
         </div>
 
         <!--右部分-->
-        <div class="main_right_1 fr">
+        <div class="wrapperRight">
             <!-- 浏览历史组件 -->
             <ui_list_pic_06_book_list namespace="common" number="4" modulename="historyrecord"></ui_list_pic_06_book_list>
             <!-- END 浏览历史组件 -->
+
+            <!-- 相关图书组件 -->
+            <ui_list_pic_16 namespace="bookdetail"></ui_list_pic_16>
+            <!-- END 相关图书组件 -->
         </div>
         <!--END 右部分-->
 

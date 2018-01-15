@@ -3,14 +3,6 @@ export default {
   name: "bookdetail",
   list_pic: {
     list_pic_04_pic_list: {
-      relativebook: {
-        url: BASE_URL + "spc/cms/publish/related.do",
-        params: {
-          size:3,
-          pubId:''
-        },
-        picLinkUrl: ""
-      },
       historylist:{
         url: BASE_URL + "browserHistory/getHistoryList.do",
         params: {
@@ -18,6 +10,14 @@ export default {
         },
         picLinkUrl: ""
       }
+    },
+    list_pic_16_relative: {
+      title: '相关图书',
+        url: BASE_URL + "spc/cms/publish/related.do",
+        params: {
+          pubId: '',
+          size: 3,
+        },
     }
   },
   common: {
@@ -61,5 +61,6 @@ export default {
         }
       }
     }
-  }
+  },
+  
 };

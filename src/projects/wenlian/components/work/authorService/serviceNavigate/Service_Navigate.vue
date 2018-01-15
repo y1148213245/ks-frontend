@@ -3,9 +3,9 @@
   <div class="zzfw_center fl ">
     <p class="zzfw_center_name f18"><i></i><span>作者服务</span></p>
     <div class="zzfw_center_class f14">
-      <p class="tgfs_title" v-for="col in cols" v-on:click="colChange(col)" :class="{bg_on: current === col.url}">
-        <a href="javascript:void(0)" :class="{on: current === col.url}">
-          <span class="self mr05" :class="{self_on: current === col.url}"></span>
+      <p class="tgfs_title" v-for="col in cols" v-on:click="colChange(col)" :class="{bg_on: current.id === col.id}">
+        <a href="javascript:void(0)" :class="{on: current.id === col.id}">
+          <span class="self mr05" :class="{self_on: current.id === col.id}"></span>
           {{col.name}}
         </a>
       </p>

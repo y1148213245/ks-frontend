@@ -41,7 +41,7 @@
   export default {
     name: "ui_swiper_03_pic_words",
     reused: true,
-    props: ["namespace"],
+    props: ["namespace","startposition"],
     data () {
     return {
       swiperInitFlag: false,
@@ -76,9 +76,9 @@
             bookUrl: datas[i].pub_picBig || ""
           };
           loadDatas.push(entry)
-        }
-        ;
-        this.picWords = loadDatas;
+        };
+        (this.startposition || this.startposition===0) && loadDatas.length>=(this.startposition+3)?
+                (this.picWords = loadDatas.slice(this.startposition,this.startposition+3)):(this.picWords = loadDatas);
         this.$nextTick(this.initSwiper);
       })
     },

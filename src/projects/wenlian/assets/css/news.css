@@ -88,20 +88,94 @@ ul.zzxq_detail_zp_list  li  img { width:116px; height:200px;}
 
 /*作者列表*/
 .zzlb_list{
- overflow: hidden;
- padding: 20px 0 0 80px;
+  overflow: hidden;
+  padding: 20px 0 0 80px;
 }
 .zzlb_list .zzlb_list_con {
- margin-right: 75px;
+  margin-right: 75px;
 }
 .zzlb_list .zzlb_list_con_pic {
-	width:147px;
-	height: 222px;
+  width:147px;
+  height: 222px;
 }
 .zzlb_list .zzlb_list_con_pic img {
-	width: 100%;
-	height: 222px;
+  width: 100%;
+  height: 222px;
 }
 .zzlb_list_tit {
-	text-align: center;
+  text-align: center;
+}
+/*指定编辑投稿*/
+.bjtg_list {
+  overflow: hidden;
+}
+.bjtg_list_con {
+  border: 1px solid #909090;
+  width: 248px;
+  text-align: center;
+  padding: 20px 0px;
+}
+
+.bjtg_list_con_pic {
+  width: 147px;
+  height: 222px;
+  padding-left: 50px;
+}
+.bjtg_list .bjtg_list_con_pic img {
+  width: 100%;
+  height: 100%;
+}
+.bjtg_list_tg span {
+  border: 1px solid #909090;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  padding: 2px 8px;
+}
+
+/*20171224*/
+.bm_con {
+  text-align: left;
+}
+
+.bm_list {
+  position: relative;
+  margin-right: 20px;
+  width: 135px;
+  text-align: center;
+  display: inline-block;
+}
+
+.bm_name {
+  line-height: 45px;
+  font-size: 16px;
+}
+
+.bm_name a:hover {
+  color: #ca0000;
+  font-weight: bold;
+}
+
+.bm_name_jj {
+  position: absolute;
+  left: 145px;
+  top: 10px;
+  border: 1px solid red;
+  padding: 10px 5px;
+  z-index: 10;
+  width: 210px;
+  background-color: #fff;
+  text-align: left;
+  display: none
+}
+
+.bm_list:nth-child(5n+5) .bm_name_jj {
+  right: 145px;
+  left: inherit;
+}
+
+
+/*20171226*/
+.bg_ca00 {
+  background-color: #ca0000
 }

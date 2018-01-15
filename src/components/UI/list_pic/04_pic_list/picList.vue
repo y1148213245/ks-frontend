@@ -31,7 +31,6 @@ import { mapGetters, mapActions } from "vuex";
 import * as interfaces from "@work/login/common/interfaces.js";
 import { Get, Post, DrawImage, CookieUtils } from "@common";
 import PROJECT_CONFIG from "projectConfig";
-import { Url } from "url";
 
 export default {
   name: "ui_list_pic_04",

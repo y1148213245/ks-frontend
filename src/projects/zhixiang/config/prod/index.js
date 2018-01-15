@@ -41,7 +41,7 @@ export default {
         pageSize: "15",
         searchText: null
       },
-      herf:"./bookDetail.html?pubId="
+      herf:"./bookdetail.html?pubId="
     }
 	},
   indexBestSale: {

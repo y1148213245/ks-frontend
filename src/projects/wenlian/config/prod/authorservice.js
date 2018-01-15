@@ -3,5 +3,18 @@
  */
 
 export default {
-  name: "authorservice"
+  name: 'authorservice',
+  submission: {
+    queryEditorList: {
+      url: BASE_URL + 'spc/cms/publish/list.do',
+      params: {
+        conditions: '[{pub_col_id:226}]',
+        pageNo: '1',
+        pageSize: '15',
+        orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
+        searchText: '',
+        groupBy: 'pub_resource_id'
+      }
+    }
+  }
 }

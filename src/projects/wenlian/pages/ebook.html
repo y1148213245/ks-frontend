@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>电子书城</title>
   <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
+
   <link type="text/css" rel="stylesheet" href="../assets/css/book.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
   <link type="text/css" rel="stylesheet" href="../assets/css/bookStyle.css">
   <link type="text/css" rel="stylesheet" href="../assets/skin/ebook.css">
   <script type="text/javascript" src="../assets/js/jquery.js"></script>
@@ -21,14 +22,14 @@
   <!--头end-->
   <div class="main">
     <div class="main_left fl">
-      <div class="book_jdt fr" style="margin-left: 223px;margin-top: 30px;">
-        <div class="id_flash" style="height: 100%">
-          <div class="top" style="height: 100%;overflow: hidden">
+      <div class="book_jdt fr">
+        <div class="id_flash">
+          <div class="top">
             <!--start 轮播-->
-            <pic_info_list_12 namespace="ebook"></pic_info_list_12>
+            <ui_pic_info_list_12 namespace="ebook"></ui_pic_info_list_12>
             <!--end 轮播-->
             <!--start 图书列表-->
-            <star_pic_info_13 namespace="ebook"></star_pic_info_13>
+            <ui_star_pic_info_13 namespace="ebook"></ui_star_pic_info_13>
             <!--end 图书列表-->
           </div>
         </div>
@@ -39,7 +40,7 @@
           <h3>
             <span class="hot_book_name fl f18 color_7e7">热门书籍</span>
             <span class="more fr pt20 f12">
-                <a href="../book/bookList.html?colId=57" class="color_727">MORE+</a>
+                <a href="../pages/bookList.html?colId=57" class="color_727">MORE+</a>
               </span>
           </h3>
           <ui_list_pic_o7_popular_book namespace="common"></ui_list_pic_o7_popular_book>

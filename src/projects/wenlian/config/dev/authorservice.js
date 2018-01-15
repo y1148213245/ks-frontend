@@ -3,5 +3,11 @@
  */
 
 export default {
-  name: "authorservice"
+  name: 'authorservice',
+  submission: {
+    queryEditorList: {
+      url: '/data/work_author_service_submission.json',
+      params: {}
+    }
+  }
 }

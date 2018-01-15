@@ -1,34 +1,46 @@
 <!-- 图书详情页组件 edit by song 2018/1/2 -->
 <template>
-<div>
-  <div id="eb_position" class="daohang">
-    <span class="color_9b9">您的位置：</span>
-    <a href="../index/index.html" class="color_9b9">首页</a>>>
-    <a href="../book/index.html" class="color_626">电子商城</a>>>
-    <span class="color_626" v-text="bookInfo.resourceName"></span>
+<div class="work_bookdetail_02 work_bookdetail_02_skin">
+  <div class="navigation">
+    <span class="curPositionFixed">
+      <span>您的位置：</span>
+      <a class="indexPage" href="../pages/index.html">首页 </a>>>
+    </span>
+    <span class="curPositionUnfixed">
+      <a class="ebookPage" href="../pages/ebook.html">电子书城 </a>>>
+      <span v-text="bookInfo.resourceName"></span>
+    </span>
+    
   </div>
-  <div id="bookBaseInfo" class="book_detail_con">
+
+  <div class="bookDetailWrapper">
     <!-- 图书基本信息-->
-    <dl class="book_detail_xq">
-      <dt class="fl" style="width: 221px;height: 317px;"><img onload="DrawImage(this,221,317)" :src="bookInfo.bigPic" alt="暂无封面" style="text-align: center;float: left;line-height: 320px;border: 1px solid;"></dt>
-      <dd class="fl pl28">
-        <p class="title f20 scoped_overflow_hidden"><span class="book_detail_title"
-                                                          v-text="bookInfo.resourceName"></span>
-          <span v-if="bookInfo.isLike == '1'" class="dz dianzan_cg fr" @click="collectOrLike('1',bookInfo.contentType,bookInfo.pubId,bookInfo.productId)"></span>
-          <span v-else-if="bookInfo.isLike == '0' || bookInfo.isLike == null" class="dz dianzan fr" @click="collectOrLike('1',bookInfo.contentType,bookInfo.pubId,bookInfo.productId)"></span>
-          <span v-else-if="member.loginName == undefined" class="dz dianzan fr" @click="collectOrLike('1',bookInfo.contentType,bookInfo.pubId,bookInfo.productId)"></span>
-          <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis share fr" target="_blank"></a>
-          <span v-if="bookInfo.isCollect == '1'" class="sc shoucang_cg fr" @click="collectOrLike('0',bookInfo.contentType,bookInfo.pubId,bookInfo.productId)"></span>
-          <span v-else-if="bookInfo.isCollect == '0' || bookInfo.isCollect == null" class="sc shoucang fr" @click="collectOrLike('0',bookInfo.contentType,bookInfo.pubId,bookInfo.productId)"></span>
-          <span v-else-if="member.loginName == undefined" class="sc shoucang fr" @click="collectOrLike('0',bookInfo.contentType,bookInfo.pubId,bookInfo.productId)"></span>
+    <dl class="bookDetailInfo">
+      <dt class="bookDetailDt">
+        <img class="bookDetailImg" onload="DrawImage(this,221,317)" :src="bookInfo.bigPic" alt="暂无封面">
+      </dt>
+      <dd class="bookDetailDd">
+        <p class="titleCon">
+          <span class="title" v-text="bookInfo.resourceName"></span>
+
+          <span class="likeOperation" @click="collectOrLike('1', bookInfo.contentType, bookInfo.pubId, bookInfo.productId)" :class="{likeActive: bookInfo.isLike == '1', likeUnactive: bookInfo.isLike == '0' || bookInfo.isLike == null || member.loginName == undefined}"></span>
+
+          <a href="http://www.jiathis.com/share" class="collectOperation share jiathis jiathis_txt jtico jtico_jiathis fr" target="_blank"></a>
+          
+          <span class="collectOperation" @click="collectOrLike('0', bookInfo.contentType, bookInfo.pubId, bookInfo.productId)" :class="{collectActive: bookInfo.isCollect == '1', collectUnactive: bookInfo.isCollect == '0' || bookInfo.isCollect == null || member.loginName == undefined}"></span>
         </p>
-        <p class="price mt10 f14">电子书价格:<span class="xj">￥{{bookInfo.memberPrice | filterFun}}</span><span class="yj">￥{{bookInfo.ebPrice | filterFun}}</span>
+
+        <p class="price">
+          电子书价格:
+          <span class="newPrice">￥{{bookInfo.memberPrice | filterFun}}</span>
+          <span class="oldPrice">￥{{bookInfo.ebPrice | filterFun}}</span>
         </p>
-        <p class="cuxiao_1 mt15 mb10">
+
+        <p class="promotion" v-if="bookInfo.activityList && bookInfo.activityList.length > 0">
           <span>促销：</span>
-          <span class="cx_01">满额减</span>
-          <span class="pl05 color_7d7 cx_tab">
-            <em :class="{cx_01_on:index==0?true:false}" @click="discount(index)" v-for="(activity,index) in bookInfo.activityList">
+          <span class="fullcut">满额减</span>
+          <span class="fullcutInfo">
+            <em :class="{cx_01_on:index == 0 ? true : false}" @click="discount(index)" v-for="(activity,index) in bookInfo.activityList" :key="index">
               <span v-text="activity.discountName"></span>
             </em>
           </span>
@@ -38,21 +50,20 @@
         <work_01_bookdetail_coupons :oneBookDetailInfo="bookInfo" namespace="bookdetail"></work_01_bookdetail_coupons>
         <!-- 优惠券 END -->
 
-        <p class="paper line-h18 color_7e7 mb30 ">纸书定价：￥{{bookInfo.bookPrice | filterFun}}<span class="gm_01 ml05 mr05"><a :href="buyBookUrl" class="color_fff">购买纸书</a></span></p>
+        <p class="paperPrice">纸书定价：￥{{bookInfo.bookPrice | filterFun}}<span class="buyBook"><a :href="buyBookUrl">购买纸书</a></span></p>
 
-        <p class="other line-h30 mt15 f14">
-          <a target="_blank" v-if="!bookInfo.bookFreeDownLoadPath" href="javascript:void(0)" class="color_fff mfsd mr20" style="background: #444;cursor:default"><i></i><span>免费试读</span></a>
+        <p class="otherOpertion">
 
-          <a target="_blank" v-if="bookInfo.bookFreeDownLoadPath" href="javascript:void(0)" @click="probation(bookInfo.resourceId,0,bookInfo.resourceName)" class="color_fff mfsd mr20" ><i></i><span>免费试读</span></a>
+          <a target="_blank" class="probation" :class="{notProbation: !bookInfo.bookFreeDownLoadPath}" @click="probation(bookInfo.resourceId, 0, bookInfo.resourceName, bookInfo.bookFreeDownLoadPath)"><i class="opertionIcon read"></i><span>免费试读</span></a>
 
-          <a href="#" @click="cart(bookInfo.contentType)" class="color_c50 gwc"><i></i><span>加入购物车</span></a>
+          <a class="addCart" @click="cart(bookInfo.contentType)"><i class="opertionIcon cart"></i><span>加入购物车</span></a>
         </p>
       </dd>
     </dl>
   </div>
   <!--图书其他内容-->
-  <div class="book_detail_qt  mt15 pl15 cl">
-    <div class="book_detail_01 f16 color_626 mb20 line-h35 pt10 pb10 ml20">
+  <div class="otherInfoWrapper">
+    <div class="otherInfo">
       <p><span>出版时间：{{bookInfo.pubTime | formatDate}}</span><span>ISBN：{{bookInfo.isbn}}</span><span>版次：{{bookInfo.bookVersion}}</span><span>页数：{{bookInfo.pageNums}}</span>
       </p>
       <p><span>字数：{{bookInfo.bookWords}}</span></p>
@@ -196,7 +207,10 @@ export default {
       }
       this.$store.dispatch('bookDetail/' + type.COLLECT_OR_LIKE, params);
     },
-    probation (bookId, readType, bookName) {
+    probation (bookId, readType, bookName, probationUrl) {
+      if (!probationUrl) {  // 没有试读地址的情况
+        return false;
+      }
       var url = BASE_URL + probationUrl + '?bookId=' + bookId + '&readType=' + readType + '&bookName=' + bookName;
       window.open(url);
     }
@@ -252,7 +266,191 @@ function addCart (contentType, this_value, loginName) {
 }
 </script>
 <style scoped>
-.scoped_overflow_hidden {
+* {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.work_bookdetail_02 .navigation {
+  height: 42px;
+  line-height: 42px;
+  border-bottom-width: 2px;
+  padding-left: 15px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper {
+  padding: 34px 17px 5px 37px;
   overflow: hidden;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDt {
+  width: 221px;
+  height: 317px;
+  float: left;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailImg {
+  text-align: center;
+  float: left;
+  line-height: 320px;
+  border-width: 1px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd {
+  width: 613px;
+  overflow: hidden;
+  padding-left: 28px;
+  float: left;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .titleCon {
+  overflow: hidden;
+  border-bottom-width: 1px;
+  padding-bottom: 10px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .titleCon .title {
+  display: inline-block;
+  width: 460px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .titleCon .collectOperation {
+  display: inline-block;
+  height: 28px;
+  width: 25px;
+  cursor: pointer;
+  float: right;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .titleCon .collectUnactive {
+  background-position: -7px 3px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .titleCon .collectActive {
+  background-position: -116px 3px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .titleCon .likeOperation {
+  display: inline-block;
+  height: 28px;
+  width: 28px;
+  cursor: pointer;
+  text-indent: -9999px;
+  vertical-align: middle;
+  float: right;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .titleCon .likeUnactive {
+  background-position: 2px 2px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .titleCon .likeActive {
+  background-position: 2px -26px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .titleCon .share {
+  background-position: -7px 90px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .titleCon .share:hover {
+  background-position: -42px -20px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .price {
+  line-height: 70px;
+  height: 70px;
+  margin-top: 10px;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .price .oldPrice {
+  padding-left: 22px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .promotion {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .promotion .fullcut {
+  padding: 1px 10px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .promotion em {
+  padding: 0px 10px;
+  cursor: pointer;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .promotion .cx_01_on {
+  border-width: 1px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .promotion .fullcutInfo {
+  padding-left: 5px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .paperPrice {
+  line-height: 18px;
+  margin-bottom: 30px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .buyBook {
+  padding: 1px 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .otherOpertion {
+  line-height: 30px;
+  margin-top: 15px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .probation {
+  padding: 5px 12px;
+  margin-right: 20px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .opertionIcon {
+  height: 18px;
+  display: inline-block;
+  width: 28px;
+  text-indent: -9999px;
+  vertical-align: middle;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .opertionIcon.read {
+  background-position: 2px -87px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .addCart {
+  border-width: 1px;
+  padding: 5px 12px 4px 12px;
+}
+
+.work_bookdetail_02 .bookDetailWrapper .bookDetailDd .opertionIcon.cart {
+  background-position: 1px -114px;
+}
+
+.work_bookdetail_02 .otherInfoWrapper {
+  padding-left: 15px;
+  clear: both;
+}
+
+.work_bookdetail_02 .otherInfoWrapper .otherInfo {
+  border-width: 1px;
+  border-left: 0px;
+  border-right: 0px;
+  line-height: 35px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.work_bookdetail_02 .otherInfoWrapper .otherInfo span {
+  padding-right: 70px;
 }
 </style>

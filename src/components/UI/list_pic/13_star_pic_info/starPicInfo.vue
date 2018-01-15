@@ -20,7 +20,7 @@
   import { Post} from "@common";
   import PROJECT_CONFIG from "projectConfig";
     export default {
-      name: "star_pic_info_13",
+      name: "ui_star_pic_info_13",
       reused: true,
       props: ["namespace"],
       data:function(){

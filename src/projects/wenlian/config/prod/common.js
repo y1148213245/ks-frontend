@@ -59,7 +59,7 @@ export default {
 				searchText: ""
 			},
 			number:4,
-			href:"./bookDetail.html?pubId="
+			href:"./bookdetail.html?pubId="
 		},
 		refinedBook:{
 			url:"http://172.19.57.153/portal/api/spc/cms/publish/list.do",
@@ -71,7 +71,7 @@ export default {
 				pageSize: "15",
 				searchText: ""
 			},
-			href:"./bookDetail.html?pubId=",
+			href:"./bookdetail.html?pubId=",
 			pubId:59
 		}
 	}

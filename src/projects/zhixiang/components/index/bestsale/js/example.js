@@ -4,7 +4,7 @@
 const dev = {
 	indexBestSale: {
 			url: './data/components_index_bestsale.json',
-      picLinkUrl:"/pages/bookDetail.html?pubId=",
+      picLinkUrl:"/pages/bookdetail.html?pubId=",
 		  columnId:"51"
 	}
 }

@@ -9,8 +9,8 @@
     <div class="zzfw_container">
       <!-- 左边导航-->
       <div class="zzfw_container_left fl" style=" margin:36px 0 0 50px;">
-        <work_author_service_navigate namespace="authorservice" :cols="authorServiceCols" :current="currentCol.url"></work_author_service_navigate>
-        <div v-bind:is="currentCol.url" namespace="authorservice"></div>
+        <work_author_service_navigate namespace="authorservice" :cols="authorServiceCols" :current="currentCol"></work_author_service_navigate>
+        <div v-bind:is="currentCol.url" namespace="authorservice" :col="currentCol"></div>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@
       }),
       authorServiceCols: function () {
         return this.allNavCols.filter(item => {
-          return Number(item.parentId) === Number(this.colId);
+          return Number(item.parentId) === Number(this.colId) && item.name.indexOf('展示') === -1;
         });
       }
     },

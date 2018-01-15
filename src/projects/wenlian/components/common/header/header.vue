@@ -57,7 +57,7 @@
         <div class="all_class f16 color_fff fl open off"><span class="all_class_bg pl30">全部分类</span></div>
         <div class="all_class_detail">
           <div class="con">
-            <dl v-for="(entry,index) in (navCategory || 0)" v-show="index<col_loading_num">
+            <dl v-for="(entry,index) in (navCategory || 0)" v-show="index<col_loading_num" :key="index">
               <dt><a href="javascript:;" @click="getUrl(entry.id)" class="one_title f14" v-text="entry.text"></a></dt>
               <dd class="two_title">
                 <template v-for="(sub_entry,index) in entry.children">
@@ -201,6 +201,7 @@
       },
       doLogin: function () {  // 登陆
         // this.queryMember();
+        window.location.href = "../pages/login.html";
       },
       getUrl (id) {
         return this.colId ? (this.bookListUrl + '?cascadeId=' + id + '&colId=' + this.colId) : (this.bookListUrl + '?cascadeId=' + id);

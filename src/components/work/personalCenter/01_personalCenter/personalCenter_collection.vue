@@ -46,7 +46,7 @@
                 <div>价格：￥ <span v-text="item.productPrice"></span></div>
               </div>
               <div class="readBox">
-                <a target="_blank" v-bind:href="'./bookDetail.html?pubId=' + item.pubId">购买</a>
+                <a target="_blank" v-bind:href="'./bookdetail.html?pubId=' + item.pubId">购买</a>
               </div>
               <div class="deleteCllo" @click="deleteCollProduct(item)">
                 <!-- <img src="~projects/wenlian/assets/img/deleteCllo.png" alt=""> -->

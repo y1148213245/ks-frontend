@@ -8,7 +8,7 @@
           </a>
         </dt>
         <dd>
-          <p class="title f16"><a href="javascript:void(0)" @click="toBookDetail(entry.id)" v-text="entry.bookName" class="text" :title="entry.bookName"></a></p>
+          <p class="title f16"><a href="javascript:void(0)" @click="toBookDetail(entry.pubId)" v-text="entry.bookName" class="text" :title="entry.bookName"></a></p>
           <p class="xing starStyle">
             <el-rate v-model="entry.starNum" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
           </p>
@@ -80,6 +80,7 @@
 				});
 			},
 			toBookDetail(pubId) {
+        debugger
 				window.location.href = this.CONFIG.href + pubId;
 			},
 			formatDate: function(time, fmt) {

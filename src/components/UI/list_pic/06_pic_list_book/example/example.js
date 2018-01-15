@@ -15,7 +15,7 @@ const description = `热销排行`;
 const dev = {
 	picListBook:{
 		url:"/data/ui_list_pic_06.json",
-		href:"./bookDetail.html?pubId="
+		href:"./bookdetail.html?pubId="
 	}
 };
 
@@ -30,7 +30,7 @@ const prod = {
 			pageSize: "4",
 			searchText: ""
 		},
-		href:"./bookDetail.html?pubId="
+		href:"./bookdetail.html?pubId="
 	}
 };
 
