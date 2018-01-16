@@ -23,8 +23,8 @@
     </div>
 
     <div class="header_top2">
-      <div class="wrap">
-        <div class="logoCon" href="/pages/index.html"><img src="/assets/img/logo.jpg" alt=""></div>
+      <div class="twowrap">
+        <div class="logoCon"><a href="/pages/index.html"><img src="/assets/img/logo.jpg" alt=""></a></div>
         <div class="searchCon">
           <div class="myshop">
             <a class="cartIcon" @click="goToCart()">
@@ -45,7 +45,7 @@
           <div class="hotWordCon">
             <span class="hotSearchWord">热门搜索:</span>
             <div v-for="(item, index) in hotWordList" :key="index">
-              <a class="info" @click="goToSearchResultByHW(item.information_SYS_TOPIC || '')" v-text="item.information_SYS_TOPIC" :title="item.information_SYS_TOPIC" href="javascript:;"></a>
+              <a class="info" @click="goToSearchResultByHW(item.information_SYS_TOPIC || '')" v-text="item.information_SYS_TOPIC" :title="item.information_SYS_TOPIC" href="javascript:"></a>
               <span class="search-word_block&#45;&#45;float" style="display: inline-block;" v-if="index < hotWordList.length - 1">|</span>
             </div>
           </div>
@@ -54,20 +54,23 @@
     </div>
 
     <div class="header_top3">
-      <div class="wrap">
-        <div class="allCata"><span class="allCataBg">全部分类</span></div>
-        <div class="all_class_detail" style="display: none;">
+      <div class="threewrap">
+        <div class="allCata all_class f16 color_fff fl open off"><span class="allCataBg">全部分类</span></div>
+        <div class="all_class_detail">
           <div class="con">
             <dl v-for="(entry,index) in (navCategory || 0)" v-show="index<col_loading_num" :key="index">
-              <dt><a href="javascript:;" @click="getUrl(entry.id)" class="one_title f14" v-text="entry.text"></a></dt>
+              <dt><a href="javascript:" @click="getUrl(entry.id)" class="one_title f14" v-text="entry.text"></a></dt>
               <dd class="two_title">
                 <template v-for="(sub_entry,index) in entry.children">
-                  <a href="javascript:;" @click="getUrl(sub_entry.cascadeId)" v-text="sub_entry.text"></a><span>|</span>
+                  <a href="javascript:" @click="getUrl(sub_entry.cascadeId)" v-text="sub_entry.text" :key="index"></a><span>|</span>
                 </template>
               </dd>
             </dl>
           </div>
-          <a v-if="col_loading_num!=999" class="expend fr color_727 f14" @click="bindShowAll()" href="javascript:;"><span>显示全部</span><i class="i-incline-down ml05"></i></a>
+          <a v-if="col_loading_num!=999" class="expend fr color_727 f14" @click="bindShowAll()" href="javascript:">
+            <span :class="{showAll:showAll}">显示全部</span>
+            <span :class="{showAll:!showAll}">收起全部</span>
+            <i class="i-incline-down ml05"></i></a>
         </div>
         <div class="nav">
           <a href="javascript:void(0)" v-for="(sub,index) in navColArray" v-text="sub.title" :key="index" @click="toSub(sub)" :class="{'on': showColId == sub.id}"></a>
@@ -109,7 +112,8 @@ export default {
       navColArray: [],  // 栏目导航
       hotWordList: [],  // 热门搜索关键词
       showColId: "",
-      col_loading_num: 5
+      col_loading_num: 5,
+      showAll: false
     }
   },
   computed: {
@@ -137,7 +141,7 @@ export default {
           }
           this.recordTotalAmount = tempLength;
         }
-      }
+      };
       this.$store.dispatch('shoppingcart/' + type.QUERY_SHOPPING_CART, params);
     });
   },
@@ -158,6 +162,7 @@ export default {
     bindShowAll: function () {
       //更多分类
       this.col_loading_num = this.col_loading_num === 5 ? this.navCategory.length + 1 : 5;
+      this.showAll = !this.showAll;
     },
     queryHotWord: function () {
       var maxNum = this.CONFIG.queryHotWord.num; // 控制最多显示数量
@@ -291,9 +296,19 @@ export default {
   padding-left: 15px;
   background-position: -6px -14px;
 }
+
+.components_header .header_top2 {
+  height: 127px;
+  clear: both;
+}
+
+.components_header .header_top2 .twowrap {
+  width: 1200px;
+  margin: 0 auto;
+}
+
 .components_header .header_top2 .logoCon {
   float: left;
-  margin-left: 150px;
 }
 
 .components_header .header_top2 .searchCon {
@@ -349,7 +364,7 @@ export default {
   width: 494px;
   height: 44px;
   float: right;
-  border-width: 2px solid #ca0000;
+  border-width: 2px;
   margin-top: 38px;
   position: relative;
 }
@@ -404,7 +419,7 @@ export default {
   clear: both;
 }
 
-.components_header .header_top3 .wrap {
+.components_header .header_top3 .threewrap {
   width: 1200px;
   margin: 0 auto;
   position: relative;

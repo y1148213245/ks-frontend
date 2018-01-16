@@ -46,7 +46,7 @@
                 <div>价格：￥ <span v-text="item.productPrice"></span></div>
               </div>
               <div class="readBox">
-                <a target="_blank" v-bind:href="'./bookdetail.html?pubId=' + item.pubId">购买</a>
+                <a target="_blank" v-bind:href="'./bookDetail.html?pubId=' + item.pubId">购买</a>
               </div>
               <div class="deleteCllo" @click="deleteCollProduct(item)">
                 <!-- <img src="~projects/wenlian/assets/img/deleteCllo.png" alt=""> -->
@@ -61,7 +61,7 @@
     </div>
 
     <div class="emptyColl" v-else>
-      <img src="./assets/img/empty.png" alt="">
+      <img src="../../assets/img/empty.png" alt="">
       <div>收藏夹是空的</div>
     </div>
     <ui_pagination :pageMessage="{totalCount: this.collectionInfo.data && this.collectionInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>

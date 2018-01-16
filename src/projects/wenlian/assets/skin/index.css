@@ -1,24 +1,5 @@
 /********************** start 头部 ************************/
-.cartIcon{
-  position: relative;
-  cursor: pointer;
-}
-.cartIcon span{
-  display: block;
-  position: absolute;
-  top: -7px;
-  left: auto;
-  right: -16px;
-  font-size: 10px;
-  color: #FFF;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-  width: 18px;
-  height: 18px;
-  line-height: 16px;
-  text-align: center;
-  background-color: #AE0F29;
-  border-radius: 50%;
-}
+/* 头部样式作为项目公共组件 放在skin/common.css */
 /********************** end 头部 ************************/
 /************start 头部轮播图**************/
 .ui_swiper_04_pic_nowords .swiper-container{

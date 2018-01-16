@@ -151,7 +151,7 @@
         <el-table-column prop="contactor" label="收货人" width="150px">
         </el-table-column>
         <el-table-column label="收货地址">
-          <template slot-scope="scope">
+          <template scope="scope">
             <span>{{ scope.row.city }}{{ scope.row.county }}{{ scope.row.address }}</span>
           </template>
         </el-table-column>
@@ -159,7 +159,7 @@
         <el-table-column prop="phone" label="电话" width="150px">
         </el-table-column>
         <el-table-column label="操作" prop="action" width="220px">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-button @click="editClick(scope.$index, scope.row)" type="success" size="small">编辑</el-button>
             <el-button type="danger" :disabled="true" size="small" v-show="scope.row.isDefault === '1'">删除</el-button>
             <el-button @click="deleteAddress(scope.row.id)" type="danger" size="small"
@@ -254,20 +254,30 @@
             <el-button type="primary" @click="cryptoguar = true" class="butt" v-if="account.questions == ''">设置密保问题</el-button>
           </div>
           <div class="mt30 mb30">
+            <div v-if="account && account.email">
             <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
             <span v-text="account && account.email"></span>
             <el-button type="primary" @click="changeEmail" class="butt">修改邮箱</el-button>
           </div>
-
-          <div class="mb30" v-if="account && account.mobileno">
+          <div v-if="account.email ==''">
+            <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
+            <span>暂未绑定</span>
+            <el-button type="primary" @click="changeEmail" class="butt" >绑定邮箱</el-button>
+          </div>
+          </div>
+          
+          <div class="mt30 mb30">
+          <!-- <div v-if="account && account.mobileno">
             <i class="wzdh_xgxx_bdhm mr08"></i>手机号码:
             <span v-text="account && account.mobileno"></span>
             <el-button type="primary" class="butt" @click="modifyMobile">修改手机号</el-button>
           </div>
 
-          <!-- <div class="mb30" v-if="account.mobileno ==''">
-            <el-button type="primary" @click="setMobile" class="butt" v-if="account.mobileno == ''">设置手机号</el-button>
+          <div v-if="account.mobileno ==''">
+            <el-button type="primary" @click="setMobileDialog = true" class="butt">设置手机号</el-button>
           </div> -->
+          </div>
+
 
           <div class="wzdh_xgxx_tj">
             <el-button type="primary" @click="modifyPass" class="f14">修改密码</el-button>
@@ -275,7 +285,7 @@
 
         </div>
         <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
-
+          <!-- 设置密保问题弹窗 -->
           <el-dialog title="设置密保问题" :visible.sync="cryptoguar">
             <el-form ref="cryptoguarForm" :model="cryptoguarForm" :rules="cryptoguarRules" style="margin-top: 15px;">
               <el-form-item prop="answer">
@@ -293,7 +303,30 @@
             <el-button type="primary" @click="submitCryptoguarForm('cryptoguarForm')">确 定</el-button>
          </div>
         </el-dialog>
+        <!-- 设置手机号弹窗-->
+        <el-dialog title="绑定手机号" :visible.sync="setMobileDialog">
+          <div style="margin:20px 0 0 200px">
+            <el-form ref="setMobileDialogForm" :model="setMobileDialogForm" :rules="setMobileDialogRules" style="margin-top: 15px;">
+              <el-form-item prop="number">
+                <div class="bangding_con_1_sj mt30"><i class="sj_01 mr05"></i><span class="sj_02 f14 color_727 mr15">手机号:</span>
+                <el-input type="text" v-model="setMobileDialogForm.number" placeholder="请输入手机号"  style="width:200px;height:35px;"></el-input>
+                  <el-button @click="getCode(setMobileDialogForm.number)" class="yzm_04 color_7e7">发送验证码</el-button>
+                </div>
+              </el-form-item>
+                <el-form-item prop="sendNum"><i class="yzm_01 mr05"></i><span class="yzm_02 f14 color_727 mr15">验证码:</span>
+                  <el-input type="text" v-model="setMobileDialogForm.sendNum" placeholder="请输入手机验证码"  style="width:200px;height:35px;"></el-input>
+          </el-form-item>
+            </el-form>
+          </div>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="setMobileDialog = false">取 消</el-button>
+            <el-button type="primary" @click="submitSetMobileWindowForm('setMobileDialogForm')">确 定</el-button>
+         </div>
+        </el-dialog>
 
+
+
+        <!-- 修改密码弹窗 -->
         <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
             <el-form-item label="旧密码" prop="oldPass" :label-width="formLabelWidth">
@@ -326,7 +359,11 @@
             <div class="wzdh_xgyx f14 color_6f6">
               <div class="wzdh_xgyx_ico"></div>
               <div style="margin:20px 0 0 70px;">
-                <el-form :model="emailValidateNum" :rules="emailValidateNumRules" ref="emailValidateNum" >
+                <div v-if="account.email ==''">
+                <span style="display:inline-block;margin:20px;" >请先绑定邮箱</span>
+                <el-button type="primary" @click="changeEmail">绑定邮箱</el-button>
+                </div>  
+                <el-form :model="emailValidateNum" :rules="emailValidateNumRules" ref="emailValidateNum" v-if="account.email !=''">
                   <el-form-item label="绑定邮箱:" prop="email">
                   <span>{{account && account.email}}</span>
                   <el-button type="primary" @click="submitEmailValidateForm"  size="small" v-show="vcodeButt">发送验证码</el-button>
@@ -350,17 +387,16 @@
             <div class="wzdh_yzsjh f14 color_6f6">
               <div class="wzdh_yzsjh_ico"></div>
               <div style="margin:20px 0 0 70px;">
-                <el-form :model="mobileValidateForm" :rules="mobileValidateRules" ref="mobileValidateForm">
+                <el-form :model="oldMobileValidateForm" :rules="oldMobileValidateFormRules" ref="oldMobileValidateForm">
                   <el-form-item label="绑定手机号:">
                     <span>{{account && account.mobileno}}</span>
-                    <el-button type="primary" size="small">发送验证码</el-button>
+                    <el-button type="primary" size="small" @click="getOldCode(account.mobileno)">发送验证码</el-button>
                     </el-form-item>
-                    <el-form-item label="手机验证码:" prop="mobilenum">
-                    <el-input type="text" v-model="mobileValidateForm.mobilenum" auto-complete="off" placeholder="请输入手机验证码" style="display:inline-block;width:220px;"></el-input> <span style="margin-left:10px;color:red">{{time}}</span>
+                    <el-form-item label="手机验证码:" prop="oldSendNum">
+                    <el-input type="text" v-model="oldMobileValidateForm.oldSendNum" auto-complete="off" placeholder="请输入手机验证码" style="display:inline-block;width:220px;"></el-input>
                   </el-form-item>
                   <div style="margin-left:100px;">
-                        <el-button type="primary"  v-if="butt">下一步</el-button>
-                        <el-button  type="text" :disabled="true" class="button" v-show="!butt">验证码已失效，请重新验证</el-button>
+                        <el-button type="primary"    @click="submitMobileValidateNum('oldMobileValidateForm')">下一步</el-button>
                   </div>
                 </el-form>
               </div>
@@ -383,7 +419,7 @@
                     <el-input type="text" v-model="questionsValidateForm.answer" auto-complete="off" placeholder="请输入密保问题答案" style="display:inline-block;width:200px;"></el-input>
                   </el-form-item>
                   <div style="margin-left:100px;" >
-                    <el-button type="primary"  @click="submitQuestionsValidateNum('questionsValidateForm')" v-if="butt">下一步</el-button>
+                    <el-button type="primary"  @click="submitQuestionsValidateNum('questionsValidateForm')">下一步</el-button>
                   </div>
                 </el-form>
                 </div>
@@ -392,7 +428,7 @@
           </el-tab-pane>
 
           </el-tabs>
-      <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
+      <el-button type="primary" @click="back" class="butt_back">返回</el-button>
     </div>
     <!-- 通过验证身份修改密码 -->
     <div v-show="currentShow=='modifyPassword'">
@@ -414,7 +450,7 @@
           </div>
       </div>
 		</div>
-      <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
+      <el-button type="primary" @click="back" class="butt_back">返回</el-button>
     </div>
     <!-- 通过验证身份修改手机号 -->
     <div v-show="currentShow=='modifyMobile'">
@@ -422,23 +458,24 @@
             <div class="wzdh_yzsjh f14 color_6f6">
               <div class="wzdh_yzsjh_ico"></div>
               <div style="margin:20px 0 0 50px;">
-                <el-form :model="mobileValidateForm" :rules="mobileValidateRules" ref="mobileValidateForm">
-                  <el-form-item label="绑定手机号:">
-                    <el-input type="text" v-model="emailValidateNum.emailnum" auto-complete="off" placeholder="请输入新手机号" style="display:inline-block;width:200px;"></el-input> <span style="margin-left:10px;color:red">{{time}}</span>
-                    <el-button type="primary" size="small">发送验证码</el-button>
-                    </el-form-item>
-                    <el-form-item label="手机验证码:" prop="mobilenum">
-                    <el-input type="text" v-model="mobileValidateForm.mobilenum" auto-complete="off" placeholder="请输入手机验证码" style="display:inline-block;width:200px;"></el-input> <span style="margin-left:10px;color:red">{{time}}</span>
-                  </el-form-item>
-                  <div style="margin-left:120px;">
-                        <el-button type="primary"  v-if="butt">提交</el-button>
-                        <el-button  type="text" :disabled="true" class="button" v-show="!butt">验证码已失效，请重新验证</el-button>
-                  </div>
-                </el-form>
+
+            <el-form ref="setMobileDialogForm" :model="setMobileDialogForm" :rules="setMobileDialogRules" style="margin-top: 15px;">
+              <el-form-item prop="number">
+                <div class="bangding_con_1_sj mt30"><i class="sj_01 mr05"></i><span class="sj_02 f14 color_727 mr15">新手机号:</span>
+                <el-input type="text" v-model="setMobileDialogForm.number" placeholder="请输入手机号"  style="width:200px;height:35px;"></el-input>
+                  <el-button @click="getCode(setMobileDialogForm.number)" class="yzm_04 color_7e7">发送验证码</el-button>
+                </div>
+              </el-form-item>
+                <el-form-item prop="sendNum"><i class="yzm_01 mr05"></i><span class="yzm_02 f14 color_727 mr15" style="margin-right:30px;">验证码:</span>
+                  <el-input type="text" v-model="setMobileDialogForm.sendNum" placeholder="请输入手机验证码"  style="width:200px;height:35px;"></el-input>
+          </el-form-item>
+            </el-form>
+            <el-button type="primary" @click="submitChangeMobile('setMobileDialogForm')" style="margin-left:130px;">绑 定</el-button>
+
               </div>
             </div>
           </div>
-      <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
+      <el-button type="primary" @click="back" class="butt_back">返回</el-button>
     </div>
     <!--查看虚拟币-->
     <div v-show="currentShow=='virtualMoney'">
@@ -517,13 +554,12 @@
   import Vuex from 'vuex'
   import axios from 'axios'
   import {mapGetters, mapActions} from "vuex";
-  import CityInfo from './assets/js/city-data.js'
-
+  import CityInfo from '../../assets/js/city-data'
   Vue.use(Vuex)
   Vue.prototype.$ajax = axios
 
   export default {
-    name: "account",
+    name: "personalCenter_account",
     reused: true,
     props: ["namespace"],
     props: {
@@ -634,6 +670,37 @@
         callback();
       }
     };
+    var validateSetMobile = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入手机号"));
+      } else if (value != value.match(/^[1][3,4,5,6,7,8,9][0-9]{9}$/)) {
+        callback(new Error("请输入正确的手机号"));
+      }else {
+        callback();
+      }
+    };
+    var validateSendNum  = (rule, value, callback) => {
+    if (value === "") {
+      callback(new Error("请输入手机验证码"));
+    }else if(value!=this.cbsendNum){
+      callback(new Error("验证码错误"));
+    } else{
+      callback();
+    }
+    };
+    var validateOldSendNum  = (rule, value, callback) => {
+    if (value === "") {
+      callback(new Error("请输入手机验证码"));
+    }else if(value!=this.cbOldSendNum){
+      console.log('校验'+this.cbOldSendNum)
+      console.log('输入'+value)
+      callback(new Error("验证码错误"));
+    } else{
+      console.log('校验'+this.cbOldSendNum)
+      console.log('输入'+value)
+      callback();
+    }
+    };
       return {
         title: [
           "main",
@@ -656,7 +723,11 @@
         butt:true,
         /*修改密码*/
         dialogFormVisible: false,
+        // 修改密保问题弹窗状态
         cryptoguar:false,
+        // 修改密保问题弹窗状态
+        setMobileDialog:false,
+
         activeName:"first",
         formLabelWidth: "120px",
         // 修改密码表单
@@ -681,10 +752,19 @@
           questionId:"",
           answer:""
         },
+        // 验证身份--设置手机号
+        setMobileDialogForm:{
+          number:"",
+          sendNum:""
+        },
         // 验证身份--修改密码
         modifyPassword:{
           pass:"",
           checkPass:"",
+        },
+        //验证身份--旧手机号验证码
+        oldMobileValidateForm:{
+          oldSendNum:""
         },
         loading:"",//头像上传loading
         rules: {
@@ -696,6 +776,12 @@
         cryptoguarRules:{
           answer:[{validator: validateAnswer, trigger: "blur"}]
         },
+        // 设置手机号校验
+        setMobileDialogRules:{
+          number:[{validator: validateSetMobile, trigger: "blur"}],
+          sendNum:[{validator: validateSendNum, trigger: "blur"}]
+        },
+        //身份验证--邮箱校验
         emailValidateNumRules:{
           emailnum: [{ validator: validateEmailnum, trigger: "blur" }],
         },
@@ -711,6 +797,10 @@
         modifyPasswordrules:{
           pass: [{ validator: validatePass, trigger: "blur" }],
           checkPass: [{ validator: validateCheckPass, trigger: "blur" }]
+        },
+        //身份验证--旧手机号验证
+        oldMobileValidateFormRules:{
+          oldSendNum:[{validator: validateOldSendNum, trigger: "blur"}]
         },
         currentShow: "main",
         cryptoguardAnswer: "",
@@ -755,7 +845,6 @@
         fullLoading: '',//全屏加载框
       };
     },
-
     mounted() {
       this.siteId = SITE_CONFIG.siteId;
       this.$store.dispatch("personalCenter/queryUser", {
@@ -1198,10 +1287,143 @@
           });
         }
       },
-      /*修改手机*/
-      setMobile() {
-        alert("接口等待中...");
+
+
+
+      /*个人中心更改手机号*/
+      submitChangeMobile(setMobileDialogForm) {
+          this.$refs.setMobileDialogForm.validate(valid => {
+          if (valid) {
+          var params = {
+            loginName: this.account.loginName,
+            mobileNum:this.setMobileDialogForm.number,
+            cb: this.changeMobileCallback
+          };
+          this.$store.dispatch("personalCenter/changeBindMobile", params);
+          } else {
+            return false;
+          }
+        });
       },
+      changeMobileCallback(sendStatus,rep){
+      if (sendStatus) {
+          this.$message({
+            type: "error",
+            message:rep.data.data.msg
+          });
+        this.$refs.setMobileDialogForm.resetFields();
+        } else {
+        this.$store.dispatch("personalCenter/queryUser");
+        this.$message({
+          type: "success",
+          message:rep.data.data.msg
+        });
+        window.setTimeout(function() {
+            window.location.reload()
+          }, 1000);
+        }
+    },
+
+
+
+
+      /*个人中心设置手机号*/
+      submitSetMobileWindowForm(setMobileDialogForm) {
+          this.$refs.setMobileDialogForm.validate(valid => {
+          if (valid) {
+          var params = {
+            loginName: this.account.loginName,
+            mobileNum:this.setMobileDialogForm.number,
+            cb: this.setMobileCallback
+          };
+          this.$store.dispatch("personalCenter/bindMobile", params);
+          } else {
+            return false;
+          }
+        });
+      },
+      setMobileCallback(sendStatus,rep){
+      if (sendStatus) {
+        this.setMobileDialog = false
+        this.$refs.setMobileDialogForm.resetFields();
+          this.$message({
+            type: "error",
+            message:rep.data.data.msg
+          });
+        } else {
+        this.$store.dispatch("personalCenter/queryUser");
+        this.setMobileDialog = false
+        this.$message({
+          type: "success",
+          message:rep.data.data.msg
+        });
+        }
+    },
+      
+      // 设置手机号获取验证码
+      getCode(number){
+      if (number === "") {
+        this.$message({
+            type: "error",
+            message: "请输入手机号"
+          });
+      } else if (number != number.match(/^[1][3,4,5,6,7,8,9][0-9]{9}$/)) {
+
+      }
+      else{
+        this.$message({
+            type: "success",
+            message: "手机验证码已发送，请注意查收"
+          });
+      var params = {
+        mobileNum: number,
+        cb: this.MobileCallback
+      };
+      this.$store.dispatch("personalCenter/sendToMobile", params);
+      }
+
+    },
+    MobileCallback(sendStatus, sendNum) {
+      if (sendStatus == 1) {
+        this.cbsendNum = sendNum;
+        this.$message({
+          type: "success",
+          message: "手机验证码已发送，请注意查收"
+        });
+        } else {
+          this.$message({
+            type: "info",
+            message: rep.data.error.errorMsg
+          });
+        }
+    },
+    // 旧手机获取验证码
+    getOldCode(number){
+    var params = {
+      mobileNum: number,
+      cb: this.oldMobileCallback
+      };
+      this.$store.dispatch("personalCenter/sendToMobile", params);
+    },
+    oldMobileCallback(sendStatus, oldSendNum) {
+      if (sendStatus == 1) {
+        this.cbOldSendNum = oldSendNum;
+        }
+    },
+    // 验证身份--手机号验证通过
+    submitMobileValidateNum(oldMobileValidateForm) {
+      this.$refs.oldMobileValidateForm.validate(valid => {
+        if (valid) {
+          if(this.modifyType==1){ 
+            this.showCurrent(7);
+          }else{
+            this.showCurrent(8);
+          }
+        } else {
+          return false;
+        }
+      });
+    },
       /*修改密码*/
       submitForm(ruleForm) {
         this.$refs.ruleForm.validate(valid => {
@@ -1255,14 +1477,16 @@
             };
             if (_this.payMethod === "1") {         // 支付宝支付
               window.open(url + '/epay/getVirtualCoinPayForm.do?price=' + this.value + '&loginName=' + this.account.loginName + '&payMethodId=' + this.payWay + '&siteId=' + this.siteId, '_self');
-              window.history.pushState(null, null, '../errorPage/errorpage.html'); // 添加历史记录
+              window.history.pushState(null, null, '../errorPage/errorPage.html'); // 添加历史记录
             } else if (_this.payMethod === "0") {  // 微信支付
               axios.get(url + '/epay/getVirtualCoinPayForm.do?price=' + this.value + '&loginName=' + this.account.loginName + '&payMethodId=' + this.payWay + '&siteId=' + this.siteId).then(function(response) {
                 var data = response.data.substring(response.data.indexOf('<a>') + 3, response.data.indexOf('</a>'));
                 var orderCode = response.data.substring(response.data.indexOf('<div>') + 5, response.data.indexOf('</div>'));
-                window.location.href = '../qrcode.html?data=' + data + '&orderCode=' + orderCode;
+                window.location.href = '../shoppingCart/QRcode.html?data=' + data + '&orderCode=' + orderCode;
               })
             }
+            /*window.open(url + '/epay/getVirtualCoinPayForm.do?price=' + this.value + '&loginName=' + this.account.loginName + '&payMethodId=' + this.payWay + '&siteId=' + this.siteId, '_self');
+            window.history.pushState(null, null, '../errorPage/errorPage.html'); // 添加历史记录*/
           })
           .catch(err => {
             console.log(err);
@@ -1347,10 +1571,15 @@
           });
         }
       },
+      // 验证身份--邮箱验证通过
       submitEmailValidateNum(emailValidateNum) {
         this.$refs.emailValidateNum.validate(valid => {
           if (valid) {
+          if(this.modifyType==1){ 
             this.showCurrent(7);
+          }else{
+            this.showCurrent(8);
+          }
           } else {
             return false;
           }
@@ -1442,7 +1671,11 @@
         confirmButtonText: "确定",
         });
       },
+      back(){
+        window.location.reload()
+      }
     }
+
   };
 </script>
 <style>
@@ -1721,3 +1954,4 @@
     line-height: 135px;
   }
 </style>
+

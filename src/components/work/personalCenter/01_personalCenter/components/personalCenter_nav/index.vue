@@ -15,9 +15,7 @@
 </template>
 
 <script>
-  import Vue from 'vue';
   import {mapActions} from 'vuex';
-
   export default {
     name: "vnav",
     reused: true,

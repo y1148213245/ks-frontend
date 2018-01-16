@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
-    <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
-    <link type="text/css" rel="stylesheet" href="../assets/css/news.css">
     <link type="text/css" rel="stylesheet" href="../assets/skin/authordetail.css">
-    <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
+    <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
     <script type="text/javascript" src="../assets/config/index.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.js"></script>
     <script type="text/javascript" src="../assets/js/web.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $(".all_class").click(function () {
+          $(this).toggleClass("open");
+          $(".all_class_detail").slideToggle();
+        });
+      });
+    </script>
 </head>
 <body>
   <div id="app">
@@ -20,7 +26,7 @@
     <div class="main_zzxq">
       <div name="data_info_detail">
         <wenlian_common_crumbs></wenlian_common_crumbs>
-        <wenlian_common_authod_detail namespace="authordetail"></wenlian_common_authod_detail>
+        <components_authordetail_authordetail namespace="authordetail"></components_authordetail_authordetail>
       </div>
     </div>
   </div>

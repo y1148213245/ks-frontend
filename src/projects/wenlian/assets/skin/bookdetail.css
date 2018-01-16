@@ -3,6 +3,12 @@
  * Created by song 2018/1/10 
  */
 
+body {
+  background: url(../img/bg_1.png) repeat;
+}
+
+
+
 
 /********************** start 图书详情组件 ************************/
 
@@ -137,19 +143,176 @@
 
 
 
-
 /********************** end 图书详情组件 ************************/
+
+
+/********************** start 图书简介组件 ************************/
+
+.work_bookdetail_02_related_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.work_bookdetail_02_related_skin .relatedHead {
+  border-bottom-style: solid;
+  border-bottom-color: #c50000;
+  color: #7e7e7e;
+  font-size: 14px;
+}
+
+.work_bookdetail_02_related_skin .relatedHead span {
+  cursor: pointer;
+}
+
+.work_bookdetail_02_related_skin .relatedHead .active {
+  background: url(../img/bg_008.png) no-repeat;
+  color: #c50000;
+  font-style: normal;
+}
+
+.work_bookdetail_02_related_skin .briefIntro {
+  color: #7e7e7e;
+}
+
+.work_bookdetail_02_related_skin .briefIntro .showAllIntro {
+  color: #727272;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.work_bookdetail_02_related_skin .btnDown {
+  background: url(../img/bg_008.png) no-repeat;
+  font-style: normal;
+}
+
+
+
+
+
+
+
+
+/********************** end 图书简介组件 ************************/
 
 
 /********************** start 评论组件 ************************/
 
+.work_bookreview_01_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
 
-/* .book_detail_pinglun .book_detail_pinglun_name span {
+.work_bookreview_01_skin .title {
+  color: #c50000;
+  font-size: 14px;
+  border-bottom-style: solid;
+  border-bottom-color: #c50000;
+}
+
+.work_bookreview_01_skin .title span {
   background: url(../img/bg_008.png) no-repeat;
-} */
+}
+
+.work_bookreview_01_skin .reviewCon .review .reviewSpan {
+  color: #636363;
+  font-size: 14px;
+}
+
+.work_bookreview_01_skin .reviewCon textarea {
+  color: #767676;
+}
+
+.work_bookreview_01_skin .reviewCon .reviewBtn {
+  border-style: solid;
+  border-color: #dbdbdb;
+  color: #7e7e7e;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+}
+
+.work_bookreview_01_skin .bookReviewWrapper .username {
+  color: #636363;
+  font-size: 14px;
+}
+
+.work_bookreview_01_skin .bookReviewWrapper .createTime {
+  color: #b1b1b1;
+  font-size: 10px;
+}
+
+.work_bookreview_01_skin .bookReviewWrapper .reviewContent {
+  background: #f9f9f9;
+}
+
+.work_bookreview_01_skin .noReview {
+  color: #636363;
+  font-size: 14px;
+}
+
 
 
 /********************** end 评论组件 ************************/
+
+
+/********************** start 浏览历史组件 ************************/
+.ui_list_pic_06_skin {
+  font-family: 'Microsoft Yahei','微软雅黑','\5FAE\8F6F\96C5\9ED1','宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.ui_list_pic_06_skin a {
+  text-decoration: none;
+  color: #535353;
+}
+
+.ui_list_pic_06_skin .titleHead {
+  color: #fff;
+  background: #c50000;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.ui_list_pic_06_skin .listWrapper {
+  border-style: solid;
+  border-color: #f8f8f8;
+  background: #fff;
+}
+
+.ui_list_pic_06_skin .listCon {
+  border-bottom-style: solid;
+  border-bottom-color: #f8f8f8;
+}
+
+/* .ui_list_pic_06_skin .listCon .listDt .jiaobiao {
+  color: #fff;
+  background: #f9ab3c;
+} */
+
+.ui_list_pic_06_skin .listCon .title {
+  font-size: 14px;
+  color: #535353;
+}
+
+.ui_list_pic_06_skin .listCon .hitcount {
+  color: #9f9f9f;
+}
+
+.ui_list_pic_06_skin .listCon .price {
+  color: #ff5842;
+}
+
+.ui_list_pic_06 .listCon .delete {
+  cursor: pointer;
+  background: url(../img/bg_008.png) no-repeat;
+}
+
+
+/********************** end 浏览历史组件 ************************/
 
 
 /********************** start 相关图书组件 ************************/
@@ -181,6 +344,14 @@
 .ui_list_pic_16_skin .listCon .listDd {
   color: #7a7a7a;
 }
+
+
+
+
+
+
+
+
 
 
 

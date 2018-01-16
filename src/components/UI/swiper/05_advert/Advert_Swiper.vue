@@ -2,7 +2,7 @@
 <template>
   <div class="advertCon" v-if="infoUrl">
     <a :href="infoUrl" style="display:block;" class="gz_001">
-      <img :src="advertList[0] && advertList[0].pub_picBig"/>
+      <img :src="advertList[0] && advertList[0].pub_picBig" style="width: 100%;"/>
     </a>
   </div>
 </template>

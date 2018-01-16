@@ -1,4 +1,4 @@
-/* 
+/*
  * 装公共页面的皮肤样式 比如：头部
  * Created by song 2018/1/15
  */
@@ -36,6 +36,10 @@
 
 .components_header_skin .header_top1 .download .downloadApp {
   background: url(../img/bg_001.png) no-repeat;
+}
+
+.components_header_skin .header_top2 {
+  background-color: #fff;
 }
 
 .components_header_skin .header_top2 .logo {
@@ -82,7 +86,6 @@
   color: #fff;
   cursor: pointer;
   background-image: none;
-  background: url(../img/search.png) no-repeat left center;
 }
 
 .components_header_skin .header_top2 .searchBox .searchText {
@@ -116,11 +119,157 @@
 
 .components_header_skin .header_top3 .nav a:hover {
   background-color: #c50000;
-} 
+}
 
 .components_header_skin .header_top3 .nav .on {
   background-color: #c50000;
 }
-
-
+.components_header_skin .header_top3 .off:after{
+  content: '';
+  position: absolute;
+  top: 32%;
+  right: 18px;
+  width: 17px;
+  height: 10px;
+  background: url(../img/shang.png) no-repeat;
+}
+.components_header_skin .header_top3 .open:after{
+  top: 18px;
+  content: ' ';
+  position: absolute;
+  top: 41%;
+  right: 18px;
+  width: 17px;
+  height: 10px;
+  background: url(../img/xia.png) no-repeat;
+}
+.components_header_skin .two_title span:last-child{
+  visibility: hidden;
+}
+.components_header_skin .showAll{
+  display: none;
+}
+.components_header_skin .expend{
+  height: 48px;
+}
+.all_class_detail{
+  padding-top: 18px;
+  background: #fff;
+  width: 222px;
+  position: absolute;
+  top: 41px;
+  left: 0px;
+  display: none;
+  box-shadow: 0px 0px 8px #e7e7e7;
+  z-index: 9;
+}
+.all_class_detail dl{
+  padding: 5.88px 17px;
+}
+.all_class_detail dl:nth-child(even){
+  background: #f5f5f5;
+  padding: 5.5px 17px;
+}
+.all_class_detail .one_title{
+  color: #545454;
+}
+.components_header_skin a{
+  text-decoration: none;
+  outline: none;
+}
+.f14{
+  font-size: 14px;
+}
+.all_class_detail dd{
+  line-height: 22px;
+}
+.all_class_detail .two_title a{
+  color: #9a9a9a;
+}
+.all_class_detail dd span{
+  padding: 0px 8px;
+}
+.header_top3 .wrap{
+  position: relative;
+  width: 1200px;
+  margin: 0 auto;
+}
+.fr{
+  float: right;
+}
+.fl{
+  float: left;
+}
+.cl{
+  clear: both;
+}
+body{
+  font-family: 'Microsoft Yahei','微软雅黑','\5FAE\8F6F\96C5\9ED1','宋体';
+  font-size: 12px;
+  color: #888888;
+  background: url(../img/bg_1.png) repeat;
+}
+.pl20{
+  padding-left: 20px;
+}
+.color_9b9{
+  color: #9b9b9b;
+}
+.line-h35{
+  line-height: 35px;
+}
+.ml12{
+  margin-left: 12px;
+}
+.mt18{
+  margin-top: 18px;
+}
+.color_9b9{
+  color: #9b9b9b;
+}
+.color_626{
+  color: #626262;
+}
+.pb25{
+  padding-bottom: 25px;
+}
+.pr12{
+  padding-right: 12px;
+}
+.pl12{
+  padding-left: 12px;
+}
+.pt25{
+  padding-top: 25px;
+}
+.mb10{
+  margin-bottom: 10px;
+}
+.color_424{
+  color: #424242;
+}
+.color_fff{
+  color: #fff;
+}
+.line-h35{
+  line-height: 35px;
+}
+.pr15{
+  padding-right: 15px;
+}
+.pl15{
+  padding-left: 15px;
+}
+.color_7e7{
+  color: #7e7e7e;
+}
+.f18{
+  font-size: 18px;
+}
+.mb15{
+  margin-bottom: 15px;
+}
+.mt15{
+  margin-top: 15px;
+}
 /********************** end 头部组件 ************************/

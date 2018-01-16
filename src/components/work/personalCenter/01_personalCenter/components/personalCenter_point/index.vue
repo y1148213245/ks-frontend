@@ -41,14 +41,12 @@
 </template>
 <script type="text/ecmascript-6">
 import Vue from "vue";
-// import * as type from "projectsConfig/config.wl.js";
 import { mapGetters, mapActions } from "vuex";
-// import { SITE_CONFIG } from "projectConfig";
 export default {
     name: "point",
     reused: true,
     props: ["namespace"],
-  mounted: function() {
+    mounted: function() {
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
     });
@@ -102,8 +100,7 @@ export default {
             cb: this.exchangeCallb
           };
           this.$store.dispatch("personalCenter/exchangeVirtualCoin", params);
-          this.ruleForm.number = '';  // #42766 个人中心，兑换虚拟币，建议兑换成功后，输入框置空
-
+          this.ruleForm.number = ''; 
         } else {
           console.log("error submit!!");
           return false;

@@ -102,3 +102,19 @@ ul.zzxq_detail_zp_list li{
 .zzxq_rwjs .zzxq_rwjs_con{
   line-height: 40px;
 }
+dl.zzxq_detail{
+  overflow: hidden;
+}
+a{
+  text-decoration: none;
+  outline: none;
+  color: #888888;
+  text-decoration: none;
+}
+.clear:after, .clearfix:after{
+  height: 0;
+  content: ".";
+  clear: both;
+  display: block;
+  visibility: hidden;
+}

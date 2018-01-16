@@ -23,18 +23,14 @@
       </ul>
     </div>
     <div class="emptyColl" v-else>
-      <img src="./assets/img/empty.png" alt="">
+      <img src="../../assets/img/empty.png" alt="">
       <div>我的书架是空的</div>
     </div>
     <ui_pagination :pageMessage="{totalCount: this.bookShelfInfo.data && this.bookShelfInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import Vue from 'vue';
-  // import * as type from 'projectConfig';
   import {mapGetters, mapActions} from 'vuex';
-  // import {READ_CONFIG} from 'projectConfig';
-
   export default {
     name: "book",
     reused: true,

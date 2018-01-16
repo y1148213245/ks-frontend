@@ -3,10 +3,10 @@
   line-height: 41px;
   background-color: #515151;
 }
-.header_top3 .wrap{
+.header_top3 .threewrap{
   position: relative;
 }
-.wrap{
+.threewrap{
   width: 1200px;
   margin: 0 auto;
 }
@@ -90,6 +90,16 @@
   top: 41px;
   left: 0px;
   box-shadow: 0px 0px 8px #e7e7e7;
+  z-index: 9;
+
+  padding-top: 18px;
+  background: #fff;
+  width: 222px;
+  position: absolute;
+  top: 41px;
+  left: 0;
+  box-shadow: 0 0 8px #e7e7e7;
+  display: block;
   z-index: 9;
 }
 .header .two_title span:last-child{
@@ -177,4 +187,336 @@
   overflow: hidden;
   text-decoration: none;
 }
+.main{
+  width: 1200px;
+  margin: 0 auto;
+}
+.book_jdt dl.l_big dd p.title{
+  padding-top: 20px;
+}
+.book_jdt dl.l_big dd{
+  width: 250px;
+  overflow: hidden;
+}
+.book_jdt dl.l_big{
+  overflow: hidden;
+}
+.book_jdt dl.l_big dd p.title a{
+  color: #494949;
+}
+.book_jdt dl.l_big dd p.xing{
+  margin: 2px 0 5px 0;
+}
+.book_jdt dl.l_big dd p.author{
+  color: #727272;
+  line-height: 23px;
+  margin-top: 15px;
+}
+.book_jdt dl.l_big dd p.banquan, .book_jdt dl.l_big dd p.chuban{
+  color: #8d8c8c;
+  line-height: 25px;
+}
+.book_jdt dl.l_big dd p.price{
+  color: #494949;
+  margin: 3px 0 15px;
+}
+.book_jdt dl.l_big dd p.reader{
+  line-height: 28px;
+  margin-top: 25px;
+}
+.book_jdt dl.l_big dd p.price span{
+  color: #9c9595;
+  text-decoration: line-through;
+  padding-left: 8px;
+}
+.book_jdt dl.l_big dd p.reader a{
+  padding: 6px 15px;
+  color: #fff;
+  background: #c50000;
+}
 /*********************end 推荐*********************/
+
+/***和首页一样的组件样式****/
+.hot_book .hot_book_list dl dd p.author{
+  color: #727272;
+  line-height: 23px;
+}
+.hot_book .hot_book_list dl dd p.price span{
+  color: #9c9595;
+  text-decoration: line-through;
+}
+.hot_book .hot_book_list dl dd p.banquan, .hot_book .hot_book_list dl dd p.chuban{
+  color: #8d8c8c;
+  line-height: 23px;
+}
+.hot_book .hot_book_list dl dd p.other .share{
+  border-top: 1px solid #d2d2d2;
+  border-bottom: 1px solid #d2d2d2;
+  background-position: 0 90px;
+}
+.hot_book .hot_book_list dl dd p.other .shoucang, .hot_book .hot_book_list dl dd p.other .shoucang_cg, .hot_book .hot_book_list dl dd p.other .share{
+  background-image: url(../img/bg_005.png);
+  display: inline-block;
+  height: 28px;
+  width: 38px;
+  text-indent: -9999px;
+}
+.hot_book .hot_book_list dl dd p.other .goumai{
+  background: #c50000;
+  display: inline-block;
+  width: 52px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+}
+.hot_book .hot_book_list dl dd p.other .chakan{
+  background: #515151;
+  display: inline-block;
+  width: 52px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+}
+.hot_book .hot_book_list dl dd p.price{
+  color: #494949;
+  margin: 3px 0 15px;
+}
+.hot_book .hot_book_list dl dd p.other{
+  line-height: 28px;
+}
+.hot_book{
+  border-top: 2px solid #da0b2d;
+  padding-left: 20px;
+  width: 940px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.hot_book .hot_book_list dl{
+  background-color: #F3F3F3;
+  width: 458px;
+  height: 240px;
+}
+.mb35{
+  margin-bottom: 35px;
+}
+a img{
+  border: 0;
+}
+.hot_book .hot_book_list dl dd{
+  width: 270px;
+  float: left;
+  padding-left: 25px;
+}
+.hot_book .hot_book_list dl dd p.title{
+  padding-top: 20px;
+}
+.f16{
+  font-size: 16px;
+}
+.hot_book .hot_book_list dl dd p.title a{
+  color: #494949;
+}
+a{
+  text-decoration: none;
+  outline: none;
+  color: #888888;
+  text-decoration: none;
+}
+.f16{
+  font-size: 16px;
+}
+.hot_book .hot_book_list dl dd p.xing{
+  margin: 2px 0 5px 0;
+}
+.hot_book .hot_book_list dl{
+  background-color: #F3F3F3;
+  width: 458px;
+  height: 240px;
+}
+.mb35{
+  margin-bottom: 35px;
+}
+.sale_top, .bianji, .xgzx{
+  background: #fff;
+}
+.mt30{
+  margin-top: 30px;
+}
+.sale_top .sale_top_title, .bianji .bianji_title{
+  height: 29px;
+  line-height: 29px;
+  width: 222px;
+  background: #c50000;
+  text-align: center;
+  color: #fff;
+  font-weight: normal;
+}
+.f16{
+  font-size: 16px;
+}
+.sale_top_list{
+  border: 2px solid #f8f8f8;
+  border-top: none;
+  width: 218px;
+  height: 427px;
+}
+.sale_top .sale_top_con{
+  padding: 23px 10px 30px 15px;
+  border-bottom: 2px solid #f8f8f8;
+  margin: 0 7px 0px 10px;
+  overflow: hidden;
+  position: relative;
+}
+.sale_top .sale_top_con dd.jiaobiao{
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  background: #f9ab3c;
+}
+.pl15{
+  padding-left: 15px;
+}
+.sale_top .sale_top_con dd p.title{
+  color: #535353;
+  height: 30px;
+  line-height: 30px;
+}
+.sale_top .sale_top_con dd p.title a{
+  color: #535353;
+}
+.sale_top .sale_top_con dd p.hitcount, .sale_top_con dd p.price{
+  color: #9f9f9f;
+}
+.pt15{
+  padding-top: 15px;
+}
+.sale_top .sale_top_con{
+  padding: 23px 10px 30px 15px;
+  border-bottom: 2px solid #f8f8f8;
+  margin: 0 7px 0px 10px;
+  overflow: hidden;
+  position: relative;
+}
+.sale_top .sale_top_con dd.jiaobiao{
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  background: #f9ab3c;
+}
+.pl15{
+  padding-left: 15px;
+}
+.sale_top .sale_top_con dd p.title{
+  color: #535353;
+  height: 30px;
+  line-height: 30px;
+}
+.sale_top .sale_top_con dd p.title a{
+  color: #535353;
+}
+.hot_sell_text{
+  display: inline-block;
+  width: 80px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.pt15{
+  padding-top: 15px;
+}
+.sale_top .sale_top_con{
+  padding: 23px 10px 30px 15px;
+  border-bottom: 2px solid #f8f8f8;
+  margin: 0 7px 0px 10px;
+  overflow: hidden;
+  position: relative;
+}
+.sale_top .sale_top_con dd.jiaobiao{
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  background: #f9ab3c;
+}
+.mt42{
+  margin-top: 53px;
+}
+.bianji .bianji_list{
+  text-align: center;
+  border: 2px solid #f8f8f8;
+  border-top: none;
+  width: 218px;
+}
+.bianji .bianji_list .bianji_con{
+   border-bottom: 1px dotted #33373e;
+  padding: 20px;
+  overflow: hidden;
+}
+.bianji .bianji_list .bianji_con dt{
+  padding: 0 0 15px 0px;
+}
+.bianji .bianji_list .bianji_con dt img{
+  border-radius: 50%;
+  width: 98px;
+  height: 98px;
+}
+.bianji .bianji_list .bianji_con dd.author{
+  color: #2c3138;
+  padding-bottom: 10px;
+  background: url(../img/bg_003.png) repeat-x center 30%;
+}
+.bianji .bianji_list .bianji_con dd.author a{
+  color: #2c3138;
+  padding: 0 7px;
+  background: #fff;
+}
+.bianji .bianji_list .bianji_con dd.zhaiyao{
+  color: #7a7a7a;
+  line-height: 21px;
+  text-align: left;
+}
+.bianji .bianji_list .bianji_con dd.mail{
+  color: #2c3138;
+  text-align: left;
+  padding-top: 10px;
+}
+.header .header_top1 .login_img, .header .header_top1 .download_app, .header .header_top3 .all_class_bg, .search .myshop, .search .ssbj, .index_jpts .index_jpts_name, .index_jpts .index_jpts_t dd p.shoucang, .hot_book .hot_book_name, .zzzs .zzzs_name{
+  background: url(../img/bg_001.png) no-repeat;
+}
+.hot_book .hot_book_name{
+  padding: 0px 0 0px 30px;
+  background-position: -2px -132px;
+  margin: 15px 0 20px 0;
+}
+.color_7e7{
+  color: #7e7e7e;
+}
+.f18{
+  font-size: 18px;
+}
+.f12{
+  font-size: 12px;
+}
+pt20{
+  padding-top: 20px;
+}
+.color_727{
+  color: #727272;
+}

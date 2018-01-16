@@ -2,7 +2,6 @@
   <div class="box">
     <div class="center_container">
       <vnav style="margin-right: 20px;" :navs="navs" :current-show-index="currentShowIndex"></vnav>
-      
       <component :is="currentShow" :detail-url="detailUrl" :show_star="show_star"></component>
     </div>
   </div>
@@ -11,16 +10,16 @@
 <script>
   import Vue from 'vue';
   import {mapGetters} from 'vuex';
-  import vnav from './personalCenter_nav';
   import URL from "url";
-  import account from './personalCenter_account.vue';
-  import list from './personalCenter_list.vue';
-  import book from './personalCenter_bookshelf.vue';
-  import collecting from './personalCenter_collection.vue';
-  import point from './personalCenter_point.vue';
-  import afterservice from './personalCenter_afterservice.vue';
-  import coupon from './personalCenter_coupon.vue';
-
+  import vnav from './components/personalCenter_nav';
+  import account from './components/personalCenter_account';
+  import list from './components/personalCenter_list';
+  import book from './components/personalCenter_bookshelf';
+  import collecting from './components/personalCenter_collection';
+  import point from './components/personalCenter_point';
+  import afterservice from './components/personalCenter_afterservice';
+  import coupon from './components/personalCenter_coupon';
+  import note from './components/personalCenter_note';
 
   export default {
     name: "work_personalcenter_01",
@@ -69,6 +68,11 @@
               title: '我的优惠券',
               icon: 'el-icon-menu',
               tag: 'coupon',
+            },
+            {
+              title: '随手记',
+              icon: 'el-icon-document',
+              tag: 'note',
             }
           ]
         }
@@ -77,9 +81,6 @@
         type: String,
         default: '../book/bookdetail.html'
       }
-    },
-    created() {
-		  // this.initCurrentShow()
     },
     mounted() {
       var _this = this;
@@ -133,7 +134,8 @@
       collecting,
       point,
       afterservice,
-      coupon
+      coupon,
+      note
     },
   }
 </script>
@@ -141,19 +143,16 @@
   ol, ul, li {
     list-style: none;
   }
-
   table {
     border-collapse: collapse;
     margin-bottom: 0px !important
   }
 </style>
-
 <style scoped>
   .box {
     width: 1100px;
     margin: 20px auto;
   }
-
   .center_container {
     overflow: hidden;
   }

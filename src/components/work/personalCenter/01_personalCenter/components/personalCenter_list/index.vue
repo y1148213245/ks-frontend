@@ -130,7 +130,7 @@
                     </div>
                 </div>
                 <div class="emptyColl" v-else>
-                    <img src="./assets/img/empty.png" alt="">
+                    <img src="../../assets/img/empty.png" alt="">
                     <div>订单是空的~快去购买吧</div>
                 </div>
                 <ui_pagination :pageMessage="{totalCount: this.myOrderList.data && this.myOrderList.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
@@ -322,8 +322,6 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-import Vue from "vue";
-// import * as type from "projectConfig";
 import { mapGetters, mapActions } from "vuex";
 import axios from 'axios';
 

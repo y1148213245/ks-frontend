@@ -1,23 +1,23 @@
 <template>
-    <div class="ui_list_pic_06 sale_top mt30">
-        <h6 class="sale_top_title f16" v-text="title"></h6>
-        <div class="sale_top_list">
-            <div class="data_column_block_picListBook" name="data_column_block">
-                <dl class="sale_top_con cl" v-for="(entry,index) in list" v-if="index<(number || 4)" :key="index">
-                    <dt class="fl">
-                        <a :href="(CONFIG && CONFIG.href)+entry.id" class="hotsellrank_ofbook_list_imgBox">
-                            <img class="hotsellrank_ofbook_list_img" :src="entry && entry.pub_picBig" onload="DrawImage(this,70,84)" alt="暂无封面"/>
+    <div class="ui_list_pic_06 ui_list_pic_06_skin">
+        <h6 class="titleHead" v-text="title"></h6>
+        <div class="listWrapper">
+            <div class="" name="data_column_block">
+                <dl class="listCon" v-for="(entry,index) in list" v-if="index<(number || 4)" :key="index">
+                    <dt class="listDt">
+                        <a :href="(CONFIG && CONFIG.href)+entry.id">
+                            <img :src="entry && entry.pub_picBig" onload="DrawImage(this,70,84)" alt="暂无封面"/>
                         </a>
                     </dt>
                     <dd class="jiaobiao" v-text="index+1" v-if="modulename === 'hotsalebank'"></dd>
-                    <dd class="fl pl15">
-                        <p class="title f14 ">
+                    <dd class="listDd">
+                        <p class="title">
                             <a :href="(CONFIG && CONFIG.href)+entry.id" class="hot_sell_text" v-text="entry.pub_resource_name" :title="entry.pub_resource_name"></a>
                         </p>
-                        <p class="hitcount pt15" v-if="modulename === 'hotsalebank'">点击量:{{entry.pub_read_num || 0}}</p>
-                        <p class="price" :class="{pt10: modulename === 'historyrecord'}">价格:￥{{entry.prod_member_price?Number(entry.prod_member_price).toFixed(2):'0.00'}}</p>
-                        <p class="shanchu fr" v-if="modulename === 'historyrecord'">
-                            <a href="javascript:void(0)" @click="deleteOneHistory()">删除</a>
+                        <p class="hitcount" v-if="modulename === 'hotsalebank'">点击量:{{entry.pub_read_num || 0}}</p>
+                        <p :class="{lineHeight: modulename === 'historyrecord'}">价格:￥<span class="price">{{entry.prod_member_price?Number(entry.prod_member_price).toFixed(2):'0.00'}}</span></p>
+                        <p class="delete" v-if="modulename === 'historyrecord'">
+                            <a href="javascript:void(0)" @click="deleteOneHistory(entry.id)"></a>
                         </p>
                     </dd>
                 </dl>
@@ -109,9 +109,9 @@ export default {
                 }
             })
         },
-        deleteOneHistory () {
+        deleteOneHistory (pubId) {
             if (this.member.loginName) {
-                Get(BASE_URL + 'browserHistory/deleteOneHistory.do?&loginName=' + 'song@163.com' + '&pubId=' + this.pubId + '&siteId=' + SITE_CONFIG.siteId).then((rep) => {
+                Get(BASE_URL + 'browserHistory/deleteOneHistory.do?&loginName=' + 'song@163.com' + '&pubId=' + pubId + '&siteId=' + SITE_CONFIG.siteId).then((rep) => {
                     if (rep.data.result === "1") {
                         this.$message({
                             type: "success",
@@ -178,25 +178,85 @@ export default {
 }
 </script>
 <style>
-/*文字自动换行处理*/
-.hot_sell_text {
+.ui_list_pic_06 {
+  margin-top: 30px;
+}
+
+.ui_list_pic_06 .titleHead {
+  height: 29px;
+  line-height: 29px;
+  width: 222px;
+  text-align: center;
+}
+
+.ui_list_pic_06 .listWrapper {
+  height: 437px;
+  border-width: 2px;
+  border-top: none;
+  width: 218px;
+}
+
+.ui_list_pic_06 .listCon {
+  padding: 23px 10px 30px 15px;
+  border-bottom-width: 2px;
+  margin: 0 7px 0px 10px;
+  overflow: hidden;
+  position: relative;
+  clear: both;
+}
+
+.ui_list_pic_06 .listCon .listDt {
+  float: left;
+}
+
+/* .ui_list_pic_06 .listCon .listDt .jiaobiao {
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;
+} */
+
+.ui_list_pic_06 .listCon .listDd {
+  padding-left: 15px;
+  float: left;
+}
+
+.ui_list_pic_06 .listCon .title {
+  height: 30px;
+  line-height: 30px;
+}
+
+.ui_list_pic_06 .listCon .hitcount {
+  padding-top: 15px;
+}
+
+.ui_list_pic_06 .listCon .lineHeight {
+  line-height: 35px;
+}
+
+.ui_list_pic_06 .listCon .delete {
+  background-position: -8px -28px;
+  width: 20px;
+  height: 20px;
+  float: right;
+}
+
+.ui_list_pic_06 .listCon .delete a {
+  text-indent: -99999px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.ui_list_pic_06 .hot_sell_text {
   display: inline-block;
   width: 80px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-.hotsellrank_ofbook_list_imgBox {
-  position: relative;
-  display: block !important;
-  width: 63px !important;
-  height: 84px !important;
-  line-height: 84px !important;
-}
-.hotsellrank_ofbook_list_img {
-  position: absolute;
-  display: inline-block;
-  top: 50%;
-  transform: translateY(-50%);
 }
 </style>

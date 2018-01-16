@@ -1,36 +1,39 @@
 <!-- 评论组件 Created by song 2018/1/10 -->
 <template>
-  <div id="bookReview" class="work_bookreview_01 book_detail_pinglun  mt10 pl15 cl ">
-    <div class="book_detail_pinglun_name color_c50 f14 pl20"><span class="pl25">精彩评论</span></div>
-    <div class="book_detail_pinglun_k">
-      <div class="book_detail_pinglun_k_01 mb15"><span class="fl f14 pr10 color_636">评论</span>
-        <p class="xing  mt04  fl starStyle">
-        <el-rate  v-model="starValue" :show-text="true" :max="5" void-color="#c1c1c0"></el-rate>
+  <div class="work_bookreview_01 work_bookreview_01_skin">
+    <div class="title">
+      <span>精彩评论</span>
+    </div>
+    <div class="reviewCon">
+      <div class="review">
+        <span class="reviewSpan">评论</span>
+        <p class="star">
+          <el-rate v-model="starValue" :show-text="true" :max="5" void-color="#c1c1c0"></el-rate>
         </p>
       </div>
-      <span class=""><textarea ref="commentContent" class="pinglun_02 pl10 color_767" style="width: 774px;height: 74px;margin-left: 40px;"></textarea></span>
+      <textarea ref="commentContent"></textarea>
 
-      <input type="button" class="pinglun_btn fr mt15" value="评论" @click="bookReview()"/>
+      <input type="button" class="reviewBtn" value="评论" @click="bookReview()"/>
     </div>
 
     <!--评论内容-->
-    <div class="book_detail_pinglun_con cl" v-if="commentList && commentList.length > 0" v-for="queryComment in commentList">
-      <div class="book_detail_pinglun_con_tx fl  pr20">
+    <div class="bookReviewWrapper" v-if="commentList && commentList.length > 0" v-for="queryComment in commentList">
+      <div class="personalImg">
         <img onload="DrawImage(this,35,35)" :src="queryComment.picture || '../../assets/img/people.jpg'" alt="暂无头像"/>
       </div>
-      <div class="book_detail_pinglun_con_xq fl">
-        <div class="line-h30">
-          <span class="fl book_detail_pinglun_con_xq_xm color_636 f14" v-text="queryComment.loginName"></span>
-          <p class="xing  mt08 ml10 fl starStyle">
+      <div class="reviewLists">
+        <div>
+          <span class="username" v-text="queryComment.loginName"></span>
+          <p class="score">
             <el-rate  v-model="queryComment.starNum - 0" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
           </p>
-          <span class="fr book_detail_pinglun_con_xq_time  f10" v-text="queryComment.createTime"></span>
+          <span class="createTime" v-text="queryComment.createTime"></span>
         </div>
-        <div class="cl book_detail_pinglun_con_xq_nr line-h20" v-text="queryComment.content">
+        <div class="reviewContent" v-text="queryComment.content">
         </div>
       </div>
     </div>
-    <div class="book_detail_pinglun_con cl f14 color_636" v-if="commentList.length === 0">暂无评论</div>
+    <div class="noReview" v-if="commentList.length === 0">暂无评论</div>
     <!--评论内容-->
   </div>
 </template>
@@ -90,7 +93,7 @@ export default {
       content = encodeURIComponent(content);
       var starNum = this.starValue;
       if (starNum == 0) {
-        _this.$message({
+        this.$message({
           message: '请先评分再提交评论~',
           type: 'error'
         })
@@ -143,6 +146,111 @@ export default {
 
 </script>
 <style>
+.work_bookreview_01 {
+  padding-left: 15px;
+  margin-top: 10px;
+  clear: both;
+}
 
+.work_bookreview_01 .title {
+  height: 22px;
+  line-height: 22px;
+  border-bottom-width: 2px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+}
+
+.work_bookreview_01 .title span {
+  background-position: -9px -50px;
+  padding-left: 25px;
+}
+
+.work_bookreview_01 .reviewCon {
+  padding: 32px 40px 16px 40px;
+  overflow: hidden;
+}
+
+.work_bookreview_01 .reviewCon .review {
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.work_bookreview_01 .reviewCon .review .reviewSpan {
+  padding-right: 10px;
+  float: left;
+}
+
+.work_bookreview_01 .reviewCon .star {
+  float: left;
+}
+
+.work_bookreview_01 .reviewCon textarea {
+  width: 774px;
+  height: 74px;
+  margin-left: 40px;
+  padding-left: 10px;
+}
+
+.work_bookreview_01 .reviewCon .reviewBtn {
+  margin-top: 15px;
+  float: right;
+  width: 80px;
+  height: 32px;
+  line-height: 32px;
+  border-width: 1px;
+}
+
+.work_bookreview_01 .bookReviewWrapper {
+  padding: 32px 40px 16px 40px;
+  overflow: hidden;
+  clear: both;
+}
+
+.work_bookreview_01 .bookReviewWrapper .personalImg {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  padding-right: 20px;
+  float: left;
+}
+
+.work_bookreview_01 .bookReviewWrapper .personalImg img {
+  width: 35px;
+  height: 35px;
+}
+
+.work_bookreview_01 .bookReviewWrapper .reviewLists {
+  width: 768px;
+  float: left;
+}
+
+.work_bookreview_01 .bookReviewWrapper .username {
+  float: left;
+}
+
+.work_bookreview_01 .bookReviewWrapper .score {
+  margin-left: 10px;
+  margin-bottom: 8px;
+  float: left;
+}
+
+.work_bookreview_01 .bookReviewWrapper .score .el-rate {
+  height: 20px;
+  line-height: 1;
+}
+
+.work_bookreview_01 .bookReviewWrapper .createTime {
+  float: right;
+}
+
+.work_bookreview_01 .bookReviewWrapper .reviewContent {
+  padding: 15px;
+  line-height: 20px;
+  clear: both;
+}
+
+.work_bookreview_01 .noReview {
+  padding: 32px 40px 16px 40px;
+}
 </style>
 

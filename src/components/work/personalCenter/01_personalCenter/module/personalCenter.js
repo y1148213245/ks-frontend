@@ -20,6 +20,7 @@ var state = {
   couponsList: [],    // 个人中心优惠券列表
   sumCoupons: {},     // 个人中心可用和已用优惠券的金额
   /*checkStatus: false, // 优惠码校验情况*/
+  searchNoteList:[]   // 个人中心随手记列表
 };
 var getters = {
   getMember: (state) => state.member,
@@ -39,6 +40,7 @@ var getters = {
   getCouponsList: (state) => state.couponsList,
   getSumCoupons: (state) => state.sumCoupons,
   /*getCheckStatus: (state) => state.checkStatus,*/
+  getSearchNoteList:(state) => state.searchNoteList,
 };
 
 var actions = {
@@ -402,6 +404,52 @@ var actions = {
       myCallback: datas.myCallback
     }));
   },
+      /*发送手机验证码*/
+      sendToMobile({commit, getters}, params) {
+        let loading = Vue.prototype.$loading({text: "验证码发送中..."});
+        api.sendToMobile(params).then(function (response) {
+        let sendStatus = response.data.result;
+        let sendNum = response.data.data;
+        params.cb(sendStatus, sendNum);
+        loading.close();
+        })
+      },
+          /*个人中心设置手机号*/
+        bindMobile({commit, getters}, params) {
+        api.bindMobile(params).then(function (response) {
+        let sendStatus = response.data.data.code;
+        params.cb(sendStatus, response);
+        })
+      },
+      /*个人中心更改手机号*/
+      changeBindMobile({commit, getters}, params) {
+        api.changeBindMobile(params).then(function (response) {
+        let sendStatus = response.data.data.code;
+        params.cb(sendStatus, response);
+        })
+      },
+      // 个人中心随手记列表
+      searchNoteList({commit, getters}, params) {
+        let loading = Vue.prototype.$loading({text: "正在加载中..."});
+        api.searchNoteList(params).then(function (response) {
+          let searchNoteList = response.data;
+          commit('setSearchNoteList', searchNoteList);
+          loading.close();
+        })
+      },
+      /*随手记上传*/
+      saveNote({commit, getters}, params) {
+        api.saveNote(params).then(function (response) {
+        params.cb(response.data.status);
+        })
+      },
+      /*随手记删除*/
+      deleteNote({commit, getters}, params) {
+        params.loginName = getters.getMember.loginName;
+        api.deleteNote(params).then(function (response) {
+        params.cb(response.data);
+        })
+      },
 };
 
 var mutations = {
@@ -417,6 +465,7 @@ var mutations = {
   setOrderDetailst: (state, orderDetails) => state.orderDetails = orderDetails,
   setBookShelfInfo: (state, bookShelfInfo) => state.bookShelfInfo = bookShelfInfo,
   setReturnGoodsList:(state, returnGoodsList) => state.returnGoodsList = returnGoodsList,
+  setSearchNoteList:(state, searchNoteList) => state.searchNoteList = searchNoteList,
   setCollectionInfo: (state, datas) => {
     state.collectionInfo = datas.collectionInfo;
     datas.myCallBack();
