@@ -1,0 +1,126 @@
+/* 
+ * 装公共页面的皮肤样式 比如：头部
+ * Created by song 2018/1/15
+ */
+
+
+/********************** start 头部组件 ************************/
+
+.components_header_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.components_header_skin a {
+  text-decoration: none;
+  outline: none;
+  color: #888888;
+}
+
+.components_header_skin input {
+  outline: none;
+}
+
+.components_header_skin .header_top1 {
+  font-size: 12px;
+  background-color: #ececec;
+  border-bottom-style: solid;
+  border-bottom-color: #d8d8d8;
+}
+
+.components_header_skin .header_top1 .member .loginImg {
+  background: url(../img/bg_001.png) no-repeat;
+  color: #c50000;
+}
+
+.components_header_skin .header_top1 .download .downloadApp {
+  background: url(../img/bg_001.png) no-repeat;
+}
+
+.components_header_skin .header_top2 .logo {
+  background: url(../img/logo.jpg) no-repeat;
+}
+
+.components_header_skin .header_top2 .myshop {
+  background: url(../img/bg_001.png) no-repeat;
+  font-size: 14px;
+}
+
+.components_header_skin .header_top2 .myshop .cartIcon {
+  cursor: pointer;
+  color: #525252;
+}
+
+.components_header_skin .header_top2 .myshop .cartIcon span {
+  background-color: #ae0f29;
+  font-size: 10px;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.components_header_skin .header_top2 .suishouji {
+  cursor: pointer;
+  color: #525252;
+  background: url(../img/bg_001.png) no-repeat;
+}
+
+.components_header_skin .header_top2 .highsearh {
+  color: #3b3b3b;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.components_header_skin .header_top2 .searchBox {
+  border-style: solid;
+  border-color: #ca0000;
+}
+
+.components_header_skin .header_top2 .searchBox .searchBtn {
+  font-size: 16px;
+  background-color: #c50000;
+  color: #fff;
+  cursor: pointer;
+  background-image: none;
+  background: url(../img/search.png) no-repeat left center;
+}
+
+.components_header_skin .header_top2 .searchBox .searchText {
+  color: #767676;
+  background: url(../img/search.png) no-repeat left center;
+}
+
+.components_header_skin .header_top2 .hotWordCon .info {
+  color: #787878;
+}
+
+.components_header_skin .header_top3 {
+  background-color: #515151;
+}
+
+.components_header_skin .header_top3 .allCata {
+  border-right-style: solid;
+  border-right-color: #908f8f;
+  color: #fff;
+  font-size: 16px;
+}
+
+.components_header_skin .header_top3 .allCata .allCataBg {
+  background: url(../img/bg_001.png) no-repeat;
+}
+
+.components_header_skin .header_top3 .nav a {
+  font-size: 16px;
+  color: #fff;
+}
+
+.components_header_skin .header_top3 .nav a:hover {
+  background-color: #c50000;
+} 
+
+.components_header_skin .header_top3 .nav .on {
+  background-color: #c50000;
+}
+
+
+/********************** end 头部组件 ************************/

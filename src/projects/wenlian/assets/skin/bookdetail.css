@@ -12,6 +12,12 @@
   color: #888888;
 }
 
+.work_bookdetail_02_skin a {
+  text-decoration: none;
+  outline: none;
+  color: #888888;
+}
+
 .work_bookdetail_02_skin .navigation {
   border-bottom-style: solid;
   border-bottom-color: #c50000;
@@ -118,6 +124,7 @@
   border-style: solid;
   border-color: #e13652;
   color: #c50000;
+  cursor: pointer;
 }
 
 .work_bookdetail_02 .otherInfoWrapper .otherInfo {

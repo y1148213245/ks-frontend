@@ -47,7 +47,7 @@
         </p>
 
         <!-- 优惠券 封装成组件形式 -->
-        <work_01_bookdetail_coupons :oneBookDetailInfo="bookInfo" namespace="bookdetail"></work_01_bookdetail_coupons>
+        <work_01_bookdetail_coupons :oneBookDetailInfo="bookInfo" namespace="bookdetail" style="margin-bottom:10px;"></work_01_bookdetail_coupons>
         <!-- 优惠券 END -->
 
         <p class="paperPrice">纸书定价：￥{{bookInfo.bookPrice | filterFun}}<span class="buyBook"><a :href="buyBookUrl">购买纸书</a></span></p>
@@ -364,6 +364,7 @@ function addCart (contentType, this_value, loginName) {
   line-height: 70px;
   height: 70px;
   margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .work_bookdetail_02_skin .bookDetailWrapper .price .oldPrice {
@@ -371,7 +372,6 @@ function addCart (contentType, this_value, loginName) {
 }
 
 .work_bookdetail_02 .bookDetailWrapper .bookDetailDd .promotion {
-  margin-top: 15px;
   margin-bottom: 10px;
 }
 
