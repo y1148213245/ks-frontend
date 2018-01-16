@@ -42,50 +42,55 @@
     </form>
   </div>
   <!-- 第二步 -->
-  <div class="bangding"  v-if="step==2">
-		<div class="bangding_name color_515">
-			<span class="f16 ml30 mr30 pl06 pr06" :class="{mingcheng_on:isBindMail}" @click="showBindMail">邮箱绑定</span>
-      |<span class="f16  ml30 pl06 pr06"  :class="{mingcheng_on:!isBindMail}" @click="showBindPhone">手机绑定</span>
+  <div class="register_02_bind"  v-if="step==2">
+		<div class="register_02_bind_nav-box">
+			<span class="register_02_bind_nav-box_title" :class="{'register_02_bind_nav-box_bind--on':isBindMail}" @click="showBindMail">邮箱绑定</span>
+      |<span class="register_02_bind_nav-box_title"  :class="{'register_02_bind_nav-box_bind--on':!isBindMail}" @click="showBindPhone">手机绑定</span>
 		</div>
 
-		<div class="bangding_con">
-			<div class="bangding_con_1" v-show="isBindMail && !isMailsend">
+		<div class="register_02_bind_content">
+			<div class="register_02_bind_content_mail" v-show="isBindMail && !isMailsend">
         <el-form :model="ruleFormE" :rules="rulesE" ref="ruleFormE" onkeydown="if(event.keyCode==13)return false;">
           <el-form-item prop="Email" >
-            <div class="bangding_con_2_yx mt30"><i class="yx_01 mr05"></i><span
-              class="yx_02 f14 color_727 mr30">邮箱:</span>
-              <el-input type="text" v-model="ruleFormE.Email" placeholder="请输入邮箱 email@mail.com" style="width:230px;"
+            <div class="register_02_bind_content_mail_input-box">
+              <i class="register_02_bind_content_mail_input-box_icon"></i>
+              <span class="register_02_bind_content_mail_input-box_label">邮箱:</span>
+              <el-input type="text" v-model="ruleFormE.Email" placeholder="请输入邮箱 email@mail.com" class="register_02_bind_content_mail_input-box_input"
                         @keyup.enter.native="submitFormE($event,'ruleFormE')"></el-input>
             </div>
           </el-form-item>
-          <el-button type="primary" @click="submitFormE('ruleFormE')" class="bangding_sj_xyb f14 color_fff lh11">立即注册</el-button>
+          <el-button type="primary" @click="submitFormE('ruleFormE')" class="register_02_bind_content_mail_input-box_button">立即注册</el-button>
         </el-form>
 			</div>
 
 
 
-			<div class="bangding_con_1" v-show="!isBindMail">
+			<div class="register_02_bind_content_mobile" v-show="!isBindMail">
         <el-form :model="ruleFormM" :rules="rulesM" ref="ruleFormM">
           <el-form-item prop="mobileNum" >
-          <div class="bangding_con_1_sj mt30"><i class="sj_01 mr05"></i><span class="sj_02 f14 color_727 mr15">手机号:</span>
-          <el-input type="text" v-model="ruleFormM.mobileNum" placeholder="请输入手机号"  style="width:115px;height:35px;"></el-input>
-          <div v-show="this.cheStatus==0" class="el-form-item__error">手机号已被绑定</div>
-          <el-button @click="getCode(ruleFormM.mobileNum)" class="yzm_04 color_7e7" v-show="this.cheStatus!=0">获取验证码</el-button>
-          </div>
+            <div class="register_02_bind_content_mobile_input-box">
+              <i class="register_02_bind_content_mobile_input-box_mobile-icon"></i>
+              <span class="register_02_bind_content_mobile_input-box_mobile-label">手机号:</span>
+              <el-input type="text" v-model="ruleFormM.mobileNum" placeholder="请输入手机号" class="register_02_bind_content_mobile_input-box_mobile-input"></el-input>
+              <div v-show="this.cheStatus==0" class="el-form-item__error">手机号已被绑定</div>
+              <el-button @click="getCode(ruleFormM.mobileNum)" class="register_02_bind_content_mobile_input-box_mobile-button" v-show="this.cheStatus!=0">获取验证码</el-button>
+            </div>
           </el-form-item>
-          <div class="bangding_con_1_yzm mt30">
-            <el-form-item prop="sendNum"><i class="yzm_01 mr05"></i><span class="yzm_02 f14 color_727 mr15">验证码:</span>
-          <el-input type="text" v-model="ruleFormM.sendNum" placeholder="请输入手机验证码"  style="width:115px;height:35px;"></el-input>
+          <el-form-item prop="sendNum">
+            <div class="register_02_bind_content_mobile_input-box">
+              <i class="register_02_bind_content_mobile_input-box_validate-icon"></i>
+              <span class="register_02_bind_content_mobile_input-box_validate-label">验证码:</span>
+              <el-input type="text" v-model="ruleFormM.sendNum" placeholder="请输入手机验证码"  class="register_02_bind_content_mobile_input-box_validate-input"></el-input>
+            </div>
           </el-form-item>
-          </div>
-          <el-button type="primary" @click="submitFormM('ruleFormM')" class="bangding_sj_xyb f14 color_fff lh11">立即注册</el-button>  
+          <el-button type="primary" @click="submitFormM('ruleFormM')" class="register_02_bind_content_mobile_input-box_button">立即注册</el-button>  
         </el-form>
       
 			</div>
 
 
-			<div class="bangding_con" v-show="isMailsend && isBindMail">
-				<div class="bangding_con_1" style="padding-left:0px;">
+			<div class="register_02_bind_content" v-show="isMailsend && isBindMail">
+				<div class="register_02_bind_content_mail" style="padding-left:0px;">
 					<div class="zhuce_cg_con_wc mt30 mb20"></div>
           <div class="zhuce_cg_con_ts f18 color_727 mb35">您的邮箱将会收到一封<span class="color_c50">验证</span>邮件 <br/> 请登录你的邮箱查看
           </div>
@@ -449,9 +454,9 @@ export default {
   border-width: 1px;
   overflow: hidden;
 
-  border-style: solid;
+  /* border-style: solid;
   border-color: #d9d9d9;
-  background-color: #fff;
+  background-color: #fff; */
 }
 .register_02_register_titlebox {
   margin: 0 18px 0 18px;
@@ -459,8 +464,8 @@ export default {
   line-height: 70px;
   border-bottom-width: 1px;
 
-  border-bottom-style: solid;
-  border-bottom-color: #bfbfbf;
+  /* border-bottom-style: solid;
+  border-bottom-color: #bfbfbf; */
 }
 .register_02_register_title {
   display: inline-block;
@@ -470,10 +475,10 @@ export default {
   line-height: 68px;
   border-bottom-width: 5px;
 
-  border-bottom-style: solid;
+  /* border-bottom-style: solid;
   border-bottom-color: #c50000;
   color: #c50000;
-  font-size: 16px;
+  font-size: 16px; */
 }
 .register_02_register_form {
   width: 480px;
@@ -495,15 +500,15 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  font-style: normal;
-  background-position: -5px -142px;
+  /* font-style: normal;
+  background-position: -5px -142px; */
   /* background: url(../img/bg_10.png) no-repeat; */
 }
 .register_02_register_form_box_usernamebox_label {
   margin-right: 15px;
 
-  color: #727272;
-  font-size: 14px;
+  /* color: #727272;
+  font-size: 14px; */
 }
 .register_02_register_form_box_usernamebox_input {
   width: 235px;
@@ -522,15 +527,15 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  background-position: -8px -324px;
+  /* background-position: -8px -324px; */
   /* background: url(../img/bg_10.png) no-repeat; */
-  font-style: normal;
+  /* font-style: normal; */
 }
 .register_02_register_form_box_passwordbox_label {
   margin-right: 15px;
 
-  color: #727272;
-  font-size: 14px;
+  /* color: #727272;
+  font-size: 14px; */
 }
 .register_02_register_form_box_passwordbox_input {
   width: 235px;
@@ -549,15 +554,15 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  background-position: -8px -354px;
+  /* background-position: -8px -354px; */
   /* background: url(../img/bg_10.png) no-repeat; */
-  font-style: normal;
+  /* font-style: normal; */
 }
 .register_02_register_form_box_confirm-password-box_label {
   margin-right: 15px;
 
-  color: #727272;
-  font-size: 14px;
+  /* color: #727272;
+  font-size: 14px; */
 }
 .register_02_register_form_box_confirm-password-box_input {
   width: 235px;
@@ -576,22 +581,21 @@ export default {
   text-indent: -9999px;
 
   /* background: url(../img/bg_10.png) no-repeat; */
-  background-position: -7px -176px;
-  font-style: normal;
+  /* background-position: -7px -176px;
+  font-style: normal; */
 }
 .register_02_register_form_box_validate-code-box_label {
   margin-right: 15px;
 
-  color: #727272;
-  font-size: 14px;
+  /* color: #727272;
+  font-size: 14px; */
 }
 .register_02_register_form_box_validate-code-box_input {
   width: 117px;
 }
 .register_02_register_form_box_validate-code-box_change-picture {
-  font-size: 12px;
-  font-size: 12px;
-  text-decoration: none;
+  /* font-size: 12px;
+  text-decoration: none; */
 }
 .register_02_register_form_box_validate-code-box_change-icon {
   display: inline-block;
@@ -600,9 +604,9 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  background-position: -5px -380px;
+  /* background-position: -5px -380px; */
   /* background: url(../img/bg_10.png) no-repeat; */
-  font-style: normal;
+  /* font-style: normal; */
 }
 .register_02_register_next-box {
   margin-left: 23px;
@@ -615,11 +619,144 @@ export default {
   line-height: 30px;
   border: 0px;
 
-  cursor: pointer;
+  /* cursor: pointer;
   background-color: #c50000;
   color: #fff;
   font-size: 14px;
-  outline: none;
+  outline: none; */
+}
+.register_02_bind {
+  width: 748px;
+  margin: 44px auto 55px auto;
+  padding-bottom: 80px;
+  border-width: 1px;
+  overflow: hidden;
+
+  /* border-style: solid;
+  border-color: #d9d9d9;
+  background-color: #fff; */
+}
+.register_02_bind_nav-box {
+  margin: 0 18px 0 18px;
+  line-height: 70px;
+  height: 70px;
+  border-bottom-width: 1px;
+
+  /* border-bottom-style: solid;
+  border-bottom-color: #bfbfbf;
+  color: #515151; */
+}
+.register_02_bind_nav-box_title {
+  padding-right: 6px;
+  padding-left: 6px;
+  margin-right: 30px;
+  margin-left: 30px;
+
+  /* cursor: pointer;
+  font-size: 16px; */
+}
+.register_02_bind_nav-box_bind--on {
+  display: inline-block;
+  line-height: 68px;
+  height: 67px;
+  border-bottom-width: 5px;
+
+  /* color: #c50000;
+  border-bottom-style: solid;
+  border-bottom-color: #c50000; */
+}
+.register_02_bind_content {
+  width: 480px;
+  margin: 0 auto;
+}
+.register_02_bind_content_mail,
+.register_02_bind_content_mobile {
+  padding: 85px 0 0 60px;
+}
+.register_02_bind_content_mail_input-box,
+.register_02_bind_content_mobile_input-box {
+  margin-top: 30px;
+}
+.register_02_bind_content_mail_input-box_icon {
+  display: inline-block;
+  margin-right: 5px;
+  height: 15px;
+  width: 17px;
+  vertical-align: middle;
+  text-indent: -9999px;
+
+  /* background-position: -8px -294px; */
+  /* background: url(../img/bg_10.png) no-repeat; */
+  /* font-style: normal; */
+}
+.register_02_bind_content_mail_input-box_label {
+  margin-right: 30px;
+
+  /* color: #727272;
+  font-size: 14px; */
+}
+.register_02_bind_content_mail_input-box_input {
+  width: 230px;
+}
+.register_02_bind_content_mail_input-box_button {
+  margin-left: 85px;
+  margin-top: 20px;
+  height: 35px;
+  border: 0px;
+  cursor: pointer;
+}
+.register_02_bind_content_mobile_input-box_mobile-icon {
+  display: inline-block;
+  margin-right: 5px;
+  height: 18px;
+  width: 15px;
+  text-indent: -9999px;
+  vertical-align: middle;
+
+  /* background-position: -8px -264px; */
+  /* background: url(../img/bg_10.png) no-repeat; */
+  /* font-style: normal; */
+}
+.register_02_bind_content_mobile_input-box_mobile-label {
+  margin-right: 15px;
+
+  /* color: #727272;
+  font-size: 14px; */
+}
+.register_02_bind_content_mobile_input-box_mobile-input {
+  width: 135px;
+  height: 35px;
+}
+.register_02_bind_content_mobile_input-box_mobile-button {
+}
+
+.register_02_bind_content_mobile_input-box_validate-icon {
+  display: inline-block;
+  margin-right: 5px;
+  height: 18px;
+  width: 17px;
+  vertical-align: middle;
+  text-indent: -9999px;
+
+  /* background-position: -7px -176px; */
+  /* background: url(../img/bg_10.png) no-repeat; */
+}
+.register_02_bind_content_mobile_input-box_validate-label {
+  margin-right: 15px;
+
+  /* color: #727272;
+  font-size: 14px; */
+}
+.register_02_bind_content_mobile_input-box_validate-input {
+  width: 115px;
+  height: 35px;
+}
+.register_02_bind_content_mobile_input-box_button {
+  margin-left: 85px;
+  margin-top: 20px;
+  height: 35px;
+  border: 0px;
+  cursor: pointer;
 }
 </style>
 
@@ -634,8 +771,5 @@ export default {
   border-radius: 4px;
   letter-spacing: 5px;
   color: #c50000;
-}
-.lh11 {
-  line-height: 11px;
 }
 </style>
