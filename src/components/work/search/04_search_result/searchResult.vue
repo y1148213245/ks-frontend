@@ -1,51 +1,51 @@
 <!--  -->
 <template>
- <div>
-    <div v-if="projectConfig.isShowTotalCountTag" class="search_num f14">共<span v-text="totalCount"></span>件商品</div>
+ <div class="search_04">
+    <div v-if="projectConfig.isShowTotalCountTag" class="search_04-search_totalcount">共<span v-text="totalCount"></span>件商品</div>
     
-    <div class="search_jg_list cl">
-      <div style="overflow: hidden;">
+    <div class="search_04-content">
+      <div class="search_04-content-list">
         <transition-group name="fade">
-          <dl class="search_jg_list_con fl" v-for='entry in list' :key="entry.id">
-            <dt class="fl">
+          <dl class="search_04-content-list-entry_box" v-for='entry in list' :key="entry.id">
+            <dt class="search_04-content-list-entry_box-dt">
               <a class="search_list_imgBox" href="javascript:void(0)" @click="toDetail(entry.id)">
                 <img class="search_list_img" :src="entry.pub_picBig"  onload="DrawImage(this,186,271)" alt="暂无封面"/>
               </a>
             </dt>
             <dd>
-              <p class="title f16">
-                <a href="javascript:void(0)" @click="toDetail(entry.id)" v-text="entry.pub_resource_name" class="search_text" :title="entry.pub_resource_name"></a>
+              <p class="search_04-content-list-entry_box-title">
+                <a href="javascript:void(0)" @click="toDetail(entry.id)" v-text="entry.pub_resource_name" class="search_04-content-list-entry_box-title-a" :title="entry.pub_resource_name"></a>
               </p>
-              <p class="author f14 search_text">作者：<span v-text="entry.BOOK_SYS_AUTHORS" :title="entry.BOOK_SYS_AUTHORS"></span></p>
-              <p class="banquan search_text" :title="entry.BOOK_PRESS_NAME">版权：{{entry.BOOK_PRESS_NAME}}</p>
-              <p class="chuban search_text" :title="entry.BOOK_PUBDATE | fmtDate">出版：{{entry.BOOK_PUBDATE | fmtDate}}</p>
-              <p class="price f16">￥<i v-text="parseFloat(entry.prod_member_price || 0).toFixed(2) "></i>
-                <span>￥<span
+              <p class="search_04-content-list-entry_box-author">作者：<span v-text="entry.BOOK_SYS_AUTHORS" :title="entry.BOOK_SYS_AUTHORS"></span></p>
+              <p class="search_04-content-list-entry_box-pressname" :title="entry.BOOK_PRESS_NAME">版权：{{entry.BOOK_PRESS_NAME}}</p>
+              <p class="search_04-content-list-entry_box-pub-date" :title="entry.BOOK_PUBDATE | fmtDate">出版：{{entry.BOOK_PUBDATE | fmtDate}}</p>
+              <p class="search_04-content-list-entry_box-price">￥<i v-text="parseFloat(entry.prod_member_price || 0).toFixed(2) "></i>
+                <span class="search_04-content-list-entry_box-price-span">￥<span
                   v-text="parseFloat(entry.BOOK_EB_PRICE || 0).toFixed(2)"></span></span></p>
-              <p class="xing">
+              <p class="search_04-content-list-entry_box-star">
                 <span class="scope_star">
                   <el-rate v-model="entry.pub_star_num" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
                 </span>
                 <span v-text="entry.pub_comment_num || 0"></span>条评论
               </p>
-              <p class="zhaiyao zhaiyao_text" v-text="entry.BOOK_SYNOPSIS || '暂无摘要'"
+              <p class="search_04-content-list-entry_box-synopsis" v-text="entry.BOOK_SYNOPSIS || '暂无摘要'"
                   :title="entry.BOOK_SYNOPSIS"></p>
-              <p class="disanfang">
-                <a href="javascript:void(0)" @click="toDetail(entry.id)">第三方购买</a>
+              <p class="search_04-content-list-entry_box-orther_shop">
+                <a href="javascript:void(0)" class="search_04-content-list-entry_box-orther_shop-a" @click="toDetail(entry.id)">第三方购买</a>
               </p>
-              <p class="other"><!--<span class="sc shoucang">收藏</span>-->
+              <p class="search_04-content-list-entry_box-orthers"><!--<span class="sc shoucang">收藏</span>-->
                 <a href="http://www.jiathis.com/share"
-                    class="jiathis jiathis_txt jtico jtico_jiathis share share-box" target="_blank">分享</a>
-                <a href="javascript:void(0)" @click="toDetail(entry.id)" class="goumai f12  color_fff">购买</a>
-                <a href="javascript:void(0)" @click="toDetail(entry.id)" class="chakan f12 color_fff">查看</a>
+                    class="search_04-content-list-entry_box-orthers-share" target="_blank">分享</a>
+                <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-orthers-buy">购买</a>
+                <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-orthers-to_view">查看</a>
               </p>
             </dd>
           </dl>
         </transition-group>
       </div>
-      <div class="searh_pagingBox">
+      <div class="search_04-content-paging">
         <ui_pagination :pageMessage="{totalCount}" :excuteFunction="toPage"
-                :page-sizes="pageSizes" :current-page="currentPage"></ui_pagination>
+                :page-sizes="pageSizes" :props-current-page="currentPage"></ui_pagination>
       </div>
     </div>
  </div>
@@ -122,80 +122,184 @@ export default {
           this.list = data;
         }
       })
+    },
+    toDetail(pubId) {
+      window.location.href = this.projectConfig.detailHref + pubId;
     }
   },
   filters: {
-      fmtDate(obj) {
-        if (obj) {
-          var date = new Date(obj);
-          var y = 1900 + date.getYear();
-          var m = "0" + (date.getMonth() + 1);
-          var d = "0" + date.getDate();
-          return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
-        } else {
-          return "暂无日期"
-        }
-      },
+    fmtDate (obj) {
+      if (obj) {
+        var date = new Date(obj);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+      } else {
+        return "暂无日期"
+      }
     },
+  },
 }
 
 </script>
-<style scoped>
-.share-box {
-  border: 1px solid #d2d2d2;
+<style>
+.search_04 {
 }
+.search_04-search_totalcount {
+  padding-right: 30px;
+  padding-top: 20px;
+  text-align: right;
 
-.scope_star {
+  font-size: 14px;
+}
+.search_04-content {
+  overflow: hidden;
+  clear: both;
+}
+.search_04-content-list {
+  overflow: hidden;
+}
+.search_04-content-list-entry_box {
+  float: left;
+  width: 580px;
+  padding: 20px 0px 15px 20px;
+  overflow: hidden;
+  border-bottom-width: 1px;
+
+  border-bottom-style: solid;
+  border-bottom-color: #e5e5e5;
+}
+.search_04-content-list-entry_box-dt {
+  float: left;
+}
+.search_04-content-list-entry_box-title {
+  font-size: 16px;
+}
+.search_04-content-list-entry_box-title-a {
   display: inline-block;
-}
-.fade-enter-active {
-  transition: opacity 0.4s;
-}
+  line-height: 34px;
+  width: 300px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
-.fade-enter {
-  opacity: 0;
+  text-decoration: none;
+  color: #c50000;
 }
-
-.searh_pagingBox {
-  padding: 30px 0;
-}
-
-/*单行自动换行处理*/
-.search_text {
+.search_04-content-list-entry_box-author {
   display: inline-block;
   width: 300px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
+  line-height: 24px;
 
-/*多行自动换行处理*/
-.zhaiyao_text {
+  color: #0871b0;
+}
+.search_04-content-list-entry_box-pressname {
+  display: inline-block;
+  width: 300px;
+  line-height: 24px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  color: #8d8c8c;
+}
+.search_04-content-list-entry_box-pub-date {
+  display: inline-block;
+  width: 300px;
+  line-height: 24px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  color: #8d8c8c;
+}
+.search_04-content-list-entry_box-price {
+  font-size: 16px;
+  color: #c50000;
+  font-weight: bold;
+  line-height: 36px;
+}
+.search_04-content-list-entry_box-price-span {
+  color: #9c9595;
+  text-decoration: line-through;
+  font-size: 12px;
+}
+.search_04-content-list-entry_box-star {
+  margin: 2px 0 5px 0;
+}
+.search_04-content-list-entry_box-synopsis {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
   width: 300px;
   height: 40px;
-}
+  line-height: 20px;
 
-.search_list_imgBox {
-  position: relative;
-  display: block !important;
-  width: 186px !important;
-  height: 271px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 271px !important;
+  color: #947aa0;
 }
+.search_04-content-list-entry_box-orther_shop {
+  height: 32px;
 
-.search_list_img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  /* background: url(../img/bg_008.png) no-repeat; */
+  background-position: -9px 2px;
+}
+.search_04-content-list-entry_box-orther_shop-a {
+  line-height: 32px;
+  padding-left: 25px;
+
+  text-decoration: none;
+  color: #515151;
+  outline: none;
+}
+.search_04-content-list-entry_box-orthers {
+  line-height: 28px;
+}
+.search_04-content-list-entry_box-orthers-share {
   display: inline-block;
-  margin: 0 !important;
-  padding: 0 !important;
-  transform: translate(-50%, -50%);
+  height: 28px;
+  width: 38px;
+  border: 1px solid #d2d2d2;
+  line-height: 28px;
+  text-indent: -9999px;
+
+  text-decoration: none;
+  outline: none;
+  color: #888888;
+  background-position: 1px 90px;
+  /* background-image: url(../img/bg_005.png); */
+}
+.search_04-content-list-entry_box-orthers-buy {
+  display: inline-block;
+  width: 52px;
+  height: 30px;
+  line-height: 30px;
+
+  text-align: center;
+  background: #c50000;
+  color: #fff;
+  font-size: 12px;
+  text-decoration: none;
+  outline: none;
+}
+.search_04-content-list-entry_box-orthers-to_view {
+  display: inline-block;
+  width: 52px;
+  height: 30px;
+  line-height: 30px;
+
+  text-align: center;
+  background: #515151;
+  color: #fff;
+  font-size: 12px;
+  text-decoration: none;
+  outline: none;
+}
+.search_04-content-paging {
+  padding: 30px 0;
 }
 </style>
