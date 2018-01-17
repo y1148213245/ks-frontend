@@ -6,7 +6,7 @@
           <div class="slide">
             <div class="testi-image">
               <a class="index_recommend_imgBox">
-                <img class="index_recommend_img" :src="picList && picList[index] && picList[index].pub_picSmall" onload="DrawImage(this,282,148)" alt="暂无封面">
+                <img class="index_recommend_img" :src="picList && picList[index] && picList[index].pub_picSmall" onload="DrawImage(this,282,148)" alt="暂无封面" @click="toDetail(item.id)" style="cursor: pointer;">
               </a>
             </div>
           </div>
@@ -27,7 +27,8 @@
     props: ["namespace"],
     data:function(){
       return {
-        picList:[]
+        picList:[],
+        CONFIG: null,
       }
     },
     created:function(){
@@ -36,6 +37,7 @@
     methods:{
       getData:function(){
         let CONFIG =  PROJECT_CONFIG[this.namespace].swiper.pic_noWords_04;
+        this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
         Post(CONFIG.url,CONFIG.params).then((rep)=>{
           this.picList=rep.data.result;
           this.$nextTick(this.initSwiper);
@@ -51,6 +53,9 @@
               paginationAsRange:true
             },
           })
+      },
+      toDetail(id) {
+        window.location.href = this.CONFIG.infoDetailHref + id;
       }
     }
   }

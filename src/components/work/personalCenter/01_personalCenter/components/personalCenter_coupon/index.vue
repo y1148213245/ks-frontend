@@ -98,333 +98,344 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import Vue from 'vue';
-  // import * as type from 'projectsConfig/config.wl.js';
-  import {mapGetters, mapActions} from 'vuex';
-  export default {
-    name: "coupon",
-    reused: true,
-    props: ["namespace"],
-    mounted: function () {
-      this.$store.dispatch('personalCenter/queryUser', {  // 先去vuex获取一下用户信息
-        loadedCallBack: this.loadCallBack
-      });
-
-    },
-    data() {
-      return {
-        showItem: 'noUse',
-        password: '',
-      }
-    },
-    computed: {
-      ...mapGetters({
-        member: 'personalCenter/getMember',
-        /*member: 'page/member/login/getMember',  // 获取用户信息 */
-        couponsList: 'personalCenter/getCouponsList',  // 优惠券列表
-        sumCoupons: 'personalCenter/getSumCoupons',    // 可用 or 已用优惠券总金额
-      })
-    },
-    components: {},
-    methods: {
-      activeCoupon() {  // 优惠码激活
-        var _this = this;
-        var params = {
-          param: {
-            couponPassword: this.password,  //优惠券的密码
-            loginName: this.member.loginName
-          },
-          myCallback: function () {
-            if (this.checkStatus.status === true) {  // 操作成功
-              var errorMsg = this.checkStatus.msg;
-              _this.$alert(errorMsg, '系统提示', {
-                confirmButtonText: '确定'
-              });
-            } else {  // 操作失败
-              _this.$alert('操作失败~', '系统提示', {
-                confirmButtonText: '确定'
-              });
-            }
-            _this.password = '';
-            _this.queryCoupons()
+import Vue from "vue";
+// import * as type from 'projectsConfig/config.wl.js';
+import { mapGetters, mapActions } from "vuex";
+export default {
+  name: "coupon",
+  reused: true,
+  props: ["namespace"],
+  mounted: function() {
+    this.$store.dispatch("personalCenter/queryUser", {
+      // 先去vuex获取一下用户信息
+      loadedCallBack: this.loadCallBack
+    });
+  },
+  data() {
+    return {
+      showItem: "noUse",
+      password: ""
+    };
+  },
+  computed: {
+    ...mapGetters({
+      member: "personalCenter/getMember",
+      /*member: 'page/member/login/getMember',  // 获取用户信息 */
+      couponsList: "personalCenter/getCouponsList", // 优惠券列表
+      sumCoupons: "personalCenter/getSumCoupons" // 可用 or 已用优惠券总金额
+    })
+  },
+  components: {},
+  methods: {
+    activeCoupon() {
+      // 优惠码激活
+      var _this = this;
+      var params = {
+        param: {
+          couponPassword: this.password, //优惠券的密码
+          loginName: this.member.loginName
+        },
+        myCallback: function() {
+          if (this.checkStatus.status === true) {
+            // 操作成功
+            var errorMsg = this.checkStatus.msg;
+            _this.$alert(errorMsg, "系统提示", {
+              confirmButtonText: "确定"
+            });
+          } else {
+            // 操作失败
+            _this.$alert("操作失败~", "系统提示", {
+              confirmButtonText: "确定"
+            });
           }
-        };
-        if (this.password !== "") {
-          this.$store.dispatch('personalCenter/queryActiveCoupons', params);
+          _this.password = "";
+          _this.queryCoupons();
         }
-      },
-      loadCallBack() {
-        this.queryCoupons();
-        this.$store.dispatch('personalCenter/querySumCoupons', {loginName: this.member.loginName});
-      },
-      toggleCoupon(item) {
-        this.showItem = item;
-        this.queryCoupons();
-      },
-      queryCoupons() {
-        var params = {
-          loginName: this.member.loginName,
-          type: this.showItem
-        };
-        this.$store.dispatch('personalCenter/queryCoupons', params);
-      },
-      toUseCoupons(item) {  // 立即使用 跳转到第一个分类下的列表页面
-        var cascadeId = item.cascadeId.substring(0, item.cascadeId.indexOf(','));
-        window.location.href = '../book/bookList.html?cascadeId=' + cascadeId;
+      };
+      if (this.password !== "") {
+        this.$store.dispatch("personalCenter/queryActiveCoupons", params);
       }
     },
-    filters: {
-      formatTime: function (value) {
-        if (value) {
-          return value.substring(0, value.indexOf(' ')).replace(/-/g, '.');
-        } else {
-          return value;
-        }
-      },
-      formatDiscount: function (value) {
-        return value * 10;
-      },
-      formatName: function (value) {
-        if (value) {
-          return value.replace(/,/g, '，');
-        } else {
-          return value;
-        }
-      },
-      formatMoney: function (value) {
-        if (value) {
-          return Number(value).toFixed(2) + ' 元';
-        } else {
-          return value;
-        }
-
+    loadCallBack() {
+      this.queryCoupons();
+      this.$store.dispatch("personalCenter/querySumCoupons", {
+        loginName: this.member.loginName
+      });
+    },
+    toggleCoupon(item) {
+      this.showItem = item;
+      this.queryCoupons();
+    },
+    queryCoupons() {
+      var params = {
+        loginName: this.member.loginName,
+        type: this.showItem
+      };
+      this.$store.dispatch("personalCenter/queryCoupons", params);
+    },
+    toUseCoupons(item) {
+      // 立即使用 跳转到第一个分类下的列表页面
+      var cascadeId = item.cascadeId.substring(0, item.cascadeId.indexOf(","));
+      window.location.href = "../book/bookList.html?cascadeId=" + cascadeId;
+    }
+  },
+  filters: {
+    formatTime: function(value) {
+      if (value) {
+        return value.substring(0, value.indexOf(" ")).replace(/-/g, ".");
+      } else {
+        return value;
+      }
+    },
+    formatDiscount: function(value) {
+      return value * 10;
+    },
+    formatName: function(value) {
+      if (value) {
+        return value.replace(/,/g, "，");
+      } else {
+        return value;
+      }
+    },
+    formatMoney: function(value) {
+      if (value) {
+        return Number(value).toFixed(2) + " 元";
+      } else {
+        return value;
       }
     }
   }
+};
 </script>
 <style>
-  #couponsCom .couponActive .el-input {
-    width: 200px;
-  }
+#couponsCom .couponActive .el-input {
+  width: 200px;
+}
 
-  #couponsCom .couponRange {
-    max-width: 200px;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-  }
+#couponsCom .couponRange {
+  max-width: 200px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
 
-  #couponsCom .yhq_con .yhq_con_02 {
-    font-size: 24px;
-  }
+#couponsCom .yhq_con .yhq_con_02 {
+  font-size: 24px;
+}
 
-  #couponsCom .yhq_con .yhq_con_03 {
-    font-size: 40px;
-  }
+#couponsCom .yhq_con .yhq_con_03 {
+  font-size: 40px;
+}
 
-  #couponsCom .noneCoupons {
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-  }
+#couponsCom .noneCoupons {
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+}
 
-  .main_right {
-    width: 880px;
-    overflow: hidden;
-    margin: 0 auto;
-  }
+.main_right {
+  width: 880px;
+  overflow: hidden;
+  margin: 0 auto;
+}
 
-  #couponsCom .color_6f6 {
-    color: #6f6f6f;
-  }
+#couponsCom .color_6f6 {
+  color: #6f6f6f;
+}
 
-  #couponsCom .wzdh_yhq {
-    border: 1px solid #d9d9d9;
-    padding: 40px 35px;
-  }
+#couponsCom .wzdh_yhq {
+  border: 1px solid #d9d9d9;
+  padding: 40px 35px;
+}
 
-  #couponsCom .wzdh_yhq .wzdh_yhq_con {
-    width: 690px;
-    margin: 0 auto;
-  }
+#couponsCom .wzdh_yhq .wzdh_yhq_con {
+  width: 690px;
+  margin: 0 auto;
+}
 
-  #couponsCom .wzdh_yhq .wzdh_yhq_con .wzdh_yhq_con_all {
-    overflow: hidden;
-  }
+#couponsCom .wzdh_yhq .wzdh_yhq_con .wzdh_yhq_con_all {
+  overflow: hidden;
+}
 
-  #couponsCom .f16 {
-    font-size: 16px;
-  }
+#couponsCom .f16 {
+  font-size: 16px;
+}
 
-  #couponsCom .wzdh_yhq_con_all .wzdh_yhq_con_all_01 {
-    width: 340px;
-    height: 88px;
-    background: #eeeeee;
-    text-align: center;
-  }
+#couponsCom .wzdh_yhq_con_all .wzdh_yhq_con_all_01 {
+  width: 340px;
+  height: 88px;
+  background: #eeeeee;
+  text-align: center;
+}
 
-  #couponsCom .color_ca0 {
-    color: #ca0000;
-  }
+#couponsCom .color_ca0 {
+  color: #ca0000;
+}
 
-  #couponsCom .f24 {
-    font-size: 24px;
-  }
+#couponsCom .f24 {
+  font-size: 24px;
+}
 
-  #couponsCom .mt30 {
-    margin-top: 30px;
-  }
+#couponsCom .mt30 {
+  margin-top: 30px;
+}
 
-  #couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_title {
-    border-bottom: 1px solid #c50000;
-  }
+#couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_title {
+  border-bottom: 1px solid #c50000;
+}
 
-  #couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab {
-    font-weight: bold;
-    overflow: hidden;
-  }
+#couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab {
+  font-weight: bold;
+  overflow: hidden;
+}
 
-  #couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab p {
-    width: 222px;
-    height: 24px;
-  }
+#couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab p {
+  width: 222px;
+  height: 24px;
+}
 
-  #couponsCom .fl {
-    float: left;
-  }
+#couponsCom .fl {
+  float: left;
+}
 
-  #couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab span {
-    cursor: pointer;
-  }
+#couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab span {
+  cursor: pointer;
+}
 
-  #couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab span.on {
-    color: #ca0000;
-    border-bottom: 2px solid #ca0000;
-  }
+#couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab span.on {
+  color: #ca0000;
+  border-bottom: 2px solid #ca0000;
+}
 
-  #couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab p.wzdh_yhq_con_list_tab_03 {
-    text-align: right;
-  }
+#couponsCom
+  .wzdh_yhq_con_list
+  .wzdh_yhq_con_list_tab
+  p.wzdh_yhq_con_list_tab_03 {
+  text-align: right;
+}
 
-  #couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_tab p.wzdh_yhq_con_list_tab_02 {
-    text-align: center;
-  }
+#couponsCom
+  .wzdh_yhq_con_list
+  .wzdh_yhq_con_list_tab
+  p.wzdh_yhq_con_list_tab_02 {
+  text-align: center;
+}
 
-  #couponsCom .wzdh_yhq_con_list_tab_con table tr.yhq_title {
-    background: #f2f2f2;
-    line-height: 45px;
-    height: 45px;
-  }
+#couponsCom .wzdh_yhq_con_list_tab_con table tr.yhq_title {
+  background: #f2f2f2;
+  line-height: 45px;
+  height: 45px;
+}
 
-  #couponsCom .wzdh_yhq_con_list_tab_con table tr td div.yhq_con_01 {
-    /* background: url(../../../../../../static/img/bg_10.png) no-repeat; */
-    display: inline-block;
-    vertical-align: middle;
-  }
+#couponsCom .wzdh_yhq_con_list_tab_con table tr td div.yhq_con_01 {
+  background: url(../../assets/img/bg_10.png) no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+}
 
-  #couponsCom .wzdh_yhq_con_list_tab_con table tr td {
-    width: 33.33%;
-  }
+#couponsCom .wzdh_yhq_con_list_tab_con table tr td {
+  width: 33.33%;
+}
 
-  #couponsCom .wzdh_yhq_con_list_tab_con table tr.yhq_con {
-    height: 125px;
-  }
+#couponsCom .wzdh_yhq_con_list_tab_con table tr.yhq_con {
+  height: 125px;
+}
 
-  #couponsCom .wzdh_yhq_con_list_tab_con table tr {
-    vertical-align: middle;
-    text-align: center;
-  }
+#couponsCom .wzdh_yhq_con_list_tab_con table tr {
+  vertical-align: middle;
+  text-align: center;
+}
 
-  #couponsCom .wzdh_yhq_con_list_tab_con table tr.yhq_con {
-    height: 125px;
-  }
+#couponsCom .wzdh_yhq_con_list_tab_con table tr.yhq_con {
+  height: 125px;
+}
 
-  #couponsCom .wzdh_yhq_con_list_tab_con table tr {
-    vertical-align: middle;
-    text-align: center;
-  }
+#couponsCom .wzdh_yhq_con_list_tab_con table tr {
+  vertical-align: middle;
+  text-align: center;
+}
 
-  #couponsCom .wzdh_yhq_con_list_tab_con table tr td div.yhq_con_01 {
-    background-position: -256px -512px;
-    width: 214px;
-    height: 78px;
-  }
+#couponsCom .wzdh_yhq_con_list_tab_con table tr td div.yhq_con_01 {
+  background-position: -256px -512px;
+  width: 214px;
+  height: 78px;
+}
 
-  #couponsCom .mr05 {
-    margin-right: 5px;
-  }
+#couponsCom .mr05 {
+  margin-right: 5px;
+}
 
-  #couponsCom .ml18 {
-    margin-left: 18px;
-  }
+#couponsCom .ml18 {
+  margin-left: 18px;
+}
 
-  #couponsCom .color_656 {
-    color: #656260;
-  }
+#couponsCom .color_656 {
+  color: #656260;
+}
 
-  #couponsCom .f16 {
-    font-size: 16px;
-  }
+#couponsCom .f16 {
+  font-size: 16px;
+}
 
-  #couponsCom .mb05 {
-    margin-bottom: 5px;
-  }
+#couponsCom .mb05 {
+  margin-bottom: 5px;
+}
 
-  #couponsCom .yhq_sy {
-    text-align: right;
-  }
+#couponsCom .yhq_sy {
+  text-align: right;
+}
 
-  #couponsCom .yhq_sy_01 {
-    background: #ca0000;
-    line-height: 30px;
-    height: 30px;
-    padding: 3px 15px;
-  }
+#couponsCom .yhq_sy_01 {
+  background: #ca0000;
+  line-height: 30px;
+  height: 30px;
+  padding: 3px 15px;
+}
 
-  #couponsCom .color_fff {
-    color: #fff;
-  }
+#couponsCom .color_fff {
+  color: #fff;
+}
 
-  #couponsCom .mt10 {
-    margin-top: 10px;
-  }
+#couponsCom .mt10 {
+  margin-top: 10px;
+}
 
-  #couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_title {
-    border-bottom: 1px solid #c50000;
-  }
+#couponsCom .wzdh_yhq_con_list .wzdh_yhq_con_list_title {
+  border-bottom: 1px solid #c50000;
+}
 
-  #couponsCom .color_727 {
-    color: #727272;
-  }
+#couponsCom .color_727 {
+  color: #727272;
+}
 
-  #couponsCom .f18 {
-    font-size: 18px;
-  }
+#couponsCom .f18 {
+  font-size: 18px;
+}
 
-  #couponsCom .line-h24 {
-    line-height: 24px;
-  }
+#couponsCom .line-h24 {
+  line-height: 24px;
+}
 
-  #couponsCom .pb15 {
-    padding-bottom: 15px;
-  }
+#couponsCom .pb15 {
+  padding-bottom: 15px;
+}
 
-  #couponsCom .pl12 {
-    padding-left: 12px;
-  }
+#couponsCom .pl12 {
+  padding-left: 12px;
+}
 
-  #couponsCom .yhq_con .yhq_con_04 {
-    font-size: 25px;
-    margin-bottom: 0px;
-  }
+#couponsCom .yhq_con .yhq_con_04 {
+  font-size: 25px;
+  margin-bottom: 0px;
+}
 
-  #couponsCom .pb05 {
-    padding-bottom: 5px;
-  }
+#couponsCom .pb05 {
+  padding-bottom: 5px;
+}
 
-  #couponsCom .pt10 {
-    padding-top: 10px;
-  }
+#couponsCom .pt10 {
+  padding-top: 10px;
+}
 </style>

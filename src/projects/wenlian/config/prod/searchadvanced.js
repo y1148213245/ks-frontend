@@ -20,6 +20,7 @@ export default {
       pageSizes:[10, 20, 50, 100],
       eventName_loadDate:'loadSearchResult',
       isShowTotalCountTag:false,
+      detailHref: '../pages/bookdetail.html?pubId='
     },
     search_condition_05: {
       conditions:"{pub_resource_type:'BOOK'},{pub_site_id:'2'}",

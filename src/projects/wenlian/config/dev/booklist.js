@@ -3,5 +3,17 @@
  */
 
 export default {
-  name: 'booklist'
+  name: 'booklist',
+  _2colsWithSort: {
+    queryBookList: {
+      url: '/data/ui_list_pic_17.json',
+      params: {}
+    }
+  },
+  _3colsWithSort: {
+    queryBookList: {
+      url: '/data/ui_list_pic_18.json',
+      params: {}
+    }
+  }
 }

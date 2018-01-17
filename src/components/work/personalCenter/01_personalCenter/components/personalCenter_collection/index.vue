@@ -68,324 +68,323 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import Vue from "vue";
+// import * as type from 'projectsConfig/config.wl.js';
+import { mapGetters, mapActions } from "vuex";
 
-  import Vue from 'vue';
-  // import * as type from 'projectsConfig/config.wl.js';
-  import {mapGetters, mapActions} from 'vuex';
-
-  export default {
-    name: "collecting",
-    reused: true,
-    props: ["namespace"],
-    mounted: function () {
-      this.siteId = SITE_CONFIG.siteId;
-      this.$store.dispatch("personalCenter/queryUser", {
-        loadedCallBack: this.loadedCallBack
+export default {
+  name: "collecting",
+  reused: true,
+  props: ["namespace"],
+  mounted: function() {
+    this.siteId = SITE_CONFIG.siteId;
+    this.$store.dispatch("personalCenter/queryUser", {
+      loadedCallBack: this.loadedCallBack
+    });
+  },
+  data() {
+    return {
+      siteId: "",
+      modalStatus: false,
+      selectedAll: false
+    };
+  },
+  computed: {
+    ...mapGetters("personalCenter/", {
+      collectionInfo: "getCollectionInfo"
+    })
+  },
+  methods: {
+    loadedCallBack() {
+      var params = {
+        param: {
+          pageIndex: 1,
+          pageSize: 8
+        },
+        myCallBack: function() {}
+      };
+      this.$store.dispatch("personalCenter/queryCollectionInfo", params);
+    },
+    pagingF: function({ pageNum, pageSize }) {
+      var params = {
+        param: {
+          pageIndex: pageNum,
+          pageSize: pageSize
+        },
+        myCallBack: function() {}
+      };
+      this.$store.dispatch("personalCenter/queryCollectionInfo", params);
+    },
+    deleteCollProduct: function(item) {
+      // 删除收藏商品
+      var _this = this;
+      this.$confirm("您确定要将商品移除收藏夹吗?", "系统提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function() {
+        var params = {
+          id: item.pubId,
+          cb: _this.deleteCollProductcb
+        };
+        _this.$store.dispatch("personalCenter/deleteCollProduct", params);
       });
     },
-    data() {
-      return {
-        siteId: "",
-        modalStatus: false,
-        selectedAll: false,
+    deleteCollProductcb: function(delCollStatus) {
+      var _this = this;
+      if (delCollStatus == 1) {
+        this.$message({
+          message: "移除成功",
+          type: "success"
+        });
+        var params = {
+          param: {},
+          myCallBack: function() {
+            _this.isSelectAll();
+          }
+        };
+        this.$forceUpdate();
+        this.$store.dispatch("personalCenter/queryCollectionInfo", params);
+      } else {
+        this.$message({
+          message: "移除失败",
+          type: "error"
+        });
       }
     },
-    computed: {
-      ...mapGetters("personalCenter/", {
-        collectionInfo: "getCollectionInfo",
-      })
+    selectCollProduct: function(item) {
+      this.isSelectAll();
     },
-    methods: {
-      loadedCallBack() {
-        var params = {
-          param: {
-            pageIndex: 1,
-            pageSize: 8
-          },
-          myCallBack: function() {}
-        };
-        this.$store.dispatch("personalCenter/queryCollectionInfo", params);
-      },
-      pagingF: function ({pageNum, pageSize}) {
-        var params = {
-          param: {
-            pageIndex: pageNum,
-            pageSize: pageSize
-          },
-          myCallBack: function() {}
-        };
-        this.$store.dispatch("personalCenter/queryCollectionInfo", params);
-      },
-      deleteCollProduct: function (item) {  // 删除收藏商品
-        var _this = this;
-        this.$confirm('您确定要将商品移除收藏夹吗?', '系统提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(function () {
-          var params = {
-            id: item.pubId,
-            cb: _this.deleteCollProductcb
-          };
-          _this.$store.dispatch("personalCenter/deleteCollProduct", params);
-        })
-      },
-      deleteCollProductcb: function (delCollStatus) {
-        var _this = this;
-        if (delCollStatus == 1) {
-          this.$message({
-            message: '移除成功',
-            type: 'success'
-          });
-          var params = {
-            param: {},
-            myCallBack: function() {
-              _this.isSelectAll();
-            }
-          };
-          this.$forceUpdate();
-          this.$store.dispatch("personalCenter/queryCollectionInfo", params);
-
+    deleteLots: function() {
+      var tempList = this.collectionInfo.data;
+      var len = tempList.length;
+      var pubidList = [];
+      for (var i = 0; i < len; i++) {
+        if (tempList[i].checked) {
+          pubidList.push(tempList[i].pubId);
+        }
+      }
+      if (pubidList.length <= 0) {
+        this.$message({
+          message: "请选择至少一件商品~",
+          type: "error"
+        });
+        return false;
+      }
+      var pubIds = {
+        pubId: pubidList.join(",")
+      };
+      this.deleteCollProduct(pubIds);
+    },
+    selectAll: function() {
+      var tempList = this.collectionInfo.data;
+      var len = tempList.length;
+      for (var j = 0; j < len; j++) {
+        if (typeof tempList[j].checked == "undefined") {
+          Vue.set(tempList[j], "checked", this.selectedAll);
         } else {
-          this.$message({
-            message: '移除失败',
-            type: 'error'
-          })
+          tempList[j].checked = this.selectedAll;
         }
-      },
-      selectCollProduct: function (item) {
-        this.isSelectAll();
-      },
-      deleteLots: function () {
-        var tempList = this.collectionInfo.data;
-        var len = tempList.length;
-        var pubidList = [];
-        for (var i = 0; i < len; i++) {
-          if (tempList[i].checked) {
-            pubidList.push(tempList[i].pubId);
-          }
+      }
+    },
+    isSelectAll: function() {
+      var status = true;
+      var data = this.collectionInfo.data;
+      for (var j = 0; j < data.length; j++) {
+        if (!data[j].checked) {
+          status = false;
         }
-        if (pubidList.length <= 0) {
-          this.$message({
-            message: '请选择至少一件商品~',
-            type: 'error'
-          });
-          return false;
-        }
-        var pubIds = {
-          pubId: pubidList.join(",")
-        };
-        this.deleteCollProduct(pubIds);
-      },
-      selectAll: function () {
-        var tempList = this.collectionInfo.data;
-        var len = tempList.length;
-        for (var j = 0; j < len; j++) {
-          if (typeof tempList[j].checked == "undefined") {
-            Vue.set(tempList[j], "checked", this.selectedAll);
-          } else {
-            tempList[j].checked = this.selectedAll;
-          }
-        }
-      },
-      isSelectAll: function () {
-        var status = true;
-        var data = this.collectionInfo.data;
-        for (var j = 0; j < data.length; j++) {
-          if (!data[j].checked) {
-            status = false;
-          }
-        }
-        if (status) {
-          this.selectedAll = true;
-        } else {
-          this.selectedAll = false;
-        }
+      }
+      if (status) {
+        this.selectedAll = true;
+      } else {
+        this.selectedAll = false;
       }
     }
   }
+};
 </script>
 <style>
-  .wl_collWrapper {
-    width: 80%;
-    float: right;
-    color: #4a4a4a;
-    font-size: 14px;
-  }
+.wl_collWrapper {
+  width: 80%;
+  float: right;
+  color: #4a4a4a;
+  font-size: 14px;
+}
 
-  .wl_collWrapper .myColList {
-    margin-bottom: 30px;
-  }
+.wl_collWrapper .myColList {
+  margin-bottom: 30px;
+}
 
-  .wl_collWrapper .readBox {
-    position: absolute;
-    bottom: 30px;
-    z-index: 0;
-    width: 180px;
-    height: 30px;
-    line-height: 30px;
-    background-color: rgba(100, 100, 100, 0.7);
-    color: white;
-    cursor: pointer;
-    user-select: none;
-    transition: all .2s ease-in 0s;
-    transform: translateY(0px);
-  }
+.wl_collWrapper .readBox {
+  position: absolute;
+  bottom: 30px;
+  z-index: 0;
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  background-color: rgba(100, 100, 100, 0.7);
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in 0s;
+  transform: translateY(0px);
+}
 
-  .wl_collWrapper .readBox a {
-    color: #ffffff;
-  }
+.wl_collWrapper .readBox a {
+  color: #ffffff;
+}
 
-  .wl_collWrapper .picBox:hover > .readBox {
-    transition: all 0.2s ease-out;
-    transform: translateY(-30px);
-  }
+.wl_collWrapper .picBox:hover > .readBox {
+  transition: all 0.2s ease-out;
+  transform: translateY(-30px);
+}
 
-  .wl_collWrapper .picBox {
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 10px;
-    border: 1px solid #e7e7e7;
-    width: 180px;
-    height: 200px;
-    vertical-align: middle;
-    display: table-cell;
-    background-color: #ffffff;
-  }
+.wl_collWrapper .picBox {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+  border: 1px solid #e7e7e7;
+  width: 180px;
+  height: 200px;
+  vertical-align: middle;
+  display: table-cell;
+  background-color: #ffffff;
+}
 
-  .wl_collWrapper .collContent .namePrice {
-    width: 180px;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-    background-color: #FFF;
-  }
+.wl_collWrapper .collContent .namePrice {
+  width: 180px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  background-color: #fff;
+}
 
-  .wl_collWrapper .collContent .namePrice div {
-    width: 180px;
-    height: 30px;
-    line-height: 30px;
-    white-space: nowrap;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 10px;
-    box-sizing: border-box;
-  }
+.wl_collWrapper .collContent .namePrice div {
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
 
-  .wl_collWrapper .collContent .namePrice div:last-child {
-    color: #ffa31a;
-  }
+.wl_collWrapper .collContent .namePrice div:last-child {
+  color: #ffa31a;
+}
 
-  .wl_collWrapper .collContent .namePrice div:last-child span {
-    font-weight: bold;
-    font-size: 16px;
-  }
+.wl_collWrapper .collContent .namePrice div:last-child span {
+  font-weight: bold;
+  font-size: 16px;
+}
 
-  .wl_collWrapper .picBox:hover {
-    border: 1px solid #ffa31a;
-  }
+.wl_collWrapper .picBox:hover {
+  border: 1px solid #ffa31a;
+}
 
-  .wl_collWrapper .collContent .deleteCllo {
-    position: absolute;
-    right: 2px;
-    top: -17px;
-    transition: all .2s ease-in 0s;
-    transform: translateY(0px);
-  }
+.wl_collWrapper .collContent .deleteCllo {
+  position: absolute;
+  right: 2px;
+  top: -17px;
+  transition: all 0.2s ease-in 0s;
+  transform: translateY(0px);
+}
 
-  .wl_collWrapper .collContent .deleteCllo img {
-    cursor: pointer;
-  }
+.wl_collWrapper .collContent .deleteCllo img {
+  cursor: pointer;
+}
 
-  .wl_collWrapper .picBox:hover > .deleteCllo {
-    transition: all 0.2s ease-out;
-    transform: translateY(17px);
-  }
+.wl_collWrapper .picBox:hover > .deleteCllo {
+  transition: all 0.2s ease-out;
+  transform: translateY(17px);
+}
 
-  .wl_collWrapper .collContent .selectCllo {
-    position: absolute;
-    left: 1px;
-    top: 1px;
-    /*transition: all .2s ease-in 0s;
+.wl_collWrapper .collContent .selectCllo {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  /*transition: all .2s ease-in 0s;
     transform: translateY(0px);*/
-  }
+}
 
-  .wl_collWrapper .collContent .selectCllo a {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border: 1px solid #bcbcbc;
-    border-radius: 3px;
-    font-size: 0;
-    line-height: 0;
-    overflow: hidden;
-    margin: 0 5px 1px 0;
-    vertical-align: text-bottom;
-  }
+.wl_collWrapper .collContent .selectCllo a {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #bcbcbc;
+  border-radius: 3px;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+  margin: 0 5px 1px 0;
+  vertical-align: text-bottom;
+}
 
-  .wl_collWrapper .collContent .selectCllo .checked {
-    border-color: #ff2832;
-    /* background: #ff2832 url(~projects/wenlian/assets/img/tick.png) no-repeat 0px 1px; */
-    background-size: 12px;
-  }
+.wl_collWrapper .collContent .selectCllo .checked {
+  border-color: #ff2832;
+  /* background: #ff2832 url(~projects/wenlian/assets/img/tick.png) no-repeat 0px 1px; */
+  background-size: 12px;
+}
 
-  .wl_collWrapper .emptyColl {
-    text-align: center;
-    padding: 50px 0px;
-  }
+.wl_collWrapper .emptyColl {
+  text-align: center;
+  padding: 50px 0px;
+}
 
-  .wl_collWrapper .emptyColl img {
-    width: 150px;
-  }
+.wl_collWrapper .emptyColl img {
+  width: 150px;
+}
 
-  .wl_collWrapper .deleteColls {
-    height: 30px;
-    line-height: 30px;
-  }
+.wl_collWrapper .deleteColls {
+  height: 30px;
+  line-height: 30px;
+}
 
-  .wl_collWrapper .deleteColls a {
-    margin-left: 10px;
-    color: #4a4a4a;
-  }
+.wl_collWrapper .deleteColls a {
+  margin-left: 10px;
+  color: #4a4a4a;
+}
 
-  .wl_collWrapper .deleteColls a:hover {
-    color: #ff2832;
-    text-decoration: underline !important;
-  }
+.wl_collWrapper .deleteColls a:hover {
+  color: #ff2832;
+  text-decoration: underline !important;
+}
 
-  .wl_collWrapper .deleteColls .selectAll {
-    margin-right: 10px;
-    cursor: pointer;
-  }
+.wl_collWrapper .deleteColls .selectAll {
+  margin-right: 10px;
+  cursor: pointer;
+}
 
-  .wl_collWrapper .deleteColls .selectAll a {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border: 1px solid #bcbcbc;
-    background-color: #fff;
-    border-radius: 3px;
-    font-size: 0;
-    line-height: 0;
-    overflow: hidden;
-    margin: 0 1px 1px 0;
-    vertical-align: text-bottom;
-  }
+.wl_collWrapper .deleteColls .selectAll a {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #bcbcbc;
+  background-color: #fff;
+  border-radius: 3px;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+  margin: 0 1px 1px 0;
+  vertical-align: text-bottom;
+}
 
-  .wl_collWrapper .deleteColls .checked a {
-    border-color: #ff2832;
-    /* background: #ff2832 url(~projects/wenlian/assets/img/tick.png) no-repeat 0px 1px; */
-    background-size: 12px;
-  }
+.wl_collWrapper .deleteColls .checked a {
+  border-color: #ff2832;
+  /* background: #ff2832 url(~projects/wenlian/assets/img/tick.png) no-repeat 0px 1px; */
+  background-size: 12px;
+}
 
-  .wl_collWrapper .myColList ul {
-    display: inline-block;
-  }
+.wl_collWrapper .myColList ul {
+  display: inline-block;
+}
 
-  .wl_collWrapper .myColList ul li {
-    float: left;
-    margin-right: 30px;
-    margin-top: 15px;
-  }
+.wl_collWrapper .myColList ul li {
+  float: left;
+  margin-right: 30px;
+  margin-top: 15px;
+}
 </style>

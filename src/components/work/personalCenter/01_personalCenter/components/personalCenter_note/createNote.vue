@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import ArticleDetail from './parallelWriting/parallelWriting.vue'
+import ArticleDetail from "./parallelWriting/parallelWriting.vue";
 export default {
-  name: 'createForm',
+  name: "createForm",
   reused: true,
   props: ["namespace"],
   components: { ArticleDetail }
-}
+};
 </script>
 

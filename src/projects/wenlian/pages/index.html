@@ -3,10 +3,10 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title>首页</title>
-  <!-- <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/index.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/bookStyle.css"> -->
+  <!--<link type="text/css" rel="stylesheet" href="../assets/css/base.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="../assets/css/common.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="../assets/css/index.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="../assets/css/bookStyle.css">-->
   <link type="text/css" rel="stylesheet" href="../assets/skin/index.css">
   <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
 
@@ -15,15 +15,17 @@
   <script type="text/javascript" src="../assets/js/web.js"></script>
 
   <script type="text/javascript" src="../assets/config/index.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $(".all_class").click(function () {
-        $(this).toggleClass("open");
-        $(".all_class_detail").slideToggle();
-      });
-    });
-  </script>
   <style>
+    .main {
+      width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+    }
+
+    .main_left {
+      float:left
+    }
+
     .footerCom {
       height: 117px;
       text-align: center;
@@ -37,11 +39,99 @@
       line-height: 30px;
       color: #d4d4d4;
     }
+
+    /* start 热门书籍 */
+    .hot_book_con {
+      border-top: 2px solid #da0b2d;
+      padding-left: 20px;
+      width: 940px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      clear: both;
+    }
+
+    .hot_book_con h3 {
+      font-weight: normal;
+      line-height: 25px;
+      height: 25px;
+    }
+
+    .hot_book_con .hot_book_name {
+      padding: 0px 0 0px 30px;
+      margin: 15px 0 20px 0;
+      background: url(../assets/img/bg_001.png) no-repeat -2px -132px;
+      color: #7e7e7e;
+      font-size: 18px;
+      float: left;
+    }
+
+    .hot_book_con .more {
+      font-size: 12px;
+      padding-top: 20px;
+      float: right;
+    }
+
+    .hot_book_con .more a {
+      color: #727272;
+      text-decoration: none;
+    }
+    /* end 热门书籍 */
+
+    .main_right {
+      float: right;
+    }
+
+    /* start 作者展示 */
+
+    .showAuthor {
+      border-top: 2px solid #da0b2d;
+      padding-left: 20px;
+      width: 1180px;
+      overflow: hidden;
+      margin-bottom: 48px;
+      clear: both;
+    }
+
+    .showAuthor h3 {
+      font-weight: normal;
+      line-height: 25px;
+      height: 25px;
+    }
+
+    .showAuthor .showAuthorName {
+      color: #7e7e7e;
+      font-size: 18px;
+      float: left;
+      padding: 0px 0 0px 30px;
+      margin: 15px 0 0px 0;
+      background: url(../assets/img/bg_001.png) no-repeat  -2px -156px;
+    }
+
+    .showAuthor .more {
+      padding-right: 30px;
+      font-size: 12px;
+      padding-top: 20px;
+      float: right;
+    }
+
+    .showAuthor .more a {
+      color: #727272;
+      text-decoration: none;
+    }
+
+    .showAuthorList {
+      background: #fff;
+      margin: 20px auto;
+      padding-left: 7px;
+      padding-top: 25px;
+      clear: both;
+    }
+    /* end 作者展示 */
   </style>
 </head>
 
 <body id="home">
-<div id="app">
+<div id="app" style="display: none">
   <!--id="wl"-->
   <!--头-->
   <components_common_header namespace="header"></components_common_header>
@@ -49,7 +139,7 @@
 
   <ui_swiper_05_advert namespace="index"></ui_swiper_05_advert>
 
-  <div id="advert" class="gz_001">
+  <!-- <div id="advert" class="gz_001">
     <div class="advertCon">
       <div name="data_column_block">
         <a class="gz_001" style="display: block;">
@@ -57,7 +147,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="main">
     <ui_swiper_04_pic_nowords namespace="index"></ui_swiper_04_pic_nowords>
     <!--<div id="carousel" class="jdt">-->
@@ -67,18 +157,28 @@
     <!--</div>-->
     <!--</div>-->
     <!--</div>-->
-    <div class="main_left fl">
+    <!--<div class="wenlian_common_refine wenlian_common_refine_skin" style="width:100%;border-top:2px solid #da0b2d;">-->
+      <!--<div name="index_jpts_head">-->
+          <!--<span class="index_jpts_name">运营分析</span>-->
+        <!--<div class="zzzs_list cl">-->
+          <!--&lt;!&ndash;-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;运营分析&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+          <!--<operation_analysis></operation_analysis>-->
+          <!--&lt;!&ndash;-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;END 运营分析&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <div class="main_left">
       <!-- 精品图书组件 -->
       <wenlian_common_refined_book namespace="common"></wenlian_common_refined_book>
       <!-- END 精品图书组件 -->
 
       <!-----------------------热门书籍-------------------------------->
-      <div id="popular" class="hot_book cl">
+      <div class="hot_book_con">
         <div class="popularCon">
           <h3>
-            <span class="hot_book_name fl f18 color_7e7">热门书籍</span>
-            <span class="more fr pt20 f12">
-                <a href="../pages/bookList.html?colId=57" class="color_727">MORE+</a>
+            <span class="hot_book_name">热门书籍</span>
+            <span class="more">
+                <a href="../pages/bookList.html?colId=57">MORE+</a>
               </span>
           </h3>
           <ui_list_pic_o7_popular_book namespace="common"></ui_list_pic_o7_popular_book>
@@ -86,7 +186,7 @@
       </div>
       <!-----------------------END 热门书籍-------------------------------->
     </div>
-    <div class="fr">
+    <div class="main_right">
       <!--热销排行-->
       <ui_list_pic_06_book_list namespace="common" number="4" modulename="hotsalebank"></ui_list_pic_06_book_list>
       <!--END热销排行-->
@@ -94,21 +194,22 @@
       <ui_list_pic_08_editor namespace="common" :show_more="true"></ui_list_pic_08_editor>
       <!--END编辑-->
     </div>
-    <div class="zzzs cl">
+    <div class="showAuthor">
       <div name="data_column_block">
         <h3>
-          <span class="zzzs_name fl f18 color_7e7">作者展示</span>
-          <span class="more fr pt20 f12">
-              <a href="javascript:location.href=$_$.indexPage.authorMoreHref" class="color_727">MORE+</a>
+          <span class="showAuthorName">作者展示</span>
+          <span class="more">
+              <a href="javascript:location.href=$_$.indexPage.authorMoreHref">MORE+</a>
             </span>
         </h3>
 
-        <div class="zzzs_list cl">
+        <div class="showAuthorList">
           <!-----------------------作者展示-------------------------------->
           <ui_list_pic_11 namespace="index"></ui_list_pic_11>
           <!-----------------------END 作者展示-------------------------------->
         </div>
       </div>
+    </div>
     </div>
   </div>
   <div class="footerCom">

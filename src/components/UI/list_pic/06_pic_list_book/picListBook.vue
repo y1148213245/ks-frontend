@@ -209,7 +209,7 @@ export default {
   float: left;
 }
 
-/* .ui_list_pic_06 .listCon .listDt .jiaobiao {
+.ui_list_pic_06 .listCon .jiaobiao {
   position: absolute;
   top: 15px;
   left: 8px;
@@ -218,7 +218,7 @@ export default {
   text-align: center;
   line-height: 20px;
   border-radius: 50%;
-} */
+}
 
 .ui_list_pic_06 .listCon .listDd {
   padding-left: 15px;

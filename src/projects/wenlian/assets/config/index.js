@@ -16,7 +16,16 @@ var CRUMB_TYPE = [{
 }, {
   name: 'editor',
   title: '编辑详情',
+},{
+  name: 'aboutus',
+  title: '关于我们',
 }];
+
+// 图书列表根据栏目ID控制显示类型
+var BOOK_LIST_TYPE= {
+  _2_COLS:[57],
+  _3_COLS:[0,59,130]
+};
 
 var GO_CONTRIBUTE={
   // baseURL:'http://172.19.36.42:8080/wenlian/ssoWenlianLogin.do?'   //去投稿

@@ -3,28 +3,27 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>首页</title>
-  <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
+  <title>关于我们</title>
+  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
   <link type="text/css" rel="stylesheet" href="../assets/skin/aboutus.css">
 
   <script type="text/javascript" src="../assets/js/jquery.js"></script>
-
+  <script type="text/javascript" src="../assets/js/web.js"></script>
   <script type="text/javascript" src="../assets/config/index.js"></script>
-  <script type="text/javascript">
-  </script>
 
 </head>
 
-<body id="home">
+<body>
 
 
-  <div id="app">
+  <div id="app" style="display: none">
+    <components_aboutus_handleurl></components_aboutus_handleurl>
     <!--id="wl"-->
     <!--头-->
     <components_common_header namespace="header"></components_common_header>
     <div class="main_news mb60">
       <wenlian_common_crumbs></wenlian_common_crumbs>
+      <components_aboutus_content namespace="aboutus"></components_aboutus_content>
     </div>
     <!--头end-->
     <div id="wl_footer" class="footer f14">

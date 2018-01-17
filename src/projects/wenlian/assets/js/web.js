@@ -43,3 +43,11 @@ function DrawImage(ImgD,iwidth,iheight) {
   }
 
 }
+
+//左侧图书分类
+$(document).ready(function () {
+  $(".all_class").on("click",function(){
+    $(this).toggleClass("open");
+    $(".all_class_detail").slideToggle();
+  });
+});

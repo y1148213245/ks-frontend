@@ -146,6 +146,7 @@ export default {
 
 </script>
 <style>
+/* start 评论结构样式 */
 .work_bookreview_01 {
   padding-left: 15px;
   margin-top: 10px;
@@ -252,5 +253,64 @@ export default {
 .work_bookreview_01 .noReview {
   padding: 32px 40px 16px 40px;
 }
+/* end 评论结构样式 */
+
+/* start 皮肤样式 */
+.work_bookreview_01_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.work_bookreview_01_skin .title {
+  color: #c50000;
+  font-size: 14px;
+  border-bottom-style: solid;
+  border-bottom-color: #c50000;
+}
+
+.work_bookreview_01_skin .title span {
+  background-image: url(/assets/img/bg_008.png) ;
+  background-repeat: no-repeat;
+}
+
+.work_bookreview_01_skin .reviewCon .review .reviewSpan {
+  color: #636363;
+  font-size: 14px;
+}
+
+.work_bookreview_01_skin .reviewCon textarea {
+  color: #767676;
+}
+
+.work_bookreview_01_skin .reviewCon .reviewBtn {
+  border-style: solid;
+  border-color: #dbdbdb;
+  color: #7e7e7e;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+}
+
+.work_bookreview_01_skin .bookReviewWrapper .username {
+  color: #636363;
+  font-size: 14px;
+}
+
+.work_bookreview_01_skin .bookReviewWrapper .createTime {
+  color: #b1b1b1;
+  font-size: 10px;
+}
+
+.work_bookreview_01_skin .bookReviewWrapper .reviewContent {
+  background: #f9f9f9;
+}
+
+.work_bookreview_01_skin .noReview {
+  color: #636363;
+  font-size: 14px;
+}
+
+/* end 皮肤样式 */
 </style>
 

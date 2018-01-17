@@ -11,14 +11,14 @@
           <a @click="toEditRoom(entry)" v-text="entry.name" class="scoped_line" href="javascript:void(0)">编辑室</a>
         </div>
         <div class="bm_name_jj">
-          <p style="margin-bottom:15px;">成立时间：<span v-text="entry.create_date || '暂无成立时间'"></span></p>
-          <p style="margin-bottom:15px;">团队成员：<span v-text="entry.people_num || '暂无成员数'"></span></p>
-          <p style="line-height:20px;">编辑室简介：<span v-text="entry.describe || '暂无简介'"></span></p>
+          <p>成立时间：<span v-text="entry.create_date || '暂无成立时间'"></span></p>
+          <p>团队成员：<span v-text="entry.people_num || '暂无成员数'"></span></p>
+          <p>编辑室简介：<span v-text="entry.describe || '暂无简介'"></span></p>
         </div>
       </div>
     </div>
 
-    <div v-show="inEditRoom" style="width: 100%;overflow: hidden;">
+    <div v-show="inEditRoom" class="inEditRoom">
       <div @click="exitEditRoom" class="scoped_tg_back">返回</div>
     </div>
     <template v-show="inEditRoom" v-for="entry in editorPage.result">

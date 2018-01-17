@@ -2,15 +2,17 @@
 <template>
   <div class="main_zzfw">
     <div class="daohang f14">
-      <span class="color_9b9">您的位置：</span><a href="../index/index.html" class="color_9b9">首页</a> >>
+      <span class="color_9b9">您的位置：</span><a href="../pages/index.html">首页</a> >>
       <span class="color_626" v-text="currentCol.name">投稿方式</span>
     </div>
     <!-- 导航-->
     <div class="zzfw_container">
       <!-- 左边导航-->
-      <div class="zzfw_container_left fl" style=" margin:36px 0 0 50px;">
+      <div class="zzfw_container_left fl">
         <work_author_service_navigate namespace="authorservice" :cols="authorServiceCols" :current="currentCol"></work_author_service_navigate>
+        <keep-alive exclude="work_author_service_submission">
         <div v-bind:is="currentCol.url" namespace="authorservice" :col="currentCol"></div>
+        </keep-alive>
       </div>
     </div>
   </div>

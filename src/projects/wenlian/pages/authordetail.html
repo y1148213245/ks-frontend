@@ -8,17 +8,9 @@
     <script type="text/javascript" src="../assets/config/index.js"></script>
     <script type="text/javascript" src="../assets/js/jquery.js"></script>
     <script type="text/javascript" src="../assets/js/web.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $(".all_class").click(function () {
-          $(this).toggleClass("open");
-          $(".all_class_detail").slideToggle();
-        });
-      });
-    </script>
 </head>
 <body>
-  <div id="app">
+  <div id="app" style="display: none">
     <components_authordetail_handleurl></components_authordetail_handleurl>
     <!--头-->
     <components_common_header namespace="header"></components_common_header>

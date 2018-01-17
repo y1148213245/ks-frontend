@@ -28,11 +28,12 @@
 					</span>
         </div>
         <div class="news_nr f14 line-h24 pt20 color_737 pb25" v-html="information.information_a_content"></div>
-        <div style="text-align:center; width:940px;margin:0 auto;overflow:hidden;">
+        <div class="infoImg">
           <img :src="information.pub_picBig" onload="DrawImage(this,940,455)">
         </div>
 
         <!-- 这里要放评论组件 -->
+        <work_bookreview_01 namespace="bookdetail"></work_bookreview_01>
       </div>
     </div>
   </div>
@@ -51,6 +52,7 @@
     data: function () {
       return {
         CONFIG: null, // API配置
+        pubId: 0, // 资讯ID
         information: {}, // 资讯详情
         commentList: [] // 评论列表
       }
@@ -62,6 +64,7 @@
     },
     mounted: function () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].information_info_content;
+      this.setPubId();
       this.queryInformation();
     },
     methods: {
@@ -70,13 +73,17 @@
         'setQueryComment',
         'setAddComment'
       ]),
+      setPubId: function () {
+        let urlParams = URL.parse(document.URL, true).query;
+        this.pubId = urlParams.pubId || 0;
+      },
       parseUrlAndParamsToStr: function (url, params) {
         let urlInfo = URL.parse(url, true);
         urlInfo.query = params;
         return URL.format(urlInfo);
       },
       queryInformation: function () {
-        let url = this.parseUrlAndParamsToStr(this.CONFIG.queryDetail.url, this.CONFIG.queryDetail.params);
+        let url = this.parseUrlAndParamsToStr(this.CONFIG.queryDetail.url, {pubId: this.pubId, loginName: this.member && this.member.loginName || ''});
         Get(url).then(rep => {
           if (rep.data && rep.data.success) {
             this.information = rep.data.data;
@@ -94,7 +101,7 @@
           return;
         }
         let param = {
-          loginName: 'song@163.com',
+          loginName: loginName,
           pubId: id,
           operateType: operateTypeValue,
           contentType: contentType

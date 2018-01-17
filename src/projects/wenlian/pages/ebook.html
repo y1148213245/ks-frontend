@@ -10,9 +10,14 @@
   <script type="text/javascript" src="../assets/config/index.js"></script>
   <script type="text/javascript" src="../assets/js/web.js"></script>
   <script type="text/javascript" src="../assets/js/jquery_03.js"></script>
+  <script>
+    $(document).ready(function () {
+      $(".all_class").off("click");
+    });
+  </script>
 </head>
 <body>
-<div id="app">
+<div id="app" style="display: none">
   <components_ebook_handleurl></components_ebook_handleurl>
   <!--头-->
   <components_common_header namespace="header"></components_common_header>

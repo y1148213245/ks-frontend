@@ -323,13 +323,13 @@
 </template>
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions } from "vuex";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
-    name: "list",
-    reused: true,
-    props: ["namespace"],
-    mounted() {
+  name: "list",
+  reused: true,
+  props: ["namespace"],
+  mounted() {
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
     });
@@ -337,11 +337,11 @@ export default {
   computed: {
     ...mapGetters({
       /*member: "page/member/login/getMember", // 获取用户信息*/
-      member: "personalCenter/getMember",   // 在vuex里面获取用户信息
+      member: "personalCenter/getMember", // 在vuex里面获取用户信息
       myOrderList: "personalCenter/getOrderList", // 获取订单列表
-      orderDetails: "personalCenter/getOrderDetails",  // 获取订单详情
-      commitInfo: 'personalCenter/getCommitInfo',      // 获取订单号等信息
-    }),
+      orderDetails: "personalCenter/getOrderDetails", // 获取订单详情
+      commitInfo: "personalCenter/getCommitInfo" // 获取订单号等信息
+    })
   },
   data() {
     return {
@@ -350,19 +350,19 @@ export default {
       myData: [],
       dialogTableVisible: false,
       // 订单列表状态
-      payStatusNum:'',
+      payStatusNum: "",
       // 退换货
       num: 1,
       max: 10,
-      textarea: '',
-      dialogImageUrl: '',
+      textarea: "",
+      dialogImageUrl: "",
       dialogVisible: false,
-      returnNum:'',
-      returnAuthor:'',
-      returnCreateTime:'',
-      returnBigPic:'',
-      returnProductName:'',
-      returnReasons:'',
+      returnNum: "",
+      returnAuthor: "",
+      returnCreateTime: "",
+      returnBigPic: "",
+      returnProductName: "",
+      returnReasons: "",
       //退换货结束
       pickerOptions2: {
         shortcuts: [
@@ -409,7 +409,7 @@ export default {
       this.currentShow = this.title[index];
     },
     // 展示退换货
-    showReturn(item,item1,orderindex){
+    showReturn(item, item1, orderindex) {
       let productName = item1.productName;
       let author = item1.author;
       let bigPic = item1.bigPic;
@@ -423,7 +423,7 @@ export default {
       this.returnAuthor = author;
       this.returnCreateTime = createTime;
       this.returnProductName = productName;
-      this.returnBigPic = bigPic
+      this.returnBigPic = bigPic;
 
       console.log(orderCode);
       console.log(returnNum);
@@ -437,14 +437,13 @@ export default {
       this.currentShow = "return";
     },
     // 文本框
-    textChange(value){
+    textChange(value) {
       console.log(value);
       let textValue = value;
       this.returnReasons = textValue;
     },
-    textBlur(){
-      if(this.returnReasons.length == 0){
-
+    textBlur() {
+      if (this.returnReasons.length == 0) {
       }
       console.log(this.returnReasons);
     },
@@ -454,13 +453,11 @@ export default {
     },
     // 退换货申请
     applyReturnGoods() {
-      var params = {
-
-      };
+      var params = {};
       this.$store.dispatch("personalCenter/applyReturnGoods", params);
     },
     // 详情页返回列表页
-    goBack(){
+    goBack() {
       this.currentShow = "list";
     },
     showDetails(outIndex, index) {
@@ -478,7 +475,7 @@ export default {
       var param = {
         pageIndex: 1,
         pageSize: 8,
-        payStatus:''
+        payStatus: ""
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
@@ -488,44 +485,90 @@ export default {
       var loading = {};
       var params = {
         param: {
-          parentOrderCode: this.myOrderList.data[outIndex].parentOrderCode,
+          parentOrderCode: this.myOrderList.data[outIndex].parentOrderCode
         },
-        myCallback: function () {
+        myCallback: function() {
           var url = type.API_CONFIG.baseURL;
           var argus = {
             orderId: _this.commitInfo.orderId,
-            status: _this.commitInfo.status,   // 订单状态
+            status: _this.commitInfo.status, // 订单状态
             payMethodId: _this.commitInfo.payMethodId,
-            paymentType: _this.commitInfo.paymentType, // true需要跳转 false不需要
+            paymentType: _this.commitInfo.paymentType // true需要跳转 false不需要
           };
-          if (this.commitInfo.submitStatus) {    // 提交成功
-            if (_this.commitInfo.paymentType) {  // 需要跳转支付宝支付/微信扫描二维码页面
-              if (payMethod === "1") {         // 支付宝支付
+          if (this.commitInfo.submitStatus) {
+            // 提交成功
+            if (_this.commitInfo.paymentType) {
+              // 需要跳转支付宝支付/微信扫描二维码页面
+              if (payMethod === "1") {
+                // 支付宝支付
                 loading.close();
-                window.open(url + '/epay/getPayForm.do?orderId=' + argus.orderId + '&loginName=' + _this.member.loginName + '&payMethodId=' + argus.payMethodId, '_self');
-                window.history.pushState(null, null, '../errorPage/errorpage.html'); // 添加历史记录
-              } else if (payMethod === "0") {  // 微信支付
-                axios.get(url + '/epay/getPayForm.do?orderId=' + argus.orderId + '&loginName=' + _this.member.loginName + '&payMethodId=' + argus.payMethodId).then(function(response) {
-                  loading.close();
-                  var data = response.data.substring(response.data.indexOf('<a>') + 3, response.data.indexOf('</a>'));
-                  var orderCode = response.data.substring(response.data.indexOf('<div>') + 5, response.data.indexOf('</div>'));
-                  window.location.href = '../shoppingCart/QRcode.html?data=' + data + '&orderCode=' + orderCode;
-                })
+                window.open(
+                  url +
+                    "/epay/getPayForm.do?orderId=" +
+                    argus.orderId +
+                    "&loginName=" +
+                    _this.member.loginName +
+                    "&payMethodId=" +
+                    argus.payMethodId,
+                  "_self"
+                );
+                window.history.pushState(
+                  null,
+                  null,
+                  "../errorPage/errorpage.html"
+                ); // 添加历史记录
+              } else if (payMethod === "0") {
+                // 微信支付
+                axios
+                  .get(
+                    url +
+                      "/epay/getPayForm.do?orderId=" +
+                      argus.orderId +
+                      "&loginName=" +
+                      _this.member.loginName +
+                      "&payMethodId=" +
+                      argus.payMethodId
+                  )
+                  .then(function(response) {
+                    loading.close();
+                    var data = response.data.substring(
+                      response.data.indexOf("<a>") + 3,
+                      response.data.indexOf("</a>")
+                    );
+                    var orderCode = response.data.substring(
+                      response.data.indexOf("<div>") + 5,
+                      response.data.indexOf("</div>")
+                    );
+                    window.location.href =
+                      "../shoppingCart/QRcode.html?data=" +
+                      data +
+                      "&orderCode=" +
+                      orderCode;
+                  });
               }
-            } else {    // 不需要跳转支付页面 实付金额为0
-              window.location.href = "../shoppingCart/commitOrder.html#/commitOrder/" + _this.commitInfo.orderCode + "/" + _this.commitInfo.status + '/order';
+            } else {
+              // 不需要跳转支付页面 实付金额为0
+              window.location.href =
+                "../shoppingCart/commitOrder.html#/commitOrder/" +
+                _this.commitInfo.orderCode +
+                "/" +
+                _this.commitInfo.status +
+                "/order";
             }
-          } else {  // 提交失败
+          } else {
+            // 提交失败
             loading.close();
-            var errorMsg = this.commitInfo.errMsg ? this.commitInfo.errMsg : '订单提交有误';
-            _this.$alert(errorMsg, '系统提示', {
-              confirmButtonText: '确定'
+            var errorMsg = this.commitInfo.errMsg
+              ? this.commitInfo.errMsg
+              : "订单提交有误";
+            _this.$alert(errorMsg, "系统提示", {
+              confirmButtonText: "确定"
             });
           }
         }
       };
-      this.$store.dispatch('personalCenter/commitOrder', params);
-      loading = this.$loading({fullscreen: true});
+      this.$store.dispatch("personalCenter/commitOrder", params);
+      loading = this.$loading({ fullscreen: true });
     },
     changeDateValue(value) {
       var stime = value.split("  ~  ")[0];
@@ -540,7 +583,7 @@ export default {
       var param = {
         pageIndex: pageNum,
         pageSize: pageSize,
-        payStatus:this.payStatusNum
+        payStatus: this.payStatusNum
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
@@ -557,7 +600,7 @@ export default {
         var param = {
           pageIndex: 1,
           pageSize: 8,
-          payStatus:''
+          payStatus: ""
         };
         this.$store.dispatch("personalCenter/queryOrderList", param);
         this.$message({
@@ -584,7 +627,7 @@ export default {
         var param = {
           pageIndex: 1,
           pageSize: 8,
-          payStatus:''
+          payStatus: ""
         };
         this.$store.dispatch("personalCenter/queryOrderList", param);
         this.$message({
@@ -599,32 +642,32 @@ export default {
       }
     },
     all() {
-      this.payStatusNum = '';
-        var param = {
-            pageIndex: 1,
-            pageSize: 8,
-            payStatus:''
-          };
-          this.$store.dispatch("personalCenter/queryOrderList", param);
+      this.payStatusNum = "";
+      var param = {
+        pageIndex: 1,
+        pageSize: 8,
+        payStatus: ""
+      };
+      this.$store.dispatch("personalCenter/queryOrderList", param);
     },
     wait() {
       this.payStatusNum = 0;
       var param = {
-          pageIndex: 1,
-          pageSize: 8,
-          payStatus:0
-        };
-        this.$store.dispatch("personalCenter/queryOrderList", param);
+        pageIndex: 1,
+        pageSize: 8,
+        payStatus: 0
+      };
+      this.$store.dispatch("personalCenter/queryOrderList", param);
     },
     // 退换货图片上传
     handleRemove(file, fileList) {
-        console.log(file, fileList);
+      console.log(file, fileList);
     },
     handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-    },
-  },
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    }
+  }
 };
 </script>
 <style scoped>
@@ -730,9 +773,9 @@ export default {
 }
 
 .det p {
-  text-indent:0.5em;
+  text-indent: 0.5em;
   width: 192.7px;
-  word-break:break-all
+  word-break: break-all;
 }
 .el-col {
   border-radius: 4px;
@@ -765,28 +808,27 @@ export default {
   margin-top: 30px;
   float: right;
 }
-.realAmount{
-  font-size:18px;
+.realAmount {
+  font-size: 18px;
   float: right;
-  margin:5px 20px 0 0;
+  margin: 5px 20px 0 0;
 }
-.realAmount span{
-  color:red;
+.realAmount span {
+  color: red;
 }
 /* 退换货 */
-
 </style>
 <style>
-.el-input-number__decrease{
-  height:29px!important;
+.el-input-number__decrease {
+  height: 29px !important;
 }
-.el-input-number__increase{
-  height:29px!important;
+.el-input-number__increase {
+  height: 29px !important;
 }
-.el-icon-minus{
+.el-icon-minus {
   margin-top: 8px;
 }
-.el-icon-plus{
+.el-icon-plus {
   margin-top: 7px;
 }
 </style>

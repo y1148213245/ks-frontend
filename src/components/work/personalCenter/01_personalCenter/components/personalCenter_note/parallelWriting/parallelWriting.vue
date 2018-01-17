@@ -18,20 +18,20 @@
 
 </template>
 <style>
-  @import 'simplemde/dist/simplemde.min.css';
+@import "simplemde/dist/simplemde.min.css";
 </style>
 <script type="text/ecmascript-6">
-import {mapGetters} from 'vuex';
-import markdownEditor from 'vue-simplemde/src/markdown-editor'
-import MDinput from './MDinput'
-import TypeButton from './water/TypeButton.vue'
-import api from  '../../../api/personalCenterApi';
+import { mapGetters } from "vuex";
+import markdownEditor from "vue-simplemde/src/markdown-editor";
+import MDinput from "./MDinput";
+import TypeButton from "./water/TypeButton.vue";
+import api from "../../../api/personalCenterApi";
 const defaultForm = {
-  CONTENT : '',
-  SYS_TOPIC : '', 
-}
+  CONTENT: "",
+  SYS_TOPIC: ""
+};
 export default {
-  name: 'parallel-writing',
+  name: "parallel-writing",
   description: "随手记组件",
   props: {
     isEdit: {
@@ -40,127 +40,133 @@ export default {
     }
   },
   created() {
-      var getUrlStr =  function(name) {
-  　　var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-  　　var r = window.location.search.substr(1).match(reg);
-  　　if(r != null) return unescape(r[2]);
-  　　return null;
-    }
-    this.DocId = getUrlStr ("DocId");
-    this.user = getUrlStr ("user");
+    var getUrlStr = function(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    };
+    this.DocId = getUrlStr("DocId");
+    this.user = getUrlStr("user");
   },
   mounted() {
     if (this.isEdit) {
       this.fetchData();
     } else {
-      this.postForm = Object.assign({}, defaultForm)
+      this.postForm = Object.assign({}, defaultForm);
     }
   },
-  
+
   computed: {
     ...mapGetters({
-      member: 'personalCenter/getMember',             // 获取用户信息
+      member: "personalCenter/getMember" // 获取用户信息
     }),
-    simplemde () {
-      return this.$refs.markdownEditor.simplemde
+    simplemde() {
+      return this.$refs.markdownEditor.simplemde;
     }
   },
   components: {
-      markdownEditor,
-      MDinput,
-      TypeButton,
-    },
-    data () {
-      const validateRequire = (rule, value, callback) => {
-        if (value === '') {
-          this.$message({
-            message: rule.field + '不能为空',
-            type: 'error'
-          })
-          callback(null)
-        } else {
-          callback()
-        }
+    markdownEditor,
+    MDinput,
+    TypeButton
+  },
+  data() {
+    const validateRequire = (rule, value, callback) => {
+      if (value === "") {
+        this.$message({
+          message: rule.field + "不能为空",
+          type: "error"
+        });
+        callback(null);
+      } else {
+        callback();
       }
-      return {
-        DocId:'',
-        user:'',
-        postForm:{},
-        html: '',
-        configs: {
-          status: true, // 禁用底部状态栏
-          spellChecker: false // 禁用拼写检查
-        },
-        rules: {
-          title: [{ validator: validateRequire }],
-        }
+    };
+    return {
+      DocId: "",
+      user: "",
+      postForm: {},
+      html: "",
+      configs: {
+        status: true, // 禁用底部状态栏
+        spellChecker: false // 禁用拼写检查
+      },
+      rules: {
+        title: [{ validator: validateRequire }]
       }
-    },
-    methods: {
-      fetchData() {
+    };
+  },
+  methods: {
+    fetchData() {
       var params = {
         DocIDs: this.DocId,
-        loginName: this.user,
+        loginName: this.user
       };
-      api.fetchArticle(params).then(response => {
-        this.postForm = response.data
-      }).catch(err => {
-        console.log(err)
-      })
-      },
-      markdown2Html() {
-      if(this.member.loginName) {
-        if (this.postForm.CONTENT.length === 0 || this.postForm.SYS_TOPIC.length === 0) {
-        this.$message({
-          message: '请填写必要的标题和内容',
-          type: 'warning'
+      api
+        .fetchArticle(params)
+        .then(response => {
+          this.postForm = response.data;
         })
-        return
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    markdown2Html() {
+      if (this.member.loginName) {
+        if (
+          this.postForm.CONTENT.length === 0 ||
+          this.postForm.SYS_TOPIC.length === 0
+        ) {
+          this.$message({
+            message: "请填写必要的标题和内容",
+            type: "warning"
+          });
+          return;
         }
-        this.loading = true
-            var params = {
-              doclibCode:'PORTAL_NOTE',
-              docID:this.DocId,
-              metaMap:{
-                CONTENT: this.postForm.CONTENT,
-                SYS_AUTHORS: this.member.loginName,
-                SYS_TOPIC:this.postForm.SYS_TOPIC,
-              },
-              cb: this.saveNoteCallback
-          };
-          this.$store.dispatch("personalCenter/saveNote", params);
-			} else {
-				this.$alert('请您先登录~', '系统提示', {
-					confirmButtonText: '确定'
-				});
+        this.loading = true;
+        var params = {
+          doclibCode: "PORTAL_NOTE",
+          docID: this.DocId,
+          metaMap: {
+            CONTENT: this.postForm.CONTENT,
+            SYS_AUTHORS: this.member.loginName,
+            SYS_TOPIC: this.postForm.SYS_TOPIC
+          },
+          cb: this.saveNoteCallback
+        };
+        this.$store.dispatch("personalCenter/saveNote", params);
+      } else {
+        this.$alert("请您先登录~", "系统提示", {
+          confirmButtonText: "确定"
+        });
       }
-      },
-      saveNoteCallback(rep){
-        if (rep == 'success') {
-          this.$notify({
-          title: '成功',
-          message: '笔记保存成功',
-          type: 'success',
+    },
+    saveNoteCallback(rep) {
+      if (rep == "success") {
+        this.$notify({
+          title: "成功",
+          message: "笔记保存成功",
+          type: "success",
           duration: 2000
-          })
-          this.loading = false
+        });
+        this.loading = false;
       } else {
         console.log("error submit!!");
         return false;
       }
-      }
     }
-}
+  }
+};
 </script>
 
 <style>
-  .title-prompt{
-    position: absolute;
-    right: 0px;
-    font-size: 12px;
-    top:10px;
-    color:#ff4949;
-    z-index: 999;
-  }
+.title-prompt {
+  position: absolute;
+  right: 0px;
+  font-size: 12px;
+  top: 10px;
+  color: #ff4949;
+  z-index: 999;
+}
 </style>
 

@@ -1,0 +1,6 @@
+.panel {
+    width: 720px;
+    height: 480px;
+    overflow: hidden;
+    background-color: #2a3d76;
+}

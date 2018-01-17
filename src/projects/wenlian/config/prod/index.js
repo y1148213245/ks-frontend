@@ -60,7 +60,8 @@ export default {
         pageNo: "1",
         pageSize: "16",
         searchText: ""
-      }
+      },
+      infoDetailHref: "../pages/informationInfo.html?pubId=",
     },
     pic_advert_05: {
       url: BASE_URL + 'spc/cms/publish/list.do',

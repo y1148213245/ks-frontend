@@ -12,9 +12,8 @@
   <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
   <!-- END 头部 -->
   <script type="text/javascript" src="../assets/config/index.js"></script>
+  <script type="text/javascript" src="../assets/js/jquery.js"></script>
   <script type="text/javascript" src="../assets/js/web.js"></script>
-  <script type="text/javascript">
-  </script>
   <style>
     .bookDetailWrapper {
       width: 1200px;
@@ -51,20 +50,20 @@
 </head>
 
 <body id="home">
-  <div id="app">
+  <div id="app" style="display: none;">
     <!--id="wl"-->
     <!--头-->
     <components_common_header namespace="header"></components_common_header>
     <!--头end-->
-    
+
     <div class="bookDetailWrapper">
         <!--左部分-->
         <div class="wrapperLeft">
-    
+
           <!-- 图书详情组件 -->
           <work_bookdetail_02_content namespace="bookdetail"></work_bookdetail_02_content>
           <!-- END 图书详情组件 -->
-          
+
           <!-- 图书相关信息组件  -->
           <work_bookdetail_02_bookrelatedinfo namespace="bookdetail"></work_bookdetail_02_bookrelatedinfo>
           <!-- END 图书相关信息组件 -->

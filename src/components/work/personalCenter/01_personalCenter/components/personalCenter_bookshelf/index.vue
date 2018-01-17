@@ -30,132 +30,139 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {mapGetters, mapActions} from 'vuex';
-  export default {
-    name: "book",
-    reused: true,
-    props: ["namespace"],
-    data()　{
-      return {
-        // readConfig: READ_CONFIG
-      }
-    },
-    mounted: function() {
-      this.$store.dispatch("personalCenter/queryUser", {
-        loadedCallBack: this.loadedCallBack
-      });
-    },
-    computed: {
-        ...mapGetters("personalCenter/", {
-        bookShelfInfo: "getBookShelfInfo",
-      })
-    },
-    methods: {
-      loadedCallBack() {
-        var param = {
-          pageIndex: 1,
-          pageSize: 8,
-          type: 2
-        };
+import { mapGetters, mapActions } from "vuex";
+export default {
+  name: "book",
+  reused: true,
+  props: ["namespace"],
+  data() {
+    return {
+      // readConfig: READ_CONFIG
+    };
+  },
+  mounted: function() {
+    this.$store.dispatch("personalCenter/queryUser", {
+      loadedCallBack: this.loadedCallBack
+    });
+  },
+  computed: {
+    ...mapGetters("personalCenter/", {
+      bookShelfInfo: "getBookShelfInfo"
+    })
+  },
+  methods: {
+    loadedCallBack() {
+      var param = {
+        pageIndex: 1,
+        pageSize: 8,
+        type: 2
+      };
       this.$store.dispatch("personalCenter/querybookShelfInfo", param);
     },
-      pagingF: function({ pageNum, pageSize }) {
-        var param = {
-          pageIndex: pageNum,
-          pageSize: pageSize,
-          type: 2
-        };
-        this.$store.dispatch("personalCenter/querybookShelfInfo",param);
-      },
-      toRead(bookId,readType,bookName){
-      var url = READ_CONFIG.baseURL+'/ebook/read.jsp?bookId='+bookId+'&readType='+readType+'&bookName='+bookName;
-      window.open(url);
-      }
+    pagingF: function({ pageNum, pageSize }) {
+      var param = {
+        pageIndex: pageNum,
+        pageSize: pageSize,
+        type: 2
+      };
+      this.$store.dispatch("personalCenter/querybookShelfInfo", param);
     },
+    toRead(bookId, readType, bookName) {
+      var url =
+        READ_CONFIG.baseURL +
+        "/ebook/read.jsp?bookId=" +
+        bookId +
+        "&readType=" +
+        readType +
+        "&bookName=" +
+        bookName;
+      window.open(url);
+    }
   }
+};
 </script>
 <style scoped>
-.shelflWrapper{
+.shelflWrapper {
   width: 80%;
   float: right;
 }
-  .shelflWrapper .readBox {
-    position: absolute;
-    bottom: 0px;
-    z-index: 0;
-    width: 180px;
-    height: 30px;
-    line-height: 30px;
-    background-color: rgba(100, 100, 100, 0.7);
-    color: white;
-    cursor: pointer;
-    user-select: none;
-    transition: all .2s ease-in 0s;
-    transform: translateY(0px);
-  }
+.shelflWrapper .readBox {
+  position: absolute;
+  bottom: 0px;
+  z-index: 0;
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  background-color: rgba(100, 100, 100, 0.7);
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in 0s;
+  transform: translateY(0px);
+}
 
-  .shelflWrapper .readBox a {
-    color: #ffffff;
-  }
+.shelflWrapper .readBox a {
+  color: #ffffff;
+}
 
-  .shelflWrapper .picBox:hover>.readBox {
-    transition: all 0.2s ease-out;
-    transform: translateY(-30px);
-  }
+.shelflWrapper .picBox:hover > .readBox {
+  transition: all 0.2s ease-out;
+  transform: translateY(-30px);
+}
 
-  .shelflWrapper .picBox {
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 10px;
-    border: 1px solid #e7e7e7;
-    width: 200px;
-    height: 200px;
-    vertical-align: middle;
-    display: table-cell;
-    background-color: #ffffff;
-  }
+.shelflWrapper .picBox {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+  border: 1px solid #e7e7e7;
+  width: 200px;
+  height: 200px;
+  vertical-align: middle;
+  display: table-cell;
+  background-color: #ffffff;
+}
 
-  .shelflWrapper .shelfContent .namePrice {
-    text-align: center;
-    position: relative;
-    z-index: 1;
-    background-color: #FFF;
-  }
+.shelflWrapper .shelfContent .namePrice {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  background-color: #fff;
+}
 
-  .shelflWrapper .shelfContent .namePrice div {
-    width: 180px;
-    height: 30px;
-    line-height: 30px;
-    white-space: nowrap;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 10px;
-    box-sizing: border-box;
-  }
+.shelflWrapper .shelfContent .namePrice div {
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
 
-  .shelflWrapper .picBox:hover {
-    border: 1px solid #ffa31a;
-  }
+.shelflWrapper .picBox:hover {
+  border: 1px solid #ffa31a;
+}
 
-  .shelflWrapper .emptyColl {
-    text-align: center;
-    padding: 50px 0px;
-  }
+.shelflWrapper .emptyColl {
+  text-align: center;
+  padding: 50px 0px;
+}
 
-  .shelflWrapper .emptyColl img {
-    width: 150px;
-  }
-  .shelflWrapper .myShelf{
-    margin-bottom: 30px;
-  }
-  .shelflWrapper .myShelf ul {
-    display: inline-block;
-  }
+.shelflWrapper .emptyColl img {
+  width: 150px;
+}
+.shelflWrapper .myShelf {
+  margin-bottom: 30px;
+}
+.shelflWrapper .myShelf ul {
+  display: inline-block;
+}
 
-  .shelflWrapper .myShelf ul li {
-    float: left;
-    margin-right: 30px;
-    margin-top: 15px;
-  }
+.shelflWrapper .myShelf ul li {
+  float: left;
+  margin-right: 30px;
+  margin-top: 15px;
+}
 </style>

@@ -66,16 +66,16 @@
 </template>
 
 <script>
-  import Vue from "vue";
-  import Vuex from 'vuex'
-  import axios from 'axios'
-  import {mapGetters, mapActions} from "vuex";
-  // import * as type from 'projectConfig';
+import Vue from "vue";
+import Vuex from "vuex";
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
+// import * as type from 'projectConfig';
 
-  export default {
-    name: "afterservice",
-    reused: true,
-    props: ["namespace"],
+export default {
+  name: "afterservice",
+  reused: true,
+  props: ["namespace"],
   mounted() {
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
@@ -83,41 +83,46 @@
   },
   computed: {
     ...mapGetters({
-      returnGoodsList: "personalCenter/getReturnGoodsList", 
+      returnGoodsList: "personalCenter/getReturnGoodsList"
     })
-    },
-    data() {
-      return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-          tag: '1'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄',
-          tag: '2'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄',
-          tag: '1'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄',
-          tag: '2'
-        }]
-      }
-    },
-    methods: {
-      loadedCallBack() {
+  },
+  data() {
+    return {
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+          tag: "1"
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄",
+          tag: "2"
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄",
+          tag: "1"
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+          tag: "2"
+        }
+      ]
+    };
+  },
+  methods: {
+    loadedCallBack() {
       this.$store.dispatch("personalCenter/getReturnGoodsList", {});
     },
-      filterTag(value, row) {
-        return row.tag === value;
-      }
+    filterTag(value, row) {
+      return row.tag === value;
     }
   }
+};
 </script>

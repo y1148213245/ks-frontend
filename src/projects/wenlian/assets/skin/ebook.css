@@ -456,7 +456,7 @@ a{
   background: #f9ab3c;
 }
 .mt42{
-  margin-top: 53px;
+  /*margin-top: 53px;*/
 }
 .bianji .bianji_list{
   text-align: center;
@@ -519,4 +519,54 @@ pt20{
 }
 .color_727{
   color: #727272;
+}
+.ui_list_pic_06_skin .titleHead{
+  height: 29px;
+  line-height: 29px;
+  width: 222px;
+  text-align: center;
+}
+.ui_list_pic_06_skin .titleHead{
+  color: #fff;
+  background: #c50000;
+  font-weight: normal;
+  font-size: 16px;
+}
+.ui_list_pic_06_skin .listWrapper{
+  border-style: solid;
+  border-color: #f8f8f8;
+  background: #fff;
+  /*height: 552px!important;*/
+  height: auto;
+}
+.ui_list_pic_06_skin .listCon{
+  border-bottom-style: solid;
+  border-bottom-color: #f8f8f8;
+}
+.ui_list_pic_06 .listCon .listDt{
+  float: left;
+}
+.ui_list_pic_06_skin a{
+  text-decoration: none;
+  color: #535353;
+}
+.ui_list_pic_06_skin .listCon .jiaobiao{
+  color: #fff;
+  background: #f9ab3c;
+}
+.ui_list_pic_06_skin .listCon .listDd{
+  color: #9f9f9f;
+}
+.ui_list_pic_06_skin .listCon .title{
+  font-size: 14px;
+  color: #535353;
+}
+.ui_list_pic_06_skin .listCon .hitcount{
+  color: #9f9f9f;
+}
+.ui_list_pic_06_skin .listCon .price{
+  color: #9f9f9f;
+}
+.components_header_skin .header_top3 .open:after{
+  background: none;
 }
