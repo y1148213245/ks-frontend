@@ -45,8 +45,8 @@ export default {
 				pageSize: "2",
 				searchText: ""
 			},
-			href:"./editorList.html",
-			locationHref:"authorDetail.html?pubId="
+			href:"./editorlist.html",
+			locationHref:"./authordetail.html?pubId="
 		},
 		popularBook:{
 			url:"http://172.19.57.153/portal/api/spc/cms/publish/list.do",

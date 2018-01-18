@@ -1,7 +1,7 @@
 <template>
   <div class="swiper-container pic_info_list_12">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" :style="{background: '#f4f7f9'}" v-for="(bookDetailInfo,ind) in bookDetailInfoList"> <!--这个背景颜色是解决图片，文字重叠的效果的-->
+      <div class="swiper-slide" :style="{background: '#f4f7f9'}" v-for="(bookDetailInfo,ind) in bookDetailInfoList" :key="ind"> <!--这个背景颜色是解决图片，文字重叠的效果的-->
         <dl class="l_big fl">
           <dt class="fl">
             <a class="swiper-a" target="_blank" href="javascript:void(0)" @click="toBookDetail(bookDetailInfo.pubId)">
@@ -11,7 +11,7 @@
           <dd class="fl pl20">
             <p class="title f16"><a href="javascript:void(0)" @click="toBookDetail(bookDetailInfo.pubId)" v-text="bookDetailInfo && bookDetailInfo.resourceName"></a></p>
             <p class="xing starStyle">
-              <el-rate v-model="bookDetailInfo.starNum" :show-text="false" :max="5" disabled
+              <el-rate v-model="bookDetailInfo.starNum - 0" :show-text="false" :max="5" disabled
                        disabled-void-color="#c1c1c0" v-if="bookDetailInfo && bookDetailInfo.pub_star_num != 0"></el-rate>
 
             </p>
@@ -150,6 +150,113 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+  .book_jdt dl.l_big{
+    overflow: hidden;
+  }
+  .book_jdt dl.l_big dd p.title{
+    padding-top: 20px;
+  }
+  .book_jdt dl.l_big dd{
+    width: 250px;
+    overflow: hidden;
+  }
+  .book_jdt dl.l_big{
+    overflow: hidden;
+  }
+  .book_jdt dl.l_big dd p.title a{
+    color: #494949;
+  }
+  .book_jdt dl.l_big dd p.xing{
+    margin: 2px 0 5px 0;
+  }
+  .book_jdt dl.l_big dd p.author{
+    color: #727272;
+    line-height: 23px;
+    margin-top: 15px;
+  }
+  .book_jdt dl.l_big dd p.banquan, .book_jdt dl.l_big dd p.chuban{
+    color: #8d8c8c;
+    line-height: 25px;
+  }
+  .book_jdt dl.l_big dd p.price{
+    color: #494949;
+    margin: 3px 0 15px;
+  }
+  .book_jdt dl.l_big dd p.reader{
+    line-height: 28px;
+    margin-top: 25px;
+  }
+  .book_jdt dl.l_big dd p.price span{
+    color: #9c9595;
+    text-decoration: line-through;
+    padding-left: 8px;
+  }
+  .book_jdt dl.l_big dd p.reader a{
+    padding: 6px 15px;
+    color: #fff;
+    background: #c50000;
+  }
+  .book_jdt .id_flash a{
+    color: #000;
+    overflow: hidden;
+    text-decoration: none;
+  }
+  .book_jdt .id_flash{
+    height: 100%
+  }
+  .book_jdt .id_flash .top{
+    clear: both;
+    position: relative;height: 100%;overflow: hidden
+  }
+  .book_jdt{
+    border: 1px solid #e0dfde;
+    width: 695px;
+    padding: 20px 20px 10px 20px;
+    overflow: hidden;
+    background: #f4f7f9;
+    margin-bottom: 65px;
+    height: 425px;
+    margin-left: 223px;
+    margin-top: 30px;
+  }
+  .pic_info_list_12{
+    float: left;
+    width: 460px;
+    height: 100%
+  }
+  .pic_info_list_12 .l_big{
+    width: 100%
+  }
+  .pic_info_list_12 .swiper-a{
+    width: 186px;
+    height: 248px;
+  }
+  .pic_info_list_12 .swiper-img{
+    float: left;
+    text-align: center;
+    line-height: 230px;
+  }
+  .pic_info_list_12 .swiper-wrapper .more{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    color: #c50000;
+    font-size: 10px;
+  }
+  .pic_info_list_12{
+    float: left;
+    width: 460px;
+    height: 100%;
+  }
+  a img{
+    border: 0;
+  }
+  .jianjie{
+    width: 455px;
+    font-size: 10px;
+    line-height: 18px;
+    padding-top: 24px;
+    overflow: hidden;
+  }
 </style>

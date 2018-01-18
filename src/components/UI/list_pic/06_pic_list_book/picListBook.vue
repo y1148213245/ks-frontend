@@ -31,6 +31,7 @@ import { Post, Get, DrawImage, CookieUtils } from "@common";
 import PROJECT_CONFIG from "projectConfig";
 import { mapGetters } from "vuex";
 import * as interfaces from "@work/login/common/interfaces.js";
+import URL from "url";
 
 export default {
     name: "ui_list_pic_06_book_list",
@@ -73,14 +74,15 @@ export default {
         },
         historyrecord () {
             let param = Object.assign({}, this.CONFIG.params);
-            param.username = 'song@163.com';
+            param.username = this.member.loginName;
             this.gethistorylist(param);
         },
         addgethistorylist: function (loginName) {
             var url = this.CONFIG.url;
             let param = Object.assign({}, this.CONFIG.params);
             param.username = loginName;
-            Get(BASE_URL + '/browserHistory/addBrowserHistory.do?pubId=' + this.query.pubId + '&loginName=' + loginName).then((repsonse) => {
+            let pubId = URL.parse(document.URL, true).query.pubId;
+            Get(BASE_URL + '/browserHistory/addBrowserHistory.do?pubId=' + pubId + '&loginName=' + loginName).then((repsonse) => {
                 if (repsonse.data.result === '1') {
                     this.gethistorylist(param);
                 }
@@ -111,7 +113,7 @@ export default {
         },
         deleteOneHistory (pubId) {
             if (this.member.loginName) {
-                Get(BASE_URL + 'browserHistory/deleteOneHistory.do?&loginName=' + 'song@163.com' + '&pubId=' + pubId + '&siteId=' + SITE_CONFIG.siteId).then((rep) => {
+                Get(BASE_URL + 'browserHistory/deleteOneHistory.do?&loginName=' + this.member.loginName + '&pubId=' + pubId + '&siteId=' + SITE_CONFIG.siteId).then((rep) => {
                     if (rep.data.result === "1") {
                         this.$message({
                             type: "success",
@@ -135,11 +137,11 @@ export default {
         }
     },
     watch: {
-        /* member: function (newValue, oldValue) {
-            if (newValue.loginName && newValue.loginName !== oldValue.loginName) { // 已经登录时 历史浏览记录从后台请求
+        member: function (newValue, oldValue) {
+            if (newValue.loginName && newValue.loginName !== oldValue.loginName && this.modulename === 'historyrecord') { // 已经登录时 历史浏览记录从后台请求
                 this.addgethistorylist(newValue.loginName);   // 您的历史记录
             }
-        }, */
+        },
         bookInfo: function (newv, oldv) {
             if (this.modulename === 'historyrecord') {
                 var loginName = this.member.loginName;

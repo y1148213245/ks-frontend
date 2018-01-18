@@ -77,12 +77,7 @@ dl.zzxq_detail dd p.zzxq_detail_zp{
   font-size: 22px;
   line-height: 47px;
 }
-ul.zzxq_detail_zp_list li{
-  float: left;
-  width: 130px;
-  text-align: center;
-  padding-right: 60px;
-}
+
 .zzxq_rwjs .zzxq_rwjs_tit{
   border-bottom: 1px solid #c50000;
 }
@@ -118,3 +113,8 @@ a{
   display: block;
   visibility: hidden;
 }
+/**start 左侧图书分类**/
+.components_header_skin .header_top3 .open:after{
+  background: none;
+}
+/**end 左侧图书分类**/

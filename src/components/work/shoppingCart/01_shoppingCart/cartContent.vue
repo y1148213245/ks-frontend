@@ -1636,6 +1636,7 @@ input[type="number"] {
 #cartWrapper {
   margin-top: 36px;
   padding-bottom: 24px;
+  min-height: 600px;
 }
 
 #cartWrapper .cartContainer {
@@ -1842,6 +1843,7 @@ input[type="number"] {
 #clearingWrapper .clearing {
   float: right;
   position: relative;
+  height: 50px;
 }
 
 #clearingWrapper .clearing button {

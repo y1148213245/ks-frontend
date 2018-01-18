@@ -122,7 +122,6 @@ export default {
     getHtmlParams() {
       let searchUrl = document.URL;
       let params = URL.parse(searchUrl || "");
-      console.log(params);
       if (!params) {
         params = {};
       }

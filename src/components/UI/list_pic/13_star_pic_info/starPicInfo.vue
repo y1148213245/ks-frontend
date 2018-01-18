@@ -61,6 +61,43 @@
     }
 </script>
 
-<style scoped>
-
+<style>
+  .star_pic_info_13{
+    float: right;
+    width: 200px;
+  }
+  .star_pic_info_13 .list{
+    width: 100%;
+  }
+  .star_pic_info_13 .item{
+    margin-top: 6px;
+  }
+  .star_pic_info_13 .img{
+    line-height: 90px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .star_pic_info_13 .text{
+    float: right;
+    width: 120px;
+    height: 100%;
+  }
+  .book_jdt .id_flash a{
+    color: #000;
+    overflow: hidden;
+    text-decoration: none;
+    outline: none;
+    line-height: 24px;
+  }
+  .star_pic_info_13 .author{
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 24px;
+  }
+  .star_pic_info_13 .price{
+    line-height: 24px;
+    color: #dd2a48;
+  }
 </style>

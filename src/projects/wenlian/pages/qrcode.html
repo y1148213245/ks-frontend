@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <![endif]-->
+  <!--微信支付 生成二维码js-->
+  <script type="text/javascript" src="../assets/js/qrcode.js"></script>
+  <!--END 微信支付 生成二维码js-->
+  <title>扫描二维码支付</title>
+
+  <style>
+    .footerCom {
+      height: 117px;
+      text-align: center;
+      width: 100%;
+      background: #595959;
+      padding-top: 40px;
+      font-size: 14px;
+    }
+
+    .footerCom p {
+      line-height: 30px;
+      color: #d4d4d4;
+    }
+  </style>
+</head>
+<body class="stretched">
+<div id="app" style="display: none">
+  <!--头-->
+  <components_common_header namespace="header"></components_common_header>
+  <!--头end-->
+
+  <!-- 我的购物车组件 -->
+  <work_shoppingcart_01_qrcode namespace="commit"></work_shoppingcart_01_qrcode>
+  <!-- END 我的购物车组件 -->
+
+  <div class="footerCom">
+    <p>地址：北京市朝阳区农展馆南里10号 邮编：100125</p>
+    <p>版权所有： 中国文联出版社</p>
+  </div>
+</div>
+</body>
+</html>

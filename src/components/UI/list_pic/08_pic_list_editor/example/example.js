@@ -14,7 +14,7 @@ const dev = {
   picListEditor:{
     url:"/data/ui_list_pic_08.json",
     href:"./editorList.html",
-    locationHref:"authorDetail.html?pubId="
+    locationHref:"authordetail.html?pubId="
   }
 };
 
@@ -30,7 +30,7 @@ const prod = {
       searchText: ""
     },
     href:"./editorList.html",
-    locationHref:"authorDetail.html?pubId="
+    locationHref:"authordetail.html?pubId="
   }
 };
 

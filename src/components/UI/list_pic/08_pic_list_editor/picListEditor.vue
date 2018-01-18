@@ -1,11 +1,11 @@
 <template>
     <div class="ui_list_pic_08 ui_list_pic_08_skin">
         <div class="editorListWrapper" name="data_column_block">
-            <h6 class="editorCon">
-                <span class="editor">编辑</span>
-                <!-- <span v-else-if="!show_more" class="editor">编辑</span> -->
+            <h6 class="editorCon" :class="{onlyEditorCon: !show_more}">
+                <span class="editor" v-if="show_more">编辑</span>
+                <span class="onlyEditor" v-else-if="!show_more">编辑</span>
                 <span class="moreEditor" v-if="show_more">
-                    <a href="(CONFIG && CONFIG.href)">MORE+</a>
+                  <a :href="(CONFIG && CONFIG.href)">MORE+</a>
                 </span>
             </h6>
             <div class="editorList">
@@ -34,36 +34,36 @@
 import { Post, DrawImage } from "@common";
 import PROJECT_CONFIG from "projectConfig";
 export default {
-    name: "ui_list_pic_08_editor",
-    reused: true,
-    props: ["namespace", "show_more"],
-    data: function () {
-        return {
-            list: [],
-            CONFIG: null
-        }
-    },
-    mounted: function () {
-        this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].list_pic.picListEditor : PROJECT_CONFIG.list_pic.picListEditor;
-        this.queryData();
-    },
-    methods: {
-        queryData: function () {
-            Post(this.CONFIG.url, this.CONFIG.params || {
-                conditions: "[{pub_col_id:'117'}]",
-                groupBy: "pub_resource_id",
-                orderBy: "pub_a_order asc pub_lastmodified desc id asc",
-                pageNo: "1",
-                pageSize: "2",
-                searchText: ""
-            }).then((rep) => {
-                this.list = rep.data.result;
-            });
-        },
-        toDetail: function (pubId) {
-            window.location.href = this.CONFIG.locationHref + pubId + '&currentType=editor#';
-        }
+  name: "ui_list_pic_08_editor",
+  reused: true,
+  props: ["namespace", "show_more"],
+  data: function () {
+    return {
+      list: [],
+      CONFIG: null
     }
+  },
+  mounted: function () {
+    this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].list_pic.picListEditor : PROJECT_CONFIG.list_pic.picListEditor;
+    this.queryData();
+  },
+  methods: {
+    queryData: function () {
+      Post(this.CONFIG.url, this.CONFIG.params || {
+        conditions: "[{pub_col_id:'117'}]",
+        groupBy: "pub_resource_id",
+        orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+        pageNo: "1",
+        pageSize: "2",
+        searchText: ""
+      }).then((rep) => {
+        this.list = rep.data.result;
+      });
+    },
+    toDetail: function (pubId) {
+      window.location.href = this.CONFIG.locationHref + pubId + '&currentType=editor#';
+    }
+  }
 }
 </script>
 
@@ -91,6 +91,13 @@ export default {
 
 .ui_list_pic_08 .editorCon .moreEditor {
   float: right;
+}
+
+.ui_list_pic_08 .onlyEditorCon {
+  height: 29px;
+  line-height: 29px;
+  width: 222px;
+  text-align: center;
 }
 
 .ui_list_pic_08 .editorList {
@@ -174,6 +181,7 @@ export default {
 
 /* start 皮肤样式 */
 .ui_list_pic_08_skin .editorListWrapper {
+  background-color: #ffffff;
 }
 
 .ui_list_pic_08_skin .editorCon {
@@ -192,6 +200,16 @@ export default {
 
 .ui_list_pic_08_skin .editorCon .moreEditor {
   font-size: 12px;
+}
+
+.ui_list_pic_08_skin .onlyEditorCon {
+  font-weight: normal;
+  font-size: 16px;
+  background: #c50000;
+}
+
+.ui_list_pic_08_skin .onlyEditorCon .onlyEditor {
+  color: #ffffff;
 }
 
 .ui_list_pic_08_skin .editorCon .moreEditor a {

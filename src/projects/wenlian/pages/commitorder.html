@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>关于我们</title>
-  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
-  <link type="text/css" rel="stylesheet" href="../assets/skin/aboutus.css">
 
-  <script type="text/javascript" src="../assets/js/jquery.js"></script>
-  <script type="text/javascript" src="../assets/js/web.js"></script>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
+
   <script type="text/javascript" src="../assets/config/index.js"></script>
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <![endif]-->
+
+  <title>生成订单</title>
   <style>
     .footerCom {
       height: 117px;
@@ -26,25 +28,20 @@
     }
   </style>
 </head>
-
-<body>
-
-
-  <div id="app" style="display: none">
-    <components_aboutus_handleurl></components_aboutus_handleurl>
-    <!--id="wl"-->
+<body class="stretched">
+<div id="app" style="display: none">
     <!--头-->
     <components_common_header namespace="header"></components_common_header>
-    <div class="main_news mb60">
-      <wenlian_common_crumbs></wenlian_common_crumbs>
-      <components_aboutus_content namespace="aboutus"></components_aboutus_content>
-    </div>
     <!--头end-->
+
+    <!-- 我的购物车组件 -->
+    <work_shoppingcart_01_commit namespace="commit"></work_shoppingcart_01_commit>
+    <!-- END 我的购物车组件 -->
+
     <div class="footerCom">
       <p>地址：北京市朝阳区农展馆南里10号 邮编：100125</p>
       <p>版权所有： 中国文联出版社</p>
     </div>
-  </div>
+</div>
 </body>
-
 </html>

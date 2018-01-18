@@ -8,7 +8,7 @@
         <div class="member">
           <span class="login_success" v-show="member && member.loginName">
             欢迎回来!
-            <a href="#" class="loginImg" v-text="member && member.loginName">北京大学</a>
+             <a href="./personalcenter.html" class="loginImg" v-text="member && member.loginName"></a>
             <a href="#" class="quit" @click="doLogout()">[退出]</a>
           </span>
           <span class="loginNo" v-show="!(member && member.loginName)">
@@ -34,7 +34,7 @@
             </a>
           </div>
           <div class="suishouji">
-            <a class="color_525" style="cursor: pointer;" @click="goToNote()">随手记</a>
+            <a class="color_525" @click="goToNote()" style="cursor: pointer;">随手记</a>
           </div>
           <div class="highsearh" @click="goToAdvSearch">高级检索</div>
           <div class="searchBox">
@@ -267,6 +267,27 @@
         urlInfo.search = '';
         return URL.format(urlInfo);
       }
+    },
+    goToNote: function () {
+      if (this.member.loginName) {
+        window.location.href = '../pages/createNote.html'
+      } else {
+        this.$alert('请您先登录~', '系统提示', {
+          confirmButtonText: '确定'
+        });
+      }
+    },
+    goToAdvSearch: function () {
+      window.location.href = 'advSearch.html'
+    },
+    goToSearchResult () {
+      window.location.href = 'search.html?searchText=' + this.searchText + "&category=" + this.category + "#";
+    },
+    goToSearchResultByHW (name) {
+      window.location.href = 'search.html?searchText=' + name + "#"
+    },
+    getUrl: function (id) {
+      window.location.href = './bookList.html?cascadeId=' + id;
     },
     watch: {
       cartTotalAmount: function (newValue, oldValue) {

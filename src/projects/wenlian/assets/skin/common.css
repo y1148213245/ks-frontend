@@ -353,3 +353,42 @@ body{
 .pt20{
   padding-top: 20px;
 }
+a{
+  text-decoration: none;
+  outline: none;
+  color: #888888;
+  text-decoration: none;
+}
+.f16{
+  font-size: 16px;
+}
+.mb35{
+   margin-bottom: 35px;
+ }
+.mb35{
+  margin-bottom: 35px;
+}
+.mt30{
+  margin-top: 30px;
+}
+.pl15{
+  padding-left: 15px;
+}
+.mt42{
+  margin-top: 53px;
+}
+.color_7e7{
+  color: #7e7e7e;
+}
+.f18{
+  font-size: 18px;
+}
+.f12{
+  font-size: 12px;
+}
+pt20{
+  padding-top: 20px;
+}
+.color_727{
+  color: #727272;
+}

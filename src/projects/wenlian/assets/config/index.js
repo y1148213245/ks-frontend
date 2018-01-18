@@ -48,6 +48,6 @@ var $_$ = {
    }
    }*/
    indexPage:{
-     authorMoreHref:'./index.html'
+     authorMoreHref:'./authorlist.html',  // 首页作者列表页面
    }
 };

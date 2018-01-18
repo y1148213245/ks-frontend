@@ -9,7 +9,7 @@
         shoppingCart_01: {
         url: BASE_URL + 'cart/getCartAndActivity.do',
         params: {
-            loginName: "song@163.com",
+            loginName: "",
             siteId: SITE_CONFIG.siteId,
             timeStamp: ""
         },

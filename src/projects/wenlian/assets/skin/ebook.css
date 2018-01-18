@@ -21,25 +21,11 @@
   height: 25px;
   /*background: url(../img/bg_001.png) no-repeat;*/
 }
-.header .header_top3 .open:after{
-  top: 18px;
-  content: ' ';
-  position: absolute;
-  top: 41%;
-  right: 18px;
-  width: 17px;
-  height: 10px;
-  background: url(../img/xia.png) no-repeat;
+/**start 左侧图书分类**/
+.components_header_skin .header_top3 .open:after{
+  background: none;
 }
-.header .header_top3 .off:after{
-  content: '';
-  position: absolute;
-  top: 32%;
-  right: 18px;
-  width: 17px;
-  height: 10px;
-  background: url(../img/shang.png) no-repeat;
-}
+/**end 左侧图书分类**/
 .all_class_detail dl{
   padding: 5.88px 17px;
 }
@@ -83,156 +69,26 @@
 /********************* start 左侧导航 *******************/
 .all_class_detail{
   display: block;
-  padding-top: 0px;
-  background: #fff;
   width: 222px;
   position: absolute;
   top: 41px;
   left: 0px;
-  box-shadow: 0px 0px 8px #e7e7e7;
-  z-index: 9;
-
   padding-top: 18px;
   background: #fff;
-  width: 222px;
-  position: absolute;
-  top: 41px;
-  left: 0;
   box-shadow: 0 0 8px #e7e7e7;
-  display: block;
   z-index: 9;
 }
 .header .two_title span:last-child{
   visibility: hidden;
-}
-.jianjie{
-  width: 455px;
-  font-size: 10px;
-  line-height: 18px;
-  padding-top: 24px;
-  overflow: hidden;
 }
 /********************* end 左侧导航 *******************/
 /*********************star 推荐************************/
 .main{
   overflow: hidden;
 }
-.pic_info_list_12{
-  float: left;
-  width: 460px;
-  height: 100%
-}
-.pic_info_list_12 .l_big{
-  width: 100%
-}
-.pic_info_list_12 .swiper-a{
-  width: 186px;
-  height: 248px;
-}
-.pic_info_list_12 .swiper-img{
-  float: left;
-  text-align: center;
-  line-height: 230px;
-}
-.pic_info_list_12 .swiper-wrapper .more{
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  color: #c50000;
-  font-size: 10px;
-}
-.star_pic_info_13{
-  float: right;height: 100%;width: 200px;
-}
-.star_pic_info_13 .item{
-  margin-top: 10px
-}
-.star_pic_info_13 .img{
-  line-height:90px;text-align:center;cursor: pointer;
-}
-.star_pic_info_13 .text{
-  float: right;width: 120px;height: 100%;
-}
-.star_pic_info_13 .author{
-  width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;
-}
-.star_pic_info_13 .price{
-  color:#dd2a48
-}
-.book_jdt{
-  border: 1px solid #e0dfde;
-  width: 695px;
-  padding: 20px 20px 10px 20px;
-  overflow: hidden;
-  background: #f4f7f9;
-  margin-bottom: 34px;
-  height: 425px;
-  margin-left: 223px;
-  margin-top: 30px;
-}
-.book_jdt .id_flash{
-  height: 100%
-}
-.book_jdt .id_flash .top{
-  clear: both;
-  position: relative;height: 100%;overflow: hidden
-}
-.pic_info_list_12{
-  float: left;
-  width: 460px;
-  height: 100%;
-}
-.book_jdt .id_flash a{
-  color: #000;
-  overflow: hidden;
-  text-decoration: none;
-}
 .main{
   width: 1200px;
   margin: 0 auto;
-}
-.book_jdt dl.l_big dd p.title{
-  padding-top: 20px;
-}
-.book_jdt dl.l_big dd{
-  width: 250px;
-  overflow: hidden;
-}
-.book_jdt dl.l_big{
-  overflow: hidden;
-}
-.book_jdt dl.l_big dd p.title a{
-  color: #494949;
-}
-.book_jdt dl.l_big dd p.xing{
-  margin: 2px 0 5px 0;
-}
-.book_jdt dl.l_big dd p.author{
-  color: #727272;
-  line-height: 23px;
-  margin-top: 15px;
-}
-.book_jdt dl.l_big dd p.banquan, .book_jdt dl.l_big dd p.chuban{
-  color: #8d8c8c;
-  line-height: 25px;
-}
-.book_jdt dl.l_big dd p.price{
-  color: #494949;
-  margin: 3px 0 15px;
-}
-.book_jdt dl.l_big dd p.reader{
-  line-height: 28px;
-  margin-top: 25px;
-}
-.book_jdt dl.l_big dd p.price span{
-  color: #9c9595;
-  text-decoration: line-through;
-  padding-left: 8px;
-}
-.book_jdt dl.l_big dd p.reader a{
-  padding: 6px 15px;
-  color: #fff;
-  background: #c50000;
 }
 /*********************end 推荐*********************/
 
@@ -296,12 +152,7 @@
   width: 458px;
   height: 240px;
 }
-.mb35{
-  margin-bottom: 35px;
-}
-a img{
-  border: 0;
-}
+
 .hot_book .hot_book_list dl dd{
   width: 270px;
   float: left;
@@ -310,21 +161,11 @@ a img{
 .hot_book .hot_book_list dl dd p.title{
   padding-top: 20px;
 }
-.f16{
-  font-size: 16px;
-}
+
 .hot_book .hot_book_list dl dd p.title a{
   color: #494949;
 }
-a{
-  text-decoration: none;
-  outline: none;
-  color: #888888;
-  text-decoration: none;
-}
-.f16{
-  font-size: 16px;
-}
+
 .hot_book .hot_book_list dl dd p.xing{
   margin: 2px 0 5px 0;
 }
@@ -333,15 +174,11 @@ a{
   width: 458px;
   height: 240px;
 }
-.mb35{
-  margin-bottom: 35px;
-}
+
 .sale_top, .bianji, .xgzx{
-  background: #fff;
+  /* background: #fff; */
 }
-.mt30{
-  margin-top: 30px;
-}
+
 .sale_top .sale_top_title, .bianji .bianji_title{
   height: 29px;
   line-height: 29px;
@@ -350,9 +187,6 @@ a{
   text-align: center;
   color: #fff;
   font-weight: normal;
-}
-.f16{
-  font-size: 16px;
 }
 .sale_top_list{
   border: 2px solid #f8f8f8;
@@ -379,9 +213,7 @@ a{
   color: #fff;
   background: #f9ab3c;
 }
-.pl15{
-  padding-left: 15px;
-}
+
 .sale_top .sale_top_con dd p.title{
   color: #535353;
   height: 30px;
@@ -393,9 +225,7 @@ a{
 .sale_top .sale_top_con dd p.hitcount, .sale_top_con dd p.price{
   color: #9f9f9f;
 }
-.pt15{
-  padding-top: 15px;
-}
+
 .sale_top .sale_top_con{
   padding: 23px 10px 30px 15px;
   border-bottom: 2px solid #f8f8f8;
@@ -414,9 +244,6 @@ a{
   border-radius: 50%;
   color: #fff;
   background: #f9ab3c;
-}
-.pl15{
-  padding-left: 15px;
 }
 .sale_top .sale_top_con dd p.title{
   color: #535353;
@@ -433,9 +260,6 @@ a{
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.pt15{
-  padding-top: 15px;
-}
 .sale_top .sale_top_con{
   padding: 23px 10px 30px 15px;
   border-bottom: 2px solid #f8f8f8;
@@ -455,9 +279,7 @@ a{
   color: #fff;
   background: #f9ab3c;
 }
-.mt42{
-  /*margin-top: 53px;*/
-}
+
 .bianji .bianji_list{
   text-align: center;
   border: 2px solid #f8f8f8;
@@ -505,21 +327,7 @@ a{
   background-position: -2px -132px;
   margin: 15px 0 20px 0;
 }
-.color_7e7{
-  color: #7e7e7e;
-}
-.f18{
-  font-size: 18px;
-}
-.f12{
-  font-size: 12px;
-}
-pt20{
-  padding-top: 20px;
-}
-.color_727{
-  color: #727272;
-}
+
 .ui_list_pic_06_skin .titleHead{
   height: 29px;
   line-height: 29px;
@@ -536,8 +344,6 @@ pt20{
   border-style: solid;
   border-color: #f8f8f8;
   background: #fff;
-  /*height: 552px!important;*/
-  height: auto;
 }
 .ui_list_pic_06_skin .listCon{
   border-bottom-style: solid;
@@ -565,8 +371,5 @@ pt20{
   color: #9f9f9f;
 }
 .ui_list_pic_06_skin .listCon .price{
-  color: #9f9f9f;
-}
-.components_header_skin .header_top3 .open:after{
-  background: none;
+
 }

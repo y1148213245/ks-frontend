@@ -45,7 +45,7 @@ export default {
         pageSize: "15",
         searchText: ""
       },
-      detailHref: '',
+      detailHref: './authordetail.html?pubId=',
       colId: 116,
     }
 

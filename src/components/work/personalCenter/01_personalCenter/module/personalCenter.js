@@ -1,6 +1,8 @@
 import api from "../api/personalCenterApi.js";
 // import loginApi from 'api/wl/loginApi.js';
+import loginApi from '../../../login/module/login_02.js';
 import Vue from "vue";
+import {Get, Post,_axios} from "@common";
 
 var state = {
   member: {}, //用户信息
@@ -44,71 +46,40 @@ var getters = {
 };
 
 var actions = {
-  /*查询账户信息*/
-  queryUser({ commit }, param) {
-    commit("setMember", { loginName: "1" });
-    param.loadCallBack();
-    /*登陆验证*/
-    // loginApi.keepSession().then(function(rep) {
-    //   if(rep.data && rep.data.status == 'ok' && rep.data['member']) {
-    //     commit('setMember',rep.data['member']);
-    //     param.loadCallBack();
-    //   } else {
-    //     alert('请您先登录~');
-    //   }
-    // });
-  },
   updateCurrentShow({ commit }, param) {
     commit("setCurrentShow", param);
   },
   /*查询账户信息*/
   queryUser({ commit }, param) {
-    commit("setMember", { loginName: "1" });
-    api.queryUser("1").then(function(response) {
-      var data = response.data.data;
-      var account = {
-        loginName: data.loginName,
-        email: data.email,
-        mobileno: data.mobileno,
-        username: data.nickName,
-        userRank: data.userRank,
-        payPoints: data.payPoints,
-        virtualCoin: data.virtualCoin,
-        avatar: data.picture,
-        couponNum: data.couponNum,
-        questions: data.questions
-      };
-      commit("setUser", account);
-    });
-    param.loadedCallBack();
-
     /*登陆验证*/
-    // loginApi.keepSession().then(function (rep) {
-    //   if (rep.data && rep.data.status == 'ok' && rep.data['member']) {
-    //     commit('setMember', rep.data['member']);
-    //     /*账户信息加载*/
-    //     api.queryUser(rep.data['member'].loginName).then(function (response) {
-    //       var data = response.data.data;
-    //       var account = {
-    //         "loginName": data.loginName,
-    //         "email": data.email,
-    //         "mobileno": data.mobileno,
-    //         "username": data.nickName,
-    //         "userRank": data.userRank,
-    //         "payPoints": data.payPoints,
-    //         "virtualCoin": data.virtualCoin,
-    //         "avatar": data.picture,
-    //         "couponNum":data.couponNum,
-    //         "questions":data.questions,
-    //       };
-    //       commit('setUser', account);
-    //     })
-    //     /*账户信息加载完毕，执行回调*/
-    //     param.loadedCallBack();
-    //   } else {
-    //     alert('未登录');
-    //   }
-    // });
+    return Get(BASE_URL + 'checkToken.do').then(function (rep) {
+      let datas = rep.data.data;
+      if (datas && datas.checkStatus == '1') {
+        commit('setMember', datas);
+        /*账户信息加载*/
+        api.queryUser(datas.loginName).then(function (response) {
+          var data = response.data.data;
+          var account = {
+            "loginName": data.loginName,
+            "email": data.email,
+            "mobileno": data.mobileno,
+            "username": data.nickName,
+            "userRank": data.userRank,
+            "payPoints": data.payPoints,
+            "virtualCoin": data.virtualCoin,
+            "avatar": data.picture,
+            "couponNum":data.couponNum,
+            "questions":data.questions,
+          };
+          commit('setUser', account);
+        })
+        /*账户信息加载完毕，执行回调*/
+        param.loadedCallBack();
+      } else {
+        alert('未登录');
+      }
+    }
+  );
   },
 
   /*查询积分详情*/
@@ -116,7 +87,6 @@ var actions = {
     params.loginName = getters.getMember.loginName;
     api.queryPointRecord(params).then(function(response) {
       let pointRecord = response.data;
-      console.log(pointRecord);
       commit("setPointRecord", pointRecord);
     });
   },

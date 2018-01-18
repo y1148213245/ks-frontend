@@ -24,7 +24,7 @@ const dev = {
     personalCenter: {
       personalCenter_01: {
         params: {
-            loginName: "song@163.com",
+            loginName: "",
             siteId: SITE_CONFIG.siteId,
             timeStamp: new Date().getTime(), // 加时间戳是为了不从缓存里取数据
         },
