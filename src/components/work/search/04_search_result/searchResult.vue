@@ -1,25 +1,25 @@
 <!--  -->
 <template>
  <div class="search_04">
-    <div v-if="projectConfig.isShowTotalCountTag" class="search_04-search_totalcount">共<span v-text="totalCount"></span>件商品</div>
+    <div v-if="projectConfig.isShowTotalCountTag" class="search_04-search_totalcount">共<span class="search_04-search_totalcount-num" v-text="totalCount"></span>件商品</div>
     
     <div class="search_04-content">
       <div class="search_04-content-list">
         <transition-group name="fade">
           <dl class="search_04-content-list-entry_box" v-for='entry in list' :key="entry.id">
             <dt class="search_04-content-list-entry_box-dt">
-              <a class="search_list_imgBox" href="javascript:void(0)" @click="toDetail(entry.id)">
-                <img class="search_list_img" :src="entry.pub_picBig"  onload="DrawImage(this,186,271)" alt="暂无封面"/>
+              <a class="search_04-content-list-entry_box-img_box" href="javascript:void(0)" @click="toDetail(entry.id)">
+                <img class="search_04-content-list-entry_box-img" :src="entry.pub_picBig"  onload="DrawImage(this,186,271)" alt="暂无封面"/>
               </a>
             </dt>
-            <dd>
+            <dd class="search_04-content-list-entry_box-dd">
               <p class="search_04-content-list-entry_box-title">
                 <a href="javascript:void(0)" @click="toDetail(entry.id)" v-text="entry.pub_resource_name" class="search_04-content-list-entry_box-title-a" :title="entry.pub_resource_name"></a>
               </p>
               <p class="search_04-content-list-entry_box-author">作者：<span v-text="entry.BOOK_SYS_AUTHORS" :title="entry.BOOK_SYS_AUTHORS"></span></p>
               <p class="search_04-content-list-entry_box-pressname" :title="entry.BOOK_PRESS_NAME">版权：{{entry.BOOK_PRESS_NAME}}</p>
               <p class="search_04-content-list-entry_box-pub-date" :title="entry.BOOK_PUBDATE | fmtDate">出版：{{entry.BOOK_PUBDATE | fmtDate}}</p>
-              <p class="search_04-content-list-entry_box-price">￥<i v-text="parseFloat(entry.prod_member_price || 0).toFixed(2) "></i>
+              <p class="search_04-content-list-entry_box-price">￥<span v-text="parseFloat(entry.prod_member_price || 0).toFixed(2) "></span>
                 <span class="search_04-content-list-entry_box-price-span">￥<span
                   v-text="parseFloat(entry.BOOK_EB_PRICE || 0).toFixed(2)"></span></span></p>
               <p class="search_04-content-list-entry_box-star">
@@ -123,7 +123,7 @@ export default {
         }
       })
     },
-    toDetail(pubId) {
+    toDetail (pubId) {
       window.location.href = this.projectConfig.detailHref + pubId;
     }
   },
@@ -145,6 +145,9 @@ export default {
 </script>
 <style>
 .search_04 {
+   font-family: 'Microsoft Yahei','微软雅黑','\5FAE\8F6F\96C5\9ED1','宋体';
+  font-size: 12px;
+  color: #888888;
 }
 .search_04-search_totalcount {
   padding-right: 30px;
@@ -152,6 +155,9 @@ export default {
   text-align: right;
 
   font-size: 14px;
+}
+.search_04-search_totalcount-num{
+  color: #c50000;
 }
 .search_04-content {
   overflow: hidden;
@@ -172,6 +178,11 @@ export default {
 }
 .search_04-content-list-entry_box-dt {
   float: left;
+}
+.search_04-content-list-entry_box-dd {
+  width: 360px;
+  float: left;
+  padding-left: 25px;
 }
 .search_04-content-list-entry_box-title {
   font-size: 16px;
@@ -245,7 +256,7 @@ export default {
 .search_04-content-list-entry_box-orther_shop {
   height: 32px;
 
-  /* background: url(../img/bg_008.png) no-repeat; */
+  background: url(./img/bg_008.png) no-repeat;
   background-position: -9px 2px;
 }
 .search_04-content-list-entry_box-orther_shop-a {
@@ -271,7 +282,7 @@ export default {
   outline: none;
   color: #888888;
   background-position: 1px 90px;
-  /* background-image: url(../img/bg_005.png); */
+  background-image: url(./img/bg_005.png);
 }
 .search_04-content-list-entry_box-orthers-buy {
   display: inline-block;
@@ -298,6 +309,30 @@ export default {
   font-size: 12px;
   text-decoration: none;
   outline: none;
+}
+.search_04-content-list-entry_box-img_box {
+  position: relative;
+  display: block;
+  width: 186px;
+  height: 271px;
+  margin: 0;
+  padding: 0;
+  line-height: 271px;
+
+  text-decoration: none;
+  outline: none;
+  color: #888888;
+}
+.search_04-content-list-entry_box-img_box-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: 0px;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 .search_04-content-paging {
   padding: 30px 0;

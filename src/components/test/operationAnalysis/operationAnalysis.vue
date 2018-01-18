@@ -47,7 +47,7 @@
 </template>
 <script type="text/ecmascript-6">
 import $ from 'jquery'
-import echarts from 'echarts'
+// import echarts from 'echarts'
 	import {BASE_AMUC_URL, CONFIG} from './config/config';
 
 	var url = BASE_AMUC_URL + "news/getsourceid";

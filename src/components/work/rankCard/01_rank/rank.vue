@@ -49,13 +49,15 @@ export default {
   padding-left: 20px;
   height: 22px;
   
-  /* color: #656260; */
+  font-family: 'Microsoft Yahei','微软雅黑','\5FAE\8F6F\96C5\9ED1','宋体';
+  font-size: 12px;
+  color: #656260;
 }
 .rankcard_01_nav{
   padding: 3px 8px;
 }
 .rankcard_01_nav--on {
-  /* background: #da0b2d;
-  color: #fff; */
+  background: #da0b2d;
+  color: #fff;
 }
 </style>
