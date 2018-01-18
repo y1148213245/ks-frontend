@@ -1,29 +1,29 @@
 <!--  -->
 <template>
- <div id="search-high-condition" class="search_jg_bg">
-    <table border="0">
+ <div id="search-high-condition" class="work_search_05">
+    <table border="0" class="work_search_05-table">
       <tr>
         <td height="40" width="265">
-          <span>书名:</span>
+          <span class="work_search_05-table-title">书名:</span>
           <span>
             <el-input style="width: 200px;" size="small" placeholder="请输入书名" v-model="bookName"></el-input>
           </span>
         </td>
         <td height="40" width="265">
-          <span>作者:</span>
+          <span class="work_search_05-table-title">作者:</span>
           <span>
             <el-input style="width: 150px;" size="small" placeholder="请输入作者" v-model="author"></el-input>
           </span>
         </td>
         <td height="40" width="300">
-          <span>ISBN:</span>
+          <span class="work_search_05-table-title">ISBN:</span>
           <span><el-input style="width: 200px;" size="small" placeholder="请输入ISBN" v-model="isbn"></el-input></span>
         </td>
-        <td rowspan="2"><input type="button" class="search_jg_btn f14 color_939" value="检索" @click="toSearch"/></td>
+        <td rowspan="2"><input type="button" class="work_search_05-table-button" value="检索" @click="toSearch"/></td>
       </tr>
       <tr>
         <td colspan="2">
-          <span>出版时间:</span>
+          <span class="work_search_05-table-title">出版时间:</span>
           <span class="search_jg_01">
             <el-date-picker v-model="picker_from_model" type="date" size="small" placeholder="选择日期" :picker-options="pickerOptions_from" @change="picker_from"></el-date-picker>
           </span>至
@@ -31,7 +31,7 @@
           <el-date-picker v-model="picker_to_model" type="date" size="small" placeholder="选择日期" :picker-options="pickerOptions_to" @change="picker_to"></el-date-picker>
           </span>
         <td>
-          <span>定价:</span>
+          <span class="work_search_05-table-title">定价:</span>
           <span><el-input style="width: 100px;" size="small" placeholder="请输入价格" v-model="priceFrom"></el-input></span>至
           <span><el-input style="width: 100px;" size="small" placeholder="请输入价格" v-model="priceTo"></el-input></span>
         </td>
@@ -109,11 +109,40 @@ export default {
 
 </script>
 <style>
+.work_search_05 {
+  height: 93px;
+
+  font-family: "Microsoft Yahei", "微软雅黑", "\5FAE\8F6F\96C5\9ED1", "宋体";
+  font-size: 12px;
+  color: #888888;
+  background: #f6f6f6;
+}
+.work_search_05-table {
+  width: 1060px;
+  margin: 0 auto;
+  padding-top: 8px;
+}
+.work_search_05-table span {
+  padding: 0 8px;
+}
+.work_search_05-table-title {
+}
+.work_search_05-table-button {
+  height: 36px;
+  line-height: 36px;
+  width: 124px;
+  border: 0px;
+  background: #c50000;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  outline: none;
+}
 .searh_pagingBox {
   padding: 30px 0;
 }
-.el-date-editor span{
-  padding: 0px!important;
+.el-date-editor span {
+  padding: 0px !important;
 }
 .el-date-editor.el-input {
   width: 205px;

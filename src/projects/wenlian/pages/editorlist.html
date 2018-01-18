@@ -4,19 +4,45 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>首页</title>
-  <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/leixing.css">
 
+  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
 
   <script type="text/javascript" src="../assets/js/jquery.js"></script>
-  <script type="text/javascript" src="../assets/js/sl.js"></script>
   <script type="text/javascript" src="../assets/js/web.js"></script>
 
   <script type="text/javascript" src="../assets/config/index.js"></script>
   <script type="text/javascript">
   </script>
+  <style>
+    .main {
+      margin: 0 auto 48px;
+      width: 1200px;
+      min-height: 680px;
+      overflow: hidden;
 
+      background: none repeat scroll 0 0 #fff;
+    }
+
+    .daohang {
+      height: 52px;
+      line-height: 52px;
+      padding-left: 15px;
+      
+      border-bottom: 2px solid #c50000;
+    }
+
+    .daohang a {
+      text-decoration-line: none;
+    }
+
+    .position-title-color {
+      color: #9b9b9b;
+    }
+
+    .position-title-color--current {
+      color: rgb(98, 98, 98);
+    }
+  </style>
 </head>
 
 <body id="home">
@@ -27,18 +53,20 @@
     <!--头-->
     <components_common_header namespace="header"></components_common_header>
     <!--头end-->
-    <div class="main_zzxq" id="editor_list">
+    <div class="main" id="editor_list">
       <!-- 导航-->
       <div class="daohang">
-        <span class="color_9bab">您的位置:</span><a href="../index/index.html" class="color_9bab">首页</a>>><span class="color_6262">编辑列表</span>
+        <span class="position-title-color">您的位置:</span>
+        <a href="../index/index.html" class="position-title-color">首页</a>>>
+        <span class="position-title-color--current">编辑列表</span>
       </div>
       <!-- END 导航-->
 
       <!--编辑列表-->
-     <ui_list_pic_15 namespace="editorlist" loginModuleNamespace="login_02"></ui_list_pic_15>
+      <ui_list_pic_15 namespace="editorlist" loginModuleNamespace="login_02"></ui_list_pic_15>
       <!-- END 编辑列表-->
-    
-    
+
+
     </div>
 
     <div id="wl_footer" class="footer f14">

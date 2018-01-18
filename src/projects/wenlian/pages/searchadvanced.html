@@ -4,11 +4,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>首页</title>
-  <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
-  <link type="text/css" rel="stylesheet" href="../assets/css/search.css">
-  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
 
+  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
   <script type="text/javascript" src="../assets/js/jquery.js"></script>
   <script type="text/javascript" src="../assets/js/sl.js"></script>
   <script type="text/javascript" src="../assets/js/web.js"></script>
@@ -17,6 +14,34 @@
   <script type="text/javascript">
   </script>
   <style>
+    .main {
+      width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .daohang {
+      height: 35px;
+      line-height: 35px;
+      margin-top: 25px;
+      font-size: 14px;
+      
+      border-bottom: 2px solid #c50000;
+    }
+
+    .daohang a {
+      text-decoration-line: none;
+    }
+
+    .position-title-color {
+      color: #9b9b9b;
+    }
+
+    .position-title-color--current {
+      color: #626262;
+    }
+
     .footerCom {
       height: 117px;
       text-align: center;
@@ -43,19 +68,21 @@
     <components_common_header namespace="header"></components_common_header>
     <!--头end-->
     <div class="main">
-      <div class="daohang f14" style="height:35px; line-height:35px; margin-top:25px;">
-        <span class="color_9b9">您的位置:</span><a href="./index.html" class="color_9b9">首页</a>>><span style="color:#626262;">搜索结果</span>
+      <div class="daohang">
+        <span class="position-title-color">您的位置:</span>
+        <a href="./index.html" class="position-title-color">首页</a>>>
+        <span class="position-title-color--current">搜索结果</span>
       </div>
       <!-- 搜索结果-->
       <div class="search_jg ">
         <!-- 高级检索组件-->
-         <work_search_05 namespace="searchadvance"></work_search_05>
+        <work_search_05 namespace="searchadvance"></work_search_05>
         <!-- END 高级检索组件-->
         <!-- 结果组件-->
-         <work_search_04 namespace="searchadvance"></work_search_04>
+        <work_search_04 namespace="searchadvance"></work_search_04>
         <!-- END 结果组件-->
       </div>
-    <!-- END 搜索结果-->
+      <!-- END 搜索结果-->
     </div>
 
     <div class="footerCom">
