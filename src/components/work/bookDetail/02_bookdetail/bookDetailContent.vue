@@ -125,14 +125,14 @@ export default {
     ...mapGetters({
       bookInfo: 'bookDetail/bookDetailInfo',
       getCartAmount: 'bookDetail/getCartAmount',
-      getTotalAmount: "login_02/getTotalAmount",        // 获取购物车商品总数量
+      getTotalAmount: "login_store/getTotalAmount",        // 获取购物车商品总数量
     }),
-    ...mapGetters("login_02", {
+    ...mapGetters("login_store", {
       member: interfaces.GET_MEMBER
     }),
   },
   methods: {
-    ...mapActions("login_02", {
+    ...mapActions("login_store", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
     //加入购物车
@@ -251,7 +251,7 @@ function addCart (contentType, this_value, loginName) {
       if (this.addCartInfo === '1') { //电子书加入成功
         //原有的购物车数量
         var num = _this.getCartAmount;
-        _this.$store.dispatch("login_02/getTotalAmount", parseInt(number) + num);  //详情页气泡上购物车数量
+        _this.$store.dispatch("login_store/getTotalAmount", parseInt(number) + num);  //详情页气泡上购物车数量
         window.location.href = "../pages/addcart.html?pubId=" + _this.pubId;
       }
       if (this.addCartInfo === '0') { //电子书已经加入

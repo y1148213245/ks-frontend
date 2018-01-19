@@ -39,7 +39,7 @@ export default {
       });
     },
     toDetailsPage: function () {
-      window.location.href = this.CONFIG.href + this.CONFIG.pubId;
+      window.location.href = this.CONFIG.href + this.CONFIG.colId;
     }
   }
 }
@@ -69,5 +69,6 @@ export default {
 .wenlian_common_refine .index_jpts_head .more {
   padding-top: 20px;
   float: right;
+  cursor: pointer;
 }
 </style>

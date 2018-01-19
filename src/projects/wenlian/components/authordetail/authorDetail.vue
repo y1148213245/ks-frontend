@@ -43,7 +43,7 @@
       this.$bus.$on(this.namespace,this.getAuthorInfo);
     },
     computed: {
-      ...mapGetters("login_02", {
+      ...mapGetters("login_store", {
         member: interfaces.GET_MEMBER // 获取用户信息
       })
     },

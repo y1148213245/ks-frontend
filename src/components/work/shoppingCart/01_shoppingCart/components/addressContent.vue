@@ -115,7 +115,7 @@ export default {
     }); */
   },
   methods: {
-    ...mapActions("login_02", {
+    ...mapActions("login_store", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
     loadCallBack () {

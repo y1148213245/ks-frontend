@@ -54,7 +54,7 @@
     },
     computed: {
       ...mapGetters({
-        member: 'login_02/getMember',
+        member: 'login_store/getMember',
         allNavCols: 'cache/getNavCols'
       }),
       submissionCols: function () {

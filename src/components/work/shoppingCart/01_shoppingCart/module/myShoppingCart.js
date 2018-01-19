@@ -67,7 +67,7 @@ var actions = {
         productList: productList,
         myCallBack: params.myCallback
       });
-      storex.rootState.login_02.cartTotalAmount = totalCount;
+      storex.rootState.login_store.cartTotalAmount = totalCount;
     });
   },
 

@@ -1,6 +1,6 @@
 import api from "../api/personalCenterApi.js";
 // import loginApi from 'api/wl/loginApi.js';
-import loginApi from '../../../login/module/login_02.js';
+import loginApi from '../../../login/module/login_store';
 import Vue from "vue";
 import {Get, Post,_axios} from "@common";
 

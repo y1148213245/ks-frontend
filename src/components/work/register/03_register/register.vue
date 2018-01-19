@@ -281,7 +281,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('login_02', {
+    ...mapActions('login_store', {
       action_register: interfaces.ACTION_REGISTER_EMAIL,
       action_checkUserInfo: interfaces.ACTION_CHECK_USERINFO,
       action_sendMobileNum: interfaces.ACTION_SEND_MOBILE_NUM,
@@ -454,9 +454,9 @@ export default {
   border-width: 1px;
   overflow: hidden;
 
-  /* border-style: solid;
+  border-style: solid;
   border-color: #d9d9d9;
-  background-color: #fff; */
+  background-color: #fff;
 }
 .register_02_register_titlebox {
   margin: 0 18px 0 18px;
@@ -464,8 +464,8 @@ export default {
   line-height: 70px;
   border-bottom-width: 1px;
 
-  /* border-bottom-style: solid;
-  border-bottom-color: #bfbfbf; */
+  border-bottom-style: solid;
+  border-bottom-color: #bfbfbf;
 }
 .register_02_register_title {
   display: inline-block;
@@ -475,10 +475,10 @@ export default {
   line-height: 68px;
   border-bottom-width: 5px;
 
-  /* border-bottom-style: solid;
+  border-bottom-style: solid;
   border-bottom-color: #c50000;
   color: #c50000;
-  font-size: 16px; */
+  font-size: 16px;
 }
 .register_02_register_form {
   width: 480px;
@@ -500,15 +500,15 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  /* font-style: normal;
-  background-position: -5px -142px; */
-  /* background: url(../img/bg_10.png) no-repeat; */
+  font-style: normal;
+  background-position: -5px -142px; 
+ background: url(./img/bg_10.png) no-repeat;
 }
 .register_02_register_form_box_usernamebox_label {
   margin-right: 15px;
 
-  /* color: #727272;
-  font-size: 14px; */
+  color: #727272;
+  font-size: 14px;
 }
 .register_02_register_form_box_usernamebox_input {
   width: 235px;
@@ -527,15 +527,15 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  /* background-position: -8px -324px; */
-  /* background: url(../img/bg_10.png) no-repeat; */
-  /* font-style: normal; */
+  background-position: -8px -324px; 
+  background: url(./img/bg_10.png) no-repeat;
+  font-style: normal;
 }
 .register_02_register_form_box_passwordbox_label {
   margin-right: 15px;
 
-  /* color: #727272;
-  font-size: 14px; */
+  color: #727272;
+  font-size: 14px;
 }
 .register_02_register_form_box_passwordbox_input {
   width: 235px;
@@ -554,15 +554,15 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  /* background-position: -8px -354px; */
-  /* background: url(../img/bg_10.png) no-repeat; */
-  /* font-style: normal; */
+  background-position: -8px -354px;
+  background: url(./img/bg_10.png) no-repeat;
+  font-style: normal;
 }
 .register_02_register_form_box_confirm-password-box_label {
   margin-right: 15px;
 
-  /* color: #727272;
-  font-size: 14px; */
+  color: #727272;
+  font-size: 14px;
 }
 .register_02_register_form_box_confirm-password-box_input {
   width: 235px;
@@ -580,22 +580,22 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  /* background: url(../img/bg_10.png) no-repeat; */
-  /* background-position: -7px -176px;
-  font-style: normal; */
+  background: url(./img/bg_10.png) no-repeat;
+  background-position: -7px -176px;
+  font-style: normal;
 }
 .register_02_register_form_box_validate-code-box_label {
   margin-right: 15px;
 
-  /* color: #727272;
-  font-size: 14px; */
+  color: #727272;
+  font-size: 14px;
 }
 .register_02_register_form_box_validate-code-box_input {
   width: 117px;
 }
 .register_02_register_form_box_validate-code-box_change-picture {
-  /* font-size: 12px;
-  text-decoration: none; */
+  font-size: 12px;
+  text-decoration: none;
 }
 .register_02_register_form_box_validate-code-box_change-icon {
   display: inline-block;
@@ -604,9 +604,9 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  /* background-position: -5px -380px; */
-  /* background: url(../img/bg_10.png) no-repeat; */
-  /* font-style: normal; */
+  background-position: -5px -380px;
+  background: url(./img/bg_10.png) no-repeat;
+  font-style: normal;
 }
 .register_02_register_next-box {
   margin-left: 23px;
@@ -619,11 +619,11 @@ export default {
   line-height: 30px;
   border: 0px;
 
-  /* cursor: pointer;
+  cursor: pointer;
   background-color: #c50000;
   color: #fff;
   font-size: 14px;
-  outline: none; */
+  outline: none;
 }
 .register_02_bind {
   width: 748px;
@@ -632,9 +632,9 @@ export default {
   border-width: 1px;
   overflow: hidden;
 
-  /* border-style: solid;
+  border-style: solid;
   border-color: #d9d9d9;
-  background-color: #fff; */
+  background-color: #fff;
 }
 .register_02_bind_nav-box {
   margin: 0 18px 0 18px;
@@ -642,9 +642,9 @@ export default {
   height: 70px;
   border-bottom-width: 1px;
 
-  /* border-bottom-style: solid;
+  border-bottom-style: solid;
   border-bottom-color: #bfbfbf;
-  color: #515151; */
+  color: #515151;
 }
 .register_02_bind_nav-box_title {
   padding-right: 6px;
@@ -652,8 +652,8 @@ export default {
   margin-right: 30px;
   margin-left: 30px;
 
-  /* cursor: pointer;
-  font-size: 16px; */
+  cursor: pointer;
+  font-size: 16px;
 }
 .register_02_bind_nav-box_bind--on {
   display: inline-block;
@@ -661,9 +661,9 @@ export default {
   height: 67px;
   border-bottom-width: 5px;
 
-  /* color: #c50000;
+  color: #c50000;
   border-bottom-style: solid;
-  border-bottom-color: #c50000; */
+  border-bottom-color: #c50000;
 }
 .register_02_bind_content {
   width: 480px;
@@ -685,15 +685,15 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  /* background-position: -8px -294px; */
-  /* background: url(../img/bg_10.png) no-repeat; */
-  /* font-style: normal; */
+  background-position: -8px -294px; 
+  background: url(./img/bg_10.png) no-repeat;
+  font-style: normal;
 }
 .register_02_bind_content_mail_input-box_label {
   margin-right: 30px;
 
-  /* color: #727272;
-  font-size: 14px; */
+  color: #727272;
+  font-size: 14px;
 }
 .register_02_bind_content_mail_input-box_input {
   width: 230px;
@@ -713,15 +713,15 @@ export default {
   text-indent: -9999px;
   vertical-align: middle;
 
-  /* background-position: -8px -264px; */
-  /* background: url(../img/bg_10.png) no-repeat; */
-  /* font-style: normal; */
+  background-position: -8px -264px;
+  background: url(./img/bg_10.png) no-repeat;
+  font-style: normal;
 }
 .register_02_bind_content_mobile_input-box_mobile-label {
   margin-right: 15px;
 
-  /* color: #727272;
-  font-size: 14px; */
+  color: #727272;
+  font-size: 14px;
 }
 .register_02_bind_content_mobile_input-box_mobile-input {
   width: 135px;
@@ -738,14 +738,14 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  /* background-position: -7px -176px; */
-  /* background: url(../img/bg_10.png) no-repeat; */
+  background-position: -7px -176px;
+  background: url(./img/bg_10.png) no-repeat;
 }
 .register_02_bind_content_mobile_input-box_validate-label {
   margin-right: 15px;
 
-  /* color: #727272;
-  font-size: 14px; */
+  color: #727272;
+  font-size: 14px;
 }
 .register_02_bind_content_mobile_input-box_validate-input {
   width: 115px;

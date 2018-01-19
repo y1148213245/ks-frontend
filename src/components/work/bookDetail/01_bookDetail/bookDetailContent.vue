@@ -289,18 +289,18 @@ export default {
     this.pubId = param.pubId;                // pubId
   },
   computed: {
-    ...mapGetters("login_02", {
+    ...mapGetters("login_store", {
       isLogin: interfaces.GET_MEMBER_ISLOGIN,
       member: interfaces.GET_MEMBER
     }),
     ...mapGetters({
       bookInfo: 'bookDetail/bookDetailInfo',
       getCartAmount: 'bookDetail/getCartAmount',
-      getTotalAmount: "login_02/getTotalAmount",        // 获取购物车商品总数量
+      getTotalAmount: "login_store/getTotalAmount",        // 获取购物车商品总数量
     }),
   },
   methods: {
-    ...mapActions("login_02", {
+    ...mapActions("login_store", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
     toSecond (colId) {
@@ -473,7 +473,7 @@ function addCart (contentType, this_value, loginName) {
         });
         //原有的购物车数量
         var num = _this.getCartAmount;
-        _this.$store.dispatch("login_02/getTotalAmount", parseInt(number) + num);  //详情页气泡上购物车数量
+        _this.$store.dispatch("login_store/getTotalAmount", parseInt(number) + num);  //详情页气泡上购物车数量
       }
       if (this.addCartInfo === '0') {
         _this.$message({

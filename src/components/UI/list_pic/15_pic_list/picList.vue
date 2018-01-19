@@ -52,7 +52,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("login_02", {
+    ...mapGetters("login_store", {
       member: interfaces.GET_MEMBER
     })
   },

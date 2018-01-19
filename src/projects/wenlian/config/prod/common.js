@@ -71,8 +71,8 @@ export default {
 				pageSize: "15",
 				searchText: ""
 			},
-			href:"./bookdetail.html?pubId=",
-			pubId:59
+			href:"./bookList.html?colId=",
+			colId: 59, // 精品图书栏目id
 		}
 	}
 }

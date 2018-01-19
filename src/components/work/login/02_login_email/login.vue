@@ -1,5 +1,5 @@
 <template>
-	<div class="work_login_02_login">
+	<div class="work_login_store_login">
 		<el-form :model="member" :rules="loginRules" ref="member">
 			<el-form-item label="邮 箱" prop="loginName">
 				<el-input type="text" v-model="member.loginName" auto-complete="off" placeholder="请输入邮箱"></el-input>
@@ -22,7 +22,7 @@ import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 
 export default {
-	name: "work_login_02_login",
+	name: "work_login_store_login",
 	reused: true,
 	props: ["namespace"],
 	data () {
@@ -39,10 +39,10 @@ export default {
 		};
 	},
 	mounted: function () {
-		this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_login_02;
+		this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_login_store;
 	},
 	methods: {
-		...mapActions("login_02", {
+		...mapActions("login_store", {
 			login: interfaces.ACTION_LOGIN,
 		}),
 		backMain () {

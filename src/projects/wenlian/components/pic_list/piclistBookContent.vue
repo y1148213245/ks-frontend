@@ -41,7 +41,7 @@ import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 
 export default {
-  name: "ui_pic_list_19",
+  name: "components_pic_list",
   reused: true,
   props: ['namespace', 'modulename'],
   data () {

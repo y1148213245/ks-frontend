@@ -117,12 +117,12 @@
       }
     },
     computed: {
-      ...mapGetters("login_02", {
+      ...mapGetters("login_store", {
         member: interfaces.GET_MEMBER
       }),
       ...mapGetters({
         productList: "shoppingcart/getProductList",        // 获取购物车商品列表
-        cartTotalAmount: "login_02/getTotalAmount",        // 获取购物车商品总数量
+        cartTotalAmount: "login_store/getTotalAmount",        // 获取购物车商品总数量
         allNavCols: "cache/getNavCols"
       })
     },
@@ -153,7 +153,7 @@
       this.getAllNavCols();
     },
     methods: {
-      ...mapActions("login_02", {  // 取用户信息
+      ...mapActions("login_store", {  // 取用户信息
         getMemberInfo: interfaces.ACTION_KEEP_SESSION
       }),
       ...mapActions({
