@@ -160,4 +160,46 @@
     margin: 12px 0px;
     padding: auto;
   }
+  .zzfw_container_right{
+    padding: 35px 22px;
+    background: #fff;
+    margin: 0 0 40px 27px;
+    width: 836px;
+  }
+  .zzfw_name{
+    background: url(/assets/img/bg_004.png) repeat-x scroll center center;
+  }
+  .zzfw_name span{
+    background: #fff;
+  }
+  .bm_con{
+    text-align: left;
+  }
+  .bm_list{
+    position: relative;
+    margin-right: 20px;
+    width: 135px;
+    text-align: center;
+    display: inline-block;
+  }
+  .bm_name{
+    line-height: 45px;
+    font-size: 16px;
+  }
+  .bm_name_jj{
+    position: absolute;
+    left: 145px;
+    top: 10px;
+    border: 1px solid red;
+    padding: 10px 5px;
+    z-index: 10;
+    width: 210px;
+    background-color: #fff;
+    text-align: left;
+    display: none;
+    margin-bottom:15px;
+  }
+  .inEditRoom{
+    width: 100%;overflow: hidden;
+  }
 </style>
