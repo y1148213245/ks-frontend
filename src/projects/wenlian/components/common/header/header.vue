@@ -80,14 +80,14 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {mapGetters, mapActions} from "vuex";
-  import * as interfaces from "@work/login/common/interfaces.js";
-  import * as type from "@work/shoppingCart/common/interfaces.js";
-  import {Get, Post} from "@common";
-  import URL from "url";
-  import PROJECT_CONFIG from "projectConfig";
+import { mapGetters, mapActions } from "vuex";
+import * as interfaces from "@work/login/common/interfaces.js";
+import * as type from "@work/shoppingCart/common/interfaces.js";
+import { Get, Post } from "@common";
+import URL from "url";
+import PROJECT_CONFIG from "projectConfig";
 
-  export default {
+export default {
     name: 'components_common_header',
     reused: true,
     // props: ['namespace', { colLoadingNum: { default: 5 } }, { colId: { default: '' } }],
@@ -195,7 +195,11 @@
             }
           }
           var colId = URL.parse(document.URL, true).query.colId;
-          this.showColId = colId ? colId : navColArr[0];
+        this.showColId = colId;
+        if (document.URL.substring(document.URL.indexOf('/pages/') + 7, document.URL.indexOf('.html')) === this.navColArray[0].url.substring(this.navColArray[0].url.indexOf('/pages/') + 7, this.navColArray[0].url.indexOf('.html'))) {
+          this.showColId = navColArr[0];
+        }
+
         });
       },
       toSub (sub) {  // 二级菜单
@@ -236,7 +240,7 @@
         let params = URL.parse(document.URL, true).query;
         params.searchText = this.searchText;
         window.location.href = this.parseUrlAndParamsToStr('../pages/search.html', params);
-//        window.location.href = '../pages/search.html?searchText=' + this.searchText + "&category=" + this.category + "#";
+      //        window.location.href = '../pages/search.html?searchText=' + this.searchText + "&category=" + this.category + "#";
       },
       goToSearchResultByHW (name) {
         window.location.href = '../pages/search.html?searchText=' + name + "#"
@@ -296,95 +300,95 @@
         }
       },
     }
-  }
+}
 </script>
 <style>
-  * {
+* {
     margin: 0;
     padding: 0;
     list-style-type: none;
-  }
+}
 
-  .components_header {
+.components_header {
     width: 100%;
-  }
+}
 
-  .components_header .topOneWrapper {
+.components_header .topOneWrapper {
     width: 1200px;
     margin: 0 auto;
-  }
+}
 
-  .components_header .header_top1 {
+.components_header .header_top1 {
     height: 31px;
     line-height: 31px;
     border-bottom-width: 1px;
-  }
+}
 
-  .components_header .header_top1 .hello {
+.components_header .header_top1 .hello {
     float: left;
-  }
+}
 
-  .components_header .header_top1 .member {
+.components_header .header_top1 .member {
     float: right;
-  }
+}
 
-  .components_header .header_top1 .member .loginImg {
+.components_header .header_top1 .member .loginImg {
     background-position: -1px 1px;
     padding-right: 18px;
     padding-left: 18px;
-  }
+}
 
-  .components_header .header_top1 .member .quit {
+.components_header .header_top1 .member .quit {
     padding-right: 25px;
-  }
+}
 
-  .components_header .header_top1 .aboutSite {
+.components_header .header_top1 .aboutSite {
     padding-right: 25px;
     padding-left: 25px;
-  }
+}
 
-  .components_header .header_top1 .download {
+.components_header .header_top1 .download {
     padding-left: 20px;
     padding-right: 5px;
-  }
+}
 
-  .components_header .header_top1 .download .downloadApp {
+.components_header .header_top1 .download .downloadApp {
     padding-left: 15px;
     background-position: -6px -14px;
-  }
+}
 
-  .components_header .header_top2 {
+.components_header .header_top2 {
     height: 127px;
     clear: both;
-  }
+}
 
-  .components_header .header_top2 .twowrap {
+.components_header .header_top2 .twowrap {
     width: 1200px;
     margin: 0 auto;
-  }
+}
 
-  .components_header .header_top2 .logoCon {
+.components_header .header_top2 .logoCon {
     float: left;
-  }
+}
 
-  .components_header .header_top2 .searchCon {
+.components_header .header_top2 .searchCon {
     float: right;
     margin-right: 150px;
-  }
+}
 
-  .components_header .header_top2 .myshop {
+.components_header .header_top2 .myshop {
     background-position: -1px -54px;
     margin: 45px 10px 0 10px;
     padding-left: 25px;
     line-height: 30px;
     float: right;
-  }
+}
 
-  .components_header .header_top2 .myshop .cartIcon {
+.components_header .header_top2 .myshop .cartIcon {
     position: relative;
-  }
+}
 
-  .components_header .header_top2 .myshop .cartIcon span {
+.components_header .header_top2 .myshop .cartIcon span {
     display: block;
     position: absolute;
     top: -7px;
@@ -395,18 +399,18 @@
     border-radius: 50%;
     line-height: 16px;
     text-align: center;
-  }
+}
 
-  .components_header .header_top2 .suishouji {
+.components_header .header_top2 .suishouji {
     background-position: -5px -31px;
     margin: 45px 10px 0 10px;
     padding-left: 25px;
     line-height: 30px;
     font-size: 14px;
     float: right;
-  }
+}
 
-  .components_header .header_top2 .highsearh {
+.components_header .header_top2 .highsearh {
     float: right;
     width: 30px;
     text-align: center;
@@ -414,18 +418,18 @@
     margin: 38px 0 0 10px;
     line-height: 22px;
     padding-right: 20px;
-  }
+}
 
-  .components_header .header_top2 .searchBox {
+.components_header .header_top2 .searchBox {
     width: 494px;
     height: 44px;
     float: right;
     border-width: 2px;
     margin-top: 38px;
     position: relative;
-  }
+}
 
-  .components_header .header_top2 .searchBox .searchBtn {
+.components_header .header_top2 .searchBox .searchBtn {
     width: 88px;
     height: 44px;
     line-height: 44px;
@@ -434,30 +438,30 @@
     border: none;
     padding: 0;
     overflow: hidden;
-  }
+}
 
-  .components_header .header_top2 .searchBox .searchText {
+.components_header .header_top2 .searchBox .searchText {
     width: 300px;
     height: 44px;
     float: right;
     border: 0;
     padding-left: 25px;
     float: left;
-  }
+}
 
-  .components_header .header_top2 .searchBox .hotWordCon {
+.components_header .header_top2 .searchBox .hotWordCon {
     height: 40px;
     overflow: hidden;
     line-height: 32px;
     clear: both;
-  }
+}
 
-  .components_header .header_top2 .hotWordCon .hotSearchWord {
+.components_header .header_top2 .hotWordCon .hotSearchWord {
     float: left;
     line-height: 32px;
-  }
+}
 
-  .components_header .header_top2 .hotWordCon .info {
+.components_header .header_top2 .hotWordCon .info {
     line-height: 32px;
     padding: 0 5px 0 5px;
     display: inline-block;
@@ -467,45 +471,45 @@
     text-overflow: ellipsis;
     text-align: center;
     float: left;
-  }
+}
 
-  .components_header .header_top3 {
+.components_header .header_top3 {
     height: 41px;
     line-height: 41px;
     clear: both;
-  }
+}
 
-  .components_header .header_top3 .threewrap {
+.components_header .header_top3 .threewrap {
     width: 1200px;
     margin: 0 auto;
     position: relative;
-  }
+}
 
-  .components_header .header_top3 .allCata {
+.components_header .header_top3 .allCata {
     width: 222px;
     border-right-width: 1px;
     position: relative;
     cursor: pointer;
     float: left;
-  }
+}
 
-  .components_header .header_top3 .allCata .allCataBg {
+.components_header .header_top3 .allCata .allCataBg {
     background-position: -2px -85px;
     height: 25px;
     padding-left: 30px;
-  }
+}
 
-  .components_header .header_top3 .nav {
+.components_header .header_top3 .nav {
     width: 855px;
     margin: 0 auto;
     float: right;
-  }
+}
 
-  .components_header .header_top3 .nav a {
+.components_header .header_top3 .nav a {
     width: 155px;
     text-align: center;
     display: inline-block;
-  }
+}
 </style>
 
 

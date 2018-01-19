@@ -1,59 +1,56 @@
 // 三列图书列表带排序组件
 <template>
-  <div>
+  <div class="ui_list_pic_17_3_cols_with_sort ui_list_pic_17_3_cols_with_sort_skin">
+    <div class="list_wrapper main_booklist fl" style="padding-left:225px;margin-left:20px">
 
-    <div class="main_booklist fl" style="padding-left:225px;margin-left:20px">
-
-      <div id="current_position">
-        <div class="booklist_nav  f14 line-h35 color_9b9">
-          <a href="./index.html" class="color_9b9 ">首页</a>>>
-          <a href="./ebook.html" class="color_9b9 ">电子书城</a>>>
-          <span class="color_626">更多图书列表</span>
+      <div class="title_wrapper">
+        <div class="title  f14 line-h35 color_9b9">
+          <a href="../pages/index.html" class="index color_9b9 ">首页</a>>>
+          <a href="../pages/ebook.html" class="ebook color_9b9 ">电子书城</a>>>
+          <span class="current color_626">更多图书列表</span>
         </div>
       </div>
 
-      <div id="wl_current_rank" class="main_booklist_sort line-h35 f14 color_515 ">
-        <span class="booklist_sort01" :class="{on:orderType==0}" @click="setOrderParam('pub_a_order asc pub_lastmodified desc id asc',0,false)">默认排序</span>
-        <span class="booklist_sort02" :class="{on:orderType==1}" @click="setOrderParam('BOOK_PUBDATE',1,true)">发布时间
-          <a href="#"><i class="shang" @click="setOrderParam('BOOK_PUBDATE asc',1,false)">正序</i></a>
-          <a href="#"><i class="xia" @click="setOrderParam('BOOK_PUBDATE desc',1,false)">倒叙</i></a>
+      <div class="book_list_sort_wrapper main_booklist_sort line-h35 f14 color_515 ">
+        <span class="sort_default booklist_sort01" :class="{on:orderType==0}" @click="setOrderParam('pub_a_order asc pub_lastmodified desc id asc',0,false)">默认排序</span>
+        <span class="sort_other booklist_sort02" :class="{on:orderType==1}" @click="setOrderParam('BOOK_PUBDATE',1,true)">发布时间
+          <a href="#" class="order_wrapper"><i class="asc shang" @click="setOrderParam('BOOK_PUBDATE asc',1,false)">正序</i></a>
+          <a href="#" class="order_wrapper"><i class="desc xia" @click="setOrderParam('BOOK_PUBDATE desc',1,false)">倒叙</i></a>
         </span>
-        <span class="booklist_sort03" :class="{on:orderType==2}" @click="setOrderParam('pub_sales_num',2,true)">销量
-          <a href="#"><i class="shang" @click="setOrderParam('pub_sales_num asc',2,false)">正序</i></a>
-          <a href="#"><i class="xia" @click="setOrderParam('pub_sales_num desc',2,false)">倒叙</i></a>
+        <span class="sort_other booklist_sort03" :class="{on:orderType==2}" @click="setOrderParam('pub_sales_num',2,true)">销量
+          <a href="#" class="order_wrapper"><i class="asc shang" @click="setOrderParam('pub_sales_num asc',2,false)">正序</i></a>
+          <a href="#" class="order_wrapper"><i class="desc xia" @click="setOrderParam('pub_sales_num desc',2,false)">倒叙</i></a>
         </span>
-        <span class="booklist_sort04" :class="{on:orderType==3}" @click="setOrderParam('pub_comment_num',3,true)">评论
-          <a href="#"><i class="shang" @click="setOrderParam('pub_comment_num asc',3,false)">正序</i></a>
-          <a href="#"><i class="xia" @click="setOrderParam('pub_comment_num desc',3,false)">倒叙</i></a>
+        <span class="sort_other booklist_sort04" :class="{on:orderType==3}" @click="setOrderParam('pub_comment_num',3,true)">评论
+          <a href="#" class="order_wrapper"><i class="asc shang" @click="setOrderParam('pub_comment_num asc',3,false)">正序</i></a>
+          <a href="#" class="order_wrapper"><i class="desc xia" @click="setOrderParam('pub_comment_num desc',3,false)">倒叙</i></a>
         </span>
       </div>
 
-      <div class="booklist_con pt30">
-        <dl class="booklist_con_list fl" v-for="(getEb,index) in resultList" style="height:152px">
-          <dt class="fl">
-            <img class="" onload="DrawImage(this,113,152)" :src="getEb.pub_picBig" alt="暂无图片" style="text-align: center;float: left;line-height: 150px;cursor: pointer;"
+      <div class="book_list_content_wrapper booklist_con pt30">
+        <dl class="book_content_wrapper booklist_con_list fl" v-for="(getEb,index) in resultList" style="height:152px">
+          <dt class="book_img_wrapper fl">
+            <img class="book_img" onload="DrawImage(this,113,152)" :src="getEb.pub_picBig" alt="暂无图片" style="text-align: center;float: left;line-height: 150px;cursor: pointer;"
                  @click="toBookDetail(getEb.id)"/>
           </dt>
-          <dd class="">
-            <p class="title f16 "><a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="color_494 book_list_text" v-text="getEb.pub_resource_name"></a></p>
-            <p class="xing mb02 mt02 starStyle">
+          <dd class="book_attr_wrapper">
+            <p class="book_title title f16 "><a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="color_494 book_list_text" v-text="getEb.pub_resource_name"></a></p>
+            <p class="book_star xing mb02 mt02 starStyle">
               <el-rate v-model="getEb.pub_star_num" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
             </p>
-            <p class="author f14 color_727 mb02 book_list_text">作者：{{getEb.BOOK_SYS_AUTHORS}}</p>
-            <p class="zhaiyao color_727 line-h20 mb20 zhaiyao_list_text" v-text="getEb.BOOK_SYNOPSIS"></p>
+            <p class="book_author author f14 color_727 mb02 book_list_text">作者：{{getEb.BOOK_SYS_AUTHORS}}</p>
+            <p class="book_synopsis zhaiyao color_727 line-h20 mb20 zhaiyao_list_text" v-text="getEb.BOOK_SYNOPSIS"></p>
 
-            <p class="other">
-              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="goumai f12  color_fff">购买</a>
-              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="chakan f12 color_fff">查看</a>
+            <p class="book_operate other">
+              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="book_buy goumai f12  color_fff">购买</a>
+              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="book_view chakan f12 color_fff">查看</a>
             </p>
           </dd>
         </dl>
       </div>
     </div>
-    <div class="page">
-      <div class="pre_next f14">
-        <ui_pagination :pageMessage='resultPage' :excuteFunction='searchPage'></ui_pagination>
-      </div>
+    <div class="page_wrapper f14">
+      <ui_pagination :pageMessage='resultPage' :excuteFunction='searchPage'></ui_pagination>
     </div>
   </div>
 </template>
@@ -178,3 +175,136 @@
     }
   }
 </script>
+<style>
+  /* start 结构样式 */
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper {
+    padding-left: 225px;
+    width: 950px;
+    margin: 0 auto 0 20px;
+    overflow: hidden;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .title_wrapper .title {
+    line-height: 35px;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_sort_wrapper {
+    line-height: 35px;
+    border-top: 0;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_sort_wrapper .sort_default {
+    padding: 8px 38px 8px 28px;
+    position: relative;
+    border-right: 1px solid #dcdcdc;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_sort_wrapper .sort_other {
+    padding: 8px 38px 8px 28px;
+    position: relative;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_sort_wrapper .sort_other .order_wrapper .asc {
+    background: url(./assets/img/bg_10.png) no-repeat -48px -412px;
+    vertical-align: middle;
+    display: inline-block;
+    text-indent: -99999px;
+    width: 10px;
+    height: 8px;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_sort_wrapper .sort_other .order_wrapper .desc {
+    background: url(./assets/img/bg_10.png) no-repeat -48px -428px;
+    vertical-align: middle;
+    display: inline-block;
+    text-indent: -99999px;
+    width: 10px;
+    height: 8px;
+    position: absolute;
+    top: 18px;
+    right: 15px;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper {
+    padding-top: 30px;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper {
+    height: 152px;
+    width: 305px;
+    position: relative;
+    margin: 0 10px 40px 0;
+    float: left;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_img_wrapper {
+    float: left;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_img_wrapper .book_img {
+    text-align: center;
+    float: left;
+    line-height: 150px;
+    cursor: pointer;
+    height: 152px;
+    width: 103px;
+    box-shadow: 0 0 15px #e8e8e8
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_attr_wrapper {
+    padding-left: 130px;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_attr_wrapper .book_title .book_list_text {
+    display: inline-block;
+    width: 80px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_attr_wrapper .book_star {
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_attr_wrapper .book_star .el-rate {
+    height: 20px;
+    line-height: 1;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_attr_wrapper .book_star .el-rate .el-rate__item {
+    height: 20px;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_attr_wrapper .book_author {
+
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_attr_wrapper .book_synopsis {
+
+  }
+
+  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper .book_content_wrapper .book_attr_wrapper .book_operate {
+
+  }
+
+  .page_wrapper {
+    clear: both;
+    line-height: 40px;
+    padding: 40px 0 60px;
+    text-align: center;
+  }
+
+  /* end 结构样式 */
+  /* start 皮肤样式 */
+  /* end 皮肤样式 */
+</style>

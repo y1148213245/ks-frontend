@@ -14,7 +14,7 @@ export default {
         pageSize: "15",
         searchText: ""
       },
-      href: "./read.jsp?bookId=",
+      href: "http://172.19.57.153/portal/reader",
       bookDetail: "./bookdetail.html?pubId=",
       beginPicIndex: 2,
       finishPicIndex: 8,

@@ -60,7 +60,7 @@ export default {
             }
         },
         shidu: function (bookId, readType, bookName) {
-            var url = this.CONFIG.href + bookId + '&readType=' + readType + '&bookName=' + bookName;
+            var url = this.CONFIG.href  + '/ebook/read.jsp?bookId=' + bookId + '&readType=' + readType + '&bookName=' + bookName;
             window.open(url);
         }
     }
