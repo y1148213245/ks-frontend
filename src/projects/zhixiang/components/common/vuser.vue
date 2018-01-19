@@ -54,17 +54,17 @@
 			});
 		},
 		computed: {
-			...mapGetters("login_store", {
+			...mapGetters("login", {
 				isLogin: interfaces.GET_MEMBER_ISLOGIN,
 				member: interfaces.GET_MEMBER
 			}),
 			...mapGetters({
 				productList: "shoppingcart/getProductList",        // 获取购物车商品列表
-				cartTotalAmount: "login_store/getTotalAmount",        // 获取购物车商品总数量
+				cartTotalAmount: "login/getTotalAmount",        // 获取购物车商品总数量
 			})
 		},
 		methods: {
-			...mapActions("login_store", {
+			...mapActions("login", {
 				getMemberInfo: interfaces.ACTION_KEEP_SESSION,
 				logout: interfaces.ACTION_LOGOUT
 			}),

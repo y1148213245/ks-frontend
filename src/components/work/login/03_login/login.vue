@@ -40,7 +40,7 @@ export default {
   mounted () { },
 
   methods: {
-    ...mapActions('login_store', {
+    ...mapActions('login', {
       action_login: interfaces.ACTION_LOGIN,
     }),
     login: function () {

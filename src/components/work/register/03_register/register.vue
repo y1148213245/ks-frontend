@@ -91,8 +91,8 @@
 
 			<div class="register_02_bind_content" v-show="isMailsend && isBindMail">
 				<div class="register_02_bind_content_mail" style="padding-left:0px;">
-					<div class="zhuce_cg_con_wc mt30 mb20"></div>
-          <div class="zhuce_cg_con_ts f18 color_727 mb35">您的邮箱将会收到一封<span class="color_c50">验证</span>邮件 <br/> 请登录你的邮箱查看
+					<div class="register_02_bind_content_mail_success-title"></div>
+          <div class="register_02_bind_content_mail_success-content">您的邮箱将会收到一封<span class="register_02_bind_content_mail_success-content-text">验证</span>邮件 <br/> 请登录你的邮箱查看
           </div>
 				</div>
 			</div>
@@ -104,7 +104,7 @@
 
 <script>
 import { ValidateRules, CreateCode } from '@common';
-import * as interfaces from '@work/login/common/interfaces.js';
+import * as interfaces from '@work/register/common/interfaces.js';
 import { mapActions } from 'vuex';
 export default {
   name: 'work_login_03_register',
@@ -281,7 +281,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('login_store', {
+    ...mapActions('register', {
       action_register: interfaces.ACTION_REGISTER_EMAIL,
       action_checkUserInfo: interfaces.ACTION_CHECK_USERINFO,
       action_sendMobileNum: interfaces.ACTION_SEND_MOBILE_NUM,
@@ -501,8 +501,8 @@ export default {
   text-indent: -9999px;
 
   font-style: normal;
-  background-position: -5px -142px; 
- background: url(./img/bg_10.png) no-repeat;
+  background-position: -5px -142px;
+  background: url(./img/bg_10.png) no-repeat;
 }
 .register_02_register_form_box_usernamebox_label {
   margin-right: 15px;
@@ -527,7 +527,7 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  background-position: -8px -324px; 
+  background-position: -8px -324px;
   background: url(./img/bg_10.png) no-repeat;
   font-style: normal;
 }
@@ -685,7 +685,7 @@ export default {
   vertical-align: middle;
   text-indent: -9999px;
 
-  background-position: -8px -294px; 
+  background-position: -8px -294px;
   background: url(./img/bg_10.png) no-repeat;
   font-style: normal;
 }
@@ -757,6 +757,18 @@ export default {
   height: 35px;
   border: 0px;
   cursor: pointer;
+}
+.register_02_bind_content_mail_success-title {
+  margin-top: 30px;
+}
+.register_02_bind_content_mail_success-content {
+  margin-bottom: 35px;
+  color: #727272;
+  font-size: 18px;
+  text-align: center;
+}
+.register_02_bind_content_mail_success-content-text {
+  color: #c50000;
 }
 </style>
 

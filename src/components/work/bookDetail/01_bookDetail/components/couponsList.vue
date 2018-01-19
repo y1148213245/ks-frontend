@@ -46,12 +46,12 @@ export default {
   },
   props: ["oneBookDetailInfo"],
   computed: {
-    ...mapGetters("login_store", {
+    ...mapGetters("login", {
       isLogin: interfaces.GET_MEMBER_ISLOGIN,
     }),
   },
   methods: {
-    ...mapActions("login_store", {
+    ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
     showCouponsModel () {

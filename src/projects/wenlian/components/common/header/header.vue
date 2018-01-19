@@ -117,12 +117,12 @@
       }
     },
     computed: {
-      ...mapGetters("login_store", {
+      ...mapGetters("login", {
         member: interfaces.GET_MEMBER
       }),
       ...mapGetters({
         productList: "shoppingcart/getProductList",        // 获取购物车商品列表
-        cartTotalAmount: "login_store/getTotalAmount",        // 获取购物车商品总数量
+        cartTotalAmount: "login/getTotalAmount",        // 获取购物车商品总数量
         allNavCols: "cache/getNavCols"
       })
     },
@@ -153,7 +153,7 @@
       this.getAllNavCols();
     },
     methods: {
-      ...mapActions("login_store", {  // 取用户信息
+      ...mapActions("login", {  // 取用户信息
         getMemberInfo: interfaces.ACTION_KEEP_SESSION
       }),
       ...mapActions({
@@ -222,7 +222,7 @@
       },
       goToNote() {
         if (this.member.loginName) {
-          window.location.href = '../parallelWriting/createNote.html'
+          window.location.href = '../pages/createNote.html'
         } else {
           this.$alert('请您先登录~', '提示', {
             confirmButtonText: '确定'

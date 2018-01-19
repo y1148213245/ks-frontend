@@ -73,7 +73,7 @@ export default {
     ...mapGetters({
       bookInfo: 'bookDetail/bookDetailInfo',   // 图书详情信息
     }),
-    ...mapGetters("login_store", {
+    ...mapGetters("login", {
       member: interfaces.GET_MEMBER   // 用户信息
     }),
   },

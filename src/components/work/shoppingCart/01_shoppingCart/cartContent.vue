@@ -583,7 +583,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("login_store", {
+    ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
     /************ 商品列表页 即结算页面 ************/
@@ -994,7 +994,7 @@ export default {
           tempLength += this.productList[i].list[j].nums;
         }
       }
-      this.$store.dispatch("login_store/getTotalAmount", tempLength);
+      this.$store.dispatch("login/getTotalAmount", tempLength);
     },
     addFavorite: function (product) {  // 添加收藏
       var _this = this;

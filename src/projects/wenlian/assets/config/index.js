@@ -3,7 +3,7 @@
  */
 
 var BASE_URL = "http://172.19.57.153/portal/api/";
-// var BASE_URL = "http://172.19.36.70:9092/spc-portal-web/";
+// var BASE_URL = "http://172.19.36.70:9092/spc-portal-web/";//曼曼本地
 
 var SITE_CONFIG = {
   siteId: 2,

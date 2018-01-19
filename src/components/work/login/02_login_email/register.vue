@@ -1,5 +1,5 @@
 <template>
-	<div class="work_login_store_register">
+	<div class="work_login_register">
 		<!--:rules="rules"-->
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm">
 			<el-form-item label="邮 箱" prop="email">

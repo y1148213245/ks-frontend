@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2017-12-26 09:23:33
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-12 17:02:34
+ * @Last Modified time: 2018-01-19 14:01:15
  */
 
 import * as interfaces from "../common/interfaces.js";
@@ -33,7 +33,7 @@ let mutations = {
 
 let actions = {
 	[interfaces.ACTION_LOGIN]({commit}, params) {
-		return Post(BASE_URL + "login2.do", params.member).then(function (rep) {
+		return Post(BASE_URL + "login.do", params.member).then(function (rep) {
 			let datas = rep.data
 			if (datas.data && (datas.data.checkStatus == "1" || datas.data.checkStatus == 1)) {
 				commit("updateMember", datas.data);
@@ -87,7 +87,7 @@ var keepSession = function (commit) {
 
 export default {
 	namespaced: true,
-	name: "login_02",
+	name: "login",
 	state,
 	getters,
 	actions,

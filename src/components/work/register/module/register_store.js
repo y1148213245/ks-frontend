@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2017-12-26 09:23:33
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-12 17:02:34
+ * @Last Modified time: 2018-01-19 13:55:45
  */
 
 import * as interfaces from "../common/interfaces.js";
@@ -87,7 +87,7 @@ var keepSession = function (commit) {
 
 export default {
 	namespaced: true,
-	name: "login_store",
+	name: "register",
 	state,
 	getters,
 	actions,

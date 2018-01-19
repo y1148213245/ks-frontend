@@ -78,7 +78,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("login_store", {
+    ...mapGetters("login", {
       isLogin: interfaces.GET_MEMBER_ISLOGIN,
       member: interfaces.GET_MEMBER
     }),
@@ -87,7 +87,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions("login_store", {
+    ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
     hideModel () {
