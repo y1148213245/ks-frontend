@@ -36,6 +36,12 @@ export default {
   changeProductCount(params, cb) {
     axios.get(BASE_URL + 'cart/updateCart.do?productId=' + params.productId + '&number=' + params.number + '&loginName=' + params.loginName).then(function (response) {
       if (cb && cb instanceof Function) {
+        if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+          Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+            confirmButtonText: "确定"
+          });
+          return false;
+        }
         cb({ changeStatus: true });
       }
     }).catch(function (error) {});
@@ -57,6 +63,12 @@ export default {
   queryDefaultAddress(name, cb) {
     axios.get(BASE_URL + 'user/getDefalutAddress.do?loginName=' + name).then(function (response) {
       if (cb && cb instanceof Function) {
+        if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+          Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+            confirmButtonText: "确定"
+          });
+          return false;
+        }
         cb({ defaultAddress: response.data.data });
       }
     })
@@ -104,6 +116,12 @@ export default {
   addFavorite(params, cb) {
     axios.post(BASE_URL + 'collection/addCollect.do?loginName=' + params.loginName + '&pubId=' + params.pubId + '&operateType=' + params.operateType + '&productId=' + params.productId + '&siteId=' + SITE_CONFIG.siteId).then(function (response) {
       if (cb && cb instanceof Function) {
+        if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+          Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+            confirmButtonText: "确定"
+          });
+          return false;
+        }
         cb({ favoriteStatus: response.data.data.code });
       }
     }).catch(function (error) {});
@@ -111,6 +129,12 @@ export default {
   queryVirtualCoin(loginName, cb) {
     axios.get(BASE_URL + 'rechargeVirtualCoin/getCoinByName.do?loginName=' + loginName).then(function (response) {
       if (cb && cb instanceof Function) {
+        if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+          Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+            confirmButtonText: "确定"
+          });
+          return false;
+        }
         cb({ virtualCoin: response.data.data });
       }
     })
@@ -125,6 +149,12 @@ export default {
   changeActivity(params, cb) {
     axios.get(BASE_URL + 'cart/getCartAndActivityForChange.do?loginName=' + params.loginName + '&siteId=' + SITE_CONFIG.siteId + '&productId=' + params.productId + '&activityId=' + params.activityId).then(function (response) {
       if (cb && cb instanceof Function) {
+        if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+          Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+              confirmButtonText: "确定"
+          });
+          return false;
+        }
         cb({ changeActivity: response.data.result === "1" ? true : false });
       }
     })
@@ -135,6 +165,12 @@ export default {
   queryCoupons(params, cb) {
     axios.get(BASE_URL + 'user/getCounponsByName.do?loginName=' + params.loginName + '&type=' + params.type).then(function (response) {
       if (cb && cb instanceof Function) {
+        if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+          Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+            confirmButtonText: "确定"
+          });
+          return false;
+        }
         cb({
           couponsList: response.data.result === '1' ? response.data.data : false
         });

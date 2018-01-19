@@ -202,7 +202,7 @@
         window.location.href = sub.url + '?colId=' + sub.id;
       },
       doLogout: function () {  // 登出
-        Post(this.CONFIG.logoutUrl).then(rep => {
+        Get(this.CONFIG.logoutUrl).then(rep => {
           if (Number(rep.status) === 200) {
             window.location.href = '../pages/index.html';
           }

@@ -1,5 +1,8 @@
 <template>
   <div class="box">
+    <el-tooltip effect="dark" content="自定义主题色" placement="bottom">
+        <theme-picker class="theme-switch right-menu-item"></theme-picker>
+    </el-tooltip>
     <div class="center_container">
       <vnav style="margin-right: 20px;" :navs="navs" :current-show-index="currentShowIndex"></vnav>
       <component :is="currentShow" :detail-url="detailUrl" :show_star="show_star"></component>
@@ -21,6 +24,7 @@ import afterservice from "./components/personalCenter_afterservice";
 import coupon from "./components/personalCenter_coupon";
 import note from "./components/personalCenter_note";
 import PROJECT_CONFIG from "projectConfig";
+import ThemePicker from './components/ThemePicker'
 export default {
   name: "work_personalcenter_01",
   reused: true,
@@ -97,7 +101,8 @@ export default {
     point,
     afterservice,
     coupon,
-    note
+    note,
+    ThemePicker
   }
 };
 </script>

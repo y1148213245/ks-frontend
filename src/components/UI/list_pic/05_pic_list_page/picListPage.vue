@@ -141,7 +141,6 @@ div {
 }
 
 .iproduct .product-image,
-.iproduct .product-image a,
 .iproduct .product-image img {
   height: auto;
 }
@@ -158,7 +157,6 @@ div {
   overflow: hidden;
 }
 
-.product-image > a,
 .product-image .slide a,
 .product-image img {
   display: block;
@@ -170,14 +168,6 @@ div {
 .iproduct .product-image a,
 .iproduct .product-image img {
   height: auto;
-}
-
-.product-image > a,
-.product-image .slide a,
-.product-image img {
-  display: block;
-  width: 100%;
-  height: 100%;
 }
 
 a {
@@ -253,7 +243,9 @@ label {
 #commonPaging {
   clear: both;
 }
-
+.ebook_list_imgBox{
+  height: 260px;
+}
 body:not(.device-touch):not(.device-xs):not(.device-xxs) .product-overlay {
   -webkit-transition: bottom 0.3s ease-in-out;
   -o-transition: bottom 0.3s ease-in-out;

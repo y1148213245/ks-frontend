@@ -86,16 +86,16 @@ export default {
   height: 358px;
   padding: 15px 30px;
 
-  /* box-shadow: 0 0 10px #e5e5e5;
-  background: #fff; */
+  box-shadow: 0 0 10px #e5e5e5;
+  background: #fff;
 }
 .login_03_titlebox {
   line-height: 35px;
   border-bottom-width: 1px;
 
-  /* font-size: 18px; */
-  /* border-bottom-style: solid;
-  border-bottom-color: #cccccc; */
+  font-size: 18px;
+  border-bottom-style: solid;
+  border-bottom-color: #cccccc;
 }
 .login_03_userinput,
 .login_03_password {
@@ -107,13 +107,13 @@ export default {
   padding-left: 40px;
   vertical-align: middle;
 
-  /* border-style: solid;
+  border-style: solid;
   border-color: #e0e0e0;
   color: #939393;
   background-color: transparent;
-  outline: none; */
-  /* background: url(../img/bg_10.png) no-repeat; */
-  /* background-position: -574px -93px; */
+  outline: none;
+  background: url(./img/bg_10.png) no-repeat;
+  background-position: -574px -93px;
 }
 .login_03_password {
 }
@@ -121,10 +121,10 @@ input:focus.login_03_userinput,
 input:focus.login_03_password {
   border-width: 1px;
 
-  /* border-style: solid;
+  border-style: solid;
   border-color: #bf3636;
   outline-color: #bf3636;
-  color: #bf3636; */
+  color: #bf3636;
 }
 
 .login_03_box_01 {
@@ -137,7 +137,7 @@ input:focus.login_03_password {
 .login_03_box_01_forgetpassword {
   float: right;
 
-  /* color: #c50000; */
+  color: #c50000;
 }
 .login_03_box_02 {
   margin-top: 30px;
@@ -148,23 +148,23 @@ input:focus.login_03_password {
   height: 42px;
   width: 350px;
 
-  /* border-radius: 5px;
+  border-radius: 5px;
   background: #c50000;
   color: #fff;
   font-size: 24px;
   font-weight: bold;
-  cursor: pointer; */
+  cursor: pointer;
 }
 
 .login_03_box_03 {
   margin-top: 15px;
 
-  /* color: #a6a6a6;
-  font-size: 14px; */
+  color: #a6a6a6;
+  font-size: 14px;
 }
 .login_03_box_03_register {
   float: right;
 
-  /* color: #c50000; */
+  color: #c50000;
 }
 </style>

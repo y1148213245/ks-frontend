@@ -57,7 +57,7 @@ export default {
         this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.picListBook[moduleName];
         this.title = this.CONFIG.title;
         // this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].list_pic.picListBook : PROJECT_CONFIG.list_pic.picListBook;
-        this[moduleName]();  // 首页 —— 热销排行组件  &  图书详情页 —— 浏览历史组件
+        this.hotsalebank();  // 首页 —— 热销排行组件  &  图书详情页 —— 浏览历史组件
     },
     methods: {
         hotsalebank: function () {
@@ -72,23 +72,23 @@ export default {
                 this.list = rep.data.result;
             });
         },
-        historyrecord () {
+        /* historyrecord () {
             let param = Object.assign({}, this.CONFIG.params);
+            debugger
             param.username = this.member.loginName;
             this.gethistorylist(param);
-        },
+        }, */
         addgethistorylist: function (loginName) {
-            var url = this.CONFIG.url;
-            let param = Object.assign({}, this.CONFIG.params);
-            param.username = loginName;
             let pubId = URL.parse(document.URL, true).query.pubId;
             Get(BASE_URL + '/browserHistory/addBrowserHistory.do?pubId=' + pubId + '&loginName=' + loginName).then((repsonse) => {
                 if (repsonse.data.result === '1') {
-                    this.gethistorylist(param);
+                    this.gethistorylist(loginName);
                 }
             })
         },
-        gethistorylist (param) {
+        gethistorylist (loginName) {
+            let param = Object.assign({}, this.CONFIG.params);
+            param.username = loginName;
             Get(this.CONFIG.url, { params: param }).then((rep) => {
                 var data = rep.data.data;
                 var hasData = rep.status === 200 && data && Object.prototype.toString.call(data) === "[object Array]" && data.length > 0 ? true : false;
@@ -119,9 +119,7 @@ export default {
                             type: "success",
                             message: "删除成功!"
                         });
-                        let param = Object.assign({}, this.CONFIG.params);
-                        param.username = this.member.loginName;
-                        this.gethistorylist(param);
+                        this.gethistorylist(this.member.loginName);
                     } else {
                         this.$message({
                             type: "error",
@@ -131,7 +129,7 @@ export default {
                 })
             } else {
                 CookieUtils.delCookie("history");
-                this.bookList = "";
+                this.list = "";
             }
 
         }
@@ -139,7 +137,7 @@ export default {
     watch: {
         member: function (newValue, oldValue) {
             if (newValue.loginName && newValue.loginName !== oldValue.loginName && this.modulename === 'historyrecord') { // 已经登录时 历史浏览记录从后台请求
-                this.addgethistorylist(newValue.loginName);   // 您的历史记录
+                this.addgethistorylist(newValue.loginName);   // 添加历史记录
             }
         },
         bookInfo: function (newv, oldv) {
@@ -172,7 +170,7 @@ export default {
                         //存 cookie
                     }
                     CookieUtils.setCookie("history", JSON.stringify(queryCookie), 1);
-                    this.bookList = (JSON.parse(CookieUtils.getCookie('history')));
+                    this.list = (JSON.parse(CookieUtils.getCookie('history')));
                 }
             }
         }

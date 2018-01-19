@@ -9,45 +9,46 @@ export default {
 			searchHrefPage: "./searchresult.html"
 		}
 	},
-	navigation:{
-		headerNavigation_01:{
-			navigationTitleWordList:[
+	navigation: {
+		headerNavigation_01: {
+			navigationTitleWordList: [
 				{
-					name:"资讯",
-					columnType:0
+					name: "资讯",
+					id: 42
 				},
 				{
-					name:"图书",
-					columnType:2
+					name: "图书",
+					id: 43
 				},
 				{
-					name:"电子书",
-					columnType:3
+					name: "电子书",
+					id: 44
 				},
 				{
-					name:"资源",
-					columnType:1
+					name: "资源",
+					id: 45
 				},
 				{
-					name:"天猫旗舰店",
-					columnType:4,
-					href:"https://shrmms.tmall.com/",
-					type:"shopLink",
-					childHref:[
+					name: "天猫旗舰店",
+					id: -1,
+					href: "https://shrmms.tmall.com/",
+					type: "shopLink",
+					childHref: [
 						{
-							name:"亚马逊",
-							href:"#"
-						},{
-							name:"京东",
-							href:"#"
-						},{
-							name:"当当网",
-							href:"#"
+							name: "亚马逊",
+							href: "#"
+						}, {
+							name: "京东",
+							href: "#"
+						}, {
+							name: "当当网",
+							href: "#"
 						}
 					]
 				},
 			],
-			url: '/data/snavigation_01_headerNavigation.json'
+			showItemFromColId:['46','48','49','51','54','56'],
+			url: BASE_URL + 'spc/cms/col/getAllColBySiteId.do?siteId=1&chId=0'
 		}
 	}
 }

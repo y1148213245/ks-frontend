@@ -56,7 +56,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'assets',
     assetsPublicPath: '../',
-
+    // assetsPublicPath: '/portal/sites/zhixiang',
     /**
      * Source Maps
      */

@@ -28,17 +28,24 @@ export default {
   addCartInfos(params, cb) {
     var url = BASE_URL + 'cart/addCart.do?number=' + params.number + '&loginName=' + params.loginName + '&activityId=' + 0 + '&pubId=' + params.pubId + "&colId=" + params.colId + '&siteId=' + SITE_CONFIG.siteId;
     axios.get(url).then(function (response) {
-      if (cb && cb instanceof Function)
-        var showMsg = '系统数据维护中，请联系客服。';
-      if (response.data.data && response.data.data.msg) {
-        showMsg = response.data.data.msg;
-      } else if (response.data.error && response.data.error.errorMsg) {
-        showMsg = response.data.error.errorMsg === "用户名错误" ? '系统数据维护中，请联系客服。' : showMsg;
+      if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+        Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+          confirmButtonText: "确定"
+        });
+        return false;
       }
-      cb({
-        addCartInfo: response.data.result,
-        cartMessage: showMsg
-      });
+      if (cb && cb instanceof Function) {
+        var showMsg = '系统数据维护中，请联系客服。';
+        if (response.data.data && response.data.data.msg) {
+          showMsg = response.data.data.msg;
+        } else if (response.data.error && response.data.error.errorMsg) {
+          showMsg = response.data.error.errorMsg === "用户名错误" ? '系统数据维护中，请联系客服。' : showMsg;
+        }
+        cb({
+          addCartInfo: response.data.result,
+          cartMessage: showMsg
+        });
+      }
     }).catch(function (error) {});
   },
 
@@ -50,11 +57,19 @@ export default {
   addCollectOrLikeInfo(params, cb) {
     var collect_url = BASE_URL + 'collection/addCollect.do?loginName=' + params.loginName + '&pubId=' + params.pubId + '&operateType=' + params.operateType + '&productId=' + params.productId + '&siteId=' + SITE_CONFIG.siteId;
     axios.post(collect_url).then(function (response) {
-      if (cb && cb instanceof Function)
+      if (cb && cb instanceof Function) {
+        if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+          Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+            confirmButtonText: "确定"
+          });
+          return false;
+        }
         cb({
           collectOrLikeInfo: response.data.result,
           message: response.data.data
         });
+      }
+        
     }).catch(function (error) {});
   },
 
@@ -67,6 +82,12 @@ export default {
     var url = BASE_URL + "cart/getCartAndActivity.do?loginName=" + loginName + '&siteId=' + SITE_CONFIG.siteId;
     axios.get(url).then(function (response) {
       var number = 0;
+      if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+        Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+          confirmButtonText: "确定"
+        });
+        return false;
+      }
       if (!!response.data.data && !!response.data.data.content) {
         var cartData = response.data.data.content;
         if (cartData.length > 0) {
@@ -120,6 +141,12 @@ export default {
   cancelHistoryInfo(params, cb) {
     var url = BASE_URL + 'browserHistory/deleteHistoryByUser.do?loginName=' + params;
     axios.get(url).then(function (response) {
+      if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+        Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+          confirmButtonText: "确定"
+        });
+        return false;
+      }
       if (response.data.result == "1") {
         if (cb && cb instanceof Function)
           cb({ addHistory: [] });
@@ -136,6 +163,12 @@ export default {
     var url = BASE_URL + 'browserHistory/addBrowserHistory.do?pubId=' + params.pubId + '&loginName=' + params.loginName;
     var query_url = '/browserHistory/getHistoryList.do?num=' + params.num + '&username=' + params.loginName;
     axios.get(url).then(function (response) {
+      if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+        Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+          confirmButtonText: "确定"
+        });
+        return false;
+      }
       if (response.data.result == '1') {
         axios.get(query_url).then(function (response) {
           if (response.data.result == "1") {

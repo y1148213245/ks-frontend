@@ -169,8 +169,9 @@ var actions = {
     params.loginName = getters.getMember.loginName;
     let loading = Vue.prototype.$loading({ text: "正在加载中..." });
     api.queryTimeList(params).then(function(response) {
-      let newdata = response.data.data;
+      let newdata = response.data;
       commit("setNewList", newdata);
+      debugger
       loading.close();
     });
   },

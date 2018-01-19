@@ -14,7 +14,7 @@
                         {{navigationWord.name}}
                     </label>
                     <ul class="sf-js-enabled" style="touch-action: pan-y;">
-                        <li  v-for="nav in navList" v-if="nav.columnType == navigationWord.columnType" class="li_header_navigation"><a class="a1_header_navigation" :href="nav.template">{{nav.name}}</a></li>
+                        <li  v-for="nav in navList" v-if="nav.parentId == navigationWord.id" class="li_header_navigation"><a class="a1_header_navigation" :href="nav.template">{{nav.name}}</a></li>
                     </ul>
                 </template>
             </div>
@@ -31,21 +31,35 @@
         data (){
         return {
             CONFIG: null,
+
             navList: [],
-            navigationTitleWordList:[]
+            navigationTitleWordList:[],
+            showItemFromColId:[],
         }
     },
     mounted:function(){
         this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].navigation.headerNavigation_01 : PROJECT_CONFIG.navigation.headerNavigation_01;
         this.navigationTitleWordList = this.CONFIG.navigationTitleWordList?this.CONFIG.navigationTitleWordList:[];
+        this.showItemFromColId = this.CONFIG.showItemFromColId;
         this.initNavigation();
     },
     methods:{
         initNavigation:function(){
             Get(this.CONFIG.url).then((rep) => {
-                this.navList = rep.data.data;
+                
+                let shows = this.showItemFromColId;
+                let datas = rep.data.data
+                for (let index = 0; index < shows.length; index++) {
+                    const showId = shows[index];
+                    for (let index2 = 0; index2 < datas.length; index2++) {
+                        const col = datas[index2];
+                        if(showId == col.id){
+                            this.navList.push(col);
+                        }
+                    }
+                }
             });
-        }
+        },
     }
     }
 </script>

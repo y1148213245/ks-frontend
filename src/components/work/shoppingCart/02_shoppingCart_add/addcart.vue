@@ -45,7 +45,7 @@ export default {
     ...mapGetters({
       bookInfo: 'bookDetail/bookDetailInfo',
     }),
-    ...mapGetters("login_02", {
+    ...mapGetters("login", {
       member: interfaces.GET_MEMBER
     }),
   },

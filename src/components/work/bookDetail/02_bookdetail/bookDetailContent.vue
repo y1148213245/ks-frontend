@@ -98,6 +98,7 @@ export default {
     this.pubId = URL.parse(window.location.href, true).query.pubId;
     this.buyBookUrl = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02.buyBookUrl;
     this.probationUrl = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02.probationUrl;
+    
   },
   created: function () {
     this.getMemberInfo().then((member) => {
@@ -107,6 +108,7 @@ export default {
         siteId: SITE_CONFIG.siteId
       };
       this.$store.dispatch('bookDetail/' + type.BOOK_DETAIL, params);
+      this.$store.dispatch('bookDetail/' + type.CART_NUMS, member.loginName);
     });
   },
   filters: {

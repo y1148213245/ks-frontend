@@ -92,7 +92,7 @@ export default {
 }
 
 .ui_list_pic_16 .listCon .listImg {
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .ui_list_pic_16 .listCon .listDd {

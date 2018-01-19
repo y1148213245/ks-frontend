@@ -43,11 +43,10 @@
         }, 3000);
       },
       queryOrder() {
-        var url = BASE_URL;
-        axios.get(url + '/order/getParentOrder.do?orderCode=' + this.orderCode).then(function (response) {
+        axios.get(BASE_URL + '/order/getParentOrder.do?orderCode=' + this.orderCode).then(function (response) {
           var data = response.data.data;
           if (data.payStatus === '1') {  // 支付成功跳转生成订单页面 支付失败继续请求
-            window.location.href = "../shoppingCart/commitorder.html#/commitOrder/" + data.orderCode + "/" + payStatus + '/order';
+            window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/" + payStatus + '/order';
           }
         })
       }

@@ -1461,7 +1461,6 @@ export default {
                 );
               } else if (_this.payMethod === "0") {
                 // 微信支付
-
                 axios.get(
                   BASE_URL +
                   "/epay/getPayForm.do?orderId=" +
@@ -1618,6 +1617,11 @@ export default {
         } else {
           console.log("%c注意：当前订单不免运费", "color:red");
         }
+      }
+    },
+    paymentList: function () {
+      if (this.paymentList.length > 0) {
+        this.payMethod = this.paymentList[0].id + '';
       }
     }
   }

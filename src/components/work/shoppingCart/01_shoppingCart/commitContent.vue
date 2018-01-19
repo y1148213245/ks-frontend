@@ -54,9 +54,9 @@
     },
     methods: {
       viewMyOrder: function () {
-        window.location.href = '../personalCenter/personalCenter.html';  // 虚拟币订单需要跳转到我的账号
+        window.location.href = '../pages/personalcenter.html';  // 虚拟币订单需要跳转到我的账号
         if (this.commitInfo.type === 'order') {          // 商品订单需要跳转到我的订单
-          window.location.href = '../personalCenter/personalCenter.html#list';
+          window.location.href = '../page/personalcenter.html#list';
         }
       }
     }

@@ -144,7 +144,7 @@
       <el-table border :data="addresses" style="width: 100%" max-height="500">
         <el-table-column prop="contactor" label="收货人" width="140px">
         </el-table-column>
-        <el-table-column label="收货地址" width="428px">
+        <el-table-column label="收货地址" width="349px">
           <template slot-scope="scope">
             <span>{{ scope.row.city }}{{ scope.row.county }}{{ scope.row.address }}</span>
           </template>
@@ -260,7 +260,7 @@
           </div>
           
           <div class="mt30 mb30">
-          <div v-if="account && account.mobileno">
+          <!-- <div v-if="account && account.mobileno">
             <i class="wzdh_xgxx_bdhm mr08"></i>手机号码:
             <span v-text="account && account.mobileno"></span>
             <el-button type="primary" class="butt" @click="modifyMobile">修改手机号</el-button>
@@ -268,7 +268,7 @@
 
           <div v-if="account.mobileno ==''">
             <el-button type="primary" @click="setMobileDialog = true" class="butt">设置手机号</el-button>
-          </div>
+          </div> -->
           </div>
 
 
@@ -345,7 +345,7 @@
         <el-tabs v-model="activeName"  >
           <el-tab-pane label="邮箱验证" name="first">
           <div class="main_right fl">
-            <div class="wzdh_xgyx f14 color_6f6">
+            <div class="wzdh_xgyx f14 color_6f6" >
               <div class="wzdh_xgyx_ico"></div>
               <div style="margin:20px 0 0 70px;">
                 <div v-if="account.email ==''">
@@ -543,7 +543,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-import CityInfo from "../../assets/js/city-data";
 Vue.use(Vuex);
 Vue.prototype.$ajax = axios;
 
@@ -1451,7 +1450,6 @@ export default {
     },
     RechargeVirtual() {
       var _this = this;
-      var url = type.API_CONFIG.baseURL;
       this.$confirm("点击确认支付", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -1464,7 +1462,7 @@ export default {
           if (_this.payMethod === "1") {
             // 支付宝支付
             window.open(
-              url +
+              BASE_URL +
                 "/epay/getVirtualCoinPayForm.do?price=" +
                 this.value +
                 "&loginName=" +
@@ -1475,12 +1473,12 @@ export default {
                 this.siteId,
               "_self"
             );
-            window.history.pushState(null, null, "../errorPage/errorPage.html"); // 添加历史记录
+            window.history.pushState(null, null, "./errorpage.html"); // 添加历史记录
           } else if (_this.payMethod === "0") {
             // 微信支付
             axios
               .get(
-                url +
+               BASE_URL +
                   "/epay/getVirtualCoinPayForm.do?price=" +
                   this.value +
                   "&loginName=" +
@@ -1500,14 +1498,12 @@ export default {
                   response.data.indexOf("</div>")
                 );
                 window.location.href =
-                  "../shoppingCart/QRcode.html?data=" +
+                  "./qrcode.html?data=" +
                   data +
                   "&orderCode=" +
                   orderCode;
               });
           }
-          /*window.open(url + '/epay/getVirtualCoinPayForm.do?price=' + this.value + '&loginName=' + this.account.loginName + '&payMethodId=' + this.payWay + '&siteId=' + this.siteId, '_self');
-            window.history.pushState(null, null, '../errorPage/errorPage.html'); // 添加历史记录*/
         })
         .catch(err => {
           console.log(err);
@@ -2306,6 +2302,7 @@ input.bdhm {
   background: #c50000;
   border: 0px;
 }
+.main_right { width:880px; overflow:hidden; margin:0 auto;}
 /*修改邮箱*/
 .main_right .wzdh_yzsjh,
 .main_right .wzdh_xgyx,
@@ -2314,7 +2311,7 @@ input.bdhm {
 .main_right .wzdh_xgmm {
   padding: 20px 120px 100px 240px;
   border: 1px solid #d9d9d9;
-  width: 534px;
+  /* width: 518px; */
 }
 
 .wzdh_xgyx .wzdh_xgyx_ico {
