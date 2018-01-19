@@ -1,5 +1,6 @@
 .main_zzfw{
   width: 1200px;
+  min-height: 600px;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -124,4 +125,30 @@ zzfw_container_left{
 }
 .zzfw_container{
   margin: 36px 0px 0px 50px;
+}
+.goContribute{
+  overflow: hidden;
+  margin-top: -30px;
+}
+.tgfs_con{
+  border-bottom: 1px solid #e5e5e5;
+}
+.tgfs_con p a.qtg{
+  background: #ca0000;
+}
+.bm_name_jj{
+  position: absolute;
+  left: 145px;
+  top: 10px;
+  border: 1px solid red;
+  padding: 10px 5px;
+  z-index: 10;
+  width: 210px;
+  background-color: #fff;
+  text-align: left;
+  display: none;
+}
+.bm_name a:hover{
+  color: #ca0000;
+  font-weight: bold;
 }

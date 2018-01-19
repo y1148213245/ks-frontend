@@ -252,7 +252,7 @@ function addCart (contentType, this_value, loginName) {
         //原有的购物车数量
         var num = _this.getCartAmount;
         _this.$store.dispatch("login_02/getTotalAmount", parseInt(number) + num);  //详情页气泡上购物车数量
-        // window.location.href = "../pages/addcarttips.html?pubId=" + this.pubId;
+        window.location.href = "../pages/addcart.html?pubId=" + _this.pubId;
       }
       if (this.addCartInfo === '0') { //电子书已经加入
         _this.$message({

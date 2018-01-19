@@ -37,7 +37,7 @@ export default {
       totalCount: 0,
       pageNo: 0,
       pageSize: 0,
-      pageSizes: null,
+      pageSizes:null,
     };
   },
 
@@ -83,8 +83,7 @@ export default {
       })
     },
     toDetail (id) {
-      // window.location.href = this.projectConfig.toDetailHref + id;
-      window.location.href = "./authordetail.html?pubId=2980&currentType=editor";
+      window.location.href = this.projectConfig.toDetailHref + id + "&currentType=author#";
     }
   }
 }

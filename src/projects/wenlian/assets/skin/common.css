@@ -242,6 +242,9 @@ body{
 .pt25{
   padding-top: 25px;
 }
+.mt10{
+  margin-top: 10px;
+}
 .mb10{
   margin-bottom: 10px;
 }
@@ -277,6 +280,8 @@ body{
 }
 .pr30{
   padding-right: 30px;
+}
+.color_8d8c{
 }
 .pl30{
   padding-left: 30px;
@@ -392,3 +397,25 @@ pt20{
 .color_727{
   color: #727272;
 }
+.pb12{
+  padding-bottom: 12px;
+}
+
+
+
+
+/**start 尾部**/
+.footerCom {
+  height: 117px;
+  text-align: center;
+  width: 100%;
+  background: #595959;
+  padding-top: 40px;
+  font-size: 14px;
+}
+
+.footerCom p {
+  line-height: 30px;
+  color: #d4d4d4;
+}
+/**end 尾部**/

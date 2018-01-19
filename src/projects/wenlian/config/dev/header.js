@@ -15,7 +15,10 @@ export default {
           siteId: 2,
           chId: 0
         }
-      }
+      },
+      queryHotWord: {
+        num: 4,   // 显示个数限制
+      },
     }
   }
 }

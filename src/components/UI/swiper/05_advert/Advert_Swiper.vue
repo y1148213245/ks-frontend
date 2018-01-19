@@ -1,8 +1,8 @@
 // 广告组件，暂定归类为轮播
 <template>
-  <div class="advertCon" v-if="infoUrl">
-    <a :href="infoUrl" style="display:block;" class="gz_001">
-      <img :src="advertList[0] && advertList[0].pub_picBig" style="width: 100%;"/>
+  <div class="advertCon ui_swiper_05_advert" v-if="infoUrl">
+    <a :href="infoUrl" class="gz_001">
+      <img :src="advertList[0] && advertList[0].pub_picBig" class="advImg"/>
     </a>
   </div>
 </template>
@@ -48,3 +48,11 @@
     }
   }
 </script>
+<style>
+  .ui_swiper_05_advert .gz_001{
+    display:block;
+  }
+  .ui_swiper_05_advert .advImg{
+    width: 100%;
+  }
+</style>

@@ -26,7 +26,7 @@
         <span>姓名：</span>
         <a v-html="entry && entry.information_SYS_TOPIC || ''" :href="getEditorDetailUrl(entry)" class="tgfs_con_tit line-h35 mt10 scoped_tg_html"></a>
         <div v-html="entry.information_a_content" class="scoped_tg_content"></div>
-        <p class="color_8d8c line-h35" style="overflow: hidden;margin-top: -30px;">
+        <p class="color_8d8c line-h35 goContribute">
           <a @click="contribute()" href="javascript:void(0)" class="qtg fr pl15 pr15 color_fff f14">去投稿</a>
         </p>
       </div>

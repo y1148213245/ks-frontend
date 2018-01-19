@@ -419,11 +419,11 @@ export default {
     }
   },
   created: function () {
-			this.getMemberInfo().then((member) => {
-        this.member.loginName = member.loginName;
-        this.loadCallBack();
-			});
-	},
+    this.getMemberInfo().then((member) => {
+      this.member.loginName = member.loginName;
+      this.loadCallBack();
+    });
+  },
   mounted: function () {
     var _this = this;
     /* this.$store.dispatch("shoppingcart/queryUser", { // 先去vuex获取一下用户信息
@@ -584,8 +584,8 @@ export default {
   },
   methods: {
     ...mapActions("login_02", {
-				getMemberInfo: interfaces.ACTION_KEEP_SESSION
-		}),
+      getMemberInfo: interfaces.ACTION_KEEP_SESSION
+    }),
     /************ 商品列表页 即结算页面 ************/
     selectActivity (event, product, item) { // 更换活动
       product.checked = false;
@@ -1633,10 +1633,16 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-#cartWrapper {
-  margin-top: 36px;
-  padding-bottom: 24px;
+.shoppingCartWrapper {
   min-height: 600px;
+}
+
+#cartWrapper {
+  padding-bottom: 24px;
+  width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+  margin-top: 36px;
 }
 
 #cartWrapper .cartContainer {

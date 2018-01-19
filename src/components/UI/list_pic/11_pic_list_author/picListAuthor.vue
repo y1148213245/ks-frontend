@@ -53,7 +53,7 @@ export default {
       this.projectConfig = PROJECT_CONFIG[this.namespace].list_pic.list_pic_11
     },
     toDetail (id) {
-      window.location.href = this.projectConfig.detailHref + id
+      window.location.href = this.projectConfig.detailHref + id + "&currentType=author#";
     },
     loadDatas () {
       Post(this.projectConfig.url, this.projectConfig.param).then((rep) => {

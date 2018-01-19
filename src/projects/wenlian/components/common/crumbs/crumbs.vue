@@ -22,6 +22,9 @@
             this.title=CRUMB_TYPE.find(function(item){
               return item.name==param;
             }).title;
+            this.$nextTick(()=>{
+              document.title=this.title;
+            })
           }
         }
     }
