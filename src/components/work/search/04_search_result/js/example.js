@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-01-04 16:44:27 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-05 13:34:55
+ * @Last Modified time: 2018-01-19 14:37:57
  * 搜索结果列表
  */
  
@@ -36,6 +36,7 @@ const prod = {
       },
       pageSizes:[10, 20, 50, 100],
       eventName_loadDate:'loadSearchResult',
+      detailHref:'./bookdetail.html?pubId=',
     }
   }
 };

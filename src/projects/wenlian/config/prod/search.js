@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-01-05 13:36:35 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-17 20:55:42
+ * @Last Modified time: 2018-01-19 14:37:46
  */
 export default {
   name: 'search',
@@ -20,6 +20,7 @@ export default {
       pageSizes:[10, 20, 50, 100],
       eventName_loadDate:'loadSearchResult',
       isShowTotalCountTag:true,
+      detailHref:'./bookdetail.html?pubId=',
     }
   },
   rankCard: {

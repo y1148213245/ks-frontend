@@ -106,6 +106,7 @@ export default {
   reused: true,
   props: ["namespace"],
   mounted: function() {
+    this.siteId = SITE_CONFIG.siteId;
     this.$store.dispatch("personalCenter/queryUser", {
       // 先去vuex获取一下用户信息
       loadedCallBack: this.loadCallBack
@@ -114,7 +115,8 @@ export default {
   data() {
     return {
       showItem: "noUse",
-      password: ""
+      password: "",
+      siteId: ""
     };
   },
   computed: {
@@ -175,8 +177,19 @@ export default {
     },
     toUseCoupons(item) {
       // 立即使用 跳转到第一个分类下的列表页面
-      var cascadeId = item.cascadeId.substring(0, item.cascadeId.indexOf(","));
-      window.location.href = "../book/bookList.html?cascadeId=" + cascadeId;
+      if (this.siteId == 1) {
+        if (item.couponRange == "book") {
+          window.location.href = "../pages/bestsale.html";
+        } else {
+          window.location.href = "../pages/recommend.html";
+        }
+      } else {
+        var cascadeId = item.cascadeId.substring(
+          0,
+          item.cascadeId.indexOf(",")
+        );
+        window.location.href = "../pages/bookList.html?cascadeId=" + cascadeId;
+      }
     }
   },
   filters: {

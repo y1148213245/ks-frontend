@@ -918,10 +918,10 @@ export default {
       this.$store.dispatch("personalCenter/getMyComment", {});
     },
     /*积分分页*/
-    pointRecordPaging({ pageNum, pageSize }) {
+    pointRecordPaging({ pageNo, pageSize }) {
       var param = {
         loginName: "",
-        pageIndex: pageNum,
+        pageIndex: pageNo,
         pageSize: pageSize
       };
       this.$store.dispatch("personalCenter/queryPointRecord", param);
@@ -939,10 +939,10 @@ export default {
       this.currentShow = this.title[index];
     },
     /*虚拟币分页*/
-    virtualPaging({ pageNum, pageSize }) {
+    virtualPaging({ pagesNo, pageSize }) {
       var param = {
         loginName: "",
-        pageIndex: pageNum,
+        pageIndex: pagesNo,
         pageSize: pageSize
       };
       this.$store.dispatch("personalCenter/queryVirtualMoney", param);

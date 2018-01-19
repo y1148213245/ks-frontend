@@ -18,8 +18,9 @@ import api from "../../api/personalCenterApi";
 // import {formatDate} from '../../../../../components/utils/data';
 import showdown from "showdown";
 export default {
-  name: "noteContent",
-  description: "随手记正文组件",
+  name: "note_content",
+  reused: true,
+  props: ["namespace"],
   data() {
     return {
       DocId: "",

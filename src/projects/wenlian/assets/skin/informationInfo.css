@@ -45,3 +45,41 @@ a{
 .infoImg{
   text-align:center; width:940px;margin:0 auto;overflow:hidden;
 }
+.work_bookreview_01_skin div.title{
+  display: none;
+}
+.work_bookreview_01 .reviewCon div.review{
+  display: none;
+}
+.work_bookreview_01 div.reviewCon textarea{
+  border: 1px solid #f07878;
+  width: 100%;
+  height: 105px;
+  margin-left: 0;
+  padding-left: 0;
+}
+.work_bookreview_01 .reviewCon input.reviewBtn{
+  border: 0px;
+  color: #fff;
+  line-height: 30px;
+  height: 30px;
+  width: 120px;
+  background: #c50000;
+  cursor: pointer;
+}
+.work_bookreview_01 .reviewCon input.reviewBtn:after{
+  content: "Hellow";
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 20px;
+  bottom: 0;
+  background: #c50000;
+  color: #fff;
+}
+.work_bookreview_01_skin div.noReview{
+  display: none;
+}
+.work_bookreview_01 div.noReview{
+  display: none;
+}

@@ -5,8 +5,9 @@
 <script>
 import ArticleDetail from "./parallelWriting/parallelWriting.vue";
 export default {
-  name: "editForm",
-  description: "随手记新建组件",
+  name: "edit_note",
+  reused: true,
+  props: ["namespace"],
   components: { ArticleDetail }
 };
 </script>

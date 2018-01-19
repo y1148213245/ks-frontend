@@ -59,11 +59,12 @@ export default {
 
   computed: {
     ...mapGetters({
-      member: "personalCenter/getMember" // 获取用户信息
+      member: "personalCenter/getMember" 
     }),
     simplemde() {
       return this.$refs.markdownEditor.simplemde;
-    }
+    },
+    
   },
   components: {
     markdownEditor,
@@ -112,6 +113,7 @@ export default {
         });
     },
     markdown2Html() {
+      console.log(this.member)
       if (this.member.loginName) {
         if (
           this.postForm.CONTENT.length === 0 ||

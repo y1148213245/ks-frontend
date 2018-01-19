@@ -11,7 +11,7 @@
                     <el-row :gutter="1">
                         <el-col :span="9">
                             <div class="block">
-                                <el-date-picker v-model="value4" type="datetimerange" range-separator="  ~  " :picker-options="pickerOptions2" placeholder="选择时间范围" align="left" format="yyyy-MM-dd HH:mm:ss" @change="changeDateValue">
+                                <el-date-picker v-model="value4" type="datetimerange" range-separator="  ~  " start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2" placeholder="选择时间范围" align="left" value-format="yyyy-MM-dd HH:mm:ss" @change="changeDateValue">
                                 </el-date-picker>
                             </div>
                         </el-col>
@@ -571,17 +571,17 @@ export default {
       loading = this.$loading({ fullscreen: true });
     },
     changeDateValue(value) {
-      var stime = value.split("  ~  ")[0];
-      var etime = value.split("  ~  ")[1];
+      var stime = value[0];
+      var etime = value[1];
       var param = {
         stime: stime,
         etime: etime
       };
       this.$store.dispatch("personalCenter/queryTimeList", param);
     },
-    pagingF({ pageNum, pageSize }) {
+    pagingF({ pageNo, pageSize }) {
       var param = {
-        pageIndex: pageNum,
+        pageIndex: pageNo,
         pageSize: pageSize,
         payStatus: this.payStatusNum
       };

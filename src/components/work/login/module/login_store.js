@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2017-12-26 09:23:33
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-19 14:01:15
+ * @Last Modified time: 2018-01-19 15:13:14
  */
 
 import * as interfaces from "../common/interfaces.js";
@@ -43,18 +43,11 @@ let actions = {
 					sessionStorage.setItem('token',datas.token)
 				}
 			}
+			// debugger
 			return rep;
 		});
 	},
-	[interfaces.ACTION_REGISTER]: function ({}, user) {
-		return Post(BASE_URL + "/user/registerSys.do?loginName=" + user.loginName + "&passWord=" + user.password);
-	},
-	[interfaces.ACTION_REGISTER_EMAIL]: function ({}, user) {
-		return Post(BASE_URL + '/user/registerSys1.do?loginName=' + user.loginName +'&passWord=' + user.checkPass + '&email=' + user.email);
-	},
-	[interfaces.ACTION_REGISTER_MOBILE]:({},params) => {
-		return Get(BASE_URL + '/user/registerBindMobileNum.do?mobileNum=' + params.mobileNum + '&loginName=' + params.loginName + '&passWord=' + params.checkPass);
-	},
+	
 	[interfaces.ACTION_KEEP_SESSION]: ({commit}) => {
 		if(!timer)
 			timer = window.setInterval(keepSession(commit), 600000);
@@ -65,12 +58,6 @@ let actions = {
 	},
 	getTotalAmount({commit, state}, amount) {
 		state.cartTotalAmount = amount;
-	},
-	[interfaces.ACTION_CHECK_USERINFO]:({},params) => {
-		return Get(BASE_URL + '/user/checkUserInfo.do?checkText=' + params.text + '&checkType=' + params.type);
-	},
-	[interfaces.ACTION_SEND_MOBILE_NUM]:({},params) => {
-		return Get(BASE_URL + '/user/sendToMobile.do?mobileNum=' + params.mobileNum)
 	}
 	
 };

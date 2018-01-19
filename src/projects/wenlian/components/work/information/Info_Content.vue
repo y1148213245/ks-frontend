@@ -10,7 +10,7 @@
         <div class="news_tit f20 pb10" v-text="information.pub_resource_name"></div>
         <div class="news_other f14 color_aba pt10 scoped_title_info">
           <span>{{information.information_SYS_AUTHORS || '暂无作者'}}</span>
-          <span>{{information.information_a_pubTime | formatDate}}</span>
+          <span>{{information.information_a_pubTime | formatTime}}</span>
           <span class="fr share">
 						<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis " target="_blank">
               <i class="news_other_03"></i>分享
@@ -141,3 +141,8 @@
     }
   }
 </script>
+<style>
+  .scoped_title_info{
+    text-align: center;
+  }
+</style>

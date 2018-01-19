@@ -55,6 +55,7 @@ export default {
 }
 .rankcard_01_nav{
   padding: 3px 8px;
+  cursor: pointer;
 }
 .rankcard_01_nav--on {
   background: #da0b2d;

@@ -23,7 +23,7 @@
                 <span class="search_04-content-list-entry_box-price-span">￥<span
                   v-text="parseFloat(entry.BOOK_EB_PRICE || 0).toFixed(2)"></span></span></p>
               <p class="search_04-content-list-entry_box-star">
-                <span class="scope_star">
+                <span class="search_04-content-list-entry_box-star-el_box">
                   <el-rate v-model="entry.pub_star_num" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
                 </span>
                 <span v-text="entry.pub_comment_num || 0"></span>条评论
@@ -241,6 +241,9 @@ export default {
 }
 .search_04-content-list-entry_box-star {
   margin: 2px 0 5px 0;
+}
+.search_04-content-list-entry_box-star-el_box{
+  display: inline-block;
 }
 .search_04-content-list-entry_box-synopsis {
   display: -webkit-box;

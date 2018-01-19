@@ -22,7 +22,7 @@ import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 
 export default {
-	name: "work_login_login",
+	name: "work_login_02_login",
 	reused: true,
 	props: ["namespace"],
 	data () {
@@ -39,7 +39,7 @@ export default {
 		};
 	},
 	mounted: function () {
-		this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_login;
+		this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_login_02;
 	},
 	methods: {
 		...mapActions("login", {

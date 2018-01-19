@@ -20,67 +20,23 @@ import point from "./components/personalCenter_point";
 import afterservice from "./components/personalCenter_afterservice";
 import coupon from "./components/personalCenter_coupon";
 import note from "./components/personalCenter_note";
-
+import PROJECT_CONFIG from "projectConfig";
 export default {
   name: "work_personalcenter_01",
   reused: true,
-  props: ["namespace"],
   props: {
+    namespace:String,
     show_star: {
       type: Boolean,
       default: true
-    },
-    navs: {
-      type: Array,
-      default() {
-        return [
-          {
-            title: "我的帐号",
-            icon: "el-icon-edit",
-            tag: "account"
-          },
-          {
-            title: "我的订单",
-            icon: "el-icon-goods",
-            tag: "list"
-          },
-          {
-            title: "我的书架",
-            icon: "el-icon-tickets",
-            tag: "book"
-          },
-          {
-            title: "收藏夹",
-            icon: "el-icon-star-on",
-            tag: "collecting"
-          },
-          {
-            title: "我的积分",
-            icon: "el-icon-news",
-            tag: "point"
-          },
-          {
-            title: "售后记录",
-            icon: "el-icon-service",
-            tag: "afterservice"
-          },
-          {
-            title: "我的优惠券",
-            icon: "el-icon-menu",
-            tag: "coupon"
-          },
-          {
-            title: "随手记",
-            icon: "el-icon-edit-outline",
-            tag: "note"
-          }
-        ];
-      }
     },
     detailUrl: {
       type: String,
       default: "../book/bookdetail.html"
     }
+  },
+  created () {
+    this.initConfig();
   },
   mounted() {
     var _this = this;
@@ -93,8 +49,9 @@ export default {
   },
   data: function() {
     return {
-      currentShowIndex: "0"
-    };
+      currentShowIndex: "0",
+      navs:null,
+    }
   },
   computed: {
     ...mapGetters({
@@ -102,6 +59,9 @@ export default {
     })
   },
   methods: {
+    initConfig () {
+      this.navs = PROJECT_CONFIG[this.namespace].navList;
+    },
     initCurrentShow() {
       let param = this.getHtmlParams();
       if (param.show) {

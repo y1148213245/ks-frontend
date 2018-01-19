@@ -11,7 +11,7 @@
           </el-collapse-item>
           <el-collapse-item title="未注册? 创建账号" :class="isOpen ?'icon-user4':'icon-ok-sign'" name="2" >
             <div class="acc_content clearfix">
-              <work_login_02_register :namespace = "namespace"></work_login_02_register>
+              <work_register_02 :namespace = "namespace"></work_register_02>
             </div>
           </el-collapse-item>
         </el-collapse>

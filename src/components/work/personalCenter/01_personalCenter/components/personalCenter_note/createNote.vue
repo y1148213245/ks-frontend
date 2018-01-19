@@ -5,7 +5,7 @@
 <script>
 import ArticleDetail from "./parallelWriting/parallelWriting.vue";
 export default {
-  name: "createForm",
+  name: "create_form",
   reused: true,
   props: ["namespace"],
   components: { ArticleDetail }

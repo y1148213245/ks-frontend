@@ -1,5 +1,5 @@
 <template>
-	<div class="work_login_register">
+	<div class="work_register_02">
 		<!--:rules="rules"-->
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm">
 			<el-form-item label="邮 箱" prop="email">
@@ -28,13 +28,13 @@
 </template>
 <script>
 	import {ValidateRules, CreateCode} from "@common";
-	import * as interfaces from "@work/login/common/interfaces.js";
+	import * as interfaces from "@work/register/common/interfaces.js";
 	import {mapActions} from "vuex";
 	import PROJECT_CONFIG from "projectConfig";
 	import URL from "url";
 
 	export default {
-		name: "work_login_02_register",
+		name: "work_register_02",
 		reused: true,
     props:["namespace"],
 
@@ -85,10 +85,10 @@
 		},
 		mounted: function () {
 			this.createCode();
-      this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_login_02;
+      this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_register_02;
 		},
 		methods: {
-			...mapActions("login_02", {
+			...mapActions("register", {
 				register: interfaces.ACTION_REGISTER
 			}),
 			submitRegisterForm() {

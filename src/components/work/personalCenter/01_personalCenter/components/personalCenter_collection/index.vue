@@ -8,7 +8,7 @@
         <a href="javascript: void(0);" @click="deleteLots()">批量取消收藏</a>
       </div>
       <ul>
-        <li v-for="item in collectionInfo.data" v-if="siteId == 1 && item.contentType== '91'" class="bookColl collContent">
+        <li v-for="item in collectionInfo.data" class="bookColl collContent">
           <div style="width:180px;height: 240px; text-align: center;">
             <div class="picBox">
               <div
@@ -21,35 +21,10 @@
               </div>
               <div class="readBox">
                 <a target="_blank"
-                   v-bind:href="'/pages/column/43/48/detail/detail.html?pubId=' + item.pubId + '&contentType=91&columnId=' + item.colId">
+                   v-bind:href="'/pages/bookdetail.html?pubId=' + item.pubId">
                   购买</a>
               </div>
               <div class="deleteCllo" @click="deleteCollProduct(item)">
-                <!-- <img src="~projects/wenlian/assets/img/deleteCllo.png" alt=""> -->
-              </div>
-              <div class="selectCllo">
-                <!--<a href="javascript:void(0)" v-bind:class="{checked:item.checked}"></a>-->
-                <el-checkbox v-model="item.checked" @change="selectCollProduct(item)"></el-checkbox>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li v-for="item in collectionInfo.data" v-if="item.contentType== '94'" class="ebookColl collContent">
-          <div style="width:180px;height: 240px; text-align: center;">
-            <div class="picBox">
-              <div
-                style="width: 180px; height: 180px; vertical-align: middle; display: table-cell; position: relative;">
-                <img v-bind:src="item.bigPic" onload="DrawImage(this,150,150)"/>
-              </div>
-              <div class="namePrice">
-                <div v-text="item.productName" :title="item.productName"></div>
-                <div>价格：￥ <span v-text="item.productPrice"></span></div>
-              </div>
-              <div class="readBox">
-                <a target="_blank" v-bind:href="'./bookDetail.html?pubId=' + item.pubId">购买</a>
-              </div>
-              <div class="deleteCllo" @click="deleteCollProduct(item)">
-                <!-- <img src="~projects/wenlian/assets/img/deleteCllo.png" alt=""> -->
               </div>
               <div class="selectCllo">
                 <el-checkbox v-model="item.checked" @change="selectCollProduct(item)"></el-checkbox>
@@ -69,7 +44,6 @@
 </template>
 <script type="text/ecmascript-6">
 import Vue from "vue";
-// import * as type from 'projectsConfig/config.wl.js';
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -105,10 +79,10 @@ export default {
       };
       this.$store.dispatch("personalCenter/queryCollectionInfo", params);
     },
-    pagingF: function({ pageNum, pageSize }) {
+    pagingF: function({ pageNo, pageSize }) {
       var params = {
         param: {
-          pageIndex: pageNum,
+          pageIndex: pageNo,
           pageSize: pageSize
         },
         myCallBack: function() {}

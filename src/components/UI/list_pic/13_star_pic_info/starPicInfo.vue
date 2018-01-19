@@ -71,6 +71,7 @@
   }
   .star_pic_info_13 .item{
     margin-top: 6px;
+    overflow: hidden;
   }
   .star_pic_info_13 .img{
     line-height: 90px;

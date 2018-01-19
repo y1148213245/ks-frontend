@@ -33,7 +33,7 @@
 				<el-table-column label="获取日期" prop="createTime" align="center" sortable>
 				</el-table-column>
 			</el-table>
-			<ui_pagination :pageMessage="{totalCount: this.pointRecords.data && this.pointRecords.totalCount - 0 || 0}" :excuteFunction="pointRecordPaging" :page-sizes="[8,16,32,64]" style="margin-top: 40px;"></ui_pagination>
+      <ui_pagination :pageMessage="{totalCount: this.pointRecords.data && this.pointRecords.totalCount - 0 || 0}" :excuteFunction="pointRecordPaging" :page-sizes="[8,16,32,64]" style="margin-top: 40px;"></ui_pagination>
 		</div>
   </div>
 </div>
@@ -84,10 +84,9 @@ export default {
     loadedCallBack() {
       this.$store.dispatch("personalCenter/queryPointRecord", {});
     },
-    pointRecordPaging({ pageNum, pageSize }) {
+    pointRecordPaging({ pageNo, pageSize }) {
       var param = {
-        loginName: "",
-        pageIndex: pageNum,
+        pageIndex: pageNo,
         pageSize: pageSize
       };
       this.$store.dispatch("personalCenter/queryPointRecord", param);

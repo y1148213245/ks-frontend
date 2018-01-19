@@ -59,9 +59,9 @@ export default {
       };
       this.$store.dispatch("personalCenter/querybookShelfInfo", param);
     },
-    pagingF: function({ pageNum, pageSize }) {
+    pagingF: function({ pageNo, pageSize }) {
       var param = {
-        pageIndex: pageNum,
+        pageIndex: pageNo,
         pageSize: pageSize,
         type: 2
       };

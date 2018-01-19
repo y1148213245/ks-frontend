@@ -100,18 +100,18 @@ export default {
       }
     },
     goToCreateNote() {
-      window.location.href = "../parallelWriting/createNote.html";
+      window.location.href = "./createNote.html";
     },
     goToEditNote(num) {
       window.location.href =
-        "../parallelWriting/editNote.html?DocId=" +
+        "./editNote.html?DocId=" +
         num +
         "&user=" +
         this.member.loginName;
     },
     goToContent(num) {
       window.location.href =
-        "../parallelWriting/noteContent.html?DocId=" +
+        "./noteContent.html?DocId=" +
         num +
         "&user=" +
         this.member.loginName;

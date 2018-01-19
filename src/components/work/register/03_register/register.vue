@@ -107,7 +107,7 @@ import { ValidateRules, CreateCode } from '@common';
 import * as interfaces from '@work/register/common/interfaces.js';
 import { mapActions } from 'vuex';
 export default {
-  name: 'work_login_03_register',
+  name: 'work_register_03',
   reused: true,
   props: {},
   data () {
