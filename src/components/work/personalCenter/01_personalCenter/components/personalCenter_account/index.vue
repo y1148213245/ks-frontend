@@ -10,16 +10,16 @@
           </li>
           <li>
             <span class="center_te">账户等级</span>:
-            <span>{{account && account.userRank}}</span>
+            <span>{{account && account.userRank  || "LV1"}}</span>
           </li>
           <li>
             <span class="center_te">当前积分</span>:
-            <span>{{account && account.payPoints}}</span>
+            <span>{{account && account.payPoints || "0"}}</span>
             <el-button type="primary" @click="showCurrent(1)" class="butt">查看积分</el-button>
           </li>
           <li>
             <span class="center_te">虚拟币</span>:
-            <span>{{account && account.virtualCoin}}</span>
+            <span>{{account && account.virtualCoin || "0" }}</span>
             <el-button type="primary" @click="showCurrent(2)" class="butt">查看虚拟币</el-button>
           </li>
         </ul>
@@ -827,7 +827,7 @@ export default {
       updateAddressDialog: false,
       modalState: true,
       payWay: 0,
-      payMethod: "0", // 支付方式 0 微信支付 1 支付宝支付
+      payMethod: "1", // 支付方式 0 微信支付 1 支付宝支付
       siteId: "",
       imageUrl: "",
       fullLoading: "" //全屏加载框
@@ -1445,8 +1445,9 @@ export default {
     },
     /*虚拟币充值*/
     selectPayWay: function(item, id) {
+      console.log(item);
       this.payWay = id;
-      this.payMethod = item.id + "";
+      this.payMethod = item.id;
     },
     RechargeVirtual() {
       var _this = this;
@@ -1459,16 +1460,18 @@ export default {
           var param = {
             paynum: this.value
           };
+          console.log(_this.payMethod);
+
           if (_this.payMethod === "1") {
             // 支付宝支付
             window.open(
               BASE_URL +
-                "/epay/getVirtualCoinPayForm.do?price=" +
+                "epay/getVirtualCoinPayForm.do?price=" +
                 this.value +
                 "&loginName=" +
                 this.account.loginName +
                 "&payMethodId=" +
-                this.payWay +
+               _this.payMethod +
                 "&siteId=" +
                 this.siteId,
               "_self"
@@ -1479,12 +1482,12 @@ export default {
             axios
               .get(
                BASE_URL +
-                  "/epay/getVirtualCoinPayForm.do?price=" +
+                  "epay/getVirtualCoinPayForm.do?price=" +
                   this.value +
                   "&loginName=" +
                   this.account.loginName +
                   "&payMethodId=" +
-                  this.payWay +
+                  _this.payMethod +
                   "&siteId=" +
                   this.siteId
               )

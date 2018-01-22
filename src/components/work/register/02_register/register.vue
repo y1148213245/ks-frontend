@@ -3,25 +3,25 @@
 		<!--:rules="rules"-->
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm">
 			<el-form-item label="邮 箱" prop="email">
-				<el-input type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱"></el-input>
+				<el-input id="register_02-input-email" type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱"></el-input>
 			</el-form-item>
 			<el-form-item label="密 码" prop="pass">
-				<el-input type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="密码支持6-16位字符"></el-input>
+				<el-input id="register_02-input-password" type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="密码支持6-16位字符"></el-input>
 			</el-form-item>
 			<el-form-item label="确认密码" prop="checkPass">
-				<el-input type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请再次输入密码"></el-input>
+				<el-input id="register_02-input-password_2" type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请再次输入密码"></el-input>
 			</el-form-item>
 			<el-form-item label="验证码" prop="captcha">
 				<div class="captcha">
-					<el-input type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码" id="input" style="width:150px;"></el-input>
-					<input type="button" id="code" class="createcode" @click="createCode()"/>
-					<el-button type="text" @click="createCode">看不清楚</el-button>
+					<el-input id="register_02-input-validate" type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码"  style="width:150px;"></el-input>
+					<input id="register_02-input-code" type="button" class="createcode" @click="createCode()"/>
+					<el-button id="register_02-input-update" type="text" @click="createCode">看不清楚</el-button>
 				</div>
 			</el-form-item>
 		</el-form>
 		<div class="col_full nobottommargin">
-			<el-button type="primary" @click="submitRegisterForm('ruleForm')" class="button nomargin">提交</el-button>
-			<el-button @click="resetForm('ruleForm')" class="button nomargin">重置</el-button>
+			<el-button id="register_02-input-submit" type="primary" @click="submitRegisterForm('ruleForm')" class="button nomargin">提交</el-button>
+			<el-button id="register_02-input-reset" @click="resetForm('ruleForm')" class="button nomargin">重置</el-button>
 		</div>
 	</div>
 	<!-- END 注册 -->
@@ -143,7 +143,7 @@
 		width: 150px;
 	}
 
-	#code {
+	#register_02-input-code {
 		width: 80px;
 		font-family: Arial;
 		font-style: italic;

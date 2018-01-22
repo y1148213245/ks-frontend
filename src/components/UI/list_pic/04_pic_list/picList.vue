@@ -53,7 +53,7 @@ export default {
   created: function () {
     let moduleName = this.modulename;
     let url = PROJECT_CONFIG[this.namespace].list_pic.list_pic_04_pic_list;
-    this.CONFIG = !this.modulename ? url : url[moduleName];
+    this.CONFIG = !this.modulename ? url : url[moduleName];  //判断一个页面有一个还是两个以上该组件
     this.query = URL.parse(document.URL, true).query;
     //get
     this.$bus.$on("relativebook", this.relativeBook);//详情页 - 相关图书

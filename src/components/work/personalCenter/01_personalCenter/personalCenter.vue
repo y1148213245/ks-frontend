@@ -1,8 +1,8 @@
 <template>
   <div class="box">
-    <el-tooltip effect="dark" content="自定义主题色" placement="bottom">
+    <!-- <el-tooltip effect="dark" content="自定义主题色" placement="bottom">
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
-    </el-tooltip>
+    </el-tooltip> -->
     <div class="center_container">
       <vnav style="margin-right: 20px;" :navs="navs" :current-show-index="currentShowIndex"></vnav>
       <component :is="currentShow" :detail-url="detailUrl" :show_star="show_star"></component>

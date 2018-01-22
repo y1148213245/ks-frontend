@@ -1,6 +1,7 @@
 export default {
   name: 'aboutus',
-  url: BASE_URL + 'spc/cms/publish/list.do',
+  // url: BASE_URL + 'spc/cms/publish/list.do',
+  url:`${BASE_URL}spc/cms/publish/list.do`,
   params: {
     conditions:"[{pub_col_id:'40'}]",
     groupBy:"pub_resource_id",

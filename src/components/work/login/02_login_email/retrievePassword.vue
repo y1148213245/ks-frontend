@@ -7,10 +7,10 @@
         <el-step title="更改密码"></el-step>
         <el-step title="找回完成"></el-step>
       </el-steps>
-      <div style="margin-top: 20px; height: 200px;"v-if="show">
+      <div style="margin-top: 20px; height: 200px;" v-if="show">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
           <el-form-item label="邮 箱" prop="email">
-            <el-input type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱" style="display:inline-block;width:300px;"></el-input>
+            <el-input type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱" style="display:inline-block;width:300px;" id="ffcs"></el-input>
           </el-form-item>
           <el-form-item label="验证码" prop="captcha">
             <div class="captcha">

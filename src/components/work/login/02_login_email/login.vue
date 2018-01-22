@@ -2,15 +2,15 @@
 	<div class="work_login_login">
 		<el-form :model="member" :rules="loginRules" ref="member">
 			<el-form-item label="邮 箱" prop="loginName">
-				<el-input type="text" v-model="member.loginName" auto-complete="off" placeholder="请输入邮箱"></el-input>
+				<el-input id="login_02-input-email" type="text" v-model="member.loginName" auto-complete="off" placeholder="请输入邮箱"></el-input>
 			</el-form-item>
 			<el-form-item label="密 码" prop="password">
-				<el-input type="password" v-model="member.password" auto-complete="off" placeholder="请输入密码"></el-input>
+				<el-input id="login_02-input-password" type="password" v-model="member.password" auto-complete="off" placeholder="请输入密码"></el-input>
 			</el-form-item>
 		</el-form>
 		<div class="col_full nobottommargin">
-			<el-button type="primary" @click="submitLoginForm()" class="button nomargin" id="login-form-submit">提交</el-button>
-			<el-button type="text" @click="backMain" class="fright">忘记密码?</el-button>
+			<el-button id="login_02-input-submit" type="primary" @click="submitLoginForm()" class="button nomargin">提交</el-button>
+			<el-button id="login_02-input-to_forgetpassword" type="text" @click="backMain" class="fright">忘记密码?</el-button>
 		</div>
 	</div>
 </template>
@@ -47,7 +47,7 @@ export default {
 		}),
 		backMain () {
 			//				window.location.href = "./index.html";
-			$(".box").css("display", "block");
+			$(".retrievePasswordBox").css("display", "block");
 			$("#title-nav").css("display", "none");
 			$("#content").css("display", "none");
 		},
@@ -57,9 +57,11 @@ export default {
 				if (valid) {
 					this.login({ member: this.member }).then((rep) => {
 						//如果data == ""的时候，为登录失败
-						if (!rep.data) {
+
+						let datas = rep.data;
+						if (!datas.data) {
 							this.loginValid();
-						} else if (rep.data.checkStatus == 0 || rep.data.checkStatus == "0") {
+						} else if (datas.data.checkStatus == 0 || datas.data.checkStatus == "0") {
 							this.$message({
 								type: "error",
 								message: "账号已被冻结，请联系管理员"

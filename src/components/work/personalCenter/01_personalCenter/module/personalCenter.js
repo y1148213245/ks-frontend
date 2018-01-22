@@ -171,7 +171,6 @@ var actions = {
     api.queryTimeList(params).then(function(response) {
       let newdata = response.data;
       commit("setNewList", newdata);
-      debugger
       loading.close();
     });
   },

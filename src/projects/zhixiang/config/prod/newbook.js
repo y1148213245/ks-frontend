@@ -24,7 +24,7 @@ export default {
 				// type: "selling"
 				colName: ''
 			},
-			styleType: "show5"
+			styleType: "show4"
 		}
 	},
 	components: {

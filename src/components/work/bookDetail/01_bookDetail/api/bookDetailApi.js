@@ -82,12 +82,12 @@ export default {
     var url = BASE_URL + "cart/getCartAndActivity.do?loginName=" + loginName + '&siteId=' + SITE_CONFIG.siteId;
     axios.get(url).then(function (response) {
       var number = 0;
-      if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
-        Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
-          confirmButtonText: "确定"
-        });
-        return false;
-      }
+      // if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
+      //   Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
+      //     confirmButtonText: "确定"
+      //   });
+      //   return false;
+      // }
       if (!!response.data.data && !!response.data.data.content) {
         var cartData = response.data.data.content;
         if (cartData.length > 0) {

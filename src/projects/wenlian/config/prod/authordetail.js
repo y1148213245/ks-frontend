@@ -2,7 +2,8 @@ export default {
   name: 'authordetail',
   components: {
     common: {
-      url: BASE_URL + 'spc/cms/publish/detail.do',
+      // url: BASE_URL + 'spc/cms/publish/detail.do',
+      url:`${BASE_URL}spc/cms/publish/detail.do`,
       swiperUrl:BASE_URL + 'spc/cms/publish/list.do',
       params: {
         pubId:'',

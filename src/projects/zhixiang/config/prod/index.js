@@ -10,7 +10,7 @@ export default {
 			interval: 5000,
 			url: BASE_URL + '/spc/cms/publish/list.do',
 			params: {
-				conditions: "[{'pub_col_id':'225'}]",
+				conditions: "[{'pub_col_id':'239'}]",
 				orderBy: null,
 				pageNo: "1",
 				pageSize: "15",

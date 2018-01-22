@@ -29,7 +29,7 @@
       <div class="col-md-8 norightpadding" style="position: unset;">
 
         <ol class="breadcrumb">
-          <li>你的位置：<a href="/pages/index/index.html">首 页</a></li>
+          <li>你的位置：<a href="/pages/index.html">首 页</a></li>
           <li><a @click="toSecond(bookInfo.colId)" id="second" v-text="colName || ''"></a></li>
         </ol>
         <h1></h1>
@@ -88,12 +88,10 @@
           </div>
           <div v-if="bookInfo.contentType == 91">
             <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.contentType)"><i
-              class="icon-shopping-cart"></i>纸书加入购物车
-            </button>
+              class="icon-shopping-cart"></i>纸书加入购物车</button>
             <div v-if="bookInfo.relBook" class="ebookClass">
               <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.relBook.contentType)"><i
-                class="icon-shopping-cart"></i>电子书加入购物车
-              </button>
+                class="icon-shopping-cart"></i>电子书加入购物车</button>
             </div>
             <div v-if="bookInfo.relBook" class="shiduClass">
               <a v-if="bookInfo.bookFreeDownLoadPath.length ==0 " target="_blank" href="javascript:void(0)"
@@ -107,8 +105,7 @@
 
           <div v-else-if="bookInfo.contentType == 94">
             <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.contentType)"><i
-              class="icon-shopping-cart"></i>电子书加入购物车
-            </button>
+              class="icon-shopping-cart"></i>电子书加入购物车</button>
             <div class="ebookCart">
               <a v-if="bookInfo.bookFreeDownLoadPath.length ==0 " target="_blank" href="javascript:void(0)"
                  class="add-to-cart button nomargin" style="background-color: #444;cursor:default"><i
@@ -119,8 +116,7 @@
             </div>
             <div v-if="bookInfo.relBook" class="bookCart">
               <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.relBook.contentType)"><i
-                class="icon-shopping-cart"></i>纸书加入购物车
-              </button>
+                class="icon-shopping-cart"></i>纸书加入购物车</button>
             </div>
           </div>
 
@@ -261,32 +257,32 @@ import URL from "url";
 export default {
   name: "work_bookdetail_01_content",
   reused: true,
-  props: ['namespace'],
-  data () {
+  props: ["namespace"],
+  data() {
     return {
       modalStatus: false,
-      "contentType": 91,  //赋值属性，页面可以调用
-      columnId: '',
-      colName: '',
-      pubId: '',
+      contentType: 91, //赋值属性，页面可以调用
+      columnId: "",
+      colName: "",
+      pubId: ""
     };
   },
-  created: function () {
-    this.getMemberInfo().then((member) => {
+  created: function() {
+    this.getMemberInfo().then(member => {
       var params = {
-        loginName: this.isLogin ? this.isLogin : '',
-        pubId: this.pubId,
+        loginName: this.isLogin ? this.isLogin : "",
+        pubId: this.pubId
       };
-      this.$store.dispatch('bookDetail/' + type.BOOK_DETAIL, params);
-      this.$store.dispatch('bookDetail/' + type.CART_NUMS, params.loginName);
+      this.$store.dispatch("bookDetail/" + type.BOOK_DETAIL, params);
+      this.$store.dispatch("bookDetail/" + type.CART_NUMS, params.loginName);
     });
   },
-  mounted () {
+  mounted() {
     var param = URL.parse(window.location.href, true).query;
-    this.contentType = param.contentType;   // 书的类型
-    this.columnId = param.columnId;         // 栏目id
-    this.colName = param.columnName;           // 栏目名称
-    this.pubId = param.pubId;                // pubId
+    this.contentType = param.contentType; // 书的类型
+    this.columnId = param.columnId; // 栏目id
+    this.colName = param.columnName; // 栏目名称
+    this.pubId = param.pubId; // pubId
   },
   computed: {
     ...mapGetters("login", {
@@ -294,22 +290,23 @@ export default {
       member: interfaces.GET_MEMBER
     }),
     ...mapGetters({
-      bookInfo: 'bookDetail/bookDetailInfo',
-      getCartAmount: 'bookDetail/getCartAmount',
-      getTotalAmount: "login/getTotalAmount",        // 获取购物车商品总数量
-    }),
+      bookInfo: "bookDetail/bookDetailInfo",
+      getCartAmount: "bookDetail/getCartAmount",
+      getTotalAmount: "login/getTotalAmount" // 获取购物车商品总数量
+    })
   },
   methods: {
     ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
-    toSecond (colId) {
+    toSecond(colId) {
       window.location.href = $_$.columnType[colId].url;
     },
-    cart (contentType) { //加入购物车
+    cart(contentType) {
+      //加入购物车
       var loginName = this.member.loginName;
-      if (loginName == undefined || loginName == '') {
-        this.$alert('请您先登录！', "系统提示", {
+      if (loginName == undefined || loginName == "") {
+        this.$alert("请您先登录！", "系统提示", {
           confirmButtonText: "确定"
         });
         return;
@@ -317,13 +314,14 @@ export default {
 
       addCart(contentType, this, loginName);
     },
-    bookCount (val) {
+    bookCount(val) {
       var number = $("#book_num");
       if (val > 0) {
-        if (number.val() >= 200) { // 防止加过200
+        if (number.val() >= 200) {
+          // 防止加过200
           number.val(200);
-          this.$alert('商品数量不能大于200', '系统提示', {
-            confirmButtonText: '确定'
+          this.$alert("商品数量不能大于200", "系统提示", {
+            confirmButtonText: "确定"
           });
           return false;
         }
@@ -336,17 +334,24 @@ export default {
         }
       }
     },
-    shidu:function(bookId,readType,bookName){
-        console.log(bookId,readType,bookName);
-        var url = READ_CONFIG.baseURL+'/ebook/read.jsp?bookId='+bookId+'&readType='+readType+'&bookName='+bookName;
-        window.open(url);
-      },
+    shidu: function(bookId, readType, bookName) {
+      console.log(bookId, readType, bookName);
+      var url =
+        READ_CONFIG.baseURL +
+        "/ebook/read.jsp?bookId=" +
+        bookId +
+        "&readType=" +
+        readType +
+        "&bookName=" +
+        bookName;
+      window.open(url);
+    },
     //收藏or点赞
-    collectOrLike (operateTypeValue, contentType) {
+    collectOrLike(operateTypeValue, contentType) {
       var _this = this;
       var loginName = this.member.loginName;
-      if (loginName == undefined || loginName == '') {
-        this.$alert('请您先登录！', "系统提示", {
+      if (loginName == undefined || loginName == "") {
+        this.$alert("请您先登录！", "系统提示", {
           confirmButtonText: "确定"
         });
         return;
@@ -361,41 +366,41 @@ export default {
           contentType: contentType
         },
 
-        myCallback: function () {
+        myCallback: function() {
           if (this.collectOrLikeInfo == "1") {
-            if (this.message.code === '00') {
+            if (this.message.code === "00") {
               _this.$message({
                 message: this.message.msg,
-                type: 'success'
-              })
-            } else if (this.message.code === '11') {
-              _this.$message({
-                message: this.message.msg,
-                type: 'success'
+                type: "success"
               });
-            } else if (this.message.code === '000') {
+            } else if (this.message.code === "11") {
               _this.$message({
                 message: this.message.msg,
-                type: 'success'
+                type: "success"
               });
-            } else if (this.message.code === '111') {
+            } else if (this.message.code === "000") {
               _this.$message({
                 message: this.message.msg,
-                type: 'success'
+                type: "success"
+              });
+            } else if (this.message.code === "111") {
+              _this.$message({
+                message: this.message.msg,
+                type: "success"
               });
             }
-            _this.$store.dispatch('bookDetail/' + type.BOOK_DETAIL, {
+            _this.$store.dispatch("bookDetail/" + type.BOOK_DETAIL, {
               pubId: params.param.pubId,
               loginName: params.param.loginName
             });
           }
         }
-      }
-      this.$store.dispatch('bookDetail/' + type.COLLECT_OR_LIKE, params);
-    },
+      };
+      this.$store.dispatch("bookDetail/" + type.COLLECT_OR_LIKE, params);
+    }
   },
   filters: {
-    formatMoney: function (val) {
+    formatMoney: function(val) {
       if (val !== null && val !== undefined) {
         return Number(val).toFixed(2);
       } else {
@@ -403,22 +408,23 @@ export default {
       }
     }
   },
-  watch: {
-  }
-}
+  watch: {}
+};
 
-function addCart (contentType, this_value, loginName) {
+function addCart(contentType, this_value, loginName) {
   var _this = this_value;
   var isEb, pubId, colId, number;
   //图书详情页加购物车
   if (_this.columnId == "48" || _this.columnId == "49") {
-    if (contentType == '91') {  //图书详情页纸书加购物车
+    if (contentType == "91") {
+      //图书详情页纸书加购物车
       isEb = _this.bookInfo.isEb;
       pubId = _this.bookInfo.pubId;
       colId = _this.bookInfo.colId; //栏目id
       number = $("#book_num").val();
     }
-    if (contentType == '94') {  //图书详情页电子书加购物车
+    if (contentType == "94") {
+      //图书详情页电子书加购物车
       isEb = _this.bookInfo.relBook.isEb;
       pubId = _this.bookInfo.relBook.pubId;
       colId = _this.bookInfo.relBook.colId; //栏目id
@@ -429,13 +435,13 @@ function addCart (contentType, this_value, loginName) {
       } else {
         number = "1";
       }
-
     }
   }
 
   //电子书详情页加购物车
   if (_this.columnId == "51") {
-    if (contentType == '94') {  //电子书详情页电子书加购物车
+    if (contentType == "94") {
+      //电子书详情页电子书加购物车
 
       isEb = _this.bookInfo.isEb;
       pubId = _this.bookInfo.pubId;
@@ -447,9 +453,9 @@ function addCart (contentType, this_value, loginName) {
       } else {
         number = "1";
       }
-
     }
-    if (contentType == '91') { //电子书详情页纸书加购物车
+    if (contentType == "91") {
+      //电子书详情页纸书加购物车
       isEb = _this.bookInfo.relBook.isEb;
       pubId = _this.bookInfo.relBook.pubId;
       colId = _this.bookInfo.relBook.colId; //栏目id
@@ -470,26 +476,25 @@ function addCart (contentType, this_value, loginName) {
       number: number,
       siteId: SITE_CONFIG.siteId
     },
-    myCallback: function () {
-      if (this.addCartInfo === '1') {
+    myCallback: function() {
+      if (this.addCartInfo === "1") {
         _this.$message({
           message: this.cartMessage,
-          type: 'success'
+          type: "success"
         });
         //原有的购物车数量
         var num = _this.getCartAmount;
-        _this.$store.dispatch("login/getTotalAmount", parseInt(number) + num);  //详情页气泡上购物车数量
+        _this.$store.dispatch("login/getTotalAmount", parseInt(number) + num); //详情页气泡上购物车数量
       }
-      if (this.addCartInfo === '0') {
+      if (this.addCartInfo === "0") {
         _this.$message({
           message: this.cartMessage,
-          type: 'error'
-        })
+          type: "error"
+        });
       }
     }
-  }
-  _this.$store.dispatch('bookDetail/' + type.ADD_CART, params);
-
+  };
+  _this.$store.dispatch("bookDetail/" + type.ADD_CART, params);
 }
 </script>
 <style>
@@ -625,28 +630,30 @@ body:not(.device-touch) .button {
 }
 
 .flex-control-nav.flex-control-thumbs {
-    position: relative;
-    top: 0;
-    left: 0;
-    right: 0;
-    margin: 2px -2px -2px 0;
-    height: 75px;
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 2px -2px -2px 0;
+  height: 75px;
 }
 
 .flex-control-nav {
-    position: absolute;
-    z-index: 10;
-    text-align: center;
-    top: 14px;
-    right: 10px;
-    margin: 0;
+  position: absolute;
+  z-index: 10;
+  text-align: center;
+  top: 14px;
+  right: 10px;
+  margin: 0;
 }
 
-.slider-wrap, .flex-control-nav, .flex-direction-nav {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border: none;
+.slider-wrap,
+.flex-control-nav,
+.flex-direction-nav {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: none;
 }
 
 /* ----------------------------------------------------------------
@@ -735,5 +742,4 @@ body:not(.device-touch) .button {
 #info-book .btn-link .button {
   margin-right: 24px;
 }
-
 </style>
