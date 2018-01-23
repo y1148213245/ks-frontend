@@ -15,25 +15,27 @@ const dev = {
   swiper: {
     pic_word_03: {
       url: './data/swiper_03_pic_words.json',
-      herf:"./bookdetail.html?pubId="
+      herf: "./bookdetail.html?pubId="
     }
   }
 }
 
 const prod = {
   swiper: {
-    pic_word_03: {
-      url: 'http://172.19.57.153:9092/spc-portal-web/spc/cms/publish/list.do',
-      params: {
-        conditions: "[{pub_resource_type:'BOOK'}]",
-        orderBy: null,
-        pageNo:  "1",
-        pageSize: "15",
-        searchText: null
-      },
-      herf:"./bookdetail.html?pubId="
+    'modules': {
+      pic_word_03: {
+        url: BASE_URL + 'spc/cms/publish/list.do',
+        params: {
+          conditions: "[{pub_resource_type:'BOOK'},{pub_col_id:'240'}]",
+          orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
+          pageNo: "1",
+          pageSize: "15",
+          searchText: null
+        },
+        herf: "./bookdetail.html?pubId="
+      }
     }
   }
 };
 
-export {name, title, dev, prod, description};
+export { name, title, dev, prod, description };

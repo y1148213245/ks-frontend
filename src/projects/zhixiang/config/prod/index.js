@@ -3,57 +3,73 @@
  */
 
 export default {
-	name: "index",
-	swiper: {
-		pic_01: {
-			height: "480px",
-			interval: 5000,
-			url: BASE_URL + '/spc/cms/publish/list.do',
-			params: {
-				conditions: "[{'pub_col_id':'239'}]",
-				orderBy: null,
-				pageNo: "1",
-				pageSize: "15",
-				searchText: null
-			}
-     },
+  name: "index",
+  swiper: {
+    pic_01: {
+      height: "480px",
+      interval: 5000,
+      url: BASE_URL + '/spc/cms/publish/list.do',
+      params: {
+        conditions: "[{'pub_col_id':'239'}]",
+        orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
+        pageNo: "1",
+        pageSize: "15",
+        searchText: null
+      }
+    },
     smallPic_02: {
       height: "480px",
-      width:"200px",
+      width: "200px",
       interval: 5000,
-      url: BASE_URL+'/spc/cms/publish/list.do',
+      url: BASE_URL + '/spc/cms/publish/list.do',
       params: {
-        conditions: "[{pub_resource_type:'BOOK'}]",
+        conditions: "[{pub_resource_type:'BOOK'},{pub_site_id:'1'}]",
         orderBy: "BOOK_PUBDATE desc",
         pageNo: "1",
         pageSize: "15",
         searchText: null
       },
-      picLinkUrl:"./bookdetail.html?pubId=",
-      columnId:"51"
+      picLinkUrl: "./bookdetail.html?pubId=",
+      columnId: "51"
     },
-    pic_word_03: {
-      url: BASE_URL+'/spc/cms/publish/list.do',
-      params: {
-        conditions: "[{pub_resource_type:'BOOK'}]",
-        orderBy: null,
-        pageNo:  "1",
-        pageSize: "15",
-        searchText: null
-      },
-      herf:"./bookdetail.html?pubId="
+    'module1': {
+      pic_word_03: {
+        url: BASE_URL + '/spc/cms/publish/list.do',
+        params: {
+          conditions: "[{pub_resource_type:'BOOK'},{pub_col_id:'240'}]",
+          orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
+          pageNo: "1",
+          pageSize: "3",
+          searchText: null
+        },
+        herf: "./bookdetail.html?pubId="
+      }
+    },
+    'module2': {
+      pic_word_03: {
+        url: BASE_URL + '/spc/cms/publish/list.do',
+        params: {
+          conditions: "[{pub_resource_type:'BOOK'},{pub_col_id:'241'}]",
+          orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
+          pageNo: "1",
+          pageSize: "3",
+          searchText: null
+        },
+        herf: "./bookdetail.html?pubId="
+      }
     }
-	},
+
+  },
   indexBestSale: {
-    url: BASE_URL+'/spc/cms/publish/list.do',
+    url: BASE_URL + '/spc/cms/publish/list.do',
     params: {
-      conditions: "[{pub_resource_type:'BOOK'}]",
-      orderBy:  null,
+      conditions: "[{pub_resource_type:'BOOK'},{pub_site_id:'1'}]",
+      orderBy: 'pub_sales_num desc',
       pageNo: "1",
       pageSize: "15",
       searchText: null
     },
-    picLinkUrl:"./bookdetail.html?pubId=",
-    columnId:"51"
+    picLinkUrl: "./bookdetail.html?pubId=",
+    columnId: "51"
   }
 };

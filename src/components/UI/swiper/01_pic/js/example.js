@@ -29,7 +29,7 @@ const prod = {
 			url: 'http://172.19.57.153:9092/spc-portal-web/spc/cms/publish/list.do',
 			params: {
 				conditions: "[{'pub_col_id':'225'}]",
-				orderBy: null,
+				orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
 				pageNo: "1",
 				pageSize: "15",
 				searchText: null

@@ -14,7 +14,7 @@
             :href="'../pages/bookdetail.html?pubId='+item.id+'&contentType='+item.pub_content_type+'&columnId=' + item.pub_col_id "
             target="_blank">{{item.BOOK_SYS_TOPIC}}</a></h5></div>
           <div class="product-author">作者：{{item.BOOK_SYS_AUTHORS | notAvailable}}</div>
-          <div class="product-price"><label>定价：</label> ¥ {{item.prod_sale_price | notAvailable}}</div>
+          <div class="product-price"><label>定价：</label> ¥ {{item.prod_sale_price | twoPoint| notAvailable}}</div>
         </div>
       </div>
     </div>

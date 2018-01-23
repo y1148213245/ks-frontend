@@ -41,7 +41,7 @@
   export default {
     name: "ui_swiper_03_pic_words",
     reused: true,
-    props: ["namespace","startposition"],
+    props: ["namespace","modules"],
     data () {
     return {
       swiperInitFlag: false,
@@ -50,15 +50,15 @@
     }
   },
   mounted: function () {
-    this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].swiper.pic_word_03 : PROJECT_CONFIG.swiper.pic_word_03;
-
+    this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].swiper[this.modules].pic_word_03 : PROJECT_CONFIG.swiper.pic_word_03;
+  
     this.queryData();
   },
   methods: {
     queryData: function () {
       Post(this.CONFIG.url, this.CONFIG.params || {
           conditions: "[{pub_resource_type:'BOOK'}]",
-          orderBy: null,
+          orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
           pageNo: "1",
           pageSize: "15",
           searchText: null
@@ -77,8 +77,7 @@
           };
           loadDatas.push(entry)
         };
-        (this.startposition || this.startposition===0) && loadDatas.length>=(this.startposition+3)?
-                (this.picWords = loadDatas.slice(this.startposition,this.startposition+3)):(this.picWords = loadDatas);
+        this.picWords = loadDatas.slice(0,3);
         this.$nextTick(this.initSwiper);
       })
     },

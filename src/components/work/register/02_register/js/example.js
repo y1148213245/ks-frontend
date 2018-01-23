@@ -20,7 +20,9 @@ const dev = {
 const prod = {
 	register: {
 		work_register_02: {
+			toLoginPages:''
 		}
+
 	}
 };
 

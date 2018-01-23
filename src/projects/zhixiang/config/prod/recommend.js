@@ -8,7 +8,7 @@ export default {
     ui_list_pic_05: {
       url: BASE_URL + "spc/cms/publish/list.do",
       params: {
-        conditions: "[{pub_resource_type:'BOOK'},{pub_status:'1'},{pub_col_id:51}]",
+        conditions: "[{pub_resource_type:'BOOK'},{pub_status:'1'},{pub_col_id:51},{pub_site_id:'1'}]",
         orderBy: "pub_a_order asc pub_lastmodified desc id asc",
         pageNo: "1",
         pageSize: "15",

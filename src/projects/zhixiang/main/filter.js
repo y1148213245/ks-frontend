@@ -6,4 +6,8 @@ Vue.filter('notAvailable', function (value) {
     return '暂无';
   }
   return value;
-})
+});
+Vue.filter('twoPoint', function (value) {
+  // 返回处理后的值
+  return Number(value).toFixed(2);
+});

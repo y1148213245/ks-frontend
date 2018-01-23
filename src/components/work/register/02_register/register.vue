@@ -27,129 +27,133 @@
 	<!-- END 注册 -->
 </template>
 <script>
-	import {ValidateRules, CreateCode} from "@common";
-	import * as interfaces from "@work/register/common/interfaces.js";
-	import {mapActions} from "vuex";
-	import PROJECT_CONFIG from "projectConfig";
-	import URL from "url";
+import { ValidateRules, CreateCode } from "@common";
+import * as interfaces from "@work/register/common/interfaces.js";
+import { mapActions } from "vuex";
+import PROJECT_CONFIG from "projectConfig";
+import URL from "url";
 
-	export default {
-		name: "work_register_02",
-		reused: true,
-    props:["namespace"],
+export default {
+	name: "work_register_02",
+	reused: true,
+	props: ["namespace"],
 
-		data() {
-			var validatePass3 = (rule, value, callback) => {
-				if (value === "") {
-					callback(new Error("请再次输入密码"));
-				} else if (value !== this.ruleForm.pass) {
-					callback(new Error("两次输入密码不一致!"));
-				} else {
-					callback();
-				}
-			};
-			var validateCaptcha = (rule, value, callback) => {
-				let inputCode = value.toUpperCase();
-				let orignalCode = this.$el.querySelector(".createcode").value;
-				if (inputCode == 1) {
-					callback();
-				}
-				else if (value === "") {
-					callback(new Error("请输入验证码"));
-				} else if (inputCode != orignalCode) {
-					this.$message({
-						type: "warning",
-						message: "验证码输入错误！"
-					});
-					this.createCode();
-					return false;
-				} else {
-					callback();
-				}
-			};
-			return {
-				PROJECT:null,
-				ruleForm: {
-					email: "",
-					pass: "",
-					checkPass: "",
-					captcha: ""
-				},
-				rules: {
-					email: [{validator: ValidateRules.validateEmail, trigger: "blur"}],
-					pass: [{validator: ValidateRules.validatePass2, trigger: "blur"}],
-					checkPass: [{validator: validatePass3, trigger: "blur"}],
-					captcha: [{validator: validateCaptcha, trigger: "blur"}]
-				}
-			};
-		},
-		mounted: function () {
-			this.createCode();
-      this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_register_02;
-		},
-		methods: {
-			...mapActions("register", {
-				register: interfaces.ACTION_REGISTER
-			}),
-			submitRegisterForm() {
-				var obj = this;
-				this.register({loginName: this.ruleForm.email, password: this.ruleForm.checkPass})
-						.then(response => {
-									var _data = response.data;
-									if (_data.result == 1) {
-										this.$message({
-											type: "success",
-											message: "注册成功,请登录"
-										});
-										window.setTimeout(function () {
-											window.location.href = obj.PROJECT.toLoginPages;
-										}, 3000);
-									} else if (_data.result == 0) {
-										this.$message({
-											type: "info",
-											message: "注册失败" + _data.error.errorMsg
-										});
-									} else {
-										this.$message({
-											type: "info",
-											message: "注册失败，请重试"
-										});
-									}
-								},
-								error => {
-									console.log(error);
-								}
-						);
-			},
-			resetForm(formName) {
-				this.$nextTick(function () {
-					this.$refs[formName].resetFields();
-				})
-			},
-			createCode() {
-				this.$el.querySelector(".createcode").value = CreateCode();
+	data () {
+		var validatePass3 = (rule, value, callback) => {
+			if (value === "") {
+				callback(new Error("请再次输入密码"));
+			} else if (value !== this.ruleForm.pass) {
+				callback(new Error("两次输入密码不一致!"));
+			} else {
+				callback();
 			}
+		};
+		var validateCaptcha = (rule, value, callback) => {
+			let inputCode = value.toUpperCase();
+			let orignalCode = this.$el.querySelector(".createcode").value;
+			if (inputCode == 1) {
+				callback();
+			}
+			else if (value === "") {
+				callback(new Error("请输入验证码"));
+			} else if (inputCode != orignalCode) {
+				this.$message({
+					type: "warning",
+					message: "验证码输入错误！"
+				});
+				this.createCode();
+				return false;
+			} else {
+				callback();
+			}
+		};
+		return {
+			PROJECT: null,
+			ruleForm: {
+				email: "",
+				pass: "",
+				checkPass: "",
+				captcha: ""
+			},
+			rules: {
+				email: [{ validator: ValidateRules.validateEmail, trigger: "blur" }],
+				pass: [{ validator: ValidateRules.validatePass2, trigger: "blur" }],
+				checkPass: [{ validator: validatePass3, trigger: "blur" }],
+				captcha: [{ validator: validateCaptcha, trigger: "blur" }]
+			}
+		};
+	},
+	mounted: function () {
+		this.createCode();
+		this.PROJECT = PROJECT_CONFIG[this.namespace].register.work_register_02;
+	},
+	methods: {
+		...mapActions("register", {
+			register: interfaces.ACTION_REGISTER
+		}),
+		submitRegisterForm () {
+			var obj = this;
+			this.$refs.ruleForm.validate((valid) => {
+				if (valid) {
+					this.register({ loginName: this.ruleForm.email, password: this.ruleForm.checkPass })
+						.then(response => {
+							var _data = response.data;
+							if (_data.result == 1) {
+								this.$message({
+									type: "success",
+									message: "注册成功,请登录"
+								});
+								window.setTimeout(function () {
+									window.location.href = obj.PROJECT.toLoginPages;
+								}, 3000);
+							} else if (_data.result == 0) {
+								this.$message({
+									type: "info",
+									message: "注册失败" + _data.error.errorMsg
+								});
+							} else {
+								this.$message({
+									type: "info",
+									message: "注册失败，请重试"
+								});
+							}
+						},
+						error => {
+							console.log(error);
+						}
+						);
+				}
+			})
+		},
+		resetForm (formName) {
+			this.$nextTick(function () {
+				this.$refs[formName].resetFields();
+			})
+		},
+		createCode () {
+			this.$el.querySelector(".createcode").value = CreateCode();
 		}
-	};
+	}
+};
 </script>
 <style scoped>
-	.captcha input {
-		display: inline-block;
-		border-radius: 3px;
-		height: 36px;
-	}
+.captcha input {
+  display: inline-block;
+  border-radius: 3px;
+  height: 36px;
+}
 
-	.captcha .input1 {
-		width: 150px;
-	}
+.captcha .input1 {
+  width: 150px;
+}
 
-	#register_02-input-code {
-		width: 80px;
-		font-family: Arial;
-		font-style: italic;
-		font-weight: bold;
-		border: 0;
-		letter-spacing: 2px;
-		color: #33938d;
-	}
+#register_02-input-code {
+  width: 80px;
+  font-family: Arial;
+  font-style: italic;
+  font-weight: bold;
+  border: 0;
+  letter-spacing: 2px;
+  color: #33938d;
+}
 </style>

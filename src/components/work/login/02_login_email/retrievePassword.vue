@@ -10,42 +10,42 @@
       <div style="margin-top: 20px; height: 200px;" v-if="show">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
           <el-form-item label="邮 箱" prop="email">
-            <el-input type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱" style="display:inline-block;width:300px;" id="ffcs"></el-input>
+            <el-input id="retrieve_02-input-email" type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱" style="display:inline-block;width:300px;"></el-input>
           </el-form-item>
           <el-form-item label="验证码" prop="captcha">
             <div class="captcha">
-              <el-input type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码" id="input1" style="width:150px;"></el-input>
-              <input type="button" class="createcode" id="code1" />
-              <el-button type="text" @click="createCode">看不清楚</el-button>
+              <el-input id="retrieve_02-input-validate" type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码" style="width:150px;"></el-input>
+              <input id="retrieve_02-input-code" type="button" class="createcode" />
+              <el-button id="retrieve_02-input-update" type="text" @click="createCode">看不清楚</el-button>
             </div>
           </el-form-item>
           <div class="col_full nobottommargin btnbox" >
-            <el-button type="primary" @click="submitForm('ruleForm')" class="button nomargin">下一步</el-button>
+            <el-button id="retrieve_02-input-next" type="primary" @click="submitForm('ruleForm')" class="button nomargin">下一步</el-button>
           </div>
         </el-form>
       </div>
       <div style="margin-top: 20px; height: 200px;" v-if="show1">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
           <el-form-item label="邮箱验证码" prop="emailnum"  v-if="butt">
-            <el-input type="text" v-model="ruleForm.emailnum" auto-complete="off" placeholder="请输入邮箱验证码" style="display:inline-block;width:300px;"></el-input>
+            <el-input id="retrieve_02-input-email_validate" type="text" v-model="ruleForm.emailnum" auto-complete="off" placeholder="请输入邮箱验证码" style="display:inline-block;width:300px;"></el-input>
           </el-form-item>
 
           <div class="col_full nobottommargin btnbox">
-            <el-button type="primary" @click="submitForm1('ruleForm')" class="button nomargin" v-if="butt">提交（{{time}}）</el-button>
-            <el-button  type="text" :disabled="true" class="button nomargin" v-show="!butt">验证码已失效，请重新验证</el-button>
+            <el-button id="retrieve_02-input-submit" type="primary" @click="submitForm1('ruleForm')" class="button nomargin" v-if="butt">提交（{{time}}）</el-button>
+            <el-button id="retrieve_02-input-reset"  type="text" :disabled="true" class="button nomargin" v-show="!butt">验证码已失效，请重新验证</el-button>
           </div>
         </el-form>
       </div>
       <div style="margin-top: 20px; height: 200px;" v-if="show2">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
           <el-form-item label="请输入新密码" prop="pass">
-            <el-input type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="请输入新密码"></el-input>
+            <el-input id="retrieve_02-input-password" type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="请输入新密码"></el-input>
           </el-form-item>
           <el-form-item label="请确认新密码" prop="checkPass">
-            <el-input type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请确认新密码"></el-input>
+            <el-input id="retrieve_02-input-password_2" type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请确认新密码"></el-input>
           </el-form-item>
           <div class="col_full nobottommargin btnbox">
-            <el-button type="primary" @click="submitForm2('ruleForm')" class="button nomargin">提交</el-button>
+            <el-button id="retrieve_02-input-password_submit" type="primary" @click="submitForm2('ruleForm')" class="button nomargin">提交</el-button>
           </div>
         </el-form>
       </div>
@@ -321,7 +321,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.retrievePasswordBox .captcha input1 {
+.retrievePasswordBox .captcha .retrieve_02-input-validate {
   display: inline-block;
   border-radius: 3px;
   height: 36px;
@@ -331,7 +331,7 @@ export default {
   width: 150px;
 }
 
-.retrievePasswordBox #code1 {
+.retrievePasswordBox #retrieve_02-input-code {
   width: 80px;
   font-family: Arial;
   font-style: italic;

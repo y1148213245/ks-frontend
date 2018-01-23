@@ -488,7 +488,6 @@ export default {
           parentOrderCode: this.myOrderList.data[outIndex].parentOrderCode
         },
         myCallback: function() {
-          var url = type.API_CONFIG.baseURL;
           var argus = {
             orderId: _this.commitInfo.orderId,
             status: _this.commitInfo.status, // 订单状态
@@ -503,7 +502,7 @@ export default {
                 // 支付宝支付
                 loading.close();
                 window.open(
-                  url +
+                  BASE_URL +
                     "/epay/getPayForm.do?orderId=" +
                     argus.orderId +
                     "&loginName=" +
@@ -521,7 +520,7 @@ export default {
                 // 微信支付
                 axios
                   .get(
-                    url +
+                    BASE_URL +
                       "/epay/getPayForm.do?orderId=" +
                       argus.orderId +
                       "&loginName=" +
