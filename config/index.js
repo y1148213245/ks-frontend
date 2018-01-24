@@ -59,7 +59,7 @@ module.exports = {
     // assetsPublicPath: '../',
 
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/portal/sites/zhixiang',
+    assetsPublicPath: '/portal/sites/zhixiang/',
 
     /**
      * Source Maps

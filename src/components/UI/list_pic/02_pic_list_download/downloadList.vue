@@ -4,7 +4,7 @@
       <template v-for="item in bookcatalogList">
         <article class="entry clearfix">
           <div class="entry-image">
-            <img class="image_fade" src="./assets/kejian-thumb.jpg" alt="Standard Post with Image">
+            <img class="image_fade" src="./assets/kejian-thumb.jpg" alt="暂无图片">
             <label>{{item.fileType}}</label>
           </div>
           <div class="entry-title">

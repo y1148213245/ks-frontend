@@ -6,22 +6,12 @@
         <!-- Product Single - Gallery
                 ============================================= -->
         <div class="product-image">
-          <div class="fslider" data-pagi="false" data-arrows="false" data-thumbs="true">
-            <div class="flexslider">
-              <div class="slider-wrap" data-lightbox="gallery">
-
-                <div class="slide" :data-thumb="bookInfo.bigPic">
-                  <a class="book_list_imgBox" :href="bookInfo.bigPic" title="Pink Printed Dress - Front View">
-                    <img class="book_list_img" :src="bookInfo.bigPic" onload="DrawImage(this,410,280)" alt="暂无封面">
-                  </a>
-                </div>
-                <div class="slide" :data-thumb="bookInfo.bigPic">
-                  <a class="book_list_imgBox" :href="bookInfo.bigPic" title="Pink Printed Dress - Side View">
-                    <img class="book_list_img" :src="bookInfo.bigPic" onload="DrawImage(this,410,280)" alt="暂无封面">
-                  </a>
-                </div>
+          <div class="fslider" style="width:365px;height:357px;">
+              <div class="slide">
+                <a class="book_list_imgBox" :href="bookInfo.bigPic">
+                  <img class="book_list_img" :src="bookInfo.bigPic" onload="DrawImage(this,410,280)" alt="暂无封面">
+                </a>
               </div>
-            </div>
           </div>
           <div class="sale-flash">热销!</div>
         </div><!-- Product Single - Gallery End -->
@@ -92,7 +82,7 @@
               class="icon-shopping-cart"></i>纸书加入购物车
             </button>
             <div v-if="bookInfo.relBook" class="ebookClass">
-              <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.relBook.contentType)"><i
+              <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.relBook.prod_product_type)"><i
                 class="icon-shopping-cart"></i>电子书加入购物车
               </button>
             </div>
@@ -119,7 +109,7 @@
                 class="icon-newspaper"></i>电子书试读</a>
             </div>
             <div v-if="bookInfo.relBook" class="bookCart">
-              <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.relBook.contentType)"><i
+              <button type="button" class="add-to-cart button nomargin" @click="cart(bookInfo.relBook.prod_product_type)"><i
                 class="icon-shopping-cart"></i>纸书加入购物车
               </button>
             </div>
@@ -317,7 +307,6 @@
           });
           return;
         }
-
         addCart(contentType, this, loginName);
       },
       bookCount(val) {
@@ -431,9 +420,9 @@
       }
       if (contentType == $_$.bookContentType.ebookType) {
         //图书详情页电子书加购物车
-        isEb = _this.bookInfo.relBook.isEb;
-        pubId = _this.bookInfo.relBook.pubId;
-        colId = _this.bookInfo.relBook.colId; //栏目id
+        isEb = _this.bookInfo.relBook.pub_is_eb;
+        pubId = _this.bookInfo.relBook.id;
+        colId = _this.bookInfo.relBook.pub_col_id; //栏目id
         number = $("#book_num").val();
         if (number > "1") {
           alert("电子书加购物车只能加一本");
@@ -462,9 +451,9 @@
       }
       if (contentType == $_$.bookContentType.bookType) {
         //电子书详情页纸书加购物车
-        isEb = _this.bookInfo.relBook.isEb;
-        pubId = _this.bookInfo.relBook.pubId;
-        colId = _this.bookInfo.relBook.colId; //栏目id
+        isEb = _this.bookInfo.relBook.pub_is_eb;
+        pubId = _this.bookInfo.relBook.id;
+        colId = _this.bookInfo.relBook.pub_col_id; //栏目id
         number = $("#book_num").val();
       }
     }
@@ -515,9 +504,9 @@
 
   .book_list_imgBox {
     display: block !important;
-    width: 410px !important;
-    height: 280px !important;
-    line-height: 280px !important;
+    width: 365px !important;
+    height: 357px !important;
+    line-height: 357px !important;
     text-align: center !important;
   }
 

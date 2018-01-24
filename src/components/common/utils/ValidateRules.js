@@ -53,19 +53,25 @@ export default {
 		let char;
 		let badword;
 		badword = ';|<>`&!*(~^)#?:"/$=\\' + "'";
-		for (i = 0; i < value.length; i++) {
-			char = value.charAt(i);
-		}
-		if (badword.indexOf(char) >= 0) {
-			callback(new Error('格式错误，密码仅支持汉字、字母、数字、"-"、"_"的组合'));
-		} else if (value === "") {
+
+		if (value === "") {
 			callback(new Error("请输入密码"));
 		} else if (value.length <= 5) {
 			callback(new Error("密码至少为6位数"));
 		} else if (value.length >= 17) {
 			callback(new Error("密码最多为16位数"));
 		} else {
-			callback();
+			let result = true;
+			for (i = 0; i < value.length; i++) {
+				char = value.charAt(i);
+				if (badword.indexOf(char) >= 0) {
+					callback(new Error('格式错误，密码仅支持汉字、字母、数字、"-"、"_"的组合'));
+					result = false;
+					break;
+				}
+			}
+			result ? callback() : '';
 		}
+
 	}
 }
