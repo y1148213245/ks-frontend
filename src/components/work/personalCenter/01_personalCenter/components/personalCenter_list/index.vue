@@ -123,7 +123,8 @@
 
                             </div>
                             <div class="realAmount">
-                                  <div v-if="Aitem.payStatus==1">已付款：<span>￥{{Aitem.realAmount}}</span></div>
+                                  <div v-if="Aitem.balanceAmount!='0.00'" style="display:inline-block">虚拟币抵扣：<span>￥{{Aitem.balanceAmount}}</span></div>
+                                  <div v-if="Aitem.payStatus==1" style="display:inline-block;margin-left:30px;">已付款：<span>￥{{Aitem.realAmount}}</span></div>
                                   <div v-if="Aitem.payStatus==0 && Aitem.status==1">待支付：<span>￥{{Aitem.realAmount}}</span></div>
                             </div>
                         </div>
@@ -514,7 +515,7 @@ export default {
                 window.history.pushState(
                   null,
                   null,
-                  "../errorPage/errorpage.html"
+                  "../pages/errorpage.html"
                 ); // 添加历史记录
               } else if (payMethod === "0") {
                 // 微信支付
@@ -548,7 +549,7 @@ export default {
             } else {
               // 不需要跳转支付页面 实付金额为0
               window.location.href =
-                "../shoppingCart/commitOrder.html#/commitOrder/" +
+                "../pages/commitorder.html#/commitOrder/" +
                 _this.commitInfo.orderCode +
                 "/" +
                 _this.commitInfo.status +

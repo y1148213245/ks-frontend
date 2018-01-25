@@ -12,7 +12,13 @@ const pageTypeObj = [{ // 页面类别属性
   name: '列表页',
   type: 'list'
 }, {
-  name: '频道页',
+  name: '登录页',
+  type: 'login'
+}, {
+  name: '注册页',
+  type: 'register'
+}, {
+  name: '频道页',  // 例如：电子书城页
   type: 'channel'
 }, {
   name: '个人中心',

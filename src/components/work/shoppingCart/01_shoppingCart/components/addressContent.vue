@@ -59,7 +59,7 @@
       </div>
       <div class="newWrapper">
         <div>联系电话：</div>
-        <input id="s_phone" type="text" @blur="checkPhone()" @keypress="checkNumberType($event)" maxlength="11">
+        <input id="s_phone" type="number" @blur="checkPhone()" @keypress="checkNumberType($event)" maxlength="11">
         <span class="warningInfo" v-if="emptyPhone">请填写联系电话</span>
       </div>
       <div slot="footer" class="dialog-footer">

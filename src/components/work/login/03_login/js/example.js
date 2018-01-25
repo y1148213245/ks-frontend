@@ -28,7 +28,11 @@ const prod = {
 	}
 };
 
-export {name, title, dev, prod, description,style};
+const platform = 'PC';
+const pageType = ['login'];
+const resourceType = ['others'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};
 
 const style = `
 .login_03_content {

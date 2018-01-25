@@ -14,11 +14,19 @@ const description = `图书详情`;
 
 
 const dev = {
-  
+  bookdetail: {
+    bookdetail_01: {
+      url: '/data/bookDetail_01_bookDetail.json'
+    }
+  }
 };
 
 const prod = {
   
 };
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['detail'];
+const resourceType = ['book'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

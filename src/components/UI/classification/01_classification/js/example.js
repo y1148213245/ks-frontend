@@ -5,7 +5,6 @@
 
 import component from "../classification.vue";
 
-
 const name = component.name;  // 组件标签名
 
 const title = "分类导航组件";  // 组件title
@@ -15,8 +14,7 @@ const description = `图书分类导航`;  // 组件描述信息
 const dev = {
   classification: {
     classification_01: {
-      url: '/data/classification_01_classification.json',
-      picLinkUrl: ''
+      url: '/data/classification_01_classification.json'
     }
   }
 };
@@ -34,8 +32,8 @@ const prod = {
 };
 
 const platform = 'PC';
-const pageType = ['index', 'list'];
-const resourceType = ['book', 'information'];
+const pageType = ['list', 'channel'];
+const resourceType = ['book'];
 
 export {name, title, dev, prod, description, platform, pageType, resourceType};
 

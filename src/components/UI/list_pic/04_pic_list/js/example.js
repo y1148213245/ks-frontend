@@ -3,9 +3,9 @@ import component from "../picList.vue";
 
 const name = component.name;
 
-const title = "相关图书组件";
+const title = "图书组件";
 
-const description = `相关图书`;
+const description = `可用于展示相关图书、您的历史记录、图书热卖榜等`;
 
 const dev = {
   list_pic: {
@@ -18,7 +18,7 @@ const dev = {
 const prod = {
   list_pic: {
     pic_list_04: {
-      url: 'http://172.19.57.153:9092/spc-portal-web/spc/cms/publish/list.do',
+      url: BASE_URL + 'cms/publish/list.do',
       params: {
         conditions: "[{pub_resource_type:'BOOK'}]",
         orderBy: "pub_resource_id",
@@ -31,4 +31,8 @@ const prod = {
   }
 };
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['list'];
+const resourceType = ['book'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

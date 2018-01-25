@@ -8,9 +8,9 @@ import component from "../starPicInfo.vue";
 
 const name = component.name;
 
-const title = "图书列表组件";
+const title = "图书组件";
 
-const description = `纵向的图书列表`;
+const description = `纵向的图书组件`;
 
 const  dev = {
   star_pic_info_13: {
@@ -32,4 +32,9 @@ const prod = {
   }
 }
 
-export {name, title, dev, prod, description};
+
+const platform = 'PC';
+const pageType = ['index', 'list', 'channel'];
+const resourceType = ['book'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

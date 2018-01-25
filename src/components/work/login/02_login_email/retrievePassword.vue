@@ -14,7 +14,7 @@
           </el-form-item>
           <el-form-item label="验证码" prop="captcha">
             <div class="captcha">
-              <el-input id="retrieve_02-input-validate" type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码" style="width:150px;"></el-input>
+              <el-input id="retrieve_02-input-validate" type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码" style="width:150px;" @keyup.enter.native="submitForm('ruleForm')"></el-input>
               <input id="retrieve_02-input-code" type="button" class="createcode" />
               <el-button id="retrieve_02-input-update" type="text" @click="createCode">看不清楚</el-button>
             </div>
@@ -42,7 +42,7 @@
             <el-input id="retrieve_02-input-password" type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="请输入新密码"></el-input>
           </el-form-item>
           <el-form-item label="请确认新密码" prop="checkPass">
-            <el-input id="retrieve_02-input-password_2" type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请确认新密码"></el-input>
+            <el-input id="retrieve_02-input-password_2" type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请确认新密码" @keyup.enter.native="submitForm2('ruleForm')"></el-input>
           </el-form-item>
           <div class="col_full nobottommargin btnbox">
             <el-button id="retrieve_02-input-password_submit" type="primary" @click="submitForm2('ruleForm')" class="button nomargin">提交</el-button>

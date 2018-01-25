@@ -5,11 +5,11 @@
 import component from "../Advert_Swiper.vue";
 
 
-const name = component.name;  // 组件标签名
+const name = component.name; // 组件标签名
 
-const title = "广告组件";  // 组件title
+const title = "广告组件"; // 组件title
 
-const description = `广告`;  // 组件描述信息
+const description = `广告，展示一张广告图。`; // 组件描述信息
 
 const dev = {
   swiper: {
@@ -36,4 +36,8 @@ const prod = {
   }
 };
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['index'];
+const resourceType = ['book', 'information', 'journal'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

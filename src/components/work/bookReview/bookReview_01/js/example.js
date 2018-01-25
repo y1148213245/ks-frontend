@@ -53,4 +53,8 @@ var prod = {
   }
 }
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['detail'];
+const resourceType = ['book', 'information'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

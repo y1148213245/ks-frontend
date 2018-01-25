@@ -57,7 +57,7 @@
                     <div class="cart-item-title">
                       <div class="item-name">
                         <a
-                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId">{{product.productName}}</a>
+                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId+'&columnId='+product.colId">{{product.productName}}</a>
                       </div>
                       <div class="author">
                         <span>作者：</span>
@@ -238,7 +238,7 @@
           <!-- END 发票信息组件 -->
 
         </div>
-        
+
         <!-- 优惠券模块 -->
         <div class="discount" v-if="isShowCoupon">
           <div class="infoHead">优惠券</div>

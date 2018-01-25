@@ -5,7 +5,7 @@
 				<el-input id="login_02-input-email" type="text" v-model="member.loginName" auto-complete="off" placeholder="请输入邮箱"></el-input>
 			</el-form-item>
 			<el-form-item label="密 码" prop="password">
-				<el-input id="login_02-input-password" type="password" v-model="member.password" auto-complete="off" placeholder="请输入密码"></el-input>
+				<el-input id="login_02-input-password" type="password" v-model="member.password" auto-complete="off" placeholder="请输入密码" @keyup.enter.native="submitLoginForm"></el-input>
 			</el-form-item>
 		</el-form>
 		<div class="col_full nobottommargin">

@@ -5,7 +5,9 @@
       <article class="col-md-4 clearfix" v-for="item in bookRecommendList">
         <div class="product iproduct clearfix">
           <div class="product-image">
-            <a class="ebook_list_imgBox" target="_blank"><img :src="item.bookUrl" alt="暂无封面" onload="DrawImage(this,260,260)" style="height:247px;width: auto;margin: 0 auto;"></a>
+            <a class="ebook_list_imgBox" target="_blank">
+              <img :src="item.bookUrl  || '../assets/img/zwfm.png'" alt="暂无封面" onload="DrawImage(this,260,260)" style="height:247px;width: auto;margin: 0 auto;">
+            </a>
             <div class="product-overlay">
               <!-- <a href="#" class="add-to-cart"><i class="icon-shopping-cart"></i><span>加入购物车</span></a> -->
               <a class="w247" href="javascript:void(0)" @click="toInfo(item)" target="_blank"><i class="icon-zoom-in2"></i><span> 查看详情</span></a>

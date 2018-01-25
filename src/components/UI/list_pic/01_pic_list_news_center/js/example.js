@@ -22,7 +22,7 @@ const dev = {
 const prod = {
 	list_pic: {
 		ui_list_pic_01: {
-			url: 'http://172.19.57.153:9092/spc-portal-web/spc/cms/publish/list.do',
+			url: BASE_URL + 'spc/cms/publish/list.do',
 			params: {
 				conditions: "[{pub_resource_type:'BOOK'},{pub_status:'1'},{pub_col_id:51}]",
 				orderBy:"pub_a_order asc pub_lastmodified desc id asc",
@@ -34,4 +34,8 @@ const prod = {
 	}
 };
 
-export {name, title, description, dev, prod};
+const platform = 'PC';
+const pageType = ['list'];
+const resourceType = ['information'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

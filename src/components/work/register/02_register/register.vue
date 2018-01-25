@@ -6,14 +6,14 @@
 				<el-input id="register_02-input-email" type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱"></el-input>
 			</el-form-item>
 			<el-form-item label="密 码" prop="pass">
-				<el-input id="register_02-input-password" type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="密码支持6-16位字符"></el-input>
+				<el-input id="register_02-input-password" type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="密码支持6-16位字符,仅支持汉字、字母、数字、'-'、'_'的组合"></el-input>
 			</el-form-item>
 			<el-form-item label="确认密码" prop="checkPass">
 				<el-input id="register_02-input-password_2" type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请再次输入密码"></el-input>
 			</el-form-item>
 			<el-form-item label="验证码" prop="captcha">
 				<div class="captcha">
-					<el-input id="register_02-input-validate" type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码"  style="width:150px;"></el-input>
+					<el-input id="register_02-input-validate" type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码"  style="width:150px;" @keyup.enter.native="submitRegisterForm('ruleForm')"></el-input>
 					<input id="register_02-input-code" type="button" class="createcode" @click="createCode()"/>
 					<el-button id="register_02-input-update" type="text" @click="createCode">看不清楚</el-button>
 				</div>

@@ -25,7 +25,7 @@ const dev = {
 const prod = {
   search: {
     search_result_04: {
-      url: 'http://172.19.57.153/portal/api/spc/cms/publish/list.do',
+      url: BASE_URL + 'spc/cms/publish/list.do',
       param: {
         conditions: "[{pub_site_id:'2'},{pub_status:'1'}]",
         groupBy: 'pub_resource_id',
@@ -41,4 +41,8 @@ const prod = {
   }
 };
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['list'];
+const resourceType = ['book'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

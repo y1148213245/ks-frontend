@@ -36,4 +36,8 @@ const prod = {
   }
 }
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['channel'];
+const resourceType = ['book'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

@@ -5,37 +5,41 @@
 import component from "../SmallPic_Swiper.vue";
 
 
-const name = component.name;  // 组件标签名
+const name = component.name; // 组件标签名
 
-const title = "图书轮播组件";  // 组件title
+const title = "轮播组件"; // 组件title
 
-const description = `图书轮播，手动轮播`;  // 组件描述信息
+const description = `手动轮播`; // 组件描述信息
 
 const dev = {
-	swiper: {
+  swiper: {
     smallPic_02: {
-			url: './data/swiper_02_smallPic_list.json',
-      picLinkUrl:"./bookdetail.html?pubId=",
-			columnId:"51"
-		}
-	}
+      url: './data/swiper_02_smallPic_list.json',
+      picLinkUrl: "./bookdetail.html?pubId=",
+      columnId: "51"
+    }
+  }
 }
 
 const prod = {
-	swiper: {
+  swiper: {
     smallPic_02: {
-			url: 'http://172.19.57.153:9092/spc-portal-web/spc/cms/publish/list.do',
-			params: {
+      url: BASE_URL + 'spc/cms/publish/list.do',
+      params: {
         conditions: "[{pub_resource_type:'BOOK'}]",
         orderBy: "BOOK_PUBDATE desc",
         pageNo: "1",
         pageSize: "15",
         searchText: null
-			},
-      picLinkUrl:"./bookdetail.html?pubId=",
-			columnId:"51"
-		}
-	}
+      },
+      picLinkUrl: "./bookdetail.html?pubId=",
+      columnId: "51"
+    }
+  }
 };
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['index'];
+const resourceType = ['book'];
+
+export { name, title, dev, prod, description, platform, pageType, resourceType };

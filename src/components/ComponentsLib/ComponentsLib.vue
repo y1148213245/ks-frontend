@@ -12,21 +12,25 @@
 			<div class="checkBtn">
 				<div class="title">资源类别</div>
 				<el-checkbox-group v-model="checkedResourceType">
-					<el-checkbox v-for="(resource, index) in resourceTypeObj" :key="index" :label="resource.type" @change="filterDatas()">{{resource.name}}</el-checkbox>
+					<div class="checkboxCon" style="display: inline-block; margin-right: 12px;" v-for="(resource, index) in resourceTypeObj" :key="index">
+						<el-checkbox :label="resource.type" @change="filterDatas()">{{resource.name}}</el-checkbox>
+					</div>
 				</el-checkbox-group>
 			</div>
 			<div class="checkBtn">
 				<div class="title">页面类别</div>
 				<el-checkbox-group v-model="checkedPageType">
-					<el-checkbox v-for="(page, index) in pageTypeObj" :key="index" :label="page.type" @change="filterDatas()">{{page.name}}</el-checkbox>
+					<div class="checkboxCon" style="display: inline-block; margin-right: 12px;" v-for="(page, index) in pageTypeObj" :key="index">
+						<el-checkbox :label="page.type" @change="filterDatas()">{{page.name}}</el-checkbox>
+					</div>
+					
 				</el-checkbox-group>
 			</div>
 		</div>
 		
 		<el-row class="tac">
 			<el-col :span="7" :style="{height: clientHeight + 'px'}" class="comList">
-				<el-menu default-active="0"
-					class="el-menu-vertical-demo">
+				<el-menu default-active="0" class="el-menu-vertical-demo">
 					<el-menu-item v-for="(com,vkey,index) in examples" :key="vkey" :index="String(index)" @click="toggleShowCom(com)">
 						<i class="el-icon-menu"></i>
 						<span slot="title" v-text="com.title + '（' + com.name + '）'"></span>
@@ -71,7 +75,7 @@ export default {
 	mounted: function () {
 		this.resourceTypeObj = resourceTypeObj;
 		this.pageTypeObj = pageTypeObj;
-		this.clientHeight = document.documentElement.clientHeight;
+		this.clientHeight = document.documentElement.clientHeight - 120;
 		this.examples = ScanExamples();
 		this.tempExamples = ScanExamples();
 		this.loadComponent(this.examples);
@@ -180,7 +184,10 @@ export default {
 			}
 			this.showComponents = null;
 			this.loadComponent(this.examples);
-		}
+		},
+
+	},
+	watch: {
 	}
 };  
 </script>
@@ -194,7 +201,7 @@ export default {
 .common_components_lib .titleHead {
   width: 100%;
   overflow: hidden;
-  height: 100px;
+  height: 120px;
   width: 100%;
   background-color: #f8f8f8;
   box-shadow: 0 0 10px 2px #ccc;
@@ -227,6 +234,11 @@ export default {
   padding: 16px 0px;
 }
 
+.common_components_lib .titleHead .checkBtn .checkboxCon {
+  display: inline-block;
+  margin-right: 12px;
+}
+
 .common_components_lib .titleHead .checkBtn .title {
   font-size: 16px;
   color: #303133;
@@ -245,9 +257,10 @@ export default {
 }
 
 .common_components_lib .comList {
+  overflow-x: hidden;
   overflow-y: scroll;
   position: fixed;
-  top: 110px;
+  top: 130px;
   bottom: 0;
   left: 0;
 }
@@ -260,9 +273,13 @@ export default {
   padding: 20px 30px;
   overflow-y: scroll;
   position: fixed;
-  top: 110px;
+  top: 130px;
   bottom: 0;
   right: 0;
+}
+
+.common_components_lib .comInfo img {
+  max-width: 100%;
 }
 
 .common_components_lib .jsonInfo {

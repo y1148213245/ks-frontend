@@ -21,7 +21,7 @@
 						<div class="product-title"><h5>
 							<a class="book-name-space" href="javascript:void(0)" @click="toBookDetail(recommend.id,recommend.pub_content_type,recommend.pub_col_id, recommend.pub_col_name)" :title="recommend.pub_resource_name">{{recommend.pub_resource_name}}</a>
 						</h5></div>
-						<div class="product-author">作者：{{recommend.BOOK_EDITOR}}</div>
+						<div class="product-author">作者：{{recommend.BOOK_SYS_AUTHORS}}</div>
 						<div class="product-price"><label>定价：</label> ¥ {{recommend.prod_sale_price}}</div>
 					</div>
 				</div>

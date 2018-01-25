@@ -116,6 +116,8 @@ exports.htmlPlugin = function () {
 
 	//*********添加组件库
 	entryHtml.push(path.resolve(__dirname, '../src/projects/zjk.html'));
+  //*********添加资源库
+  entryHtml.push(path.resolve(__dirname, '../src/projects/zyk.html'));
 
 	let arr = [];
 	entryHtml.forEach((filePath) => {

@@ -1,4 +1,4 @@
-/**
+/*  *//**
  * Created by song 2018/1/15.
  * 图书详情页 —— 相关图书组件
  */
@@ -34,4 +34,8 @@ const prod = {
   }
 };
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['detail'];
+const resourceType = ['book'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

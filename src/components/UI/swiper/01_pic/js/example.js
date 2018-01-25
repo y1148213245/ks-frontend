@@ -7,7 +7,7 @@ import component from "../Pic_Swiper.vue";
 
 const name = component.name;  // 组件标签名
 
-const title = "轮播图组件";  // 组件title
+const title = "轮播组件";  // 组件title
 
 const description = `轮播图`;  // 组件描述信息
 
@@ -26,7 +26,7 @@ const prod = {
 		pic_01: {
 			height: "480px",
 			interval: 5000,
-			url: 'http://172.19.57.153:9092/spc-portal-web/spc/cms/publish/list.do',
+			url: BASE_URL + 'spc/cms/publish/list.do',
 			params: {
 				conditions: "[{'pub_col_id':'225'}]",
 				orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
@@ -38,4 +38,8 @@ const prod = {
 	}
 };
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['index'];
+const resourceType = ['book', 'information', 'journal', 'vedio'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};

@@ -14,7 +14,8 @@ export default {
 				pageSize: "10",
 			},
 			pageSizes:[10,20,50,100],
-			pubColId:'46'
+			pubColId:'46',
+			toDetail:'./newsdetail.html?pubId='
 		},
 	}
 };

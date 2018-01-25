@@ -101,7 +101,7 @@ export default {
     },
     toNewsDetail (pubId) {
       //window.location.href =  locationUtils.addParams({pubId:pubId},"../detail/detail.html");
-      window.location.href = "../pages/bookdetail.html?pubId=" + pubId;
+      window.location.href = this.CONFIG.toDetail + pubId;
     },
     paging: function ({ pageNo, pageSize }) {
       var param = {

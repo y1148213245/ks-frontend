@@ -26,6 +26,10 @@ const prod = {
 	}
 };
 
-export {name, title, dev, prod, description,style};
+const platform = 'PC';
+const pageType = ['register'];
+const resourceType = ['others'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};
 
 const style = ''

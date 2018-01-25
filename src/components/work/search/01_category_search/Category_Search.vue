@@ -10,8 +10,8 @@
 					</select>
 				</div>
 				<div class="input-group-addon search-field-area">
-					<input type="text" class="search-field tt-input" value="" name="searchText" placeholder="输入书名或资讯关键字" autocomplete="off" spellcheck="false" v-model="searchText">
-					<button type="button" @click="toSearch()"><i class="icon-search3"></i></button>
+					<input type="text" id="searchInput" class="search-field tt-input" value="" name="searchText" placeholder="输入书名或资讯关键字" autocomplete="off" spellcheck="false" v-model="searchText" @keyup.13="toSearch">
+					<button type="button"  id="searchButton" @click="toSearch()"><i class="icon-search3"></i></button>
 				</div>
 			</div>
 		</form>
