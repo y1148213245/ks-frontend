@@ -55,9 +55,7 @@ export default {
     },
     handleCurrentChange (val) {
       if (this.excuteFunction && this.excuteFunction instanceof Function) {
-        this.excuteFunction({ pageNo: val.toString(), pageSize: this.pageSize.toString() });
-        console.log(this.currentPage);
-
+        this.excuteFunction({ pageNo: val + '', pageSize: this.pageSize + '' });
       }
     }
   },
@@ -73,7 +71,7 @@ export default {
     };
   },
   created () {
-    this.pageSize = this.pageSizes[0];
+    this.pageSize = this.pageSizes[0] ? this.pageSizes[0] : 15;
   }
 };
 </script>

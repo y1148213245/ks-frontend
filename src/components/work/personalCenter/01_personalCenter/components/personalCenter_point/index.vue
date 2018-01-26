@@ -9,11 +9,11 @@
 		<div class="wzdh_jf_duih">
 			<div class="wzdh_jf_duih_01">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="elform">
-        <el-form-item prop="number" style="width:370px; margin:30px auto;">
+        <el-form-item prop="number" style="width:520px; margin:30px auto;">
           <span>积分：</span>
           <el-input style="width: 200px;" type="text" v-model.number="ruleForm.number" auto-complete="off"
                     placeholder="请输入兑换积分数量" class="inputwid"></el-input>
-          <span>兑换</span><span class="re30">{{ruleForm.number}}</span>虚拟币<i class="jf_duih_03"></i>
+          <div style="display:inline-block"><span>兑换</span><span class="re30">{{ruleForm.number}}</span>虚拟币<i class="jf_duih_03"></i></div>
         </el-form-item>
         <div class="col_full nobottommargin btnbox">
             <el-button type="primary" @click="submitForm('ruleForm')" class="button nomargin">提交</el-button>
@@ -58,7 +58,7 @@ export default {
       } else if (!Number.isInteger(value)) {
         callback(new Error("请输入数字"));
       }else if (value === 0) {
-        callback(new Error("请输入兑换数额"));
+        callback(new Error("请输入大于0的整数金额"));
       } else {
         callback();
       }

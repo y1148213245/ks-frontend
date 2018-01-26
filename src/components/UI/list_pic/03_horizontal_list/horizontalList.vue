@@ -10,7 +10,7 @@
 				<div class="product iproduct clearfix">
 					<div class="product-image">
 						<a class="tuijian_list_imgBox" href="javascript:void(0)" @click="toBookDetail(recommend.id,recommend.pub_content_type,recommend.pub_col_id, recommend.pub_col_name)">
-							<img class="tuijian_list_img" onload="DrawImage(this,240,200)" :src="recommend.pub_picBig" alt="暂无封面">
+							<img class="tuijian_list_img" onload="DrawImage(this,240,200)" :src="recommend.pub_picBig || '../assets/img/zwfm.png'" alt="暂无封面">
 						</a>
 						<!-- <div class="product-overlay">
 							<a @click="toCart(recommend.prod_id,recommend.id,recommend.pub_col_id,recommend.pub_is_eb)" class="add-to-cart"><i class="icon-shopping-cart"></i><span>加入购物车</span></a>

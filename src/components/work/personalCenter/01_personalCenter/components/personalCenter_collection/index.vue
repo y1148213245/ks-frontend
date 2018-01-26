@@ -13,16 +13,14 @@
             <div class="picBox">
               <div
                 style="width: 180px; height: 180px; vertical-align: middle; display: table-cell; position: relative;">
-                <img v-bind:src="item.bigPic" onload="DrawImage(this,150,150)"/>
+                <img v-bind:src="item.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,150,150)"/>
               </div>
               <div class="namePrice">
                 <div v-text="item.productName" :title="item.productName"></div>
                 <div>价格：￥ <span v-text="item.productPrice"></span></div>
               </div>
               <div class="readBox">
-                <a target="_blank"
-                   v-bind:href="'/pages/bookdetail.html?pubId=' + item.pubId">
-                  购买</a>
+                <a target="_blank" v-bind:href="'../pages/bookdetail.html?pubId=' + item.pubId">购买</a>
               </div>
               <div class="deleteCllo" @click="deleteCollProduct(item)">
               </div>

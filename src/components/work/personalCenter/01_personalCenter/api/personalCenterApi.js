@@ -113,7 +113,9 @@ export default {
       "&siteId=" +
       SITE_CONFIG.siteId +
       "&payStatus=" +
-      params.payStatus;
+      params.payStatus +
+      "&status=" +
+      params.status;
     return axios.get(url);
   },
   /*时间筛选订单*/

@@ -12,9 +12,9 @@
             <div class="product-desc">
               <div class="product-title">
                 <h5 v-show="entry.dataType == 1"><a
-                  :href="'../pages/bookdetail.html?pubId='+entry.pubId+'&contentType='+entry.contentType+'&columnId='+entry.pub_col_id+'&colName='+entry.pub_col_name">{{entry.bookName}}</a>
+                  :href="'./bookdetail.html?pubId='+entry.pubId+'&contentType='+entry.contentType+'&columnId='+entry.pub_col_id+'&colName='+entry.pub_col_name">{{entry.bookName}}</a>
                 </h5>
-                <h5 v-show="entry.dataType == 2"><a :href="'../pages/bookdetail.html?pubId='+entry.pubId">{{entry.bookName}}</a>
+                <h5 v-show="entry.dataType == 2"><a :href="'./newsdetail.html?pubId='+entry.pubId">{{entry.bookName}}</a>
                 </h5>
               </div>
               <div class="product-author">作者：{{entry.bookAuthor}}</div>

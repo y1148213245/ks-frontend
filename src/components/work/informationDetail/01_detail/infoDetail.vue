@@ -6,7 +6,7 @@
     <!--<h1>{{newsDetailInfo.resourceName}}</h1>-->
     <!--<span>{{newsDetailInfo.information_a_pubTime | formatDate}}</span>-->
     <div style="text-align: center;">
-      <span>作者：{{newsDetailInfo.information_a_editor}}</span>
+      <span>作者：{{newsDetailInfo.information_SYS_AUTHORS}}</span>
       <span style="margin-left: 16px;">创建日期：{{newsDetailInfo.information_a_pubTime | formatDate}}</span>
       <span style="margin-left: 16px;">来源：{{newsDetailInfo.information_a_source}}</span>
     </div>
@@ -14,8 +14,9 @@
       <span>摘要：</span>
       <span v-text="newsDetailInfo.information_a_abstract || '暂无摘要'" :title="newsDetailInfo.information_a_abstract"></span>
     </div>
-
-    <img :src="newsDetailInfo.pub_picBig">
+    <br/>
+    <img style="max-width: 100%;" :src="newsDetailInfo.pub_picBig">
+    <br/>
     <p class="html-feild" v-html="newsDetailInfo.information_a_content"></p>
   </div>
 

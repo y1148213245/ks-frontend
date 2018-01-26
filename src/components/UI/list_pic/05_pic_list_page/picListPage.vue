@@ -15,8 +15,8 @@
           </div>
           <div class="product-desc center">
             <div class="product-title">
-              <h5><a href="javascript:void(0)" @click="toInfo(item)">{{item.bookName}}</a></h5></div>
-            <div class="product-author">作者：{{item.bookAuthor}}</div>
+              <h5><a href="javascript:void(0)" @click="toInfo(item)">{{item.bookName | cutOut}}</a></h5></div>
+            <div class="product-author">作者：{{item.bookAuthor | cutOut}}</div>
             <div class="product-price"><label>定价：</label> ¥ {{item.ebookPrice}}</div>
           </div>
         </div>

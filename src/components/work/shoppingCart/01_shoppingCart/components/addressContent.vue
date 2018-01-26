@@ -64,7 +64,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="confirmNewAdd(false)">取 消</el-button>
-        <el-button type="primary" @click="confirmNewAdd(true)">确 定</el-button>
+        <el-button type="primary" @click="confirmNewAdd(true)" id="testUseAddressLocation">确 定</el-button>
       </div>
     </el-dialog>
     <!--END 新增收货地址弹框-->

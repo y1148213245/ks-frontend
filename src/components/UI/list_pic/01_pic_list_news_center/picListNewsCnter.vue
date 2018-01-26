@@ -67,10 +67,12 @@ export default {
       pageSizes: [],
     }
   },
-  mounted () {
+  created(){
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_01_news_center;
     this.pageSizes = this.CONFIG.pageSizes
     this.getNewCenterData();
+  },
+  mounted () {
   },
   methods: {
     getNewCenterData: function (param) {

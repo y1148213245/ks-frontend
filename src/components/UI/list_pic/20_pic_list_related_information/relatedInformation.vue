@@ -57,6 +57,9 @@ export default {
 
         _this.relateNews = response.data.data.result;
       })
+    },
+    toDetail(id){
+      window.location.href = projectConfig.toDetailUrl + id;
     }
   },
   filters: {

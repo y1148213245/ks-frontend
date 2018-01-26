@@ -12,20 +12,6 @@
         </el-menu>
       </el-col>
     </el-row>
-    <!--<table class="fl" border="1" cellspacing="0">-->
-      <!--<thead>-->
-        <!--<th>字段名称</th>-->
-        <!--<th>显示名称</th>-->
-        <!--<th>字段类型</th>-->
-      <!--</thead>-->
-      <!--<tbody>-->
-        <!--<tr v-for="(item,index) in resourceNoteList">-->
-          <!--<td width="400">{{item.fieldName}}</td>-->
-          <!--<td width="400">{{item.fieldNameCn}}</td>-->
-          <!--<td>{{item.filedTypeName}}</td>-->
-        <!--</tr>-->
-      <!--</tbody>-->
-    <!--</table>-->
     <el-table
       :data="resourceNoteList"
       border
@@ -81,12 +67,12 @@
             Get(this.resourceNoteConfig.url,{"params":params}).then((rep)=>{
               let data=rep.data.fields;
               if(data && data instanceof Array){
-                data.forEach(function(item,index){
+                this.resourceNoteList=data.map(item => {
                   if(resourceFileType.hasOwnProperty(item.fieldType)){
                     item.filedTypeName=resourceFileType[item.fieldType];
                   }
+                  return item;
                 });
-                this.resourceNoteList=data;
               }
             });
 

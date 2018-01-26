@@ -82,7 +82,7 @@
                                 <el-row class="cent" v-for="(item1,innerindex) in item.itemList" :key="innerindex">
                                     <el-col :span="15">
                                         <div style="margin: 10px;height: 100px;">
-                                            <img v-bind:src="item1.bigPic" onload="DrawImage(this,120,100)" style="float:left;text-align: center;line-height: 100px;" alt="暂无封面">
+                                            <img v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" style="float:left;text-align: center;line-height: 100px;" alt="暂无封面">
                                             <div class="itemlist">
                                                 <span style="margin-top:5px;" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
                                                 <span style="font-size:14px;margin-top:25px;">作者：{{item1.author||"暂无作者"}}</span>
@@ -92,6 +92,7 @@
                                     <el-col :span="3">
                                         <div style="font-size:16px;text-align:center;margin-top:45px;">
                                             <span v-if="item.itemList[0].productType== 94">电子书订单</span>
+                                            <span v-if="item.itemList[0].productType== 91">纸书订单</span>
                                         </div>
                                     </el-col>
                                     <el-col :span="3">
@@ -106,7 +107,7 @@
                             <div style="margin-top:5px;">
 
                                 <div v-if="Aitem.payStatus==0 && Aitem.status==1" class="elbutt">
-                                    <el-button type="text" @click="cancelOrder(outIndex)">
+                                    <el-button type="text" @click="cancelOrder(outIndex)" id="testUseCancelLocation">
                                         取消订单
                                     </el-button>
                                     <el-button type="primary" @click="myCallBack(outIndex)">
@@ -212,7 +213,7 @@
                     <el-row class="cent" v-for="item1 in item.itemList" :key="item1.id">
                         <el-col :span="15">
                             <div style="height: 100px;">
-                                <img onload="DrawImage(this,120,100)" v-bind:src="item1.bigPic" style="float:left;text-align: center;line-height: 100px;" alt="暂无封面">
+                                <img onload="DrawImage(this,120,100)" v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" style="float:left;text-align: center;line-height: 100px;" alt="暂无封面">
                                 <div class="itemlist">
                                     <span style="margin-top:5px;" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
                                     <span style="font-size:16px;margin-top:25px;">作者：{{item1.author||"暂无作者"}}</span>
@@ -271,7 +272,7 @@
               <el-row class="cent">
                   <el-col :span="14">
                       <div style="margin: 10px;height: 100px;">
-                          <img v-bind:src="returnBigPic" onload="DrawImage(this,120,100)" style="float:left;text-align: center;line-height: 100px;" alt="暂无封面">
+                          <img v-bind:src="returnBigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" style="float:left;text-align: center;line-height: 100px;" alt="暂无封面">
                           <div class="itemlist">
                               <span style="margin-top:5px;">{{returnProductName}}</span>
                               <span style="font-size:14px;margin-top:25px;">作者：{{returnAuthor}}</span>
@@ -352,6 +353,7 @@ export default {
       dialogTableVisible: false,
       // 订单列表状态
       payStatusNum: "",
+      displayCancel: "",
       // 退换货
       num: 1,
       max: 10,
@@ -476,10 +478,12 @@ export default {
       var param = {
         pageIndex: 1,
         pageSize: 8,
-        payStatus: ""
+        payStatus: "",
+        status: ""
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
+    // 订单付款
     myCallBack(outIndex, index) {
       var payMethod = this.myOrderList.data[outIndex].orderList[0].payMethod;
       var _this = this;
@@ -512,11 +516,7 @@ export default {
                     argus.payMethodId,
                   "_self"
                 );
-                window.history.pushState(
-                  null,
-                  null,
-                  "../pages/errorpage.html"
-                ); // 添加历史记录
+                window.history.pushState(null, null, "../pages/errorpage.html"); // 添加历史记录
               } else if (payMethod === "0") {
                 // 微信支付
                 axios
@@ -579,11 +579,35 @@ export default {
       };
       this.$store.dispatch("personalCenter/queryTimeList", param);
     },
+    // 订单筛选 删除 取消
+    all() {
+      this.payStatusNum = "";
+      this.displayCancel = "";
+      var param = {
+        pageIndex: 1,
+        pageSize: 8,
+        payStatus: "",
+        status: ""
+      };
+      this.$store.dispatch("personalCenter/queryOrderList", param);
+    },
+    wait() {
+      this.payStatusNum = 0;
+      this.displayCancel = 1;
+      var param = {
+        pageIndex: 1,
+        pageSize: 8,
+        payStatus: 0,
+        status: 1
+      };
+      this.$store.dispatch("personalCenter/queryOrderList", param);
+    },
     pagingF({ pageNo, pageSize }) {
       var param = {
         pageIndex: pageNo,
         pageSize: pageSize,
-        payStatus: this.payStatusNum
+        payStatus: this.payStatusNum,
+        status: this.displayCancel
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
@@ -600,7 +624,8 @@ export default {
         var param = {
           pageIndex: 1,
           pageSize: 8,
-          payStatus: ""
+          payStatus: this.payStatusNum,
+          status: this.displayCancel
         };
         this.$store.dispatch("personalCenter/queryOrderList", param);
         this.$message({
@@ -627,7 +652,8 @@ export default {
         var param = {
           pageIndex: 1,
           pageSize: 8,
-          payStatus: ""
+          payStatus: this.payStatusNum,
+          status: this.displayCancel
         };
         this.$store.dispatch("personalCenter/queryOrderList", param);
         this.$message({
@@ -641,24 +667,7 @@ export default {
         });
       }
     },
-    all() {
-      this.payStatusNum = "";
-      var param = {
-        pageIndex: 1,
-        pageSize: 8,
-        payStatus: ""
-      };
-      this.$store.dispatch("personalCenter/queryOrderList", param);
-    },
-    wait() {
-      this.payStatusNum = 0;
-      var param = {
-        pageIndex: 1,
-        pageSize: 8,
-        payStatus: 0
-      };
-      this.$store.dispatch("personalCenter/queryOrderList", param);
-    },
+
     // 退换货图片上传
     handleRemove(file, fileList) {
       console.log(file, fileList);

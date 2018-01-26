@@ -51,7 +51,7 @@
                   </div>
                   <div class="cart-tab-2">
                     <div class="cart-item-pic">
-                      <img v-bind:src="product.smallPic" onload="DrawImage(this,80,80)">
+                      <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)">
                       <!--<img src="~projects/wenlian/assets/img/bookex.jpg" alt="">-->
                     </div>
                     <div class="cart-item-title">
@@ -118,7 +118,7 @@
                   </div>
                   <div class="cart-tab-2">
                     <div class="cart-item-pic">
-                      <img v-bind:src="product.smallPic" onload="DrawImage(this,80,80)" alt="暂无图片" style="line-height: 80px;text-align: center;float: left;">
+                      <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)" alt="暂无图片" style="line-height: 80px;text-align: center;float: left;">
                     </div>
                     <div class="cart-item-title">
                       <div class="item-name">
@@ -314,7 +314,7 @@
               <li v-for="product in item.list">
                 <div class="cart-tab-1">
                   <div class="cart-item-pic">
-                    <img v-bind:src="product.smallPic" onload="DrawImage(this,80,80)">
+                    <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)">
                   </div>
                   <div class="cart-item-title">
                     <div class="item-name">

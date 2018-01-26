@@ -2,7 +2,7 @@
 <div>
   <div class="book-board ui_list_pic_04">
     <div v-if="bookList && bookList.length > 0" class="oc-item shuping-item" v-for="(item, index) in bookList" :key="index">
-      <div class="product iproduct  clearfix">
+      <div class="product iproduct  clearfix" style="margin-top:55px;">
         <div class="product-image">
           <a :href="'../pages/bookdetail.html?pubId='+item.id+'&contentType='+item.pub_content_type+'&columnId=' + item.pub_col_id"
              target="_blank" class="ebook_hot_imgBox">
@@ -12,8 +12,8 @@
         <div class="product-desc">
           <div class="product-title"><h5><a
             :href="'../pages/bookdetail.html?pubId='+item.id+'&contentType='+item.pub_content_type+'&columnId=' + item.pub_col_id "
-            target="_blank">{{item.BOOK_SYS_TOPIC}}</a></h5></div>
-          <div class="product-author">作者：{{item.BOOK_SYS_AUTHORS | notAvailable}}</div>
+            target="_blank" class="scoped-title_line" :title="item.BOOK_SYS_TOPIC">{{item.BOOK_SYS_TOPIC}}</a></h5></div>
+          <div class="product-author scoped-title_line" :title="item.BOOK_SYS_AUTHORS | notAvailable">作者：{{item.BOOK_SYS_AUTHORS | notAvailable}}</div>
           <div class="product-price"><label>定价：</label> ¥ {{item.prod_sale_price | twoPoint| notAvailable}}</div>
         </div>
       </div>
@@ -190,6 +190,17 @@ export default {
   }
 }
 </script>
+<style scoped>
+.scoped-title_line{
+  display: inline-block;
+  max-width: 100px;
+  line-height: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+</style>
+
 <style>
 .ebook_hot_imgBox {
   display: block !important;

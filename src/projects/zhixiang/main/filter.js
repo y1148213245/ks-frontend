@@ -11,3 +11,8 @@ Vue.filter('twoPoint', function (value) {
   // 返回处理后的值
   return Number(value).toFixed(2);
 });
+Vue.filter('cutOut', function (value) {
+  // 返回处理后的值
+  let result = value.length>16 ? `${value.slice(0,16)}...` : value.slice(0,16);
+  return result;
+});

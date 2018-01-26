@@ -9,7 +9,7 @@
           <div class="fslider" style="width:365px;height:357px;">
               <div class="slide">
                 <a class="book_list_imgBox" :href="bookInfo.bigPic">
-                  <img class="book_list_img" :src="bookInfo.bigPic" onload="DrawImage(this,410,280)" alt="暂无封面">
+                  <img class="book_list_img" :src="bookInfo.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,410,280)" alt="暂无封面">
                 </a>
               </div>
           </div>
