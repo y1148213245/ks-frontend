@@ -140,65 +140,58 @@
             <!-- 订单详情 -->
             <div v-show="currentShow=='details'">
                 <div v-for="item in orderDetails" :key="item.id">
-                    <div class="item">
-                        <el-row :gutter="20">
-                            <el-col :span="6" v-if="item.itemList[0].productType == 91 ">
-                                <div class="grid-content bg-purple title">
-                                    <p>收货信息</p>
-                                </div>
-                            </el-col>
-                            <el-col :span="6">
-                                <div class="grid-content bg-purple title">
-                                    <p>支付方式</p>
-                                </div>
-                            </el-col>
-                            <el-col :span="6"  v-if="item.receiptType.lenght > 0">
-                                <div class="grid-content bg-purple title" >
-                                    <p>发票信息</p>
-                                </div>
-                            </el-col>
-                            <el-col :span="6">
-                                <div class="grid-content bg-purple title">
-                                    <p>备注</p>
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row :gutter="20">
-                            <el-col :span="6" v-if="item.itemList[0].productType == 91">
-                                <div class="grid-content det">
-                                    <p>收货人：{{item.deliveryPerson}}</p>
-                                    <p>电话：{{item.deliveryContact}}</p>
-                                    <p>收货地址：{{item.deliveryAddress}}</p>
-                                </div>
-                            </el-col>
-                            <el-col :span="6">
-                                <div class="grid-content det">
-                                    <p>支付方式：
-                                        <span v-if="item.payMethod==0">微信支付</span>
-                                        <span v-if="item.payMethod==1">支付宝</span>
-                                        <span v-if="item.payMethod==3">虚拟币</span>
-                                    </p>
-                                    <p>商品总计：{{item.orderTotalPrice | filterFun}}</p>
-                                    <p>运费总计：{{item.deliveryPrice}}元</p>
-                                </div>
-                            </el-col>
-                            <el-col :span="6" v-if="item.receiptType.lenght > 0">
-                                <div class="grid-content det">
-                                    <p>发票类型：
-                                        <span v-if="item.receiptType==1">个人</span>
-                                        <span v-if="item.receiptType==2">增值税发票</span>
-                                    </p>
-                                    <p>发票抬头：{{item.receiptTitle}}</p>
-                                    <p v-if="item.receiptType==1">发票内容：{{item.receiptId}}</p>
-                                </div>
-                            </el-col>
-                            <el-col :span="6">
-                                <div class="grid-content det">
-                                    <p>{{item.payRemark}}</p>
-                                </div>
-                            </el-col>
-                        </el-row>
+                    <div style="margin-bottom:20px;">
+                    <el-card class="box-card"  v-if="item.itemList[0].productType == 91 ">
+                    <div slot="header" class="clearfix">
+                    <i class="el-icon-location"></i><span>收货信息</span>
                     </div>
+                    <div  class="text item">
+                    <p>收货人：<span>{{item.deliveryPerson}}</span></p>
+                    <p>电话：<span>{{item.deliveryContact}}</span></p>
+                    <p>收货地址：<span>{{item.deliveryAddress}}</span></p>
+                    </div>
+                    </el-card>
+
+                    <el-card class="box-card" style="vertical-align: top;" v-if="item.receiptType != ''">
+                    <div slot="header" class="clearfix">
+                     <i class="el-icon-printer"></i><span>发票信息</span>
+                    </div>
+                    <div  class="text item">
+                    <p>发票类型：
+                        <span v-if="item.receiptType==1">个人</span>
+                        <span v-if="item.receiptType==2">增值税发票</span>
+                    </p>
+                    <p>发票抬头：<span>{{item.receiptTitle}}</span></p>
+                    <p v-if="item.receiptType==1">发票内容：<span>{{item.receiptId}}</span></p>
+                    </div>
+                    </el-card>
+
+                    <el-card class="box-card" style="vertical-align: top;">
+                    <div slot="header" class="clearfix">
+                    <i class="el-icon-goods"></i><span>支付详情</span>
+                    </div>
+                    <div  class="text item">
+                    <p>支付方式：
+                        <span v-if="item.payMethod==0">微信支付</span>
+                        <span v-if="item.payMethod==1">支付宝</span>
+                        <span v-if="item.payMethod==3">虚拟币</span>
+                    </p>
+                    <p>商品总计：<span>{{item.orderTotalPrice | filterFun}}</span></p>
+                    <p>运费总计：<span>{{item.deliveryPrice}}元</span></p>
+                    </div>
+                    </el-card>
+                    <el-card class="box-card" style="vertical-align: top;">
+                    <div slot="header" class="clearfix">
+                    <i class="el-icon-edit"></i><span>备注信息</span>
+
+                    </div>
+                    <div  class="text item">
+                    <p><span>{{item.payRemark}}</span></p>
+                    </div>
+                    </el-card>
+                    </div>
+
+
                     <div style="float:right;margin-right:20px;">
                         <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="item.payStatus==0 && item.status==1">订单状态：待付款</span>
                         <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="item.payStatus==1">订单状态：已完成</span>
@@ -840,4 +833,22 @@ export default {
 .el-icon-plus {
   margin-top: 7px;
 }
+  .box-card{
+    width:210px;display:inline-block;
+  }
+  .box-card p {
+    margin-bottom:10px;
+  }
+  .box-card .clearfix span {
+    margin-left:3px;
+    color :#303133;
+    font-size:16px;
+  }
+  .box-card .text p {
+    color :#303133 ;
+    font-size:14px;
+  }
+  .box-card .text p span {
+    color :#606266;
+  }
 </style>

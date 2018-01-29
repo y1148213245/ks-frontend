@@ -15,7 +15,7 @@
       <span v-text="newsDetailInfo.information_a_abstract || '暂无摘要'" :title="newsDetailInfo.information_a_abstract"></span>
     </div>
     <br/>
-    <img style="max-width: 100%;" :src="newsDetailInfo.pub_picBig">
+    <!-- <img style="max-width: 100%;" :src="newsDetailInfo.pub_picBig"> -->
     <br/>
     <p class="html-feild" v-html="newsDetailInfo.information_a_content"></p>
   </div>

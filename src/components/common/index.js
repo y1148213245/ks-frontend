@@ -17,9 +17,10 @@ _axios.defaults.headers.token = getToken();
 
 var Get = _axios.get;
 var Post = readProd || (process.env.NODE_ENV === 'production') ? _axios.post : _axios.get;
+var Delete = _axios.delete;
 
 
-export { Get, Post, DrawImage, ValidateRules, CreateCode, vv, CookieUtils ,_axios};
+export { Get, Post, Delete, DrawImage, ValidateRules, CreateCode, vv, CookieUtils ,_axios};
 
 function getToken () {
 	let session = sessionStorage;

@@ -8,7 +8,7 @@ export default {
   list_pic: {
     work_list_pic_20: {
       url: BASE_URL + "spc/cms/publish/relatedZX.do?pubId=",
-      toDetailUrl: './bookdetail.html?pubId='
+      toDetailUrl:'./newsdetail.html?pubId='
     }
   }
 }

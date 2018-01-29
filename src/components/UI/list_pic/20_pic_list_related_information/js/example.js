@@ -24,7 +24,7 @@ const prod = {
   list_pic:{
     work_list_pic_20:{
       url:'spc/cms/publish/relatedZX.do?pubId=',
-      toDetailUrl:''
+      toDetailUrl:'./newsdetail.html?pubId='
     }
   }
 };

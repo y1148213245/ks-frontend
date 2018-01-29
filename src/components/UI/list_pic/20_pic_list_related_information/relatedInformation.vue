@@ -59,7 +59,7 @@ export default {
       })
     },
     toDetail(id){
-      window.location.href = projectConfig.toDetailUrl + id;
+      window.location.href = this.projectConfig.toDetailUrl + id;
     }
   },
   filters: {

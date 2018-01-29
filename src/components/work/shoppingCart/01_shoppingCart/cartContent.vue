@@ -57,11 +57,11 @@
                     <div class="cart-item-title">
                       <div class="item-name">
                         <a
-                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId+'&columnId='+product.colId">{{product.productName}}</a>
+                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId+'&columnId='+product.colId" class="scoped_text" :title="product.productName">{{product.productName}}</a>
                       </div>
                       <div class="author">
-                        <span>作者：</span>
-                        <span v-text="product.author"></span>
+                        <span class="scoped_text">作者：</span>
+                        <span v-text="product.author" :title="product.author" class="scoped_text"></span>
                       </div>
                     </div>
                   </div>
@@ -69,7 +69,7 @@
                     <div class="item-price">
                       <span>{{product.productPrice | formatMoney}}</span>
                     </div>
-                    <select name="" v-if="product.productDiscountList.length > 0" style="width: 95%;" @change="selectActivity($event, product, item)">
+                    <select name="" v-if="product.productDiscountList.length > 0" style="max-width:350px;" @change="selectActivity($event, product, item)">
                       <option value="0">不参与任何活动</option>
                       <option v-for="(item, ind) in product.productDiscountList" v-bind="{selected: item.id === product.activityId ? 'selected' : false, value: item.id}">
                         <span>{{item.discountName}}</span>
@@ -123,11 +123,11 @@
                     <div class="cart-item-title">
                       <div class="item-name">
                         <a
-                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId">{{product.productName}}</a><span> (电子书)</span>
+                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId" class="scoped_text" :title="product.productName">{{product.productName}}</a><span class="scoped_text"> (电子书)</span>
                       </div>
                       <div class="author">
-                        <span>作者：</span>
-                        <span v-text="product.author"></span>
+                        <span class="scoped_text">作者：</span>
+                        <span v-text="product.author" :title="product.author" class="scoped_text"></span>
                       </div>
                     </div>
                   </div>
@@ -135,7 +135,7 @@
                     <div class="item-price">
                       <span>{{product.productPrice | formatMoney}}</span>
                     </div>
-                    <select name="" v-if="product.productDiscountList.length > 0" style="width: 95%;" @change="selectActivity($event, product, item)">
+                    <select name="" v-if="product.productDiscountList.length > 0" style="max-width:350px;" @change="selectActivity($event, product, item)">
                       <option value="0">不参与任何活动</option>
                       <option v-for="(item, ind) in product.productDiscountList" v-bind="{selected: item.id === product.activityId ? 'selected' : false, value: item.id}">
                         <span>{{item.discountName}}</span>
@@ -1627,6 +1627,17 @@ export default {
   }
 };
 </script>
+<style>
+.scoped_text {
+  display: inline-block;
+  max-width: 150px;
+  line-height: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+</style>
+
 <style>
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
