@@ -156,7 +156,7 @@ export default {
   margin-top: 24px;
 }
 .news-hot {
-  height: 443px;
+  height: 423px;
   overflow: hidden;
 }
 .news-hot,
