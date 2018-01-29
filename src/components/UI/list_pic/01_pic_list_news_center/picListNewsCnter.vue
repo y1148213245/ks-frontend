@@ -186,12 +186,12 @@ h3 {
   line-height: 1.5;
   margin: 0 0 8px 0;
 }
-.heading-block:after {
+/* .heading-block:after {
   content: "";
   display: block;
   margin-top: 30px;
   width: 40px;
-}
+} */
 .news-thumb a img {
   width: 310px;
 }
