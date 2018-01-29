@@ -213,7 +213,7 @@ export default {
       if (!probationUrl) {  // 没有试读地址的情况
         return false;
       }
-      var url = BASE_URL + probationUrl + '?bookId=' + bookId + '&readType=' + readType + '&bookName=' + bookName;
+      var url = READ_CONFIG.baseURL + '?bookId=' + bookId + '&readType=' + readType + '&userName=&siteType=0';
       window.open(url);
     }
   },

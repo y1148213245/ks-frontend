@@ -12,7 +12,8 @@ var SITE_CONFIG = {
 };
 
 var READ_CONFIG = {
-	baseURL: 'http://172.19.57.153:8945/spc-reader',
+  // baseURL: 'http://172.19.57.153:8945/spc-reader',
+  baseURL: 'http://172.19.57.153/portal/reader/yuezhi/read.jsp?',
 	// baseURL: 'http://172.19.57.153:80/portal/spc-reader',
   // baseURL: 'http://12.0.0.2:8944/spc-reader',//协和现场服务器
 };

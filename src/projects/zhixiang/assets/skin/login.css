@@ -2991,7 +2991,7 @@ body:not(.device-touch) #gotoTop .icon-angle-up,body:not(.device-touch) #gotoTop
 } */
 /* .news-thumb .heading-block:after {margin-left: 190px} */
 .news-thumb img{width: 180px;height: 180px;margin-right: 10px;float: left}
-.news-thumb p{margin-top: 18px;font-size: 14px;color: #404040}
+.news-thumb p{margin-top: 4px;font-size: 14px;color: #404040}
 .news-feature{margin-top: 24px}
 /* .news-feature .news-thumb{border-left: 0px} */
 .news-detail .breadcrumb{margin-top: 24px;}

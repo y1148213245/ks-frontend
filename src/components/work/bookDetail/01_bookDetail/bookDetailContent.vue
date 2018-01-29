@@ -351,15 +351,13 @@ export default {
       }
     },
     shidu: function(bookId, readType, bookName) {
-      console.log(bookId, readType, bookName);
       var url =
         READ_CONFIG.baseURL +
-        "/ebook/read.jsp?bookId=" +
+        "bookId=" +
         bookId +
         "&readType=" +
         readType +
-        "&bookName=" +
-        bookName;
+        "&userName=&siteType=0";
       window.open(url);
     },
     //收藏or点赞

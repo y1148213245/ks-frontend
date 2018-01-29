@@ -3,7 +3,7 @@
     <div class="container clearfix"  >
       <!-- 新闻列表
           ============================================= -->
-      <div class="news-feature" v-for="(news,index) in listNewsCenter">
+      <div class="news-feature" v-for="(news,index) in listNewsCenter" :key="news.id">
         <div v-if="index==0">
           <div class="news-hot">
             <a href="javascript:void(0)" @click="toNewsDetail(news.pubId)" target="_blank">
@@ -11,8 +11,8 @@
               <img onload="DrawImage(this,310,240)" :src="news.bookUrl" v-if="news.bookUrl">
             </a>
             <div class="heading-block">
-              <h3><a href="javascript:void(0)" @click="toNewsDetail(news.pubId)" target="_blank">{{news.bookName}}</a></h3>
-              <span>{{news.pubTime }}</span>
+              <h3><a href="javascript:void(0)" @click="toNewsDetail(news.pubId)" target="_blank" class="scoped_text" :title="news.bookName">{{news.bookName}}</a></h3>
+              <span class="scoped_text">{{news.pubTime }}</span>
             </div>
           </div>
         </div>
@@ -20,24 +20,24 @@
         <div v-else="index==1">
           <div class="news-thumb">
             <a href="javascript:void(0)" @click="toNewsDetail(news.pubId)" >
-              <img onload="DrawImage(this,310,240)" :src="news.bookUrl" v-if="news.bookUrl">
+              <img onload="DrawImage(this,120,99)" :src="news.bookUrl" v-if="news.bookUrl">
             </a>
             <div class="heading-block">
-              <h4><a href="javascript:void(0)" @click="toNewsDetail(news.pubId)" target="_blank">{{news.bookName}}</a></h4>
-              <span>{{news.pubTime }}</span>
-              <p>{{news.pubToPic}}</p>
+              <h4><a href="javascript:void(0)" @click="toNewsDetail(news.pubId)" target="_blank" class="scoped_text" :title="news.bookName">{{news.bookName}}</a></h4>
+              <span class="scoped_text">{{news.pubTime }}</span>
+              <p class="scoped_text" :title="news.pubToPic">{{news.pubToPic}}</p>
             </div>
           </div>
         </div>
         <div v-else>
           <div class="news-thumb notopborder">
             <a href="javascript:void(0)" @click="toNewsDetail(news.pubId)">
-              <img onload="DrawImage(this,310,240)" :src="news.bookUrl" v-if="news.bookUrl">
+              <img onload="DrawImage(this,120,99)" :src="news.bookUrl" v-if="news.bookUrl">
             </a>
             <div class="heading-block">
-              <h4><a href="javascript:void(0)" @click="toNewsDetail(news.pubId)" target="_blank">{{news.bookName}}</a></h4>
-              <span>{{news.pubTime}}</span>
-              <p>{{news.pubToPic}}</p>
+              <h4><a href="javascript:void(0)" @click="toNewsDetail(news.pubId)" target="_blank" class="scoped_text" :title="news.bookName">{{news.bookName}}</a></h4>
+              <span class="scoped_text">{{news.pubTime}}</span>
+              <p class="scoped_text" :title="news.pubToPic">{{news.pubToPic}}</p>
             </div>
           </div>
         </div>
@@ -137,7 +137,16 @@ export default {
   },
 }
 </script>
-
+<style scoped>
+.scoped_text {
+  display: block;
+  max-width: 350px;
+  line-height: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+</style>
 <style>
 * {
   -webkit-box-sizing: border-box;
@@ -195,9 +204,9 @@ h3 {
 .news-thumb a img {
   width: 310px;
 }
-.news-feature .news-thumb {
+/* .news-feature .news-thumb {
   border-left: 0px;
-}
+} */
 .news-thumb h4 {
   margin-bottom: 0px;
 }
@@ -208,7 +217,7 @@ h4 {
   line-height: 1.1;
 }
 .news-thumb p {
-  margin-top: 18px;
+  margin-top: 4px;
 }
 p {
   margin: 0 0 10px;

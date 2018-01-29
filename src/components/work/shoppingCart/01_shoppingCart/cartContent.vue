@@ -1288,6 +1288,7 @@ export default {
       this.curSelectedInvoice = data;
     },
     selectCoupon: function (item, index) {  // 选择某个可用优惠券
+      debugger
       if (this.couponProductListWrapper[item.type]) {
         this.selectedCouponsPassword = item.password;
         var couponProductList = this.couponProductListWrapper[item.type][0];

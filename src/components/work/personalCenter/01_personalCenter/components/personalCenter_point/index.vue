@@ -16,7 +16,7 @@
           <div style="display:inline-block"><span>兑换</span><span class="re30">{{ruleForm.number}}</span>虚拟币<i class="jf_duih_03"></i></div>
         </el-form-item>
         <div class="col_full nobottommargin btnbox">
-            <el-button type="primary" @click="submitForm('ruleForm')" class="button nomargin">提交</el-button>
+            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
         </div>
       </el-form>
       </div>

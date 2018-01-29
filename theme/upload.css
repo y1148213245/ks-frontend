@@ -414,7 +414,7 @@
     left: 0;
     top: 0;
     height: 100%;
-    background-color: red;
+    background-color: #e15616;
     text-align: right;
     border-radius: 100px;
     line-height: 1;
@@ -587,13 +587,13 @@
       font-size: 28px;
       color: #8c939d; }
     .el-upload--picture-card:hover {
-      border-color: red;
-      color: red; }
+      border-color: #e15616;
+      color: #e15616; }
   .el-upload:focus {
-    border-color: red;
-    color: red; }
+    border-color: #e15616;
+    color: #e15616; }
     .el-upload:focus .el-upload-dragger {
-      border-color: red; }
+      border-color: #e15616; }
 
 .el-upload-dragger {
   background-color: #fff;
@@ -623,13 +623,13 @@
     font-size: 14px;
     text-align: center; }
     .el-upload-dragger .el-upload__text em {
-      color: red;
+      color: #e15616;
       font-style: normal; }
   .el-upload-dragger:hover {
-    border-color: red; }
+    border-color: #e15616; }
   .el-upload-dragger.is-dragover {
     background-color: rgba(32, 159, 255, 0.06);
-    border: 2px dashed red; }
+    border: 2px dashed #e15616; }
 
 .el-upload-list {
   margin: 0;
@@ -680,7 +680,7 @@
       font-size: 12px;
       cursor: pointer;
       opacity: 1;
-      color: red; }
+      color: #e15616; }
     .el-upload-list__item:hover {
       background-color: #f5f7fa; }
       .el-upload-list__item:hover .el-icon-close {
@@ -690,7 +690,7 @@
     .el-upload-list__item.is-success .el-upload-list__item-status-label {
       display: block; }
     .el-upload-list__item.is-success .el-upload-list__item-name:hover, .el-upload-list__item.is-success .el-upload-list__item-name:focus {
-      color: red;
+      color: #e15616;
       cursor: pointer; }
     .el-upload-list__item.is-success:focus:not(:hover) {
       /* 键盘focus */ }
@@ -734,7 +734,7 @@
     color: #606266;
     display: none; }
     .el-upload-list__item-delete:hover {
-      color: red; }
+      color: #e15616; }
   .el-upload-list--picture-card {
     margin: 0;
     display: inline;

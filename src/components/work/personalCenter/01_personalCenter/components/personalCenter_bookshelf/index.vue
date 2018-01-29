@@ -70,12 +70,11 @@ export default {
     toRead(bookId, readType, bookName) {
       var url =
         READ_CONFIG.baseURL +
-        "/ebook/read.jsp?bookId=" +
+        "bookId=" +
         bookId +
         "&readType=" +
         readType +
-        "&bookName=" +
-        bookName;
+        "&userName=&siteType=0";
       window.open(url);
     }
   }

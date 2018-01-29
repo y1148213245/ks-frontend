@@ -367,16 +367,16 @@
       color: #cccccc;
       cursor: not-allowed; }
     .el-color-dropdown__btn:hover {
-      color: red;
-      border-color: red; }
+      color: #e15616;
+      border-color: #e15616; }
   .el-color-dropdown__link-btn {
     cursor: pointer;
-    color: red;
+    color: #e15616;
     text-decoration: none;
     padding: 15px;
     font-size: 12px; }
     .el-color-dropdown__link-btn:hover {
-      color: tint(red, 20%); }
+      color: tint(#e15616, 20%); }
 
 .el-color-picker {
   display: inline-block;
