@@ -35,3 +35,9 @@ function getToken () {
 	}
 	return token;
 }
+
+window.addEventListener('storage',function(e){
+	if (e.key == 'token') {
+		window.location.reload();
+	}
+})

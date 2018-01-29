@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2017-12-26 09:23:33
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-19 15:13:14
+ * @Last Modified time: 2018-01-29 14:42:05
  */
 
 import * as interfaces from "../common/interfaces.js";
@@ -37,7 +37,9 @@ let actions = {
 			let datas = rep.data
 			if (datas.data && (datas.data.checkStatus == "1" || datas.data.checkStatus == 1)) {
 				commit("updateMember", datas.data);
-				if (params.isAutomaticLogin) {
+				//params.isAutomaticLogin 是否自动登陆属性
+				//由于sessionStorage 多标签页不能共享，暂时使用localstorage
+				if (1) {
 					window.localStorage.setItem('token',datas.token);
 				}else{
 					sessionStorage.setItem('token',datas.token)
@@ -54,6 +56,8 @@ let actions = {
 		return keepSession(commit);
 	},
 	[interfaces.ACTION_LOGOUT]: function () {
+		window.localStorage.removeItem('token');
+		window.sessionStorage.removeItem('token');
 		return Get( BASE_URL + '/logout.do');
 	},
 	getTotalAmount({commit, state}, amount) {
