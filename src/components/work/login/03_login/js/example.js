@@ -34,7 +34,7 @@ const resourceType = ['others'];
 
 export {name, title, dev, prod, description, platform, pageType, resourceType};
 
-const style = `
+/* const style = `
 .login_03_content {
   box-shadow: 0 0 10px #e5e5e5;
   background: #fff;
@@ -89,4 +89,4 @@ input:focus.login_03_box_02_button{
   color: #c50000;
   text-decoration-line: none;
 }
-`
+` */

@@ -32,4 +32,4 @@ const resourceType = ['others'];
 
 export {name, title, dev, prod, description, platform, pageType, resourceType};
 
-const style = ''
+/* const style = '' */

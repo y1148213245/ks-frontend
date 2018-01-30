@@ -25,5 +25,5 @@ const prod = {
 	}
 };
 
-export {name, title, dev, prod, description,style};
+export {name, title, dev, prod, description};
 

@@ -69,13 +69,14 @@
            </div>
          </div>
          <div class="contentCon">
-             <div class="review" v-if="showItem == 'review'">
+             <div class="review" v-if="showItem == 'review' && !noData">
                <iframe :src="reviewContext"></iframe>
              </div>
-             <div class="codemirror" v-if="showItem == 'coding'">
+             <div class="codemirror" v-if="showItem == 'coding' && !noData">
                <!-- codemirror-->
                <codemirror v-model="code"></codemirror>
              </div>
+             <div v-if="noData" style="padding: 20px;">暂无内容</div>
           </div>
        </div>
 
@@ -83,11 +84,25 @@
        <div class="rightList">
          <div class="rightListTop listArea">
            <div class="title">已用组件列表</div>
-           <div class="conponentsCon"></div>
+           <div class="conponentsCon">
+             <ul class="usedComUl">
+               <li v-if="JSON.stringify(usedComponents) !== '{}'" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'">
+                 <span v-text="com.title + '（' + com.name + '）'"></span>
+               </li>
+               <li v-if="JSON.stringify(usedComponents) === '{}'">暂无已用组件</li>
+             </ul>
+           </div>
          </div>
          <div class="rightListBottom listArea">
            <div class="title">未采用组件列表</div>
-           <div class="conponentsCon"></div>
+           <div class="conponentsCon">
+             <ul class="usedComUl">
+               <li v-if="JSON.stringify(unusedComponents) !== '{}'" v-for="(com, vkey, index) in unusedComponents" :key="index" :title="com.title + '（' + com.name + '）'">
+                 <span v-text="com.title + '（' + com.name + '）'"></span>
+               </li>
+               <li v-if="JSON.stringify(unusedComponents) === '{}'">暂无未用组件</li>
+             </ul>
+           </div>
          </div>
        </div>
      </div>
@@ -96,6 +111,7 @@
  </template>
  
  <script>
+import ScanExamples from "@common/scans/ScanExamples";
 import { Get, Post, Delete } from "@common";
 
 export default {
@@ -103,6 +119,7 @@ export default {
   reused: true,
   data () {
     return {
+      examples: {},   // 组件对象
       code: '',  // 源码
       clientHeight: 0, // 容器高度
       listArray: [{    // 列表对象：页面列表、样式列表、图片列表 
@@ -131,16 +148,21 @@ export default {
       }, {
         name: '发布',
         type: 'public'
-      }, {
+      }/* , {
         name: '删除',
         type: 'delete'
-      }],
+      } */],
       configUrl: 'http://172.19.36.31:8085/spc/api/files',  // 请求url
       reviewContext: '',  // iframe里面的内容 呈现源码
+      noData: true,
+      usedComponents: {},
+      unusedComponents: {},
     };
   },
 
   mounted () {
+    this.examples = ScanExamples();
+    this.unusedComponents = ScanExamples();
     this.clientHeight = document.documentElement.clientHeight - 80;
     this.queryLists(); // 页面一加载 查询列表
   },
@@ -156,16 +178,35 @@ export default {
       this.activeFile = file;
       this.showItem = item ? item : this.showItem;
       this.toggleOperation(this.showItem);
+      this.usedComponents = {};
     },
-    toggleOperation (item) { // 切换中间区域的操作: 预览、编程、替换、发布、删除
+    toggleOperation (item) { // 切换中间区域的操作: 预览、编程、替换、发布
       this.showItem = item;
-      if (this.showItem === 'review') {  // 预览
+      this.noData = this.activeFile ? false : true;  // 中间预览区要兼容没有数据的情况
+      if (!this.noData) {  // 有数据才执行
         this.reviewContext = this.configUrl + '?fileName=' + this.activeFile;
-      } else if (this.showItem === 'coding') { // 编程 图片没有编程操作
         Get(this.configUrl + '/edit?fileName=' + this.activeFile).then((res) => {
           var datas = res.data;
           if (datas.success && datas.content) {
             this.code = datas.content;
+            /* 扫描已用组件标签 先用正则匹配 再用字符串方法筛出标签名 */
+            let bodyContent = datas.content.indexOf('<body') !== -1 ? datas.content.substring(datas.content.indexOf('<body'), datas.content.indexOf('</body>')) : '';
+            var uiComponent = bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) ? bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) : [];
+            var uiComArray = [];  // ui组件列表
+            for (var i = 0; i < uiComponent.length; i++) {
+              uiComArray.push(uiComponent[i].substring(uiComponent[i].indexOf('</'), uiComponent[i].length).replace('</', '').replace('>', ''));
+            }
+            var workComponent = bodyContent.match(/<work_.*?>(.*?)<\/work_.*?>/g) ? bodyContent.match(/<work_.*?>(.*?)<\/work_.*?>/g) : [];
+            var workComArray = []; // work组件列表
+            for (var j = 0; j < workComponent.length; j++) {
+              workComArray.push(workComponent[j].substring(workComponent[j].indexOf('</'), workComponent[j].length).replace('</', '').replace('>', ''));
+            }
+            let exampleArray = uiComArray.concat(workComArray);  // 将两个数组拼成一个
+            for (var k = 0; k < exampleArray.length; k++) {
+              this.usedComponents[exampleArray[k]] = this.examples[exampleArray[k]];
+              delete this.unusedComponents[exampleArray[k]]
+            }
+            this.$forceUpdate();
           }
         })
       }
@@ -176,8 +217,19 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        Delete(this.configUrl + '?fileName=' + this.activeFile).then((res) => {  // TODO 有跨域错误
-          console.log(res);
+        Delete(this.configUrl + '?fileName=' + this.activeFile).then((res) => {
+          if (res.data.success) {
+            this.queryLists();
+            this.$message({
+              type: "success",
+              message: "文件删除成功"
+            });
+          } else {
+            this.$message({
+              type: "info",
+              message: "文件删除失败"
+            });
+          }
         })
       });
     },
@@ -419,7 +471,7 @@ body {
 }
 
 .components_pagemanagement .mainFooter .rightList .listArea {
-  height: calc(50% - 40px);
+  height: 50%;
 }
 
 .components_pagemanagement .mainFooter .contentCon {
@@ -490,5 +542,24 @@ body {
 
 .components_pagemanagement .listCon .listWrapper .listConUl .listName {
   margin-left: 26px;
+}
+
+.components_pagemanagement .conponentsCon {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.components_pagemanagement .usedComUl {
+  margin: 0px;
+  padding: 10px;
+}
+
+.components_pagemanagement .usedComUl li {
+  font-size: 14px;
+  list-style-type: none;
+  padding: 6px 0px;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  white-space: nowrap;
 }
 </style>

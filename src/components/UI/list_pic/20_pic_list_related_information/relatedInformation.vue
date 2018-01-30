@@ -8,7 +8,7 @@
         <div class="news-thumb" v-for="relateNew in relateNews" v-if="relateNews" :key="relateNew.id">
           <a @click="toDetail(relateNew.id)"><img onload="DrawImage(this,210,100)" :src="relateNew.picSmall"></a>
           <div class="heading-block">
-            <h5><a @click="toDetail(relateNew.id)">{{relateNew.resourceName || ''}}</a></h5>
+            <h5><a @click="toDetail(relateNew.id)" class="scoped_text" :title="relateNew.resourceName">{{relateNew.resourceName || ''}}</a></h5>
             <span v-if="relateNew.pubTime">{{relateNew.pubTime.time | formatDate}}</span>
           </div>
         </div>
@@ -97,6 +97,14 @@ export default {
 }
 
 </script>
-<style>
-
+<style scoped>
+.scoped_text {
+  display: inline-block;
+  max-width: 135px;
+  line-height: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
 </style>

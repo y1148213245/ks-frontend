@@ -1027,7 +1027,7 @@ export default {
     },
     moveFavorite: function (product) { // 移入收藏
       var _this = this;
-      if (product.isCollect === "0") { // 已收藏的话就直接移除就行
+      if (product.isCollect === "1") { // 已收藏的话就直接移除就行
         var param = {
           ids: product.id,
           cb: function () {
