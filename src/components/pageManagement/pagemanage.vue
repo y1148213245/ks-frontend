@@ -32,7 +32,19 @@
                       <span>上传</span>
                     </el-upload>
                   </span>
-                  <span class="operation"><i class="el-icon-upload"></i><span>导入</span></span>
+                  <span class="operation">
+                    <el-upload
+                      class="upload-demo"
+                      :action="importUrl()"
+                      name="file"
+                      :show-file-list="false"
+                      :on-progress="importProgress"
+                      :on-success="importSuccess"
+                      :before-upload="beforeImport">
+                      <i class="el-icon-upload"></i>
+                      <span>导入</span>
+                    </el-upload>
+                  </span>
                   <span class="operation" @click="downloadFile()"><i class="el-icon-download"></i><span>导出</span></span>
                   <span class="operation" @click="deleteFile()"><i class="el-icon-delete"></i><span>删除</span></span>
                 </div>
@@ -55,8 +67,20 @@
 
        <!-- 中间预览区 -->
        <div class="mainContent">
-         <div class="reviewArea">
-          <span>左侧列表预览区</span>
+         <div class="reviewArea" v-if="debugModel">
+          <div class="reviewAreaDiv">
+            <el-upload
+              class="upload-demo"
+              :action="importResource()"
+              name="file"
+              :show-file-list="false"
+              :on-progress="importProgress"
+              :on-success="importResourceSuccess"
+              :before-upload="beforeImport">
+              <i class="el-icon-upload"></i>
+              <span>导入资源</span>
+            </el-upload>
+          </div>
          </div>
          <div class="handle">
            <div class="handleLeft">
@@ -65,7 +89,8 @@
            </div>
            <div class="handleRight">
              <el-button class="saveBtn" size="mini" round @click="saveCode()" v-if="showItem === 'coding'">保存</el-button>
-             <el-radio label="1">切换视图</el-radio>
+             <!-- <el-radio label="1" @click="toggleView()" >切换视图</el-radio> -->
+             <span @click="toggleView()" style="cursor: pointer;"><input type="radio" value="切换视图">切换视图</span>
            </div>
          </div>
          <div class="contentCon">
@@ -113,6 +138,7 @@
  <script>
 import ScanExamples from "@common/scans/ScanExamples";
 import { Get, Post, Delete } from "@common";
+import URL from "url";
 
 export default {
   name: "components_pagemanagement",
@@ -152,15 +178,18 @@ export default {
         name: '删除',
         type: 'delete'
       } */],
-      configUrl: 'http://172.19.36.31:8085/spc/api/files',  // 请求url
+      configUrl: 'http://172.19.36.31:8085/spc/api/',  // 请求url
       reviewContext: '',  // iframe里面的内容 呈现源码
       noData: true,
       usedComponents: {},
       unusedComponents: {},
+      debugModel: false, // debug模式 暗号 790118
     };
   },
 
   mounted () {
+    let query = URL.parse(document.URL, true).query;
+    this.debugModel = query && query.debug && query.debug == '790118' ? true : false;  // 暗号对上 进入debug模式
     this.examples = ScanExamples();
     this.unusedComponents = ScanExamples();
     this.clientHeight = document.documentElement.clientHeight - 80;
@@ -184,8 +213,8 @@ export default {
       this.showItem = item;
       this.noData = this.activeFile ? false : true;  // 中间预览区要兼容没有数据的情况
       if (!this.noData) {  // 有数据才执行
-        this.reviewContext = this.configUrl + '?fileName=' + this.activeFile;
-        Get(this.configUrl + '/edit?fileName=' + this.activeFile).then((res) => {
+        this.reviewContext = this.configUrl + 'files?fileName=' + this.activeFile;
+        Get(this.configUrl + 'files/edit?fileName=' + this.activeFile).then((res) => {
           var datas = res.data;
           if (datas.success && datas.content) {
             this.code = datas.content;
@@ -217,7 +246,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        Delete(this.configUrl + '?fileName=' + this.activeFile).then((res) => {
+        Delete(this.configUrl + 'files?fileName=' + this.activeFile).then((res) => {
           if (res.data.success) {
             this.queryLists();
             this.$message({
@@ -238,7 +267,7 @@ export default {
         fileName: this.activeFile,
         fileContent: this.code,
       };
-      Post(this.configUrl + '/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent)).then((res) => {
+      Post(this.configUrl + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent)).then((res) => {
         if (res.data.success) {
           this.$message({
             type: "success",
@@ -252,9 +281,12 @@ export default {
         }
       })
     },
+    toggleView () { // 切换视图
+      window.open(this.reviewContext, '_blank');
+    },
     upLoadUrl () {  // 上传地址
       return (
-        this.configUrl
+        this.configUrl + 'files'
       );
     },
     beforeUpload (file) {  // 上传前要校验格式
@@ -286,6 +318,13 @@ export default {
         spinner: "el-icon-loading",
       });
     },
+    upLoadingFailed () {  // 上传失败
+      this.loading.close();
+      this.$message({
+        type: "info",
+        message: "文件导入失败，请重试"
+      });
+    },
     upLoadingSuccess (res, file) { // 上传成功回调
       this.loading.close();
       if (res.success) {
@@ -301,16 +340,58 @@ export default {
         });
       }
     },
+    importUrl () {   // 导入地址
+      return (
+        this.configUrl + 'project/import'
+      );
+    },
+    importProgress () {  // 导入过程
+      this.loading = this.$loading({
+        lock: true,
+        text: "正在导入...",
+        spinner: "el-icon-loading",
+      });
+    },
+    importSuccess (res, file) { // 导入成功
+      this.loading.close();
+      if (res.success) {
+        this.queryLists();
+        this.$message({
+          type: "success",
+          message: "文件导入成功"
+        });
+      } else {
+        this.$message({
+          type: "info",
+          message: "文件导入失败，请重试"
+        });
+      }
+    },
+    /* importFailed (err) {  // 导入失败
+      this.loading.close();
+      this.$message({
+        type: "info",
+        message: "文件导入失败，请重试"
+      });
+    }, */
+    beforeImport (file) {  // 导入前要校验格式
+      let typeMatch = false;
+      let errorMsg = '请上传zip格式的压缩文件';  // 只支持zip格式的压缩文件
+      typeMatch = file.type === 'application/x-zip-compressed' ? true : false;
+      if (!typeMatch) {
+        this.$message.error(errorMsg);
+      }
+      return typeMatch;
+    },
     downloadFile () {  // 导出
-      let url = 'http://172.19.36.31:8085/spc/api/project/export';
-      Get(url).then(function (res) {
+      Get(this.configUrl + 'project/export').then((res) => {
         if (res.status === 200) {
-          window.location.href = url;
+          window.location.href = this.configUrl + 'project/export';
         }
       })
     },
     queryLists () {  // 查询左侧列表
-      Get(this.configUrl + '/list?type=' + this.activeType).then(res => {
+      Get(this.configUrl + 'files/list?type=' + this.activeType).then(res => {
         let datas = res.data;
         if (datas && datas.list) {
           this.activeLists = datas.list;
@@ -318,7 +399,26 @@ export default {
           this.toRightModule(this.activeFile, this.showItem);
         }
       })
-    }
+    },
+    importResource() {  // 开发者模式 导入资源
+      return (
+        this.configUrl + 'project/import/assets'
+      )
+    },
+    importResourceSuccess (res, file) { // 导入资源成功
+      this.loading.close();
+      if (res.success) {
+        this.$message({
+          type: "success",
+          message: "资源导入成功"
+        });
+      } else {
+        this.$message({
+          type: "info",
+          message: "资源导入失败，请重试"
+        });
+      }
+    },
   }
 }
 
@@ -424,16 +524,19 @@ body {
   height: 39px;
   border-bottom: 1px solid #e4e7ed;
   background-color: #f6f7f9;
+  line-height: 39px;
 }
 
-.components_pagemanagement .mainContent .reviewArea span {
+.components_pagemanagement .mainContent .reviewArea .reviewAreaDiv {
   display: inline-block;
-  padding: 5px 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
   margin-left: 20px;
-  margin-top: 3px;
-  background-color: #fff;
+  height: 30px;
+  line-height: 30px;
+  width: 100px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  color: #7f7f7f;
 }
 
 .components_pagemanagement .mainContent .handle {
@@ -512,9 +615,20 @@ body {
   padding-left: 20px;
 }
 
+.components_pagemanagement .mainFooter .listNav .el-tabs__content {
+  height: 100%;
+}
+.components_pagemanagement .mainFooter .listNav .el-tab-pane {
+  height: 100%;
+}
+
+.components_pagemanagement .listCon {
+  height: 100%;
+  overflow-y: scroll;
+}
+
 .components_pagemanagement .listCon .listWrapper .listConUl {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0px 20px 40px 20px;
 }
 
 .components_pagemanagement .listCon .listWrapper .listConUl .onFileName {

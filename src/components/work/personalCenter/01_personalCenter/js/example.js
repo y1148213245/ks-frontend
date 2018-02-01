@@ -15,7 +15,7 @@ const dev = {};
 const prod = {};
 
 const platform = 'PC';
-const pageType = ['others'];
-const resourceType = ['center'];
+const pageType = ['center'];
+const resourceType = ['others'];
 
 export {name, title, dev, prod, description, platform, pageType, resourceType};

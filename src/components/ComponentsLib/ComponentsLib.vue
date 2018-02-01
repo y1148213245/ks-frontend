@@ -1,9 +1,5 @@
 <template>
 	<div class="common_components_lib">
-		<!-- example 请参考 src/components/UI/list_pic/02_pic_list_download/js/example.js -->
-		<!-- <img src="./screenshots/ui_list_pic_02.jpg" style="max-width: 200px; max-height: 200px;"/> -->
-		<!-- <hr> -->
-		<!-- {{this.examples}} -->
 		<div class="titleHead">
 			<div class="searchContent">
 				<el-input class="searchCom" v-model="searchText" placeholder="搜索组件"></el-input>
@@ -11,11 +7,14 @@
 			</div>
 			<div class="checkBtn">
 				<div class="title">资源类别</div>
-				<el-checkbox-group v-model="checkedResourceType">
-					<div class="checkboxCon" style="display: inline-block; margin-right: 12px;" v-for="(resource, index) in resourceTypeObj" :key="index">
-						<el-checkbox :label="resource.type" @change="filterDatas()">{{resource.name}}</el-checkbox>
+				<el-radio-group v-model="checkedResourceType">
+					<div class="checkboxCon" style="display: inline-block; margin-right: 12px; margin-top: 5px;">
+						<el-radio label="unlimited" @change="filterDatas()">不限</el-radio>
 					</div>
-				</el-checkbox-group>
+					<div class="checkboxCon" style="display: inline-block; margin-right: 12px; margin-top: 5px;" v-for="(resource, index) in resourceTypeObj" :key="index">
+						<el-radio :label="resource.type" @change="filterDatas()">{{resource.name}}</el-radio>
+					</div>
+				</el-radio-group>
 			</div>
 			<div class="checkBtn">
 				<div class="title">页面类别</div>
@@ -67,8 +66,8 @@ export default {
 			searchText: "",            // 搜索内容
 			resourceTypeObj: [],       // 所有资源类别
 			pageTypeObj: [],           // 所有页面类别
-			checkedResourceType: [],   // 已选资源类别
-			checkedPageType: [],       // 已选页面类别
+			checkedResourceType: 'unlimited',   // 已选资源类别 单选 字符串 默认选中不限选项
+			checkedPageType: [],       // 已选页面类别 多选 数组
 			searchExamples: {},        // 搜索
 		}
 	},
@@ -108,36 +107,31 @@ export default {
 			this.imgUrl = hasImg ? require('./screenshots/' + com.name + '.jpg') : '';
 		},
 		filterDatas () {
-			// this.examples  页面左侧渲染的数组列表 会被改变
+			// this.examples  页面左侧渲染的数组列表 随着筛选条件不同会被改变
 			// this.tempExamples     最初的数组列表 不变
 			let datas = this.tempExamples	// 组件对象
 			let loadedDatas = {};
-			let resourceTypeArr = this.checkedResourceType;  // 当前选中资源 
+			let resourceTypeArr = this.checkedResourceType;  // 当前选中资源 字符串
 			let pageTypeArr = this.checkedPageType;          // 当前选中页面
 
-			if (resourceTypeArr.length > 0 || pageTypeArr.length > 0 || this.searchText !== '') {
+			if (resourceTypeArr || pageTypeArr.length > 0 || this.searchText !== '') {
 				this.examples = []; //有筛选条件了，清空显示数组
 
 				for (let key in datas) {
 					let component = datas[key];
-					let isResultArr = [false, false, false]; // 两个维度： 资源类别 和 页面类别
-					let isHave = false;
+					let isResultArr = [false, false, false]; // 三个维度： 资源类别、页面类别、组件名
+					let isHave = false;  // 是否全部符合
 
 					//筛选组件
-					if (component.resourceType) { //判断是否有选中的资源类别
+					if (component.resourceType) { //判断是否有选中的资源类别 兼容组件有资源类别属性
 
-						if (resourceTypeArr.length == 0) {
+						if (!resourceTypeArr  || resourceTypeArr === 'unlimited') {
 							isResultArr[0] = true;
 						} else {
-							for (let index = 0, len = resourceTypeArr.length; index < len; index++) {
-								const type = resourceTypeArr[index]; //当前选中的每个类别（字符串）
-
-								if (component.resourceType.indexOf(type) === -1) { // 判断是否为不存在
-									isResultArr[0] = false;
-									break
-								} else {
-									isResultArr[0] = true;
-								}
+							if (component.resourceType.indexOf(resourceTypeArr) === -1) { // 判断是否为不存在
+								isResultArr[0] = false;
+							} else {
+								isResultArr[0] = true;
 							}
 						}
 					}
@@ -149,7 +143,6 @@ export default {
 						} else {
 							for (let index = 0, len = pageTypeArr.length; index < len; index++) {
 								const type = pageTypeArr[index]; //当前选中的每个类别（字符串）
-
 								if (component.pageType.indexOf(type) === -1) {//判断是否为不存在
 									isResultArr[1] = false;
 									break
@@ -166,9 +159,9 @@ export default {
 
 					//几次的筛选结果
 					for (let index = 0, len = isResultArr.length; index < len; index++) {
-						if (isResultArr[index]) {
+						if (isResultArr[index]) { // 三个维度全都符合
 							isHave = true
-						} else {
+						} else {    // 有一个维度不符合就跳出整个循环
 							isHave = false;
 							break;
 						}
