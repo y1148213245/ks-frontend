@@ -23,7 +23,7 @@
     <div class="list_pic_15-paging">
       <ui_pagination :pageMessage='{totalCount:totalCount} || null' :excuteFunction='pageCallBack' :pageSizes="pageSizes"></ui_pagination>
     </div>
-    <!--翻页--> 
+    <!--翻页-->
   </div>
 </template>
 
@@ -59,10 +59,11 @@ export default {
 
   created () {
     this.initConfig();
-    this.loadDatas();
+    // this.loadCols();
   },
 
   mounted () {
+    this.loadCols();
   },
 
   methods: {
@@ -76,24 +77,27 @@ export default {
     pageCallBack ({ pageNo, pageSize }) {
       this.pageNo = pageNo;
       this.pageSize = pageSize;
-      this.loadDatas();
+      this.loadCols();
     },
-    loadDatas () {
-      let configParams = this.projectConfig.param
-      let param = {
-        conditions: configParams.conditions,
-        groupBy: configParams.groupBy,
-        orderBy: configParams.orderBy,
-        pageNo: this.pageNo,
-        pageSize: this.pageSize,
-        searchText: ''
-      }
-      Post(this.projectConfig.url, param).then((req) => {
-        let data = req.data.result;
-        this.totalCount = req.data.totalCount;
-        if (data && data instanceof Array && data.length >= 0) {
-          this.list = data;
+    loadCols() {
+      let url=this.projectConfig.url+'?colId='+this.projectConfig.param.colId;
+      Post(url).then((rep)=>{
+        this.cols = rep.data.data;
+        if (this.cols && this.cols instanceof Array && this.cols.length > 0) {
+          this.loadList();
         }
+      })
+    },
+    loadList() {
+      let values = this.cols[0].id;
+      for (let i = 1, len = this.cols.length; i < len; i++) {
+        values += ' OR ' + this.cols[i].id;
+      }
+      this.conditions = "[{pub_col_id:" + values + ",op:'in'}]";
+      let param=Object.assign({},this.projectConfig.resultParam,{conditions: this.conditions});
+      Post(this.projectConfig.resultUrl,param).then((rep)=>{
+        this.list = rep.data.result;
+        this.totalCount = rep.data.totalCount;
       })
     },
     toDetail (id) {
@@ -205,4 +209,4 @@ export default {
   line-height: 32px;
   width: 210px;
 }
-</style> 
+</style>

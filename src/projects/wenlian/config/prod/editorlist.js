@@ -1,6 +1,6 @@
 /*
- * @Author: yan.chaoming 
- * @Date: 2018-01-08 17:25:11 
+ * @Author: yan.chaoming
+ * @Date: 2018-01-08 17:25:11
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-01-08 18:05:29
  */
@@ -8,14 +8,17 @@ export default {
   name: 'editorlist',
   list_pic: {
     ui_list_pic_15: {
-      url: BASE_URL + 'spc/cms/publish/list.do',
+      url: BASE_URL + 'spc/cms/col/getColNextLevelNode',
       param: {
-        conditions: "[{pub_col_id:'117'},{pub_status:'1'}]",
-        groupBy: 'pub_resource_id',
-        orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
+        colId:'118'
+      },
+      resultUrl:`${BASE_URL}spc/cms/publish/list.do`,
+      resultParam:{
         pageNo: '1',
         pageSize: '10',
-        searchText: ''
+        orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
+        searchText: '',
+        groupBy: 'pub_resource_id'
       },
       toDetailHref: './detail.html?pubId=',
       pageSizes: [10, 20, 50, 100],
