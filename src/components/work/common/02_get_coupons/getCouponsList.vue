@@ -24,7 +24,7 @@
                 <span style="font-size:40px;">{{list.couponPrice | formatDiscount}}</span>
                 <span class="f20">折</span>
                 <div>折扣率</div>
-              </div>
+              </div>         
             </div>
             <div class="lq_01_xq fl f14 color_2a2">
               <p class="couponRange">仅限：
@@ -43,6 +43,7 @@
             </div>
           </div>
         </div>
+        <a href="javascript:void(0)" @click="hideModel()" class="lq_close2 color_fff">关闭</a>
       </div>
     </div>
     <div id="lq_fade" class="lq_black_overlay"></div>
@@ -51,31 +52,31 @@
 
 <script type="text/ecmascript-6">
 import { Get } from "@common";
-import { mapGetters, mapActions, mapState } from 'vuex';
+import { mapGetters, mapActions, mapState } from "vuex";
 import URL from "url";
 import * as interfaces from "@work/login/common/interfaces.js";
 import * as type from "@work/bookDetail/common/interfaces.js";
 import PROJECT_CONFIG from "projectConfig";
 
 export default {
-  name: 'work_common_02',
+  name: "work_common_02",
   reused: true,
-  props: ['namespace'],
-  created: function () {
-    var param = URL.parse(window.location.href, true).query
+  props: ["namespace"],
+  created: function() {
+    var param = URL.parse(window.location.href, true).query;
     this.pubId = param.pubId;
-    this.getMemberInfo().then((member) => {
+    this.getMemberInfo().then(member => {
       this.loadCallBack();
     });
   },
-  mounted: function () {
+  mounted: function() {
     this.CONFIG = PROJECT_CONFIG[this.namespace].common.get_coupons_02;
   },
-  data () {
+  data() {
     return {
-      pubId: '',
-      CONFIG: {},
-    }
+      pubId: "",
+      CONFIG: {}
+    };
   },
   computed: {
     ...mapGetters("login", {
@@ -83,49 +84,51 @@ export default {
       member: interfaces.GET_MEMBER
     }),
     ...mapGetters({
-      bookDetailCoupons: 'bookDetail/bookDetailInfo',    // 获取商品详情页优惠券信息
+      bookDetailCoupons: "bookDetail/bookDetailInfo" // 获取商品详情页优惠券信息
     })
   },
   methods: {
     ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
-    hideModel () {
-      this.$emit('hideModel');  // 子组件向父组件通信
+    hideModel() {
+      this.$emit("hideModel"); // 子组件向父组件通信
     },
-    loadCallBack () {
+    loadCallBack() {
       let loginName = this.member.loginName;
       var params = {
         loginName: loginName,
-        pubId: this.pubId,
+        pubId: this.pubId
       };
-      this.$store.dispatch('bookDetail/' + type.BOOK_DETAIL, params);
+      this.$store.dispatch("bookDetail/" + type.BOOK_DETAIL, params);
     },
-    receiveCoupon (list) {  // 领取优惠券
-      if (list.pickNum === 0 || list.isPick === '1') {  // 已领完 或者 已领过 那就不能再执行领券操作
+    receiveCoupon(list) {
+      // 领取优惠券
+      if (list.pickNum === 0 || list.isPick === "1") {
+        // 已领完 或者 已领过 那就不能再执行领券操作
         return false;
       }
       let param = Object.assign({}, this.CONFIG.params);
       param.couponId = list.id;
       param.loginName = this.member.loginName;
       Get(this.CONFIG.url, { params: param }).then(rep => {
-        let couponStatus = rep.data.result === '1' ? rep.data.data : false;
-        if (couponStatus.code === 'success') {
+        let couponStatus = rep.data.result === "1" ? rep.data.data : false;
+        if (couponStatus.code === "success") {
           this.$message({
-            message: '优惠券' + couponStatus.msg + '~',
-            type: 'success'
+            message: "优惠券" + couponStatus.msg + "~",
+            type: "success"
           });
           this.loadCallBack();
-        } else if (couponStatus.code === 'fail') {
+        } else if (couponStatus.code === "fail") {
           this.$message({
-            message: '优惠券' + couponStatus.msg + '~',
-            type: 'error'
+            message: "优惠券" + couponStatus.msg + "~",
+            type: "error"
           });
           this.loadCallBack();
         } else {
           this.$message({
-            message: '优惠券领取失败~',
-            type: 'error'
+            message: "优惠券领取失败~",
+            type: "error"
           });
         }
       });
@@ -133,22 +136,21 @@ export default {
   },
   watch: {},
   filters: {
-    formatTime: function (value) {
+    formatTime: function(value) {
       if (value) {
-        return value.substring(0, value.indexOf(' ')).replace(/-/g, '.');
+        return value.substring(0, value.indexOf(" ")).replace(/-/g, ".");
       }
     },
-    formatDiscount: function (value) {
+    formatDiscount: function(value) {
       return value * 10;
     },
-    formatName: function (value) {
+    formatName: function(value) {
       if (value) {
-        return value.replace(/,/g, '，');
+        return value.replace(/,/g, "，");
       }
     }
   }
-}
-
+};
 </script>
 <style scoped>
 .couponRange {
@@ -200,7 +202,10 @@ export default {
   top: -20px;
   font-size: 12px;
 }
-
+.lq_close2 {
+  float: right;
+  margin: 5px;
+}
 #getCoupon .lq_black_overlay {
   position: fixed;
   top: 0%;

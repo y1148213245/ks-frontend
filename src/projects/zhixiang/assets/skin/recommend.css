@@ -107,7 +107,12 @@ a {
 }
 .product-author {
   font-size: 12px;
-  color: #7F7F7F;
+	color:  #7F7F7F;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	margin: 0 auto;
+  width: 200px;
 }
 
 .product-price {
@@ -189,11 +194,6 @@ h1,h2,h3,h4,h5,h6 {
 
 img {
   max-width: 100%;
-}
-
-.product-author {
-  font-size: 12px;
-  color: #7F7F7F;
 }
 
 .product-price {

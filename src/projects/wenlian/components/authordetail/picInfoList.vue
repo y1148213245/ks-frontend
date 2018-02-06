@@ -16,7 +16,8 @@
 </template>
 
 <script>
-  import{Post} from "@common";
+  import{Get} from "@common";
+  import URL from "url";
   import PROJECT_CONFIG from "projectConfig";
   export default {
     name: "components_authordetail_picinfolist",
@@ -39,22 +40,31 @@
       getSwiperInfo:function(topic){
         let CONFIG=PROJECT_CONFIG.authordetail.components.common;
         let params=Object.assign({},CONFIG.swiperParams);
-
-        let author=JSON.parse(params.conditions).filter(function(item){
-          return item.hasOwnProperty("BOOK_SYS_AUTHORS");
-        });
-        let authorOther=JSON.parse(params.conditions).filter(function(item){
-          return !item.hasOwnProperty("BOOK_SYS_AUTHORS");
-        });
-        author[0].BOOK_SYS_AUTHORS=topic;
-        let authorArr=JSON.stringify(author.concat(authorOther));
-        params.conditions=authorArr;
-        Post(CONFIG.swiperUrl,params).then((rep)=>{
+        let pubId=URL.parse(document.URL,true).query.pubId;
+        params.pubId=pubId;
+        Get(CONFIG.swiperUrl,{"params":params}).then((rep)=>{
           let data=rep.data.result;
           if(data && data instanceof Array){
             this.swiperList=data;
           }
         })
+        // let params=Object.assign({},CONFIG.swiperParams);
+        //
+        // let author=JSON.parse(params.conditions).filter(function(item){
+        //   return item.hasOwnProperty("BOOK_SYS_AUTHORS");
+        // });
+        // let authorOther=JSON.parse(params.conditions).filter(function(item){
+        //   return !item.hasOwnProperty("BOOK_SYS_AUTHORS");
+        // });
+        // author[0].BOOK_SYS_AUTHORS=topic;
+        // let authorArr=JSON.stringify(author.concat(authorOther));
+        // params.conditions=authorArr;
+        // Post(CONFIG.swiperUrl,params).then((rep)=>{
+        //   let data=rep.data.result;
+        //   if(data && data instanceof Array){
+        //     this.swiperList=data;
+        //   }
+        // })
       },
       toBookDetail(pubId){
         let CONFIG=PROJECT_CONFIG[this.namespace].toDetailAddress;

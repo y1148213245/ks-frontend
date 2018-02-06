@@ -20,43 +20,67 @@
             <span @click="selectInvoiceDetail('耗材')" :class="{invoice: curInvoice.receiptId == '耗材'}">耗材</span>
           </div>
           <div class="taxInvoice invoiceCon" v-if="curInvoice.invoiceType == '增值税发票'">
-            <div>
-              <span class="invoiceInfo"><span style="color: red;">* </span>单位名称：</span>
-              <input id="receiptTitle" type="text" v-model="curInvoice.receiptTitle" @blur="checkReceiptTitle()">
-              <span class="warningInfo" v-if="receiptTitle">请填写单位名称</span>
+            <el-form :model="invoiceConForm" :rules="rules" ref="invoiceConForm" label-width="120px" class="demo-ruleForm">
+              <el-form-item label="单位名称" prop="receiptTitle">
+                <el-input v-model="invoiceConForm.receiptTitle" id="receiptTitle"></el-input>
+              </el-form-item>
+              <el-form-item label="纳税人识别码" prop="taxpayerCode">
+                <el-input v-model="invoiceConForm.taxpayerCode" id="taxpayerCode"></el-input>
+              </el-form-item>
+              <el-form-item label="注册地址" prop="companyAddress">
+                <el-input v-model="invoiceConForm.companyAddress" id="companyAddress"></el-input>
+              </el-form-item>
+              <el-form-item label="注册电话" prop="companyPhone">
+                <el-input v-model="invoiceConForm.companyPhone" id="companyPhone"></el-input>
+              </el-form-item>
+              <el-form-item label="开户银行" prop="bankName">
+                <el-input v-model="invoiceConForm.bankName" id="bankName"></el-input>
+              </el-form-item>
+              <el-form-item label="银行账户" prop="bankAccount">
+                <el-input v-model="invoiceConForm.bankAccount" id="bankAccount"></el-input>
+              </el-form-item>
+              <div class="invoiceConSureDiv">
+                <el-button type="primary" @click="confirmAddInvoice('invoiceConForm')" id="invoiceConSure">确 定</el-button>
+              </div>
+
+              <!--<div>-->
+                <!--<span class="invoiceInfo"><span style="color: red;">* </span>单位名称：</span>-->
+                <!--<input id="receiptTitle" type="text" v-model="curInvoice.receiptTitle" @blur="checkReceiptTitle()">-->
+                <!--<span class="warningInfo" v-if="receiptTitle">请填写单位名称</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<span class="invoiceInfo"><span style="color: red;">* </span>纳税人识别码：</span>-->
+                <!--<input id="taxpayerCode" type="text" v-model="curInvoice.taxpayerCode" @blur="checkTaxpayerCode()"-->
+                       <!--@keypress="checkTaxPayer($event)" maxlength="20">-->
+                <!--<span class="warningInfo" v-if="taxpayerCode">请填写纳税人识别号</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<span class="invoiceInfo"><span style="color: red;">* </span>注册地址：</span>-->
+                <!--<input id="companyAddress" type="text" v-model="curInvoice.companyAddress" @blur="checkCompanyAddress()">-->
+                <!--<span class="warningInfo" v-if="companyAddress">请填写注册地址</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<span class="invoiceInfo"><span style="color: red;">* </span>注册电话：</span>-->
+                <!--<input id="companyPhone" type="number" v-model="curInvoice.companyPhone" @blur="checkCompanyPhone()"-->
+                       <!--@keypress="checkNumberTypes($event)">-->
+                <!--<span class="warningInfo" v-if="companyPhone">请填写注册电话</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<span class="invoiceInfo"><span style="color: red;">* </span>开户银行：</span>-->
+                <!--<input id="bankName" type="text" v-model="curInvoice.bankName" @blur="checkBankName()">-->
+                <!--<span class="warningInfo" v-if="bankName">请填写开户银行</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<span class="invoiceInfo"><span style="color: red;">* </span>银行账户：</span>-->
+                <!--<input id="bankAccount" type="number" v-model="curInvoice.bankAccount" @blur="checkBankAccount()"-->
+                       <!--@keypress="checkAccountType($event)" maxlength="21">-->
+                <!--<span class="warningInfo" v-if="bankAccount">请填写银行账户</span>-->
+              <!--</div>-->
+              <!--<div slot="footer" class="dialog-footer">-->
+                <!--<el-button type="primary" @click="confirmAddInvoice()">确 定</el-button>-->
+              <!--</div>-->
+            </el-form>
             </div>
-            <div>
-              <span class="invoiceInfo"><span style="color: red;">* </span>纳税人识别码：</span>
-              <input id="taxpayerCode" type="text" v-model="curInvoice.taxpayerCode" @blur="checkTaxpayerCode()"
-                     @keypress="checkTaxPayer($event)" maxlength="20">
-              <span class="warningInfo" v-if="taxpayerCode">请填写纳税人识别号</span>
-            </div>
-            <div>
-              <span class="invoiceInfo"><span style="color: red;">* </span>注册地址：</span>
-              <input id="companyAddress" type="text" v-model="curInvoice.companyAddress" @blur="checkCompanyAddress()">
-              <span class="warningInfo" v-if="companyAddress">请填写注册地址</span>
-            </div>
-            <div>
-              <span class="invoiceInfo"><span style="color: red;">* </span>注册电话：</span>
-              <input id="companyPhone" type="number" v-model="curInvoice.companyPhone" @blur="checkCompanyPhone()"
-                     @keypress="checkNumberTypes($event)">
-              <span class="warningInfo" v-if="companyPhone">请填写注册电话</span>
-            </div>
-            <div>
-              <span class="invoiceInfo"><span style="color: red;">* </span>开户银行：</span>
-              <input id="bankName" type="text" v-model="curInvoice.bankName" @blur="checkBankName()">
-              <span class="warningInfo" v-if="bankName">请填写开户银行</span>
-            </div>
-            <div>
-              <span class="invoiceInfo"><span style="color: red;">* </span>银行账户：</span>
-              <input id="bankAccount" type="number" v-model="curInvoice.bankAccount" @blur="checkBankAccount()"
-                     @keypress="checkAccountType($event)" maxlength="21">
-              <span class="warningInfo" v-if="bankAccount">请填写银行账户</span>
-            </div>
-          </div>
-          <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="confirmAddInvoice()">确 定</el-button>
-          </div>
         </el-dialog>
         <!-- END 选择发票类型弹框 -->
         <div class="orderContents">
@@ -83,6 +107,36 @@ export default {
     props: ["namespace"],
     data () {
         return {
+          invoiceConForm:{
+            receiptTitle:'',
+            taxpayerCode:'',
+            companyAddress:'',
+            companyPhone:'',
+            bankName:'',
+            bankAccount:''
+          },
+          rules: {
+            receiptTitle: [
+              { required: true, message: '请填写单位名称', trigger: 'blur' },
+            ],
+            taxpayerCode: [
+              { required: true, message: '请填写纳税人识别号', trigger: 'blur' },
+              { max: 20, message: '纳税人识别号不能超过20个字符', trigger: 'blur' }
+            ],
+            companyAddress: [
+              { required: true, message: '请填写注册地址', trigger: 'blur' }
+            ],
+            companyPhone: [
+              { required: true,message:'请填写注册电话' ,  trigger: 'blur' }
+            ],
+            bankName: [
+              { required: true, message: '请填写开户银行', trigger: 'blur' },
+              { max: 21, message: '开户银行不能超过21个字符', trigger: 'blur' }
+            ],
+            bankAccount: [
+              { required: true,message:'请填写银行账户' ,  trigger: 'blur' }
+            ]
+          },
             invoiceDialog: false,   // 选择发票类型弹框 默认关闭
             receiptTitle: false,    // 单位名称提示信息 为空时才显示
             taxpayerCode: false,    // 纳税人识别号提示信息 为空时才显示
@@ -164,49 +218,59 @@ export default {
         selectInvoiceDetail: function(item) {   // 普通发票的发票内容 有四种：明细 办公用品 电脑配件 耗材
             this.curInvoice.receiptId = item;
         },
-        checkReceiptTitle: function() {     // 单位名称失去焦点校验
-            this.receiptTitle = $("#receiptTitle").val() === "" ? true : false;
-        },
-        checkTaxpayerCode: function() {    // 纳税人识别号失去焦点校验
-            this.taxpayerCode = $("#taxpayerCode").val() === "" ? true : false;
-        },
-        checkCompanyAddress: function() {  // 注册地址失去焦点校验
-            this.companyAddress = $("#companyAddress").val() === "" ? true : false;
-        },
-        checkCompanyPhone: function() {    // 注册电话失去焦点校验
-            this.companyPhone = $("#companyPhone").val() === "" ? true : false;
-        },
-        checkBankName: function() {        // 开户银行名称失去焦点校验
-            this.bankName = $("#bankName").val() === "" ? true : false;
-        },
-        checkBankAccount: function() {    // 开户账号失去焦点校验
-            this.bankAccount = $("#bankAccount").val() === "" ? true : false;
-        },
-        confirmAddInvoice: function() {
-            if ($("#receiptTitle").val() === "") {
-                this.receiptTitle = true;
-                return false;
-            } else if ($("#taxpayerCode").val() === "") {
-                this.taxpayerCode = true;
-                return false;
-            } else if ($("#companyAddress").val() === "") {
-                this.companyAddress = true;
-                return false;
-            } else if ($("#companyPhone").val() === "") {
-                this.companyPhone = true;
-                return false;
-            } else if ($("#bankName").val() === "") {
-                this.bankName = true;
-                return false;
-            } else if ($("#bankAccount").val() === "") {
-                this.bankAccount = true;
-                return false;
+        // checkReceiptTitle: function() {     // 单位名称失去焦点校验
+        //     this.receiptTitle = $("#receiptTitle").val() === "" ? true : false;
+        // },
+        // checkTaxpayerCode: function() {    // 纳税人识别号失去焦点校验
+        //     this.taxpayerCode = $("#taxpayerCode").val() === "" ? true : false;
+        // },
+        // checkCompanyAddress: function() {  // 注册地址失去焦点校验
+        //     this.companyAddress = $("#companyAddress").val() === "" ? true : false;
+        // },
+        // checkCompanyPhone: function() {    // 注册电话失去焦点校验
+        //     this.companyPhone = $("#companyPhone").val() === "" ? true : false;
+        // },
+        // checkBankName: function() {        // 开户银行名称失去焦点校验
+        //     this.bankName = $("#bankName").val() === "" ? true : false;
+        // },
+        // checkBankAccount: function() {    // 开户账号失去焦点校验
+        //     this.bankAccount = $("#bankAccount").val() === "" ? true : false;
+        // },
+        confirmAddInvoice: function(formName) {
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              this.invoiceDialog = false;
+              this.tempInvoice = JSON.parse(JSON.stringify(this.curInvoice));
+              this.tempInvoice.receiptType = this.curInvoice.invoiceType === "普通发票" ? 1 : 2;
+              this.$emit('invoiceInfo', this.tempInvoice);
             } else {
-                this.invoiceDialog = false;
-                this.tempInvoice = JSON.parse(JSON.stringify(this.curInvoice));
-                this.tempInvoice.receiptType = this.curInvoice.invoiceType === "普通发票" ? 1 : 2;
-                this.$emit('invoiceInfo', this.tempInvoice);
+              return false;
             }
+          });
+            // if ($("#receiptTitle").val() === "") {
+            //     this.receiptTitle = true;
+            //     return false;
+            // } else if ($("#taxpayerCode").val() === "") {
+            //     this.taxpayerCode = true;
+            //     return false;
+            // } else if ($("#companyAddress").val() === "") {
+            //     this.companyAddress = true;
+            //     return false;
+            // } else if ($("#companyPhone").val() === "") {
+            //     this.companyPhone = true;
+            //     return false;
+            // } else if ($("#bankName").val() === "") {
+            //     this.bankName = true;
+            //     return false;
+            // } else if ($("#bankAccount").val() === "") {
+            //     this.bankAccount = true;
+            //     return false;
+            // } else {
+            //     this.invoiceDialog = false;
+            //     this.tempInvoice = JSON.parse(JSON.stringify(this.curInvoice));
+            //     this.tempInvoice.receiptType = this.curInvoice.invoiceType === "普通发票" ? 1 : 2;
+            //     this.$emit('invoiceInfo', this.tempInvoice);
+            // }
         },
     }
 }
@@ -220,7 +284,7 @@ export default {
 }
 
 .work_shoppingcart_01_invoice .invoiceWrapper .el-dialog {
-  height: 400px;
+  height: auto;
 }
 
 .work_shoppingcart_01_invoice .invoiceWrapper .el-dialog__footer {
@@ -286,5 +350,18 @@ export default {
 .work_shoppingcart_01_invoice  .orderContents span {
   margin-right: 20px;
 }
-
+label.el-form-item__label{
+  line-height: 35px;
+}
+  div.el-form-item{
+    margin-bottom: 0;
+  }
+  .invoiceConSureDiv{
+    padding-right: 20px;
+    text-align: right;
+  }
+.el-form-item__error{
+  left: 60%;
+  top: 10px;
+}
 </style>

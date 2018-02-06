@@ -294,7 +294,8 @@
           <div class="infoHead">备注信息</div>
           <div class="orderContent">
             <span>填写备注信息</span>
-            <el-input placeholder="请输入备注信息" id="payremark" :maxlength="50"></el-input>
+            <el-input placeholder="请输入备注信息" id="payremark" :maxlength="50" @blur="checkPayremark()" v-model="payremark" ref="payremark"></el-input>
+            <p>您还可以输入<span>{{50-payremark.length}}</span>个字</p>
           </div>
         </div>
 
@@ -361,6 +362,7 @@
                    @keypress="checkVirtual($event)">
             <span>虚拟币</span>
           </div>
+          <div class="coinremark">1虚拟币=0.1元</div>
           <div class="orderDetail" :class="{hideTrans:allEbook === true && needInvoice === '0'}">
             <div class="disc">优惠：- {{orderDetail.bookSaveMoney + orderDetail.ebookSaveMoney | formatMoney}}</div>
             <div class="vir">虚拟币：- {{rmbCoin | formatMoney}}</div>
@@ -471,6 +473,7 @@ export default {
       selectedInvoice: 1,
       coupons: "",
       payWay: 0,
+      payremark:"",
       payMethod: "0",       // 支付方式 0 微信支付 1 支付宝支付
       selectedDelivery: {},
       selectedOrderList: [],
@@ -586,6 +589,14 @@ export default {
     ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
+    //验证备注信息
+    checkPayremark:function(){
+      if(this.$refs.payremark.$refs.input._value.length > 50){
+        this.$alert("备注不能超过50个字符 ", "系统提示", {
+          confirmButtonText: "确定"
+        });
+      }
+    },
     /************ 商品列表页 即结算页面 ************/
     selectActivity (event, product, item) { // 更换活动
       product.checked = false;
@@ -1375,7 +1386,8 @@ export default {
         });
         return false;
       }
-      var payremark = $("#payremark").find("input").val();  // 订单备注信息
+      // var payremark = $("#payremark").find("input").val();
+      // 订单备注信息
       var curRealAmount = Number($(".payTotalAmount")[0].innerHTML.replace("¥ ", "")); // 应付金额
       if (this.needInvoice === "0") {
         this.curSelectedInvoice = {
@@ -1409,7 +1421,7 @@ export default {
           payAmount: this.allEbook === true && this.needInvoice === "0" ? this.orderDetail.totalMoney + this.orderDetail.saveAmount : this.orderDetail.totalMoney + this.orderDetail.saveAmount + this.selectedDelivery.deliveryPrice, // 应付金额 = 商品总价 + 运费
           payCode: "",
           payMethod: this.payMethod, // 支付方式： 0 微信支付 1 支付宝支付
-          payRemark: payremark, // 订单备注
+          payRemark: this.payremark, // 订单备注
           payStatus: "",
           payTime: null,
           payType: 1, // 0线下支付  1在线支付
@@ -1542,6 +1554,11 @@ export default {
               // 全是电子书并且不需要发票
               payAmount = _this.orderDetail.bookTotalMoney + _this.orderDetail.ebookTotalMoney - _this.orderDetail.bookSaveMoney - _this.orderDetail.ebookSaveMoney;
             }
+            if (this.rmbCoin < 0){
+              _this.$alert("虚拟币优惠数额须大于0噢~", "系统提示", {
+                confirmButtonText: "确定"
+              });
+            }
             if (this.rmbCoin > payAmount) {
               _this.$alert("虚拟币优惠数额不得大于实付金额噢~", "系统提示", {
                 confirmButtonText: "确定"
@@ -1640,6 +1657,12 @@ export default {
 </style>
 
 <style>
+  #orderWrapper .orderFooter div.coinremark{
+    height: 16px;
+    line-height: 16px;
+    font-size: 12px;
+    color: red;
+  }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -2043,7 +2066,14 @@ input[type="number"] {
 #orderWrapper .payremark .el-input {
   width: 300px;
 }
-
+#orderWrapper .payremark p {
+  display: inline-block;
+  margin-left:10px;
+  font-size:12px;
+}
+#orderWrapper .payremark p span{
+  color:red;
+}
 #orderWrapper .discount .el-input input {
   height: 30px;
   line-height: 30px;
@@ -2177,4 +2207,10 @@ input[type="number"] {
   color: #ffffff;
   text-decoration: none;
 }
+  .disabledCoupons{
+    pointer-events: none;
+  }
+  .myCoupons{
+    pointer-events: visible;
+  }
 </style>

@@ -38,34 +38,57 @@
     <!--END 选择收货地址模态弹框-->
     <!--新增收货地址弹框-->
     <el-dialog title="新增收货地址" :visible.sync="addAddressDialog" class="newAddAddress" :close-on-press-escape="false" :close-on-click-modal="false" @close="newAddAddressClose">
-      <div class="newWrapper">
-        <div>收货人：</div>
-        <input id="s_contactor" type="text" maxlength="40" @blur="checkContactor()">
-        <span class="warningInfo" v-if="emptyContactor">请填写收货人</span>
-      </div>
-      <div class="newWrapper">
-        <div>收货地区：</div>
-        <div class="selectPCC">
-          <select id="s_province" name="s_province"></select>
-          <select id="s_city" name="s_city"></select>
-          <select id="s_county" name="s_county"></select>
-        </div>
-        <span class="warningInfo" v-if="emptyPCC">请完整的省市信息</span>
-      </div>
-      <div class="newWrapper">
-        <div>详细地址：</div>
-        <input id="s_address" type="text" @blur="checkDetail()">
-        <span class="warningInfo" v-if="emptyDetail">请填写详细地址</span>
-      </div>
-      <div class="newWrapper">
-        <div>联系电话：</div>
-        <input id="s_phone" type="number" @blur="checkPhone()" @keypress="checkNumberType($event)" maxlength="11">
-        <span class="warningInfo" v-if="emptyPhone">请填写联系电话</span>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="confirmNewAdd(false)">取 消</el-button>
-        <el-button type="primary" @click="confirmNewAdd(true)" id="testUseAddressLocation">确 定</el-button>
-      </div>
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" :label-position="labelPosition">
+        <el-form-item label="收货人" prop="name">
+          <el-input v-model="ruleForm.name" id="s_contactor"></el-input>
+        </el-form-item>
+        <el-form-item label="收货地区" prop="area">
+          <div class="selectPCC">
+            <select id="s_province" name="s_province"></select>
+            <select id="s_city" name="s_city"></select>
+            <select id="s_county" name="s_county"></select>
+          </div>
+        </el-form-item>
+        <el-form-item label="详细地址" prop="address">
+          <el-input v-model="ruleForm.address" id="s_address"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="phone">
+          <el-input v-model="ruleForm.phone" id="s_phone"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="confirmNewAdd(false)">取 消</el-button>
+          <el-button type="primary" @click="confirmNewAdd(true)" id="testUseAddressLocation">确 定</el-button>
+        </el-form-item>
+      </el-form>
+
+      <!--<div class="newWrapper">-->
+        <!--<div>收货人：</div>-->
+        <!--<input id="s_contactor" type="text" maxlength="40" @blur="checkContactor()">-->
+        <!--<span class="warningInfo" v-if="emptyContactor">请填写收货人</span>-->
+      <!--</div>-->
+      <!--<div class="newWrapper">-->
+        <!--<div>收货地区：</div>-->
+        <!--<div class="selectPCC">-->
+          <!--<select id="s_province" name="s_province"></select>-->
+          <!--<select id="s_city" name="s_city"></select>-->
+          <!--<select id="s_county" name="s_county"></select>-->
+        <!--</div>-->
+        <!--<span class="warningInfo" v-if="emptyPCC">请完整的省市信息</span>-->
+      <!--</div>-->
+      <!--<div class="newWrapper">-->
+        <!--<div>详细地址：</div>-->
+        <!--<input id="s_address" type="text" @blur="checkDetail()">-->
+        <!--<span class="warningInfo" v-if="emptyDetail">请填写详细地址</span>-->
+      <!--</div>-->
+      <!--<div class="newWrapper">-->
+        <!--<div>联系电话：</div>-->
+        <!--<input id="s_phone" type="number" @blur="checkPhone()" @keypress="checkNumberType($event)" maxlength="11">-->
+        <!--<span class="warningInfo" v-if="emptyPhone">请填写联系电话</span>-->
+      <!--</div>-->
+      <!--<div slot="footer" class="dialog-footer">-->
+        <!--<el-button @click="confirmNewAdd(false)">取 消</el-button>-->
+        <!--<el-button type="primary" @click="confirmNewAdd(true)" id="testUseAddressLocation">确 定</el-button>-->
+      <!--</div>-->
     </el-dialog>
     <!--END 新增收货地址弹框-->
   </div>
@@ -86,9 +109,45 @@ export default {
     });
   },
   data () {
+    let checkNum=(rule,value,callback)=>{
+      // 联系号码格式校验 只能是数字 并且不能超过11位 ??? input type="number" 踩坑
+      // String.fromCharCode(event.keyCode)
+      if(!value){
+        return callback(new Error("请填写联系电话"));
+      }
+      if (!value.match(/^[0-9]*$/)) {
+          // 控制只能输入数字
+          return callback(new Error("电话不符合格式 - 请输入数字"));
+      }
+      if (value.length > 10) {
+        return callback(new Error("电话不符合格式 - 长度过长"));
+      }
+    };
     return {
       member: {
         loginName: ''
+      },
+      labelPosition:"top",
+      ruleForm: {
+        name: '',
+        area:'',
+        address:'',
+        phone:''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请填写收货人', trigger: 'blur' },
+          { max: 40, message: '收货人不能超过40个字符', trigger: 'blur' }
+        ],
+        area: [
+          { required: true, message: '请完整的省市信息', trigger: 'change' }
+        ],
+        address: [
+          { required: true, message: '请填写详细地址', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true,validator: checkNum ,  trigger: 'blur' }
+          ]
       },
       selectedAddress: 0, // 模态弹框选中地址  默认选中第一个
       addressDialog: false, // 地址选择模态弹框  默认关闭
@@ -248,29 +307,29 @@ export default {
       $("#s_address").val("");
       $("#s_phone").val("");
     },
-    checkContactor: function () {
-      // 联系人失去焦点校验
-      this.emptyContactor = $("#s_contactor").val() === "" ? true : false;
-    },
-    checkDetail: function () {
-      // 详细地址失去焦点校验
-      this.emptyDetail = $("#s_address").val() === "" ? true : false;
-    },
-    checkPhone: function () {
-      // 联系方式失去焦点校验
-      this.emptyPhone = $("#s_phone").val() === "" ? true : false;
-    },
+    // checkContactor: function () {
+    //   // 联系人失去焦点校验
+    //   this.emptyContactor = $("#s_contactor").val() === "" ? true : false;
+    // },
+    // checkDetail: function () {
+    //   // 详细地址失去焦点校验
+    //   this.emptyDetail = $("#s_address").val() === "" ? true : false;
+    // },
+    // checkPhone: function () {
+    //   // 联系方式失去焦点校验
+    //   this.emptyPhone = $("#s_phone").val() === "" ? true : false;
+    // },
     // 后续改成输入完之后再校验 不实时校验
-    checkNumberType: function (event) {
-      // 联系号码格式校验 只能是数字 并且不能超过11位 ??? input type="number" 踩坑
-      if (!String.fromCharCode(event.keyCode).match(/\d/)) {
-        // 控制只能输入数字
-        event.preventDefault();
-      }
-      if ($("#s_phone").val().length > 10) {
-        event.preventDefault();
-      }
-    }
+    // checkNumberType: function (event) {
+    //   // 联系号码格式校验 只能是数字 并且不能超过11位 ??? input type="number" 踩坑
+    //   if (!String.fromCharCode(event.keyCode).match(/\d/)) {
+    //     // 控制只能输入数字
+    //     event.preventDefault();
+    //   }
+    //   if ($("#s_phone").val().length > 10) {
+    //     event.preventDefault();
+    //   }
+    // }
   },
   watch: {
     // 监控当前选中的地址 要将地址信息传给父组件
@@ -282,6 +341,28 @@ export default {
 };
 </script>
 <style>
+  .el-form-item:last-child{
+    text-align: center;
+  }
+  .el-input__inner{
+    height: 32px;
+    line-height: 32px;
+  }
+  .el-form--label-top .el-form-item__label{
+    padding: 0;
+  }
+  .el-form-item__label{
+    line-height: 20px;
+  }
+  .el-form-item__label{
+  font-weight: unset;
+  }
+  .selectPCC select{
+    height: 32px;
+    line-height: 32px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+  }
 .work_shoppingcart_01_address .address a {
   color: #20a0ff;
 }

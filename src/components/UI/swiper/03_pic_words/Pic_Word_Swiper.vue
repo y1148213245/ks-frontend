@@ -135,7 +135,12 @@
 
   .product-author {
     font-size: 12px;
-    color: #7F7F7F;
+    color:  #7F7F7F;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    margin: 0 auto;
+    width: 200px;
   }
 
   .testi-content p {

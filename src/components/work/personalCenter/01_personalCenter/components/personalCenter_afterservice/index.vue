@@ -1,6 +1,5 @@
 <template>
 <div>
-
     <el-col :span="19">
     <el-table
     :data="returnGoodsList"
@@ -8,46 +7,50 @@
     style="width: 100%"
     >
      <el-table-column
+      align="center"
       prop="id"
       label="退换货编号"
-      width="130">
+      width="100">
     </el-table-column>
     <el-table-column
+      align="center"
       prop="orderCode"
       label="订单编号"
-      width="240">
+      width="220">
     </el-table-column>
     <el-table-column
-      prop="pubId"
+      align="center"
+      prop="productName"
       label="商品名称"
-      width="240">
+      width="100">
     </el-table-column>
     <el-table-column
+      align="center"
       prop="createTime"
       label="日期"
       sortable
-      width="180">
+      width="150">
     </el-table-column>
     <el-table-column
+      align="center"
       prop="num"
       label="数量"
-      width="70">
+      width="60"
+      >
     </el-table-column>
     <el-table-column
-      prop="tag"
+      align="center"
+      prop="type"
       label="全部状态"
       width="100"
-      :filters="[{ text: '家', value: '1' }, { text: '公司', value: '2' }]"
+      :formatter="dateFormat"
+      :filters="[{ text: '未完成', value: 1 }, { text: '待支付', value: 2 }]"
       :filter-method="filterTag"
-      filter-placement="bottom-end">
-      <template slot-scope="scope">
-        <el-tag
-          :type="scope.row.tag === '1' ? 'primary' : 'success'"
-          close-transition>{{scope.row.tag}}</el-tag>
-      </template>
+      filter-placement="bottom-end"
+      >
     </el-table-column>
-		<el-table-column label="操作">
-      <template slot-scope="scope">
+		<el-table-column label="操作" width="140" align="center">
+      <template slot-scope="scope" v-if="">
         <el-button
           size="small"
           @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -70,7 +73,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-// import * as type from 'projectConfig';
 
 export default {
   name: "afterservice",
@@ -87,41 +89,17 @@ export default {
     })
   },
   data() {
-    return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-          tag: "1"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-          tag: "2"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-          tag: "1"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-          tag: "2"
-        }
-      ]
-    };
+    return {};
   },
   methods: {
     loadedCallBack() {
       this.$store.dispatch("personalCenter/getReturnGoodsList", {});
     },
     filterTag(value, row) {
-      return row.tag === value;
+      return row.type === value;
+    },
+    dateFormat(row, column,cellValue) {
+      return cellValue == 1 ? '未完成' : cellValue == 0 ? '待支付' : '已完成';
     }
   }
 };

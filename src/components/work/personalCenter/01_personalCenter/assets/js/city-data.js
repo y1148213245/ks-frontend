@@ -3595,18 +3595,68 @@ CityInfo=[
             {value: 2861, label: '青河县'},
             {value: 2862, label: '吉木乃县'}
         ]},
-        {value: 339, label: '石河子市', children: []},
-        {value: 340, label: '阿拉尔市', children: []},
-        {value: 341, label: '图木舒克市', children: []},
-        {value: 342, label: '五家渠市', children: []}
+        {value: 339, label: '石河子市', children: [
+            {value: 2863, label: '新城街道'},
+            {value: 2864, label: '向阳街道'},
+            {value: 2865, label: '红山街道'},
+            {value: 2866, label: '老街街道'},
+            {value: 2867, label: '东城街道'},
+            {value: 2868, label: '北泉镇'},
+            {value: 2869, label: '石河子镇'}
+        ]},
+        {value: 340, label: '阿拉尔市', children: [
+            {value: 2870, label: '幸福路街道'},
+            {value: 2871, label: '金银川路街道'},
+            {value: 2872, label: '青松路街道'},
+            {value: 2873, label: '南口街道'},
+            {value: 2874, label: '托喀依乡'},
+            {value: 2875, label: '金银川镇'},
+            {value: 2876, label: '沙河镇'},
+            {value: 2877, label: '双城镇'}
+        ]},
+        {value: 341, label: '图木舒克市', children: [
+            {value: 2878, label: '齐干却勒街道'},
+            {value: 2879, label: '前海街道'},
+            {value: 2880, label: '永安坝街道'},
+            {value: 2881, label: '草湖镇'}
+        ]},
+        {value: 342, label: '五家渠市', children: [
+            {value: 2882, label: '军垦路街道'},
+            {value: 2883, label: '青湖路街道'},
+            {value: 2884, label: '梧桐镇'},
+            {value: 2885, label: '蔡家湖镇'}
+        ]}
     ]},
     {value: 32, label: '香港', children: [
-        {value: 343, label: '香港', children: []}
+        {value: 343, label: '香港', children: [
+            {value: 2886, label: '香港岛'},
+            {value: 2887, label: '九龙半岛'},
+            {value: 2888, label: '新界'}
+        ]}
     ]},
     {value: 33, label: '澳门', children: [
-        {value: 344, label: '澳门', children: []}
+        {value: 344, label: '澳门', children: [
+            {value: 2889, label: '花地玛堂区'},
+            {value: 2890, label: '圣安多尼堂区'},
+            {value: 2891, label: '大堂区'},
+            {value: 2892, label: '望德堂区'},
+            {value: 2893, label: '风顺堂区'},
+            {value: 2894, label: '嘉模堂区'},
+            {value: 2895, label: '圣方济各堂区'},
+            {value: 2896, label: '路氹城'}
+        ]}
     ]},
     {value: 34, label: '台湾', children: [
-        {value: 345, label: '台湾', children: []}
+        {value: 345, label: '台湾', children: [
+            {value: 2897, label: '台北市'},
+            {value: 2898, label: '新北市'},
+            {value: 2899, label: '桃园市'},
+            {value: 2900, label: '台中市'},
+            {value: 2901, label: '台南市'},
+            {value: 2902, label: '高雄市'},
+            {value: 2903, label: '基隆市'},
+            {value: 2904, label: '新竹市'},
+            {value: 2905, label: '嘉义市'}
+        ]}
     ]}
    ]
