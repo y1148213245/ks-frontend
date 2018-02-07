@@ -1,21 +1,22 @@
 <!-- 作者列表 -->
 <template>
-  <div>
-     <el-row>
-  <el-col :span="17" v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0">
-    <el-card :body-style="{ padding: '0px' }">
-      <!-- < img src="./examples/assets/images/hamburger.png" class="image"> -->
-      <div style="padding: 14px;">
+<div class="ui_pic_list_21 ui_pic_list_21_main">
+  <el-row>
+    <el-col :span="12" v-for="(o, index) in 4" :key="o">
+      <el-card :body-style="{ padding: '0px' }">
+      <img src="./img/pic1.jpg"  class="image">
+      <div style="padding: 10px;">
         <span class="ac_title">首届“防震减灾”公益作文大赛</span>
         <div class="clearfix">
           <div class="ac_text"><span>活动时间：</span><time class="time">{{ currentDate }}</time></div>
           <el-button type="text" class="button">进行中</el-button>
         </div>
       </div>
-    </el-card>
-  </el-col>
-</el-row>
-  </div>
+      </el-card>
+    </el-col>
+  </el-row>
+  <ui_pagination  :page-sizes="[8,16,32,64]" ></ui_pagination>
+</div>
 </template>
 
 <script>
@@ -37,6 +38,14 @@ export default {
 };
 </script>
 <style>
+.ui_pic_list_21_main {
+  width: 916px;
+  height: 228px;
+  margin: 0 auto;
+}
+.ui_pic_list_21_main .el-card {
+  margin: 0 20px 20px 0;
+}
 .time {
   font-size: 13px;
   color: #999;
@@ -60,7 +69,8 @@ export default {
   text-align: right;
 }
 .image {
-  width: 100%;
+  width: 459px;
+  height: 178px;
   display: block;
 }
 
@@ -80,7 +90,7 @@ export default {
   font-size: 18px;
 }
 .ac_text {
-    display: inline-block;
+  display: inline-block;
   font-family: "Arial Normal", "Arial";
   font-weight: 400;
   line-height: 40px;

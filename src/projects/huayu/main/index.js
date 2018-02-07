@@ -16,6 +16,8 @@ import store from "./store.js";
 
 import VueBus from "vue-bus";  // 通过 cnpm install vue-bus安装
 
+import qrcode from 'qrcode.vue';
+
 Vue.use(VueOccupy);
 Vue.use(ElementUI);
 Vue.use(VueBus);   // 在一个模块化工程中使用，必须通过Vue.use()使用vue-bus

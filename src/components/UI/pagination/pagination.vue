@@ -7,7 +7,7 @@
       :current-page.sync="currentPage"
       :page-sizes="pageSizes"
       :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
+      :layout="layout"
       :total="totalCount">
     </el-pagination>
   </div>
@@ -42,6 +42,12 @@ export default {
       type: Array,
       default () {
         return [15, 20, 50, 100];
+      }
+    },
+    layout:{
+      type:String,
+      default (){
+        return 'total, sizes, prev, pager, next, jumper'
       }
     }
   },

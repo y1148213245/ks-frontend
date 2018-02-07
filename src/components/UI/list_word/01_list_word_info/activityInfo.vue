@@ -2,28 +2,29 @@
  * @Author: song 
  * @Date: 2018-02-01 17:31:41 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-05 15:36:29
+ * @Last Modified time: 2018-02-06 16:35:20
  */
 <!-- 活动资讯 -->
 <template>
   <div class="ui_list_word_01">
     <div>
       <div class="activitytitle">活动资讯</div>
-      <div class="more">更多</div>
+      <div class="more" @click="moreInfo()">更多</div>
     </div>
     
     <div class="activityCon">
       <ul>
-        <li v-for="(item, index) in activitysList" :key="index" v-if="index < maxNum" :title="item.title">
-          <span v-text="item.title"></span>
+        <li v-for="(item, index) in activitysList" :key="index" v-if="activitysList.length > 0 && index < maxNum" :title="item.information_SYS_TOPIC">
+          <span v-text="item.information_SYS_TOPIC"></span>
         </li>
+        <li v-if="activitysList.length === 0">暂无数据</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import { Get } from "@common";
+import { Get, Post } from "@common";
 import PROJECT_CONFIG from "projectConfig";
 
 export default {
@@ -47,9 +48,15 @@ export default {
   methods: {
     queryActivityInfo () {
       // 活动列表查询
-      Get(this.CONFIG.url, { params: this.CONFIG.params }).then(rep => {
-        this.activitysList = rep.data.data;
+      Post(this.CONFIG.url, this.CONFIG.params).then(rep => {
+        var data = rep.data.result;
+        if (data && data instanceof Array && data.length > 0) {
+          this.activitysList = data;
+        }
       });
+    },
+    moreInfo() {
+      window.location.href = "../pages/informationlist.html";
     }
   }
 }
