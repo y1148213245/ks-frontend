@@ -9,12 +9,12 @@
         </el-steps>
         <div style="margin-top:  1.25em; height: 10em;"v-if="show">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
-                <el-form-item label="邮 箱:" prop="email">
-                    <el-input type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱" style="display:inline-block;width:12em;"></el-input>
+                <el-form-item label="邮 箱:" prop="email" style="margin-left:3em">
+                    <el-input type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱" style="display:inline-block;width:15em;"></el-input>
                 </el-form-item>
-                <el-form-item label="验证码:" prop="captcha">
+                <el-form-item label="验证码:" prop="captcha"  style="margin-left:3em">
                     <div class="captcha">
-                        <el-input type="text" v-model="ruleForm.captcha" auto-complete="off" id="input" style="width:5em;"></el-input>
+                        <el-input type="text" v-model="ruleForm.captcha" auto-complete="off" id="input" placeholder="请输入验证码" style="width:10em;"></el-input>
                         <input type="button" id="code" @click="refresh"/>
                     </div>
                 </el-form-item>
@@ -23,10 +23,10 @@
                 </div>
             </el-form>
         </div>
-        <div style="margin-top:  1.25em; height:  10em;" v-if="show1">
+        <div style="margin-top: 1.25em; height:  10em;" v-if="show1">
             <el-form :model="ruleForm1" :rules="rules" ref="ruleForm1" >
-                <el-form-item label="邮箱验证码" prop="emailnum" v-show="butt">
-                    <el-input type="text" v-model="ruleForm1.emailnum" auto-complete="off" placeholder="请输入邮箱验证码" style="display:inline-block;width:12.5em;"></el-input>
+                <el-form-item label="邮箱验证码：" prop="emailnum" v-show="butt" style="margin-left:3em">
+                    <el-input type="text" v-model="ruleForm1.emailnum" auto-complete="off" placeholder="请输入邮箱验证码" style="display:inline-block;width:12em;"></el-input>
                 </el-form-item>
                 
                 <div class="col_full nobottommargin btnbox">
@@ -37,10 +37,10 @@
         </div>
         <div style="margin-top:  1.25em; height:  10em;" v-if="show2">
             <el-form :model="ruleForm2" :rules="rules" ref="ruleForm2" >
-                <el-form-item label="请输入新密码" prop="pass">
+                <el-form-item label="请输入新密码：" prop="pass" style="margin-left:3em">
                     <el-input type="password" v-model="ruleForm2.pass" auto-complete="off" placeholder="请输入新密码" style="display:inline-block;width:12.5em;"></el-input>
                 </el-form-item>
-                <el-form-item label="请确认新密码" prop="checkPass">
+                <el-form-item label="请确认新密码：" prop="checkPass" style="margin-left:3em">
                     <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="请确认新密码" style="display:inline-block;width:12.5em;"></el-input>
                 </el-form-item>
                 <div class="col_full nobottommargin btnbox">
@@ -341,7 +341,7 @@ export default {
 }
 
 .mobile_box #code {
-  width: 50px;
+  width: 3.5rem;
   font-family: Arial;
   font-style: italic;
   font-weight: bold;

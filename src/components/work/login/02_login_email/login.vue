@@ -104,13 +104,13 @@ export default {
 };
 </script>
 <style scoped>
-.captcha input {
+.work_login_login input {
   display: inline-block;
   border-radius: 3px;
   height: 36px;
 }
 
-.captcha .input1 {
+.work_login_login .input1 {
   width: 150px;
 }
 

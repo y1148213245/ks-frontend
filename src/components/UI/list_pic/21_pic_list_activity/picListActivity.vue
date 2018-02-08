@@ -20,10 +20,6 @@
 </template>
 
 <script>
-import URL from "url";
-import PROJECT_CONFIG from "projectConfig";
-import { Post } from "@common";
-
 export default {
   name: "ui_list_pic_21",
   reused: true,
@@ -46,21 +42,21 @@ export default {
 .ui_pic_list_21_main .el-card {
   margin: 0 20px 20px 0;
 }
-.time {
+ui_pic_list_21_main .time {
   font-size: 13px;
   color: #999;
 }
 
-.bottom {
+ui_pic_list_21_main .bottom {
   margin-top: 13px;
   line-height: 12px;
 }
 
-.button {
+ui_pic_list_21_main .button {
   padding: 0;
   float: right;
 }
-.button {
+ui_pic_list_21_main .button {
   font-family: "Arial Negreta", "Arial";
   font-weight: 700;
   font-style: normal;
@@ -68,28 +64,28 @@ export default {
   color: #3498db;
   text-align: right;
 }
-.image {
+ui_pic_list_21_main .image {
   width: 459px;
   height: 178px;
   display: block;
 }
 
-.clearfix:before,
-.clearfix:after {
+ui_pic_list_21_main .clearfix:before,
+ui_pic_list_21_main .clearfix:after {
   display: table;
   content: "";
 }
 
-.clearfix:after {
+ui_pic_list_21_main .clearfix:after {
   clear: both;
 }
-.ac_title {
+ui_pic_list_21_main .ac_title {
   font-family: "Arial Negreta", "Arial";
   font-weight: 700;
   font-style: normal;
   font-size: 18px;
 }
-.ac_text {
+ui_pic_list_21_main .ac_text {
   display: inline-block;
   font-family: "Arial Normal", "Arial";
   font-weight: 400;

@@ -45,7 +45,7 @@
 
       </div>
       <el-table
-        :data="tableData3"
+        :data="participantsList"
         max-height="288"
         style="width: 700px"
         highlight-current-row
@@ -139,16 +139,16 @@
   <div v-show="active == 1">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-      <span class="ac_table_title ac_title_bottom">填写作品信息</span>
+        <span class="ac_table_title ac_title_bottom">填写作品信息</span>
       </div>
         <el-form :model="addAnnexWorksForm" :rules="rules" ref="addAnnexWorksForm" label-width="100px" class="demo-ruleForm">
 
         <el-form-item label="标题：" prop="title">
-        <el-input v-model="addAnnexWorksForm.title"></el-input>
+          <el-input v-model="addAnnexWorksForm.title"></el-input>
         </el-form-item>
 
         <el-form-item label="简介：" prop="synopsis">
-        <el-input type="textarea" v-model="addAnnexWorksForm.synopsis"></el-input>
+          <el-input type="textarea" v-model="addAnnexWorksForm.synopsis"></el-input>
         </el-form-item>
 
         <el-form-item label="文件：" prop="files">
@@ -165,6 +165,10 @@
             :file-list="addAnnexWorksForm.files">
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
+        </el-form-item>
+
+        <el-form-item label="正文：" prop="content">
+          <VueEditor v-model="addAnnexWorksForm.content" :editorToolbar="customToolbar"></VueEditor>
         </el-form-item>
 
         <el-form-item>
@@ -187,26 +191,38 @@
 </template>
 
 <script>
+import { Get } from "@common";
+import PROJECT_CONFIG from "projectConfig";
+import { VueEditor } from 'vue2-editor';
+
 export default {
   name: "work_contestants_01",
   reused: true,
   props: {
     namespace: String
   },
-  data() {
+  data () {
     return {
+      CONFIG: null,
       active: 0,
+      customToolbar: [  // 自定义编辑器工具栏
+        ['bold', 'italic', 'underline'],  // 字体样式：粗体、斜体、下划线
+        [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }],  // 对齐样式：左对齐、居中、右对齐
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],  // 列表样式：数字、圆点、对号
+        [{ 'indent': '-1' }, { 'indent': '+1' },],  // 缩进：左、右
+        ['color', 'background'],  // 文字颜色、文字背景颜色
+      ],
       rules: {
-        selectedOptions:[
+        selectedOptions: [
           { required: true, message: "请输入地区", trigger: "blur" }
         ],
-        school:[
+        school: [
           { required: true, message: "请输入学校", trigger: "blur" }
         ],
-        group:[
+        group: [
           { required: true, message: "请输入组别", trigger: "blur" }
         ],
-        teacher:[
+        teacher: [
           { required: true, message: "请输入指导教师", trigger: "blur" }
         ],
         name: [
@@ -226,6 +242,9 @@ export default {
         ],
         files: [
           { required: true, message: "请输入参赛作品简介", trigger: "blur" }
+        ],
+        content: [
+          { required: true, message: "请填写参赛作品", trigger: "blur" }
         ]
       },
       addParticipantsForm: {
@@ -234,24 +253,26 @@ export default {
         identity: "",
         telNumber: ""
       },
-      addSupplementForm:{
+      addSupplementForm: {
         city: "",
         erae: "",
         minerae: "",
-        selectedOptions: [] ,//地区筛选数组
-        school:"",
-        group:"",
-        teacher:""
+        selectedOptions: [],//地区筛选数组
+        school: "",
+        group: "",
+        teacher: ""
       },
-      addAnnexWorksForm:{
-        title:"",
-        synopsis:"",
-        files: [{name: 'demo.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+      addAnnexWorksForm: {
+        title: "",
+        synopsis: "",
+        /* files: [{ name: 'demo.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],  */
+        files: [],
+        content: '',
       },
       addParticipantsDialog: false,
       input10: "",
       CityInfo: CityInfo,
-      tableData3: [
+      participantsList: [
         {
           phoneNumber: "1391234567",
           name: "王小虎",
@@ -297,15 +318,22 @@ export default {
       ]
     };
   },
+  mounted () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].contestants.contestants_01;
+    this.queryParticipants();
+  },
+  components: {
+    VueEditor
+  },
   filters: {
-    myAddressCity: function(value) {
+    myAddressCity: function (value) {
       for (var y = 0; y < CityInfo.length; y++) {
         if (CityInfo[y].value == value) {
           return CityInfo[y].label;
         }
       }
     },
-    myAddressErae: function(value) {
+    myAddressErae: function (value) {
       for (var y = 0; y < CityInfo.length; y++) {
         for (var z = 0; z < CityInfo[y].children.length; z++) {
           if (CityInfo[y].children[z].value == value && value != undefined) {
@@ -314,7 +342,7 @@ export default {
         }
       }
     },
-    myAddressMinerae: function(value) {
+    myAddressMinerae: function (value) {
       for (var y = 0; y < CityInfo.length; y++) {
         for (var z = 0; z < CityInfo[y].children.length; z++) {
           for (var i = 0; i < CityInfo[y].children[z].children.length; i++) {
@@ -330,19 +358,24 @@ export default {
     }
   },
   methods: {
-    handleCurrentChange(currentRow) {
+    queryParticipants () {  // 查询参赛人列表
+      Get(this.CONFIG.url, { params: this.CONFIG.params }).then(rep => {
+        this.participantsList = rep.data.data;
+      });
+    },
+    handleCurrentChange (currentRow) {
       console.log(currentRow);
     },
-    handleChange(value) {
+    handleChange (value) {
       this.addSupplementForm.city = this.addSupplementForm.selectedOptions[0];
       this.addSupplementForm.erae = this.addSupplementForm.selectedOptions[1];
       this.addSupplementForm.minerae = this.addSupplementForm.selectedOptions[2];
     },
     // 提交参赛信息
-    submitAddSupplementForm(addSupplementForm) {
+    submitAddSupplementForm (addSupplementForm) {
       this.$refs[addSupplementForm].validate(valid => {
         if (valid) {
-          this.active = 1; 
+          this.active = 1;
 
           // this.$refs[addSupplementForm].resetFields(); 
 
@@ -353,7 +386,7 @@ export default {
       });
     },
     // 增加参赛人信息
-    submitAddParticipantsForm(addParticipantsForm) {
+    submitAddParticipantsForm (addParticipantsForm) {
       this.$refs[addParticipantsForm].validate(valid => {
         if (valid) {
           this.addParticipantsDialog = false;
@@ -364,15 +397,15 @@ export default {
         }
       });
     },
-    previouStep(){
+    previouStep () {
       this.active = 0;
     },
     // 添加附件类参赛作品
-    submitAddAnnexWorksForm(addAnnexWorksForm) {
+    submitAddAnnexWorksForm (addAnnexWorksForm) {
       this.$refs[addAnnexWorksForm].validate(valid => {
         if (valid) {
           this.$refs[addAnnexWorksForm].resetFields(); //清空表单
-          this.active = 2; 
+          this.active = 2;
         } else {
           console.log("error submit!!");
           return false;
@@ -380,25 +413,25 @@ export default {
       });
     },
     // 上传附件
-    handleRemove(file, fileList) {
+    handleRemove (file, fileList) {
       console.log(file, fileList);
     },
-    handlePreview(file) {
+    handlePreview (file) {
       console.log(file);
     },
-    handleExceed(files, fileList) {
+    handleExceed (files, fileList) {
       this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${ file.name }？`);
+    beforeRemove (file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
     }
   }
 };
 </script>
-<style>
-.work_contestants_01_main .el-steps--simple{
-  background:#ECF0F1;
-  color:#5E8242;
+<style scoped>
+.work_contestants_01_main .el-steps--simple {
+  background: #ecf0f1;
+  color: #5e8242;
 }
 .work_contestants_01_main {
   width: 700px;
@@ -456,16 +489,16 @@ export default {
 .ac_to_next {
   float: right;
 }
-.ac_last_text{
-  color:#5E8242;
+.ac_last_text {
+  color: #5e8242;
   font-size: 24px;
   margin: 0 auto;
   width: 300px;
   height: 40px;
-  margin-top:100px;
+  margin-top: 100px;
   text-align: center;
 }
-.ac_button{
+.ac_button {
   float: right;
 }
 </style>

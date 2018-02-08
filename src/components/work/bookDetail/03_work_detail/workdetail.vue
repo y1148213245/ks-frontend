@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-06 15:00:24
+ * @Last Modified time: 2018-02-08 14:06:04
  */ 
 <!-- 作品详情 -->
 <template>
@@ -64,7 +64,7 @@ export default {
     };
   },
   components: {
-    qrcode
+    qrcode,
   },
   mounted () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].bookdetail.bookdetail_03;

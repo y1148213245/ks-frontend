@@ -32,8 +32,8 @@
 			</div>
 		</div>
 		<!-- 如果需要导航按钮 -->
-		<div class="swiper-button-prev swiper-button-prev-smallPic"></div>
-		<div class="swiper-button-next swiper-button-next-smallPic"></div>
+		<div class="swiper-button-prev swiper-button-prev-smallPic left_0" ></div>
+		<div class="swiper-button-next swiper-button-next-smallPic right_0"></div>
 	</div>
 </template>
 <script type="text/ecmascript-6">
@@ -151,5 +151,12 @@ export default {
   padding: 0;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.left_0{
+  left: 0px;
+}
+.right_0{
+  right: 35px;
 }
 </style>

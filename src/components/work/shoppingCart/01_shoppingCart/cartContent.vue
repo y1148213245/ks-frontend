@@ -87,7 +87,7 @@
                   </div>
                   <div class="cart-tab-5">
                     <div class="item-price-total">
-                      <span> {{product.productPrice * product.nums}}</span>
+                      <span> {{Math.round(product.productPrice * product.nums * 100) / 100}}</span>
                     </div>
                   </div>
                   <div class="cart-tab-6">

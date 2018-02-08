@@ -347,23 +347,23 @@
   };
 </script>
 <style>
-  .el-form-item:last-child{
+work_shoppingcart_01_address  .el-form-item:last-child{
     text-align: center;
   }
-  .el-input__inner{
+work_shoppingcart_01_address  .el-input__inner{
     height: 32px;
     line-height: 32px;
   }
-  .el-form--label-top .el-form-item__label{
+work_shoppingcart_01_address  .el-form--label-top .el-form-item__label{
     padding: 0;
   }
-  .el-form-item__label{
+work_shoppingcart_01_address  .el-form-item__label{
     line-height: 20px;
   }
-  .el-form-item__label{
+work_shoppingcart_01_address  .el-form-item__label{
     font-weight: unset;
   }
-  .selectPCC select{
+work_shoppingcart_01_address  .selectPCC select{
     height: 32px;
     line-height: 32px;
     border-radius: 4px;

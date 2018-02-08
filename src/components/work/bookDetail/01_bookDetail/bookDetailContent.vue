@@ -315,8 +315,8 @@ export default {
     },
     checkProductNums: function () {
       var _this = this;
-      if (Number($("#book_num").val()) < 0) {
-        this.$alert("商品数量不能为负数", "系统提示", {
+      if (Number($("#book_num").val()) <= 0) {
+        this.$alert("商品数量需要大于0", "系统提示", {
           confirmButtonText: "确定",
           callback: function () {
             $("#book_num").val(1)

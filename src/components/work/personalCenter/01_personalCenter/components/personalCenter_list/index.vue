@@ -123,11 +123,18 @@
                                 </div>
 
                             </div>
-                            <div class="realAmount">
-                                  <div v-if="Aitem.balanceAmount!='0.00'" style="display:inline-block">虚拟币抵扣：<span>￥{{Aitem.balanceAmount}}</span></div>
-                                  <div v-if="Aitem.payStatus==1" style="display:inline-block;margin-left:30px;">已付款：<span>￥{{Aitem.realAmount}}</span></div>
-                                  <div v-if="Aitem.payStatus==0 && Aitem.status==1">待支付：<span>￥{{Aitem.realAmount}}</span></div>
-                            </div>
+                          <div class="realAmount">
+                            <div v-if="Aitem.balanceAmount!='0.00'" style="display:inline-block">虚拟币抵扣：<span>￥{{Aitem.balanceAmount}}</span></div>
+                            <div v-if="Aitem.payStatus==1" style="display:inline-block;margin-left:30px;">已付款：<span>￥{{Aitem.realAmount}}</span></div>
+                            <div v-if="Aitem.payStatus==0 && Aitem.status==1">待支付：<span>￥{{Aitem.realAmount}}</span></div>
+                          </div>
+                          <div class="realAmount">
+                            <div>优惠券减免：<span>￥{{Aitem.couposAmount }}</span></div>
+                          </div>
+                          <div class="realAmount">
+                            <div>活动减免：<span>￥{{Aitem["orderList"][0]["activityRemark"]}}</span></div>
+                          </div>
+
                         </div>
                     </div>
                 </div>
