@@ -2,18 +2,18 @@
  * @Author: song 
  * @Date: 2018-02-05 17:24:29 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-06 17:07:03
+ * @Last Modified time: 2018-02-07 17:50:40
  */
 <!-- 活动资讯列表 -->
 <template>
-  <div class="ui_list_word_02">
+  <div class="ui_list_word_01">
     <ul class="listUl">
       <li class="listLi" v-for="(item, index) in activitysList" :key="index">
         <span v-text="item.information_SYS_TOPIC"></span>
-        <span class="createTime">{{item.information_a_pubTime | formatDate}}</span>
+        <span class="createTime" v-if="controlTime">{{item.information_a_pubTime | formatDate}}</span>
       </li>
     </ul>
-    <ui_pagination  :pageMessage="{totalCount: totalCount - 0 || 0}" :excuteFunction="paging" namespace="pagination"></ui_pagination>
+    <ui_pagination v-if="controlPagination" :pageMessage="{totalCount: totalCount - 0 || 0}" :excuteFunction="paging" namespace="pagination" style="margin-top: 20px;"></ui_pagination>
   </div>
 </template>
 
@@ -23,9 +23,20 @@ import PROJECT_CONFIG from "projectConfig";
 import moment from "moment";
 
 export default {
-  name: 'ui_list_word_02',
+  name: 'ui_list_word_01',
   reused: true,
-  props: ["namespace"],
+  props: {
+    namespace: String,
+    controlPagination: {  // 控制分页显示隐藏  简化版的咨询列表不需要显示分页
+      type: Boolean,
+      default: true,
+    },
+    controlTime: {  // 控制时间显示隐藏  简化版的咨询列表不需要显示时间
+      type: Boolean,
+      default: true,
+    },
+    maxNum: Number,  // 控制显示的数量 简化版需要控制显示资讯个数
+  },
   data () {
     return {
       activitysList: [], // 活动资讯列表
@@ -50,7 +61,7 @@ export default {
         this.totalCount = rep.data.totalCount;
         var data = rep.data.result;
         if (data && data instanceof Array && data.length > 0) {
-          this.activitysList = data;
+          this.activitysList = this.maxNum !== undefined && this.maxNum <= data.length ? data.slice(0, this.maxNum + 1) : data;
         }
       });
     },
@@ -75,23 +86,24 @@ export default {
 
 </script>
 <style>
-.ui_list_word_02 {
-  width: 800px;
+.ui_list_word_01 {
+  width: 100%;
   margin: 0 auto;
 }
 
-.ui_list_word_02 .listUl {
+.ui_list_word_01 .listUl {
   padding-left: 0px;
+  margin: 0px;
 }
 
-.ui_list_word_02 .listUl .listLi {
+.ui_list_word_01 .listUl .listLi {
   list-style-type: none;
   height: 40px;
   line-height: 40px;
   border-bottom: 1px solid #ddd;
 }
 
-.ui_list_word_02 .listLi .createTime {
+.ui_list_word_01 .listLi .createTime {
   float: right;
   font-size: 14px;
   color: #bcbcbc;

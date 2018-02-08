@@ -5,10 +5,11 @@
 
 export default {
   name: "activity",
-  list_word: {
-    list_word_01: {
-      url: '/data/activty_info_01_data.json',
-      maxNum: 8,
-    },
-  },
+  swiper: {
+    swiper_07: {
+      url: '../data/swiper_07_data.json',
+      height: "480px",
+			interval: 5000
+    }
+  }
 };

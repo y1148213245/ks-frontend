@@ -1,7 +1,7 @@
 <!-- 无接口轮播图 -->
 <template>
   <el-carousel :interval="5000" arrow="always" height="400px">
-    <el-carousel-item v-for="(item, index) in 3" :key="index" >
+    <el-carousel-item v-for="(item, index) in (pics || 3)" :key="index" >
     </el-carousel-item>
   </el-carousel>
 </template>
@@ -10,7 +10,11 @@
 export default {
   name: 'ui_swiper_06',
   reused: true,
-  props: {},
+  props: {
+    pics:{
+      type:Array,
+    }
+  },
   data () {
     return {
     };
@@ -20,7 +24,9 @@ export default {
 
   created () { },
 
-  mounted () { },
+  mounted () { 
+    console.log(this.pics);
+  },
 
   methods: {}
 }

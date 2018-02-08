@@ -18,7 +18,7 @@
         </div>
 
         <div v-else="index==1">
-          <div class="news-thumb">
+          <div class="news-thumb1">
             <a href="javascript:void(0)" @click="toNewsDetail(news.pubId)" >
               <img onload="DrawImage(this,120,99)" :src="news.bookUrl" v-if="news.bookUrl">
             </a>
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div v-else>
-          <div class="news-thumb notopborder">
+          <div class="news-thumb1 notopborder">
             <a href="javascript:void(0)" @click="toNewsDetail(news.pubId)">
               <img onload="DrawImage(this,120,99)" :src="news.bookUrl" v-if="news.bookUrl">
             </a>
@@ -169,7 +169,7 @@ export default {
   overflow: hidden;
 }
 .news-hot,
-.news-thumb {
+.news-thumb1 {
   width: 50%;
   display: inline-block;
   padding: 20px;
@@ -201,13 +201,13 @@ h3 {
   margin-top: 30px;
   width: 40px;
 } */
-.news-thumb a img {
+.news-thumb1 a img {
   width: 310px;
 }
-/* .news-feature .news-thumb {
+/* .news-feature .news-thumb1 {
   border-left: 0px;
 } */
-.news-thumb h4 {
+.news-thumb1 h4 {
   margin-bottom: 0px;
 }
 h4 {
@@ -216,7 +216,7 @@ h4 {
   font-weight: 500;
   line-height: 1.1;
 }
-.news-thumb p {
+.news-thumb1 p {
   margin-top: 4px;
 }
 p {

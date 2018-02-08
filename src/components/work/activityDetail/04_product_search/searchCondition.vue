@@ -38,12 +38,19 @@
 </template>
 
 <script>
+import URL from "url";
+import PROJECT_CONFIG from "projectConfig";
+import { Post } from "@common";
 export default {
   name: 'work_activitydetail_04',
   reused: true,
-  props: {},
+  props: {
+    namespace: String
+  },
   data () {
     return {
+      projectConfig: null,
+      keys: null,
       formData: {
         place: '',
         school: '',
@@ -55,31 +62,36 @@ export default {
 
   computed: {},
 
-  created () { },
+  created () {
+    this.initConfig();
+  },
 
   mounted () { },
 
   methods: {
-    onSubmit(){
-
+    initConfig () {
+      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_04;
+      this.keys = this.projectConfig.keys;
+    },
+    onSubmit () {
+      
     }
   }
 }
 
 </script>
 <style>
-.work_activitydetail_04{
-
+.work_activitydetail_04 {
 }
-.work_activitydetail_04-label{
- height: 40px;
- line-height: 40px;
- text-align: center;
+.work_activitydetail_04-label {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
 }
-.work_activitydetail_04 .el-col{
+.work_activitydetail_04 .el-col {
   margin-top: 10px;
 }
-.work_activitydetail_04-button_box{
+.work_activitydetail_04-button_box {
   text-align: center;
 }
 </style>

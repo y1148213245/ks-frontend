@@ -370,7 +370,7 @@
               <span>配送方式：</span>
               <div class="transwayDrop">
                 <el-dropdown size="mini" :split-button="true" type="primary" trigger="click" @command="selectDelivery">
-                {{selectedDelivery.methods}}
+                  {{selectedDelivery.methods}}
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item :key="index" v-for="(item, index) in deliveryList" :command="item">{{item.methods}}</el-dropdown-item>
                   </el-dropdown-menu>
@@ -397,1263 +397,1264 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import Vue from "vue";
-import * as type from "@work/shoppingCart/common/interfaces.js";
-import * as interfaces from "@work/login/common/interfaces.js";
-import { mapGetters, mapActions } from "vuex";
-import axios from "axios";
-import moment from "moment";
-import $ from "jquery";
-// import {DrawImage} from "@common";
+  import Vue from "vue";
+  import * as type from "@work/shoppingCart/common/interfaces.js";
+  import * as interfaces from "@work/login/common/interfaces.js";
+  import { mapGetters, mapActions } from "vuex";
+  import axios from "axios";
+  import moment from "moment";
+  import $ from "jquery";
+  import { Base64 } from 'js-base64';
+  // import {DrawImage} from "@common";
 
-export default {
-  name: "work_shoppingcart_01_cart",
-  reused: true,
-  props: {
-    namespace: String,
-    isShowCollectButton: {  // 收藏按钮控制 有些站点不需要
-      type: Boolean,
-      default: true
+  export default {
+    name: "work_shoppingcart_01_cart",
+    reused: true,
+    props: {
+      namespace: String,
+      isShowCollectButton: {  // 收藏按钮控制 有些站点不需要
+        type: Boolean,
+        default: true
+      },
+      isShowCoupon: {         // 优惠券按钮控制 有些站点不需要
+        type: Boolean,
+        default: true
+      }
     },
-    isShowCoupon: {         // 优惠券按钮控制 有些站点不需要
-      type: Boolean,
-      default: true
-    }
-  },
-  created: function () {
-    this.getMemberInfo().then((member) => {
-      this.member.loginName = member.loginName;
-      this.loadCallBack();
-    });
-  },
-  mounted: function () {
-    var _this = this;
-    /* this.$store.dispatch("shoppingcart/queryUser", { // 先去vuex获取一下用户信息
-      loadCallBack: this.loadCallBack
-    }); */
-    if (window.location.hash) { // #/myOrder  提交订单页面 即在提交订单页面执行刷新操作
-      this.getRecordOrder();
-    } else {                    // 购物车列表页面 即 结算页面
-      this.showItem = "showCartWrapper";
-    }
-    this.$store.dispatch("shoppingcart/" + type.GET_PAYMENT);   // 获取支付方式
-    this.$store.dispatch("shoppingcart/" + type.GET_DELIVERY);  // 获取物流运输方式
-
-    this.priceInfo();          // 查询价格变更信息列表
-
-    $(window).scroll(function (event) {               // 监控滚动条 控制下方结算按钮要始终在可视区域
-      if ($(".normalClearing").length > 0) {
-        var clientHeight = $(window)[0].innerHeight; // 屏幕可视高度
-        var scrollTop = $(window).scrollTop();       // 元素距离窗口最上边的高度
-        _this.toogleFixed(_this.elementTop, clientHeight, scrollTop);
-      }
-    });
-  },
-  data () {
-    return {
-      member: {
-        loginName: ''
-      },
-      /* 购物车列表页面 */
-      showItem: "showCartWrapper",
-      selectedAll: false,       // 是否全选状态：默认不全选
-      totalMoney: 0,            // 总金额
-      totalNum: 0,              // 总数量
-      saveAmount: 0,            // 节省总金额
-      selectedProductList: {},  // c:减金额
-      selectedProductListArray: [],
-      freeFreight: false,   // 是否免运费状态：默认不免运费
-      sendPoints: 0,        // 送积分
-      orderProductList: [], // 订单商品列表 从购物车页面带到订单页面
-      priceChangeList: [],  // 价格变更信息列表
-      showFixedClearing: false,
-      showZeroTips: false,  // 提示要选择至少一件商品的框框
-      /* 提交订单页 */
-      needInvoice: "0",     // 是否需要发票： 1 是    0 否  默认不需要发票
-      selectedInvoice: 1,
-      coupons: "",
-      payWay: 0,
-      payremark:"",
-      payMethod: "0",       // 支付方式 0 微信支付 1 支付宝支付
-      selectedDelivery: {},
-      selectedOrderList: [],
-      allEbook: true, // 只有电子书的时候不显示收货地址和快递信息,默认都是电子书
-      allBook: true, // 全部都是纸质书 优惠码需要使用
-      activityValue: "",
-      bookTotalMoney: 0, // 纸质书总价
-      bookSaveMoney: 0, // 纸质书节省金额
-      ebookTotalMoney: 0, // 电子书总价
-      ebookSaveMoney: 0, // 电子书节省金额
-      couponSaveMoney: [], // 使用优惠券优惠总金额
-      couponProductListWrapper: {}, // 使用优惠券优惠商品列表
-      selectedCouponsPassword: "", // 当前选择的优惠券id
-      bookTypeTag: "91", // 纸书类型代号
-      ebookTypeTag: "94", // 电子书类型代号
-      showCancelCoupons: false,
-      elementTop: 0,  // 底部结算栏距离顶部的高度
-      curSelectedAddress: {}, // 当前选择的地址 从地址选择子组件中接收到的
-      curSelectedInvoice: {   // 当前选择的发票 从发票信息子组件中接收到的
-        invoiceType: "普通发票", // 发票类型 默认显示普通发票
-        receipttypes: "个人",
-        receiptType: "1",       // 1:个人  2:单位
-        receiptId: "明细",      // 普通发票的明细  默认显示明细
-        receiptTitle: "",       // 公司名称
-        taxpayerCode: "",       // 纳税人识别号
-        companyAddress: "",     // 公司住址 即注册地址
-        companyPhone: "",       // 公司联系方式 即注册电话
-        bankName: "",           // 开户银行
-        bankAccount: ""         // 开户账号
-      },
-    };
-  },
-  computed: {
-    ...mapGetters({
-      // member: "shoppingcart/getMember",               // 在vuex里面获取用户信息
-      productList: "shoppingcart/getProductList",        // 获取购物车商品列表
-      deleteStatus: "shoppingcart/getDeleteStatus",      // 删除商品状态
-      favoriteStatus: "shoppingcart/getFavoriteStatus",  // 添加收藏状态
-      orderList: "shoppingcart/getOrderList",            // 获取订单商品列表
-      orderDetail: "shoppingcart/getOrderDetail",        // 获取订单详情：总价 总数 节省 运费 积分
-      paymentList: "shoppingcart/getPaymentList",        // 获取支付方式
-      deliveryList: "shoppingcart/getDeliveryList",      // 获取配送方式
-      commitInfo: "shoppingcart/getCommitInfo",          // 获取订单号
-      virtualCoin: "shoppingcart/getVirtualCoin",        // 获取用户虚拟币总数量
-      rmbCoin: "shoppingcart/getRmbCoin",                // 获取用户虚拟币兑换人民币
-      couponsList: "shoppingcart/getCouponsList"         // 用户优惠券列表
-    }),
-    recordOrder: function () {
-      // 将订单从本地存储中取出来
+    created: function () {
+      this.getMemberInfo().then((member) => {
+        this.member.loginName = member.loginName;
+        this.loadCallBack();
+      });
+    },
+    mounted: function () {
       var _this = this;
-      var tempList = [];
-      if (this.orderList.length > 0) {
-        tempList = this.orderList;
-      } else {
-        tempList = JSON.parse(window.sessionStorage.getItem("recordOrder"))
-          .recordOrderList;
+      /* this.$store.dispatch("shoppingcart/queryUser", { // 先去vuex获取一下用户信息
+        loadCallBack: this.loadCallBack
+      }); */
+      if (window.location.hash) { // #/myOrder  提交订单页面 即在提交订单页面执行刷新操作
+        this.getRecordOrder();
+      } else {                    // 购物车列表页面 即 结算页面
+        this.showItem = "showCartWrapper";
       }
-      tempList.forEach(function (items) {
-        if (items.list.length > 0) {
-          _this.selectedOrderList.push(items);
+      this.$store.dispatch("shoppingcart/" + type.GET_PAYMENT);   // 获取支付方式
+      this.$store.dispatch("shoppingcart/" + type.GET_DELIVERY);  // 获取物流运输方式
+
+      this.priceInfo();          // 查询价格变更信息列表
+
+      $(window).scroll(function (event) {               // 监控滚动条 控制下方结算按钮要始终在可视区域
+        if ($(".normalClearing").length > 0) {
+          var clientHeight = $(window)[0].innerHeight; // 屏幕可视高度
+          var scrollTop = $(window).scrollTop();       // 元素距离窗口最上边的高度
+          _this.toogleFixed(_this.elementTop, clientHeight, scrollTop);
         }
       });
+    },
+    data () {
       return {
-        recordOrderList: tempList
+        member: {
+          loginName: ''
+        },
+        /* 购物车列表页面 */
+        showItem: "showCartWrapper",
+        selectedAll: false,       // 是否全选状态：默认不全选
+        totalMoney: 0,            // 总金额
+        totalNum: 0,              // 总数量
+        saveAmount: 0,            // 节省总金额
+        selectedProductList: {},  // c:减金额
+        selectedProductListArray: [],
+        freeFreight: false,   // 是否免运费状态：默认不免运费
+        sendPoints: 0,        // 送积分
+        orderProductList: [], // 订单商品列表 从购物车页面带到订单页面
+        priceChangeList: [],  // 价格变更信息列表
+        showFixedClearing: false,
+        showZeroTips: false,  // 提示要选择至少一件商品的框框
+        /* 提交订单页 */
+        needInvoice: "0",     // 是否需要发票： 1 是    0 否  默认不需要发票
+        selectedInvoice: 1,
+        coupons: "",
+        payWay: 0,
+        payremark:"",
+        payMethod: "0",       // 支付方式 0 微信支付 1 支付宝支付
+        selectedDelivery: {},
+        selectedOrderList: [],
+        allEbook: true, // 只有电子书的时候不显示收货地址和快递信息,默认都是电子书
+        allBook: true, // 全部都是纸质书 优惠码需要使用
+        activityValue: "",
+        bookTotalMoney: 0, // 纸质书总价
+        bookSaveMoney: 0, // 纸质书节省金额
+        ebookTotalMoney: 0, // 电子书总价
+        ebookSaveMoney: 0, // 电子书节省金额
+        couponSaveMoney: [], // 使用优惠券优惠总金额
+        couponProductListWrapper: {}, // 使用优惠券优惠商品列表
+        selectedCouponsPassword: "", // 当前选择的优惠券id
+        bookTypeTag: "91", // 纸书类型代号
+        ebookTypeTag: "94", // 电子书类型代号
+        showCancelCoupons: false,
+        elementTop: 0,  // 底部结算栏距离顶部的高度
+        curSelectedAddress: {}, // 当前选择的地址 从地址选择子组件中接收到的
+        curSelectedInvoice: {   // 当前选择的发票 从发票信息子组件中接收到的
+          invoiceType: "普通发票", // 发票类型 默认显示普通发票
+          receipttypes: "个人",
+          receiptType: "1",       // 1:个人  2:单位
+          receiptId: "明细",      // 普通发票的明细  默认显示明细
+          receiptTitle: "",       // 公司名称
+          taxpayerCode: "",       // 纳税人识别号
+          companyAddress: "",     // 公司住址 即注册地址
+          companyPhone: "",       // 公司联系方式 即注册电话
+          bankName: "",           // 开户银行
+          bankAccount: ""         // 开户账号
+        },
       };
     },
-    recordOrderDetail: function () {
-      // 将订单详细信息从本地存储中取出来
-      var tempDetails = JSON.parse(
-        window.sessionStorage.getItem("recordOrderDetail")
-      );
-      return {
-        totalMoney:
-        this.orderDetail.totalNum !== 0
-          ? this.orderDetail.totalMoney
-          : tempDetails.totalMoney,
-        totalNum:
-        this.orderDetail.totalNum !== 0
-          ? this.orderDetail.totalNum
-          : tempDetails.totalNum,
-        saveAmount:
-        this.orderDetail.totalNum !== 0
-          ? this.orderDetail.saveAmount
-          : tempDetails.saveAmount,
-        freeFreight:
-        this.orderDetail.totalNum !== 0
-          ? this.orderDetail.freeFreight
-          : tempDetails.freeFreight,
-        sendPoints:
-        this.orderDetail.totalNum !== 0
-          ? this.orderDetail.sendPoints
-          : tempDetails.sendPoints,
-        bookTotalMoney:
-        this.orderDetail.totalNum !== 0
-          ? this.orderDetail.bookTotalMoney
-          : tempDetails.bookTotalMoney,
-        bookSaveMoney:
-        this.orderDetail.totalNum !== 0
-          ? this.orderDetail.bookSaveMoney
-          : tempDetails.bookSaveMoney,
-        ebookTotalMoney:
-        this.orderDetail.totalNum !== 0
-          ? this.orderDetail.ebookTotalMoney
-          : tempDetails.ebookTotalMoney,
-        ebookSaveMoney:
-        this.orderDetail.totalNum !== 0
-          ? this.orderDetail.ebookSaveMoney
-          : tempDetails.ebookSaveMoney
-      };
-    }
-  },
-  methods: {
-    ...mapActions("login", {
-      getMemberInfo: interfaces.ACTION_KEEP_SESSION
-    }),
-    //验证备注信息
-    checkPayremark:function(){
-      if(this.$refs.payremark.$refs.input._value.length > 50){
-        this.$alert("备注不能超过50个字符 ", "系统提示", {
-          confirmButtonText: "确定"
+    computed: {
+      ...mapGetters({
+        // member: "shoppingcart/getMember",               // 在vuex里面获取用户信息
+        productList: "shoppingcart/getProductList",        // 获取购物车商品列表
+        deleteStatus: "shoppingcart/getDeleteStatus",      // 删除商品状态
+        favoriteStatus: "shoppingcart/getFavoriteStatus",  // 添加收藏状态
+        orderList: "shoppingcart/getOrderList",            // 获取订单商品列表
+        orderDetail: "shoppingcart/getOrderDetail",        // 获取订单详情：总价 总数 节省 运费 积分
+        paymentList: "shoppingcart/getPaymentList",        // 获取支付方式
+        deliveryList: "shoppingcart/getDeliveryList",      // 获取配送方式
+        commitInfo: "shoppingcart/getCommitInfo",          // 获取订单号
+        virtualCoin: "shoppingcart/getVirtualCoin",        // 获取用户虚拟币总数量
+        rmbCoin: "shoppingcart/getRmbCoin",                // 获取用户虚拟币兑换人民币
+        couponsList: "shoppingcart/getCouponsList"         // 用户优惠券列表
+      }),
+      recordOrder: function () {
+        // 将订单从本地存储中取出来
+        var _this = this;
+        var tempList = [];
+        if (this.orderList.length > 0) {
+          tempList = this.orderList;
+        } else {
+          tempList =JSON.parse(Base64.decode(window.sessionStorage.getItem("recordOrder"))).recordOrderList;
+        }
+        tempList.forEach(function (items) {
+          if (items.list.length > 0) {
+            _this.selectedOrderList.push(items);
+          }
         });
-      }
-    },
-    /************ 商品列表页 即结算页面 ************/
-    selectActivity (event, product, item) { // 更换活动
-      product.checked = false;
-      this.$forceUpdate();
-      var _this = this;
-      var params = {
-        param: {
-          loginName: this.member.loginName,
-          productId: product.productId,
-          activityId: event.target.value
-        },
-        myCallBack: function () {
-          if (this.changeActivity) {
-            _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
-            window.location.reload();
-          } else {
-            _this.$message({
-              type: "error",
-              message: "活动更换失败~"
-            });
-          }
-        }
-      };
-      _this.$store.dispatch("shoppingcart/" + type.CHANGE_ACTIVITY, params);
-    },
-    toogleFixed: function (eleTop, clientHeight, scrollTop) {  // 结算条要始终显示在可视区域
-      if (scrollTop + clientHeight < eleTop) {
-        this.showFixedClearing = true;
-      } else {
-        this.showFixedClearing = false;
-      }
-    },
-    loadCallBack: function () {   // 一进页面就要通过查询用户之后立即执行的操作 比如：查询商品列表、虚拟币、优惠券
-      var _this = this;
-      var params = {
-        param: {
-          loginName: this.member.loginName
-        },
-        myCallback: function () {
-          var eleTop; // 元素距离窗口最上边的高度
-          var clientHeight; // 屏幕可视高度
-          var scrollTop; // 元素距离窗口最上边的高度
-
-          _this.$nextTick(function () {
-            if ($(".normalClearing").length > 0) {
-              _this.elementTop = $($(".normalClearing")[0]).offset().top;
-              clientHeight = $(window)[0].innerHeight;
-              scrollTop = $(window).scrollTop();
-              _this.toogleFixed(_this.elementTop, clientHeight, scrollTop);
-            }
-          });
-        }
-      };
-      // this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, params);              // 购物车商品列表
-      this.$store.dispatch("shoppingcart/" + type.QUERY_VIRTUAL_COIN, this.member.loginName); // 虚拟币数量
-      this.$store.dispatch("shoppingcart/" + type.QUERY_COUPONS, { loginName: this.member.loginName, type: "noUse" }); // 优惠券列表
-    },
-    setRecordOrder: function () {  // 商品列表和订单详情（优惠金额、总数、总价等）要存在 sessionStorage 里面 刷新页面要取
-      window.sessionStorage.setItem("recordOrder", JSON.stringify(this.recordOrder)); // 商品列表
-      window.sessionStorage.setItem("recordOrderDetail", JSON.stringify(this.recordOrderDetail)); // 订单详情
-    },
-    getRecordOrder: function () {  // 取存在 sessionStorage 里面的东西
-      var _this = this;
-      var sessionOrderList = JSON.parse(window.sessionStorage.getItem("recordOrder")).recordOrderList;
-      this.allEbook = JSON.parse(window.sessionStorage.getItem("allEbook")); // 电子书状态
-      this.allBook = JSON.parse(window.sessionStorage.getItem("allBook")); // 纸质书状态
-      this.showItem = window.sessionStorage.getItem("showItem"); // 显示状态
-      sessionOrderList.forEach(function (item) {
-        _this.orderList.push(item);
-      });
-      sessionOrderList.forEach(function (items) {
-        if (items.list.length > 0) {
-          _this.selectedOrderList.push(items);
-        }
-      });
-      var tempDetail = JSON.parse(
-        window.sessionStorage.getItem("recordOrderDetail")
-      );
-      _this.orderDetail.totalMoney = tempDetail.totalMoney;
-      _this.orderDetail.totalNum = tempDetail.totalNum;
-      _this.orderDetail.saveAmount = tempDetail.saveAmount;
-      _this.orderDetail.freeFreight = tempDetail.freeFreight;
-      _this.orderDetail.sendPoints = tempDetail.sendPoints;
-      _this.orderDetail.bookTotalMoney = tempDetail.bookTotalMoney;
-      _this.orderDetail.bookSaveMoney = tempDetail.bookSaveMoney;
-      _this.orderDetail.ebookTotalMoney = tempDetail.ebookTotalMoney;
-      _this.orderDetail.ebookSaveMoney = tempDetail.ebookSaveMoney;
-    },
-    deleteProduct: function (id) {  // 删除商品
-      var _this = this;
-      this.$confirm("您确定要删除该商品吗?", "系统提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(function () {
-        var param = {
-          ids: id,
-          cb: function () {
-            if (this.deleteStatus) {
-              _this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-              _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
-            } else {
-              _this.$message({
-                type: "error",
-                message: "删除失败!"
-              });
-            }
-          }
+        return {
+          recordOrderList: tempList
         };
-        _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
-      });
-    },
-    selectAll: function () {       // 商品全选操作
-      var _this = this;
-      var data = this.productList;
-      for (var i = 0; i < data.length; i++) {
-        var dataList = data[i].list;
-        for (var j = 0; j < dataList.length; j++) {
-          dataList[j].checked = this.selectedAll;
-        }
-      }
-      data.forEach(function (data) {
-        data.selectedOne = false;
-        Vue.set(data, "selectedOne", _this.selectedAll);
-      });
-      this.calcTotalMoney();
-    },
-    selectedProduct: function (product, item) { // 选择某个商品
-      item.selectedOne = false; // 默认一个也没有选中
-      this.isSelectAll();
-      this.calcTotalMoney();
-      var list = item.list;
-      list.forEach(function (listItem) {
-        if (listItem.checked === true) {
-          Vue.set(item, "selectedOne", true);
-        }
-      });
-    },
-    isSelectAll: function () {    // 判断是否全选
-      var status = true; // 全选与否的状态
-      var data = this.productList;
-      for (var i = 0; i < data.length; i++) {
-        var dataList = data[i].list;
-        for (var j = 0; j < dataList.length; j++) {
-          if (!dataList[j].checked) { // 非全选状态
-            status = false;
-          }
-        }
-      }
-      this.selectedAll = status ? true : false;
-    },
-    calcTotalMoney: function () { // 计算选中商品总价（不参加任何活动的单纯计算）
-      this.calSaveMoney();
-      var totalMoney = 0; // 所有商品总价
-      var totalNum = 0;
-      var data = this.productList;
-      for (var i = 0; i < data.length; i++) {
-        var dataList = data[i].list;
-        for (var j = 0; j < dataList.length; j++) {
-          if (dataList[j].checked) {
-            totalMoney += dataList[j].productPrice * dataList[j].nums; // 不加任何活动时候的总价格
-            totalNum += Number(dataList[j].nums); // 勾选商品总数
-            var list = this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].list; // 把当前勾选中的商品放到他的活动id对应的对象里的list数组里面
-            list.push(dataList[j]); // 整理出来的所有类型活动的商品
-            if (list.length > 0) {
-              var discountType = list[0].discountType; // 满多收钱 + 4种操作：cutMoney discount freeFare sendPoints 外加不参加任何活动
-              var referAmount = list[0].amount; // 满多少 这是减的标准线 超过了才能减 不超过不能减
-              var curTotalMoney = 0; // 某个类型活动的总金额
-              switch (discountType) {
-                case "cutMoney": // 满多少钱减多少钱
-                  var discountAmount = list[0].discountAmount; // 减多少钱
-                  list.forEach(function (item) {
-                    curTotalMoney += item.productPrice * item.nums;
-                  });
-                  if (dataList[j].discountRule === "fullReduce") { // 一级活动分类：满多少钱 + 4种操作 减钱
-                    if (curTotalMoney >= referAmount) { // 满足满多少钱减多少钱的条件
-                      this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].saveValue = discountAmount;
-                    }
-                  } else if (dataList[j].discountRule === "fixedDiscount") { // 一级活动分类：固定折扣 减钱
-                    this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].saveValue = discountAmount > curTotalMoney ? curTotalMoney : discountAmount;
-                  }
-                  this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].totalPrice = curTotalMoney;
-                  break;
-                case "discount": // 满多少钱打折
-                  var discountRatio = list[0].discountRatio; // 折扣力度
-                  list.forEach(function (item) {
-                    curTotalMoney += item.productPrice * item.nums; // 总金额
-                  });
-                  if (dataList[j].discountRule === "fullReduce") { // 一级活动分类：满多少钱 + 4种操作 打折
-                    if (curTotalMoney >= referAmount) { // 满足满多少钱打折的条件
-                      this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].saveValue = curTotalMoney - curTotalMoney * (discountRatio / 100);
-                    } else {
-                      this.selectedProductList[
-                        "activity" +
-                        dataList[j].activityId +
-                        dataList[j].productType
-                      ].saveValue = 0;
-                    }
-                  } else if (dataList[j].discountRule === "fixedDiscount") {
-                    // 一级活动分类：固定折扣 打折
-                    this.selectedProductList[
-                      "activity" +
-                      dataList[j].activityId +
-                      dataList[j].productType
-                    ].saveValue =
-                      curTotalMoney - curTotalMoney * (discountRatio / 100);
-                  }
-                  this.selectedProductList[
-                    "activity" +
-                    dataList[j].activityId +
-                    dataList[j].productType
-                  ].totalPrice = curTotalMoney;
-                  break;
-                case "freeFare": // 满多少减运费
-                  list.forEach(function (item) {
-                    curTotalMoney += item.productPrice * item.nums;
-                  });
-                  if (dataList[j].discountRule === "fullReduce") {
-                    // 一级活动分类：满多少钱 + 4种操作 免运费
-                    if (curTotalMoney >= referAmount) {
-                      // 满足满多少免运费的条件
-                      this.freeFreight = true;
-                    } else {
-                      this.freeFreight = false;
-                    }
-                  } else if (dataList[j].discountRule === "fixedDiscount") {
-                    // 一级活动分类：固定折扣 免运费
-                    this.freeFreight = true;
-                  }
-                  this.selectedProductList[
-                    "activity" +
-                    dataList[j].activityId +
-                    dataList[j].productType
-                  ].totalPrice = curTotalMoney;
-                  break;
-                case "sendPoints": //满多少送积分  待定
-                  var points = list[0].points;
-                  var curTotalPoints = 0;
-                  list.forEach(function (item) {
-                    curTotalMoney += item.productPrice * item.nums;
-                  });
-                  if (dataList[j].discountRule === "fullReduce") {
-                    // 一级活动分类：满多少钱 + 4种操作 送积分
-                    if (curTotalMoney >= referAmount) {
-                      // 满足满多少钱送积分的条件
-                      this.selectedProductList[
-                        "activity" +
-                        dataList[j].activityId +
-                        dataList[j].productType
-                      ].sendPoints = points;
-                    } else {
-                      this.selectedProductList[
-                        "activity" +
-                        dataList[j].activityId +
-                        dataList[j].productType
-                      ].sendPoints = 0;
-                    }
-                  } else if (dataList[j].discountRule === "fixedDiscount") {
-                    // 一级活动分类：固定折扣 送积分
-                    this.selectedProductList[
-                      "activity" +
-                      dataList[j].activityId +
-                      dataList[j].productType
-                    ].sendPoints = points;
-                  }
-                  this.selectedProductList[
-                    "activity" +
-                    dataList[j].activityId +
-                    dataList[j].productType
-                  ].totalPrice = curTotalMoney;
-                  break;
-                default:
-                  // 不参与任何活动的商品
-                  /*console.info('do not participate any activity');*/
-                  this.totalMoney = totalMoney;
-                  this.saveAmount = 0;
-                  list.forEach(function (item) {
-                    curTotalMoney += item.productPrice * item.nums;
-                  });
-                  this.selectedProductList[
-                    "activity" +
-                    dataList[j].activityId +
-                    dataList[j].productType
-                  ].totalPrice = curTotalMoney;
-              }
-            }
-          } else {
-            this.totalMoney = totalMoney;
-          }
-        }
-      }
-      var saveMoneyArray = [];
-      var bookTotalMoneyArray = [];
-      var bookSaveMoneyArray = [];
-      var ebookTotalMoneyArray = [];
-      var ebookSaveMoneyArray = [];
-      var sendPointsArray = [];
-      var _this = this;
-      this.selectedProductListArray.forEach(function (item) {
-        saveMoneyArray.push(item.saveValue);
-        sendPointsArray.push(item.sendPoints); // 积分
-        if (item.productType === _this.bookTypeTag) {
-          // book
-          bookTotalMoneyArray.push(item.totalPrice);
-          bookSaveMoneyArray.push(item.saveValue);
-        } else if (item.productType === _this.ebookTypeTag) {
-          // ebook
-          ebookTotalMoneyArray.push(item.totalPrice);
-          ebookSaveMoneyArray.push(item.saveValue);
-        }
-      });
-      this.saveAmount =
-        saveMoneyArray.length > 0 ? eval(saveMoneyArray.join("+")) : 0;
-      this.bookTotalMoney =
-        bookTotalMoneyArray.length > 0
-          ? eval(bookTotalMoneyArray.join("+"))
-          : 0;
-      this.bookSaveMoney =
-        bookSaveMoneyArray.length > 0 ? eval(bookSaveMoneyArray.join("+")) : 0;
-      this.ebookTotalMoney =
-        ebookTotalMoneyArray.length > 0
-          ? eval(ebookTotalMoneyArray.join("+"))
-          : 0;
-      this.ebookSaveMoney =
-        ebookSaveMoneyArray.length > 0
-          ? eval(ebookSaveMoneyArray.join("+"))
-          : 0;
-      this.sendPoints =
-        sendPointsArray.length > 0 ? eval(sendPointsArray.join("+")) : 0;
-      this.totalMoney = totalMoney - this.saveAmount;
-      this.totalNum = totalNum;
-    },
-    calSaveMoney: function () {   // 计算节省金额
-      this.selectedProductListArray = [];
-      var _this = this;
-      this.productList.forEach(function (item) {
-        // 前端根据后端返回多少种活动来拟好相应的对象 对象是根据活动id命名的 push到选择商品的数组里面   错误点：没有区分电子书和纸质书
-        _this.selectedProductList[
-          "activity" + item.activityId + item.productType
-        ] = {};
-        _this.selectedProductList[
-          "activity" + item.activityId + item.productType
-        ].list = [];
-        _this.selectedProductList[
-          "activity" + item.activityId + item.productType
-        ].saveValue = 0; // 默认初始值 节省 0 元
-        _this.selectedProductList[
-          "activity" + item.activityId + item.productType
-        ].sendPoints = 0; // 送积分 默认值 0 积分
-        _this.selectedProductList[
-          "activity" + item.activityId + item.productType
-        ].totalPrice = 0;
-        _this.selectedProductList[
-          "activity" + item.activityId + item.productType
-        ].productType =
-          item.productType;
-        _this.selectedProductList[
-          "activity" + item.activityId + item.productType
-        ].activityName =
-          item.activityName;
-        _this.selectedProductList[
-          "activity" + item.activityId + item.productType
-        ].activityId =
-          item.activityId;
-        _this.selectedProductListArray.push(
-          _this.selectedProductList[
-          "activity" + item.activityId + item.productType
-          ]
+      },
+      recordOrderDetail: function () {
+        // 将订单详细信息从本地存储中取出来
+        var tempDetails = JSON.parse(
+          window.sessionStorage.getItem("recordOrderDetail")
         );
-      });
+        return {
+          totalMoney:
+            this.orderDetail.totalNum !== 0
+              ? this.orderDetail.totalMoney
+              : tempDetails.totalMoney,
+          totalNum:
+            this.orderDetail.totalNum !== 0
+              ? this.orderDetail.totalNum
+              : tempDetails.totalNum,
+          saveAmount:
+            this.orderDetail.totalNum !== 0
+              ? this.orderDetail.saveAmount
+              : tempDetails.saveAmount,
+          freeFreight:
+            this.orderDetail.totalNum !== 0
+              ? this.orderDetail.freeFreight
+              : tempDetails.freeFreight,
+          sendPoints:
+            this.orderDetail.totalNum !== 0
+              ? this.orderDetail.sendPoints
+              : tempDetails.sendPoints,
+          bookTotalMoney:
+            this.orderDetail.totalNum !== 0
+              ? this.orderDetail.bookTotalMoney
+              : tempDetails.bookTotalMoney,
+          bookSaveMoney:
+            this.orderDetail.totalNum !== 0
+              ? this.orderDetail.bookSaveMoney
+              : tempDetails.bookSaveMoney,
+          ebookTotalMoney:
+            this.orderDetail.totalNum !== 0
+              ? this.orderDetail.ebookTotalMoney
+              : tempDetails.ebookTotalMoney,
+          ebookSaveMoney:
+            this.orderDetail.totalNum !== 0
+              ? this.orderDetail.ebookSaveMoney
+              : tempDetails.ebookSaveMoney
+        };
+      }
     },
-    changeQuantity: function (product, val, fixedVal) { // 改变纸质书商品数量
-      if (val > 0) {
-        ++product.nums;
-        if (product.nums > 200) { // 防止加过200
-          product.nums = 200;
-          this.$alert("商品数量不能大于200", "系统提示", {
+    methods: {
+      ...mapActions("login", {
+        getMemberInfo: interfaces.ACTION_KEEP_SESSION
+      }),
+      //验证备注信息
+      checkPayremark:function(){
+        if(this.$refs.payremark.$refs.input._value.length > 50){
+          this.$alert("备注不能超过50个字符 ", "系统提示", {
             confirmButtonText: "确定"
           });
         }
-      } else if (val < 0) {
-        product.nums--;
-        if (product.nums < 1) { // 防止减到0
-          product.nums = 1;
-        }
-      }
-      if (fixedVal) { // 手动输入固定值
-        product.nums = fixedVal;
-      }
-      this.calcTotalMoney();
-      var changeCountParams = {
-        productId: product.productId,
-        number: product.nums,
-        loginName: this.member.loginName
-      };
-      this.$store.dispatch(
-        "shoppingcart/" + type.CHANGE_PRODUCT_COUNT,
-        changeCountParams
-      );
-      var tempLength = 0;
-      for (var i = 0; i < this.productList.length; i++) {
-        for (var j = 0; j < this.productList[i].list.length; j++) {
-          tempLength += this.productList[i].list[j].nums;
-        }
-      }
-      this.$store.dispatch("login/getTotalAmount", tempLength);
-    },
-    addFavorite: function (product) {  // 添加收藏
-      var _this = this;
-      var params = {
-        param: {
-          loginName: this.member.loginName,
-          pubId: product.pubId,
-          productId: product.productId,
-          operateType: "0"
-        },
-        myCallback: function () {
-          if (this.favoriteStatus === "00") {
-            _this.$message({
-              message: "收藏成功",
-              type: "success"
-            });
-          } else if (this.favoriteStatus === "000") {
-            _this.$message({
-              message: "取消收藏成功",
-              type: "success"
-            });
-          }
-          _this.$store.dispatch(
-            "shoppingcart/" + type.QUERY_SHOPPING_CART,
-            { param: { loginName: _this.member.loginName } }
-          );
-        }
-      };
-      this.$store.dispatch("shoppingcart/" + type.ADD_FAVORITE, params);
-    },
-    moveFavorite: function (product) { // 移入收藏
-      var _this = this;
-      if (product.isCollect === "1") { // 已收藏的话就直接移除就行
-        var param = {
-          ids: product.id,
-          cb: function () {
-            if (this.deleteStatus) { // 删除成功以后再重新load购物车数据
+      },
+      /************ 商品列表页 即结算页面 ************/
+      selectActivity (event, product, item) { // 更换活动
+        product.checked = false;
+        this.$forceUpdate();
+        var _this = this;
+        var params = {
+          param: {
+            loginName: this.member.loginName,
+            productId: product.productId,
+            activityId: event.target.value
+          },
+          myCallBack: function () {
+            if (this.changeActivity) {
               _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
-              _this.$message({
-                type: "success",
-                message: "成功移入收藏夹"
-              });
+              window.location.reload();
             } else {
               _this.$message({
                 type: "error",
-                message: "移入收藏夹失败"
+                message: "活动更换失败~"
               });
             }
           }
         };
-        _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
-        return false;
-      }
-      var params = { // 没有收藏过的商品需要先收藏后删除
-        param: {
-          loginName: this.member.loginName,
-          pubId: product.pubId,
-          productId: product.productId,
-          operateType: "0"
-        },
-        myCallback: function () {
-          if (this.favoriteStatus === "00") { // 添加收藏成功
-            var param = {
-              ids: product.id,
-              cb: function () {
-                if (this.deleteStatus) { // 删除成功以后再重新load购物车数据
-                  _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
-                  _this.$message({
-                    type: "success",
-                    message: "成功移入收藏夹"
-                  });
-                } else {
-                  _this.$message({
-                    type: "error",
-                    message: "移入收藏夹失败"
-                  });
-                }
-              }
-            };
-            _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
-          }
+        _this.$store.dispatch("shoppingcart/" + type.CHANGE_ACTIVITY, params);
+      },
+      toogleFixed: function (eleTop, clientHeight, scrollTop) {  // 结算条要始终显示在可视区域
+        if (scrollTop + clientHeight < eleTop) {
+          this.showFixedClearing = true;
+        } else {
+          this.showFixedClearing = false;
         }
-      };
-      this.$store.dispatch("shoppingcart/" + type.ADD_FAVORITE, params);
-    },
-    priceInfo: function () {     // 计算价格变更信息
-      var _this = this;
-      loadPriceChangeInfo();
+      },
+      loadCallBack: function () {   // 一进页面就要通过查询用户之后立即执行的操作 比如：查询商品列表、虚拟币、优惠券
+        var _this = this;
+        var params = {
+          param: {
+            loginName: this.member.loginName
+          },
+          myCallback: function () {
+            var eleTop; // 元素距离窗口最上边的高度
+            var clientHeight; // 屏幕可视高度
+            var scrollTop; // 元素距离窗口最上边的高度
 
-      function loadPriceChangeInfo () {
-        setTimeout(function () {
-          if (_this.productList && _this.productList.length > 0) {
-            var outerLength = _this.productList.length;
-            for (var i = 0; i < outerLength; i++) {
-              var innerLength = _this.productList[i].list.length;
-              for (var j = 0; j < innerLength; j++) { // 判断 现在的价格 小于 加入购物车时的价格
-                var product = _this.productList[i].list[j];
-                if (product.productPrice < product.productPriceIn) {
-                  let priceChange = {};
-                  priceChange.name = product.productName;
-                  priceChange.diffPrice = (parseFloat(product.productPriceIn) - product.productPrice).toFixed(2); // 降了多少
-                  _this.priceChangeList.push(priceChange);
-                }
+            _this.$nextTick(function () {
+              if ($(".normalClearing").length > 0) {
+                _this.elementTop = $($(".normalClearing")[0]).offset().top;
+                clientHeight = $(window)[0].innerHeight;
+                scrollTop = $(window).scrollTop();
+                _this.toogleFixed(_this.elementTop, clientHeight, scrollTop);
+              }
+            });
+          }
+        };
+        // this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, params);              // 购物车商品列表
+        this.$store.dispatch("shoppingcart/" + type.QUERY_VIRTUAL_COIN, this.member.loginName); // 虚拟币数量
+        this.$store.dispatch("shoppingcart/" + type.QUERY_COUPONS, { loginName: this.member.loginName, type: "noUse" }); // 优惠券列表
+      },
+      setRecordOrder: function () {  // 商品列表和订单详情（优惠金额、总数、总价等）要存在 sessionStorage 里面 刷新页面要取
+        // JSON.stringify(this.recordOrder);
+        window.sessionStorage.setItem("recordOrder", Base64.encode(JSON.stringify(this.recordOrder))); // 商品列表
+        window.sessionStorage.setItem("recordOrderDetail", JSON.stringify(this.recordOrderDetail)); // 订单详情
+      },
+      getRecordOrder: function () {  // 取存在 sessionStorage 里面的东西
+        var _this = this;
+        var sessionOrderList = JSON.parse(Base64.decode(window.sessionStorage.getItem("recordOrder"))).recordOrderList;
+        this.allEbook = JSON.parse(window.sessionStorage.getItem("allEbook")); // 电子书状态
+        this.allBook = JSON.parse(window.sessionStorage.getItem("allBook")); // 纸质书状态
+        this.showItem = window.sessionStorage.getItem("showItem"); // 显示状态
+        sessionOrderList.forEach(function (item) {
+          _this.orderList.push(item);
+        });
+        sessionOrderList.forEach(function (items) {
+          if (items.list.length > 0) {
+            _this.selectedOrderList.push(items);
+          }
+        });
+        var tempDetail = JSON.parse(
+          window.sessionStorage.getItem("recordOrderDetail")
+        );
+        _this.orderDetail.totalMoney = tempDetail.totalMoney;
+        _this.orderDetail.totalNum = tempDetail.totalNum;
+        _this.orderDetail.saveAmount = tempDetail.saveAmount;
+        _this.orderDetail.freeFreight = tempDetail.freeFreight;
+        _this.orderDetail.sendPoints = tempDetail.sendPoints;
+        _this.orderDetail.bookTotalMoney = tempDetail.bookTotalMoney;
+        _this.orderDetail.bookSaveMoney = tempDetail.bookSaveMoney;
+        _this.orderDetail.ebookTotalMoney = tempDetail.ebookTotalMoney;
+        _this.orderDetail.ebookSaveMoney = tempDetail.ebookSaveMoney;
+      },
+      deleteProduct: function (id) {  // 删除商品
+        var _this = this;
+        this.$confirm("您确定要删除该商品吗?", "系统提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function () {
+          var param = {
+            ids: id,
+            cb: function () {
+              if (this.deleteStatus) {
+                _this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
+              } else {
+                _this.$message({
+                  type: "error",
+                  message: "删除失败!"
+                });
               }
             }
-          } else {
-            loadPriceChangeInfo();
+          };
+          _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
+        });
+      },
+      selectAll: function () {       // 商品全选操作
+        var _this = this;
+        var data = this.productList;
+        for (var i = 0; i < data.length; i++) {
+          var dataList = data[i].list;
+          for (var j = 0; j < dataList.length; j++) {
+            dataList[j].checked = this.selectedAll;
           }
-        }, 50);
-      }
-    },
-    checkNumber: function (event) { // 购买数量格式校验
-      if (!String.fromCharCode(event.keyCode).match(/\d/)) {
-        event.preventDefault();
-      }
-      if ($(".productNums").val().length > 4) {
-        event.preventDefault();
-      }
-    },
-    checkProductNums: function (product) {
-      var _this = this;
-      if (Number($(".productNums").val()) <= 0) {
-        this.$alert("商品数量必须大于0", "系统提示", {
-          confirmButtonText: "确定",
-          callback: function () {
-            $(".productNums").val(1);
-            _this.changeQuantity(product, 0, 1);
+        }
+        data.forEach(function (data) {
+          data.selectedOne = false;
+          Vue.set(data, "selectedOne", _this.selectedAll);
+        });
+        this.calcTotalMoney();
+      },
+      selectedProduct: function (product, item) { // 选择某个商品
+        item.selectedOne = false; // 默认一个也没有选中
+        this.isSelectAll();
+        this.calcTotalMoney();
+        var list = item.list;
+        list.forEach(function (listItem) {
+          if (listItem.checked === true) {
+            Vue.set(item, "selectedOne", true);
           }
         });
-      } else if (Number($(".productNums").val()) > 200) {
-        this.$alert("商品数量不能大于200", "系统提示", {
-          confirmButtonText: "确定",
-          callback: function () {
-            $(".productNums").val(200);
-            _this.changeQuantity(product, 0, 200);
+      },
+      isSelectAll: function () {    // 判断是否全选
+        var status = true; // 全选与否的状态
+        var data = this.productList;
+        for (var i = 0; i < data.length; i++) {
+          var dataList = data[i].list;
+          for (var j = 0; j < dataList.length; j++) {
+            if (!dataList[j].checked) { // 非全选状态
+              status = false;
+            }
+          }
+        }
+        this.selectedAll = status ? true : false;
+      },
+      calcTotalMoney: function () { // 计算选中商品总价（不参加任何活动的单纯计算）
+        this.calSaveMoney();
+        var totalMoney = 0; // 所有商品总价
+        var totalNum = 0;
+        var data = this.productList;
+        for (var i = 0; i < data.length; i++) {
+          var dataList = data[i].list;
+          for (var j = 0; j < dataList.length; j++) {
+            if (dataList[j].checked) {
+              totalMoney += dataList[j].productPrice * dataList[j].nums; // 不加任何活动时候的总价格
+              totalNum += Number(dataList[j].nums); // 勾选商品总数
+              var list = this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].list; // 把当前勾选中的商品放到他的活动id对应的对象里的list数组里面
+              list.push(dataList[j]); // 整理出来的所有类型活动的商品
+              if (list.length > 0) {
+                var discountType = list[0].discountType; // 满多收钱 + 4种操作：cutMoney discount freeFare sendPoints 外加不参加任何活动
+                var referAmount = list[0].amount; // 满多少 这是减的标准线 超过了才能减 不超过不能减
+                var curTotalMoney = 0; // 某个类型活动的总金额
+                switch (discountType) {
+                  case "cutMoney": // 满多少钱减多少钱
+                    var discountAmount = list[0].discountAmount; // 减多少钱
+                    list.forEach(function (item) {
+                      curTotalMoney += item.productPrice * item.nums;
+                    });
+                    if (dataList[j].discountRule === "fullReduce") { // 一级活动分类：满多少钱 + 4种操作 减钱
+                      if (curTotalMoney >= referAmount) { // 满足满多少钱减多少钱的条件
+                        this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].saveValue = discountAmount;
+                      }
+                    } else if (dataList[j].discountRule === "fixedDiscount") { // 一级活动分类：固定折扣 减钱
+                      this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].saveValue = discountAmount > curTotalMoney ? curTotalMoney : discountAmount;
+                    }
+                    this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].totalPrice = curTotalMoney;
+                    break;
+                  case "discount": // 满多少钱打折
+                    var discountRatio = list[0].discountRatio; // 折扣力度
+                    list.forEach(function (item) {
+                      curTotalMoney += item.productPrice * item.nums; // 总金额
+                    });
+                    if (dataList[j].discountRule === "fullReduce") { // 一级活动分类：满多少钱 + 4种操作 打折
+                      if (curTotalMoney >= referAmount) { // 满足满多少钱打折的条件
+                        this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType].saveValue = curTotalMoney - curTotalMoney * (discountRatio / 100);
+                      } else {
+                        this.selectedProductList[
+                        "activity" +
+                        dataList[j].activityId +
+                        dataList[j].productType
+                          ].saveValue = 0;
+                      }
+                    } else if (dataList[j].discountRule === "fixedDiscount") {
+                      // 一级活动分类：固定折扣 打折
+                      this.selectedProductList[
+                      "activity" +
+                      dataList[j].activityId +
+                      dataList[j].productType
+                        ].saveValue =
+                        curTotalMoney - curTotalMoney * (discountRatio / 100);
+                    }
+                    this.selectedProductList[
+                    "activity" +
+                    dataList[j].activityId +
+                    dataList[j].productType
+                      ].totalPrice = curTotalMoney;
+                    break;
+                  case "freeFare": // 满多少减运费
+                    list.forEach(function (item) {
+                      curTotalMoney += item.productPrice * item.nums;
+                    });
+                    if (dataList[j].discountRule === "fullReduce") {
+                      // 一级活动分类：满多少钱 + 4种操作 免运费
+                      if (curTotalMoney >= referAmount) {
+                        // 满足满多少免运费的条件
+                        this.freeFreight = true;
+                      } else {
+                        this.freeFreight = false;
+                      }
+                    } else if (dataList[j].discountRule === "fixedDiscount") {
+                      // 一级活动分类：固定折扣 免运费
+                      this.freeFreight = true;
+                    }
+                    this.selectedProductList[
+                    "activity" +
+                    dataList[j].activityId +
+                    dataList[j].productType
+                      ].totalPrice = curTotalMoney;
+                    break;
+                  case "sendPoints": //满多少送积分  待定
+                    var points = list[0].points;
+                    var curTotalPoints = 0;
+                    list.forEach(function (item) {
+                      curTotalMoney += item.productPrice * item.nums;
+                    });
+                    if (dataList[j].discountRule === "fullReduce") {
+                      // 一级活动分类：满多少钱 + 4种操作 送积分
+                      if (curTotalMoney >= referAmount) {
+                        // 满足满多少钱送积分的条件
+                        this.selectedProductList[
+                        "activity" +
+                        dataList[j].activityId +
+                        dataList[j].productType
+                          ].sendPoints = points;
+                      } else {
+                        this.selectedProductList[
+                        "activity" +
+                        dataList[j].activityId +
+                        dataList[j].productType
+                          ].sendPoints = 0;
+                      }
+                    } else if (dataList[j].discountRule === "fixedDiscount") {
+                      // 一级活动分类：固定折扣 送积分
+                      this.selectedProductList[
+                      "activity" +
+                      dataList[j].activityId +
+                      dataList[j].productType
+                        ].sendPoints = points;
+                    }
+                    this.selectedProductList[
+                    "activity" +
+                    dataList[j].activityId +
+                    dataList[j].productType
+                      ].totalPrice = curTotalMoney;
+                    break;
+                  default:
+                    // 不参与任何活动的商品
+                    /*console.info('do not participate any activity');*/
+                    this.totalMoney = totalMoney;
+                    this.saveAmount = 0;
+                    list.forEach(function (item) {
+                      curTotalMoney += item.productPrice * item.nums;
+                    });
+                    this.selectedProductList[
+                    "activity" +
+                    dataList[j].activityId +
+                    dataList[j].productType
+                      ].totalPrice = curTotalMoney;
+                }
+              }
+            } else {
+              this.totalMoney = totalMoney;
+            }
+          }
+        }
+        var saveMoneyArray = [];
+        var bookTotalMoneyArray = [];
+        var bookSaveMoneyArray = [];
+        var ebookTotalMoneyArray = [];
+        var ebookSaveMoneyArray = [];
+        var sendPointsArray = [];
+        var _this = this;
+        this.selectedProductListArray.forEach(function (item) {
+          saveMoneyArray.push(item.saveValue);
+          sendPointsArray.push(item.sendPoints); // 积分
+          if (item.productType === _this.bookTypeTag) {
+            // book
+            bookTotalMoneyArray.push(item.totalPrice);
+            bookSaveMoneyArray.push(item.saveValue);
+          } else if (item.productType === _this.ebookTypeTag) {
+            // ebook
+            ebookTotalMoneyArray.push(item.totalPrice);
+            ebookSaveMoneyArray.push(item.saveValue);
           }
         });
-      }
-    },
-    clearing: function () { // 结算：即为初次进入提交订单页面 要将电子书状态、商品列表信息和结算详细信息存在本地
-      var _this = this;
-      var detailParams = {
-        totalMoney: this.totalMoney,
-        totalNum: this.totalNum,
-        saveAmount: this.saveAmount,
-        freeFreight: this.freeFreight,
-        sendPoints: this.sendPoints,
-        bookTotalMoney: this.bookTotalMoney,
-        bookSaveMoney: this.bookSaveMoney,
-        ebookTotalMoney: this.ebookTotalMoney,
-        ebookSaveMoney: this.ebookSaveMoney
-      };
-      this.selectedProductListArray.forEach(function (items) {
-        if (items.list.length > 0) {
-          items.list.forEach(function (item) {
-            _this.orderProductList.push(item);
+        this.saveAmount =
+          saveMoneyArray.length > 0 ? eval(saveMoneyArray.join("+")) : 0;
+        this.bookTotalMoney =
+          bookTotalMoneyArray.length > 0
+            ? eval(bookTotalMoneyArray.join("+"))
+            : 0;
+        this.bookSaveMoney =
+          bookSaveMoneyArray.length > 0 ? eval(bookSaveMoneyArray.join("+")) : 0;
+        this.ebookTotalMoney =
+          ebookTotalMoneyArray.length > 0
+            ? eval(ebookTotalMoneyArray.join("+"))
+            : 0;
+        this.ebookSaveMoney =
+          ebookSaveMoneyArray.length > 0
+            ? eval(ebookSaveMoneyArray.join("+"))
+            : 0;
+        this.sendPoints =
+          sendPointsArray.length > 0 ? eval(sendPointsArray.join("+")) : 0;
+        this.totalMoney = totalMoney - this.saveAmount;
+        this.totalNum = totalNum;
+      },
+      calSaveMoney: function () {   // 计算节省金额
+        this.selectedProductListArray = [];
+        var _this = this;
+        this.productList.forEach(function (item) {
+          // 前端根据后端返回多少种活动来拟好相应的对象 对象是根据活动id命名的 push到选择商品的数组里面   错误点：没有区分电子书和纸质书
+          _this.selectedProductList[
+          "activity" + item.activityId + item.productType
+            ] = {};
+          _this.selectedProductList[
+          "activity" + item.activityId + item.productType
+            ].list = [];
+          _this.selectedProductList[
+          "activity" + item.activityId + item.productType
+            ].saveValue = 0; // 默认初始值 节省 0 元
+          _this.selectedProductList[
+          "activity" + item.activityId + item.productType
+            ].sendPoints = 0; // 送积分 默认值 0 积分
+          _this.selectedProductList[
+          "activity" + item.activityId + item.productType
+            ].totalPrice = 0;
+          _this.selectedProductList[
+          "activity" + item.activityId + item.productType
+            ].productType =
+            item.productType;
+          _this.selectedProductList[
+          "activity" + item.activityId + item.productType
+            ].activityName =
+            item.activityName;
+          _this.selectedProductList[
+          "activity" + item.activityId + item.productType
+            ].activityId =
+            item.activityId;
+          _this.selectedProductListArray.push(
+            _this.selectedProductList[
+            "activity" + item.activityId + item.productType
+              ]
+          );
+        });
+      },
+      changeQuantity: function (product, val, fixedVal) { // 改变纸质书商品数量
+        if (val > 0) {
+          ++product.nums;
+          if (product.nums > 200) { // 防止加过200
+            product.nums = 200;
+            this.$alert("商品数量不能大于200", "系统提示", {
+              confirmButtonText: "确定"
+            });
+          }
+        } else if (val < 0) {
+          product.nums--;
+          if (product.nums < 1) { // 防止减到0
+            product.nums = 1;
+          }
+        }
+        if (fixedVal) { // 手动输入固定值
+          product.nums = fixedVal;
+        }
+        this.calcTotalMoney();
+        var changeCountParams = {
+          productId: product.productId,
+          number: product.nums,
+          loginName: this.member.loginName
+        };
+        this.$store.dispatch(
+          "shoppingcart/" + type.CHANGE_PRODUCT_COUNT,
+          changeCountParams
+        );
+        var tempLength = 0;
+        for (var i = 0; i < this.productList.length; i++) {
+          for (var j = 0; j < this.productList[i].list.length; j++) {
+            tempLength += this.productList[i].list[j].nums;
+          }
+        }
+        this.$store.dispatch("login/getTotalAmount", tempLength);
+      },
+      addFavorite: function (product) {  // 添加收藏
+        var _this = this;
+        var params = {
+          param: {
+            loginName: this.member.loginName,
+            pubId: product.pubId,
+            productId: product.productId,
+            operateType: "0"
+          },
+          myCallback: function () {
+            if (this.favoriteStatus === "00") {
+              _this.$message({
+                message: "收藏成功",
+                type: "success"
+              });
+            } else if (this.favoriteStatus === "000") {
+              _this.$message({
+                message: "取消收藏成功",
+                type: "success"
+              });
+            }
+            _this.$store.dispatch(
+              "shoppingcart/" + type.QUERY_SHOPPING_CART,
+              { param: { loginName: _this.member.loginName } }
+            );
+          }
+        };
+        this.$store.dispatch("shoppingcart/" + type.ADD_FAVORITE, params);
+      },
+      moveFavorite: function (product) { // 移入收藏
+        var _this = this;
+        if (product.isCollect === "1") { // 已收藏的话就直接移除就行
+          var param = {
+            ids: product.id,
+            cb: function () {
+              if (this.deleteStatus) { // 删除成功以后再重新load购物车数据
+                _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
+                _this.$message({
+                  type: "success",
+                  message: "成功移入收藏夹"
+                });
+              } else {
+                _this.$message({
+                  type: "error",
+                  message: "移入收藏夹失败"
+                });
+              }
+            }
+          };
+          _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
+          return false;
+        }
+        var params = { // 没有收藏过的商品需要先收藏后删除
+          param: {
+            loginName: this.member.loginName,
+            pubId: product.pubId,
+            productId: product.productId,
+            operateType: "0"
+          },
+          myCallback: function () {
+            if (this.favoriteStatus === "00") { // 添加收藏成功
+              var param = {
+                ids: product.id,
+                cb: function () {
+                  if (this.deleteStatus) { // 删除成功以后再重新load购物车数据
+                    _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
+                    _this.$message({
+                      type: "success",
+                      message: "成功移入收藏夹"
+                    });
+                  } else {
+                    _this.$message({
+                      type: "error",
+                      message: "移入收藏夹失败"
+                    });
+                  }
+                }
+              };
+              _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
+            }
+          }
+        };
+        this.$store.dispatch("shoppingcart/" + type.ADD_FAVORITE, params);
+      },
+      priceInfo: function () {     // 计算价格变更信息
+        var _this = this;
+        loadPriceChangeInfo();
+
+        function loadPriceChangeInfo () {
+          setTimeout(function () {
+            if (_this.productList && _this.productList.length > 0) {
+              var outerLength = _this.productList.length;
+              for (var i = 0; i < outerLength; i++) {
+                var innerLength = _this.productList[i].list.length;
+                for (var j = 0; j < innerLength; j++) { // 判断 现在的价格 小于 加入购物车时的价格
+                  var product = _this.productList[i].list[j];
+                  if (product.productPrice < product.productPriceIn) {
+                    let priceChange = {};
+                    priceChange.name = product.productName;
+                    priceChange.diffPrice = (parseFloat(product.productPriceIn) - product.productPrice).toFixed(2); // 降了多少
+                    _this.priceChangeList.push(priceChange);
+                  }
+                }
+              }
+            } else {
+              loadPriceChangeInfo();
+            }
+          }, 50);
+        }
+      },
+      checkNumber: function (event) { // 购买数量格式校验
+        if (!String.fromCharCode(event.keyCode).match(/\d/)) {
+          event.preventDefault();
+        }
+        if ($(".productNums").val().length > 4) {
+          event.preventDefault();
+        }
+      },
+      checkProductNums: function (product) {
+        var _this = this;
+        if (Number($(".productNums").val()) <= 0) {
+          this.$alert("商品数量必须大于0", "系统提示", {
+            confirmButtonText: "确定",
+            callback: function () {
+              $(".productNums").val(1);
+              _this.changeQuantity(product, 0, 1);
+            }
+          });
+        } else if (Number($(".productNums").val()) > 200) {
+          this.$alert("商品数量不能大于200", "系统提示", {
+            confirmButtonText: "确定",
+            callback: function () {
+              $(".productNums").val(200);
+              _this.changeQuantity(product, 0, 200);
+            }
           });
         }
-      });
-      if (this.orderProductList.length > 0) {
-        this.$store.dispatch(
-          "shoppingcart/" + type.QUERY_ORDER_PRODUCT,
-          this.selectedProductListArray
-        );
-        this.$store.dispatch(
-          "shoppingcart/" + type.QUERY_ORDER_DETAIL,
-          detailParams
-        );
-        this.showItem = "showOrderWrapper";
-        window.location.hash = "/myOrder/" + this.member.loginName;
-        window.sessionStorage.setItem("showItem", this.showItem); // 显示状态
-        if (this.deliveryList.length > 0) {
-          this.selectedDelivery = JSON.parse(
-            JSON.stringify(this.deliveryList[0])
+      },
+      clearing: function () { // 结算：即为初次进入提交订单页面 要将电子书状态、商品列表信息和结算详细信息存在本地
+        var _this = this;
+        var detailParams = {
+          totalMoney: this.totalMoney,
+          totalNum: this.totalNum,
+          saveAmount: this.saveAmount,
+          freeFreight: this.freeFreight,
+          sendPoints: this.sendPoints,
+          bookTotalMoney: this.bookTotalMoney,
+          bookSaveMoney: this.bookSaveMoney,
+          ebookTotalMoney: this.ebookTotalMoney,
+          ebookSaveMoney: this.ebookSaveMoney
+        };
+        this.selectedProductListArray.forEach(function (items) {
+          if (items.list.length > 0) {
+            items.list.forEach(function (item) {
+              _this.orderProductList.push(item);
+            });
+          }
+        });
+        if (this.orderProductList.length > 0) {
+          this.$store.dispatch(
+            "shoppingcart/" + type.QUERY_ORDER_PRODUCT,
+            this.selectedProductListArray
           );
-        }
-        if (this.freeFreight) {
-          this.selectedDelivery.deliveryPrice = 0;
-        }
-      } else {
-        this.showZeroTips = true;
-        setTimeout(function () {
-          _this.showZeroTips = false;
-        }, 2000);
-        return false; // 当一件商品也没有选择
-      }
-      this.orderList.forEach(function (item) {
-        if (item.list.length > 0) {
-          if (item.productType === _this.bookTypeTag) {
-            // 纸质书
-            _this.allEbook = false;
+          this.$store.dispatch(
+            "shoppingcart/" + type.QUERY_ORDER_DETAIL,
+            detailParams
+          );
+          this.showItem = "showOrderWrapper";
+          window.location.hash = "/myOrder/" + this.member.loginName;
+          window.sessionStorage.setItem("showItem", this.showItem); // 显示状态
+          if (this.deliveryList.length > 0) {
+            this.selectedDelivery = JSON.parse(
+              JSON.stringify(this.deliveryList[0])
+            );
           }
-          if (item.productType === _this.ebookTypeTag) {
-            // 电子书
-            _this.allBook = false;
+          if (this.freeFreight) {
+            this.selectedDelivery.deliveryPrice = 0;
           }
-          window.sessionStorage.setItem(
-            "allEbook",
-            JSON.stringify(_this.allEbook)
-          ); // 电子书状态
-          window.sessionStorage.setItem(
-            "allBook",
-            JSON.stringify(_this.allBook)
-          ); // 纸质书状态
+        } else {
+          this.showZeroTips = true;
+          setTimeout(function () {
+            _this.showZeroTips = false;
+          }, 2000);
+          return false; // 当一件商品也没有选择
         }
-      });
-      this.setRecordOrder();
-      this.dealCouponStyle();
-    },
-    dealCouponStyle: function () { // 优惠券高亮处理
-      /**
+        this.orderList.forEach(function (item) {
+          if (item.list.length > 0) {
+            if (item.productType === _this.bookTypeTag) {
+              // 纸质书
+              _this.allEbook = false;
+            }
+            if (item.productType === _this.ebookTypeTag) {
+              // 电子书
+              _this.allBook = false;
+            }
+            window.sessionStorage.setItem(
+              "allEbook",
+              JSON.stringify(_this.allEbook)
+            ); // 电子书状态
+            window.sessionStorage.setItem(
+              "allBook",
+              JSON.stringify(_this.allBook)
+            ); // 纸质书状态
+          }
+        });
+        this.setRecordOrder();
+        this.dealCouponStyle();
+      },
+      dealCouponStyle: function () { // 优惠券高亮处理
+        /**
          * 优惠券高亮与否的处理 2017/12/6
          * 优惠券分三种：折扣 discountRate、固定抵扣 deduction、满xx减xx fullCut
          * 已参加活动的商品不能再使用优惠券
          * 没有参加活动的商品按 类型（book/ebook） 和 分类 （JAVA/C/...）重新组合
          **/
-      var _this = this;
-      var couponsProductWrapper = {}; // 按 类型 和 分类 重新组合的商品列表
-      this.orderList.forEach(function (item) {
-        if (
-          item.activityId === "0" &&
-          item.activityName === "" &&
-          item.list.length > 0
-        ) {
-          // 没有参加活动的商品
-          item.list.forEach(function (pro) {
-            if (
-              !(
-                couponsProductWrapper[item.productType + "-" + pro.catId] &&
-                couponsProductWrapper[item.productType + "-" + pro.catId]
-                  .length > 0
-              )
-            ) {
-              couponsProductWrapper[item.productType + "-" + pro.catId] = [];
-            }
-            couponsProductWrapper[item.productType + "-" + pro.catId].push(pro);
-          });
-        }
-      });
-      /*console.log(this.orderList);  // 已选商品列表
-        console.log(this.couponsList);// 优惠券列表*/
-      /*let couponsProduct = '';*/
-      this.couponsList.forEach(function (coupon) {
-        var couponsType = [];
-        var type =
-          coupon.couponRange === "book"
-            ? _this.bookTypeTag
-            : _this.ebookTypeTag;
-        var idWrapper = coupon.classifyId.split(",");
-        for (var i = 0; i < idWrapper.length; i++) {
-          couponsType.push(type + "-" + idWrapper[i]);
-        }
-        for (let couponsProduct in couponsProductWrapper) {
-          var ind = couponsType.join().indexOf(couponsProduct);
-          if (ind !== -1) {
-            var couponsProductLists = couponsProductWrapper[couponsProduct]; // 能使用优惠券的商品列表
-            if (
-              !(
-                _this.couponProductListWrapper[coupon.type] &&
-                _this.couponProductListWrapper[coupon.type].length > 0
-              )
-            ) {
-              _this.couponProductListWrapper[coupon.type] = [];
-            }
-            _this.couponProductListWrapper[coupon.type].push(
-              couponsProductLists
-            );
-            if (coupon.type === "deduction" || coupon.type === "discountRate") {
-              // 固定抵扣 和 折扣 没有总金额限制
-              coupon.isAvailablesm = true;
-            } else if (coupon.type === "fullCut") {
-              // 满xx减xx 有总金额的限制
-              var fullAmount = 0; // 能使用满减优惠券商品的总金额
-              couponsProductLists.forEach(function (full) {
-                fullAmount += full.nums * full.productPrice;
-              });
-              if (fullAmount >= coupon.fullPrice) {
-                // 符合满减条件
+        var _this = this;
+        var couponsProductWrapper = {}; // 按 类型 和 分类 重新组合的商品列表
+        this.orderList.forEach(function (item) {
+          if (
+            item.activityId === "0" &&
+            item.activityName === "" &&
+            item.list.length > 0
+          ) {
+            // 没有参加活动的商品
+            item.list.forEach(function (pro) {
+              if (
+                !(
+                  couponsProductWrapper[item.productType + "-" + pro.catId] &&
+                  couponsProductWrapper[item.productType + "-" + pro.catId]
+                    .length > 0
+                )
+              ) {
+                couponsProductWrapper[item.productType + "-" + pro.catId] = [];
+              }
+              couponsProductWrapper[item.productType + "-" + pro.catId].push(pro);
+            });
+          }
+        });
+        /*console.log(this.orderList);  // 已选商品列表
+          console.log(this.couponsList);// 优惠券列表*/
+        /*let couponsProduct = '';*/
+        this.couponsList.forEach(function (coupon) {
+          var couponsType = [];
+          var type =
+            coupon.couponRange === "book"
+              ? _this.bookTypeTag
+              : _this.ebookTypeTag;
+          var idWrapper = coupon.classifyId.split(",");
+          for (var i = 0; i < idWrapper.length; i++) {
+            couponsType.push(type + "-" + idWrapper[i]);
+          }
+          for (let couponsProduct in couponsProductWrapper) {
+            var ind = couponsType.join().indexOf(couponsProduct);
+            if (ind !== -1) {
+              var couponsProductLists = couponsProductWrapper[couponsProduct]; // 能使用优惠券的商品列表
+              if (
+                !(
+                  _this.couponProductListWrapper[coupon.type] &&
+                  _this.couponProductListWrapper[coupon.type].length > 0
+                )
+              ) {
+                _this.couponProductListWrapper[coupon.type] = [];
+              }
+              _this.couponProductListWrapper[coupon.type].push(
+                couponsProductLists
+              );
+              if (coupon.type === "deduction" || coupon.type === "discountRate") {
+                // 固定抵扣 和 折扣 没有总金额限制
                 coupon.isAvailablesm = true;
+              } else if (coupon.type === "fullCut") {
+                // 满xx减xx 有总金额的限制
+                var fullAmount = 0; // 能使用满减优惠券商品的总金额
+                couponsProductLists.forEach(function (full) {
+                  fullAmount += full.nums * full.productPrice;
+                });
+                if (fullAmount >= coupon.fullPrice) {
+                  // 符合满减条件
+                  coupon.isAvailablesm = true;
+                }
               }
             }
           }
-        }
-      });
-    },
-    /************ 提交订单页面 ************/
-    getDeliveryAddress (data) {  // 接收收货地址信息
-      this.curSelectedAddress = data;
-    },
-    getInvoiceInfo (data) {      // 接收发票信息
-      this.curSelectedInvoice = data;
-    },
-    selectCoupon: function (item, index) {  // 选择某个可用优惠券
-      debugger
-      if (this.couponProductListWrapper[item.type]) {
-        this.selectedCouponsPassword = item.password;
-        var couponProductList = this.couponProductListWrapper[item.type][0];
-        var fullAmount = 0; // 能使用满减优惠券商品的总金额
-        couponProductList.forEach(function (list) {
-          fullAmount += list.nums * list.productPrice;
         });
-        if (item.type === "deduction") {
-          this.couponSaveMoney =
-            fullAmount >= item.cprice ? item.cprice : fullAmount;
-        } else if (item.type === "discountRate") {
-          this.couponSaveMoney =
-            Math.round((fullAmount - fullAmount * item.cprice) * 100) / 100;
-        } else if (item.type === "fullCut") {
-          this.couponSaveMoney = item.cprice;
+      },
+      /************ 提交订单页面 ************/
+      getDeliveryAddress (data) {  // 接收收货地址信息
+        this.curSelectedAddress = data;
+      },
+      getInvoiceInfo (data) {      // 接收发票信息
+        this.curSelectedInvoice = data;
+      },
+      selectCoupon: function (item, index) {  // 选择某个可用优惠券
+        debugger;
+        if (this.couponProductListWrapper[item.type]) {
+          this.selectedCouponsPassword = item.password;
+          var couponProductList = this.couponProductListWrapper[item.type][0];
+          var fullAmount = 0; // 能使用满减优惠券商品的总金额
+          couponProductList.forEach(function (list) {
+            fullAmount += list.nums * list.productPrice;
+          });
+          if (item.type === "deduction") {
+            this.couponSaveMoney =
+              fullAmount >= item.cprice ? item.cprice : fullAmount;
+          } else if (item.type === "discountRate") {
+            this.couponSaveMoney =
+              Math.round((fullAmount - fullAmount * item.cprice) * 100) / 100;
+          } else if (item.type === "fullCut") {
+            this.couponSaveMoney = item.cprice;
+          }
+        } else {
+          /*console.log("该优惠券是不能使用的优惠券");*/
+          return false;
         }
-      } else {
-        /*console.log("该优惠券是不能使用的优惠券");*/
-        return false;
-      }
-      if (item.couponRange === "ebook") {
-        // 电子书
-        this.orderDetail.ebookSaveMoney =
-          JSON.parse(window.sessionStorage.getItem("recordOrderDetail"))
-            .ebookSaveMoney + this.couponSaveMoney;
-      } else {
-        // 纸质书
-        this.orderDetail.bookSaveMoney =
-          JSON.parse(window.sessionStorage.getItem("recordOrderDetail"))
-            .bookSaveMoney + this.couponSaveMoney;
-      }
-      /*this.orderDetail.saveAmount = JSON.parse(window.sessionStorage.getItem('recordOrderDetail')).saveAmount + this.couponSaveMoney;*/
-      /**
+        if (item.couponRange === "ebook") {
+          // 电子书
+          this.orderDetail.ebookSaveMoney =
+            JSON.parse(window.sessionStorage.getItem("recordOrderDetail"))
+              .ebookSaveMoney + this.couponSaveMoney;
+        } else {
+          // 纸质书
+          this.orderDetail.bookSaveMoney =
+            JSON.parse(window.sessionStorage.getItem("recordOrderDetail"))
+              .bookSaveMoney + this.couponSaveMoney;
+        }
+        /*this.orderDetail.saveAmount = JSON.parse(window.sessionStorage.getItem('recordOrderDetail')).saveAmount + this.couponSaveMoney;*/
+        /**
          * ebookSaveMoney 电子书节省金额
          * bookSaveMoney  纸质书节省金额
          * saveAmount     总节省金额
          * 当且仅当没有用优惠券时  saveAmount === ebookSaveMoney + bookSaveMoney
          * 用了优惠券  ebookSaveMoney/bookSaveMoney === 商品本身活动优惠 + 优惠券优惠
          **/
-    },
-    showCancelBtn: function (password) {    // 可用优惠券上鼠标移入会出现取消选择按钮
-      if (this.selectedCouponsPassword === password) {
-        this.showCancelCoupons = true;
-      }
-    },
-    hideCancelBtn: function (password) {    // 可用优惠券上鼠标移出会隐藏取消选择按钮
-      if (this.selectedCouponsPassword === password) {
-        this.showCancelCoupons = false;
-      }
-    },
-    cancelCouponsEve: function (item) {     // 取消优惠券的选择
-      this.selectedCouponsPassword = "";
-      this.couponSaveMoney = 0;
-      if (item.couponRange === "ebook") { // 电子书
-        this.orderDetail.ebookSaveMoney = JSON.parse(window.sessionStorage.getItem("recordOrderDetail")).ebookSaveMoney + this.couponSaveMoney;
-      } else { // 纸质书
-        this.orderDetail.bookSaveMoney = JSON.parse(window.sessionStorage.getItem("recordOrderDetail")).bookSaveMoney + this.couponSaveMoney;
-      }
-      this.orderDetail.saveAmount = JSON.parse(window.sessionStorage.getItem("recordOrderDetail")).saveAmount + this.couponSaveMoney;
-    },
-    selectDelivery: function (item) {  // 选择快递方式
-      this.selectedDelivery = item;
-      var tempFreight = JSON.parse(
-        window.sessionStorage.getItem("recordOrderDetail")
-      );
-      if ((tempFreight && tempFreight.freeFreight) || this.freeFreight) {
-        this.selectedDelivery.deliveryPrice = 0;
-      }
-    },
-    selectPayWay: function (item, index) { // 选择支付方式
-      this.payWay = index;
-      this.payMethod = item.id + "";
-    },
-    commitOrder: function () {        // 最终提交订单
-      var _this = this;
-      var temp = [];
-      this.selectedOrderList.forEach(function (item) {
-        temp.push(item);
-      });
-      if (this.curSelectedAddress === null && this.allEbook === false) { // 没有填写地址情况
-        _this.$message({
-          type: "error",
-          message: "收货地址不得为空噢~"
+      },
+      showCancelBtn: function (password) {    // 可用优惠券上鼠标移入会出现取消选择按钮
+        if (this.selectedCouponsPassword === password) {
+          this.showCancelCoupons = true;
+        }
+      },
+      hideCancelBtn: function (password) {    // 可用优惠券上鼠标移出会隐藏取消选择按钮
+        if (this.selectedCouponsPassword === password) {
+          this.showCancelCoupons = false;
+        }
+      },
+      cancelCouponsEve: function (item) {     // 取消优惠券的选择
+        this.selectedCouponsPassword = "";
+        this.couponSaveMoney = 0;
+        if (item.couponRange === "ebook") { // 电子书
+          this.orderDetail.ebookSaveMoney = JSON.parse(window.sessionStorage.getItem("recordOrderDetail")).ebookSaveMoney + this.couponSaveMoney;
+        } else { // 纸质书
+          this.orderDetail.bookSaveMoney = JSON.parse(window.sessionStorage.getItem("recordOrderDetail")).bookSaveMoney + this.couponSaveMoney;
+        }
+        this.orderDetail.saveAmount = JSON.parse(window.sessionStorage.getItem("recordOrderDetail")).saveAmount + this.couponSaveMoney;
+      },
+      selectDelivery: function (item) {  // 选择快递方式
+        this.selectedDelivery = item;
+        var tempFreight = JSON.parse(
+          window.sessionStorage.getItem("recordOrderDetail")
+        );
+        if ((tempFreight && tempFreight.freeFreight) || this.freeFreight) {
+          this.selectedDelivery.deliveryPrice = 0;
+        }
+      },
+      selectPayWay: function (item, index) { // 选择支付方式
+        this.payWay = index;
+        this.payMethod = item.id + "";
+      },
+      commitOrder: function () {        // 最终提交订单
+        var _this = this;
+        var temp = [];
+        this.selectedOrderList.forEach(function (item) {
+          temp.push(item);
         });
-        return false;
-      }
-      // var payremark = $("#payremark").find("input").val();
-      // 订单备注信息
-      var curRealAmount = Number($(".payTotalAmount")[0].innerHTML.replace("¥ ", "")); // 应付金额
-      if (this.needInvoice === "0") {
-        this.curSelectedInvoice = {
-          invoiceType: "",  // 发票类型
-          receipttypes: "",
-          receiptType: "",  // 1:个人  2:单位
-          receiptId: "",    // 普通发票的明细  默认显示明细
-          receiptTitle: "", // 发票抬头：个人 / 公司名称
-          taxpayerCode: "", // 纳税人识别号
-          companyAddress: "", // 公司住址
-          companyPhone: "",   // 公司联系方式
-          bankName: "",       // 开户银行
-          bankAccount: ""     // 开户账号
-        };
-      }
-      var params = {
-        param: {
-          balanceAmount: this.$store.state.shoppingcart.rmbCoin, // 使用虚拟币抵扣金额
-          createTime: null,
-          deliveryAddress: this.curSelectedAddress ? this.curSelectedAddress.province + this.curSelectedAddress.city + this.curSelectedAddress.county + this.curSelectedAddress.address : "",
-          deliveryContact: this.curSelectedAddress ? this.curSelectedAddress.phone : "",
-          deliveryPerson: this.curSelectedAddress ? this.curSelectedAddress.contactor : "",
-          deliveryPrice: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.deliveryPrice, // 运费
-          deliveryRemark: "",
-          deliveryType: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.methods, // 运输方式
-          discountAmount: this.orderDetail.saveAmount, // 商品各种活动优惠 不包含免运费的活动
-          id: 0,
-          isReceipt: "1",
-          loginName: this.member.loginName,
-          orderCode: "",
-          payAmount: this.allEbook === true && this.needInvoice === "0" ? this.orderDetail.totalMoney + this.orderDetail.saveAmount : this.orderDetail.totalMoney + this.orderDetail.saveAmount + this.selectedDelivery.deliveryPrice, // 应付金额 = 商品总价 + 运费
-          payCode: "",
-          payMethod: this.payMethod, // 支付方式： 0 微信支付 1 支付宝支付
-          payRemark: this.payremark, // 订单备注
-          payStatus: "",
-          payTime: null,
-          payType: 1, // 0线下支付  1在线支付
-          payUser: "",
-          realAmount: curRealAmount, // 实付金额 = 商品总价 + 运费 - 商品各种活动优惠 - 使用虚拟币抵扣金额
-          receiptId:
-          this.curSelectedInvoice.receiptType == 1 ? this.curSelectedInvoice.receiptId : "",
-          receiptType: this.curSelectedInvoice.receiptType,
-          receiptTitle:
-          this.curSelectedInvoice.receiptType == 1
-            ? "个人"
-            : this.curSelectedInvoice.receiptTitle,
-          taxpayerCode: this.curSelectedInvoice.taxpayerCode,
-          companyAddress: this.curSelectedInvoice.companyAddress,
-          companyPhone: this.curSelectedInvoice.companyPhone,
-          bankName: this.curSelectedInvoice.bankName,
-          bankAccount: this.curSelectedInvoice.bankAccount,
-          remark: "",
-          siteId: SITE_CONFIG.siteId,
-          splitOrderList: temp,
-          totalPrice: this.orderDetail.totalMoney + this.orderDetail.saveAmount, // 商品总价（不含优惠运费）
-          couponsOrder: this.selectedCouponsPassword, // 优惠券的密码 如果有两张 以数组形式传递
-          point: this.orderDetail.sendPoints
-        },
-        myCallback: function () {
-          var argus = {
-            orderId: _this.commitInfo.orderId,
-            orderCode: _this.commitInfo.orderCode,
-            status: _this.commitInfo.status, // 订单状态
-            payMethodId: _this.commitInfo.payMethodId,
-            paymentType: _this.commitInfo.paymentType // true需要跳转 false不需要
+        if (this.curSelectedAddress === null && this.allEbook === false) { // 没有填写地址情况
+          _this.$message({
+            type: "error",
+            message: "收货地址不得为空噢~"
+          });
+          return false;
+        }
+        // var payremark = $("#payremark").find("input").val();
+        // 订单备注信息
+        var curRealAmount = Number($(".payTotalAmount")[0].innerHTML.replace("¥ ", "")); // 应付金额
+        if (this.needInvoice === "0") {
+          this.curSelectedInvoice = {
+            invoiceType: "",  // 发票类型
+            receipttypes: "",
+            receiptType: "",  // 1:个人  2:单位
+            receiptId: "",    // 普通发票的明细  默认显示明细
+            receiptTitle: "", // 发票抬头：个人 / 公司名称
+            taxpayerCode: "", // 纳税人识别号
+            companyAddress: "", // 公司住址
+            companyPhone: "",   // 公司联系方式
+            bankName: "",       // 开户银行
+            bankAccount: ""     // 开户账号
           };
+        }
+        var params = {
+          param: {
+            balanceAmount: this.$store.state.shoppingcart.rmbCoin, // 使用虚拟币抵扣金额
+            createTime: null,
+            deliveryAddress: this.curSelectedAddress ? this.curSelectedAddress.province + this.curSelectedAddress.city + this.curSelectedAddress.county + this.curSelectedAddress.address : "",
+            deliveryContact: this.curSelectedAddress ? this.curSelectedAddress.phone : "",
+            deliveryPerson: this.curSelectedAddress ? this.curSelectedAddress.contactor : "",
+            deliveryPrice: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.deliveryPrice, // 运费
+            deliveryRemark: "",
+            deliveryType: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.methods, // 运输方式
+            discountAmount: this.orderDetail.saveAmount, // 商品各种活动优惠 不包含免运费的活动
+            id: 0,
+            isReceipt: "1",
+            loginName: this.member.loginName,
+            orderCode: "",
+            payAmount: this.allEbook === true && this.needInvoice === "0" ? this.orderDetail.totalMoney + this.orderDetail.saveAmount : this.orderDetail.totalMoney + this.orderDetail.saveAmount + this.selectedDelivery.deliveryPrice, // 应付金额 = 商品总价 + 运费
+            payCode: "",
+            payMethod: this.payMethod, // 支付方式： 0 微信支付 1 支付宝支付
+            payRemark: this.payremark, // 订单备注
+            payStatus: "",
+            payTime: null,
+            payType: 1, // 0线下支付  1在线支付
+            payUser: "",
+            realAmount: curRealAmount, // 实付金额 = 商品总价 + 运费 - 商品各种活动优惠 - 使用虚拟币抵扣金额
+            receiptId:
+              this.curSelectedInvoice.receiptType == 1 ? this.curSelectedInvoice.receiptId : "",
+            receiptType: this.curSelectedInvoice.receiptType,
+            receiptTitle:
+              this.curSelectedInvoice.receiptType == 1
+                ? "个人"
+                : this.curSelectedInvoice.receiptTitle,
+            taxpayerCode: this.curSelectedInvoice.taxpayerCode,
+            companyAddress: this.curSelectedInvoice.companyAddress,
+            companyPhone: this.curSelectedInvoice.companyPhone,
+            bankName: this.curSelectedInvoice.bankName,
+            bankAccount: this.curSelectedInvoice.bankAccount,
+            remark: "",
+            siteId: SITE_CONFIG.siteId,
+            splitOrderList: temp,
+            totalPrice: this.orderDetail.totalMoney + this.orderDetail.saveAmount, // 商品总价（不含优惠运费）
+            couponsOrder: this.selectedCouponsPassword, // 优惠券的密码 如果有两张 以数组形式传递
+            point: this.orderDetail.sendPoints
+          },
+          myCallback: function () {
+            var argus = {
+              orderId: _this.commitInfo.orderId,
+              orderCode: _this.commitInfo.orderCode,
+              status: _this.commitInfo.status, // 订单状态
+              payMethodId: _this.commitInfo.payMethodId,
+              paymentType: _this.commitInfo.paymentType // true需要跳转 false不需要
+            };
 
-          if (this.commitInfo.submitStatus) {
-            // 提交成功
-            if (_this.commitInfo.paymentType) {
-              // 需要跳转支付宝支付/微信扫描二维码页面
-              if (_this.payMethod === "1") {
-                // 支付宝支付
+            if (this.commitInfo.submitStatus) {
+              // 提交成功
+              if (_this.commitInfo.paymentType) {
+                // 需要跳转支付宝支付/微信扫描二维码页面
+                if (_this.payMethod === "1") {
+                  // 支付宝支付
+                  loadingTag.close();
+                  window.open(
+                    BASE_URL +
+                    "/epay/getPayForm.do?orderId=" +
+                    argus.orderId +
+                    "&loginName=" +
+                    _this.member.loginName +
+                    "&payMethodId=" +
+                    argus.payMethodId,
+                    "_self"
+                  );
+                } else if (_this.payMethod === "0") {
+                  // 微信支付
+                  axios.get(
+                    BASE_URL +
+                    "/epay/getPayForm.do?orderId=" +
+                    argus.orderId +
+                    "&loginName=" +
+                    _this.member.loginName +
+                    "&payMethodId=" +
+                    argus.payMethodId
+                  )
+                    .then(function (response) {
+                      var data = response.data.substring(
+                        response.data.indexOf("<a>") + 3,
+                        response.data.indexOf("</a>")
+                      );
+                      var orderCode = response.data.substring(
+                        response.data.indexOf("<div>") + 5,
+                        response.data.indexOf("</div>")
+                      );
+                      window.location.href =
+                        "../pages/qrcode.html?data=" +
+                        data +
+                        "&orderCode=" +
+                        orderCode;
+                      loadingTag.close();
+                    });
+                }
+                window.history.pushState(
+                  null,
+                  null,
+                  "../pages/errorpage.html"
+                ); // 添加历史记录
+              } else {
+                // 不需要跳转支付页面 实付金额为0
                 loadingTag.close();
-                window.open(
-                  BASE_URL +
-                  "/epay/getPayForm.do?orderId=" +
-                  argus.orderId +
-                  "&loginName=" +
-                  _this.member.loginName +
-                  "&payMethodId=" +
-                  argus.payMethodId,
-                  "_self"
-                );
-              } else if (_this.payMethod === "0") {
-                // 微信支付
-                axios.get(
-                  BASE_URL +
-                  "/epay/getPayForm.do?orderId=" +
-                  argus.orderId +
-                  "&loginName=" +
-                  _this.member.loginName +
-                  "&payMethodId=" +
-                  argus.payMethodId
-                )
-                  .then(function (response) {
-                    var data = response.data.substring(
-                      response.data.indexOf("<a>") + 3,
-                      response.data.indexOf("</a>")
-                    );
-                    var orderCode = response.data.substring(
-                      response.data.indexOf("<div>") + 5,
-                      response.data.indexOf("</div>")
-                    );
-                    window.location.href =
-                      "../pages/qrcode.html?data=" +
-                      data +
-                      "&orderCode=" +
-                      orderCode;
-                    loadingTag.close();
-                  });
+                window.location.href =
+                  "../pages/commitorder.html#/commitOrder/" +
+                  _this.commitInfo.orderCode +
+                  "/" +
+                  _this.commitInfo.status +
+                  "/order";
               }
-              window.history.pushState(
-                null,
-                null,
-                "../pages/errorpage.html"
-              ); // 添加历史记录
             } else {
-              // 不需要跳转支付页面 实付金额为0
+              // 提交失败
               loadingTag.close();
-              window.location.href =
-                "../pages/commitorder.html#/commitOrder/" +
-                _this.commitInfo.orderCode +
-                "/" +
-                _this.commitInfo.status +
-                "/order";
+              var errorMsg = this.commitInfo.errMsg
+                ? this.commitInfo.errMsg
+                : "订单提交有误";
+              _this.$alert(errorMsg, "系统提示", {
+                confirmButtonText: "确定"
+              });
             }
-          } else {
-            // 提交失败
-            loadingTag.close();
-            var errorMsg = this.commitInfo.errMsg
-              ? this.commitInfo.errMsg
-              : "订单提交有误";
-            _this.$alert(errorMsg, "系统提示", {
-              confirmButtonText: "确定"
+          }
+        };
+        this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
+        let loadingTag = _this.$loading({ fullscreen: true });
+      },
+      getRmbCoin: function () {         // input框内容变化事件  实时兑换虚拟币为人民币
+        var _this = this;
+        if ($("#virtualCoin").val() == "") { // 清空输入框
+          _this.$store.state.shoppingcart.rmbCoin = 0;
+          return false;
+        }
+        var virtual = Number($("#virtualCoin").val());
+        if (virtual > _this.virtualCoin) {
+          _this.$alert("虚拟币不足~", "系统提示", {
+            confirmButtonText: "确定"
+          });
+          _this.$store.state.shoppingcart.rmbCoin = _this.virtualCoin;
+          virtual = _this.virtualCoin;
+          $("#virtualCoin").val(_this.virtualCoin);
+        }
+        var params = {
+          param: virtual,
+          myCallbacks: function () {
+            if (this.rmbCoin) {  // 虚拟币兑换成功
+              var payAmount = _this.orderDetail.totalMoney + _this.selectedDelivery.deliveryPrice; // 默认实付=应付-优惠活动+运费
+              if (_this.allEbook && _this.needInvoice === "0") {
+                // 全是电子书并且不需要发票
+                payAmount = _this.orderDetail.bookTotalMoney + _this.orderDetail.ebookTotalMoney - _this.orderDetail.bookSaveMoney - _this.orderDetail.ebookSaveMoney;
+              }
+              if (this.rmbCoin < 0){
+                _this.$alert("虚拟币优惠数额须大于0噢~", "系统提示", {
+                  confirmButtonText: "确定"
+                });
+              }
+              if (this.rmbCoin > payAmount) {
+                _this.$alert("虚拟币优惠数额不得大于实付金额噢~", "系统提示", {
+                  confirmButtonText: "确定"
+                });
+                var rate = $("#virtualCoin").val() / _this.$store.state.shoppingcart.rmbCoin.toFixed(3); // 计算转换率
+                _this.$store.state.shoppingcart.rmbCoin = payAmount;
+                virtual = _this.virtualCoin;
+                $("#virtualCoin").val(payAmount * rate);
+              }
+            }
+          }
+        };
+        this.$store.dispatch("shoppingcart/" + type.GET_RMB_COIN, params);
+      },
+      checkVirtual: function (event) {  //  键盘按下事件 控制虚拟币输入框只能输入数字
+        if (!String.fromCharCode(event.keyCode).match(/\d/)) {
+          event.preventDefault();
+        }
+      }
+    },
+    filters: {
+      formatMoney: function (value) {
+        if (value) {
+          return "¥ " + Number(value).toFixed(2);
+        } else {
+          return "¥ " + value;
+        }
+      },
+      formatTime: function (value) {
+        if (value) {
+          return moment(value).format("YYYY.MM.DD");
+        }
+      },
+      formatDiscount: function (value) {
+        return value * 10;
+      },
+      formatName: function (value) {
+        if (value) {
+          return value.replace(/,/g, "，");
+        }
+      }
+    },
+    watch: {
+      couponsList: function (newValue, oldValue) { // 监听优惠券列表 处理提交订单页面刷新时优惠券不高亮显示问题
+        if (window.location.hash) {
+          this.dealCouponStyle();
+        }
+      },
+      needInvoice: function (newValue, oldValue) { // 切换是否需要发票触发
+        var _this = this;
+        if (newValue !== oldValue && this.allEbook === true) {
+          $("#virtualCoin").val("");
+          if (newValue === "0") { // 不需要发票
+            this.selectedDelivery.deliveryPrice = 0;
+            this.$store.state.shoppingcart.rmbCoin = 0;
+          } else {                // 需要发票
+            this.deliveryList.forEach(function (item) {
+              if (_this.selectedDelivery.methods === item.methods) {
+                _this.selectedDelivery.deliveryPrice = item.deliveryPrice;
+              }
             });
           }
         }
-      };
-      this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
-      let loadingTag = _this.$loading({ fullscreen: true });
-    },
-    getRmbCoin: function () {         // input框内容变化事件  实时兑换虚拟币为人民币
-      var _this = this;
-      if ($("#virtualCoin").val() == "") { // 清空输入框
-        _this.$store.state.shoppingcart.rmbCoin = 0;
-        return false;
-      }
-      var virtual = Number($("#virtualCoin").val());
-      if (virtual > _this.virtualCoin) {
-        _this.$alert("虚拟币不足~", "系统提示", {
-          confirmButtonText: "确定"
-        });
-        _this.$store.state.shoppingcart.rmbCoin = _this.virtualCoin;
-        virtual = _this.virtualCoin;
-        $("#virtualCoin").val(_this.virtualCoin);
-      }
-      var params = {
-        param: virtual,
-        myCallbacks: function () {
-          if (this.rmbCoin) {  // 虚拟币兑换成功
-            var payAmount = _this.orderDetail.totalMoney + _this.selectedDelivery.deliveryPrice; // 默认实付=应付-优惠活动+运费
-            if (_this.allEbook && _this.needInvoice === "0") {
-              // 全是电子书并且不需要发票
-              payAmount = _this.orderDetail.bookTotalMoney + _this.orderDetail.ebookTotalMoney - _this.orderDetail.bookSaveMoney - _this.orderDetail.ebookSaveMoney;
-            }
-            if (this.rmbCoin < 0){
-              _this.$alert("虚拟币优惠数额须大于0噢~", "系统提示", {
-                confirmButtonText: "确定"
-              });
-            }
-            if (this.rmbCoin > payAmount) {
-              _this.$alert("虚拟币优惠数额不得大于实付金额噢~", "系统提示", {
-                confirmButtonText: "确定"
-              });
-              var rate = $("#virtualCoin").val() / _this.$store.state.shoppingcart.rmbCoin.toFixed(3); // 计算转换率
-              _this.$store.state.shoppingcart.rmbCoin = payAmount;
-              virtual = _this.virtualCoin;
-              $("#virtualCoin").val(payAmount * rate);
-            }
+      },
+      deliveryList: function (newValue, oldValue) { // 在订单页面执行刷新操作触发
+        if (newValue !== oldValue && this.showItem == "showOrderWrapper") {
+          this.selectedDelivery = JSON.parse(JSON.stringify(newValue[0]));
+          var tempDetail = JSON.parse(
+            window.sessionStorage.getItem("recordOrderDetail")
+          );
+          if (tempDetail && tempDetail.freeFreight && this.needInvoice === "0") {
+            this.selectedDelivery.deliveryPrice = 0;
+            console.log("%c注意：当前订单要免运费", "color:red");
+          } else {
+            console.log("%c注意：当前订单不免运费", "color:red");
           }
         }
-      };
-      this.$store.dispatch("shoppingcart/" + type.GET_RMB_COIN, params);
-    },
-    checkVirtual: function (event) {  //  键盘按下事件 控制虚拟币输入框只能输入数字
-      if (!String.fromCharCode(event.keyCode).match(/\d/)) {
-        event.preventDefault();
-      }
-    }
-  },
-  filters: {
-    formatMoney: function (value) {
-      if (value) {
-        return "¥ " + Number(value).toFixed(2);
-      } else {
-        return "¥ " + value;
-      }
-    },
-    formatTime: function (value) {
-      if (value) {
-        return moment(value).format("YYYY.MM.DD");
-      }
-    },
-    formatDiscount: function (value) {
-      return value * 10;
-    },
-    formatName: function (value) {
-      if (value) {
-        return value.replace(/,/g, "，");
-      }
-    }
-  },
-  watch: {
-    couponsList: function (newValue, oldValue) { // 监听优惠券列表 处理提交订单页面刷新时优惠券不高亮显示问题
-      if (window.location.hash) {
-        this.dealCouponStyle();
-      }
-    },
-    needInvoice: function (newValue, oldValue) { // 切换是否需要发票触发
-      var _this = this;
-      if (newValue !== oldValue && this.allEbook === true) {
-        $("#virtualCoin").val("");
-        if (newValue === "0") { // 不需要发票
-          this.selectedDelivery.deliveryPrice = 0;
-          this.$store.state.shoppingcart.rmbCoin = 0;
-        } else {                // 需要发票
-          this.deliveryList.forEach(function (item) {
-            if (_this.selectedDelivery.methods === item.methods) {
-              _this.selectedDelivery.deliveryPrice = item.deliveryPrice;
-            }
-          });
+      },
+      paymentList: function () {
+        if (this.paymentList.length > 0) {
+          this.payMethod = this.paymentList[0].id + '';
         }
       }
-    },
-    deliveryList: function (newValue, oldValue) { // 在订单页面执行刷新操作触发
-      if (newValue !== oldValue && this.showItem == "showOrderWrapper") {
-        this.selectedDelivery = JSON.parse(JSON.stringify(newValue[0]));
-        var tempDetail = JSON.parse(
-          window.sessionStorage.getItem("recordOrderDetail")
-        );
-        if (tempDetail && tempDetail.freeFreight && this.needInvoice === "0") {
-          this.selectedDelivery.deliveryPrice = 0;
-          console.log("%c注意：当前订单要免运费", "color:red");
-        } else {
-          console.log("%c注意：当前订单不免运费", "color:red");
-        }
-      }
-    },
-    paymentList: function () {
-      if (this.paymentList.length > 0) {
-        this.payMethod = this.paymentList[0].id + '';
-      }
     }
-  }
-};
+  };
 </script>
 <style>
-.scoped_text {
-  display: inline-block;
-  max-width: 150px;
-  line-height: 25px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+  .scoped_text {
+    display: inline-block;
+    max-width: 150px;
+    line-height: 25px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 </style>
 
 <style>
@@ -1663,550 +1664,550 @@ export default {
     font-size: 12px;
     color: red;
   }
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-.shoppingCartWrapper {
-  min-height: 600px;
-}
-
-#cartWrapper {
-  padding-bottom: 24px;
-  width: 1200px;
-  margin: 0 auto;
-  background-color: #fff;
-  margin-top: 36px;
-}
-
-#cartWrapper .cartContainer {
-  font-size: 14px;
-}
-
-#cartWrapper #priceChange .priceInfo {
-  color: #ff2832;
-}
-
-#cartWrapper #productListWrapper {
-  margin-top: 20px;
-}
-
-#productListWrapper .cart-item-head ul {
-  background: #ecebeb;
-  height: 36px;
-  line-height: 36px;
-}
-
-#productListWrapper .selectAll {
-  text-align: left;
-  cursor: pointer;
-}
-
-#productListWrapper .selectAll span {
-  margin-left: 6px;
-}
-
-#productListWrapper .cart-item-list .quantity {
-  border: 1px solid #dcdcdc;
-  height: 28px;
-  width: 111px;
-  line-height: 28px;
-  font-size: 14px;
-  margin: 5px auto;
-  overflow: hidden;
-  float: none;
-}
-
-#productListWrapper .cart-item-list .quantity a {
-  display: block;
-  float: left;
-  height: 28px;
-  width: 28px;
-  background-color: #f4f4f4;
-  color: #323232;
-}
-#cartWrapper .cart-item-list .quantity a:hover {
-  text-decoration: none;
-}
-
-#productListWrapper .cart-item-list .ebookWrapper .quantity a {
-  cursor: not-allowed;
-}
-
-#productListWrapper .cart-item-list .quantity input {
-  width: 52px;
-  height: 28px;
-  float: left;
-  padding: 0;
-  text-align: center;
-  border: 1px solid #dcdcdc;
-  border-width: 0 1px;
-  background-color: #fff;
-}
-
-.cart-item-list .promotion {
-  height: 40px;
-  line-height: 40px;
-  margin: 8px;
-  display: table-row;
-  white-space: nowrap;
-  position: relative;
-  text-align: left !important;
-}
-
-.cart-item-list .promotion .promotionInfo {
-  color: #ff2832;
-  padding-left: 20px;
-  position: absolute;
-  width: 100%;
-  border: 1px solid #e7e7e7;
-  border-bottom: 0px;
-  box-sizing: border-box;
-}
-
-.cart-item-list .promotion .promotionInfo span {
-  color: #4a4a4a;
-}
-
-.cart-item-list .promotion .promotionInfo span:first-child {
-  background: #f2f1f1;
-  border: 1px solid #979797;
-  border-radius: 4px;
-  width: 52px;
-  height: 24px;
-  line-height: 24px;
-  display: inline-block;
-  text-align: center;
-  margin-right: 12px;
-}
-
-.cart-item-list .cartOpration {
-  text-align: left;
-  padding-left: 25%;
-}
-
-.cart-item-list .cartOpration img {
-  width: 22px;
-  margin-right: 5px;
-}
-
-.cart-item-list .cartOpration .opertion:hover {
-  color: #ff2832;
-  text-decoration: underline;
-}
-
-.cart-item-list .cartOpration div {
-  cursor: pointer;
-}
-
-#cartWrapper .normalClearing {
-  height: 50px;
-  margin-top: 24px;
-  background-color: #ffffff;
-  border: 1px solid #f0f0f0;
-}
-
-#cartWrapper .normalClearing #clearingWrapper {
-  height: 100%;
-}
-
-#cartWrapper .fixedClearing {
-  position: fixed;
-  bottom: -1px;
-  left: 0px;
-  width: 100%;
-  box-shadow: 0 -1px 8px rgba(0, 1, 1, 0.08);
-  z-index: 999;
-}
-
-#cartWrapper .fixedClearing #clearingWrapper {
-  width: 1140px;
-  position: relative;
-  margin: 0 auto;
-  height: 52px;
-}
-
-#clearingWrapper .selectAllProduct {
-  float: left;
-  height: 100%;
-  line-height: 52px;
-  margin-left: 22px;
-  cursor: pointer;
-}
-
-#cartWrapper .selectedEle {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border: 1px solid #bcbcbc;
-  background-color: #fff;
-  text-decoration: none;
-  border-radius: 3px;
-  font-size: 0;
-  font-size: 0;
-  line-height: 0;
-  overflow: hidden;
-  margin: 0 5px 1px 0;
-  vertical-align: text-bottom;
-}
-
-#cartWrapper .selectedEle:hover {
-  border-color: #ff2832;
-}
-
-#clearingWrapper .clearing .zeroTips span {
-  width: 22px;
-  height: 30px;
-  display: inline-block;
-  vertical-align: middle;
-  background-image: url(./assets/img/attention.png);
-  background-position-y: 5px;
-  background-position-x: 0px;
-  background-repeat: no-repeat;
-  float: left;
-}
-
-#clearingWrapper .clearing .zeroTips {
-  position: absolute;
-  top: -40px;
-  left: -22px;
-  font-size: 12px;
-  padding: 0 40px 0px 20px;
-  height: 30px;
-  line-height: 30px;
-  border: 1px solid #f0f0f0;
-  background-color: #ffffff;
-  box-shadow: 0 -1px 8px rgba(0, 1, 1, 0.08);
-  white-space: nowrap;
-}
-
-#clearingWrapper .clearing {
-  float: right;
-  position: relative;
-  height: 50px;
-}
-
-#clearingWrapper .clearing button {
-  border-radius: 0px;
-  height: 100%;
-}
-
-#clearingWrapper .clearing span {
-  height: 28px;
-  float: right;
-  line-height: 28px;
-  width: 100px;
-  text-align: center;
-  cursor: pointer;
-  color: #fff !important;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-#clearingWrapper .detail .save span:nth-child(2) {
-  text-decoration: line-through;
-}
-
-#clearingWrapper .detail {
-  float: right;
-  height: 100%;
-  margin-right: 20px;
-}
-
-#clearingWrapper .detail .sitRight {
-  width: 60px;
-  display: inline-block;
-  text-align: right;
-}
-
-#clearingWrapper .detail .totalMoney span:nth-child(2) {
-  font-size: 20px;
-  font-weight: bold;
-  color: #ff2832;
-}
-
-#clearingWrapper .selectedProduct {
-  height: 52px;
-  line-height: 52px;
-  float: right;
-  margin-right: 30px;
-  text-align: right;
-}
-
-#clearingWrapper .selectedProduct .selectedProductCount {
-  color: #e84141;
-  margin: 0px 5px;
-}
-
-#productListWrapper .checkedLi {
-  background: #fffaf7;
-}
-
-/* 空购物车*/
-#cartWrapper .emptyCart {
-  text-align: center;
-  padding: 40px 0px;
-}
-
-#cartWrapper .emptyCart .emptyInfo {
-  margin-top: 20px;
-  color: #323232;
-}
-
-#orderWrapper {
-  margin-top: 36px;
-  color: #4a4a4a;
-  font-size: 14px;
-  padding-bottom: 24px;
-}
-
-/********* START 发票信息 *********/
-
-#orderWrapper .invoice .chooseInvoice {
-  height: 50px;
-  padding-left: 28px;
-  line-height: 70px;
-}
-
-#orderWrapper .invoice .chooseInvoice label {
-  height: 16px;
-  box-sizing: border-box;
-}
-
-#orderWrapper .invoice .orderContent {
-  line-height: 80px;
-}
-
-#orderWrapper .chooseInvoice {
-  height: 50px;
-  padding-left: 28px;
-}
-
-/********* END 发票信息 *********/
-
-#orderWrapper a:hover {
-  color: #ff2832;
-  text-decoration: underline !important;
-}
-
-#orderWrapper .infoHead {
-  width: 100%;
-  height: 36px;
-  line-height: 36px;
-  padding-left: 16px;
-  background-color: #f6f6f6;
-}
-
-#orderWrapper .discount .myCouponsWrapper {
-  padding: 8px 28px 28px 28px;
-}
-
-#orderWrapper .discount .myCouponsWrapper .f30 {
-  font-size: 30px;
-}
-
-#orderWrapper .discount .myCouponsWrapper .couponRange {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-bottom: 5px;
-}
-
-#orderWrapper .discount .activeCoupons {
-  border: 2px solid #c50000;
-  background-color: #74d2d4;
-  background-image: none !important;
-}
-
-#orderWrapper .discount .cancelCoupons {
-  background-color: rgba(253, 253, 253, 0.8);
-  color: #e43a3d;
-  padding: 0 3px 0 5px;
-  cursor: pointer;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-#orderWrapper .discount .disabledCoupons {
-  width: 250px;
-  display: inline-block;
-  border-radius: 6px;
-  margin-right: 26px;
-  margin-top: 20px;
-  padding: 0px 12px 2px 12px;
-  color: #fff;
-  cursor: not-allowed;
-  background-image: url(./assets/img/disabledCoupons.png);
-  background-repeat: no-repeat;
-  position: relative;
-}
-
-#orderWrapper .discount .myCoupons {
-  width: 250px;
-  display: inline-block;
-  border-radius: 6px;
-  margin-right: 26px;
-  margin-top: 20px;
-  padding: 0px 12px 2px 12px;
-  color: #fff;
-  cursor: pointer;
-  background-image: url(./assets/img/coupons.png);
-  background-repeat: no-repeat;
-}
-
-#orderWrapper .discount .el-input {
-  width: 160px;
-}
-
-#orderWrapper .payremark .el-input {
-  width: 300px;
-}
-#orderWrapper .payremark p {
-  display: inline-block;
-  margin-left:10px;
-  font-size:12px;
-}
-#orderWrapper .payremark p span{
-  color:red;
-}
-#orderWrapper .discount .el-input input {
-  height: 30px;
-  line-height: 30px;
-  margin-left: 10px;
-}
-
-#orderWrapper .payremark .el-input input {
-  height: 30px;
-  line-height: 30px;
-  margin-left: 10px;
-}
-
-#orderWrapper .orderContent {
-  height: 80px;
-  padding-left: 28px;
-}
-
-#orderWrapper .discount .orderContent {
-  line-height: 80px;
-}
-
-#orderWrapper .payremark .orderContent {
-  line-height: 80px;
-}
-
-#orderWrapper .payment .orderContent {
-  position: relative;
-}
-
-#orderWrapper .payment .orderContent .el-radio-group {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#orderWrapper .cart-item-list > li > div:first-child {
-  padding-left: 20px;
-  width: 40%;
-}
-
-#orderWrapper .cart-tab-1 .cart-item-title div {
-  text-align: left;
-}
-
-#orderWrapper .cart-item-list div {
-  text-align: center;
-}
-
-#orderWrapper .orderFooter div {
-  height: 50px;
-  line-height: 50px;
-  text-align: right;
-}
-
-#orderWrapper .orderFooter .virtual input {
-  width: 70px;
-  height: 28px;
-  line-height: 28px;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-
-#orderWrapper .orderFooter .commitOrder {
-  cursor: pointer;
-  float: right;
-}
-
-#orderWrapper .orderFooter .amount span:first-child {
-  margin-right: 20px;
-}
-
-#orderWrapper .orderFooter .virtual span:first-child {
-  margin-right: 20px;
-}
-
-#orderWrapper .orderFooter .orderDetail {
-  height: 100px;
-  background-color: #fafafa;
-  padding-right: 16px;
-}
-
-#orderWrapper .orderFooter .hideTrans {
-  height: 70px;
-}
-
-#orderWrapper .orderFooter .orderDetail div {
-  height: 30px;
-  line-height: 38px;
-}
-
-#orderWrapper .orderFooter .orderDetail .transwayDrop {
-  display: inline-block;
-  margin-right: 30px;
-}
-
-#orderWrapper .orderFooter .orderDetail ul {
-  min-width: 100px !important;
-}
-
-#orderWrapper .orderFooter .orderDetail .caret {
-  float: right;
-  margin-top: 7px;
-  margin-left: 12px;
-}
-
-#orderWrapper .orderFooter .orderDetail a:hover {
-  color: #4a4a4a;
-  text-decoration: none !important;
-}
-
-#orderWrapper .orderFooter .payAmount span:last-child {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-#orderWrapper .discount .couponsRight {
-  margin-left: 16px;
-  color: #42b983;
-}
-
-#orderWrapper .discount .couponsWrong {
-  margin-left: 16px;
-  color: #ff0000;
-}
-
-#orderWrapper .payment .orderContent label {
-  margin-right: 20px;
-}
-
-#wl_header .wrap .nav a:hover {
-  color: #ffffff;
-  text-decoration: none;
-}
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  .shoppingCartWrapper {
+    min-height: 600px;
+  }
+
+  #cartWrapper {
+    padding-bottom: 24px;
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    margin-top: 36px;
+  }
+
+  #cartWrapper .cartContainer {
+    font-size: 14px;
+  }
+
+  #cartWrapper #priceChange .priceInfo {
+    color: #ff2832;
+  }
+
+  #cartWrapper #productListWrapper {
+    margin-top: 20px;
+  }
+
+  #productListWrapper .cart-item-head ul {
+    background: #ecebeb;
+    height: 36px;
+    line-height: 36px;
+  }
+
+  #productListWrapper .selectAll {
+    text-align: left;
+    cursor: pointer;
+  }
+
+  #productListWrapper .selectAll span {
+    margin-left: 6px;
+  }
+
+  #productListWrapper .cart-item-list .quantity {
+    border: 1px solid #dcdcdc;
+    height: 28px;
+    width: 111px;
+    line-height: 28px;
+    font-size: 14px;
+    margin: 5px auto;
+    overflow: hidden;
+    float: none;
+  }
+
+  #productListWrapper .cart-item-list .quantity a {
+    display: block;
+    float: left;
+    height: 28px;
+    width: 28px;
+    background-color: #f4f4f4;
+    color: #323232;
+  }
+  #cartWrapper .cart-item-list .quantity a:hover {
+    text-decoration: none;
+  }
+
+  #productListWrapper .cart-item-list .ebookWrapper .quantity a {
+    cursor: not-allowed;
+  }
+
+  #productListWrapper .cart-item-list .quantity input {
+    width: 52px;
+    height: 28px;
+    float: left;
+    padding: 0;
+    text-align: center;
+    border: 1px solid #dcdcdc;
+    border-width: 0 1px;
+    background-color: #fff;
+  }
+
+  .cart-item-list .promotion {
+    height: 40px;
+    line-height: 40px;
+    margin: 8px;
+    display: table-row;
+    white-space: nowrap;
+    position: relative;
+    text-align: left !important;
+  }
+
+  .cart-item-list .promotion .promotionInfo {
+    color: #ff2832;
+    padding-left: 20px;
+    position: absolute;
+    width: 100%;
+    border: 1px solid #e7e7e7;
+    border-bottom: 0px;
+    box-sizing: border-box;
+  }
+
+  .cart-item-list .promotion .promotionInfo span {
+    color: #4a4a4a;
+  }
+
+  .cart-item-list .promotion .promotionInfo span:first-child {
+    background: #f2f1f1;
+    border: 1px solid #979797;
+    border-radius: 4px;
+    width: 52px;
+    height: 24px;
+    line-height: 24px;
+    display: inline-block;
+    text-align: center;
+    margin-right: 12px;
+  }
+
+  .cart-item-list .cartOpration {
+    text-align: left;
+    padding-left: 25%;
+  }
+
+  .cart-item-list .cartOpration img {
+    width: 22px;
+    margin-right: 5px;
+  }
+
+  .cart-item-list .cartOpration .opertion:hover {
+    color: #ff2832;
+    text-decoration: underline;
+  }
+
+  .cart-item-list .cartOpration div {
+    cursor: pointer;
+  }
+
+  #cartWrapper .normalClearing {
+    height: 50px;
+    margin-top: 24px;
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+  }
+
+  #cartWrapper .normalClearing #clearingWrapper {
+    height: 100%;
+  }
+
+  #cartWrapper .fixedClearing {
+    position: fixed;
+    bottom: -1px;
+    left: 0px;
+    width: 100%;
+    box-shadow: 0 -1px 8px rgba(0, 1, 1, 0.08);
+    z-index: 999;
+  }
+
+  #cartWrapper .fixedClearing #clearingWrapper {
+    width: 1140px;
+    position: relative;
+    margin: 0 auto;
+    height: 52px;
+  }
+
+  #clearingWrapper .selectAllProduct {
+    float: left;
+    height: 100%;
+    line-height: 52px;
+    margin-left: 22px;
+    cursor: pointer;
+  }
+
+  #cartWrapper .selectedEle {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #bcbcbc;
+    background-color: #fff;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 0;
+    font-size: 0;
+    line-height: 0;
+    overflow: hidden;
+    margin: 0 5px 1px 0;
+    vertical-align: text-bottom;
+  }
+
+  #cartWrapper .selectedEle:hover {
+    border-color: #ff2832;
+  }
+
+  #clearingWrapper .clearing .zeroTips span {
+    width: 22px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url(./assets/img/attention.png);
+    background-position-y: 5px;
+    background-position-x: 0px;
+    background-repeat: no-repeat;
+    float: left;
+  }
+
+  #clearingWrapper .clearing .zeroTips {
+    position: absolute;
+    top: -40px;
+    left: -22px;
+    font-size: 12px;
+    padding: 0 40px 0px 20px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #f0f0f0;
+    background-color: #ffffff;
+    box-shadow: 0 -1px 8px rgba(0, 1, 1, 0.08);
+    white-space: nowrap;
+  }
+
+  #clearingWrapper .clearing {
+    float: right;
+    position: relative;
+    height: 50px;
+  }
+
+  #clearingWrapper .clearing button {
+    border-radius: 0px;
+    height: 100%;
+  }
+
+  #clearingWrapper .clearing span {
+    height: 28px;
+    float: right;
+    line-height: 28px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff !important;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  #clearingWrapper .detail .save span:nth-child(2) {
+    text-decoration: line-through;
+  }
+
+  #clearingWrapper .detail {
+    float: right;
+    height: 100%;
+    margin-right: 20px;
+  }
+
+  #clearingWrapper .detail .sitRight {
+    width: 60px;
+    display: inline-block;
+    text-align: right;
+  }
+
+  #clearingWrapper .detail .totalMoney span:nth-child(2) {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff2832;
+  }
+
+  #clearingWrapper .selectedProduct {
+    height: 52px;
+    line-height: 52px;
+    float: right;
+    margin-right: 30px;
+    text-align: right;
+  }
+
+  #clearingWrapper .selectedProduct .selectedProductCount {
+    color: #e84141;
+    margin: 0px 5px;
+  }
+
+  #productListWrapper .checkedLi {
+    background: #fffaf7;
+  }
+
+  /* 空购物车*/
+  #cartWrapper .emptyCart {
+    text-align: center;
+    padding: 40px 0px;
+  }
+
+  #cartWrapper .emptyCart .emptyInfo {
+    margin-top: 20px;
+    color: #323232;
+  }
+
+  #orderWrapper {
+    margin-top: 36px;
+    color: #4a4a4a;
+    font-size: 14px;
+    padding-bottom: 24px;
+  }
+
+  /********* START 发票信息 *********/
+
+  #orderWrapper .invoice .chooseInvoice {
+    height: 50px;
+    padding-left: 28px;
+    line-height: 70px;
+  }
+
+  #orderWrapper .invoice .chooseInvoice label {
+    height: 16px;
+    box-sizing: border-box;
+  }
+
+  #orderWrapper .invoice .orderContent {
+    line-height: 80px;
+  }
+
+  #orderWrapper .chooseInvoice {
+    height: 50px;
+    padding-left: 28px;
+  }
+
+  /********* END 发票信息 *********/
+
+  #orderWrapper a:hover {
+    color: #ff2832;
+    text-decoration: underline !important;
+  }
+
+  #orderWrapper .infoHead {
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    padding-left: 16px;
+    background-color: #f6f6f6;
+  }
+
+  #orderWrapper .discount .myCouponsWrapper {
+    padding: 8px 28px 28px 28px;
+  }
+
+  #orderWrapper .discount .myCouponsWrapper .f30 {
+    font-size: 30px;
+  }
+
+  #orderWrapper .discount .myCouponsWrapper .couponRange {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 5px;
+  }
+
+  #orderWrapper .discount .activeCoupons {
+    border: 2px solid #c50000;
+    background-color: #74d2d4;
+    background-image: none !important;
+  }
+
+  #orderWrapper .discount .cancelCoupons {
+    background-color: rgba(253, 253, 253, 0.8);
+    color: #e43a3d;
+    padding: 0 3px 0 5px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  #orderWrapper .discount .disabledCoupons {
+    width: 250px;
+    display: inline-block;
+    border-radius: 6px;
+    margin-right: 26px;
+    margin-top: 20px;
+    padding: 0px 12px 2px 12px;
+    color: #fff;
+    cursor: not-allowed;
+    background-image: url(./assets/img/disabledCoupons.png);
+    background-repeat: no-repeat;
+    position: relative;
+  }
+
+  #orderWrapper .discount .myCoupons {
+    width: 250px;
+    display: inline-block;
+    border-radius: 6px;
+    margin-right: 26px;
+    margin-top: 20px;
+    padding: 0px 12px 2px 12px;
+    color: #fff;
+    cursor: pointer;
+    background-image: url(./assets/img/coupons.png);
+    background-repeat: no-repeat;
+  }
+
+  #orderWrapper .discount .el-input {
+    width: 160px;
+  }
+
+  #orderWrapper .payremark .el-input {
+    width: 300px;
+  }
+  #orderWrapper .payremark p {
+    display: inline-block;
+    margin-left:10px;
+    font-size:12px;
+  }
+  #orderWrapper .payremark p span{
+    color:red;
+  }
+  #orderWrapper .discount .el-input input {
+    height: 30px;
+    line-height: 30px;
+    margin-left: 10px;
+  }
+
+  #orderWrapper .payremark .el-input input {
+    height: 30px;
+    line-height: 30px;
+    margin-left: 10px;
+  }
+
+  #orderWrapper .orderContent {
+    height: 80px;
+    padding-left: 28px;
+  }
+
+  #orderWrapper .discount .orderContent {
+    line-height: 80px;
+  }
+
+  #orderWrapper .payremark .orderContent {
+    line-height: 80px;
+  }
+
+  #orderWrapper .payment .orderContent {
+    position: relative;
+  }
+
+  #orderWrapper .payment .orderContent .el-radio-group {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  #orderWrapper .cart-item-list > li > div:first-child {
+    padding-left: 20px;
+    width: 40%;
+  }
+
+  #orderWrapper .cart-tab-1 .cart-item-title div {
+    text-align: left;
+  }
+
+  #orderWrapper .cart-item-list div {
+    text-align: center;
+  }
+
+  #orderWrapper .orderFooter div {
+    height: 50px;
+    line-height: 50px;
+    text-align: right;
+  }
+
+  #orderWrapper .orderFooter .virtual input {
+    width: 70px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+
+  #orderWrapper .orderFooter .commitOrder {
+    cursor: pointer;
+    float: right;
+  }
+
+  #orderWrapper .orderFooter .amount span:first-child {
+    margin-right: 20px;
+  }
+
+  #orderWrapper .orderFooter .virtual span:first-child {
+    margin-right: 20px;
+  }
+
+  #orderWrapper .orderFooter .orderDetail {
+    height: 100px;
+    background-color: #fafafa;
+    padding-right: 16px;
+  }
+
+  #orderWrapper .orderFooter .hideTrans {
+    height: 70px;
+  }
+
+  #orderWrapper .orderFooter .orderDetail div {
+    height: 30px;
+    line-height: 38px;
+  }
+
+  #orderWrapper .orderFooter .orderDetail .transwayDrop {
+    display: inline-block;
+    margin-right: 30px;
+  }
+
+  #orderWrapper .orderFooter .orderDetail ul {
+    min-width: 100px !important;
+  }
+
+  #orderWrapper .orderFooter .orderDetail .caret {
+    float: right;
+    margin-top: 7px;
+    margin-left: 12px;
+  }
+
+  #orderWrapper .orderFooter .orderDetail a:hover {
+    color: #4a4a4a;
+    text-decoration: none !important;
+  }
+
+  #orderWrapper .orderFooter .payAmount span:last-child {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  #orderWrapper .discount .couponsRight {
+    margin-left: 16px;
+    color: #42b983;
+  }
+
+  #orderWrapper .discount .couponsWrong {
+    margin-left: 16px;
+    color: #ff0000;
+  }
+
+  #orderWrapper .payment .orderContent label {
+    margin-right: 20px;
+  }
+
+  #wl_header .wrap .nav a:hover {
+    color: #ffffff;
+    text-decoration: none;
+  }
   .disabledCoupons{
     pointer-events: none;
   }

@@ -93,16 +93,16 @@ export default {
     }
   },
   components: {
-    vnav,
-    account,
-    list,
-    book,
-    collecting,
-    point,
-    afterservice,
-    coupon,
-    note,
-    ThemePicker
+    vnav,           //左侧导航
+    account,        //我的账号
+    list,           //我的订单
+    book,           //我的书架
+    collecting,     //收藏夹
+    point,          //我的积分
+    afterservice,   //售后
+    coupon,         //优惠券
+    note,           //随手记
+    ThemePicker,    //左侧导航
   }
 };
 </script>

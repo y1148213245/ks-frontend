@@ -1,17 +1,15 @@
 <!-- 竞赛新闻组件 -->
 <template>
  <div class="work_activitydetail_03">
-   <template v-for="(entry,index) in  3">
+   <template v-for="(item,index) in  list">
     <div class="work_activitydetail_03-item" :key="index">
-      <div class="work_activitydetail_03-item-title">猪肉价格呈现高位运行 近期小幅回落猪肉价格呈现高位运行 近回</div>
+      <div class="work_activitydetail_03-item-title" v-text="item[keys.title]"></div>
       <div class="work_activitydetail_03-item-img_box">
-        <img class="work_activitydetail_03-item-img" src="" alt="暂无图片">
+        <img class="work_activitydetail_03-item-img" :src="item[keys.picUrl]" alt="暂无图片">
       </div>
       <div class="work_activitydetail_03-item-content">
-        <span class="work_activitydetail_03-item-content-date">2016-12-12 11:20</span>
-        <div class="work_activitydetail_03-item-content-abstract">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.
-        </div>
+        <span class="work_activitydetail_03-item-content-date" v-text="item[keys.date]"></span>
+        <div class="work_activitydetail_03-item-content-abstract" v-text="item[keys.abstract]"></div>
       </div>
     </div>
    </template>
@@ -19,22 +17,46 @@
 </template>
 
 <script>
+import URL from "url";
+import PROJECT_CONFIG from "projectConfig";
+import { Post } from "@common";
 export default {
   name: 'work_activitydetail_03',
   reused: true,
-  props: {},
+  props: {
+    namespace:String
+  },
   data () {
     return {
+      projectConfig: null,
+      keys:null,
+      list:[],
     };
   },
 
   computed: {},
 
-  created () { },
+  created () {
+    this.initConfig();
+    this.projectConfig.isDevelopment ? this.loadDatas() : this.$bus.on(this.projectConfig.eventName_listen,this.loadDatas);
+   },
 
   mounted () { },
 
-  methods: {}
+  methods: {
+    initConfig () {
+      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_03;
+      this.keys = this.projectConfig.keys
+    },
+    loadDatas(params){
+      let url = this.projectConfig.url;
+
+      Post(url).then((resp)=>{
+        let data = resp.data.data;
+        this.list = data;
+      })
+    }
+  }
 }
 
 </script>

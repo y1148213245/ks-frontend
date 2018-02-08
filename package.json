@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "echarts": "^3.8.5",
+    "js-base64": "^2.4.3",
     "qrcode": "^1.0.0",
+    "qrcode.vue": "^1.5.2",
     "vue": "^2.5.2",
     "vue-codemirror": "^4.0.3",
     "vue-simplemde": "^0.4.6"

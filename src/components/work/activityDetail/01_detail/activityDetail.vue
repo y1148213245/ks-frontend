@@ -1,38 +1,66 @@
 <!-- 竞赛详情 -->
 <template>
   <div class="work_activitydetail_01">
-    <p class="work_activitydetail_01-title">首届“防震减灾”公益作文大赛</p>
+    <p class="work_activitydetail_01-title" v-text="detail[keys.title]"></p>
     <div class="work_activitydetail_01-swiper">
       <!-- 轮播图组件 -->
       <ui_swiper_06></ui_swiper_06><!-- END 轮播图组件 -->
     </div>
-    <div class="work_activitydetail_01-text_content">
-      Lorem ipsum dolor sit amet,END consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet
-    </div>
+    <div class="work_activitydetail_01-text_content" v-text="detail[keys.content]"></div>
     <div class="work_activitydetail_01-upload_box">
-      <div class="work_activitydetail_01-upload_box-button">上传作品</div>
+      <div class="work_activitydetail_01-upload_box-button" @click="toUploadPage">上传作品</div>
       <div class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
     </div>
   </div>
 </template>
 
 <script>
+import URL from "url";
+import PROJECT_CONFIG from "projectConfig";
+import { Post } from "@common";
 export default {
   name: 'work_activitydetail_01',
   reused: true,
-  props: {},
+  props: {
+    namespace: String,
+  },
   data () {
     return {
+      projectConfig: null,
+      keys:null,
+      detail:{},
     };
   },
 
   computed: {},
 
-  created () { },
+  created () {
+    this.initConfig();
+    this.loadDatas();
+  },
 
   mounted () { },
 
-  methods: {}
+  methods: {
+    initConfig () {
+      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_01;
+      this.keys = this.projectConfig.keys
+    },
+    loadDatas(){
+      let url = this.projectConfig.url;
+
+      Post(url).then((resp)=>{
+        let data = resp.data.data;
+        this.detail = data;
+        this.$bus.emit(this.projectConfig.eventName_loadedDatas,data);
+      })
+    },
+    toUploadPage(){
+      if(this.projectConfig.toUploadPagUrl){
+        window.location.href = this.projectConfig.toUploadPagUrl
+      }
+    }
+  }
 }
 
 </script>
@@ -49,7 +77,6 @@ export default {
   font-size: 28px;
 }
 .work_activitydetail_01-swiper {
-  
 }
 .work_activitydetail_01-text_content {
 }
@@ -67,9 +94,10 @@ export default {
   box-shadow: none;
   color: white;
   background-color: black;
+  cursor: pointer;
 }
 .work_activitydetail_01-upload_box-button--failed {
-      background-color: rgba(215, 215, 215, 1);
-      color: #A1A1A1;
+  background-color: rgba(215, 215, 215, 1);
+  color: #a1a1a1;
 }
 </style>

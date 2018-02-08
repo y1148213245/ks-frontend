@@ -1,10 +1,29 @@
-/**
- * Created by song on 2018/2/5.
- * 华育活动
+/*
+ * @Author: song 
+ * @Date: 2018-02-06 18:07:52 
+ * @Last Modified by: song
+ * @Last Modified time: 2018-02-07 16:14:31
  */
 
-export default {
-  name: "activity",
+import component from "../activityswiper.vue";
+
+const name = component.name; // 组件标签名
+
+const title = "资讯轮播组件"; // 组件title
+
+const description = `资讯轮播`; // 组件描述信息
+
+const dev = {
+  swiper: {
+    swiper_07: {
+      url: '../data/swiper_07_data.json',
+      height: "480px",
+      interval: 5000
+    }
+  }
+};
+
+const prod = {
   swiper: {
     swiper_07: {
       url: BASE_URL + 'spc/cms/publish/list.do',
@@ -29,3 +48,9 @@ export default {
     }
   }
 };
+
+const platform = 'PC';
+const pageType = ['channel'];
+const resourceType = ['information'];
+
+export { name, title, dev, prod, description, platform, pageType, resourceType };
