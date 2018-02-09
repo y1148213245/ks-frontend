@@ -1,5 +1,5 @@
 <template>
-<div class="mobile_box">
+<div class="mobile_box_for_app">
     <div class="cent">
         <el-steps  :active="active" finish-status="success" align-center>
             <el-step title="输邮箱"></el-step>
@@ -317,16 +317,16 @@ export default {
 </script>
 
 <style scoped>
-.mobile_box {
+.mobile_box_for_app {
   width: 100%;
   height: 43em;
   position: relative;
 }
-.mobile_box .button {
+.mobile_box_for_app .button {
   margin-right: 2.12em;
 }
 
-.mobile_box .cent {
+.mobile_box_for_app .cent {
   width: 25em;
   position: absolute;
   top: 50%;
@@ -334,13 +334,13 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.mobile_box .captcha input {
+.mobile_box_for_app .captcha input {
   display: inline-block;
   border-radius: 0.1875em;
   height: 2.25em;
 }
 
-.mobile_box #code {
+.mobile_box_for_app #code {
   width: 3.5rem;
   font-family: Arial;
   font-style: italic;
@@ -349,10 +349,10 @@ export default {
   letter-spacing: 0.15em;
   color: #33938d;
 }
-.mobile_box .btnbox {
+.mobile_box_for_app .btnbox {
   text-align: center;
 }
-.mobile_box .transition-box {
+.mobile_box_for_app .transition-box {
   margin-bottom: 0.625em;
   width: 12.5em;
   height: 6.25em;

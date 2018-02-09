@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-02-06 11:10:06 
- * @Last Modified by: song
- * @Last Modified time: 2018-02-06 11:10:33
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-02-09 17:13:27
  */
 export default {
   name: "detail",

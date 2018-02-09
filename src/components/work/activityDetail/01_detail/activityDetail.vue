@@ -8,8 +8,8 @@
     </div>
     <div class="work_activitydetail_01-text_content" v-text="detail[keys.content]"></div>
     <div class="work_activitydetail_01-upload_box">
-      <div class="work_activitydetail_01-upload_box-button" @click="toUploadPage">上传作品</div>
-      <div class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
+      <div v-if="isActive === true" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">上传作品</div>
+      <div v-if="isActive === false" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@
 <script>
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
-import { Post } from "@common";
+import { Get } from "@common";
 export default {
   name: 'work_activitydetail_01',
   reused: true,
@@ -29,6 +29,7 @@ export default {
       projectConfig: null,
       keys:null,
       detail:{},
+      isActive:null,
     };
   },
 
@@ -44,15 +45,24 @@ export default {
   methods: {
     initConfig () {
       this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_01;
-      this.keys = this.projectConfig.keys
+      this.keys = this.projectConfig.keys;
+      
     },
     loadDatas(){
-      let url = this.projectConfig.url;
+      let url = this.projectConfig.url+"?pubId=2&loginName=";
 
-      Post(url).then((resp)=>{
+      Get(url).then((resp)=>{
         let data = resp.data.data;
         this.detail = data;
         this.$bus.emit(this.projectConfig.eventName_loadedDatas,data);
+
+        //判断活动过期
+        let thisTimestamp = new Date().getTime();
+        if (timestamp < data[this.keys.endDate]) {
+          this.isActive = true;
+        } else {
+          this.isActive = false;
+        }
       })
     },
     toUploadPage(){

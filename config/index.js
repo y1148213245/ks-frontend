@@ -58,7 +58,7 @@ module.exports = {
     // assetsSubDirectory: 'assets',
     // assetsPublicPath: '../',
 
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: 'assets',
     assetsPublicPath: '/portal/sites/zhixiang/',
     
     // assetsSubDirectory: 'static',

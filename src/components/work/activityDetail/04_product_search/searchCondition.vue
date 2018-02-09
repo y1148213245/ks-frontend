@@ -3,7 +3,7 @@
   <el-row class="work_activitydetail_04">
     <el-col class="work_activitydetail_04-label" :span="2">地区：</el-col>
     <el-col :span="6">
-      <el-select v-model="formData.school" placeholder="地区" style="width:100%">
+      <el-select v-model="formData.place" placeholder="地区" style="width:100%">
         <el-option label="区域一" value="shanghai"></el-option>
         <el-option label="区域二" value="beijing"></el-option>
       </el-select>
@@ -74,7 +74,16 @@ export default {
       this.keys = this.projectConfig.keys;
     },
     onSubmit () {
-      
+      let formData = this.formData;
+      let keys = this.keys;
+
+      let param = {
+        [this.keys.place]: formData.place,
+        [this.keys.school]: formData.school,
+        [this.keys.group]: formData.group,
+        [this.keys.searchText]: formData.searchText,
+      }
+      this.$bus.emit(this.projectConfig.eventName_search, param);
     }
   }
 }
