@@ -350,17 +350,17 @@ export default {
 .work_shoppingcart_01_invoice  .orderContents span {
   margin-right: 20px;
 }
-label.el-form-item__label{
+.work_shoppingcart_01_invoice .el-form-item__label{
   line-height: 35px;
 }
-  div.el-form-item{
+.work_shoppingcart_01_invoice div.el-form-item{
     margin-bottom: 0;
   }
-  .invoiceConSureDiv{
+.work_shoppingcart_01_invoice .invoiceConSureDiv{
     padding-right: 20px;
     text-align: right;
   }
-.el-form-item__error{
+.work_shoppingcart_01_invoice .el-form-item__error{
   left: 60%;
   top: 10px;
 }

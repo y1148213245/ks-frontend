@@ -113,14 +113,14 @@
         <div class="newWrapper">
           <div>收货人：</div>
           <input id="s_contactor" type="text" maxlength="40" v-model="newAddAddress.contactor" @blur="checkContactor()">
-          <span class="warningInfo" v-if="emptyContactor">请填写收货人</span>
+          <span class="warningInfo" v-if="emptyContactor">{{contactorError}}</span>
         </div>
         <div class="newWrapper">
           <div>收货地区：</div>
           <div class="selectPCC">
-            <select id="s_province" name="s_province"></select>
-            <select id="s_city" name="s_city"></select>
-            <select id="s_county" name="s_county"></select>
+            <select id="s_province" name="s_province" @blur="checkArea()"></select>
+            <select id="s_city" name="s_city" @blur="checkArea()"></select>
+            <select id="s_county" name="s_county" @blur="checkArea()"></select>
           </div>
           <span class="warningInfo" v-if="emptyPCC">请完善省市信息</span>
         </div>
@@ -131,9 +131,8 @@
         </div>
         <div class="newWrapper">
           <div>联系电话：</div>
-          <input id="s_phone" type="number" v-model="newAddAddress.phone" @blur="checkPhone()"
-                 @keypress="checkNumberType($event)" maxlength="11">
-          <span class="warningInfo" v-if="emptyPhone">请填写联系电话</span>
+          <input id="s_phone" v-model="newAddAddress.phone" @blur="checkPhone()" maxlength="11">
+          <span class="warningInfo" v-if="emptyPhone">{{phoneError}}</span>
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button @click="confirmNewAdd(false)">取 消</el-button>
@@ -258,7 +257,7 @@
             <el-button type="primary" @click="changeEmail" class="butt" >绑定邮箱</el-button>
           </div>
           </div>
-          
+
           <div class="mt30 mb30">
           <!-- <div v-if="account && account.mobileno">
             <i class="wzdh_xgxx_bdhm mr08"></i>手机号码:
@@ -351,7 +350,7 @@
                 <div v-if="account.email ==''">
                 <span style="display:inline-block;margin:20px;" >请先绑定邮箱</span>
                 <el-button type="primary" @click="changeEmail">绑定邮箱</el-button>
-                </div>  
+                </div>
                 <el-form :model="emailValidateNum" :rules="emailValidateNumRules" ref="emailValidateNum" v-if="account.email !=''">
                   <el-form-item label="绑定邮箱:" prop="email">
                   <span>{{account && account.email}}</span>
@@ -415,7 +414,7 @@
               </div>
             </div>
           </el-tab-pane>
-          
+
           </el-tabs>
       <el-button type="primary" @click="back" class="butt_back">返回</el-button>
     </div>
@@ -830,7 +829,10 @@ export default {
       payMethod: "1", // 支付方式 0 微信支付 1 支付宝支付
       siteId: "",
       imageUrl: "",
-      fullLoading: "" //全屏加载框
+      fullLoading: "", //全屏加载框
+      phoneError: '',//新建收货地址--联系电话验证信息
+      contactorError: '',//新建收货地址--收货人验证信息
+      goodsInfo: []//新建收货地址--验证信息
     };
   },
   mounted() {
@@ -1093,30 +1095,14 @@ export default {
       // 点击确定/取消添加地址按钮
       var _this = this;
       if (flag) {
-        // 点击确定
-        if ($("#s_contactor").val() === "") {
-          // 收件人为空
-          this.emptyContactor = true;
-          return false;
-        } else if (
-          $("#s_province").val() === "省份" ||
-          $("#s_city").val() === "地级市" ||
-          $("#s_county").val() === "市、县级市"
-        ) {
-          // 省市区没有选择或者没有选择完全
-          this.emptyPCC = true;
-          return false;
-        } else if ($("#s_address").val() === "") {
-          // 详细地址为空
-          this.emptyDetail = true;
-          this.emptyPCC = false;
-          return false;
-        } else if ($("#s_phone").val() === "") {
-          // 联系方式为空
-          this.emptyPhone = true;
-          this.emptyPCC = false;
-          return false;
-        } else {
+        this.goodsInfo = [];
+        this.checkContactor();
+        this.checkPhone();
+        this.checkDetail();
+        this.checkArea();
+        if (this.goodsInfo.find(function (item) {
+            return item == "false";
+          }) === undefined) {
           // 都不为空
           this.emptyPCC = false;
           var param = {
@@ -1138,8 +1124,9 @@ export default {
           this.addAddressDialog = false;
           // this.$refs[form].resetFields();
         }
+      }else{
+        this.addAddressDialog = false;
       }
-      this.addAddressDialog = false;
       this.newAddAddress.contactor = ""; // 点击取消的时候初始化数据
       this.newAddAddress.phone = "";
       this.newAddAddress.province = "";
@@ -1163,15 +1150,58 @@ export default {
     },
     checkContactor: function() {
       // 联系人失去焦点校验
-      this.emptyContactor = $("#s_contactor").val() === "" ? true : false;
+      // this.emptyContactor = $("#s_contactor").val() === "" ? true : false;
+      // 联系人失去焦点校验
+      let contactorVal = $("#s_contactor").val();
+      this.emptyContactor = false;
+      if (contactorVal === "") {
+        this.contactorError = "请填写收货人";
+      }
+      if (contactorVal.length > 40) {
+        this.contactorError = "收货人不能超过40个字符";
+      }
+      if (contactorVal === "" || contactorVal.length > 40) {
+        this.emptyContactor = true;
+        this.goodsInfo.push("false");
+      } else {
+        this.goodsInfo.push("true");
+      }
     },
     checkDetail: function() {
       // 详细地址失去焦点校验
-      this.emptyDetail = $("#s_address").val() === "" ? true : false;
+      // this.emptyDetail = $("#s_address").val() === "" ? true : false;
+      // 详细地址失去焦点校验
+      this.emptyDetail = false;
+      if ($("#s_address").val() === "") {
+        this.emptyDetail = true;
+        this.goodsInfo.push("false");
+      } else {
+        this.goodsInfo.push("true");
+      }
     },
     checkPhone: function() {
       // 联系方式失去焦点校验
-      this.emptyPhone = $("#s_phone").val() === "" ? true : false;
+      // this.emptyPhone = $("#s_phone").val() === "" ? true : false;
+      // 联系号码格式校验 只能是数字 并且不能超过11位 ??? input type="number" 踩坑
+      this.emptyPhone = false;
+      let phoneVal = $("#s_phone").val();
+      if (!phoneVal) {
+        this.phoneError = "请填写联系电话";
+      }
+      // if (!String.fromCharCode(event.keyCode).match(/\d/)) {
+      if (!phoneVal.match(/^[0-9]*$/)) {
+        // 控制只能输入数字
+        this.phoneError = "请输入数字";
+      }
+      if (phoneVal.length > 11) {
+        this.phoneError = "电话长度过长";
+      }
+      if (!phoneVal || !phoneVal.match(/^[0-9]*$/) || phoneVal.length > 11) {
+        this.emptyPhone = true;
+        this.goodsInfo.push("false");
+      } else {
+        this.goodsInfo.push("true");
+      }
     },
     checkNumberType: function(event) {
       // 联系号码不得超过11位
@@ -1180,6 +1210,20 @@ export default {
       }
       if ($("#s_phone").val().length > 11) {
         event.preventDefault();
+      }
+    },
+    checkArea:function(){
+      this.emptyPCC = false;
+      if (
+        $("#s_province").val() === "省份" ||
+        $("#s_city").val() === "地级市" ||
+        $("#s_county").val() === "市、县级市"
+      ) {
+        // 省市区没有选择或者没有选择完全
+        this.emptyPCC = true;
+        this.goodsInfo.push("false");
+      } else {
+        this.goodsInfo.push("true");
       }
     },
     addNewAddress: function() {
