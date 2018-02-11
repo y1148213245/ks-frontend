@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 15:34:23 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-07 17:12:25
+ * @Last Modified time: 2018-02-11 14:43:48
  */
 
 import component from '../fuwen.vue'
@@ -13,23 +13,35 @@ const description = `
 const dev = {
   activityDetail: {
     work_activitydetail_02: {
-      url: '/data/work_activitydetail_02.json',
-      key: {
-        content:'content' //辅文内容
-      },
-      eventName_listen:"loadSearchResult",
-      isDevelopment:true,
+      "module": {
+        url: '/data/work_activitydetail_02.json',
+        topic: '奖项设置',
+        keys: {
+          topic: 'topic',
+          content: 'content' //辅文内容
+        },
+        eventName_listen: "loadSearchResult",
+        isDevelopment: true,
+      }
     }
   }
 };
 const prod = {
   activityDetail: {
     work_activitydetail_02: {
-      url: BASE_URL + 'spc/cms/publish/list.do',
-      key: {
-        content:'content'
-      },
-      eventName_listen: 'loadSearchResult',
+      "module": {
+        url: BASE_URL + 'spc/cms/publish/list.do',
+        topic: '奖项设置',
+        keys: {
+          topic: 'topic',
+          content: 'content',
+          eventName_listen_resourceId:'pub_resource_id',
+          eventName_listen_resourceType:'pub_resource_type',
+          requestUrlParam_docId:'docID',
+          requestUrlParam_code:'code',
+        },
+        eventName_listen: 'loadSearchResult',
+      }
     }
   }
 };

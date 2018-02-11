@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 10:48:04 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-09 17:47:28
+ * @Last Modified time: 2018-02-11 15:49:47
  */
 
 
@@ -19,8 +19,9 @@ const dev = {
         title:'title',//标题
         pics:'pics',//轮播图
         content:'content',//内容
-        raceStatus:'raceStatus',//活动状态
         endDate:'endDate',
+        resourceId:'resourceId',
+        illustration:'illustration',
       },
       eventName_loadedDatas:'eventName_loadedDatas',
       toUploadPagUrl:'',
@@ -30,16 +31,19 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_01: {
-      url: BASE_URL + 'spc/cms/publish/list.do',
+      url: BASE_URL + 'spc/cms/publish/detail.do',
       keys: {
         title:'PORTAL_ACTIVITY_SYS_TOPIC',
         pics:'pics',
         content:'PORTAL_ACTIVITY_DESCRIPTION',
-        raceStatus:'raceStatus',
-        endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW'
+        endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
+        resourceId:'pub_resource_id',
+        illustration:'pub_illustration',
+        requestUrlParam_pubId:'pubId',
+        toUploadPageUrlParam_docId:'docId',
       },
       eventName_loadedDatas: 'eventName_loadedDatas',
-      toUploadPagUrl:'',
+      toUploadPagUrl:'./uploadproduction.html',
       
     }
   }

@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-09 17:27:34
+ * @Last Modified time: 2018-02-11 15:46:03
  */
 export default {
   name: "activityrace",
@@ -13,18 +13,22 @@ export default {
         title: 'title',//标题
         pics: 'pics',//轮播图
         content: 'content',//内容
-        raceStatus: 'raceStatus',//活动状态
+        illustration:'pub_illustration',
       },
       eventName_loadedDatas: 'eventName_loadedDatas',
-      toUploadPagUrl: '',
+      toUploadPagUrl: './uploadproduction.html',
     },
     work_activitydetail_02: {
-      url: '/data/work_activitydetail_02.json',
-      keys: {
-        content: 'content'
-      },
-      eventName_listen: "eventName_loadedDatas",
-      isDevelopment: true,
+      module1: {
+        url: '/data/work_activitydetail_02.json',
+        topic: '奖项设置',
+        keys: {
+          topic: 'topic',
+          content: 'content'
+        },
+        eventName_listen: "eventName_loadedDatas",
+        isDevelopment: true,
+      }
     },
     work_activitydetail_03: {
       url: '/data/work_activitydetail_03.json',
@@ -57,7 +61,7 @@ export default {
         voteNum: 'voteNum'
       },
       eventName_listenSearch: 'eventName_search',
-      eventName_listenLoadedData:'eventName_loadedDatas',
+      eventName_listenLoadedData: 'eventName_loadedDatas',
       isDevelopment: true,
     },
     work_activitydetail_06: {

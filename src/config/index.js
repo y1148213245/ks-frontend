@@ -6,9 +6,16 @@ module.exports = {
 	concurrentProject: process.env.PROJECT_ENV || "huayu",
 	proxy: {
 		'/portal/file': {
-			target: 'http://172.19.57.153',
+			// target: 'http://172.19.57.153',
+			target: 'http://172.19.92.76:8080',//华育服务器代理
 			// pathRewrite: {'^/portal/file' : ''},
 			changeOrigin: true
-		}
+		},
+		'/portal/api': {
+			// target: 'http://172.19.57.153',
+			target: 'http://172.19.92.76:8080',//华育服务器代理
+			// pathRewrite: {'^/portal/file' : ''},
+			changeOrigin: true
+		},
 	}
 };

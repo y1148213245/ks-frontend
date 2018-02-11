@@ -4,7 +4,7 @@
     <p class="work_activitydetail_01-title" v-text="detail[keys.title]"></p>
     <div class="work_activitydetail_01-swiper">
       <!-- 轮播图组件 -->
-      <ui_swiper_06></ui_swiper_06><!-- END 轮播图组件 -->
+      <ui_swiper_06 :pics="detail[keys.illustration]"></ui_swiper_06><!-- END 轮播图组件 -->
     </div>
     <div class="work_activitydetail_01-text_content" v-text="detail[keys.content]"></div>
     <div class="work_activitydetail_01-upload_box">
@@ -17,6 +17,8 @@
 <script>
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
+import { mapGetters } from 'vuex';
+import * as interfaces from "@work/login/common/interfaces.js";
 import { Get } from "@common";
 export default {
   name: 'work_activitydetail_01',
@@ -27,13 +29,17 @@ export default {
   data () {
     return {
       projectConfig: null,
-      keys:null,
-      detail:{},
-      isActive:null,
+      keys: null,
+      detail: {},
+      isActive: null,
     };
   },
 
-  computed: {},
+  computed: {
+    ...mapGetters("login", {
+      member: interfaces.GET_MEMBER
+    })
+  },
 
   created () {
     this.initConfig();
@@ -46,28 +52,38 @@ export default {
     initConfig () {
       this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_01;
       this.keys = this.projectConfig.keys;
-      
-    },
-    loadDatas(){
-      let url = this.projectConfig.url+"?pubId=2&loginName=";
 
-      Get(url).then((resp)=>{
+    },
+    loadDatas () {
+      let keys = this.keys;
+      let url = this.projectConfig.url;
+      let query = URL.parse(document.URL, true).query;
+      if (query[keys.requestUrlParam_pubId]) {
+        let queryParam_pubId = keys.requestUrlParam_pubId + '=' + query[keys.requestUrlParam_pubId];
+        url += '?' + queryParam_pubId + '&loginName=' + (this.member.loginName || '');
+      }
+      Get(url).then((resp) => {
         let data = resp.data.data;
         this.detail = data;
-        this.$bus.emit(this.projectConfig.eventName_loadedDatas,data);
+        this.$bus.emit(this.projectConfig.eventName_loadedDatas, data);
 
         //判断活动过期
         let thisTimestamp = new Date().getTime();
-        if (timestamp < data[this.keys.endDate]) {
+        if (thisTimestamp < data[this.keys.endDate]) {
           this.isActive = true;
         } else {
           this.isActive = false;
         }
       })
     },
-    toUploadPage(){
-      if(this.projectConfig.toUploadPagUrl){
-        window.location.href = this.projectConfig.toUploadPagUrl
+    toUploadPage () {
+      if (this.projectConfig.toUploadPagUrl) {
+        let url = this.projectConfig.toUploadPagUrl;
+        if (this.keys.toUploadPageUrlParam_docId) {
+          let queryParam_docId = this.keys.toUploadPageUrlParam_docId + '=' + this.detail[this.keys.resourceId];
+          url += '?' + queryParam_docId;
+        }
+        window.location.href = url;
       }
     }
   }
@@ -91,6 +107,7 @@ export default {
 .work_activitydetail_01-text_content {
 }
 .work_activitydetail_01-upload_box {
+  margin-top: 20px;
   width: 100%;
   text-align: center;
 }
