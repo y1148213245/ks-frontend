@@ -11,6 +11,10 @@
       <div v-if="isActive === true" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">上传作品</div>
       <div v-if="isActive === false" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
     </div>
+
+    <!-- 活动评论组件 区别于作品评论 -->
+    <work_bookreview_02 namespace="activityrace" :is-show-diff=false></work_bookreview_02>
+    <!-- END 活动评论组件 区别于作品评论 -->
   </div>
 </template>
 

@@ -14,7 +14,7 @@ const description = `投票`;
 const dev = {
   common: {
     vote_03: {
-      url: ''
+      url: '../data/work_common_03_data.json'
     }
   }
 };

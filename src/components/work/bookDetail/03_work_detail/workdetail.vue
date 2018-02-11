@@ -2,48 +2,59 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-08 14:06:04
+ * @Last Modified time: 2018-02-11 16:11:43
  */ 
-<!-- 作品详情 -->
+<!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
   <div class="work_bookdetail_03">
+    <components_common_header></components_common_header>
     <div class="topTitle">
-      <div class="title" v-text="workInfo.title"></div>
+      <div class="title" v-text="workInfo[keys.title] || '暂无'"></div>
       <div class="vote">
-        <work_common_03 :pub-id="workInfo.pubId"></work_common_03>
+        <!-- 投票组件 -->
+        <work_common_03 :pub-id="workInfo.pubId" namespace="common"></work_common_03>
+        <!-- END 投票组件 -->
       </div>
     </div>
     <div class="workInformation">
       <div class="author">
         <span>作者：</span>
-        <span v-text="workInfo.author"></span>
+        <span v-text="workInfo[keys.author] || '暂无'"></span>
       </div>
       <div class="comment">
-        <span v-text="workInfo.comment"></span>
+        <span v-text="workInfo[keys.commentNum]"></span>
         <span>评论</span>
       </div>
       <div class="voteNum">
-        <span v-text="workInfo.vote"></span>
+        <span v-text="workInfo[keys.voteNum]"></span>
         <span>票数</span>
       </div>
       <div class="type">
         <span>参赛类别：</span>
-        <span v-text="workInfo.type"></span>
+        <span v-text="workInfo[keys.raceType]"></span>
       </div>
+    </div>
+    <div class="abstract">
+      <div v-text="workInfo[keys.abstract]"></div>
     </div>
     <div class="info">
       <div v-text="workInfo.workdetail"></div>
     </div>
-    <div class="collect">
-      <span>收藏文章</span>
-    </div>
-    <div class="download">
-      <span>下载文章</span>
+    <div class="workOperation">
+      <el-button size="medium">
+        <i class="el-icon-star-off"></i>
+        <span>收藏文章</span>
+      </el-button>
+      <el-button size="medium">
+        <i class="el-icon-download"></i>
+        <span>下载文章</span>
+      </el-button>
     </div>
     <div class="qrcode">
       <qrcode :value="url" :size="120"></qrcode>
       <div>微信扫一扫分享</div>
     </div>
+    <work_bookreview_02 namespace="productiondetail"></work_bookreview_02>
   </div>
 </template>
 
@@ -51,6 +62,7 @@
 import { Get } from "@common";
 import PROJECT_CONFIG from "projectConfig";
 import qrcode from 'qrcode.vue';
+import URL from 'url';
 
 export default {
   name: 'work_bookdetail_03',
@@ -61,6 +73,7 @@ export default {
       CONFIG: null,
       workInfo: {},
       url: '',
+      keys: null,  // 作品详情页接口字段兼容
     };
   },
   components: {
@@ -68,15 +81,24 @@ export default {
   },
   mounted () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].bookdetail.bookdetail_03;
+    this.keys = this.CONFIG.keys;
     this.url = window.location.href;
-    this.queryWorkInfo();
+    var queryObj = URL.parse(document.URL, true).query;
+    let resourceType = queryObj.resourceType;
+    let resourceId = queryObj.resourceId;
+    this.queryWorkInfo(resourceType, resourceId);
   },
 
   methods: {
-    queryWorkInfo () {
+    queryWorkInfo (type, id) {
       // 作品详情信息查询
-      Get(this.CONFIG.url, { params: this.CONFIG.params }).then(rep => {
-        this.workInfo = rep.data.data;
+      let params = Object.assign({}, this.CONFIG.params);
+      params.doclibCode = type;
+      params.docID = id;
+      Get(this.CONFIG.url, { params: params }).then(rep => {
+        if (rep.data) {
+          this.workInfo = rep.data;
+        }
       });
     }
   }

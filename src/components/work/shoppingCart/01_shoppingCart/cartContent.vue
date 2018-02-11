@@ -359,7 +359,7 @@
             <span>共有 {{virtualCoin}} 虚拟币</span>
             <span>使用</span>
             <input type="number" id="virtualCoin" v-on:input="getRmbCoin()"
-                   @keypress="checkVirtual($event)">
+                   @keypress="checkVirtual($event)" oninput="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}">
             <span>虚拟币</span>
           </div>
           <div class="coinremark">1虚拟币=0.1元</div>

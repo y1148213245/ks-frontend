@@ -153,7 +153,7 @@ a img {
   border: none;
 }
 #top-cart {
-  margin-right: 16px;
+  /* margin-right: 16px; */
   position: relative;
   font-size: 13px;
 }

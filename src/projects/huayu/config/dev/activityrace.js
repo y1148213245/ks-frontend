@@ -76,5 +76,10 @@ export default {
       isDevelopment: true,
       eventName_listen: 'eventName_loadedDatas'
     }
+  },
+  review: {  
+    queryreview: { // 查询评论组件
+      url: '../data/activityreview_02_data.json'
   }
+  },
 };

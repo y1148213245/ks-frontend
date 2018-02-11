@@ -46,9 +46,6 @@
                                 <div class="grid-content" style="padding:0 20px;border: 1px solid rgb(223, 236, 236);">
                                     <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:50px;">子单号：{{item.orderCode}}</span>
                                     <!-- <el-button type="text" @click="dialogTableVisible = true">联系客服</el-button> -->
-
-                                    <!-- 文联不需要申请售后，暂时隐藏-->
-                                  <!--   <el-button type="text" @click="goToApply" v-if="item.payStatus==1" style="display:inline-block; margin:0 80px 0 80px;">申请售后</el-button> -->
                                     <el-button type="text" @click="showDetails(outIndex,index)" style="float:right;display:inline-block;margin-left:20px;">订单详情</el-button>
 
                                     <!--<el-dialog title="联系客服" :visible.sync="dialogTableVisible">
@@ -128,13 +125,8 @@
                             <div v-if="Aitem.payStatus==1" style="display:inline-block;margin-left:30px;">已付款：<span>￥{{Aitem.realAmount}}</span></div>
                             <div v-if="Aitem.payStatus==0 && Aitem.status==1">待支付：<span>￥{{Aitem.realAmount}}</span></div>
                           </div>
-                          <div class="realAmount">
-                            <div>优惠券减免：<span>￥{{Aitem.couposAmount }}</span></div>
-                          </div>
-                          <div class="realAmount">
-                            <div>活动减免：<span>￥{{Aitem["orderList"][0]["activityRemark"]}}</span></div>
-                          </div>
-
+                          <div class="realAmount" v-show="Aitem.couposAmount!='null' && Aitem.couposAmount!='0.00'">优惠券减免：<span>￥{{Aitem.couposAmount }}</span></div>
+                          <div class="realAmount" v-show="Aitem.orderList[0].activityRemark && Aitem.orderList[0].activityRemark!='0.00'">活动减免：<span>￥{{Aitem.orderList[0].activityRemark}}</span></div>
                         </div>
                     </div>
                 </div>
@@ -192,8 +184,8 @@
                     <i class="el-icon-edit"></i><span>备注信息</span>
 
                     </div>
-                    <div  class="text item">
-                    <p><span>{{item.payRemark}}</span></p>
+                    <div  class="text item" style="word-break:break-word;">
+                    <p v-text="item.payRemark"></p>
                     </div>
                     </el-card>
                     </div>
@@ -218,7 +210,7 @@
                                     <span style="margin-top:5px;" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
                                     <span style="font-size:16px;margin-top:25px;">作者：{{item1.author||"暂无作者"}}</span>
                                 </div>
-                                <!-- <el-button @click="showReturn(item,item1,orderindex)" v-if="item.itemList[0].productType == 91">退货</el-button> -->
+                                <!-- <el-button @click="showReturn(item,item1)" v-if="item.itemList[0].productType == 91">退货</el-button> -->
                             </div>
                         </el-col>
                         <el-col :span="3">
@@ -244,15 +236,15 @@
 
                 </div>
             </div>
-                        <!-- 退货 -->
+            <!-- 退货 -->
             <div v-show="currentShow=='return'">
               <div style="margin-bottom:10px;">
-              <el-steps :space="150" :active="1" :align-center="true" :center="true">
-                <el-step title="提交申请" icon="edit"></el-step>
-                <el-step title="商家审核" icon="document"></el-step>
-                <el-step title="用户发货" icon="upload2"></el-step>
-                <el-step title="审核退款" icon="setting"></el-step>
-                <el-step title="完成退货" icon="check"></el-step>
+              <el-steps :space="150" :active="1" :align-center="true" :center="true" >
+                <el-step title="提交申请" icon="el-icon-edit"></el-step>
+                <el-step title="商家审核" icon="el-icon-document"></el-step>
+                <el-step title="用户发货" icon="el-icon-upload2"></el-step>
+                <el-step title="审核退款" icon="el-icon-setting"></el-step>
+                <el-step title="完成退货" icon="el-icon-check"></el-step>
               </el-steps>
               </div>
 
@@ -291,7 +283,6 @@
                   <!-- 计数器 -->
                   <div style=" margin-bottom:20px;">
                       <span style="margin-right:20px;">退货数量:</span>
-                      <!-- <el-input-number v-model="num" :min="0" :max="3"></el-input-number> -->
                       <el-input-number v-model="num" @change="handleChange" :min="1" :max="max" size="small"></el-input-number>
                   </div>
                   <!-- 文本框 -->
@@ -318,7 +309,7 @@
                 </div>
                 <div style="margin:30px 5px;float:right;">
                       <el-button type="primary" size="large"  @click="applyReturnGoods()">申请退货</el-button>
-                  </div>
+                </div>
             </div>
         </el-col>
     </div>
@@ -412,7 +403,7 @@ export default {
       this.currentShow = this.title[index];
     },
     // 展示退换货
-    showReturn(item, item1, orderindex) {
+    showReturn(item, item1) {
       let productName = item1.productName;
       let author = item1.author;
       let bigPic = item1.bigPic;
@@ -454,9 +445,20 @@ export default {
     handleChange(value) {
       console.log(value);
     },
+    // 退换货图片上传
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
     // 退换货申请
     applyReturnGoods() {
-      var params = {};
+      var params = {
+        orderItemId:1,
+
+      };
       this.$store.dispatch("personalCenter/applyReturnGoods", params);
     },
     // 详情页返回列表页
@@ -666,15 +668,6 @@ export default {
           message: "删除失败，请重试"
         });
       }
-    },
-
-    // 退换货图片上传
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
     }
   }
 };
@@ -840,22 +833,23 @@ export default {
 .el-icon-plus {
   margin-top: 7px;
 }
-  .box-card{
-    width:210px;display:inline-block;
-  }
-  .box-card p {
-    margin-bottom:10px;
-  }
-  .box-card .clearfix span {
-    margin-left:3px;
-    color :#303133;
-    font-size:16px;
-  }
-  .box-card .text p {
-    color :#303133 ;
-    font-size:14px;
-  }
-  .box-card .text p span {
-    color :#606266;
-  }
+.box-card {
+  width: 210px;
+  display: inline-block;
+}
+.box-card p {
+  margin-bottom: 10px;
+}
+.box-card .clearfix span {
+  margin-left: 3px;
+  color: #303133;
+  font-size: 16px;
+}
+.box-card .text p {
+  color: #303133;
+  font-size: 14px;
+}
+.box-card .text p span {
+  color: #606266;
+}
 </style>

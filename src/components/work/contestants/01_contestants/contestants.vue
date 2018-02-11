@@ -272,50 +272,7 @@ export default {
       addParticipantsDialog: false,
       input10: "",
       CityInfo: CityInfo,
-      participantsList: [
-        {
-          phoneNumber: "1391234567",
-          name: "王小虎",
-          sex: "男",
-          identityCard: "230102199100000000"
-        },
-        {
-          phoneNumber: "1391234567",
-          name: "王小虎",
-          sex: "男",
-          identityCard: "230102199100000000"
-        },
-        {
-          phoneNumber: "1391234567",
-          name: "王小虎",
-          sex: "男",
-          identityCard: "230102199100000000"
-        },
-        {
-          phoneNumber: "1391234567",
-          name: "王小虎",
-          sex: "男",
-          identityCard: "230102199100000000"
-        },
-        {
-          phoneNumber: "1391234567",
-          name: "王小虎",
-          sex: "男",
-          identityCard: "230102199100000000"
-        },
-        {
-          phoneNumber: "1391234567",
-          name: "王小虎",
-          sex: "男",
-          identityCard: "230102199100000000"
-        },
-        {
-          phoneNumber: "1391234567",
-          name: "王小虎",
-          sex: "男",
-          identityCard: "230102199100000000"
-        }
-      ]
+      participantsList: []
     };
   },
   mounted () {
@@ -376,9 +333,8 @@ export default {
       this.$refs[addSupplementForm].validate(valid => {
         if (valid) {
           this.active = 1;
-
           // this.$refs[addSupplementForm].resetFields(); 
-
+          
         } else {
           console.log("error submit!!");
           return false;
@@ -443,27 +399,27 @@ export default {
 .work_contestants_01_main .el-card__header {
   padding: 12px 20px;
 }
-.box-card {
+.work_contestants_01_main .box-card {
   width: 700px;
   margin: 30px auto;
 }
-.clearfix .ac_table_title {
+.work_contestants_01_main .clearfix .ac_table_title {
   line-height: 36px;
   font-weight: bold;
   font-size: 16px;
 }
-.clearfix:before,
-.clearfix:after {
+.work_contestants_01_main .clearfix:before,
+.work_contestants_01_main .clearfix:after {
   display: table;
   content: "";
 }
-.clearfix:after {
+.work_contestants_01_main .clearfix:after {
   clear: both;
 }
-.ac_title_bottom {
+.work_contestants_01_main .ac_title_bottom {
   position: relative;
 }
-.ac_title_bottom:before {
+.work_contestants_01_main .ac_title_bottom:before {
   content: "";
   display: block;
   position: absolute;
@@ -473,23 +429,23 @@ export default {
   border-width: 3px;
   border-color: #409eff;
 }
-.ac_input {
+.work_contestants_01_main .ac_input {
   width: 320px;
   display: inline-block;
   margin-bottom: 10px;
 }
-.ac_input span {
+.work_contestants_01_main .ac_input span {
   line-height: 40px;
 }
-.ac_input .el-input {
+.work_contestants_01_main .ac_input .el-input {
   width: 210px;
   margin-right: 10px;
   display: inline-block;
 }
-.ac_to_next {
+.work_contestants_01_main .ac_to_next {
   float: right;
 }
-.ac_last_text {
+.work_contestants_01_main .ac_last_text {
   color: #5e8242;
   font-size: 24px;
   margin: 0 auto;
@@ -498,7 +454,7 @@ export default {
   margin-top: 100px;
   text-align: center;
 }
-.ac_button {
+.work_contestants_01_main .ac_button {
   float: right;
 }
 </style>

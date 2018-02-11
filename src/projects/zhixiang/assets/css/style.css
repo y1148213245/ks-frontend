@@ -400,8 +400,12 @@ span.middot {
 .top-menu a{color:#7F7F7F;margin: 0px 6px}
 .top-menu a:hover{color: #AE0F29;}
 .top-menu a:last-child{margin-right: 0px}
-#top-cart{margin-right:16px;position: relative;font-size: 13px}
-#top-cart  > span {
+#top-cart{
+	/* margin-right:16px; */
+	position: relative;
+	font-size: 13px
+}
+/* #top-cart  > span {
 	display: block;
 	position: absolute;
 	top: -7px;
@@ -416,7 +420,7 @@ span.middot {
 	text-align: center;
 	background-color: #AE0F29;
 	border-radius: 50%;
-}
+} */
 
 /* ----------------------------------------------------------------
 	Logo

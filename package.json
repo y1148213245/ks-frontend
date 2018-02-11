@@ -12,11 +12,13 @@
   "dependencies": {
     "echarts": "^3.8.5",
     "js-base64": "^2.4.3",
+    "mockjs": "^1.0.1-beta3",
     "qrcode": "^1.0.0",
     "qrcode.vue": "^1.5.2",
     "vue": "^2.5.2",
     "vue-codemirror": "^4.0.3",
-    "vue-simplemde": "^0.4.6"
+    "vue-simplemde": "^0.4.6",
+    "vue2-editor": "^2.4.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -55,6 +57,7 @@
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
     "qrcode.vue": "^1.5.2",
+    "querystring": "^0.2.0",
     "rimraf": "^2.6.0",
     "sass-loader": "^6.0.6",
     "semver": "^5.3.0",

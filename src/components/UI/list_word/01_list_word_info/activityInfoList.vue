@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-02-05 17:24:29 
+ * @Author: song
+ * @Date: 2018-02-05 17:24:29
  * @Last Modified by: song
  * @Last Modified time: 2018-02-09 16:18:16
  */
@@ -67,6 +67,7 @@ export default {
       });
     },
     toInfoDetail(pubId, colId) { // 跳转咨询详情
+      window.sessionStorage.setItem("listUrl",document.URL);
       window.location.href = "../pages/informationdetail.html?pubId=" + pubId + '&conditions=' + this.paramsObj.conditions + '&orderBy=' + this.paramsObj.orderBy + '&pageNo=' + this.paramsObj.pageNo + '&pageSize=' + this.paramsObj.pageSize;
     },
     paging: function ({ pageNo, pageSize }) {  // 翻页

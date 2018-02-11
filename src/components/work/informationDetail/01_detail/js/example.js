@@ -25,5 +25,9 @@ const prod = {
 	}
 };
 
-export {name, title, dev, prod, description};
+const platform = 'huayu';
+const pageType = ['channel'];
+const resourceType = ['information'];
+
+export {name, title, dev, prod, description, platform, pageType, resourceType};
 

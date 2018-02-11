@@ -23,6 +23,7 @@
                 <a target="_blank" v-bind:href="'../pages/bookdetail.html?pubId=' + item.pubId">购买</a>
               </div>
               <div class="deleteCllo" @click="deleteCollProduct(item)">
+                <img src="../../assets/img/deleteCllo.png" alt="">
               </div>
               <div class="selectCllo">
                 <el-checkbox v-model="item.checked" @change="selectCollProduct(item)"></el-checkbox>

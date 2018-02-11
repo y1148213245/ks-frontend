@@ -178,7 +178,7 @@ export default {
         name: '删除',
         type: 'delete'
       } */],
-      configUrl: 'http://172.19.36.31:8085/spc/api/',  // 请求url
+      configUrl: 'http://172.19.57.153:8085/spc/api/',  // 请求url
       reviewContext: '',  // iframe里面的内容 呈现源码
       noData: true,
       usedComponents: {},

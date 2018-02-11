@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 13:56:44 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-05 17:12:00
+ * @Last Modified time: 2018-02-11 15:24:23
  */
 <!-- 活动评论组件 -->
 <template>
@@ -16,25 +16,35 @@
     </div>
     <div class="reviewText">
       <div class="deffReview" v-if="isShowDiff">
-        <div class="teacher" @click="toggleDiff('teacher')" :class="{'active': showItem === 'teacher'}">教师点评</div>
-        <div class="user" @click="toggleDiff('user')" :class="{'active': showItem === 'user'}">用户点评</div>
-      </div>
-      <div class="reviewList">
-        <div class="reviewListCon" v-for="(item, index) in reviewList" :key="index">
-          <div class="picture">
-            <img :src="item.picture ||'../../assets/img/people.jpg'" alt="">
-            <div class="commentator" v-text="item.commentator"></div>
-          </div>
-          <div class="text" v-text="item.review"></div>
+        <div v-for="(review, index) in reviewType" @click="toggleDiff(review.type)" :class="{'active': showType === review.type}" :key="index">
+          <span v-text="review.name"></span>
         </div>
       </div>
+      <div class="reviewList">
+        <div class="reviewListCon" v-for="(item, index) in reviewList" :key="index" v-if="reviewList.length >0">
+          <div class="picture">
+            <img :src="item.picture ||'../../assets/img/people.jpg'" alt="">
+            <div class="commentator" v-text="item.loginName" :title="item.loginName"></div>
+          </div>
+          <div class="text" v-text="item.content"></div>
+        </div>
+        <div v-if="reviewList.length === 0">暂无数据</div>
+      </div>
+    </div>
+    <div style="clear: both;">
+      <!-- 分页组件 -->
+      <ui_pagination :pageMessage="{totalCount: this.totalCount - 0 || 0}" :excuteFunction="paging"></ui_pagination>
+      <!-- END 分页组件 -->
     </div>
   </div>
 </template>
 
 <script>
-import { Get } from "@common";
+import { Get, Post } from "@common";
 import PROJECT_CONFIG from "projectConfig";
+import { mapGetters, mapActions } from 'vuex';
+import * as interfaces from "@work/login/common/interfaces.js";
+import URL from 'url';
 
 export default {
   name: 'work_bookreview_02',
@@ -48,33 +58,103 @@ export default {
   },
   data () {
     return {
-      review: '',
+      review: '',  // 评论内容
       reviewList: [], // 评论列表
-      showItem: 'teacher',
+      showType: '1',  // 显示哪一种类型的评论：教师评论 or 普通用户评论 
+      reviewType: [],
+      // 活动、资讯详情评论 地址栏必须传 pubId colId （视为默认正常情况）
+      // 作品详情评论 地址栏必须传 resourceName resourceType resourceId colId 特殊情况 索引库查不到信息
+      pubId: '',
+      colId: '',
+      resourceName: '',
+      resourceType: '',
+      resourceId: '',
+      totalCount: '',
     };
   },
 
+  computed: {
+    ...mapGetters("login", {
+      member: interfaces.GET_MEMBER,
+    })
+  },
   mounted () {
-    this.CONFIG = PROJECT_CONFIG[this.namespace].bookreview.activityreview_02;
-    this.queryReviewList();
+    let queryObj = URL.parse(document.URL, true).query;
+    this.pubId = queryObj.pubId;
+    this.colId = queryObj.colId;
+    this.resourceName = queryObj.resourceName;
+    this.resourceType = queryObj.resourceType;
+    this.resourceId = queryObj.resourceId;
+    this.CONFIG = PROJECT_CONFIG[this.namespace].review;
+    this.reviewType = this.CONFIG.queryreview.reviewType;
+    this.queryReviewList(this.showType);  // 查询评论列表
   },
 
   methods: {
-    queryReviewList () {
-      // 评论列表查询
-      Get(this.CONFIG.url, { params: this.CONFIG.params }).then(rep => {
-        this.reviewList = rep.data.data;
-        console.log(this.reviewList);
+    queryReviewList (type) {  // 查询评论列表
+      let paramsObj = Object.assign({}, this.CONFIG.queryreview.params);
+      paramsObj.type = type;
+      if (this.namespace === 'productiondetail') {  // 作品详情
+        paramsObj.resourceType = this.resourceType;
+        paramsObj.resourceId = this.resourceId;
+      } else {   // 其他详情（活动、资讯详情） 可以理解为默认情况
+        paramsObj.pubId = this.pubId;
+      }
+      Get(this.CONFIG.queryreview.url, { params: paramsObj }).then(rep => {
+        this.totalCount = rep.data.totalCount;
+        if (rep.data.result === '1') {  //请求成功
+          this.reviewList = rep.data.data;
+        }
       });
     },
     doReview () {  // 添加评论
-
+      let paramsObj = Object.assign({}, this.CONFIG.addreview.params);
+      if (this.review == '') {  // 没有填写评论内容不得提交评论
+        this.$message({
+          type: "info",
+          message: '请添加评论内容'
+        });
+        return false;
+      }
+      paramsObj.loginName = this.member.loginName;
+      paramsObj.content = this.review;
+      paramsObj.colId = this.colId;
+      paramsObj.memberType = this.member.memberType;
+      if (this.namespace === 'productiondetail') {  // 作品详情
+        paramsObj.resourceName = this.resourceName;
+        paramsObj.resourceType = this.resourceType;
+        paramsObj.resourceId = this.resourceId;
+      } else {  // 其他详情（活动、资讯详情） 可以理解为默认情况
+        paramsObj.pubId = this.pubId;
+      }
+      Post(this.CONFIG.addreview.url, paramsObj).then(rep => {
+        if (rep.data.result === '1') {  //请求成功
+          this.queryReviewList(this.showType);
+          this.review = ''; // 清空评论内容
+          this.$message({
+            type: "success",
+            message: '添加评论成功'
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: '添加评论失败'
+          });
+        }
+      });
     },
     toggleDiff (type) {  // 切换评论内容： 教师点评 用户点评
-      this.showItem = type;
-    }
+      this.showType = type;
+      this.queryReviewList(this.showType);
+    },
+    paging: function ({ pageNo, pageSize }) {
+      var param = {
+        pageNo: pageNo,
+        pageSize: pageSize
+      };
+      this.queryReviewList(this.showType);
+    },
   }
-
 }
 
 </script>
@@ -129,6 +209,8 @@ export default {
   height: 30px;
   line-height: 30px;
   text-align: center;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
 }
 
 .work_bookreview_02 .reviewListCon .text {
