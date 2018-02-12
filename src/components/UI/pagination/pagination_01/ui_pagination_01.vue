@@ -10,55 +10,57 @@
   import URL from "url";
   import Querystring from "querystring";
   import PROJECT_CONFIG from "projectConfig";
-  import { Post} from "@common";
-    export default {
-      name: "ui_pagination_01",
-      reused:true,
-      props:["namespace"],
-      data:function(){
-        return {
-          urls:{},
-          prev:false,
-          next:false
-        }
+  import {Post} from "@common";
+
+  export default {
+    name: "ui_pagination_01",
+    reused: true,
+    props: ["namespace"],
+    data: function () {
+      return {
+        urls: {},
+        prev: false,
+        next: false
+      }
+    },
+    mounted: function () {
+      this.projectConfig = PROJECT_CONFIG[this.namespace].pagination.ui_pagination_01;
+      let query = URL.parse(document.URL, true).query;
+      this.params = Object.assign({}, query);
+      this.params.id = this.params.pubId;
+      delete this.params.pubId;
+      this.getPreNext();
+    },
+    methods: {
+      getPreNext: function () {
+        Post(this.projectConfig.url, this.params).then((rep) => {
+          //上一篇
+          let prev = Object.assign({}, this.params);
+          prev.pubId = rep.data.prev;
+          delete prev.id;
+          this.prev = rep.data.prev ? false : true;
+          this.urls.prev = this.projectConfig.prevNextUrl + Querystring.stringify(prev);
+          //下一篇
+          let next = Object.assign({}, this.params);
+          next.pubId = rep.data.next;
+          delete next.id;
+          this.next = rep.data.next ? false : true;
+          this.urls.next = this.projectConfig.prevNextUrl + Querystring.stringify(next);
+        })
       },
-      mounted:function(){
-        this.projectConfig=PROJECT_CONFIG[this.namespace].pagination.ui_pagination_01;
-        let query=URL.parse(document.URL,true).query;
-        this.params=Object.assign({},query);
-        this.params.id=this.params.pubId;
-        delete this.params.pubId;
-        this.getPreNext();
-      },
-      methods:{
-        getPreNext:function(){
-          Post(this.projectConfig.url,this.params).then((rep)=>{
-            //上一篇
-            let prev=Object.assign({},this.params);
-            prev.pubId=rep.data.prev;
-            delete prev.id;
-            this.prev = rep.data.prev ? false :true;
-            this.urls.prev=this.projectConfig.prevNextUrl+"?"+Querystring.stringify(prev);
-            //下一篇
-            let next=Object.assign({},this.params);
-            next.pubId=rep.data.next;
-            delete next.id;
-            this.next = rep.data.next ? false :true;
-            this.urls.next=this.projectConfig.prevNextUrl+"?"+Querystring.stringify(next);
-          })
-        },
-        returnList:function(){
-          window.location.href=window.sessionStorage.getItem("listUrl");
-        }
+      returnList: function () {
+        window.location.href = window.sessionStorage.getItem("listUrl");
       }
     }
+  }
 </script>
 
 <style>
-  .ui_pagination_01{
+  .ui_pagination_01 {
     text-align: center;
   }
-  .ui_pagination_01 .clickFalse{
+
+  .ui_pagination_01 .clickFalse {
     pointer-events: none;
     color: #9c9c9c;
   }

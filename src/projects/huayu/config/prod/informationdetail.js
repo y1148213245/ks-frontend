@@ -12,16 +12,16 @@ export default {
       url: `${BASE_URL}spc/cms/publish/detail.do`,
       params: {
         pubId: '',
-        loginName:''
+        loginName: ''
       },
-      keys:{
-        show_key:false,
-        information_SYS_AUTHORS:'information_SYS_AUTHORS',
-        information_a_pubTime:'information_a_pubTime',
-        information_SYS_TOPIC:'information_SYS_TOPIC',
-        information_a_content:'information_a_content',
-        information_collect:'information_collect',
-        information_share:'information_share'
+      keys: {
+        show_key: false,
+        information_SYS_AUTHORS: 'information_SYS_AUTHORS',
+        information_a_pubTime: 'information_a_pubTime',
+        information_SYS_TOPIC: 'information_SYS_TOPIC',
+        information_a_content: 'information_a_content',
+        information_collect: 'information_collect',
+        information_share: 'information_share'
       },
       collectOrLike: {
         url: `${BASE_URL}collection/addCollect.do`,
@@ -33,17 +33,17 @@ export default {
       }
     }
   },
-  pagination:{
-    ui_pagination_01:{
-      url:`${BASE_URL}spc/cms/publish/searchNext.do`,
+  pagination: {
+    ui_pagination_01: {
+      url: `${BASE_URL}spc/cms/publish/searchNext.do`,
       params:{
         conditions:'',
-        id:'',
         orderBy:'',
-        pageNo:'1',
-        pageSize:'15'
+        pageNo:'',
+        pageSize:'',
+        id:''
       },
-      prevNextUrl:"./informationdetail.html"
+      prevNextUrl: "./informationdetail.html?"
     }
   }
 };
