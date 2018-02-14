@@ -1,6 +1,6 @@
 export default {
   name: 'personalCenter',
-  navList:[
+  navList: [
     {
       title: "我的帐号",
       icon: "el-icon-edit",
@@ -26,11 +26,6 @@ export default {
       icon: "el-icon-news",
       tag: "point"
     },
-    // {
-    //   title: "售后记录",
-    //   icon: "el-icon-service",
-    //   tag: "afterservice"
-    // },
     {
       title: "我的优惠券",
       icon: "el-icon-menu",
@@ -40,6 +35,16 @@ export default {
     //   title: "随手记",
     //   icon: "el-icon-edit-outline",
     //   tag: "note"
-    // }
+    // },
+    {
+      title: "我的工作台",
+      icon: "el-icon-edit-outline",
+      tag: "workbench"
+    },
+    {
+      title: "参与的活动",
+      icon: "el-icon-service",
+      tag: "joinactivity"
+    }
   ]
 }

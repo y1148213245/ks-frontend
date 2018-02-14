@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-11 16:48:56
+ * @Last Modified time: 2018-02-14 14:31:32
  */
 export default {
   name: "activityrace",
@@ -36,6 +36,27 @@ export default {
         },
         eventName_listen: "eventName_loadedDatas",
       }
+    },
+    work_activitydetail_05: {
+      url: BASE_URL + 'spc/prodb/searchNL.do',
+      params: {
+        doclibCode: 'PORTAL_WORKS',
+        relations: '1',
+        cols: 'ACTIVITYID',
+        symbols: '2',
+        vals: '601858',
+      },
+      keys: {
+        title:'SYS_TOPIC',
+        author:'POTHUNTER_NAME',
+        date:'SYS_CREATED',
+        abstract:'DESCRIPTION',
+        teacherCommentNum:'VOTE_COUNT',
+        voteNum:'VOTE_COUNT'
+      },
+      eventName_listenLoadedData: 'eventName_loadedDatas',
+      eventName_listenSearch: 'eventName_search',
+      isDevelopment: false,
     },
     review: { // 查询活动评论列表
       queryreview: {

@@ -2,7 +2,7 @@
 import Vue from "vue";
 import axios from "axios";
 // import {SITE_CONFIG} from 'projectConfig';
-
+/*jshint esversion: 6 */
 export default {
   /*查询帐号信息*/
   queryUser(loginName) {
@@ -96,7 +96,7 @@ export default {
   /*虚拟币充值*/
   // RechargeVirtual(params) {
   // var url =BASE_URL+'rechargeVirtualCoin/rechargeByLoginName.do?loginName=' + params.loginName + '&coinValue=' + params.paynum * 100 + '&siteId=' + SITE_CONFIG.siteId;
-  // var url = 'http://172.19.36.70:9092/spc-portal-web/epay/getVirtualCoinPayForm.do?price=1&loginName=1&payMethodId=1&siteId=1'
+  // var url = 'http://172.19.36.70/portal/api/epay/getVirtualCoinPayForm.do?price=1&loginName=1&payMethodId=1&siteId=1'
   // var url = BASE_URL+'epay/getVirtualCoinPayForm.do?price=1&loginName=1&payMethodId=1&siteId=1'
   // return axios.get(url);
   // },
@@ -244,7 +244,7 @@ export default {
   },
   /*头像上传*/
   // uploadHeadPic(params){
-  // 	var url ='http://172.19.36.70:9092/spc-portal-web/user/uploadHeadPic.do?loginName=' + params.loginName;
+  // 	var url ='http://172.19.36.70/portal/api/user/uploadHeadPic.do?loginName=' + params.loginName;
   // 	return axios.post(url,config);
   // },
   /*验证注册信息是否存在*/
@@ -279,8 +279,10 @@ export default {
   },
   /*申请退换货*/
   applyReturnGoods(params) {
-    var url = BASE_URL + "order/applyReturnGoods.do?" + params;
-    return axios.get(url);
+    // var url = BASE_URL + "order/applyReturnGoods.do?";
+    var url = "http://172.19.36.70/portal/api/order/applyReturnGoods.do?";
+
+    return axios.post(url, params);
   },
   /*售后记录*/
   getReturnGoodsList(params) {
@@ -472,5 +474,38 @@ export default {
         }
       })
       .catch(function(error) {});
-  }
+  },
+  // 参与的活动
+  /*查询学生列表*/
+  getActivityMemberByTeacher(params) {
+    var url =
+      "http://172.19.57.153/portal/api/user/getActivityMemberByTeacher.do?teacherId=" +
+      params.teacherID +
+      "&pageNo=" +
+      params.pageNo +
+      "&pageSize=" +
+      params.pageSize;
+    return axios.get(url);
+  },
+  // 新增学生
+  addActivityMember(params) {
+    var url =
+      "http://172.19.57.153/portal/api/user/addActivityMember.do";
+    return axios.post(url, params);
+  },
+  // 删除学生
+  deleteActivityMemberById(params) {
+    var url =
+      "http://172.19.57.153/portal/api/user/deleteActivityMemberById.do?memberId=" +
+      params.memberId +
+      "&teacherId=" +
+      params.teacherId;
+    return axios.get(url);
+  },
+  // 编辑学生
+  modifyActivityMember(params) {
+    var url =
+      "http://172.19.57.153/portal/api/user/modifyActivityMember.do";
+    return axios.post(url, params);
+  },
 };

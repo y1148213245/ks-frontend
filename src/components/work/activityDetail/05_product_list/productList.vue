@@ -30,18 +30,18 @@
 <script>
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
-import { Post } from "@common";
+import { Get } from "@common";
 export default {
   name: 'work_activitydetail_05',
   reused: true,
   props: {
-    namespace:String,
+    namespace: String,
   },
   data () {
     return {
       projectConfig: null,
       keys: null,
-      list:[],
+      list: [],
     };
   },
 
@@ -49,9 +49,10 @@ export default {
 
   created () {
     this.initConfig();
-    this.projectConfig.isDevelopment ? this.loadData() : this.$bus.on(this.projectConfig.eventName_listenLoadedData,this.loadData);
-    this.$bus.on(this.projectConfig.eventName_listenSearch,this.loadData);
-   },
+    this.projectConfig.isDevelopment ? this.loadData() : this.$bus.on(this.projectConfig.eventName_listenLoadedData, this.loadData);
+    this.$bus.on(this.projectConfig.eventName_listenSearch, this.loadData);
+     this.loadData ()//临时
+  },
 
   mounted () { },
 
@@ -60,11 +61,14 @@ export default {
       this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_05;
       this.keys = this.projectConfig.keys;
     },
-    loadData(param){
-      console.log(param);
+    loadData (param) {
       let url = this.projectConfig.url;
-      Post(url).then((resp)=>{
-        let data = resp.data.data;
+      let params = this.projectConfig.params
+      if (params) {
+        url += '?doclibCode=' + params.doclibCode + '&relations=' + params.relations + '&cols=' + params.cols + '&symbols=' + params.symbols + '&vals=' + params.vals
+      }
+      Get(url).then((resp) => {
+        let data = resp.data.content;
         this.list = data;
       })
     }
@@ -80,22 +84,20 @@ export default {
   margin: 10px 0;
   font-size: 14px;
 }
-.work_activitydetail_05-item{
+.work_activitydetail_05-item {
   margin-top: 10px;
 }
-.work_activitydetail_05-title_box{
-
+.work_activitydetail_05-title_box {
 }
-.work_activitydetail_05-author_box{
-
+.work_activitydetail_05-author_box {
 }
-.work_activitydetail_05-date_box{
+.work_activitydetail_05-date_box {
   text-align: right;
 }
-.work_activitydetail_05-vote_box{
+.work_activitydetail_05-vote_box {
   text-align: center;
 }
-.work_activitydetail_05-vote_box button{
+.work_activitydetail_05-vote_box button {
   width: 40%;
 }
 </style>

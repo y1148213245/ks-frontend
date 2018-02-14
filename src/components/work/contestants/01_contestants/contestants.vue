@@ -10,9 +10,9 @@
       <el-card class="box-card" :body-style="{ padding: '0 0 0 10px' }">
       <div slot="header" class="clearfix">
       <span class="ac_table_title ac_title_bottom">选择参赛人员</span>
-      <el-button style="float: right;" type="primary" round icon="el-icon-plus" size="medium"  @click="addParticipantsDialog = true">新增参赛人员</el-button>
+      <el-button style="float: right;" type="primary" round icon="el-icon-plus" size="medium"  @click="additions = true">新增参赛人员</el-button>
  
-      <el-dialog title="添加参赛人信息" :visible.sync="addParticipantsDialog">
+      <el-dialog title="添加参赛人信息" :visible.sync="additions">
         <div>
           <el-form :model="addParticipantsForm" :rules="rules" ref="addParticipantsForm" label-width="100px" class="demo-ruleForm">
 
@@ -22,8 +22,8 @@
 
           <el-form-item label="性别：" prop="sex">
           <el-radio-group v-model="addParticipantsForm.sex">
-          <el-radio label="男"></el-radio>
-          <el-radio label="女"></el-radio>
+          <el-radio label="1">男</el-radio>
+          <el-radio label="0">女</el-radio>
           </el-radio-group>
           </el-form-item>
           
@@ -37,11 +37,10 @@
           </el-form>
         </div>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="addParticipantsDialog = false">取 消</el-button>
+            <el-button @click="additions = false">取 消</el-button>
             <el-button type="primary" @click="submitAddParticipantsForm('addParticipantsForm')">确 定</el-button>
           </span>
       </el-dialog>
-
 
       </div>
       <el-table
@@ -52,25 +51,26 @@
         @current-change="handleCurrentChange">
       <el-table-column
         align="center"
-        prop="name"
+        prop="userName"
         label="姓名"
         width="120">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="sex"
+        prop="gender"
         label="性别"
-        width="120">
+        width="120"
+        :formatter="sexFormat">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="phoneNumber"
+        prop="mobileNum"
         label="手机号"
         width="180">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="identityCard"
+        prop="identifyId"
         label="身份证号"
         show-overflow-tooltip>
       </el-table-column>
@@ -81,58 +81,30 @@
       <div slot="header" class="clearfix">
       <span class="ac_table_title ac_title_bottom">补充相关信息</span>
       </div>
-      <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" label-width="100px" class="demo-ruleForm">
-      <div>
-        <div class="ac_input">
-        <el-form-item label="地区：" prop="selectedOptions">
-        <el-cascader
-          :options="CityInfo"
-          v-model="addSupplementForm.selectedOptions"
-          :change-on-select="true"
-          :clearable="true"
-          :filterable="true"
-          @change="handleChange">
-        </el-cascader>
-        </el-form-item>
-        </div>
-        <div class="ac_input">
-        <el-form-item label="学校：" prop="school">
-        <el-input
-        placeholder="请输入学校"
-        v-model="addSupplementForm.school"
-        clearable>
-        </el-input>
-        </el-form-item>
-        </div>
-        <div class="ac_input">
-        <el-form-item label="组别：" prop="group">
-        <el-input
-        placeholder="请输入组别"
-        v-model="addSupplementForm.group"
-        clearable>
-        </el-input>
-        </el-form-item>
-        </div>
-        <div class="ac_input">
-        <el-form-item label="教师：" prop="teacher">
-        <el-input
-        placeholder="请输入指导教师"
-        v-model="addSupplementForm.teacher"
-        clearable>
-        </el-input>
-        </el-form-item>
-        </div>
+      <div style="display:inline-block;margin-left:30px;">
+        <span>地区：</span>
+        <el-select v-model="addressInformaitionValue" placeholder="请选择参赛地区" filterable>
+          <el-option
+          v-for="item in addressInformaition"
+          :key="item"
+          :label="item.label"
+          :value="item">
+          </el-option>
+        </el-select>
       </div>
-      </el-form>
+      <div  style="display:inline-block;margin-left:30px;">
+      <span>组别：</span>
+        <el-select v-model="classInformaitionValue" placeholder="请选择参赛组别" filterable>
+          <el-option
+          v-for="item in classInformaition"
+          :key="item"
+          :label="item.label"
+          :value="item">
+          </el-option>
+        </el-select>
+      </div>
+
     </el-card>
-
-
-    <div style="display:none">
-      <span id="t_city">{{addSupplementForm.city | myAddressCity}}</span>
-      <span id="t_erae">{{addSupplementForm.erae | myAddressErae}}</span>
-      <span id="t_minerae">{{addSupplementForm.minerae | myAddressMinerae}}</span>
-    </div>
-
     <el-button type="primary" class="ac_to_next" @click="submitAddSupplementForm('addSupplementForm')">下一步</el-button>
   </div>
   <!-- 上传作品 -->
@@ -193,38 +165,36 @@
 <script>
 import { Get } from "@common";
 import PROJECT_CONFIG from "projectConfig";
-import { VueEditor } from 'vue2-editor';
-
+import { VueEditor } from "vue2-editor";
+import api from "../../../work/personalCenter/01_personalCenter/api/personalCenterApi";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "work_contestants_01",
   reused: true,
   props: {
     namespace: String
   },
-  data () {
+  data() {
     return {
+      // loginName: null,
+      docID: "",
+      teacherID: "",
+      currentRow: "",
       CONFIG: null,
       active: 0,
-      customToolbar: [  // 自定义编辑器工具栏
-        ['bold', 'italic', 'underline'],  // 字体样式：粗体、斜体、下划线
-        [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }],  // 对齐样式：左对齐、居中、右对齐
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],  // 列表样式：数字、圆点、对号
-        [{ 'indent': '-1' }, { 'indent': '+1' },],  // 缩进：左、右
-        ['color', 'background'],  // 文字颜色、文字背景颜色
+      addressInformaition: null,
+      addressInformaitionValue: null,
+      classInformaition: null,
+      classInformaitionValue: null,
+      customToolbar: [
+        // 自定义编辑器工具栏
+        ["bold", "italic", "underline"], // 字体样式：粗体、斜体、下划线
+        [{ align: "" }, { align: "center" }, { align: "right" }], // 对齐样式：左对齐、居中、右对齐
+        [{ list: "ordered" }, { list: "bullet" }, { list: "check" }], // 列表样式：数字、圆点、对号
+        [{ indent: "-1" }, { indent: "+1" }], // 缩进：左、右
+        ["color", "background"] // 文字颜色、文字背景颜色
       ],
       rules: {
-        selectedOptions: [
-          { required: true, message: "请输入地区", trigger: "blur" }
-        ],
-        school: [
-          { required: true, message: "请输入学校", trigger: "blur" }
-        ],
-        group: [
-          { required: true, message: "请输入组别", trigger: "blur" }
-        ],
-        teacher: [
-          { required: true, message: "请输入指导教师", trigger: "blur" }
-        ],
         name: [
           { required: true, message: "请输入参赛人姓名", trigger: "blur" }
         ],
@@ -240,124 +210,173 @@ export default {
         synopsis: [
           { required: true, message: "请输入参赛作品简介", trigger: "blur" }
         ],
-        files: [
-          { required: true, message: "请输入参赛作品简介", trigger: "blur" }
-        ],
+        files: [{ required: true, message: "请上传作品附件", trigger: "blur" }],
         content: [
           { required: true, message: "请填写参赛作品", trigger: "blur" }
         ]
       },
       addParticipantsForm: {
         name: "",
-        sex: "男",
+        sex: "1",
         identity: "",
         telNumber: ""
       },
-      addSupplementForm: {
-        city: "",
-        erae: "",
-        minerae: "",
-        selectedOptions: [],//地区筛选数组
-        school: "",
-        group: "",
-        teacher: ""
-      },
+      addressInformaitionValue: "",
+      classInformaitionValue: "",
       addAnnexWorksForm: {
         title: "",
         synopsis: "",
         /* files: [{ name: 'demo.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],  */
         files: [],
-        content: '',
+        content: ""
       },
-      addParticipantsDialog: false,
-      input10: "",
+      additions: false,
       CityInfo: CityInfo,
       participantsList: []
     };
   },
-  mounted () {
+  created() {
+    var _this = this;
+    Get(BASE_URL + "checkToken.do").then(function(rep) {
+      let datas = rep.data.data;
+      if (datas && datas.checkStatus == "1") {
+      var getUrlStr = function(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+      };
+        _this.teacherID = datas.id;
+      } else {
+        alert("请登录");
+      }
+    });
+  },
+
+  mounted() {
     this.CONFIG = PROJECT_CONFIG[this.namespace].contestants.contestants_01;
     this.queryParticipants();
+    this.queryRelatedInformation();
   },
   components: {
     VueEditor
   },
-  filters: {
-    myAddressCity: function (value) {
-      for (var y = 0; y < CityInfo.length; y++) {
-        if (CityInfo[y].value == value) {
-          return CityInfo[y].label;
-        }
-      }
-    },
-    myAddressErae: function (value) {
-      for (var y = 0; y < CityInfo.length; y++) {
-        for (var z = 0; z < CityInfo[y].children.length; z++) {
-          if (CityInfo[y].children[z].value == value && value != undefined) {
-            return CityInfo[y].children[z].label;
-          }
-        }
-      }
-    },
-    myAddressMinerae: function (value) {
-      for (var y = 0; y < CityInfo.length; y++) {
-        for (var z = 0; z < CityInfo[y].children.length; z++) {
-          for (var i = 0; i < CityInfo[y].children[z].children.length; i++) {
-            if (
-              CityInfo[y].children[z].children[i].value == value &&
-              value != undefined
-            ) {
-              return CityInfo[y].children[z].children[i].label;
-            }
-          }
-        }
-      }
-    }
-  },
   methods: {
-    queryParticipants () {  // 查询参赛人列表
-      Get(this.CONFIG.url, { params: this.CONFIG.params }).then(rep => {
+    queryParticipants() {
+      // 查询参赛人列表
+      // Get(this.CONFIG.url, { params: this.CONFIG.params }).then(rep => {
+      //   this.participantsList = rep.data.data;
+      // });
+      Get(
+        "http://172.19.57.153/portal/api/user/getActivityMemberByTeacher.do?teacherId=" +
+          217996 +
+          "&pageNo=" +
+          1 +
+          "&pageSize=" +
+          8
+      ).then(rep => {
+        console.log(rep);
         this.participantsList = rep.data.data;
       });
     },
-    handleCurrentChange (currentRow) {
-      console.log(currentRow);
+    queryRelatedInformation() {
+      // 查询补充信息
+      Get(
+        "http://172.19.92.76:8080/spc-portal-web/spc/prodb/detail.do?doclibCode=PORTAL_ACTIVITY&docID=601858"
+      ).then(rep => {
+        this.relatedInformationList = rep.data;
+        this.addressInformaition = rep.data.AREALIMT.split(/;/);
+        this.classInformaition = rep.data.CLASSLIMT.split(/;/);
+      });
     },
-    handleChange (value) {
-      this.addSupplementForm.city = this.addSupplementForm.selectedOptions[0];
-      this.addSupplementForm.erae = this.addSupplementForm.selectedOptions[1];
-      this.addSupplementForm.minerae = this.addSupplementForm.selectedOptions[2];
+    handleCurrentChange(currentRow) {
+      console.log(currentRow);
+      this.currentRow = currentRow;
     },
     // 提交参赛信息
-    submitAddSupplementForm (addSupplementForm) {
-      this.$refs[addSupplementForm].validate(valid => {
-        if (valid) {
-          this.active = 1;
-          // this.$refs[addSupplementForm].resetFields(); 
-          
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    submitAddSupplementForm() {
+      if (this.currentRow === "") {
+        // 收件人为空
+        this.$message({
+          type: "error",
+          message: "请在列表里选择参赛人"
+        });
+        return false;
+      } else if (this.addressInformaitionValue == "") {
+        this.$message({
+          type: "error",
+          message: "请选择地区"
+        });
+        return false;
+      } else if (this.classInformaitionValue == "") {
+        this.$message({
+          type: "error",
+          message: "请选择组别"
+        });
+        return false;
+      } else {
+        console.log(this.addressInformaitionValue);
+        console.log(this.classInformaitionValue);
+        console.log(this.currentRow);
+        this.active = 1;
+      }
     },
     // 增加参赛人信息
-    submitAddParticipantsForm (addParticipantsForm) {
+    submitAddParticipantsForm(addParticipantsForm) {
       this.$refs[addParticipantsForm].validate(valid => {
         if (valid) {
-          this.addParticipantsDialog = false;
-          this.$refs[addParticipantsForm].resetFields(); //清空表单
+          var param = {
+            createTime: "",
+            gender: this.addParticipantsForm.sex,
+            id: 0,
+            identifyId: this.addParticipantsForm.identity,
+            mobileNum: this.addParticipantsForm.telNumber,
+            teacherId: this.teacherID,
+            userName: this.addParticipantsForm.name
+          };
+          api
+            .addActivityMember(param)
+            .then(response => {
+              console.log(response);
+              if (response.data.data.errorCode) {
+                this.$message({
+                  type: "error",
+                  message: response.data.data.errorMsg
+                });
+              } else {
+                this.$message({
+                  type: "success",
+                  message: "学生添加成功!"
+                });
+                Get(
+                  "http://172.19.57.153/portal/api/user/getActivityMemberByTeacher.do?teacherId=" +
+                    217996 +
+                    "&pageNo=" +
+                    1 +
+                    "&pageSize=" +
+                    99
+                ).then(rep => {
+                  console.log(rep);
+                  this.participantsList = rep.data.data;
+                });
+              }
+              this.additions = false;
+              this.$refs[addParticipantsForm].resetFields(); //清空表单
+            })
+            .catch(err => {
+              console.log(err);
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
-    previouStep () {
+    previouStep() {
       this.active = 0;
     },
     // 添加附件类参赛作品
-    submitAddAnnexWorksForm (addAnnexWorksForm) {
+    submitAddAnnexWorksForm(addAnnexWorksForm) {
       this.$refs[addAnnexWorksForm].validate(valid => {
         if (valid) {
           this.$refs[addAnnexWorksForm].resetFields(); //清空表单
@@ -368,17 +387,29 @@ export default {
         }
       });
     },
+    sexFormat: function(row, column) {
+      var date = row[column.property];
+      if (date == 1) {
+        return "男";
+      } else {
+        return "女";
+      }
+    },
     // 上传附件
-    handleRemove (file, fileList) {
+    handleRemove(file, fileList) {
       console.log(file, fileList);
     },
-    handlePreview (file) {
+    handlePreview(file) {
       console.log(file);
     },
-    handleExceed (files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
     },
-    beforeRemove (file, fileList) {
+    beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     }
   }
@@ -423,7 +454,7 @@ export default {
   content: "";
   display: block;
   position: absolute;
-  top: 170%;
+  top: 195%;
   width: 100%;
   border-style: solid;
   border-width: 3px;

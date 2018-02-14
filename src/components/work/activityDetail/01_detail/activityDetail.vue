@@ -1,19 +1,19 @@
 <!-- 竞赛详情 -->
 <template>
   <div class="work_activitydetail_01">
-    <p class="work_activitydetail_01-title" v-text="detail[keys.title]"></p>
+    <p class="work_activitydetail_01-title" v-text="detail && detail[keys.title] || ''"></p>
     <div class="work_activitydetail_01-swiper">
       <!-- 轮播图组件 -->
-      <ui_swiper_06 :pics="detail[keys.illustration]"></ui_swiper_06><!-- END 轮播图组件 -->
+      <ui_swiper_06 :pics="detail && detail[keys.illustration] || []"></ui_swiper_06><!-- END 轮播图组件 -->
     </div>
-    <div class="work_activitydetail_01-text_content" v-text="detail[keys.content]"></div>
+    <div class="work_activitydetail_01-text_content" v-text="detail && detail[keys.content] || ''"></div>
     <div class="work_activitydetail_01-upload_box">
       <div v-if="isActive === true" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">上传作品</div>
       <div v-if="isActive === false" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
     </div>
 
     <!-- 活动评论组件 区别于作品评论 -->
-    <work_bookreview_02 namespace="activityrace" :is-show-diff=false></work_bookreview_02>
+    <!-- <work_bookreview_02 namespace="activityrace" :is-show-diff=false></work_bookreview_02> -->
     <!-- END 活动评论组件 区别于作品评论 -->
   </div>
 </template>
@@ -69,15 +69,18 @@ export default {
       Get(url).then((resp) => {
         let data = resp.data.data;
         this.detail = data;
-        this.$bus.emit(this.projectConfig.eventName_loadedDatas, data);
+        if (this.detail) {
+          this.$bus.emit(this.projectConfig.eventName_loadedDatas, data);
 
-        //判断活动过期
-        let thisTimestamp = new Date().getTime();
-        if (thisTimestamp < data[this.keys.endDate]) {
-          this.isActive = true;
-        } else {
-          this.isActive = false;
+          //判断活动过期
+          let thisTimestamp = new Date().getTime();
+          if (thisTimestamp < data[this.keys.endDate]) {
+            this.isActive = true;
+          } else {
+            this.isActive = false;
+          }
         }
+
       })
     },
     toUploadPage () {
