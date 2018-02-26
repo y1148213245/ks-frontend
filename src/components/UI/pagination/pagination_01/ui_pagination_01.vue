@@ -49,7 +49,16 @@
         })
       },
       returnList: function () {
-        window.location.href = window.sessionStorage.getItem("listUrl");
+        let currentHost=document.URL.replace(/(.*\/)*([^.]+).*/ig,"$2");
+        let referrerHost=document.referrer.replace(/(.*\/)*([^.]+).*/ig,"$2");
+        if(currentHost!==referrerHost){
+          window.sessionStorage.setItem("listUrl",document.referrer);
+          window.location.href = document.referrer;
+        }else{
+          if(window.sessionStorage.getItem("listUrl")){
+            window.location.href = window.sessionStorage.getItem("listUrl");
+          }
+        }
       }
     }
   }

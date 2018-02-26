@@ -15,22 +15,18 @@
       <el-dialog title="添加参赛人信息" :visible.sync="additions">
         <div>
           <el-form :model="addParticipantsForm" :rules="rules" ref="addParticipantsForm" label-width="100px" class="demo-ruleForm">
-
           <el-form-item label="姓名：" prop="name">
           <el-input v-model="addParticipantsForm.name"></el-input>
           </el-form-item>
-
           <el-form-item label="性别：" prop="sex">
           <el-radio-group v-model="addParticipantsForm.sex">
           <el-radio label="1">男</el-radio>
           <el-radio label="0">女</el-radio>
           </el-radio-group>
           </el-form-item>
-          
           <el-form-item label="身份证：" prop="identity">
           <el-input v-model="addParticipantsForm.identity"></el-input>
           </el-form-item>
-
           <el-form-item label="电话：" prop="telNumber">
           <el-input v-model="addParticipantsForm.telNumber"></el-input>
           </el-form-item>
@@ -104,6 +100,28 @@
         </el-select>
       </div>
 
+      <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm">
+      <div>
+        <div class="ac_input" style="display:inline-block;margin-left:18px;">
+        <el-form-item label="学校：" prop="school">
+        <el-input
+        placeholder="请填写学校"
+        v-model="addSupplementForm.school"
+        clearable>
+        </el-input>
+        </el-form-item>
+        </div>
+        <div class="ac_input">
+        <el-form-item label="教师：" prop="teacher">
+        <el-input
+        placeholder="请填写指导教师"
+        v-model="addSupplementForm.teacher"
+        clearable>
+        </el-input>
+        </el-form-item>
+        </div>
+      </div>
+      </el-form>
     </el-card>
     <el-button type="primary" class="ac_to_next" @click="submitAddSupplementForm('addSupplementForm')">下一步</el-button>
   </div>
@@ -127,22 +145,22 @@
           <el-checkbox-group v-model="addAnnexWorksForm.files"></el-checkbox-group>
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="upLoadUrl()"
+            name="file"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
+            :on-success="upLoadingSuccess"
             multiple
-            :limit="3"
+            :limit="1"
             :on-exceed="handleExceed"
             :file-list="addAnnexWorksForm.files">
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
-
         <el-form-item label="正文：" prop="content">
           <VueEditor v-model="addAnnexWorksForm.content" :editorToolbar="customToolbar"></VueEditor>
         </el-form-item>
-
         <el-form-item>
           <div class="ac_button">
             <el-button type="primary" @click="previouStep">上一步</el-button>
@@ -151,9 +169,7 @@
         </el-form-item>
         </el-form>
     </el-card>
-
   </div>
-
   <div class="ac_last_text" v-show="active == 2">
      <span><i class="el-icon-success"></i>你的作品已提交成功</span>
   </div>
@@ -164,6 +180,7 @@
 
 <script>
 import { Get } from "@common";
+import { Post } from "@common";
 import PROJECT_CONFIG from "projectConfig";
 import { VueEditor } from "vue2-editor";
 import api from "../../../work/personalCenter/01_personalCenter/api/personalCenterApi";
@@ -204,13 +221,17 @@ export default {
         telNumber: [
           { required: true, message: "请输入参赛人手机号", trigger: "blur" }
         ],
+        school: [{ required: true, message: "请输入学校", trigger: "blur" }],
+        teacher: [
+          { required: true, message: "请输入指导教师", trigger: "blur" }
+        ],
         title: [
           { required: true, message: "请输入参赛作品标题", trigger: "blur" }
         ],
         synopsis: [
           { required: true, message: "请输入参赛作品简介", trigger: "blur" }
         ],
-        files: [{ required: true, message: "请上传作品附件", trigger: "blur" }],
+        // files: [{ required: true, message: "请上传作品附件", trigger: "blur" }],
         content: [
           { required: true, message: "请填写参赛作品", trigger: "blur" }
         ]
@@ -221,17 +242,19 @@ export default {
         identity: "",
         telNumber: ""
       },
+      addSupplementForm: {
+        school: "",
+        teacher: ""
+      },
       addressInformaitionValue: "",
       classInformaitionValue: "",
       addAnnexWorksForm: {
         title: "",
         synopsis: "",
-        /* files: [{ name: 'demo.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],  */
         files: [],
         content: ""
       },
       additions: false,
-      CityInfo: CityInfo,
       participantsList: []
     };
   },
@@ -240,12 +263,12 @@ export default {
     Get(BASE_URL + "checkToken.do").then(function(rep) {
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
-      var getUrlStr = function(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]);
-        return null;
-      };
+        var getUrlStr = function(name) {
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+          var r = window.location.search.substr(1).match(reg);
+          if (r != null) return unescape(r[2]);
+          return null;
+        };
         _this.teacherID = datas.id;
       } else {
         alert("请登录");
@@ -264,26 +287,18 @@ export default {
   methods: {
     queryParticipants() {
       // 查询参赛人列表
-      // Get(this.CONFIG.url, { params: this.CONFIG.params }).then(rep => {
-      //   this.participantsList = rep.data.data;
-      // });
-      Get(
-        "http://172.19.57.153/portal/api/user/getActivityMemberByTeacher.do?teacherId=" +
-          217996 +
-          "&pageNo=" +
-          1 +
-          "&pageSize=" +
-          8
-      ).then(rep => {
+      Get(this.CONFIG.competitionList.url, {
+        params: this.CONFIG.competitionList.params
+      }).then(rep => {
         console.log(rep);
         this.participantsList = rep.data.data;
       });
     },
     queryRelatedInformation() {
       // 查询补充信息
-      Get(
-        "http://172.19.92.76:8080/spc-portal-web/spc/prodb/detail.do?doclibCode=PORTAL_ACTIVITY&docID=601858"
-      ).then(rep => {
+      Get(this.CONFIG.supplementaryInformation.url, {
+        params: this.CONFIG.supplementaryInformation.params
+      }).then(rep => {
         this.relatedInformationList = rep.data;
         this.addressInformaition = rep.data.AREALIMT.split(/;/);
         this.classInformaition = rep.data.CLASSLIMT.split(/;/);
@@ -348,15 +363,7 @@ export default {
                   type: "success",
                   message: "学生添加成功!"
                 });
-                Get(
-                  "http://172.19.57.153/portal/api/user/getActivityMemberByTeacher.do?teacherId=" +
-                    217996 +
-                    "&pageNo=" +
-                    1 +
-                    "&pageSize=" +
-                    99
-                ).then(rep => {
-                  console.log(rep);
+                Get(this.CONFIG.competitionList.url).then(rep => {
                   this.participantsList = rep.data.data;
                 });
               }
@@ -375,10 +382,66 @@ export default {
     previouStep() {
       this.active = 0;
     },
+    upLoadUrl() {
+      // 上传地址
+      return "http://172.19.57.153/spc-portal-web/dynamicFile/upload.do?";
+    },
+    upLoadingSuccess(res, file) {
+      // 上传成功回调
+      console.log(res);
+      if ((res.Status = "success")) {
+        console.log(res.ID);
+        this.$message({
+          type: "success",
+          message: "文件上传成功"
+        });
+      } else {
+        this.$message({
+          type: "info",
+          message: "文件上传失败，请重试"
+        });
+      }
+    },
     // 添加附件类参赛作品
     submitAddAnnexWorksForm(addAnnexWorksForm) {
       this.$refs[addAnnexWorksForm].validate(valid => {
         if (valid) {
+          let paramsObj = Object.assign(
+            {},
+            this.CONFIG.informationUploading.params
+          );
+          paramsObj.metaMap.GUIDE_TEACHER = "tym";
+          // var params = {
+          //   doclibCode: "PORTAL_WORKS",
+          //   metaMap: {
+          //     // ACTIVITYLIBID:"PORTAL_ACTIVITY",
+          //     ACTIVITYID: "601858",
+          //     POTHUNTER_NAME: "联调姓名", //参赛人姓名
+          //     POTHUNTER_SEX: "1", //参赛人性别
+          //     POTHUNTER_PHONENUMBER: "18888888888", //参赛人手机号
+          //     POTHUNTER_IDNUMBER: "210303888888888888", //	参赛人身份证号
+          //     GUIDE_TEACHER: "联调指导教师", //指导教师
+          //     AREA: "北京~西城", //地区
+          //     CLASS: "小学~三年级", //年级
+          //     SCHOOL: "联调学校", //学校
+          //     SYS_TOPIC: "第六次测试", //作品标题
+          //     DESCRIPTION: "联调作品简介", //作品简介
+          //     TEXTCONTENT: "", //	正文内容
+          //     ATTACHID: "176730", //文件附件ID
+          //     COMMITUSER: "18813015362", //提交用户
+          //     WORKSTYPE: "附件" //作品类型
+          //   },
+          //   attachMap: [
+          //     {
+          //       FILERECORDID: "176730", //文件附件ID
+          //       CATEGORYID: "4127" //写死
+          //     }
+          //   ]
+          // };
+          Post(this.CONFIG.informationUploading.url, paramsObj).then(rep => {
+            var datas = rep.data.result;
+            console.log(rep);
+          });
           this.$refs[addAnnexWorksForm].resetFields(); //清空表单
           this.active = 2;
         } else {
@@ -403,11 +466,7 @@ export default {
       console.log(file);
     },
     handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      );
+      this.$message.warning(`只能上传一个参赛作品附件`);
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
@@ -470,7 +529,6 @@ export default {
 }
 .work_contestants_01_main .ac_input .el-input {
   width: 210px;
-  margin-right: 10px;
   display: inline-block;
 }
 .work_contestants_01_main .ac_to_next {

@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-26 16:16:55
+ * @Last Modified time: 2018-02-26 17:05:49
  */
 export default {
   name: "activityrace",
@@ -58,12 +58,12 @@ export default {
         vals: '601858',
       },
       keys: {
-        title:'SYS_TOPIC',
-        author:'POTHUNTER_NAME',
-        date:'SYS_CREATED',
-        abstract:'DESCRIPTION',
-        teacherCommentNum:'VOTE_COUNT',
-        voteNum:'VOTE_COUNT'
+        title: 'SYS_TOPIC',
+        author: 'POTHUNTER_NAME',
+        date: 'SYS_CREATED',
+        abstract: 'DESCRIPTION',
+        teacherCommentNum: 'VOTE_COUNT',
+        voteNum: 'VOTE_COUNT'
       },
       eventName_listenLoadedData: 'eventName_loadedDatas',
       eventName_listenSearch: 'eventName_search',

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-11 16:11:43
+ * @Last Modified time: 2018-02-26 16:11:07
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
@@ -22,7 +22,7 @@
         <span v-text="workInfo[keys.author] || '暂无'"></span>
       </div>
       <div class="comment">
-        <span v-text="workInfo[keys.commentNum]"></span>
+        <span v-text="commentNum"></span>
         <span>评论</span>
       </div>
       <div class="voteNum">
@@ -37,15 +37,15 @@
     <div class="abstract">
       <div v-text="workInfo[keys.abstract]"></div>
     </div>
-    <div class="info">
-      <div v-text="workInfo.workdetail"></div>
+    <div class="info" v-if="workInfo[keys.content]">   <!-- 表单类型的作品 -->
+      <div v-text="workInfo[keys.content]"></div>
     </div>
     <div class="workOperation">
       <el-button size="medium">
         <i class="el-icon-star-off"></i>
         <span>收藏文章</span>
       </el-button>
-      <el-button size="medium">
+      <el-button size="medium" v-if="workInfo[keys.attachment] && workInfo[keys.attachment].length>0">  <!-- 附件类型的作品 -->
         <i class="el-icon-download"></i>
         <span>下载文章</span>
       </el-button>
@@ -74,14 +74,20 @@ export default {
       workInfo: {},
       url: '',
       keys: null,  // 作品详情页接口字段兼容
+      commentNum: 0, // 评论数
     };
   },
   components: {
     qrcode,
   },
-  mounted () {
+  created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].bookdetail.bookdetail_03;
     this.keys = this.CONFIG.keys;
+    this.$bus.$on('commentNum', (data) => {
+      this.commentNum = data;
+    });
+  },
+  mounted () {
     this.url = window.location.href;
     var queryObj = URL.parse(document.URL, true).query;
     let resourceType = queryObj.resourceType;
@@ -120,9 +126,15 @@ export default {
 
 .work_bookdetail_03 .workInformation div {
   display: inline-block;
+  margin-right: 20px;
+}
+
+.work_bookdetail_03 .abstract {
+  margin: 20px 0px;
 }
 
 .work_bookdetail_03 .qrcode {
+  margin: 20px 0px;
   text-align: center;
 }
 </style>

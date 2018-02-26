@@ -67,7 +67,6 @@ export default {
       });
     },
     toInfoDetail(pubId, colId) { // 跳转咨询详情
-      window.sessionStorage.setItem("listUrl",document.URL);
       window.location.href = "../pages/informationdetail.html?pubId=" + pubId + '&conditions=' + this.paramsObj.conditions + '&orderBy=' + this.paramsObj.orderBy + '&pageNo=' + this.paramsObj.pageNo + '&pageSize=' + this.paramsObj.pageSize;
     },
     paging: function ({ pageNo, pageSize }) {  // 翻页

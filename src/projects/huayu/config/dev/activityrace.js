@@ -10,10 +10,10 @@ export default {
     work_activitydetail_01: {
       url: '/data/work_activitydetail_01.json',
       keys: {
-        title: 'title',//标题
-        pics: 'pics',//轮播图
-        content: 'content',//内容
-        illustration:'pub_illustration',
+        title: 'title', //标题
+        pics: 'pics', //轮播图
+        content: 'content', //内容
+        illustration: 'pub_illustration',
       },
       eventName_loadedDatas: 'eventName_loadedDatas',
       toUploadPagUrl: './uploadproduction.html',
@@ -78,7 +78,7 @@ export default {
       eventName_listen: 'eventName_loadedDatas'
     }
   },
-  review: {  
+  review: {
     queryreview: { // 查询评论组件
       url: '../data/activityreview_02_data.json'
   }

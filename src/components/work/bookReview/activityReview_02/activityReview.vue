@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 13:56:44 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-11 15:24:23
+ * @Last Modified time: 2018-02-26 15:52:33
  */
 <!-- 活动评论组件 -->
 <template>
@@ -87,13 +87,14 @@ export default {
     this.resourceId = queryObj.resourceId;
     this.CONFIG = PROJECT_CONFIG[this.namespace].review;
     this.reviewType = this.CONFIG.queryreview.reviewType;
+    this.queryReviewList(); // 不传tye的时候查询的是所有评论 为了获取总的评论数
     this.queryReviewList(this.showType);  // 查询评论列表
   },
 
   methods: {
     queryReviewList (type) {  // 查询评论列表
       let paramsObj = Object.assign({}, this.CONFIG.queryreview.params);
-      paramsObj.type = type;
+      paramsObj.type = type ? type : '';
       if (this.namespace === 'productiondetail') {  // 作品详情
         paramsObj.resourceType = this.resourceType;
         paramsObj.resourceId = this.resourceId;
@@ -101,8 +102,12 @@ export default {
         paramsObj.pubId = this.pubId;
       }
       Get(this.CONFIG.queryreview.url, { params: paramsObj }).then(rep => {
-        this.totalCount = rep.data.totalCount;
         if (rep.data.result === '1') {  //请求成功
+          if (paramsObj.type === '') { // 查询评论总数
+            this.$bus.$emit('commentNum', rep.data.totalCount);  // 活动评论组件（子）向作品详情组件（父）组件传值 通过发广播形式
+            return false;
+          }
+          this.totalCount = rep.data.totalCount;
           this.reviewList = rep.data.data;
         }
       });
@@ -129,6 +134,7 @@ export default {
       }
       Post(this.CONFIG.addreview.url, paramsObj).then(rep => {
         if (rep.data.result === '1') {  //请求成功
+          this.queryReviewList();
           this.queryReviewList(this.showType);
           this.review = ''; // 清空评论内容
           this.$message({

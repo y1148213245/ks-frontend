@@ -65,7 +65,7 @@
       filter-placement="bottom-end"
       >
     </el-table-column>
-    <el-table-column label="操作"  align="center" width="160" fixed="right">
+    <el-table-column label="操作"  align="center" width="160">
         <template slot-scope="scope">
         <el-button @click="handleEdit(scope.$index, scope.row)">查看作品</el-button>
         </template>

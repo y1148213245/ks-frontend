@@ -1,16 +1,16 @@
 <!-- 作者列表 -->
 <template>
   <div class="ui_pic_list_22 ui_pic_list_22_main">
-  <el-row>
-  <el-col :span="24" v-for="(o, index) in 4" :key="o">
-    <el-card :body-style="{ padding: '0px' }">
-      <a href="./activitylist.html"><img src="./img/pic1.jpg"  class="ac_image"></a>
-      <div style="padding: 14px;">
-        <span class="ac_title">首届“防震减灾”公益作文大赛</span>
-      </div>
-    </el-card>
-  </el-col>
-</el-row>
+    <el-row>
+      <el-col :span="24" v-for="(item, index) in activityList" :key="index">
+        <el-card :body-style="{ padding: '0px'}">
+          <a :href="goList(item.id)"><img :src="item[keys.small_pic]"  class="ac_image"></a>
+          <div style="padding: 14px;">
+            <a class="ac_title" :href="goList(item[keys.id])">{{item[keys.name]}}</a>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -27,8 +27,28 @@ export default {
   },
   data() {
     return {
-      currentDate: new Date()
-    };
+      currentDate: new Date(),
+      activityList:[],
+      keys:null
+    }
+  },
+  mounted:function(){
+    this.projectConfig=PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_22;
+    this.keys=this.projectConfig.keys;
+    this.getList();
+  },
+  methods:{
+    getList:function(){
+      let url=this.projectConfig.url+"?colId="+this.projectConfig.params.colId;
+      Post(url).then((rep)=>{
+        if(rep && rep.data.data instanceof Array){
+          this.activityList=rep.data.data;
+        }
+      });
+    },
+    goList:function(id){
+      return this.projectConfig.activityListUrl+"?colId="+id;
+    }
   }
 };
 </script>

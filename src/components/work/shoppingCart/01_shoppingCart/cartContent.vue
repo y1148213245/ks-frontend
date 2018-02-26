@@ -1104,7 +1104,7 @@
                 var innerLength = _this.productList[i].list.length;
                 for (var j = 0; j < innerLength; j++) { // 判断 现在的价格 小于 加入购物车时的价格
                   var product = _this.productList[i].list[j];
-                  if (product.productPrice < product.productPriceIn) {
+                  if ((product.productPrice - 0).toFixed(2) < (product.productPriceIn - 0).toFixed(2)) {  // 相同小数点进行比较 不然会出现'53'<'53.00'
                     let priceChange = {};
                     priceChange.name = product.productName;
                     priceChange.diffPrice = (parseFloat(product.productPriceIn) - product.productPrice).toFixed(2); // 降了多少

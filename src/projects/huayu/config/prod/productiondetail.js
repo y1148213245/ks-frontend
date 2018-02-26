@@ -2,25 +2,27 @@
  * @Author: song 
  * @Date: 2018-02-06 11:12:46 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-11 16:22:04
+ * @Last Modified time: 2018-02-26 14:43:32
  */
 export default {
   name: "productiondetail",
   bookdetail: {
     bookdetail_03: {
-      // url: 'http://172.19.92.76:8080/portal/api/' + 'spc/prodb/detail.do',
-      url: BASE_URL + 'spc/prodb/detail.do',
+      url: 'http://172.19.92.76:8080/portal/api/' + 'spc/prodb/detail.do',
+      // url: BASE_URL + 'spc/prodb/detail.do',
       params: {
         doclibCode: '',
         docID: '',
       },
       keys: {
-        title: 'SYS_TOPIC', // 作品标题
-        author: 'SYS_AUTHORS', // 作品作者
-        commentNum: '',     // 评论数
+        title: 'SYS_TOPIC',       // 作品标题
+        author: 'POTHUNTER_NAME', // 作品作者
+        // commentNum: '',     // 评论数 评论数通过调评论接口获得
         voteNum: 'VOTE_COUNT', // 投票数
-        raceType: 'CLASS', // 参赛类别
-        abstract: 'DESCRIPTION',
+        raceType: 'CLASS',     // 参赛类别
+        abstract: 'DESCRIPTION',   // 作品简介
+        content: 'TEXTCONTENT',    // 正文内容
+        attachment: 'ATTACH_LIST', // 附件信息
       }
     }
   },

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 14:00:38 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-11 10:04:56
+ * @Last Modified time: 2018-02-26 14:58:00
  */
 
 export default {
@@ -14,7 +14,7 @@ export default {
     }
   },
   common: {
-    vote_03: {
+    vote_03: {  // 投票组件
       url: BASE_URL + '',
       params: {
         pubId: '',

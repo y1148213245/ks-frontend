@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-vue06 18:11:31 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-07 17:24:56
+ * @Last Modified time: 2018-02-26 16:10:01
  */
 <!-- 活动轮播 点击跳到相关稿件详情 -->
 <template>
@@ -30,15 +30,15 @@ export default {
       keys: null,
     };
   },
-
-  mounted () {
+  created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].swiper.swiper_07;
     this.keys = this.CONFIG.keys;
+  },
+  mounted () {
     this.querySwpierList();
   },
-
   methods: {
-    querySwpierList() {
+    querySwpierList () {
       Post(this.CONFIG.url, this.CONFIG.params).then(rep => {
         var data = rep.data.result;
         if (data && data instanceof Array && data.length > 0) {
@@ -46,10 +46,10 @@ export default {
         }
       });
     },
-    toRelatedZX(pubId) {
+    toRelatedZX (pubId) {
       let params = Object.assign({}, this.CONFIG.relatedZXparams);
       params.pubId = pubId;
-      Get(this.CONFIG.relatedZXurl, {params: params}).then(rep => {
+      Get(this.CONFIG.relatedZXurl, { params: params }).then(rep => {
         var data = rep.data.data.result;
         if (data && data instanceof Array && data.length > 0) {
           let relatedId = data[0].id;

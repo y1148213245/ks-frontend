@@ -40,7 +40,6 @@
               <el-button type="primary" @click="showCurrent(4)">修改信息</el-button>
             </div>
             <div class="fr wdzh_zhuangtai_sj">
-              <!--注意说明:共5级，每一级的样式是不一样的，第1级wdzh_zhuangtai_sj_one;第2级wdzh_zhuangtai_sj_two;第3级wdzh_zhuangtai_sj_three;的，第4级wdzh_zhuangtai_sj_four;第5级wdzh_zhuangtai_sj_five -->
               <div class="wdzh_zhuangtai_sj_two"   v-if="account.userRank=='LV2'"></div>
               <div class="wdzh_zhuangtai_sj_three" v-else-if="account.userRank=='LV3'"></div>
               <div class="wdzh_zhuangtai_sj_four"  v-else-if="account.userRank=='LV4'"></div>
