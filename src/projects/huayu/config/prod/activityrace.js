@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-14 14:31:32
+ * @Last Modified time: 2018-02-26 16:16:55
  */
 export default {
   name: "activityrace",
@@ -36,6 +36,17 @@ export default {
         },
         eventName_listen: "eventName_loadedDatas",
       }
+    },
+    work_activitydetail_04: {
+      url: BASE_URL + 'spc/prodb/detail.do?doclibCode=PORTAL_ACTIVITY&docID=601948',
+      keys: {
+        place: 'place',
+        school: 'school',
+        group: 'group',
+        searchText: 'searchText',
+      },
+      eventName_search: 'eventName_search',
+      eventName_listenLoadedData: 'eventName_loadedDatas',
     },
     work_activitydetail_05: {
       url: BASE_URL + 'spc/prodb/searchNL.do',

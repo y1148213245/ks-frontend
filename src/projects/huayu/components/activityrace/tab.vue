@@ -15,7 +15,7 @@
 			<!-- <work_activitydetail_03 v-show="currentShowIndex == 2" namespace="activityrace"></work_activitydetail_03> -->
 			
 			<!-- 参赛作品条件 -->
-			<!-- <work_activitydetail_04 v-show="currentShowIndex == 3" namespace="activityrace"></work_activitydetail_04> -->
+			<work_activitydetail_04 v-show="currentShowIndex == 3" namespace="activityrace"></work_activitydetail_04>
 			<!-- 参赛作品列表 -->
 			<work_activitydetail_05 v-show="currentShowIndex == 3" namespace="activityrace"></work_activitydetail_05>
 

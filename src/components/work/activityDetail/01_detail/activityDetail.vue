@@ -112,6 +112,7 @@ export default {
 .work_activitydetail_01-swiper {
 }
 .work_activitydetail_01-text_content {
+  padding: 20px 0;
 }
 .work_activitydetail_01-upload_box {
   margin-top: 20px;

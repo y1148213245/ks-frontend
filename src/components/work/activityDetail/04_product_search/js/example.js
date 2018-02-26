@@ -12,14 +12,15 @@ const dev = {
         group: 'group',
         searchText: 'searchText',
       },
-      eventName_search: ''
+      eventName_search: '',
+      isDevelopment:true,
     }
   }
 };
 const prod = {
   activityDetail: {
     work_activitydetail_04: {
-      url: BASE_URL + 'spc/cms/publish/list.do',
+      url: BASE_URL + 'spc/prodb/detail.do?doclibCode=PORTAL_ACTIVITY&docID=601858',
       keys: {
         place: 'place',
         school: 'school',
@@ -27,6 +28,7 @@ const prod = {
         searchText: 'searchText',
       },
       eventName_search: '',
+      eventName_listenLoadedData: 'eventName_loadedDatas',
     }
   }
 };

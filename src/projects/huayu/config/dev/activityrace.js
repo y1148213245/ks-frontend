@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-11 15:46:03
+ * @Last Modified time: 2018-02-26 14:31:55
  */
 export default {
   name: "activityrace",
@@ -49,6 +49,7 @@ export default {
         searchText: 'searchText',
       },
       eventName_search: 'eventName_search',
+      isDevelopment:true,
     },
     work_activitydetail_05: {
       url: '/data/work_activitydetail_05.json',
