@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 10:48:04 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-11 15:49:47
+ * @Last Modified time: 2018-02-27 11:08:00
  */
 
 
@@ -16,15 +16,14 @@ const dev = {
     work_activitydetail_01: {
       url: '/data/work_activitydetail_01.json',
       keys: {
-        title:'title',//标题
-        pics:'pics',//轮播图
-        content:'content',//内容
-        endDate:'endDate',
-        resourceId:'resourceId',
-        illustration:'illustration',
+        title:'title',//标题字段
+        content:'content',//内容字段
+        endDate:'endDate',//结束日期字段
+        resourceId:'resourceId',//资源id字段
+        illustration:'illustration',//轮播图字段
       },
-      eventName_loadedDatas:'eventName_loadedDatas',
-      toUploadPagUrl:'',
+      eventName_loadedDatas:'eventName_loadedDatas',//详情数据加载后触发的事件
+      toUploadPagUrl:'',//上传页链接
     }
   }
 };
@@ -33,22 +32,21 @@ const prod = {
     work_activitydetail_01: {
       url: BASE_URL + 'spc/cms/publish/detail.do',
       keys: {
-        title:'PORTAL_ACTIVITY_SYS_TOPIC',
-        pics:'pics',
-        content:'PORTAL_ACTIVITY_DESCRIPTION',
-        endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
-        resourceId:'pub_resource_id',
-        illustration:'pub_illustration',
-        requestUrlParam_pubId:'pubId',
-        toUploadPageUrlParam_docId:'docId',
+        title:'PORTAL_ACTIVITY_SYS_TOPIC',//标题字段
+        content:'PORTAL_ACTIVITY_DESCRIPTION',//内容字段
+        endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',//结束日期字段
+        resourceId:'pub_resource_id',//资源id字段
+        illustration:'pub_illustration',//轮播图字段
+        requestUrlParam_pubId:'pubId',//请求活动详情参数：活动发布id字段
+        toUploadPageUrlParam_docId:'docId',//去上传页面参数：活动资源id字段
       },
-      eventName_loadedDatas: 'eventName_loadedDatas',
-      toUploadPagUrl:'./uploadproduction.html',
+      eventName_loadedDatas: 'eventName_loadedDatas',//详情数据加载后触发的事件
+      toUploadPagUrl:'./uploadproduction.html',//上传页链接
       
     }
   }
 };
 const platform = 'PC';
-const pageType = ['list'];
-const resourceType = ['book'];
+const pageType = ['detail'];
+const resourceType = ['activity'];
 export { name, title, dev, prod, description, platform, pageType, resourceType };

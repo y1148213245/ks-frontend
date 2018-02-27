@@ -58,6 +58,7 @@ export default {
           siteId: SITE_CONFIG.siteId,
           type: "1",
           parentId: "0",
+          activityId: '',
         }
       }
     }

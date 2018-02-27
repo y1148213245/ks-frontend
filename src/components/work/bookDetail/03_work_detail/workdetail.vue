@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-26 16:11:07
+ * @Last Modified time: 2018-02-27 15:42:13
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
@@ -45,7 +45,7 @@
         <i class="el-icon-star-off"></i>
         <span>收藏文章</span>
       </el-button>
-      <el-button size="medium" v-if="workInfo[keys.attachment] && workInfo[keys.attachment].length>0">  <!-- 附件类型的作品 -->
+      <el-button size="medium" v-if="workInfo[keys.attachment] && workInfo[keys.attachment].length>0"  @click="loadWork(workInfo[keys.attachment][0].fileRecordID)">  <!-- 附件类型的作品 -->
         <i class="el-icon-download"></i>
         <span>下载文章</span>
       </el-button>
@@ -106,6 +106,10 @@ export default {
           this.workInfo = rep.data;
         }
       });
+    },
+    loadWork (fileRecordID) {  // 下载附件类型的作品
+      let loadUrl = this.CONFIG.loadUrl + fileRecordID;
+      window.open(this.CONFIG.loadUrl, '_blank');
     }
   }
 }

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 13:56:44 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-26 15:52:33
+ * @Last Modified time: 2018-02-27 10:00:54
  */
 <!-- 活动评论组件 -->
 <template>
@@ -85,6 +85,7 @@ export default {
     this.resourceName = queryObj.resourceName;
     this.resourceType = queryObj.resourceType;
     this.resourceId = queryObj.resourceId;
+    this.activityId = queryObj.activityId;
     this.CONFIG = PROJECT_CONFIG[this.namespace].review;
     this.reviewType = this.CONFIG.queryreview.reviewType;
     this.queryReviewList(); // 不传tye的时候查询的是所有评论 为了获取总的评论数
@@ -129,6 +130,7 @@ export default {
         paramsObj.resourceName = this.resourceName;
         paramsObj.resourceType = this.resourceType;
         paramsObj.resourceId = this.resourceId;
+        paramsObj.activityId = this.activityId;
       } else {  // 其他详情（活动、资讯详情） 可以理解为默认情况
         paramsObj.pubId = this.pubId;
       }

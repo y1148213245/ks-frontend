@@ -2,13 +2,13 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 16:27:52 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-07 17:09:44
+ * @Last Modified time: 2018-02-27 11:21:56
  */
 
 import component from '../newsList.vue'
 const name = component.name;  // 组件标签名
-const title = '活动详情组件';  // 组件title
-const description = `活动详情组件`;  // 组件描述信息
+const title = '活动新闻列表组件';  // 组件title
+const description = `活动新闻列表组件`;  // 组件描述信息
 const dev = {
   activityDetail: {
     work_activitydetail_03: {

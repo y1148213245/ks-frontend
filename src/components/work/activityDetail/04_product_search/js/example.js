@@ -33,6 +33,6 @@ const prod = {
   }
 };
 const platform = 'PC';
-const pageType = ['list'];
+const pageType = ['list','detail'];
 const resourceType = ['book'];
 export { name, title, dev, prod, description, platform, pageType, resourceType };

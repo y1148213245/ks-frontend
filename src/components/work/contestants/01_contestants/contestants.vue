@@ -101,7 +101,7 @@
       </div>
 
       <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm">
-      <div>
+      <div class="ac_linetext" style="margin-top:10px;">
         <div class="ac_input" style="display:inline-block;margin-left:18px;">
         <el-form-item label="学校：" prop="school">
         <el-input
@@ -141,7 +141,7 @@
           <el-input type="textarea" v-model="addAnnexWorksForm.synopsis"></el-input>
         </el-form-item>
 
-        <el-form-item label="文件：" prop="files">
+        <el-form-item label="文件：" prop="files" v-show="worktype == '附件'">
           <el-checkbox-group v-model="addAnnexWorksForm.files"></el-checkbox-group>
           <el-upload
             class="upload-demo"
@@ -158,7 +158,7 @@
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
-        <el-form-item label="正文：" prop="content">
+        <el-form-item label="正文：" prop="content" v-show="worktype != '附件'">
           <VueEditor v-model="addAnnexWorksForm.content" :editorToolbar="customToolbar"></VueEditor>
         </el-form-item>
         <el-form-item>
@@ -179,8 +179,7 @@
 </template>
 
 <script>
-import { Get } from "@common";
-import { Post } from "@common";
+import { Get, Post, ValidateRules } from "@common";
 import PROJECT_CONFIG from "projectConfig";
 import { VueEditor } from "vue2-editor";
 import api from "../../../work/personalCenter/01_personalCenter/api/personalCenterApi";
@@ -194,9 +193,12 @@ export default {
   data() {
     return {
       // loginName: null,
-      docID: "",
+      docId: "",
       teacherID: "",
+      loginName: "",
       currentRow: "",
+      attachID: "",
+      worktype: "",
       CONFIG: null,
       active: 0,
       addressInformaition: null,
@@ -213,13 +215,16 @@ export default {
       ],
       rules: {
         name: [
-          { required: true, message: "请输入参赛人姓名", trigger: "blur" }
+          { required: true, message: "请输入参赛人姓名", trigger: "blur" },
+          { validator: ValidateRules.nameCheck, trigger: "blur" }
         ],
         identity: [
-          { required: true, message: "请输入参赛人身份证号", trigger: "blur" }
+          { required: true, message: "请输入参赛人身份证号", trigger: "blur" },
+          { validator: ValidateRules.IDCheck, trigger: "blur" }
         ],
         telNumber: [
-          { required: true, message: "请输入参赛人手机号", trigger: "blur" }
+          { required: true, message: "请输入参赛人手机号", trigger: "blur" },
+          { validator: ValidateRules.mobileCheck, trigger: "blur" }
         ],
         school: [{ required: true, message: "请输入学校", trigger: "blur" }],
         teacher: [
@@ -230,11 +235,11 @@ export default {
         ],
         synopsis: [
           { required: true, message: "请输入参赛作品简介", trigger: "blur" }
-        ],
-        // files: [{ required: true, message: "请上传作品附件", trigger: "blur" }],
-        content: [
-          { required: true, message: "请填写参赛作品", trigger: "blur" }
         ]
+        // files: [{ required: true, message: "请上传作品附件", trigger: "blur" }],
+        // content: [
+        //   { required: true, message: "请填写参赛作品", trigger: "blur" }
+        // ]
       },
       addParticipantsForm: {
         name: "",
@@ -263,13 +268,8 @@ export default {
     Get(BASE_URL + "checkToken.do").then(function(rep) {
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
-        var getUrlStr = function(name) {
-          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-          var r = window.location.search.substr(1).match(reg);
-          if (r != null) return unescape(r[2]);
-          return null;
-        };
         _this.teacherID = datas.id;
+        _this.loginName = datas.loginName;
       } else {
         alert("请登录");
       }
@@ -288,17 +288,31 @@ export default {
     queryParticipants() {
       // 查询参赛人列表
       Get(this.CONFIG.competitionList.url, {
-        params: this.CONFIG.competitionList.params
+        params: {
+          teacherId: this.teacherID,
+          pageNo: "1",
+          pageSize: "99"
+        }
       }).then(rep => {
-        console.log(rep);
         this.participantsList = rep.data.data;
       });
     },
     queryRelatedInformation() {
       // 查询补充信息
+      var getUrlStr = function(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+      };
+      this.docId = getUrlStr("docId");
       Get(this.CONFIG.supplementaryInformation.url, {
-        params: this.CONFIG.supplementaryInformation.params
+        params: {
+          doclibCode: "PORTAL_ACTIVITY",
+          docID: this.docId
+        }
       }).then(rep => {
+        this.worktype = rep.data.WORKTYPE;
         this.relatedInformationList = rep.data;
         this.addressInformaition = rep.data.AREALIMT.split(/;/);
         this.classInformaition = rep.data.CLASSLIMT.split(/;/);
@@ -311,7 +325,6 @@ export default {
     // 提交参赛信息
     submitAddSupplementForm() {
       if (this.currentRow === "") {
-        // 收件人为空
         this.$message({
           type: "error",
           message: "请在列表里选择参赛人"
@@ -329,10 +342,19 @@ export default {
           message: "请选择组别"
         });
         return false;
+      } else if (this.addSupplementForm.school == "") {
+        this.$message({
+          type: "error",
+          message: "请选择填写学校"
+        });
+        return false;
+      } else if (this.addSupplementForm.teacher == "") {
+        this.$message({
+          type: "error",
+          message: "填写指导教师"
+        });
+        return false;
       } else {
-        console.log(this.addressInformaitionValue);
-        console.log(this.classInformaitionValue);
-        console.log(this.currentRow);
         this.active = 1;
       }
     },
@@ -363,7 +385,13 @@ export default {
                   type: "success",
                   message: "学生添加成功!"
                 });
-                Get(this.CONFIG.competitionList.url).then(rep => {
+                Get(this.CONFIG.competitionList.url, {
+                  params: {
+                    teacherId: this.teacherID,
+                    pageNo: "1",
+                    pageSize: "99"
+                  }
+                }).then(rep => {
                   this.participantsList = rep.data.data;
                 });
               }
@@ -390,6 +418,7 @@ export default {
       // 上传成功回调
       console.log(res);
       if ((res.Status = "success")) {
+        this.attachID = res.ID;
         console.log(res.ID);
         this.$message({
           type: "success",
@@ -406,44 +435,56 @@ export default {
     submitAddAnnexWorksForm(addAnnexWorksForm) {
       this.$refs[addAnnexWorksForm].validate(valid => {
         if (valid) {
-          let paramsObj = Object.assign(
-            {},
-            this.CONFIG.informationUploading.params
-          );
-          paramsObj.metaMap.GUIDE_TEACHER = "tym";
-          // var params = {
-          //   doclibCode: "PORTAL_WORKS",
-          //   metaMap: {
-          //     // ACTIVITYLIBID:"PORTAL_ACTIVITY",
-          //     ACTIVITYID: "601858",
-          //     POTHUNTER_NAME: "联调姓名", //参赛人姓名
-          //     POTHUNTER_SEX: "1", //参赛人性别
-          //     POTHUNTER_PHONENUMBER: "18888888888", //参赛人手机号
-          //     POTHUNTER_IDNUMBER: "210303888888888888", //	参赛人身份证号
-          //     GUIDE_TEACHER: "联调指导教师", //指导教师
-          //     AREA: "北京~西城", //地区
-          //     CLASS: "小学~三年级", //年级
-          //     SCHOOL: "联调学校", //学校
-          //     SYS_TOPIC: "第六次测试", //作品标题
-          //     DESCRIPTION: "联调作品简介", //作品简介
-          //     TEXTCONTENT: "", //	正文内容
-          //     ATTACHID: "176730", //文件附件ID
-          //     COMMITUSER: "18813015362", //提交用户
-          //     WORKSTYPE: "附件" //作品类型
-          //   },
-          //   attachMap: [
-          //     {
-          //       FILERECORDID: "176730", //文件附件ID
-          //       CATEGORYID: "4127" //写死
-          //     }
-          //   ]
-          // };
-          Post(this.CONFIG.informationUploading.url, paramsObj).then(rep => {
-            var datas = rep.data.result;
-            console.log(rep);
-          });
-          this.$refs[addAnnexWorksForm].resetFields(); //清空表单
-          this.active = 2;
+          if (this.worktype == "附件" && this.attachID == "") {
+            this.$message({
+              type: "error",
+              message: "请上传参赛附件"
+            });
+            return false;
+          } else if (
+            this.worktype != "附件" &&
+            this.addAnnexWorksForm.content == ""
+          ) {
+            this.$message({
+              type: "error",
+              message: "请填写参赛正文"
+            });
+            return false;
+          } else {
+            let paramsObj = Object.assign(
+              {},
+              this.CONFIG.informationUploading.params
+            );
+            paramsObj.metaMap.ACTIVITYID = this.docId;
+            paramsObj.metaMap.POTHUNTER_NAME = this.currentRow.userName; //参赛人姓名
+            paramsObj.metaMap.POTHUNTER_SEX = this.currentRow.gender.toString(); //参赛人性别
+            paramsObj.metaMap.POTHUNTER_PHONENUMBER = this.currentRow.mobileNum; //参赛人手机号
+            paramsObj.metaMap.POTHUNTER_IDNUMBER = this.currentRow.identifyId; //	参赛人身份证号
+            paramsObj.metaMap.AREA = this.addressInformaitionValue; //	参赛地区
+            paramsObj.metaMap.CLASS = this.classInformaitionValue; //	参赛组别
+            paramsObj.metaMap.SCHOOL = this.addSupplementForm.school; //	参赛人学校
+            paramsObj.metaMap.GUIDE_TEACHER = this.addSupplementForm.teacher; //	参赛人指导教师
+            paramsObj.metaMap.SYS_TOPIC = this.addAnnexWorksForm.title; //	参赛作品标题
+            paramsObj.metaMap.DESCRIPTION = this.addAnnexWorksForm.synopsis; //	参赛作品简介
+            paramsObj.metaMap.TEXTCONTENT = this.addAnnexWorksForm.content; //	参赛作品正文
+            paramsObj.metaMap.ATTACHID = this.attachID.toString(); //文件附件ID
+            paramsObj.attachMap[0].FILERECORDID = this.attachID.toString(); //文件附件ID
+            paramsObj.metaMap.COMMITUSER = this.loginName; //	提交用户
+            paramsObj.metaMap.WORKSTYPE = this.worktype; //	文件类型
+            Post(this.CONFIG.informationUploading.url, paramsObj).then(rep => {
+              var datas = rep.data.result;
+              console.log(rep.data.status);
+              if (rep.data.status == "success") {
+                this.$refs[addAnnexWorksForm].resetFields(); //清空表单
+                this.active = 2;
+              } else if (rep.data.status == "faild") {
+                this.$message({
+                  type: "error",
+                  message: "提交失败"
+                });
+              }
+            });
+          }
         } else {
           console.log("error submit!!");
           return false;
@@ -520,7 +561,7 @@ export default {
   border-color: #409eff;
 }
 .work_contestants_01_main .ac_input {
-  width: 320px;
+  width: 300px;
   display: inline-block;
   margin-bottom: 10px;
 }
@@ -528,7 +569,7 @@ export default {
   line-height: 40px;
 }
 .work_contestants_01_main .ac_input .el-input {
-  width: 210px;
+  width: 217px;
   display: inline-block;
 }
 .work_contestants_01_main .ac_to_next {

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 11:12:46 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-26 14:43:32
+ * @Last Modified time: 2018-02-27 09:52:37
  */
 export default {
   name: "productiondetail",
@@ -60,6 +60,7 @@ export default {
         resourceName: '', // 必须要填
         resourceType: '',// 必须要填
         resourceId: '',  // 必须要填 
+        activityId: '',  // 活动ID 必填
       }
     }
   },

@@ -169,6 +169,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import { ValidateRules } from "@common";
 import { mapGetters, mapActions } from "vuex";
 import api from "../../api/personalCenterApi";
 import $ from "jquery";
@@ -192,14 +193,17 @@ export default {
     return {
       rules: {
         name: [
-          { required: true, message: "请输入参赛人姓名", trigger: "blur" }
+          { required: true, message: "请输入参赛人姓名", trigger: "blur" },
+          { validator: ValidateRules.nameCheck, trigger: "blur" }
         ],
         identity: [
-          { required: true, message: "请输入参赛人身份证号", trigger: "blur" }
+          { required: true, message: "请输入参赛人身份证号", trigger: "blur" },
+          { validator: ValidateRules.IDCheck, trigger: "blur" }
         ],
         telNumber: [
-          { required: true, message: "请输入参赛人手机号", trigger: "blur" }
-        ]
+          { required: true, message: "请输入参赛人手机号", trigger: "blur" },
+          { validator: ValidateRules.mobileCheck, trigger: "blur" }
+        ],
       },
       enrolman: false, //管理报名人页面
       additions: false, //新增人员弹窗

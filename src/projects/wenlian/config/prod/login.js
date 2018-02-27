@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2017-12-25 18:29:13 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2017-12-26 14:32:16
+ * @Last Modified by: song
+ * @Last Modified time: 2018-02-27 16:05:23
  */
 export default {
   name: 'login',

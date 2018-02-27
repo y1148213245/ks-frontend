@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 15:34:23 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-11 14:43:48
+ * @Last Modified time: 2018-02-27 11:20:30
  */
 
 import component from '../fuwen.vue'
@@ -15,12 +15,12 @@ const dev = {
     work_activitydetail_02: {
       "module": {
         url: '/data/work_activitydetail_02.json',
-        topic: '奖项设置',
+        topic: '奖项设置',//辅文标题
         keys: {
-          topic: 'topic',
-          content: 'content' //辅文内容
+          topic: 'topic',//辅文标题字段
+          content: 'content' //辅文内容字段
         },
-        eventName_listen: "loadSearchResult",
+        eventName_listen: "loadSearchResult",//监听详情数据加载完毕
         isDevelopment: true,
       }
     }
@@ -30,22 +30,22 @@ const prod = {
   activityDetail: {
     work_activitydetail_02: {
       "module": {
-        url: BASE_URL + 'spc/cms/publish/list.do',
-        topic: '奖项设置',
+        url: BASE_URL + 'spc/prodb/getPublicize.do',
+        topic: '奖项设置',//辅文标题
         keys: {
-          topic: 'topic',
-          content: 'content',
-          eventName_listen_resourceId:'pub_resource_id',
-          eventName_listen_resourceType:'pub_resource_type',
-          requestUrlParam_docId:'docID',
-          requestUrlParam_code:'code',
+          topic: 'topic',//辅文标题字段
+          content: 'content',//辅文内容字段
+          eventName_listen_resourceId:'pub_resource_id',//详情数据资源id字段
+          eventName_listen_resourceType:'pub_resource_type',//详情数据资源类型字段
+          requestUrlParam_docId:'docID',//请求辅文数据：资源id字段
+          requestUrlParam_code:'code',//请求辅文数据：资源类型字段
         },
-        eventName_listen: 'loadSearchResult',
+        eventName_listen: 'loadSearchResult',//监听详情数据加载完毕
       }
     }
   }
 };
 const platform = 'PC';
-const pageType = ['list'];
-const resourceType = ['book'];
+const pageType = ['detail'];
+const resourceType = ['activity'];
 export { name, title, dev, prod, description, platform, pageType, resourceType };

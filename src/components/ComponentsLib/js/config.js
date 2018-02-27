@@ -53,6 +53,9 @@ const resourceTypeObj = [{ // 资源类别属性
   name: '条目',
   type: 'entry'
 }, {
+  name: '活动',
+  type: 'activity'
+}, {
   name: '其它',
   type: 'others'
 }];

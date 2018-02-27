@@ -50,7 +50,7 @@
                 </div>
                 <div class="listWrapper">
                   <ul class="listConUl">
-                    <li v-for="(list, index) in activeLists" v-if="activeLists.length > 0" :key="index" :title="list" @click="toRightModule(list)">
+                    <li v-for="(list, index) in activeLists" v-if="activeLists.length > 0" :key="index" :title="list" @click="toRightModule(list, 'review')">
                       <img src="./img/html.png" alt="" class="listIcon" v-if="activeType === 'html'">
                       <img src="./img/css.png" alt="" class="listIcon" v-if="activeType === 'css'">
                       <img src="./img/img.png" alt="" class="listIcon" v-if="activeType === 'img'">
@@ -82,24 +82,37 @@
             </el-upload>
           </div>
          </div>
-         <div class="handle">
+         <div class="handle" v-if="showItem === 'component'">
+           <div class="handleLeft">
+             <span class="opon">预览</span>
+           </div>
+         </div>
+         <div class="handle" v-else>
            <div class="handleLeft">
              <span v-for="(handle, index) in handleLists" @click="toggleOperation(handle.type)" v-text="handle.name" :class="{opon: showItem == handle.type}" :key="index" :click="handle.type">
              </span>
            </div>
            <div class="handleRight">
              <el-button class="saveBtn" size="mini" round @click="saveCode()" v-if="showItem === 'coding'">保存</el-button>
-             <!-- <el-radio label="1" @click="toggleView()" >切换视图</el-radio> -->
-             <span @click="toggleView()" style="cursor: pointer;"><input type="radio" value="切换视图">切换视图</span>
+             <span @click="toggleView()" style="cursor: pointer;">切换视图</span>
            </div>
          </div>
          <div class="contentCon">
              <div class="review" v-if="showItem == 'review' && !noData">
-               <iframe :src="reviewContext"></iframe>
+                <iframe :src="reviewContext"></iframe>
              </div>
              <div class="codemirror" v-if="showItem == 'coding' && !noData">
-               <!-- codemirror-->
-               <codemirror v-model="code"></codemirror>
+                <!-- codemirror-->
+                <codemirror v-model="code"></codemirror>
+             </div>
+             <div class="component" v-if="showItem == 'component' && !noData">
+                <img :src="imgUrl" alt="暂无图片">
+                <div>组件标签名： <span v-text="showComponents && showComponents.name"></span></div>
+                <div>组件描述：{{showComponents && showComponents.description}}</div>
+                <div>dev 配置：</div>
+                <textarea class="jsonInfo" v-html="showComponents && showComponents.dev"></textarea>
+                <div>prod 配置：</div>
+                <textarea class="jsonInfo" v-html="showComponents && showComponents.prod"></textarea>
              </div>
              <div v-if="noData" style="padding: 20px;">暂无内容</div>
           </div>
@@ -111,7 +124,7 @@
            <div class="title">已用组件列表</div>
            <div class="conponentsCon">
              <ul class="usedComUl">
-               <li v-if="JSON.stringify(usedComponents) !== '{}'" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'">
+               <li v-if="JSON.stringify(usedComponents) !== '{}'" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}" @click="showComponentDetail(com)">
                  <span v-text="com.title + '（' + com.name + '）'"></span>
                </li>
                <li v-if="JSON.stringify(usedComponents) === '{}'">暂无已用组件</li>
@@ -122,7 +135,7 @@
            <div class="title">未采用组件列表</div>
            <div class="conponentsCon">
              <ul class="usedComUl">
-               <li v-if="JSON.stringify(unusedComponents) !== '{}'" v-for="(com, vkey, index) in unusedComponents" :key="index" :title="com.title + '（' + com.name + '）'">
+               <li v-if="JSON.stringify(unusedComponents) !== '{}'" v-for="(com, vkey, index) in unusedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}" @click="showComponentDetail(com)">
                  <span v-text="com.title + '（' + com.name + '）'"></span>
                </li>
                <li v-if="JSON.stringify(unusedComponents) === '{}'">暂无未用组件</li>
@@ -183,7 +196,9 @@ export default {
       noData: true,
       usedComponents: {},
       unusedComponents: {},
-      debugModel: false, // debug模式 暗号 790118
+      debugModel: false,  // debug模式 暗号 790118
+      imgUrl: "",         // 组件截图
+      showComponents: null,   // 中间区域当前展示的组件
     };
   },
 
@@ -400,7 +415,7 @@ export default {
         }
       })
     },
-    importResource() {  // 开发者模式 导入资源
+    importResource () {  // 开发者模式 导入资源
       return (
         this.configUrl + 'project/import/assets'
       )
@@ -419,6 +434,12 @@ export default {
         });
       }
     },
+    showComponentDetail (com) {  // 展示组件详情
+      this.showItem = 'component';
+      this.activeFile = com.name;
+      this.showComponents = this.examples[com.name];
+      this.imgUrl = require('../ComponentsLib/screenshots/' + com.name + '.jpg');
+    }
   }
 }
 
@@ -578,7 +599,7 @@ body {
 }
 
 .components_pagemanagement .mainFooter .contentCon {
-  height: calc(100% - 80px);
+  height: calc( 100% - 39px );
 }
 
 .components_pagemanagement .mainFooter .contentCon .review {
@@ -594,6 +615,22 @@ body {
 
 .components_pagemanagement .mainFooter .contentCon .codemirror {
   height: 100%;
+}
+
+.components_pagemanagement .mainFooter .contentCon .jsonInfo {
+  width: 100%;
+  height: 200px;
+  overflow-y: scroll;
+  border: none;
+  resize: none;
+}
+
+.components_pagemanagement .mainFooter .contentCon .component {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .components_pagemanagement .mainFooter .contentCon .CodeMirror {
@@ -631,7 +668,7 @@ body {
   padding: 0px 20px 40px 20px;
 }
 
-.components_pagemanagement .listCon .listWrapper .listConUl .onFileName {
+.components_pagemanagement .onFileName {
   color: #409eff;
 }
 
@@ -659,7 +696,7 @@ body {
 }
 
 .components_pagemanagement .conponentsCon {
-  height: 100%;
+  height: calc(100% - 40px);
   overflow-y: auto;
 }
 
@@ -675,5 +712,6 @@ body {
   text-overflow: ellipsis;
   overflow-x: hidden;
   white-space: nowrap;
+  cursor: pointer;
 }
 </style>

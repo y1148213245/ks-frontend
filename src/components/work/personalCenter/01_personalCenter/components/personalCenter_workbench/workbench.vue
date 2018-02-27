@@ -56,8 +56,8 @@
         label="操作"
         width="100">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">评审</el-button>
-          <el-button @click="handleClick(scope.row)" type="text" size="small">查看评审</el-button>
+          <el-button @click="toReview(scope.row)" type="text" size="small">评审</el-button>
+          <el-button @click="toReview(scope.row)" type="text" size="small">查看评审</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -91,6 +91,52 @@
       <el-button type="button" class="el-button--primary" @click="toActivityList">返回</el-button>
     </div>
   </el-col>
+
+   <!-- 评审 -->
+   <el-col v-if="currentShow == 'review'" :span="24" class="workbench-review">
+     <div class="workbench-review-product_title" v-text="productDetail[config.keys_productDetail.title]"></div>
+     <div class="workbench-review-product_abstract" v-text="productDetail[config.keys_productDetail.abstract]"></div>
+     <div class="workbench-review-product_content" v-text="productDetail[config.keys_productDetail.content]"></div>
+     <div class="workbench-review-product_fujian">
+        文件下载：<a href="#" v-text="productDetail[config.keys_productDetail.fujian]"></a>
+     </div>
+     <div class="workbench-review-history">
+       <el-table
+        :data="historyReviewList"
+        stripe
+        border
+        style="margin:0 auto;width:300px;">
+        <el-table-column
+          :prop="config.keys_historyReview.no"
+          label="#"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          :prop="config.keys_historyReview.prize"
+          label="历史评审结果"
+          width="200">
+        </el-table-column>
+      </el-table>
+     </div>
+     <div class="workbench-review_box">
+       <div class="workbench-review_box-simple_prize">
+         普通奖：
+        <el-radio v-model="simplePrize" label="1" border>无奖</el-radio>
+        <el-radio v-model="simplePrize" label="2" border>一等奖</el-radio>
+        <el-radio v-model="simplePrize" label="3" border>二等奖</el-radio>
+        <el-radio v-model="simplePrize" label="4" border>三等奖</el-radio>
+      </div>
+      <div class="workbench-review_box-teacher_prize">
+        教师指导奖：
+        <el-radio v-model="teacherPrize" label="1" border>无奖</el-radio>
+        <el-radio v-model="teacherPrize" label="2" border>指导奖1</el-radio>
+        <el-radio v-model="teacherPrize" label="3" border>指导奖2</el-radio>
+      </div>
+     </div>
+     <div class="workbench-back_review-button_box">
+      <el-button type="button" class="el-button--primary" @click="toProductList">返回</el-button>
+     </div>
+   </el-col>
  </el-col>
 </template>
 
@@ -117,6 +163,16 @@ export default {
           keys_product: {
             title: 'title',
             award: 'award',
+          },
+          keys_productDetail: {
+            title: 'title',
+            abstract: 'abstract',
+            content: 'content',
+            fujian: 'fujian',
+          },
+          keys_historyReview: {
+            no: 'no',
+            prize: 'prize'
           }
         }
       }
@@ -159,12 +215,28 @@ export default {
           award: '未评分',
         }
       ],
+      productDetail: {
+        title: '作品标题',
+        abstract: '简介，滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答',
+        content: '内容，滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答',
+        fujian: '附件',
+      },
+      simplePrize: '1',//普通奖
+      teacherPrize: '1',//教师指导奖
+      historyReviewList: [
+        {
+          no: '一审',
+          prize: '二等奖'
+        },
+        {
+          no: '二审',
+          prize: '一等奖'
+        }
+      ],
       currentShow: 'activityList',
-      select_place:'',
-      select_school:'',
-      select_award:'',
-      
-      
+      select_place: '',
+      select_school: '',
+      select_award: '',
     };
   },
 
@@ -187,11 +259,14 @@ export default {
     toProductList (row) {
       this.currentShow = 'productList'
     },
+    toReview () {
+      this.currentShow = 'review';
+    },
     toPie () {
       this.currentShow = 'pie';
       this.$nextTick(this.initEchartsPie)
     },
-    toActivityList(){
+    toActivityList () {
       this.currentShow = 'activityList';
     },
     initEchartsPie () {
@@ -246,21 +321,52 @@ export default {
 .workbench-name {
   cursor: pointer;
 }
-.workbench-productList{
+.workbench-productList {
   width: 100%;
 }
 .workbench-pie {
 }
-.workbench-pie-condition{
+.workbench-pie-condition {
   padding: 10px 0;
 }
 .workbench-pie-content {
   width: 100%;
   height: 500px;
 }
-.workbench-back_activitylist-button_box{
+.workbench-back_activitylist-button_box,
+.workbench-back_review-button_box {
   width: 100%;
   padding: 20px 0;
   text-align: right;
+}
+
+.workbench-review-product_title {
+  padding: 20px 0;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+.workbench-review-product_abstract {
+  padding: 20px 0;
+  color: dimgray;
+  font-size: 14px;
+}
+.workbench-review-product_content {
+  padding: 20px 0;
+  font-size: 14px;
+}
+.workbench-review-product_fujian {
+  padding: 20px 0;
+}
+
+.workbench-review-history {
+  padding: 20px 0;
+}
+
+.workbench-review_box {
+}
+.workbench-review_box-simple_prize,
+.workbench-review_box-teacher_prize {
+  padding-left: 100px;
 }
 </style>
