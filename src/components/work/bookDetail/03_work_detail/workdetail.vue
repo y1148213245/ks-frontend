@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-27 15:42:13
+ * @Last Modified time: 2018-02-27 17:18:07
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
@@ -109,7 +109,7 @@ export default {
     },
     loadWork (fileRecordID) {  // 下载附件类型的作品
       let loadUrl = this.CONFIG.loadUrl + fileRecordID;
-      window.open(this.CONFIG.loadUrl, '_blank');
+      window.open(loadUrl, '_blank');
     }
   }
 }

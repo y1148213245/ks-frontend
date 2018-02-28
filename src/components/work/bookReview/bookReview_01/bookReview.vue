@@ -101,7 +101,12 @@ export default {
       }
       let queryConfig = this.CONFIG.addComment;
       let paramsObj = Object.assign({}, queryConfig.params);
-      Post(queryConfig.url + '?pubId=' + this.pubId + '&loginName=' + loginName + '&content=' + content + '&siteId=' + paramsObj.siteId + '&type=' + paramsObj.type + '&parentId=' + paramsObj.parentId + '&starNum=' + starNum + '&deviceName=' + paramsObj.deviceName + '&colId=' + bookDetail.colId).then((rep) => {
+      paramsObj.pubId = this.pubId;
+      paramsObj.loginName = loginName;
+      paramsObj.content = content;
+      paramsObj.starNum = starNum;
+      paramsObj.colId = bookDetail.colId;
+      Post(queryConfig.url, paramsObj).then((rep) => {
         var result = rep.data.result;
         if (result === "1") {
           var msg = rep.data.data.msg;

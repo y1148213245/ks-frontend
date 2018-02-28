@@ -87,7 +87,7 @@
                   </div>
                   <div class="cart-tab-5">
                     <div class="item-price-total">
-                      <span> {{Math.round(product.productPrice * product.nums * 100) / 100}}</span>
+                      <span> {{(Math.round(product.productPrice * product.nums * 100) / 100).toFixed(2)}}</span>
                     </div>
                   </div>
                   <div class="cart-tab-6">
@@ -103,7 +103,7 @@
                       <span>已收藏</span>
                     </span>
                       </div>
-                      <div v-if="isShowCollectButton" class="moveFavorite opertion" @click="moveFavorite(product)">
+                      <div v-if="product.isCollect != '1' && isShowCollectButton" class="moveFavorite opertion" @click="moveFavorite(product)">
                         <span>移入收藏</span>
                       </div>
                     </div>
@@ -1556,7 +1556,7 @@
                 payAmount = _this.orderDetail.bookTotalMoney + _this.orderDetail.ebookTotalMoney - _this.orderDetail.bookSaveMoney - _this.orderDetail.ebookSaveMoney;
               }
               if (this.rmbCoin < 0){
-                _this.$alert("虚拟币优惠数额须大于0噢~", "系统提示", {
+                _this.$alert("虚拟币优惠数额不能小于0噢~", "系统提示", {
                   confirmButtonText: "确定"
                 });
               }

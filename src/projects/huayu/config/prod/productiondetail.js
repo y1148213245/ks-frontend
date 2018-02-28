@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 11:12:46 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-27 09:52:37
+ * @Last Modified time: 2018-02-27 15:42:24
  */
 export default {
   name: "productiondetail",
@@ -10,6 +10,7 @@ export default {
     bookdetail_03: {
       url: 'http://172.19.92.76:8080/portal/api/' + 'spc/prodb/detail.do',
       // url: BASE_URL + 'spc/prodb/detail.do',
+      loadUrl: 'http://172.19.92.76:8080/portal/api/dynamicFile/file.do?recordID=',  // 下载附件类型文章
       params: {
         doclibCode: '',
         docID: '',

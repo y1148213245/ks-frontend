@@ -541,6 +541,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import { Get } from "@common";
 Vue.use(Vuex);
 Vue.prototype.$ajax = axios;
 
@@ -636,7 +637,9 @@ export default {
         char = value.charAt(i);
       }
       if (badword.indexOf(char) >= 0) {
-        callback(new Error('格式错误，密码仅支持汉字、字母、数字、"-"、"_"的组合'));
+        callback(
+          new Error('格式错误，密码仅支持汉字、字母、数字、"-"、"_"的组合')
+        );
       } else if (value === "") {
         callback(new Error("请输入密码"));
       } else if (value.length <= 5) {
@@ -829,9 +832,9 @@ export default {
       siteId: "",
       imageUrl: "",
       fullLoading: "", //全屏加载框
-      phoneError: '',//新建收货地址--联系电话验证信息
-      contactorError: '',//新建收货地址--收货人验证信息
-      goodsInfo: []//新建收货地址--验证信息
+      phoneError: "", //新建收货地址--联系电话验证信息
+      contactorError: "", //新建收货地址--收货人验证信息
+      goodsInfo: [] //新建收货地址--验证信息
     };
   },
   mounted() {
@@ -1099,9 +1102,11 @@ export default {
         this.checkPhone();
         this.checkDetail();
         this.checkArea();
-        if (this.goodsInfo.find(function (item) {
+        if (
+          this.goodsInfo.find(function(item) {
             return item == "false";
-          }) === undefined) {
+          }) === undefined
+        ) {
           // 都不为空
           this.emptyPCC = false;
           var param = {
@@ -1123,7 +1128,7 @@ export default {
           this.addAddressDialog = false;
           // this.$refs[form].resetFields();
         }
-      }else{
+      } else {
         this.addAddressDialog = false;
       }
       this.newAddAddress.contactor = ""; // 点击取消的时候初始化数据
@@ -1211,7 +1216,7 @@ export default {
         event.preventDefault();
       }
     },
-    checkArea:function(){
+    checkArea: function() {
       this.emptyPCC = false;
       if (
         $("#s_province").val() === "省份" ||
@@ -1514,7 +1519,7 @@ export default {
                 "&loginName=" +
                 this.account.loginName +
                 "&payMethodId=" +
-               _this.payMethod +
+                _this.payMethod +
                 "&siteId=" +
                 this.siteId,
               "_self"
@@ -1524,7 +1529,7 @@ export default {
             // 微信支付
             axios
               .get(
-               BASE_URL +
+                BASE_URL +
                   "epay/getVirtualCoinPayForm.do?price=" +
                   this.value +
                   "&loginName=" +
@@ -1544,10 +1549,7 @@ export default {
                   response.data.indexOf("</div>")
                 );
                 window.location.href =
-                  "./qrcode.html?data=" +
-                  data +
-                  "&orderCode=" +
-                  orderCode;
+                  "./qrcode.html?data=" + data + "&orderCode=" + orderCode;
               });
           }
         })
@@ -1619,7 +1621,10 @@ export default {
         email: this.account.email,
         cb: this.emailValidateCallb
       };
-      this.fullLoading = this.$loading({ fullscreen: true, text: "验证码发送中..." });
+      this.fullLoading = this.$loading({
+        fullscreen: true,
+        text: "验证码发送中..."
+      });
       this.$store.dispatch("personalCenter/findPassword", params);
     },
     emailValidateCallb(findStatus, findNum, rep) {
@@ -1724,17 +1729,20 @@ export default {
     setPasswordCallb(setStatus) {
       if (setStatus == 1) {
         this.open();
-        // this.showCurrent(0);
         window.setTimeout(function() {
-          window.location.reload();
-        }, 1000);
+          Get(BASE_URL + "logout.do").then(rep => {
+            if (Number(rep.status) === 200) {
+              window.location.href = "./login.html";
+            }
+          });
+        }, 3000);
       } else {
         console.log("error submit!!");
         return false;
       }
     },
     open() {
-      this.$alert("密码重置成功", "恭喜", {
+      this.$alert("密码重置成功,请重新登录", "恭喜", {
         confirmButtonText: "确定"
       });
     },
@@ -2348,7 +2356,11 @@ input.bdhm {
   background: #c50000;
   border: 0px;
 }
-.main_right { width:880px; overflow:hidden; margin:0 auto;}
+.main_right {
+  width: 880px;
+  overflow: hidden;
+  margin: 0 auto;
+}
 /*修改邮箱*/
 .main_right .wzdh_yzsjh,
 .main_right .wzdh_xgyx,
