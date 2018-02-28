@@ -20,7 +20,7 @@
 			<work_activitydetail_05 v-show="currentShowIndex == 3" namespace="activityrace"></work_activitydetail_05>
 
 			<!-- 名师指导 -->
-			<!-- <work_activitydetail_06 v-show="currentShowIndex == 4"  namespace="activityrace"></work_activitydetail_06> -->
+			<work_activitydetail_06 v-show="currentShowIndex == 4"  namespace="activityrace"></work_activitydetail_06>
    </div>
  </div>
 </template>

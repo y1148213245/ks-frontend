@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-27 11:08:46
+ * @Last Modified time: 2018-02-28 17:17:51
  */
 export default {
   name: "activityrace",
@@ -48,25 +48,56 @@ export default {
       eventName_listenLoadedData: 'eventName_loadedDatas',
     },
     work_activitydetail_05: {
-      url: BASE_URL + 'spc/prodb/searchNL.do',
+      url: BASE_URL + 'spc/prodb/getWorkList.do',
+      toProductDetailUrl:'productiondetail.html',
       params: {
         doclibCode: 'PORTAL_WORKS',
         relations: '1',
         cols: 'ACTIVITYID',
         symbols: '2',
-        vals: '601858',
+        vals: '601948',
+        memberType:'4',
+        toProductDetailParam_resourceType:'PORTAL_WORKS'
       },
       keys: {
         title: 'SYS_TOPIC',
         author: 'POTHUNTER_NAME',
         date: 'SYS_CREATED',
         abstract: 'DESCRIPTION',
-        teacherCommentNum: 'VOTE_COUNT',
-        voteNum: 'VOTE_COUNT'
+        teacherCommentNum: 'DIS_COUNT_NUM',
+        voteNum: 'VOTE_COUNT',
+        resourceId:'SYS_DOCUMENTID',
+        resourceName:'SYS_TOPIC',
+        activityId:'ACTIVITYID',
+        toProductDetailParam_resourceType:'resourceType',
+        toProductDetailParam_resourceId:'resourceId',
+        toProductDetailParam_colId:'colId',
+        toProductDetailParam_resourceName:'resourceName',
+        toProductDetailParam_activityId:'activityId',
       },
       eventName_listenLoadedData: 'eventName_loadedDatas',
       eventName_listenSearch: 'eventName_search',
       isDevelopment: false,
+    },
+    work_activitydetail_06: {
+      url: BASE_URL + 'comment/getActivityDiscussDetail.do',
+      params:{
+        paging_pageSizes:[15,30,50,100],
+        requestParam_memberType:'4',
+        requestParam_pageNo:'1',
+        requestParam_pageSize:'15'
+      },
+      keys: {
+        name:'userName',
+        picUrl:'picture',
+        commentProduct:'resourceName',
+        commentContent:'disContent',
+        requestParam_activityId:'activityId',
+        requestParam_memberType:'memberType',
+        requestParam_pageNo:'pageNo',
+        requestParam_pageSize:'pageSize',
+      },
+      eventName_listen: 'loadSearchResult',
     },
     review: { // 查询活动评论列表
       queryreview: {

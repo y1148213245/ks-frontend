@@ -19,7 +19,7 @@
 	}
 
 	excuteFunction函数预传参类型
-	function({pageNum,pageSize}){}  /**pageNum 页码 ， pageSize 每页容量**/
+	function({pageNo,pageSize}){}  /**pageNo 页码 ， pageSize 每页容量**/
 -->
 <script type="text/ecmascript-6">
 export default {

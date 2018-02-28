@@ -23,21 +23,32 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_05: {
-      url: 'spc/prodb/searchNL.do',
+      url: 'spc/prodb/getWorkList.do',
+      toProductDetailUrl:'productiondetail.html',
       params:{
         doclibCode:'PORTAL_WORKS',
         relations:'1',
         cols:'ACTIVITYID',
         symbols:'2',
         vals:'601858',
+        memberType:'4',
+        toProductDetailParam_resourceType:'PORTAL_WORKS'
       },
       keys:{
         title:'SYS_TOPIC',
         author:'POTHUNTER_NAME',
         date:'VOTE_COUNT',
         abstract:'DESCRIPTION',
-        teacherCommentNum:'VOTE_COUNT',
-        voteNum:'VOTE_COUNT'
+        teacherCommentNum:'DIS_COUNT_NUM',
+        voteNum:'VOTE_COUNT',
+        resourceId:'SYS_DOCUMENTID',
+        resourceName:'SYS_TOPIC',
+        activityId:'ACTIVITYID',
+        toProductDetailParam_resourceType:'resourceType',
+        toProductDetailParam_resourceId:'resourceId',
+        toProductDetailParam_colId:'colId',
+        toProductDetailParam_resourceName:'resourceName',
+        toProductDetailParam_activityId:'activityId',
       },
       eventName_listenLoadedData:'',
       eventName_listenSearch:'',
