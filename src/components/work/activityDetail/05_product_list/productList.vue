@@ -1,13 +1,14 @@
 <!-- 作品列表 -->
 <template>
  <div class="work_activitydetail_05">
+   <div v-if="viewType == 'complete'">
     <div class="work_activitydetail_05-totalcount">总数<span v-text="totalCount"></span></div>
     <template v-for="(item,index) in list">
       <div class="work_activitydetail_05-item" :key="index">
         <el-row>
           <el-col :span="18">
             <el-row>
-              <el-col :span="8" class="work_activitydetail_05-title_box"><div v-text="item[keys.title]" @click="toProductDetail(item)"></div></el-col>
+              <el-col :span="8" class="work_activitydetail_05-title_box"><div class="work_activitydetail_05-title" v-text="item[keys.title]" @click="toProductDetail(item)"></div></el-col>
               <el-col :span="8" class="work_activitydetail_05-author_box"><div v-text="item[keys.author] || '暂无作者'"></div></el-col>
               <el-col :span="8" class="work_activitydetail_05-date_box"><div>{{item[keys.date] | formatTime}}</div></el-col>
             </el-row>
@@ -23,7 +24,15 @@
         </el-row>
       </div>
     </template>
-    <ui_pagination layout="prev, pager, next, jumper"></ui_pagination>
+    <ui_pagination :pageMessage="{totalCount}" layout="prev, pager, next, jumper"></ui_pagination>
+  </div>
+  <div v-else-if="viewType == 'simple'">
+    <template v-for="(item,index) in list">
+      <div class="work_activitydetail_05-item" :key="index">
+        <div class="work_activitydetail_05-title" v-text="item[keys.title]" @click="toProductDetail(item)"></div>
+      </div>
+    </template>
+  </div>
  </div>
 </template>
 
@@ -38,6 +47,13 @@ export default {
   reused: true,
   props: {
     namespace: String,
+    module:String,
+    viewType:{
+      type:String,
+      default(){
+        return 'complete'
+      }
+    }
   },
   data () {
     return {
@@ -61,7 +77,7 @@ export default {
 
   methods: {
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_05;
+      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_05[this.module];
       this.keys = this.projectConfig.keys;
     },
     toProductDetail(product){
@@ -110,6 +126,9 @@ export default {
   margin-top: 10px;
 }
 .work_activitydetail_05-title_box {
+}
+.work_activitydetail_05-title{
+  cursor: pointer;
 }
 .work_activitydetail_05-author_box {
 }

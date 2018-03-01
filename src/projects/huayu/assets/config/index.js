@@ -2,8 +2,8 @@
  * Created by codingnuts on 2017/12/14.
  */
 
-var BASE_URL = "http://172.19.36.97:9092/spc-portal-web/";
-// var BASE_URL = "http://172.19.92.76:8080/portal/api/";
+// var BASE_URL = "http://172.19.36.97:9092/spc-portal-web/";
+var BASE_URL = "http://172.19.92.76:8080/portal/api/";
 // var BASE_URL = "http://172.19.36.70:9092/spc-portal-web/";
 // var BASE_URL = "http://book.clapnet.cn:9092/spc-portal-web/";
 

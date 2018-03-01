@@ -21,11 +21,23 @@ const prod = {
   activityDetail: {
     work_activitydetail_04: {
       url: BASE_URL + 'spc/prodb/detail.do?doclibCode=PORTAL_ACTIVITY&docID=601858',
+      getSchoolUrl:'spc/prodb/searchNL.do',
+      params:{
+        getSchoolRequest_doclibCode:'PORTAL_SCHOOL',//配库码
+        getSchoolRequest_relations:'1,1',//1并且，2或者
+        getSchoolRequest_cols:'AREA,CLASS',//字段名
+        getSchoolRequest_symbols:'1,1',//匹配模式，1包含，2等于，3不等于
+      },
       keys: {
         place: 'place',
         school: 'school',
         group: 'group',
         searchText: 'searchText',
+        getSchoolRequest_doclibCode:'doclibCode',
+        getSchoolRequest_relations:'relations',
+        getSchoolRequest_cols:'cols',
+        getSchoolRequest_symbols:'symbols',
+        getSchoolRequest_vals:'vals',//值
       },
       eventName_search: '',
       eventName_listenLoadedData: 'eventName_loadedDatas',

@@ -14,10 +14,34 @@
       <!-- 大赛新闻 -->
 			<!-- <work_activitydetail_03 v-show="currentShowIndex == 2" namespace="activityrace"></work_activitydetail_03> -->
 			
-			<!-- 参赛作品条件 -->
-			<work_activitydetail_04 v-show="currentShowIndex == 3" namespace="activityrace"></work_activitydetail_04>
-			<!-- 参赛作品列表 -->
-			<work_activitydetail_05 v-show="currentShowIndex == 3" namespace="activityrace"></work_activitydetail_05>
+      <!-- 参赛作品 -->
+      <div  v-show="currentShowIndex == 3">
+        
+        <el-col :span="20" class="components_acitivityrace_tab-join_box">
+          <!-- 参赛作品条件 -->
+          <work_activitydetail_04 namespace="activityrace"></work_activitydetail_04>
+          <!-- 参赛作品列表 -->
+          <work_activitydetail_05 namespace="activityrace" module="module1"></work_activitydetail_05>
+        </el-col>
+        <el-col :span="4">
+          <div class="components_acitivityrace-notice">
+            <div class="components_acitivityrace-notice-title_box">
+              <span>公告</span>
+            </div>
+            <!-- 公告 -->
+            <work_activitydetail_02 namespace="activityrace" module="module2"></work_activitydetail_02>
+          </div>
+          <div class="components_acitivityrace-good_products">
+            <div class="components_acitivityrace-good_products-title_box">
+              <span>优秀作品展示</span>
+            </div>
+            <!-- 优秀参赛作品列表 -->
+            <work_activitydetail_05 namespace="activityrace" module="module2" viewType="simple"></work_activitydetail_05>
+          </div>
+        </el-col>
+
+      </div>
+			
 
 			<!-- 名师指导 -->
 			<work_activitydetail_06 v-show="currentShowIndex == 4"  namespace="activityrace"></work_activitydetail_06>
@@ -37,6 +61,7 @@ export default {
   data () {
     return {
       currentShowIndex: 1,
+      isShowJoin: true,
     }
   },
 
@@ -48,8 +73,8 @@ export default {
   mounted () { },
 
   methods: {
-    change(index){
-       this.currentShowIndex = index;
+    change (index) {
+      this.currentShowIndex = index;
     }
   }
 }
@@ -70,7 +95,25 @@ export default {
   border: 1px solid black;
   cursor: pointer;
 }
-.components_acitivityrace_tab-title--active{
+.components_acitivityrace_tab-title--active {
   color: brown;
+}
+.components_acitivityrace_tab-join_box {
+  padding: 10px;
+}
+.components_acitivityrace-notice {
+  padding: 10px;
+  border: 1px solid dimgray;
+}
+.components_acitivityrace-notice-title_box {
+  padding: 10px 0;
+}
+.components_acitivityrace-good_products {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid dimgray;
+}
+.components_acitivityrace-good_products-title_box {
+  padding: 10px 0;
 }
 </style>

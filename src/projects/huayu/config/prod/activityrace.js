@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-28 17:17:51
+ * @Last Modified time: 2018-03-01 17:45:09
  */
 export default {
   name: "activityrace",
@@ -34,68 +34,128 @@ export default {
           requestUrlParam_code: 'code',
         },
         eventName_listen: "eventName_loadedDatas",
+      },
+      module2: {
+        url: BASE_URL + 'spc/prodb/getPublicize.do',
+        topic: '公告',
+        keys: {
+          topic: 'topic',
+          content: 'content',
+          eventName_listen_resourceId: 'pub_resource_id',
+          eventName_listen_resourceType: 'pub_resource_type',
+          requestUrlParam_docId: 'docID',
+          requestUrlParam_code: 'code',
+        },
+        eventName_listen: "eventName_loadedDatas",
       }
     },
     work_activitydetail_04: {
       url: BASE_URL + 'spc/prodb/detail.do?doclibCode=PORTAL_ACTIVITY&docID=601948',
+      getSchoolUrl:BASE_URL +'spc/prodb/searchNL.do',
+      params:{
+        getSchoolRequest_doclibCode:'PORTAL_SCHOOL',//配库码
+        getSchoolRequest_relations:'1,1',//1并且，2或者
+        getSchoolRequest_cols:'AREA,CLASS',//字段名
+        getSchoolRequest_symbols:'1,1',//匹配模式，1包含，2等于，3不等于
+      },
       keys: {
         place: 'place',
         school: 'school',
         group: 'group',
         searchText: 'searchText',
+        getSchoolRequest_doclibCode:'doclibCode',
+        getSchoolRequest_relations:'relations',
+        getSchoolRequest_cols:'cols',
+        getSchoolRequest_symbols:'symbols',
+        getSchoolRequest_vals:'vals',//值
       },
       eventName_search: 'eventName_search',
       eventName_listenLoadedData: 'eventName_loadedDatas',
     },
     work_activitydetail_05: {
-      url: BASE_URL + 'spc/prodb/getWorkList.do',
-      toProductDetailUrl:'productiondetail.html',
-      params: {
-        doclibCode: 'PORTAL_WORKS',
-        relations: '1',
-        cols: 'ACTIVITYID',
-        symbols: '2',
-        vals: '601948',
-        memberType:'4',
-        toProductDetailParam_resourceType:'PORTAL_WORKS'
+      module1: {
+        url: BASE_URL + 'spc/prodb/getWorkList.do',
+        toProductDetailUrl: 'productiondetail.html',
+        params: {
+          doclibCode: 'PORTAL_WORKS',
+          relations: '1',
+          cols: 'ACTIVITYID',
+          symbols: '2',
+          vals: '601948',
+          memberType: '4',
+          toProductDetailParam_resourceType: 'PORTAL_WORKS'
+        },
+        keys: {
+          title: 'SYS_TOPIC',
+          author: 'POTHUNTER_NAME',
+          date: 'SYS_CREATED',
+          abstract: 'DESCRIPTION',
+          teacherCommentNum: 'DIS_COUNT_NUM',
+          voteNum: 'VOTE_COUNT',
+          resourceId: 'SYS_DOCUMENTID',
+          resourceName: 'SYS_TOPIC',
+          activityId: 'ACTIVITYID',
+          toProductDetailParam_resourceType: 'resourceType',
+          toProductDetailParam_resourceId: 'resourceId',
+          toProductDetailParam_colId: 'colId',
+          toProductDetailParam_resourceName: 'resourceName',
+          toProductDetailParam_activityId: 'activityId',
+        },
+        eventName_listenLoadedData: 'eventName_loadedDatas',
+        eventName_listenSearch: 'eventName_search',
+        isDevelopment: false,
       },
-      keys: {
-        title: 'SYS_TOPIC',
-        author: 'POTHUNTER_NAME',
-        date: 'SYS_CREATED',
-        abstract: 'DESCRIPTION',
-        teacherCommentNum: 'DIS_COUNT_NUM',
-        voteNum: 'VOTE_COUNT',
-        resourceId:'SYS_DOCUMENTID',
-        resourceName:'SYS_TOPIC',
-        activityId:'ACTIVITYID',
-        toProductDetailParam_resourceType:'resourceType',
-        toProductDetailParam_resourceId:'resourceId',
-        toProductDetailParam_colId:'colId',
-        toProductDetailParam_resourceName:'resourceName',
-        toProductDetailParam_activityId:'activityId',
-      },
-      eventName_listenLoadedData: 'eventName_loadedDatas',
-      eventName_listenSearch: 'eventName_search',
-      isDevelopment: false,
+      module2: {
+        url: BASE_URL + 'spc/prodb/getWorkList.do',
+        toProductDetailUrl: 'productiondetail.html',
+        params: {
+          doclibCode: 'PORTAL_WORKS',
+          relations: '1',
+          cols: 'ACTIVITYID',
+          symbols: '2',
+          vals: '601948',
+          memberType: '4',
+          toProductDetailParam_resourceType: 'PORTAL_WORKS'
+        },
+        keys: {
+          title: 'SYS_TOPIC',
+          author: 'POTHUNTER_NAME',
+          date: 'SYS_CREATED',
+          abstract: 'DESCRIPTION',
+          teacherCommentNum: 'DIS_COUNT_NUM',
+          voteNum: 'VOTE_COUNT',
+          resourceId: 'SYS_DOCUMENTID',
+          resourceName: 'SYS_TOPIC',
+          activityId: 'ACTIVITYID',
+          toProductDetailParam_resourceType: 'resourceType',
+          toProductDetailParam_resourceId: 'resourceId',
+          toProductDetailParam_colId: 'colId',
+          toProductDetailParam_resourceName: 'resourceName',
+          toProductDetailParam_activityId: 'activityId',
+        },
+        eventName_listenLoadedData: 'eventName_loadedDatas',
+        eventName_listenSearch: 'eventName_search',
+        isDevelopment: false,
+      }
+
     },
     work_activitydetail_06: {
       url: BASE_URL + 'comment/getActivityDiscussDetail.do',
-      params:{
-        paging_pageSizes:[15,30,50,100],
-        requestParam_memberType:'4',
-        requestParam_pageNo:'1',
-        requestParam_pageSize:'15'
+      params: {
+        paging_pageSizes: [15, 30, 50, 100],
+        requestParam_memberType: '4',
+        requestParam_pageNo: '1',
+        requestParam_pageSize: '15'
       },
       keys: {
-        name:'userName',
-        picUrl:'picture',
-        commentProduct:'resourceName',
-        commentContent:'disContent',
-        requestParam_activityId:'activityId',
-        requestParam_memberType:'memberType',
-        requestParam_pageNo:'pageNo',
-        requestParam_pageSize:'pageSize',
+        name: 'userName',
+        picUrl: 'picture',
+        commentProduct: 'resourceName',
+        commentContent: 'disContent',
+        requestParam_activityId: 'activityId',
+        requestParam_memberType: 'memberType',
+        requestParam_pageNo: 'pageNo',
+        requestParam_pageSize: 'pageSize',
       },
       eventName_listen: 'loadSearchResult',
     },
