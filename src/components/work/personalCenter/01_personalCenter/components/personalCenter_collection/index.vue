@@ -1,6 +1,17 @@
 <!--文联收藏夹-->
 <template>
   <div class="wl_collWrapper">
+
+
+
+
+    <div v-if="siteId==1">
+        <el-radio-group v-model="radio"  @change="bookList">
+      <el-radio-button label="94">电子书</el-radio-button>
+      <el-radio-button label="91">纸质书</el-radio-button>
+    </el-radio-group>
+    </div>
+
     <div class="myColList" v-if="collectionInfo.data && collectionInfo.data.length > 0">
       <div class="deleteColls">
         <el-checkbox v-model="selectedAll" @change="selectAll()"></el-checkbox>
@@ -59,7 +70,9 @@ export default {
     return {
       siteId: "",
       modalStatus: false,
-      selectedAll: false
+      selectedAll: false,
+      autofocus: true,
+      radio: '94',
     };
   },
   computed: {
@@ -72,7 +85,8 @@ export default {
       var params = {
         param: {
           pageIndex: 1,
-          pageSize: 8
+          pageSize: 8,
+          contentType: 94
         },
         myCallBack: function() {}
       };
@@ -83,6 +97,17 @@ export default {
         param: {
           pageIndex: pageNo,
           pageSize: pageSize
+        },
+        myCallBack: function() {}
+      };
+      this.$store.dispatch("personalCenter/queryCollectionInfo", params);
+    },
+    bookList(val){
+       var params = {
+        param: {
+          pageIndex: 1,
+          pageSize: 8,
+          contentType: val
         },
         myCallBack: function() {}
       };

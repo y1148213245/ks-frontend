@@ -176,7 +176,9 @@ export default {
       "&pageSize=" +
       (params.pageSize || 8) +
       "&siteId=" +
-      SITE_CONFIG.siteId;
+      SITE_CONFIG.siteId +
+      "&contentType=" +
+      (params.contentType || 94);
     return axios.get(url);
   },
   /*移除收藏夹*/

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 10:01:47 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-09 14:37:16
+ * @Last Modified time: 2018-02-28 18:02:18
  */
 <!-- 投票组件  -->
 <template>
@@ -17,7 +17,7 @@ import PROJECT_CONFIG from "projectConfig";
 
 export default {
   name: 'work_common_03',
-  props: ['pubId', 'namespace'],
+  props: ['namespace', 'docid'],
   reused: true,
   data () {
     return {
@@ -27,14 +27,30 @@ export default {
 
   mounted () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].common.vote_03;
-   },
+  },
 
   methods: {
-    doVote() {  // 投票
-      let paramObj = Object.assign({}, this.CONFIG.params);
-      paramObj.pubId = this.pubId;
-      Post(this.CONFIG.url, paramObj).then(res => {
-        console.log(res);
+    doVote () {  // 投票
+      let params = Object.assign({}, this.CONFIG.params);
+      params.docID = this.docid;
+      Get(this.CONFIG.url, { params: params }).then(res => {
+        if (res.data.result === "1") { // 投票成功
+          this.$emit('vote', res.data.data);  // 子组件向父组件传值
+          this.$message({
+            type: "success",
+            message: "投票成功"
+          });
+        } else if (res.data.error && res.data.error.errorCode === "-1") {  // 投票失败
+          this.$message({
+            type: "info",
+            message: res.data.error.errorMsg
+          });
+        } else {  // 投票失败
+          this.$message({
+            type: "error",
+            message: "投票失败"
+          });
+        }
       })
     }
   }

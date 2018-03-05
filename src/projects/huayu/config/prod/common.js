@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 14:00:38 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-26 14:58:00
+ * @Last Modified time: 2018-02-28 18:03:53
  */
 
 export default {
@@ -15,10 +15,9 @@ export default {
   },
   common: {
     vote_03: {  // 投票组件
-      url: BASE_URL + '',
+      url: BASE_URL + 'spc/prodb/activity/vote.do?',
       params: {
-        pubId: '',
-        loginName: '',
+        docID: '',
       }
     }
   }

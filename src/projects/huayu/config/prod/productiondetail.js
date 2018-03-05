@@ -2,15 +2,23 @@
  * @Author: song 
  * @Date: 2018-02-06 11:12:46 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-27 15:42:24
+ * @Last Modified time: 2018-03-02 15:23:56
  */
 export default {
   name: "productiondetail",
   bookdetail: {
     bookdetail_03: {
-      url: 'http://172.19.92.76:8080/portal/api/' + 'spc/prodb/detail.do',
       // url: BASE_URL + 'spc/prodb/detail.do',
-      loadUrl: 'http://172.19.92.76:8080/portal/api/dynamicFile/file.do?recordID=',  // 下载附件类型文章
+      url: BASE_URL + 'book/getWorkDetail.do',  // 查询作品详情
+      collectUrl: BASE_URL + 'collection/addWorkCollect.do', // 添加作品收藏
+      /* collectParams: {
+        loginName: '',
+        resourceId: '',
+        resourceType: '',
+        operateType: '0',
+        siteId: SITE_CONFIG.siteId
+      }, */
+      loadUrl: BASE_URL + 'dynamicFile/file.do?recordID=',  // 下载附件类型文章
       params: {
         doclibCode: '',
         docID: '',
@@ -24,6 +32,8 @@ export default {
         abstract: 'DESCRIPTION',   // 作品简介
         content: 'TEXTCONTENT',    // 正文内容
         attachment: 'ATTACH_LIST', // 附件信息
+        docId: 'SYS_DOCUMENTID', // 作品docId
+        isCollect: 'isCollect',    // 作品是否收藏
       }
     }
   },

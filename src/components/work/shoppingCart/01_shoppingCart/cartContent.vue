@@ -442,8 +442,13 @@
 
       this.priceInfo();          // 查询价格变更信息列表
 
+      let hasTop = false;
       $(window).scroll(function (event) {               // 监控滚动条 控制下方结算按钮要始终在可视区域
         if ($(".normalClearing").length > 0) {
+          if(!hasTop){
+            _this.elementTop = $($(".normalClearing")[0]).offset().top;
+            hasTop = true;
+          }
           var clientHeight = $(window)[0].innerHeight; // 屏幕可视高度
           var scrollTop = $(window).scrollTop();       // 元素距离窗口最上边的高度
           _this.toogleFixed(_this.elementTop, clientHeight, scrollTop);
@@ -630,7 +635,7 @@
         }
       },
       loadCallBack: function () {   // 一进页面就要通过查询用户之后立即执行的操作 比如：查询商品列表、虚拟币、优惠券
-        var _this = this;
+        /* var _this = this;
         var params = {
           param: {
             loginName: this.member.loginName
@@ -649,10 +654,21 @@
               }
             });
           }
-        };
+        }; */
         // this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, params);              // 购物车商品列表
         this.$store.dispatch("shoppingcart/" + type.QUERY_VIRTUAL_COIN, this.member.loginName); // 虚拟币数量
         this.$store.dispatch("shoppingcart/" + type.QUERY_COUPONS, { loginName: this.member.loginName, type: "noUse" }); // 优惠券列表
+        var eleTop; // 元素距离窗口最上边的高度
+        var clientHeight; // 屏幕可视高度
+        var scrollTop; // 元素距离窗口最上边的高度
+        this.$nextTick( () => {
+          if ($(".normalClearing").length > 0) {
+            this.elementTop = $($(".normalClearing")[0]).offset().top;
+            clientHeight = $(window)[0].innerHeight;
+            scrollTop = $(window).scrollTop();
+            this.toogleFixed(this.elementTop, clientHeight, scrollTop);
+          }
+        });
       },
       setRecordOrder: function () {  // 商品列表和订单详情（优惠金额、总数、总价等）要存在 sessionStorage 里面 刷新页面要取
         // JSON.stringify(this.recordOrder);
@@ -1224,66 +1240,62 @@
          * 没有参加活动的商品按 类型（book/ebook） 和 分类 （JAVA/C/...）重新组合
          **/
         var _this = this;
-        var couponsProductWrapper = {}; // 按 类型 和 分类 重新组合的商品列表
-        this.orderList.forEach(function (item) {
-          if (
-            item.activityId === "0" &&
-            item.activityName === "" &&
-            item.list.length > 0
-          ) {
-            // 没有参加活动的商品
-            item.list.forEach(function (pro) {
-              if (
-                !(
-                  couponsProductWrapper[item.productType + "-" + pro.catId] &&
-                  couponsProductWrapper[item.productType + "-" + pro.catId]
-                    .length > 0
-                )
-              ) {
-                couponsProductWrapper[item.productType + "-" + pro.catId] = [];
-              }
-              couponsProductWrapper[item.productType + "-" + pro.catId].push(pro);
-            });
-          }
+        var couponsProductWrapper = {}; // 按 类型 和 分类 重新组合的订单列表
+        this.orderList.forEach(function (item) { // 遍历订单列表 此时是按不同活动组合的商品列表
+          item.list.forEach(function (pro) {
+            if (!(couponsProductWrapper[item.productType + "-" + pro.catId] && couponsProductWrapper[item.productType + "-" + pro.catId].length > 0)) {
+              couponsProductWrapper[item.productType + "-" + pro.catId] = [];
+            }
+            couponsProductWrapper[item.productType + "-" + pro.catId].push(pro); // 按 类型 和 分类 重新组合的订单列表
+          });
         });
-        /*console.log(this.orderList);  // 已选商品列表
-          console.log(this.couponsList);// 优惠券列表*/
-        /*let couponsProduct = '';*/
-        this.couponsList.forEach(function (coupon) {
-          var couponsType = [];
-          var type =
-            coupon.couponRange === "book"
-              ? _this.bookTypeTag
-              : _this.ebookTypeTag;
+        this.couponsList.forEach(function (coupon) { // 遍历优惠券列表
+          var couponsType = []; // 优惠券的种类 array 如 ["91-88340", "91-88341", "91-88342"]
+          var type = coupon.couponRange === "book" ? _this.bookTypeTag : _this.ebookTypeTag;
           var idWrapper = coupon.classifyId.split(",");
           for (var i = 0; i < idWrapper.length; i++) {
             couponsType.push(type + "-" + idWrapper[i]);
           }
-          for (let couponsProduct in couponsProductWrapper) {
+          for (let couponsProduct in couponsProductWrapper) { // 循环订单列表
             var ind = couponsType.join().indexOf(couponsProduct);
             if (ind !== -1) {
               var couponsProductLists = couponsProductWrapper[couponsProduct]; // 能使用优惠券的商品列表
-              if (
-                !(
-                  _this.couponProductListWrapper[coupon.type] &&
-                  _this.couponProductListWrapper[coupon.type].length > 0
-                )
-              ) {
-                _this.couponProductListWrapper[coupon.type] = [];
+              if (!(_this.couponProductListWrapper[coupon.type + '-' + coupon.id] && _this.couponProductListWrapper[coupon.type + '-' + coupon.id].length > 0)) {
+                _this.couponProductListWrapper[coupon.type + '-' + coupon.id] = [];
               }
-              _this.couponProductListWrapper[coupon.type].push(
-                couponsProductLists
-              );
+              _this.couponProductListWrapper[coupon.type + '-' + coupon.id].push(couponsProductLists);
               if (coupon.type === "deduction" || coupon.type === "discountRate") {
                 // 固定抵扣 和 折扣 没有总金额限制
                 coupon.isAvailablesm = true;
               } else if (coupon.type === "fullCut") {
                 // 满xx减xx 有总金额的限制
                 var fullAmount = 0; // 能使用满减优惠券商品的总金额
+                var orderProductList = JSON.parse(Base64.decode(window.sessionStorage.getItem("recordOrder"))).recordOrderList;
                 couponsProductLists.forEach(function (full) {
-                  fullAmount += full.nums * full.productPrice;
+                  // fullAmount += full.nums * full.productPrice;
+                  if (full.activityId === "0" && full.activityName === "") {   // 没有参加活动的商品
+                    fullAmount += full.nums * full.productPrice;
+                  } else {  // *** 参加了活动的商品 在判断能不能参与某优惠券的时候 要拿参加完活动的价格去判断 不能拿原价去判断
+                    let listTotalPrice = 0;
+                    for(var k = 0; k < orderProductList.length; k++) {
+                      for(var u = 0; u < orderProductList[k].list.length; u++) {
+                          listTotalPrice += orderProductList[k].list[u].nums * orderProductList[k].list[u].productPrice;
+                          if (full.id === orderProductList[k].list[u].id) {
+                           full.activitySavePrice = orderProductList[k].saveValue; // 某单个商品参与的活动节省总金额 不能等同于该商品参加活动节省金额 因为这个活动里可能有多件商品
+                        }
+                      }
+                    }
+                    for(var k = 0; k < orderProductList.length; k++) {
+                      for(var u = 0; u < orderProductList[k].list.length; u++) {
+                        if (full.id === orderProductList[k].list[u].id) {
+                           full.afterActivityPrice = full.nums * full.productPrice - ((full.nums * full.productPrice / listTotalPrice) * full.activitySavePrice).toFixed(2);  // 参加了活动的商品节省金额按占比重折算出来
+                        }
+                      }
+                    }
+                    fullAmount += full.afterActivityPrice;
+                  }
                 });
-                if (fullAmount >= coupon.fullPrice) {
+                if (fullAmount >= (coupon.fullPrice - 0).toFixed(2)) {
                   // 符合满减条件
                   coupon.isAvailablesm = true;
                 }
@@ -1300,13 +1312,18 @@
         this.curSelectedInvoice = data;
       },
       selectCoupon: function (item, index) {  // 选择某个可用优惠券
-        debugger;
-        if (this.couponProductListWrapper[item.type]) {
+        if (this.couponProductListWrapper[item.type + '-' + item.id]) {
           this.selectedCouponsPassword = item.password;
-          var couponProductList = this.couponProductListWrapper[item.type][0];
+          var couponProductList = this.couponProductListWrapper[item.type + '-' + item.id];
           var fullAmount = 0; // 能使用满减优惠券商品的总金额
           couponProductList.forEach(function (list) {
-            fullAmount += list.nums * list.productPrice;
+            for(var i = 0; i < list.length; i++) {
+              if (list[i].activityId === "0" && list[i].activityName === "") {  // 没有参加活动的商品
+                fullAmount += list[i].nums * list[i].productPrice;
+              } else { // 参加了活动的商品
+                fullAmount += list[i].afterActivityPrice;
+              }
+            }
           });
           if (item.type === "deduction") {
             this.couponSaveMoney =
