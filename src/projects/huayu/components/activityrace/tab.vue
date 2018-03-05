@@ -12,7 +12,7 @@
 			<work_activitydetail_02 v-show="currentShowIndex == 1" namespace="activityrace" module="module1"></work_activitydetail_02>
 
       <!-- 大赛新闻 -->
-			<!-- <work_activitydetail_03 v-show="currentShowIndex == 2" namespace="activityrace"></work_activitydetail_03> -->
+			<work_activitydetail_03 v-show="currentShowIndex == 2" namespace="activityrace"></work_activitydetail_03>
 			
       <!-- 参赛作品 -->
       <div  v-show="currentShowIndex == 3">

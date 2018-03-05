@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-05 15:58:50
+ * @Last Modified time: 2018-03-05 18:06:54
  */
 export default {
   name: "activityrace",
@@ -48,6 +48,27 @@ export default {
         },
         eventName_listen: "eventName_loadedDatas",
       }
+    },
+    /* 大赛新闻列表配置 */
+    work_activitydetail_03: {
+      url: BASE_URL + 'spc/prodb/activity/activityNews.do',
+      params:{
+        getListParam_pageNo:'1',
+        getListParam_pageSize:'10',
+        getListParam_orderBy:'SYS_DOCUMENTID DESC',
+      },
+      keys: {
+        title: "SYS_TOPIC",
+        picUrl: "picUrl",
+        date: "date",
+        abstract: "abstract",
+        eventListenData_activityId:'pub_resource_id',
+        getListParam_activityID:'activityID',
+        getListParam_pageNo:'page',
+        getListParam_pageSize:'pageSize',
+        getListParam_orderBy:'orderBy',
+      },
+      eventName_listen:'eventName_loadedDatas'
     },
     /* 作品列表筛选配置 */
     work_activitydetail_04: {

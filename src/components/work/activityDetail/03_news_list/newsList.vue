@@ -19,18 +19,23 @@
 <script>
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
-import { Post } from "@common";
+import { Get } from "@common";
 export default {
   name: 'work_activitydetail_03',
   reused: true,
   props: {
-    namespace:String
+    namespace: String
   },
   data () {
     return {
       projectConfig: null,
-      keys:null,
-      list:[],
+      keys: null,
+      list: [],
+      activityDetailCache: null,
+      pagingConfig: {
+        pageNo: '',
+        pageSize: '',
+      }
     };
   },
 
@@ -38,20 +43,31 @@ export default {
 
   created () {
     this.initConfig();
-    this.projectConfig.isDevelopment ? this.loadDatas() : this.$bus.on(this.projectConfig.eventName_listen,this.loadDatas);
-   },
+    this.projectConfig.isDevelopment ? this.loadDatas() : this.$bus.on(this.projectConfig.eventName_listen, this.loadDatas);
+  },
 
   mounted () { },
 
   methods: {
     initConfig () {
       this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_03;
-      this.keys = this.projectConfig.keys
+      this.keys = this.projectConfig.keys;
+      this.pagingConfig.pageNo = this.projectConfig.params.getListParam_pageNo;
+      this.pagingConfig.pageSize = this.projectConfig.params.getListParam_pageSize;
     },
-    loadDatas(params){
-      let url = this.projectConfig.url;
+    loadDatas (activityDetail) {
+      let keys = this.keys;
+      if (activityDetail) {
+        this.activityDetailCache = activityDetail; //缓存数据
+      }
 
-      Post(url).then((resp)=>{
+      let activityID = keys.getListParam_activityID + '=' + this.activityDetailCache[keys.eventListenData_activityId];
+      let pageNo = keys.getListParam_pageNo + '=' + this.pagingConfig.pageNo;
+      let pageSize = keys.getListParam_pageSize + '=' + this.pagingConfig.pageSize;
+      let orderBy = keys.getListParam_orderBy + '=' + this.projectConfig.params.getListParam_orderBy;
+
+      let url = this.projectConfig.url + '?' + activityID + '&' + pageNo + '&' + pageSize + '&' + orderBy;
+      Get(url).then((resp) => {
         let data = resp.data.data;
         this.list = data;
       })
@@ -62,17 +78,16 @@ export default {
 </script>
 <style>
 .work_activitydetail_03 {
-
   width: 100%;
 }
 .work_activitydetail_03-item {
-    margin-top: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid slategray;
+  margin-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid slategray;
 }
 .work_activitydetail_03-item-title {
   margin: 10px 0;
-  font-size: 18px
+  font-size: 18px;
 }
 .work_activitydetail_03-item-img_box {
   float: left;
