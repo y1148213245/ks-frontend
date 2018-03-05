@@ -47,10 +47,10 @@ export default {
   reused: true,
   props: {
     namespace: String,
-    module:String,
-    viewType:{
-      type:String,
-      default(){
+    module: String,
+    viewType: {
+      type: String,
+      default () {
         return 'complete'
       }
     }
@@ -60,7 +60,9 @@ export default {
       projectConfig: null,
       keys: null,
       list: [],
-      totalCount:0,
+      totalCount: 0,
+      activityDetailCache: null,
+      conditionCache: null,
     };
   },
 
@@ -68,9 +70,9 @@ export default {
 
   created () {
     this.initConfig();
+    this.loadCondition();
     this.projectConfig.isDevelopment ? this.loadData() : this.$bus.on(this.projectConfig.eventName_listenLoadedData, this.loadData);
-    this.$bus.on(this.projectConfig.eventName_listenSearch, this.loadData);
-     this.loadData ()//临时
+    this.$bus.on(this.projectConfig.eventName_listenSearch, this.loadCondition);
   },
 
   mounted () { },
@@ -80,33 +82,110 @@ export default {
       this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_05[this.module];
       this.keys = this.projectConfig.keys;
     },
-    toProductDetail(product){
+    loadCondition (conditions) {//缓存条件
+      let params = this.projectConfig.params;
+      let keys = this.keys;
+      let eventListien_SearchDatasKeyArr = keys.eventListienSearchDatas;
+      let condition = null;
+      let mustKey = 'activityId';//必传条件key
+
+      let doclibCode = '';
+      let relations = '';
+      let cols = '';
+      let symbols = '';
+      let memberType = '';
+      let vals = ''
+      debugger
+
+      if (!conditions) {
+        getCondition([mustKey]);
+      } else {
+        let arr = JSON.parse(JSON.stringify(eventListien_SearchDatasKeyArr));
+        /* 添加必传条件key */
+        arr.unshift(mustKey);
+        getCondition(arr);
+      }
+
+      condition = {
+        [keys.getListParam_doclibCode]: doclibCode,
+        [keys.getListParam_relations]: relations,
+        [keys.getListParam_cols]: cols,
+        [keys.getListParam_symbols]: symbols,
+        [keys.getListParam_memberType]: memberType,
+        [keys.getListParam_vals]: vals,
+      }
+      this.conditionCache = condition;
+      if (conditions) this.loadData();
+
+      function getCondition (eventListienSearchDatas) {
+        for (let i = 0, len = eventListienSearchDatas.length; i < len; i++) {
+
+          const vkey = eventListienSearchDatas[i];
+          if (vkey == mustKey || conditions && conditions[vkey]) {
+            let option = params.getListParamOptions[vkey];
+            let splitVal = ',';
+            if (i == 0) {
+              splitVal = '';
+            }
+            /* 组装配置的值 */
+            relations += splitVal + option.getListParam_relations;
+            cols += splitVal + option.getListParam_cols;
+            symbols += splitVal + option.getListParam_symbols;
+            memberType += splitVal + option.getListParam_memberType;
+            /* 加入搜索的值 */
+            if (vkey != mustKey) {
+              vals += splitVal + conditions[vkey];
+            }
+            
+          }
+          debugger
+        }
+      }
+    },
+    toProductDetail (product) {
       let param_resourceType = this.keys.toProductDetailParam_resourceType + '=' + this.projectConfig.params.toProductDetailParam_resourceType;
       let param_resourceId = this.keys.toProductDetailParam_resourceId + '=' + product[this.keys.resourceId];
       let param_resourceName = this.keys.toProductDetailParam_resourceName + '=' + product[this.keys.resourceName];
       let param_activityId = this.keys.toProductDetailParam_activityId + '=' + product[this.keys.activityId];
-      
-      let url = this.projectConfig.toProductDetailUrl + '?' + param_resourceType + '&' + param_resourceId + '&' +  param_resourceName + '&' +  param_activityId + '&colId=';
+
+      let url = this.projectConfig.toProductDetailUrl + '?' + param_resourceType + '&' + param_resourceId + '&' + param_resourceName + '&' + param_activityId + '&colId=';
       window.location.href = url;
     },
-    loadData (param) {
-      let url = this.projectConfig.url;
-      let params = this.projectConfig.params
-      if (params) {
-        url += '?doclibCode=' + params.doclibCode + '&relations=' + params.relations + '&cols=' + params.cols + '&symbols=' + params.symbols + '&vals=' + params.vals +'&memberType=' + params.memberType
+    loadData (activityDetail) {
+      let params = this.projectConfig.params;//配置参数
+      let condition = this.conditionCache;//缓存的条件
+      let keys = this.keys;//字段配置
+
+      if (activityDetail) {
+        this.activityDetailCache = activityDetail; //缓存数据
       }
+
+      let doclibCode = keys.getListParam_doclibCode + '=' + params.getListParam_doclibCode;
+      let relations = keys.getListParam_relations + '=' + condition[keys.getListParam_relations];
+      let cols = keys.getListParam_cols + '=' + condition[keys.getListParam_cols];
+      let symbols = keys.getListParam_symbols + '=' + condition[keys.getListParam_symbols];
+      let memberType = keys.getListParam_memberType + '=' + condition[keys.getListParam_memberType];
+      let vals = keys.getListParam_vals + '=' + this.activityDetailCache[keys.eventListienLoadDatas_activityId];
+      if (condition[keys.getListParam_vals]) {
+        vals += condition[keys.getListParam_vals];
+      }
+
+      let url = this.projectConfig.url + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + memberType + '&' + vals;
+
       Get(url).then((resp) => {
         let data = resp.data.data.content;
         this.list = data;
         this.totalCount = resp.data.data.totalElements
       })
+
+
     }
   },
-  filters:{
-    formatTime(str){
-      if(str){
+  filters: {
+    formatTime (str) {
+      if (str) {
         return Moment(str).format("YYYY-MM-DD hh:mm")
-      }else {
+      } else {
         return '暂无日期'
       }
     }
@@ -127,7 +206,7 @@ export default {
 }
 .work_activitydetail_05-title_box {
 }
-.work_activitydetail_05-title{
+.work_activitydetail_05-title {
   cursor: pointer;
 }
 .work_activitydetail_05-author_box {

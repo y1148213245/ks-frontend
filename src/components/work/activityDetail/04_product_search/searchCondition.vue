@@ -4,6 +4,7 @@
     <el-col class="work_activitydetail_04-label" :span="2">地区：</el-col>
     <el-col :span="6">
       <el-select v-model="formData.place" placeholder="地区" style="width:100%" @change="updateSchool">
+        <el-option label="全部" value=""></el-option>
         <el-option v-for="(option,index) in placeArr" :label="option" :value="option" :key="index"></el-option>
       </el-select>
     </el-col>
@@ -11,15 +12,16 @@
     <el-col class="work_activitydetail_04-label" :span="2">学校：</el-col>
     <el-col :span="6">
       <el-select v-model="formData.school" placeholder="学校" style="width:100%">
-        <el-option label="全部" value="0"></el-option>
-         <el-option v-for="(option,index) in schoolArr" :label="option" :value="option" :key="index"></el-option>
+        <el-option label="全部" value=""></el-option>
+         <el-option v-for="(option,index) in schoolArr" :label="option[keys.school_name]" :value="option[keys.school_name]" :key="index"></el-option>
       </el-select>
     </el-col>
 
     <el-col class="work_activitydetail_04-label" :span="2">组别：</el-col>
     <el-col :span="6">
-      <el-select v-model="formData.group" placeholder="组别" style="width:100%">
-         <el-option v-for="(option,index) in groupArr" :label="option" :value="option" :key="index" @change="updateSchool"></el-option>
+      <el-select v-model="formData.group" placeholder="组别" style="width:100%" @change="updateSchool">
+        <el-option label="全部" value=""></el-option>
+         <el-option v-for="(option,index) in groupArr" :label="option" :value="option" :key="index"></el-option>
       </el-select>
     </el-col>
 
@@ -75,15 +77,18 @@ export default {
       this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_04;
       this.keys = this.projectConfig.keys;
     },
-    loadDatas () {
-      let url = this.projectConfig.url;
+    loadDatas (activityDetail) {
+      let doclibCode = this.keys.getPlaceRequest_doclibCode + '=' + this.projectConfig.params.getPlaceRequest_doclibCode;
+      let docID = this.keys.getPlaceRequest_docID + '=' + activityDetail[this.keys.eventData_docID];
+
+      let url = this.projectConfig.url + '?' + doclibCode + '&' + docID;
       Get(url).then((resp) => {
         let data = resp.data;
-        if (data.AREALIMT) {
-          this.placeArr = data.AREALIMT.split(';')
+        if (data[this.keys.getPlaceRequestBack_areas]) {
+          this.placeArr = data[this.keys.getPlaceRequestBack_areas].split(';');
         }
-        if (data.CLASSLIMT) {
-          this.groupArr = data.CLASSLIMT.split(';')
+        if (data[this.keys.getPlaceRequestBack_classes]) {
+          this.groupArr = data[this.keys.getPlaceRequestBack_classes].split(';');
         }
       })
     },
@@ -95,20 +100,20 @@ export default {
       let symbols = this.keys.getSchoolRequest_symbols + '=' + this.projectConfig.params.getSchoolRequest_symbols;//匹配模式，包含，等于，不等于
       let vals = this.keys.getSchoolRequest_vals + '=' + this.formData.place + ',' + this.formData.group;//值
 
-      let url = this.projectConfig.getSchoolUrl + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + vals
+      let url = this.projectConfig.getSchoolUrl + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + vals;
       Get(url).then((resp) => {
-        this.schoolArr = resp.data.content
+        this.formData.school = '';//清空学校
+        this.schoolArr = resp.data.content;
       })
     },
     onSubmit () {
       let formData = this.formData;
-      let keys = this.keys;
 
       let param = {
-        [this.keys.place]: formData.place,
-        [this.keys.school]: formData.school,
-        [this.keys.group]: formData.group,
-        [this.keys.searchText]: formData.searchText,
+        [this.keys.output_place]: formData.place,
+        [this.keys.output_school]: formData.school,
+        [this.keys.output_group]: formData.group,
+        [this.keys.output_searchText]: formData.searchText,
       }
       this.$bus.emit(this.projectConfig.eventName_search, param);
     }

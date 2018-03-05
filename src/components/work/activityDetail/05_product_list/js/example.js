@@ -31,12 +31,40 @@ const prod = {
         url: 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         params: {
-          doclibCode: 'PORTAL_WORKS',
-          relations: '1',
-          cols: 'ACTIVITYID',
-          symbols: '2',
-          vals: '601858',
-          memberType: '4',
+          getListParam_doclibCode: 'PORTAL_WORKS',
+          getListParamOptions:{//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
+            activityId:{
+              getListParam_relations: '1',
+              getListParam_cols: 'ACTIVITYID',
+              getListParam_symbols: '2',
+              getListParam_memberType: '4',
+            },
+            'place':{
+              getListParam_relations: '1',
+              getListParam_cols: 'AREA',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+            'school':{
+              getListParam_relations: '1',
+              getListParam_cols: 'SCHOOL',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+            'group':{
+              getListParam_relations: '1',
+              getListParam_cols: 'CLASS',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+            'searchText':{
+              getListParam_relations: '1',
+              getListParam_cols: 'SYS_TOPIC',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+          },
+          
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
         },
         keys: {
@@ -49,6 +77,14 @@ const prod = {
           resourceId: 'SYS_DOCUMENTID',
           resourceName: 'SYS_TOPIC',
           activityId: 'ACTIVITYID',
+          eventListienLoadDatas_activityId:'pub_resource_id',
+          eventListienSearchDatas:['place','school','group','searchText'],//扩展查询参数
+          getListParam_doclibCode:'doclibCode',
+          getListParam_relations:'relations',
+          getListParam_cols:'cols',
+          getListParam_symbols:'symbols',
+          getListParam_vals:'vals',
+          getListParam_memberType:'memberType',
           toProductDetailParam_resourceType: 'resourceType',
           toProductDetailParam_resourceId: 'resourceId',
           toProductDetailParam_colId: 'colId',

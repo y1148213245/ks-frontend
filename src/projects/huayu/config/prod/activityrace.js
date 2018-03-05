@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-01 17:45:09
+ * @Last Modified time: 2018-03-05 15:58:50
  */
 export default {
   name: "activityrace",
@@ -49,20 +49,28 @@ export default {
         eventName_listen: "eventName_loadedDatas",
       }
     },
+    /* 作品列表筛选配置 */
     work_activitydetail_04: {
-      url: BASE_URL + 'spc/prodb/detail.do?doclibCode=PORTAL_ACTIVITY&docID=601948',
+      url: BASE_URL + 'spc/prodb/detail.do',
       getSchoolUrl:BASE_URL +'spc/prodb/searchNL.do',
       params:{
+        getPlaceRequest_doclibCode:'PORTAL_ACTIVITY',//配库码
         getSchoolRequest_doclibCode:'PORTAL_SCHOOL',//配库码
         getSchoolRequest_relations:'1,1',//1并且，2或者
         getSchoolRequest_cols:'AREA,CLASS',//字段名
         getSchoolRequest_symbols:'1,1',//匹配模式，1包含，2等于，3不等于
       },
       keys: {
-        place: 'place',
-        school: 'school',
-        group: 'group',
-        searchText: 'searchText',
+        output_place: 'place',
+        output_school: 'school',
+        output_group: 'group',
+        output_searchText: 'searchText',
+        school_name:'SYS_TOPIC',
+        eventData_docID:'pub_resource_id',//事件接受参数数据，资源id
+        getPlaceRequest_doclibCode:'doclibCode',
+        getPlaceRequest_docID:'docID',//资源id
+        getPlaceRequestBack_areas:'AREALIMT',
+        getPlaceRequestBack_classes:'CLASSLIMT',
         getSchoolRequest_doclibCode:'doclibCode',
         getSchoolRequest_relations:'relations',
         getSchoolRequest_cols:'cols',
@@ -72,29 +80,66 @@ export default {
       eventName_search: 'eventName_search',
       eventName_listenLoadedData: 'eventName_loadedDatas',
     },
+    /* 作品列表配置 */
     work_activitydetail_05: {
       module1: {
         url: BASE_URL + 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         params: {
-          doclibCode: 'PORTAL_WORKS',
-          relations: '1',
-          cols: 'ACTIVITYID',
-          symbols: '2',
-          vals: '601948',
-          memberType: '4',
+          getListParam_doclibCode: 'PORTAL_WORKS',
+          getListParamOptions:{//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
+            activityId:{
+              getListParam_relations: '1',//配库字段
+              getListParam_cols: 'ACTIVITYID',
+              getListParam_symbols: '2',
+              getListParam_memberType: '4',
+            },
+            'place':{
+              getListParam_relations: '1',
+              getListParam_cols: 'AREA',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+            'school':{
+              getListParam_relations: '1',
+              getListParam_cols: 'SCHOOL',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+            'group':{
+              getListParam_relations: '1',
+              getListParam_cols: 'CLASS',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+            'searchText':{
+              getListParam_relations: '1',
+              getListParam_cols: 'SYS_TOPIC',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+          },
+          
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
         },
         keys: {
           title: 'SYS_TOPIC',
           author: 'POTHUNTER_NAME',
-          date: 'SYS_CREATED',
+          date: 'VOTE_COUNT',
           abstract: 'DESCRIPTION',
           teacherCommentNum: 'DIS_COUNT_NUM',
           voteNum: 'VOTE_COUNT',
           resourceId: 'SYS_DOCUMENTID',
           resourceName: 'SYS_TOPIC',
           activityId: 'ACTIVITYID',
+          eventListienLoadDatas_activityId:'pub_resource_id',
+          eventListienSearchDatas:['place','school','group','searchText'],//扩展查询参数
+          getListParam_doclibCode:'doclibCode',
+          getListParam_relations:'relations',
+          getListParam_cols:'cols',
+          getListParam_symbols:'symbols',
+          getListParam_vals:'vals',
+          getListParam_memberType:'memberType',
           toProductDetailParam_resourceType: 'resourceType',
           toProductDetailParam_resourceId: 'resourceId',
           toProductDetailParam_colId: 'colId',
@@ -109,24 +154,36 @@ export default {
         url: BASE_URL + 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         params: {
-          doclibCode: 'PORTAL_WORKS',
-          relations: '1',
-          cols: 'ACTIVITYID',
-          symbols: '2',
-          vals: '601948',
-          memberType: '4',
+          getListParam_doclibCode: 'PORTAL_WORKS',
+          getListParamOptions:{//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
+            activityId:{
+              getListParam_relations: '1',
+              getListParam_cols: 'ACTIVITYID',
+              getListParam_symbols: '2',
+              getListParam_memberType: '4',
+            }
+          },
+          
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
         },
         keys: {
           title: 'SYS_TOPIC',
           author: 'POTHUNTER_NAME',
-          date: 'SYS_CREATED',
+          date: 'VOTE_COUNT',
           abstract: 'DESCRIPTION',
           teacherCommentNum: 'DIS_COUNT_NUM',
           voteNum: 'VOTE_COUNT',
           resourceId: 'SYS_DOCUMENTID',
           resourceName: 'SYS_TOPIC',
           activityId: 'ACTIVITYID',
+          eventListienLoadDatas_activityId:'pub_resource_id',
+          eventListienSearchDatas:[],//扩展查询参数
+          getListParam_doclibCode:'doclibCode',
+          getListParam_relations:'relations',
+          getListParam_cols:'cols',
+          getListParam_symbols:'symbols',
+          getListParam_vals:'vals',
+          getListParam_memberType:'memberType',
           toProductDetailParam_resourceType: 'resourceType',
           toProductDetailParam_resourceId: 'resourceId',
           toProductDetailParam_colId: 'colId',
@@ -134,7 +191,7 @@ export default {
           toProductDetailParam_activityId: 'activityId',
         },
         eventName_listenLoadedData: 'eventName_loadedDatas',
-        eventName_listenSearch: 'eventName_search',
+        eventName_listenSearch: '',
         isDevelopment: false,
       }
 
