@@ -23,7 +23,8 @@ var state = {
   sumCoupons: {}, // 个人中心可用和已用优惠券的金额
   /*checkStatus: false, // 优惠码校验情况*/
   searchNoteList: [],// 个人中心随手记列表
-  activityMemberList:[]
+  activityList:[],// 参与的活动列表展示
+  activityMemberList:[]// 参与的活动管理报名人列表
 };
 var getters = {
   getMember: state => state.member,
@@ -44,6 +45,7 @@ var getters = {
   getSumCoupons: state => state.sumCoupons,
   /*getCheckStatus: (state) => state.checkStatus,*/
   getSearchNoteList: state => state.searchNoteList,
+  getActivityList: state => state.activityList,
   getActivityMemberList: state => state.activityMemberList
 };
 
@@ -429,6 +431,14 @@ var actions = {
     });
   },
   // 参与的活动
+  /*参与的活动列表*/
+  activityList({ commit, getters }, params) {
+    params.loginName = getters.getMember.loginName;
+    api.myWorks(params).then(function(response) {
+      let activityList = response.data.data;
+      commit("setActivityList", activityList);
+    });
+  },
   /*查询学生列表*/
   getActivityMemberByTeacher({ commit, getters }, params) {
     params.teacherID = getters.getMember.id;
@@ -476,6 +486,7 @@ var mutations = {
     state.checkStatus = datas.checkStatus;
     datas.myCallback();
   },
+  setActivityList: (state, activityList) => (state.activityList = activityList),
   setActivityMemberList: (state, activityMemberList) => (state.activityMemberList = activityMemberList),
 };
 

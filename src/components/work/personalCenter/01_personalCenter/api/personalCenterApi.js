@@ -481,7 +481,8 @@ export default {
   /*查询学生列表*/
   getActivityMemberByTeacher(params) {
     var url =
-      "http://172.19.57.153/portal/api/user/getActivityMemberByTeacher.do?teacherId=" +
+      BASE_URL +
+      "user/getActivityMemberByTeacher.do?teacherId=" +
       params.teacherID +
       "&pageNo=" +
       params.pageNo +
@@ -491,14 +492,14 @@ export default {
   },
   // 新增学生
   addActivityMember(params) {
-    var url =
-      "http://172.19.57.153/portal/api/user/addActivityMember.do";
+    var url = BASE_URL + "user/addActivityMember.do";
     return axios.post(url, params);
   },
   // 删除学生
   deleteActivityMemberById(params) {
     var url =
-      "http://172.19.57.153/portal/api/user/deleteActivityMemberById.do?memberId=" +
+      BASE_URL +
+      "user/deleteActivityMemberById.do?memberId=" +
       params.memberId +
       "&teacherId=" +
       params.teacherId;
@@ -506,8 +507,20 @@ export default {
   },
   // 编辑学生
   modifyActivityMember(params) {
-    var url =
-      "http://172.19.57.153/portal/api/user/modifyActivityMember.do";
+    var url = BASE_URL + "user/modifyActivityMember.do";
     return axios.post(url, params);
   },
+  // 参与的活动
+  myWorks(params) {
+    var url =
+      "http://172.19.36.197:9092/spc-portal-web/spc/prodb/activity/myWorks.do?loginName=" +
+      params.loginName +
+      "&status=" +
+      (params.status || "") +
+      "&pageSize=" +
+      (params.pageSize || "1") +
+      "&page=" +
+      (params.page || "99");
+    return axios.get(url);
+  }
 };

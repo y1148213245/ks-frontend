@@ -1,71 +1,82 @@
 <template>
 <div class="join_ac">
 <div v-show="!enrolman">
+    <el-dropdown @command="handleCommand" style="float:right;margin-right:30px;">
+    <span class="el-dropdown-link">
+    审核状态筛选<i class="el-icon-arrow-down el-icon--right"></i>
+    </span>
+    <el-dropdown-menu slot="dropdown">
+
+    <el-dropdown-item command="未审核">未审核</el-dropdown-item>
+    <el-dropdown-item command="未通过审核">未通过审核</el-dropdown-item>
+    <el-dropdown-item command="已审核">已审核</el-dropdown-item>
+    <el-dropdown-item command="评奖中">评奖中</el-dropdown-item>
+    <el-dropdown-item command="已评奖">已评奖</el-dropdown-item>
+    <el-dropdown-item command="" divided>全部</el-dropdown-item>
+    </el-dropdown-menu>
+    </el-dropdown>
+
     <el-button type="primary" style="margin:0px 0 20px 0;" @click="enrolman = true">管理报名人</el-button>
     <el-col :span="19">
     <el-table
-    :data="returnGoodsList"
-    border
+    :data="activityList"
     style="width: 100%"
     >
      <el-table-column
       align="center"
-      prop="id"
+      prop="ACTIVITY_DETAIL.SYS_TOPIC"
       label="参加活动"
-      width="100">
+      width="180">
     </el-table-column>
     <el-table-column
       align="center"
-      prop="orderCode"
+      prop="ACTIVITY_DETAIL.END_TIMESTAMPNEW"
       label="活动状态"
-      width="220">
-    </el-table-column>
-    <el-table-column
-      align="center"
-      prop="id"
-      label="审核状态"
-      width="100"
-      :filters="[{ text: '待审核', value: 1 }, { text: '通过审核', value: 2 },{ text: '未通过审核', value: 3 }]"
-      :filter-method="filterTag"
-      filter-placement="bottom-end">
-    </el-table-column>
-    <el-table-column
-      align="center"
-      prop="productName"
-      label="作品标题"
+       :formatter="activityState"
       width="100">
     </el-table-column>
     <el-table-column
       align="center"
-      prop="createTime"
+      prop="SYS_CURRENTSTATUS"
+      label="审核状态"
+      width="100">
+    </el-table-column>
+    <el-table-column
+      align="center"
+      prop="SYS_TOPIC"
+      label="作品标题"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      align="center"
+      prop="POTHUNTER_NAME"
       label="参赛人"
       width="150">
     </el-table-column>
     <el-table-column
       align="center"
-      prop="createTime"
+      prop="SYS_CREATED"
       label="参赛时间"
+      :formatter="dateFormat"  
       sortable
-      width="150">
+      width="180">
     </el-table-column>
     <el-table-column
       align="center"
-      prop="num"
+      prop="POTHUNTER_IDNUMBER"
       label="参赛人身份证号"
-      width="160"
+      width="180"
       >
     </el-table-column>
     <el-table-column
       align="center"
-      prop="type"
+      prop="AWARD"
       label="获奖情况"
       width="100"
-      :filters="[{ text: '一等奖', value: 1 }, { text: '二等奖', value: 2 },{ text: '三等奖', value: 3 }]"
-      :filter-method="filterTag"
-      filter-placement="bottom-end"
+      :formatter="worksScore"  
       >
     </el-table-column>
-    <el-table-column label="操作"  align="center" width="160">
+    <el-table-column label="操作"  align="center" width="160" fixed="right">
         <template slot-scope="scope">
         <el-button @click="handleEdit(scope.$index, scope.row)">查看作品</el-button>
         </template>
@@ -170,6 +181,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import { ValidateRules } from "@common";
+import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import api from "../../api/personalCenterApi";
 import $ from "jquery";
@@ -186,7 +198,7 @@ export default {
     ...mapGetters({
       account: "personalCenter/getAccount",
       activityMemberList: "personalCenter/getActivityMemberList",
-      returnGoodsList: "personalCenter/getReturnGoodsList"
+      activityList: "personalCenter/getActivityList"
     })
   },
   data() {
@@ -203,7 +215,7 @@ export default {
         telNumber: [
           { required: true, message: "请输入参赛人手机号", trigger: "blur" },
           { validator: ValidateRules.mobileCheck, trigger: "blur" }
-        ],
+        ]
       },
       enrolman: false, //管理报名人页面
       additions: false, //新增人员弹窗
@@ -221,14 +233,43 @@ export default {
       }
     };
   },
+  filters: {},
   methods: {
     loadedCallBack() {
+      this.$store.dispatch("personalCenter/activityList", {});
+      this.getActivityMemberByTeacher();
+    },
+    //时间格式化
+    dateFormat: function(row, column) {
+      var date = row[column.property];
+      if (date == undefined) {
+        return "";
+      }
+      return moment(date).format("YYYY-MM-DD HH:mm:ss");
+    },
+    // 状态筛选
+    handleCommand(command) {
+      var params = {
+        status: command,
+        pageSize: 1,
+        page: 99
+      };
+      this.$store.dispatch("personalCenter/activityList", params);
+    },
+    handleEdit(index, row) {
+      console.log(index, row);
+      let url = "./productiondetail.html?resourceType=PORTAL_WORKS&resourceId="+row.SYS_DOCUMENTID+"&colId=&resourceName="+row.SYS_TOPIC;
+      window.location.href = url;
+    },
+    // 获取报名人列表
+    getActivityMemberByTeacher() {
       var params = {
         pageNo: 1,
-        pageSize: 8
+        pageSize: 99
       };
       this.$store.dispatch("personalCenter/getActivityMemberByTeacher", params);
     },
+
     // 增加参赛人信息
     submitAddParticipantsForm(addParticipantsForm) {
       this.$refs[addParticipantsForm].validate(valid => {
@@ -258,7 +299,7 @@ export default {
                 });
                 var params = {
                   pageNo: 1,
-                  pageSize: 8
+                  pageSize: 99
                 };
                 this.$store.dispatch(
                   "personalCenter/getActivityMemberByTeacher",
@@ -303,7 +344,7 @@ export default {
             });
             var params = {
               pageNo: 1,
-              pageSize: 8
+              pageSize: 99
             };
             _this.$store.dispatch(
               "personalCenter/getActivityMemberByTeacher",
@@ -339,7 +380,7 @@ export default {
           teacherId: this.account.id,
           userName: $("#ac_name").val()
         };
-        console.log(param);
+
         api.modifyActivityMember(param).then(response => {
           console.log(response);
           if (response.data.error.errorCode) {
@@ -391,8 +432,20 @@ export default {
         JSON.stringify(this.activityMemberList[index])
       );
     },
-    filterTag(value, row) {
-      return row.type === value;
+    activityState(row, column) {
+      var date = row[column.property];
+      let currentTime = new Date().getTime();
+      if (date - currentTime <= 0) {
+        return "已结束";
+      } else {
+        return "进行中";
+      }
+    },
+    worksScore(row, column) {
+      var date = row[column.property];
+      if (date == null) {
+        return "评分中";
+      }
     }
   }
 };
@@ -404,7 +457,13 @@ export default {
 .join_ac .newWrapper {
   margin-bottom: 10px;
 }
-
+.join_ac .el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+}
+.join_ac .el-icon-arrow-down {
+  font-size: 12px;
+}
 .join_ac .newWrapper input {
   width: 85%;
   height: 30px;
