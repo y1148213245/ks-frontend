@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 10:01:47 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-28 18:02:18
+ * @Last Modified time: 2018-03-05 15:06:47
  */
 <!-- 投票组件  -->
 <template>
@@ -14,6 +14,7 @@
 <script>
 import { Get, Post } from "@common";
 import PROJECT_CONFIG from "projectConfig";
+import Holmes from 'holmes-js';
 
 export default {
   name: 'work_common_03',
@@ -31,25 +32,30 @@ export default {
 
   methods: {
     doVote () {  // 投票
-      let params = Object.assign({}, this.CONFIG.params);
-      params.docID = this.docid;
-      Get(this.CONFIG.url, { params: params }).then(res => {
-        if (res.data.result === "1") { // 投票成功
-          this.$emit('vote', res.data.data);  // 子组件向父组件传值
-          this.$message({
-            type: "success",
-            message: "投票成功"
-          });
-        } else if (res.data.error && res.data.error.errorCode === "-1") {  // 投票失败
-          this.$message({
-            type: "info",
-            message: res.data.error.errorMsg
-          });
-        } else {  // 投票失败
-          this.$message({
-            type: "error",
-            message: "投票失败"
-          });
+      const holmes = new Holmes();  //  浏览器指纹 限制投票次数
+      holmes.get().then(res => {
+        if (res) { // returns unique browser fingerprint as 32-bit Integer
+          let params = Object.assign({}, this.CONFIG.params);
+          params.docID = this.docid;
+          Get(this.CONFIG.url, { params: params }).then(res => {
+            if (res.data.result === "1") { // 投票成功
+              this.$emit('vote', res.data.data);  // 子组件向父组件传值
+              this.$message({
+                type: "success",
+                message: "投票成功"
+              });
+            } else if (res.data.error && res.data.error.errorCode === "-1") {  // 投票失败
+              this.$message({
+                type: "info",
+                message: res.data.error.errorMsg
+              });
+            } else {  // 投票失败
+              this.$message({
+                type: "error",
+                message: "投票失败"
+              });
+            }
+          })
         }
       })
     }

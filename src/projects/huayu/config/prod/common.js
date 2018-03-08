@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 14:00:38 
  * @Last Modified by: song
- * @Last Modified time: 2018-02-28 18:03:53
+ * @Last Modified time: 2018-03-05 15:06:34
  */
 
 export default {
@@ -10,13 +10,14 @@ export default {
   login: {
     work_login_04: {
       toLoginHref:'./login.html',
-      toPersonalCenterHref:'',
+      toPersonalCenterHref:'./personalcenter.html',
     }
   },
   common: {
     vote_03: {  // 投票组件
       url: BASE_URL + 'spc/prodb/activity/vote.do?',
       params: {
+        browserId: '', // 浏览器指纹
         docID: '',
       }
     }

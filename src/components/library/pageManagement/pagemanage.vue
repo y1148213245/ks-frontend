@@ -89,7 +89,7 @@
          </div>
          <div class="handle" v-else>
            <div class="handleLeft">
-             <span v-for="(handle, index) in handleLists" @click="toggleOperation(handle.type)" v-text="handle.name" :class="{opon: showItem == handle.type}" :key="index" :click="handle.type">
+             <span v-for="(handle, index) in handleLists" @click="toggleOperation(handle.type)" v-text="handle.name" :class="{opon: showItem == handle.type}" :key="index" :click="handle.type" v-if="!(activeType === 'img' && handle.type === 'coding')">
              </span>
            </div>
            <div class="handleRight">
@@ -107,12 +107,14 @@
              </div>
              <div class="component" v-if="showItem == 'component' && !noData">
                 <img :src="imgUrl" alt="暂无图片">
-                <div>组件标签名： <span v-text="showComponents && showComponents.name"></span></div>
+                <div>组件标签名： <span><{{showComponents.name}}></{{showComponents.name}}></span></div>
                 <div>组件描述：{{showComponents && showComponents.description}}</div>
                 <div>dev 配置：</div>
                 <textarea class="jsonInfo" v-html="showComponents && showComponents.dev"></textarea>
                 <div>prod 配置：</div>
                 <textarea class="jsonInfo" v-html="showComponents && showComponents.prod"></textarea>
+                <div>html片段：</div>
+				        <textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.templateCon"></textarea>
              </div>
              <div v-if="noData" style="padding: 20px;">暂无内容</div>
           </div>
@@ -132,7 +134,10 @@
            </div>
          </div>
          <div class="rightListBottom listArea">
-           <div class="title">未采用组件列表</div>
+           <div class="title">
+             <span>未采用组件列表</span>
+             <a href="./zjk.html" target="_blank" style="float: right; text-decoration: none;" >查看组件库</a>
+           </div>
            <div class="conponentsCon">
              <ul class="usedComUl">
                <li v-if="JSON.stringify(unusedComponents) !== '{}'" v-for="(com, vkey, index) in unusedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}" @click="showComponentDetail(com)">
@@ -150,6 +155,7 @@
  
  <script>
 import ScanExamples from "@common/scans/ScanExamples";
+import VueExamples from "@common/scans/ScanVues";
 import { Get, Post, Delete } from "@common";
 import URL from "url";
 
@@ -181,17 +187,21 @@ export default {
       }, {
         name: '编程',
         type: 'coding'
-      }, {
+      }/* , {
         name: '替换',
         type: 'change'
-      }, {
+      } */, {
         name: '发布',
         type: 'public'
+      }, {
+        name: '在线查看',
+        type: 'view'
       }/* , {
         name: '删除',
         type: 'delete'
       } */],
-      configUrl: 'http://172.19.57.153:8085/spc/api/',  // 请求url
+      // configUrl: 'http://172.19.57.153:8085/spc/api/',  // 请求url
+      configUrl: 'http://172.19.36.57:8084/spc/api/',
       reviewContext: '',  // iframe里面的内容 呈现源码
       noData: true,
       usedComponents: {},
@@ -199,6 +209,8 @@ export default {
       debugModel: false,  // debug模式 暗号 790118
       imgUrl: "",         // 组件截图
       showComponents: null,   // 中间区域当前展示的组件
+      siteName: '',  // 站点名 用于区分不同的站点
+      VueExamples: {},           // 扫描出来的vue文件的全部内容 截取的是template模块
     };
   },
 
@@ -207,13 +219,21 @@ export default {
     this.debugModel = query && query.debug && query.debug == '790118' ? true : false;  // 暗号对上 进入debug模式
     this.examples = ScanExamples();
     this.unusedComponents = ScanExamples();
+    this.VueExamples = VueExamples();
     this.clientHeight = document.documentElement.clientHeight - 80;
+    try {
+      if (SITE_NAME) { // 站点名字
+        this.siteName = SITE_NAME;
+      }
+    } catch (error) {
+      console.log(error);
+    }
     this.queryLists(); // 页面一加载 查询列表
   },
 
   methods: {
     toggleListType (tab, event) { // 切换显示列表：页面列表、样式列表、图片列表
-      this.activeType = tab.name;
+      this.activeType = tab && tab.name ? tab.name : this.activeType;
       this.showItem = 'review';  // 每次切换列表的时候都要选中预览操作 因为并不是所有的列表下的文件都有编程操作
       this.code = ''; // 每次切换列表的时候都要置空codemirror的值 理由同上
       this.queryLists();
@@ -225,11 +245,25 @@ export default {
       this.usedComponents = {};
     },
     toggleOperation (item) { // 切换中间区域的操作: 预览、编程、替换、发布
+      if (item === 'public') { //  发布操作
+        Get(this.configUrl + 'project/release?projectName=' + this.siteName).then((res) => {
+          // console.log(res);
+          this.$message({
+            type: "success",
+            message: "发布成功"
+          });
+        })
+        return false;
+      }
+      if (item === 'view') { //  在线查看
+        window.open('./' + this.activeFile, '_blank'); // 服务器端正常跳转
+        return false;
+      }
       this.showItem = item;
       this.noData = this.activeFile ? false : true;  // 中间预览区要兼容没有数据的情况
       if (!this.noData) {  // 有数据才执行
-        this.reviewContext = this.configUrl + 'files?fileName=' + this.activeFile;
-        Get(this.configUrl + 'files/edit?fileName=' + this.activeFile).then((res) => {
+        this.reviewContext = this.configUrl + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName;
+        Get(this.configUrl + 'files/edit?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
           var datas = res.data;
           if (datas.success && datas.content) {
             this.code = datas.content;
@@ -261,7 +295,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        Delete(this.configUrl + 'files?fileName=' + this.activeFile).then((res) => {
+        Delete(this.configUrl + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
           if (res.data.success) {
             this.queryLists();
             this.$message({
@@ -282,7 +316,7 @@ export default {
         fileName: this.activeFile,
         fileContent: this.code,
       };
-      Post(this.configUrl + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent)).then((res) => {
+      Post(this.configUrl + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent) + '&projectName=' + this.siteName).then((res) => {
         if (res.data.success) {
           this.$message({
             type: "success",
@@ -301,7 +335,7 @@ export default {
     },
     upLoadUrl () {  // 上传地址
       return (
-        this.configUrl + 'files'
+        this.configUrl + 'files?projectName=' + this.siteName
       );
     },
     beforeUpload (file) {  // 上传前要校验格式
@@ -337,7 +371,7 @@ export default {
       this.loading.close();
       this.$message({
         type: "info",
-        message: "文件导入失败，请重试"
+        message: "文件上传失败，请重试"
       });
     },
     upLoadingSuccess (res, file) { // 上传成功回调
@@ -357,7 +391,7 @@ export default {
     },
     importUrl () {   // 导入地址
       return (
-        this.configUrl + 'project/import'
+        this.configUrl + 'project/import?projectName=' + this.siteName
       );
     },
     importProgress () {  // 导入过程
@@ -369,7 +403,9 @@ export default {
     },
     importSuccess (res, file) { // 导入成功
       this.loading.close();
-      if (res.success) {
+      console.log(res);  // ？？？ 导入接口返回字段需要调整
+      if (res.status === 200) {
+        this.toggleListType();
         this.queryLists();
         this.$message({
           type: "success",
@@ -399,18 +435,19 @@ export default {
       return typeMatch;
     },
     downloadFile () {  // 导出
-      Get(this.configUrl + 'project/export').then((res) => {
+      Get(this.configUrl + 'project/export?projectName=' + this.siteName).then((res) => {
         if (res.status === 200) {
-          window.location.href = this.configUrl + 'project/export';
+          window.location.href = this.configUrl + 'project/export?projectName=' + this.siteName;
         }
       })
     },
     queryLists () {  // 查询左侧列表
-      Get(this.configUrl + 'files/list?type=' + this.activeType).then(res => {
+      Get(this.configUrl + 'files/list?type=' + this.activeType + '&projectName=' + this.siteName).then(res => {
         let datas = res.data;
         if (datas && datas.list) {
           this.activeLists = datas.list;
           this.activeFile = datas.list.length > 0 ? datas.list[0] : '';
+          this.noData = datas.list.length > 0 ? false : true;
           this.toRightModule(this.activeFile, this.showItem);
         }
       })
@@ -422,7 +459,8 @@ export default {
     },
     importResourceSuccess (res, file) { // 导入资源成功
       this.loading.close();
-      if (res.success) {
+      if (res.status === 200) {
+        toggleListType(this.activeType);
         this.$message({
           type: "success",
           message: "资源导入成功"
@@ -436,8 +474,10 @@ export default {
     },
     showComponentDetail (com) {  // 展示组件详情
       this.showItem = 'component';
+      this.noData = false;
       this.activeFile = com.name;
       this.showComponents = this.examples[com.name];
+      this.showComponents.templateCon = this.VueExamples[com.name];
       this.imgUrl = require('../ComponentsLib/screenshots/' + com.name + '.jpg');
     }
   }
@@ -573,7 +613,7 @@ body {
 
 .components_pagemanagement .mainContent .handle .handleLeft span {
   display: inline-block;
-  width: 60px;
+  width: 66px;
   text-align: center;
   cursor: pointer;
 }
@@ -599,7 +639,7 @@ body {
 }
 
 .components_pagemanagement .mainFooter .contentCon {
-  height: calc( 100% - 39px );
+  height: calc(100% - 39px);
 }
 
 .components_pagemanagement .mainFooter .contentCon .review {
@@ -649,7 +689,7 @@ body {
   height: 39px;
   line-height: 39px;
   border-bottom: 1px solid #e4e7ed;
-  padding-left: 20px;
+  padding: 0px 20px;
 }
 
 .components_pagemanagement .mainFooter .listNav .el-tabs__content {

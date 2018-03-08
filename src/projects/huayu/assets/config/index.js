@@ -6,6 +6,7 @@
 var BASE_URL = "http://172.19.92.76:8080/portal/api/";
 // var BASE_URL = "http://172.19.36.70:9092/spc-portal-web/";
 // var BASE_URL = "http://book.clapnet.cn:9092/spc-portal-web/";
+var BASE_URL = "http://172.19.92.76:8080/portal/api/";
 
 var SITE_CONFIG = {
   siteId: 8,

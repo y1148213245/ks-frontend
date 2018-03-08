@@ -164,7 +164,7 @@
                       <span>已收藏</span>
                     </span>
                       </div>
-                      <div v-if="isShowCollectButton" class="moveFavorite opertion" @click="moveFavorite(product)">
+                      <div v-if="product.isCollect != '1' && isShowCollectButton" class="moveFavorite opertion" @click="moveFavorite(product)">
                         <span>移入收藏</span>
                       </div>
                     </div>
@@ -1316,9 +1316,9 @@
           this.selectedCouponsPassword = item.password;
           var couponProductList = this.couponProductListWrapper[item.type + '-' + item.id];
           var fullAmount = 0; // 能使用满减优惠券商品的总金额
-          couponProductList.forEach(function (list) {
+          couponProductList.forEach( (list) => {
             for(var i = 0; i < list.length; i++) {
-              if (list[i].activityId === "0" && list[i].activityName === "") {  // 没有参加活动的商品
+              if (list[i].activityId === 0 && list[i].activityName === "") {  // 没有参加活动的商品
                 fullAmount += list[i].nums * list[i].productPrice;
               } else { // 参加了活动的商品
                 fullAmount += list[i].afterActivityPrice;

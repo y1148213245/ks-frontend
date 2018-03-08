@@ -82,6 +82,8 @@ var actions = {
         param.loadedCallBack();
       } else {
         alert("未登录");
+        let url = "./login.html"
+        window.location.href = url;
       }
     });
   },

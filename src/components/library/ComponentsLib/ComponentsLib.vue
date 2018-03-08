@@ -39,18 +39,21 @@
 
 			<el-col :span="17" class="comInfo">
 				<img :src="imgUrl" alt="暂无图片">
-				<div>组件标签名： <span v-text="this.showComponents && this.showComponents.name"></span></div>
+				<div>组件标签名： <span><{{this.showComponents.name}}></{{this.showComponents.name}}></span></div>
 				<div>组件描述：{{this.showComponents && this.showComponents.description}}</div>
 				<div>dev 配置：</div>
 				<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.dev"></textarea>
 				<div>prod 配置：</div>
 				<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.prod"></textarea>
+				<div>html片段：</div>
+				<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.templateCon"></textarea>
 			</el-col>
 </el-row>
 	</div>
 </template>
 <script type="text/ecmascript-6">
 import ScanExamples from "@common/scans/ScanExamples";
+import VueExamples from "@common/scans/ScanVues";
 import { resourceTypeObj, pageTypeObj } from "./js/config.js";
 
 export default {
@@ -69,6 +72,7 @@ export default {
 			checkedResourceType: 'unlimited',   // 已选资源类别 单选 字符串 默认选中不限选项
 			checkedPageType: [],       // 已选页面类别 多选 数组
 			searchExamples: {},        // 搜索
+			VueExamples: {},           // 扫描出来的vue文件的全部内容 截取的是template模块
 		}
 	},
 	mounted: function () {
@@ -77,11 +81,13 @@ export default {
 		this.clientHeight = document.documentElement.clientHeight - 120;
 		this.examples = ScanExamples();
 		this.tempExamples = ScanExamples();
+		this.VueExamples = VueExamples();
 		this.loadComponent(this.examples);
 	},
 	methods: {
 		toggleShowCom (com) {
 			this.showComponents = this.examples[com.name];
+			this.showComponents.templateCon = this.VueExamples[com.name];
 			this.loadImg(this.showComponents);
 		},
 		loadComponent (examples) {
@@ -92,6 +98,7 @@ export default {
 			for (var key in examples) {
 				if (!this.showComponents) {
 					this.showComponents = examples[key];
+					this.showComponents.templateCon = this.VueExamples[key];
 					this.loadImg(this.showComponents);
 					break;
 				}
@@ -279,11 +286,14 @@ export default {
   width: 100%;
   height: 200px;
   overflow-y: scroll;
-  border: none;
+	border: none;
+	font-size: 14px;
 }
+
 .common_components_lib textarea {
   resize: none;
 }
+
 .common_components_lib .comInfo div {
   margin-top: 10px;
 }

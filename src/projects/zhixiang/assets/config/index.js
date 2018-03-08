@@ -44,3 +44,7 @@ var $_$ = {
   	}
   }*/
 };
+
+/* var SITE_NAME = "site1"; // 页面管理系统 projectName 区别站点
+
+var IS_DISABLE = true;  // 站点是否被禁用 */

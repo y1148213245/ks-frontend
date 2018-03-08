@@ -2,11 +2,16 @@
   <el-col :span="19">
     <!--账户首页-->
     <div class="center_ad" v-show="currentShow=='main'">
-      <div v-if="siteId == 1">
+      <div v-if="siteId == 1 || 8 ">
         <ul>
           <li>
             <span class="center_te">我的账户</span>:
             <span>{{account && account.loginName}}</span>
+            <div class="wzdh_all" style="float:right">
+              <div class="wdzh_zhuangtai_tx">
+                <img v-bind:src="account.avatar || '../../assets/img/timg.jpg'"  alt="暂无头像" />
+              </div>
+            </div>
           </li>
           <li>
             <span class="center_te">账户等级</span>:
@@ -225,7 +230,7 @@
 
       <div class="main_right fl">
         <div class="wzdh_xgxx f14 color_6f6" style="padding:20px 120px 100px 220px">
-          <div class="wzdh_xgxx_tx" v-if="siteId === 2 || siteId === 4 ">
+          <div class="wzdh_xgxx_tx" v-if="siteId === 2 || siteId === 4 || siteId ===8">
             <!--头像上传-->
             <el-upload
               class="avatar-uploader"
@@ -542,6 +547,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import { Get } from "@common";
+import $ from "jquery";
 Vue.use(Vuex);
 Vue.prototype.$ajax = axios;
 
