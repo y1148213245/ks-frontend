@@ -120,6 +120,8 @@ exports.htmlPlugin = function () {
 	entryHtml.push(path.resolve(__dirname, '../src/projects/zyk.html'));
 	//*********添加页面管理系统
 	entryHtml.push(path.resolve(__dirname, '../src/projects/pagemanagement.html'));
+	//*********添加被禁用页面重定向页面
+	entryHtml.push(path.resolve(__dirname, '../src/projects/disablepage.html'));
 
 	let arr = [];
 	entryHtml.forEach((filePath) => {
@@ -132,7 +134,8 @@ exports.htmlPlugin = function () {
 			// 文件名称
 			filename: _path,
 			// 页面模板需要加对应的js脚本，如果不加这行则每个页面都会引入所有的js脚本
-			chunks: ['manifest', 'vendor', "app"],
+			chunks: ['manifest', 'vendor', "project", "app"],
+			chunksSortMode: 'manual',
 			inject: true
 		};
 		if (process.env.NODE_ENV === 'production') {
@@ -143,7 +146,7 @@ exports.htmlPlugin = function () {
 					collapseWhitespace: true,
 					removeAttributeQuotes: true
 				},*/
-				chunksSortMode: 'dependency'
+				chunksSortMode: 'manual'
 			})
 		}
 		arr.push(new HtmlWebpackPlugin(conf))

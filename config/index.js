@@ -8,7 +8,7 @@ module.exports = {
   dev: {
 
     // Paths
-    assetsSubDirectory: 'assets',
+    assetsSubDirectory: 'core',
     assetsPublicPath: '/',
     proxyTable: {},
 
@@ -54,11 +54,7 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-
-    // assetsSubDirectory: 'assets',
-    // assetsPublicPath: '../',
-
-    assetsSubDirectory: 'assets',
+    assetsSubDirectory: 'core',
     assetsPublicPath: '/portal/sites/zhixiang/',
     
     // assetsSubDirectory: 'static',

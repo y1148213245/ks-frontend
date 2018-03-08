@@ -23,7 +23,8 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/projects/' + baseConfig.concurrentProject + "/main/index.js"
+    app: './src/projects/' + baseConfig.concurrentProject + "/main/index.js",
+    project: './src/projects/' + baseConfig.concurrentProject + "/main/project.js",
   },
   output: {
     path: config.build.assetsRoot,
@@ -48,7 +49,8 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
+        // loader: 'vue-loader',
+        loader: path.resolve(__dirname, './vue-loader/index.js'), //'vue-loader',
         options: vueLoaderConfig
       },
       {
