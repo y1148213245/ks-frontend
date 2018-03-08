@@ -11,9 +11,12 @@
       <!-- 奖项设置 -->
 			<work_activitydetail_02 v-show="currentShowIndex == 1" namespace="activityrace" module="module1"></work_activitydetail_02>
 
-      <!-- 大赛新闻 -->
-			<work_activitydetail_03 v-show="currentShowIndex == 2" namespace="activityrace"></work_activitydetail_03>
-			
+      <div  v-show="currentShowIndex == 2">
+        <!-- 大赛新闻 -->
+        <work_activitydetail_03 namespace="activityrace"  v-show="!isNewsDetail"></work_activitydetail_03>
+        <!-- 新闻详情 -->
+        <work_informationdetail_02 namespace="activityrace" v-show="isNewsDetail"></work_informationdetail_02>
+      </div>
       <!-- 参赛作品 -->
       <div  v-show="currentShowIndex == 3">
         
@@ -22,6 +25,7 @@
           <work_activitydetail_04 namespace="activityrace"></work_activitydetail_04>
           <!-- 参赛作品列表 -->
           <work_activitydetail_05 namespace="activityrace" module="module1"></work_activitydetail_05>
+          
         </el-col>
         <el-col :span="4">
           <div class="components_acitivityrace-notice">
@@ -62,12 +66,15 @@ export default {
     return {
       currentShowIndex: 1,
       isShowJoin: true,
+      isNewsDetail:false,
     }
   },
 
   computed: {},
 
   created () {
+    this.$bus.on('eventName_toNewsDetail',this.toNewsDetail)
+    this.$bus.on('eventName_backNewsList',this.backNewsList)
   },
 
   mounted () { },
@@ -75,6 +82,12 @@ export default {
   methods: {
     change (index) {
       this.currentShowIndex = index;
+    },
+    toNewsDetail(){
+      this.isNewsDetail = true;
+    },
+    backNewsList(){
+      this.isNewsDetail = false;
     }
   }
 }

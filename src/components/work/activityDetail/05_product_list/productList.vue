@@ -94,8 +94,7 @@ export default {
       let cols = '';
       let symbols = '';
       let memberType = '';
-      let vals = ''
-      debugger
+      let vals = '';
 
       if (!conditions) {
         getCondition([mustKey]);
@@ -138,7 +137,7 @@ export default {
             }
             
           }
-          debugger
+          
         }
       }
     },
