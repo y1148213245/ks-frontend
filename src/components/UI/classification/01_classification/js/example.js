@@ -14,7 +14,7 @@ const description = `图书分类导航`;  // 组件描述信息
 const dev = {
   classification: {
     classification_01: {
-      url: '/data/classification_01_classification.json'
+      url: '../data/classification_01_classification.json'
     }
   }
 };
@@ -22,11 +22,11 @@ const dev = {
 const prod = {
   classification: {
     classification_01: {
-      url: BASE_URL + 'spc/prodb/tree-leve-one-code.do',
+      url: BASE_URL + "spc/prodb/tree-leve-one-code.do",
       params: {
         code: "BOOK",
       },
-      picLinkUrl: ''
+      broadcastName: 'queryClassificationList'
     }
   }
 };

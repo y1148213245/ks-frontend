@@ -126,8 +126,9 @@
            <div class="title">已用组件列表</div>
            <div class="conponentsCon">
              <ul class="usedComUl">
-               <li v-if="JSON.stringify(usedComponents) !== '{}'" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}" @click="showComponentDetail(com)">
-                 <span v-text="com.title + '（' + com.name + '）'"></span>
+               <li v-if="JSON.stringify(usedComponents) !== '{}'" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}">
+                 <el-button size="mini" @click="showConfig(com.name)">配置</el-button>
+                 <span v-text="com.title + '（' + com.name + '）'" @click="showComponentDetail(com)"></span>
                </li>
                <li v-if="JSON.stringify(usedComponents) === '{}'">暂无已用组件</li>
              </ul>
@@ -140,8 +141,8 @@
            </div>
            <div class="conponentsCon">
              <ul class="usedComUl">
-               <li v-if="JSON.stringify(unusedComponents) !== '{}'" v-for="(com, vkey, index) in unusedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}" @click="showComponentDetail(com)">
-                 <span v-text="com.title + '（' + com.name + '）'"></span>
+               <li v-if="JSON.stringify(unusedComponents) !== '{}'" v-for="(com, vkey, index) in unusedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}">
+                 <span v-text="com.title + '（' + com.name + '）'" @click="showComponentDetail(com)"></span>
                </li>
                <li v-if="JSON.stringify(unusedComponents) === '{}'">暂无未用组件</li>
              </ul>
@@ -149,7 +150,22 @@
          </div>
        </div>
      </div>
+     <!-- 修改配置文件的模态弹窗 -->
+     <el-dialog title="组件配置信息" :visible.sync="editConfigModel" :model="configForm" :rules="configRules">
+      <div>
+        <el-form  :model="configForm" :rules="configRules" :label-position="labelPosition" ref="configForm">
+          <el-form-item label="组件命名空间(namespace)" prop="namespace">
+            <el-input v-model="configForm.namespace" style="width: 200px;" :disabled="true"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
 
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editConfigModel = false">取 消</el-button>
+        <el-button type="primary" @click="confirmConfig('configForm')">确 定</el-button>
+      </span>
+      
+     </el-dialog>
    </div>
  </template>
  
@@ -158,6 +174,7 @@ import ScanExamples from "@common/scans/ScanExamples";
 import VueExamples from "@common/scans/ScanVues";
 import { Get, Post, Delete } from "@common";
 import URL from "url";
+import PROJECT_CONFIG from "projectConfig";
 
 export default {
   name: "components_pagemanagement",
@@ -200,8 +217,8 @@ export default {
         name: '删除',
         type: 'delete'
       } */],
-      // configUrl: 'http://172.19.57.153:8085/spc/api/',  // 请求url
-      configUrl: 'http://172.19.36.57:8084/spc/api/',
+      configUrl: 'http://172.19.57.153:8085/spc/api/',  // 请求url
+      // configUrl: 'http://172.19.36.57:8084/spc/api/',  //  ff本地ip
       reviewContext: '',  // iframe里面的内容 呈现源码
       noData: true,
       usedComponents: {},
@@ -211,6 +228,15 @@ export default {
       showComponents: null,   // 中间区域当前展示的组件
       siteName: '',  // 站点名 用于区分不同的站点
       VueExamples: {},           // 扫描出来的vue文件的全部内容 截取的是template模块
+      editConfigModel: false,  // 编辑组件配置文件信息的模态弹窗
+      labelPosition: 'right',
+      configForm: {
+        namespace: '',
+      },
+      configRules: {
+        namespace: { required: true, message: '请填写组件命名空间', trigger: 'blur' }
+      },
+      currentComponent: {}
     };
   },
 
@@ -232,6 +258,25 @@ export default {
   },
 
   methods: {
+    showConfig (com) { // 显示当前组件的配置文件 支持编辑
+      this.currentComponent = this.examples[com];
+      this.configForm.namespace = this.currentComponent.name;
+      this.editConfigModel = true;
+    },
+    confirmConfig (configForm) {  // 确定修改组件配置信息
+      this.$refs[configForm].validate(valid => {
+        if (valid) {
+          $_$[this.configForm.namespace] = this.currentComponent.prod;
+          this.editConfigModel = false;
+          if (this.code.indexOf('namespace') === -1) { // 有命名空间就不再重复添加
+            this.code = this.code.replace('<' + this.currentComponent.name, '<' + this.currentComponent.name + ' namespace="' + this.currentComponent.name + '"');  // ？？？ 这样的话namespace相当于还是不能外部编辑 只能代码编写
+          }
+          this.saveCode(false);
+        } else {
+          return false;
+        }
+      });
+    },
     toggleListType (tab, event) { // 切换显示列表：页面列表、样式列表、图片列表
       this.activeType = tab && tab.name ? tab.name : this.activeType;
       this.showItem = 'review';  // 每次切换列表的时候都要选中预览操作 因为并不是所有的列表下的文件都有编程操作
@@ -246,12 +291,21 @@ export default {
     },
     toggleOperation (item) { // 切换中间区域的操作: 预览、编程、替换、发布
       if (item === 'public') { //  发布操作
+        let loadingTag = this.$loading({ lock: true, spinner: "el-icon-loading", text: '加载中...' }); // loading
         Get(this.configUrl + 'project/release?projectName=' + this.siteName).then((res) => {
-          // console.log(res);
-          this.$message({
-            type: "success",
-            message: "发布成功"
-          });
+          loadingTag.close();
+          if (res.data && res.data.success) {
+            this.$message({
+              type: "success",
+              message: "发布成功"
+            });
+          } else {
+            this.$message({
+              type: "info",
+              message: "发布失败，请稍后重试"
+            });
+          }
+
         })
         return false;
       }
@@ -311,21 +365,24 @@ export default {
         })
       });
     },
-    saveCode () { // 保存修改
+    saveCode (status) { // 保存修改
       var data = {
         fileName: this.activeFile,
         fileContent: this.code,
       };
       Post(this.configUrl + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent) + '&projectName=' + this.siteName).then((res) => {
         if (res.data.success) {
+          if (status == false) {  // 配置组件的时候是隐形进行编辑文件的操作 所以不需要提示操作成功
+            return false;
+          }
           this.$message({
             type: "success",
-            message: "文件修改成功"
+            message: "操作成功"
           });
         } else {
           this.$message({
             type: "info",
-            message: "文件修改失败"
+            message: "操作失败，请稍后重试"
           });
         }
       })
@@ -403,14 +460,13 @@ export default {
     },
     importSuccess (res, file) { // 导入成功
       this.loading.close();
-      console.log(res);  // ？？？ 导入接口返回字段需要调整
-      if (res.status === 200) {
-        this.toggleListType();
-        this.queryLists();
+      if (res.success) {
         this.$message({
           type: "success",
           message: "文件导入成功"
         });
+        this.toggleListType();
+        this.queryLists();
       } else {
         this.$message({
           type: "info",
