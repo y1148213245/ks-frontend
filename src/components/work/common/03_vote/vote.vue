@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-02-06 10:01:47 
- * @Last Modified by: song
- * @Last Modified time: 2018-03-05 15:06:47
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-03-09 11:24:22
  */
 <!-- 投票组件  -->
 <template>
@@ -39,7 +39,7 @@ export default {
           params.docID = this.docid;
           Get(this.CONFIG.url, { params: params }).then(res => {
             if (res.data.result === "1") { // 投票成功
-              this.$emit('vote', res.data.data);  // 子组件向父组件传值
+              this.$emit('vote', res.data.data, this.docid);  // 子组件向父组件传值
               this.$message({
                 type: "success",
                 message: "投票成功"

@@ -20,7 +20,7 @@
     <br/>
     <p class="html-feild" v-html="detail[keys.content]" v-if="keys.content"></p>
     <div class="download" v-if="isShow('download')">
-      <span>稿件下载：</span>
+      <span>稿件下载：<a :href="attachUrl">{{attach['attachName']}}</a></span>
       <span v-if="keys.abstract" v-text="detail[keys.abstract] || '暂无摘要'"
             :title="detail[keys.abstract]"></span>
     </div>
@@ -52,6 +52,8 @@ export default {
       preNextParamCache: null,/* 上一篇下一篇请求参数缓存 */
       preNextData: '',/* 上一篇下一篇数据 */
       detail: '',/* 新闻详情 */
+      attach: '',/* 附件详情 */
+      attachUrl:''/* 附件链接 */
     };
   },
 
@@ -79,10 +81,12 @@ export default {
       console.log('详情参数打印:');
       console.log(data);
       this.detail = '';
+      let keys = this.keys;
       let driveMode = this.projectConfig.driveMode;
-      this.preNextParamCache = preNextParam;
+
 
       if (driveMode.eventMode) {
+        this.preNextParamCache = preNextParam;
         let params = {
           docID: data[driveMode.eventMode.dataKeys.docID]
         }
@@ -92,6 +96,12 @@ export default {
 
         let params = {
           docID: query[driveMode.locationMode.dataKeys.docID]
+        }
+        this.preNextParamCache = {
+          [keys.eventListenData_preNextConfig_activityId]: query[keys.eventListenData_preNextConfig_activityId],/* 事件或href传入的上一篇下一篇查询参数 活动id字段名 */
+          [keys.eventListenData_preNextConfig_pageNo]: query[keys.eventListenData_preNextConfig_pageNo],
+          [keys.eventListenData_preNextConfig_pageSize]: query[keys.eventListenData_preNextConfig_pageSize],
+          [eventListenData_preNextConfig_orderBy]: query[keys.eventListenData_preNextConfig_orderBy],
         }
         this.loadData(params);
       }
@@ -111,6 +121,17 @@ export default {
         console.log('详情打印:');
         console.log(resp.data);
         this.detail = resp.data;
+
+        let attachList = this.detail[this.keys.attachList];
+        if (attachList.length>0) {
+          let arr = attachList.filter((entry) => {
+            return entry[this.keys.attachTypeCode] == this.projectConfig.attachTypeCode
+          })
+          if (arr.length > 0) {
+            this.attach = arr[0]
+          }
+          this.getAttachUrl()
+        }
       })
     },
     /* 加入收藏 */
@@ -127,13 +148,14 @@ export default {
       let resourceId = 'resourceId=' + this.detail[this.keys.resourceId];
       let siteId = 'operateType=0&siteId=' + SITE_CONFIG.siteId
       let url = this.projectConfig.collectUrl + '?' + loginName + '&' + resourceType + '&' + resourceId + '&' + siteId
-
+      /* 收藏请求 */
       Post(url).then(rep => {
         if (rep.data.result === "1") { // 操作成功
           this.$message({
             type: "success",
             message: rep.data.data.msg
           });
+          this.loadData(this.newsListItemCache);
         } else {
           this.$message({
             type: "error",
@@ -186,8 +208,13 @@ export default {
       } else if (locationMode) {
         window.location.go(-1); //返回刷新上一页
       }
+    },
+    /* 获取附件下载链接 */
+    getAttachUrl(){
+      let recordID = this.keys.getAttachParam_recordID + '=' + this.attach[this.keys.fileRecordID];
+      let url = this.projectConfig.attachUrl + '?' + recordID;
+      this.attachUrl = url;
     }
-
   }
 }
 </script>

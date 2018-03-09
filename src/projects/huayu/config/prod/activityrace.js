@@ -2,10 +2,19 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-08 14:13:05
+ * @Last Modified time: 2018-03-09 18:25:33
  */
 export default {
   name: "activityrace",
+  common: {
+    vote_03: {  // 投票组件
+      url: BASE_URL + 'spc/prodb/activity/vote.do?',
+      params: {
+        browserId: '', // 浏览器指纹
+        docID: '',
+      }
+    }
+  },
   activityDetail: {
     work_activitydetail_01: {
       url: BASE_URL + 'spc/cms/publish/detail.do',
@@ -191,7 +200,15 @@ export default {
               getListParam_memberType: '4',
             }
           },
-
+          getListParamOptions_fixed:{/* 固定条件配置 */
+            IS_EXCELLENTWORK:{//例
+              getListParam_relations: '1',
+              getListParam_cols: 'IS_EXCELLENTWORK',
+              getListParam_symbols: '2',
+              getListParam_memberType: '4',
+              getListParam_vals:'是',
+            },
+          },
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
         },
         keys: {
@@ -286,7 +303,9 @@ export default {
       getDetailUrl: BASE_URL + 'spc/prodb/detail.do',
       getPreAndNextUrl: BASE_URL + 'spc/prodb/activity/prevNextNews.do',
       collectUrl: BASE_URL + 'collection/addWorkCollect.do',
+      attachUrl:BASE_URL + 'dynamicFile/file.do',
       show: ['time', 'collect', 'share', 'abstract', 'download'],/* 显示功能配置 */
+      attachTypeCode:'original',/* 附件类型 */
       params:{
         getDetailRequestParam_doclibCode:'PORTAL_ACTIVITYNEWS'/* 库码 */
       },
@@ -296,6 +315,9 @@ export default {
         content: 'TEXTCONTENT',
         resourceType:'doclibCode',/* 资源库码字段名 */
         resourceId:'SYS_DOCUMENTID',/* 资源id */
+        attachList :'ATTACH_LIST',/* 附件列表字段 */
+        fileRecordID:'fileRecordID',/*  附件id字段名 */
+        attachTypeCode:'attachTypeCode',/* 附件类型字段名 */
         
         eventListenData_preNextConfig_activityId:'activityID',/* 事件传入的上一篇下一篇查询参数 活动id字段名 */
         eventListenData_preNextConfig_pageNo:'page',
@@ -313,6 +335,8 @@ export default {
         
         preNextData_preId:'prev',/* 上一篇下一篇数据 上一篇id字段名 */
         preNextData_nextId:'next',/* 上一篇下一篇数据 下一篇id字段名 */
+
+        getAttachParam_recordID:'recordID',/* 获取附件链接参数:附件id参数名 */
       },
       /* 加载数据的方式，选一 */
       driveMode: {

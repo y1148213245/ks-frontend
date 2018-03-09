@@ -14,9 +14,11 @@ const prod = {
   informationDetail: {
     work_informationdetail_02: {
       getDetailUrl: BASE_URL + 'spc/prodb/detail.do',
-      getPreAndNextUrl: BASE_URL + 'spc/prodb/activity/prevNextNews.do?activityID=601948&newsID=602085&pageSize=10&page=1&orderBy=SYS_DOCUMENTID DESC',
+      getPreAndNextUrl: BASE_URL + 'spc/prodb/activity/prevNextNews.do',
       collectUrl: BASE_URL + 'collection/addWorkCollect.do',
+      attachUrl:BASE_URL + 'dynamicFile/file.do',
       show: ['time', 'collect', 'share', 'abstract', 'download'],/* 显示功能配置 */
+      attachTypeCode:'original',/* 附件类型 */
       params: {
         getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYNEWS'/* 库码 */
       },
@@ -25,9 +27,13 @@ const prod = {
         time: 'SYS_CREATED',
         content: 'TEXTCONTENT',
         resourceType:'doclibCode',/* 资源库码字段名 */
-        resourceId:'SYS_DOCUMENTID',/* 资源id */
+        resourceId:'SYS_DOCUMENTID',/* 资源id字段名 */
+        attachList :'ATTACH_LIST',/* 附件列表字段 */
+        fileRecordID:'fileRecordID',/*  附件id字段名 */
+        attachTypeCode:'attachTypeCode',/* 附件类型字段名 */
+        
 
-        eventListenData_preNextConfig_activityId: 'activityID',/* 事件传入的上一篇下一篇查询参数 活动id字段名 */
+        eventListenData_preNextConfig_activityId: 'activityID',/* 事件或href传入的上一篇下一篇查询参数 活动id字段名 */
         eventListenData_preNextConfig_pageNo: 'page',
         eventListenData_preNextConfig_pageSize: 'pageSize',
         eventListenData_preNextConfig_orderBy: 'orderBy',
@@ -43,6 +49,8 @@ const prod = {
 
         preNextData_preId: 'prev',/* 上一篇下一篇数据 上一篇id字段名 */
         preNextData_nextId: 'next',/* 上一篇下一篇数据 下一篇id字段名 */
+
+        getAttachParam_recordID:'recordID',/* 获取附件链接参数:附件id参数名 */
       },
       /* 加载数据的方式，选一 */
       driveMode: {

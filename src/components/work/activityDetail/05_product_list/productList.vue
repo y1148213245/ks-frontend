@@ -17,7 +17,7 @@
           </el-col>
           <el-col :span="6" class="work_activitydetail_05-vote_box">
             <div>
-              <el-button type="button">投票</el-button>
+              <work_common_03 :namespace="namespace" v-on:vote="totalVoteNum" :docid="item[keys.resourceId]" @click="getDocid(item[keys.resourceId])"></work_common_03>
             </div>
             <div><span v-text="item[keys.voteNum]"></span>票</div>
             </el-col>
@@ -66,7 +66,8 @@ export default {
     };
   },
 
-  computed: {},
+  computed: {
+  },
 
   created () {
     this.initConfig();
@@ -78,6 +79,10 @@ export default {
   mounted () { },
 
   methods: {
+    getDocid (id) {
+      this.docId = id;
+      console.log(this.docId);
+    },
     initConfig () {
       this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_05[this.module];
       this.keys = this.projectConfig.keys;
@@ -96,13 +101,22 @@ export default {
       let memberType = '';
       let vals = '';
 
+      let keyArr = [mustKey];/* 查询条件配置 key数组,通过其中配置的值来组装哪些字段的参数 */
+      let getListParamOptions_fixed = this.projectConfig.params.getListParamOptions_fixed;/* 查询字段的具体值配置 */
+      if (getListParamOptions_fixed) {
+        for (const key in getListParamOptions_fixed) {
+          keyArr.push(key);
+        }
+      }
+
       if (!conditions) {
-        getCondition([mustKey]);
+        getCondition(keyArr);
       } else {
         let arr = JSON.parse(JSON.stringify(eventListien_SearchDatasKeyArr));
         /* 添加必传条件key */
-        arr.unshift(mustKey);
-        getCondition(arr);
+        // arr.unshift(mustKey);
+        keyArr = keyArr.concat(arr)
+        getCondition(keyArr);
       }
 
       condition = {
@@ -116,12 +130,12 @@ export default {
       this.conditionCache = condition;
       if (conditions) this.loadData();
 
-      function getCondition (eventListienSearchDatas) {
-        for (let i = 0, len = eventListienSearchDatas.length; i < len; i++) {
+      function getCondition (keyArr) {
+        for (let i = 0, len = keyArr.length; i < len; i++) {
 
-          const vkey = eventListienSearchDatas[i];
-          if (vkey == mustKey || conditions && conditions[vkey]) {
-            let option = params.getListParamOptions[vkey];
+          const vkey = keyArr[i];
+          if (vkey == mustKey || (conditions && conditions[vkey]) || getListParamOptions_fixed) {
+            let option = params.getListParamOptions[vkey] || getListParamOptions_fixed[vkey];
             let splitVal = ',';
             if (i == 0) {
               splitVal = '';
@@ -133,11 +147,9 @@ export default {
             memberType += splitVal + option.getListParam_memberType;
             /* 加入搜索的值 */
             if (vkey != mustKey) {
-              vals += splitVal + conditions[vkey];
+              vals += splitVal + (conditions && conditions[vkey] ? conditions[vkey] : getListParamOptions_fixed[vkey].getListParam_vals);
             }
-            
           }
-          
         }
       }
     },
@@ -176,8 +188,15 @@ export default {
         this.list = data;
         this.totalCount = resp.data.data.totalElements
       })
-
-
+    },
+    /* 投票后刷新数量 */
+    totalVoteNum (data, id) {
+      let arr = this.list.filter((entry) => {
+        return entry[this.keys.resourceId] == id
+      })
+      if (arr.length > 0) {
+        arr[0][this.keys.voteNum] = data;
+      }
     }
   },
   filters: {

@@ -5,6 +5,15 @@ const description = `作品列表组件
   接受viewType属性，默认‘complete’，可选值‘simple’，显示完成功能或简易功能`;  // 组件描述信息
 const dev = {
   activityDetail: {
+    common: {
+      vote_03: {  // 投票组件
+        url:'',
+        params: {
+          browserId: '', // 浏览器指纹
+          docID: '',
+        }
+      }
+    },
     work_activitydetail_05: {
       'module1': {
         url: '/data/work_activitydetail_05.json',
@@ -25,6 +34,15 @@ const dev = {
   }
 };
 const prod = {
+  common: {
+    vote_03: {  // 投票组件
+      url: BASE_URL + 'spc/prodb/activity/vote.do?',
+      params: {
+        browserId: '', // 浏览器指纹
+        docID: '',
+      }
+    }
+  },
   activityDetail: {
     work_activitydetail_05: {
       'module1': {
@@ -39,7 +57,7 @@ const prod = {
               getListParam_symbols: '2',
               getListParam_memberType: '4',
             },
-            'place':{
+            'place':{//扩展属性名
               getListParam_relations: '1',
               getListParam_cols: 'AREA',
               getListParam_symbols: '1',
@@ -64,7 +82,15 @@ const prod = {
               getListParam_memberType: '4',
             },
           },
-          
+          getListParamOptions_fixed:{/* 固定条件配置 */
+            IS_EXCELLENTWORK:{//例
+              getListParam_relations: '1',
+              getListParam_cols: 'IS_EXCELLENTWORK',
+              getListParam_symbols: '2',
+              getListParam_memberType: '4',
+              getListParam_vals:'是',
+            },
+          },
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
         },
         keys: {
