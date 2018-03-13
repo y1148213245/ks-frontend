@@ -69,7 +69,7 @@ export default {
     },
     toRead(bookId, readType, bookName) {
       var url =
-        READ_CONFIG.baseURL +
+        CONFIG.READ_URL +
         "bookId=" +
         bookId +
         "&readType=" +

@@ -133,7 +133,7 @@
       },
       shidu:function(bookId,readType,bookName){
         console.log(bookId,readType,bookName);
-        var url = READ_CONFIG.baseURL+'/ebook/read.jsp?bookId='+bookId+'&readType='+readType+'&bookName='+bookName;
+        var url = CONFIG.READ_URL+'/ebook/read.jsp?bookId='+bookId+'&readType='+readType+'&bookName='+bookName;
         window.open(url);
       },
       jianjie:function(value){

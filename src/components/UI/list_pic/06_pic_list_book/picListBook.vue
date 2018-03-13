@@ -80,7 +80,7 @@ export default {
         }, */
         addgethistorylist: function (loginName) {
             let pubId = URL.parse(document.URL, true).query.pubId;
-            Get(BASE_URL + '/browserHistory/addBrowserHistory.do?pubId=' + pubId + '&loginName=' + loginName).then((repsonse) => {
+            Get(CONFIG.BASE_URL + '/browserHistory/addBrowserHistory.do?pubId=' + pubId + '&loginName=' + loginName).then((repsonse) => {
                 if (repsonse.data.result === '1') {
                     this.gethistorylist(loginName);
                 }
@@ -113,7 +113,7 @@ export default {
         },
         deleteOneHistory (pubId) {
             if (this.member.loginName) {
-                Get(BASE_URL + 'browserHistory/deleteOneHistory.do?&loginName=' + this.member.loginName + '&pubId=' + pubId + '&siteId=' + SITE_CONFIG.siteId).then((rep) => {
+                Get(CONFIG.BASE_URL + 'browserHistory/deleteOneHistory.do?&loginName=' + this.member.loginName + '&pubId=' + pubId + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
                     if (rep.data.result === "1") {
                         this.$message({
                             type: "success",

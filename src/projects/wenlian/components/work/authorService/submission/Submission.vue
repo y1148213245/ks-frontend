@@ -121,7 +121,7 @@
           window.location.href = "login.html";
           return;
         }
-        let url = GO_CONTRIBUTE.baseURL + 'authorName=' + this.member.loginName;
+        let url = CONFIG.GO_CONTRIBUTE_URL + 'authorName=' + this.member.loginName;
         window.open(url);
       }
     }

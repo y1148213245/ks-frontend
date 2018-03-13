@@ -18,7 +18,7 @@ const dev = {
 const prod = {
   list_pic: {
     pic_list_04: {
-      url: BASE_URL + 'cms/publish/list.do',
+      url: CONFIG.BASE_URL + 'cms/publish/list.do',
       params: {
         conditions: "[{pub_resource_type:'BOOK'}]",
         orderBy: "pub_resource_id",

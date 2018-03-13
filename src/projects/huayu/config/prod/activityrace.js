@@ -1,14 +1,14 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-12 11:13:34
+ * @Last Modified by: song
+ * @Last Modified time: 2018-03-12 14:20:10
  */
 export default {
   name: "activityrace",
   common: {
     vote_03: {  // 投票组件
-      url: BASE_URL + 'spc/prodb/activity/vote.do?',
+      url: CONFIG.BASE_URL + 'spc/prodb/activity/vote.do?',
       params: {
         browserId: '', // 浏览器指纹
         docID: '',
@@ -17,7 +17,7 @@ export default {
   },
   activityDetail: {
     work_activitydetail_01: {
-      url: BASE_URL + 'spc/cms/publish/detail.do',
+      url: CONFIG.BASE_URL + 'spc/cms/publish/detail.do',
       keys: {
         title: 'PORTAL_ACTIVITY_SYS_TOPIC',//标题
         content: 'PORTAL_ACTIVITY_DESCRIPTION',//内容
@@ -32,7 +32,7 @@ export default {
     },
     work_activitydetail_02: {
       module1: {
-        url: BASE_URL + 'spc/prodb/getPublicize.do',
+        url: CONFIG.BASE_URL + 'spc/prodb/getPublicize.do',
         topic: '奖项设置',
         keys: {
           topic: 'topic',
@@ -45,7 +45,7 @@ export default {
         eventName_listen: "eventName_loadedDatas",
       },
       module2: {
-        url: BASE_URL + 'spc/prodb/getPublicize.do',
+        url: CONFIG.BASE_URL + 'spc/prodb/getPublicize.do',
         topic: '公告',
         keys: {
           topic: 'topic',
@@ -60,8 +60,8 @@ export default {
     },
     /* 大赛新闻列表配置 */
     work_activitydetail_03: {
-      url: BASE_URL + 'spc/prodb/activity/activityNews.do',
-      getPicUrl:BASE_URL + 'dynamicFile/stream.do',   
+      url: CONFIG.BASE_URL + 'spc/prodb/activity/activityNews.do',
+      getPicUrl:CONFIG.BASE_URL + 'dynamicFile/stream.do',   
       params: {
         getListParam_pageNo: '1',
         getListParam_pageSize: '10',
@@ -88,8 +88,8 @@ export default {
     },
     /* 作品列表筛选配置 */
     work_activitydetail_04: {
-      url: BASE_URL + 'spc/prodb/detail.do',
-      getSchoolUrl: BASE_URL + 'spc/prodb/searchNL.do',
+      url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
+      getSchoolUrl: CONFIG.BASE_URL + 'spc/prodb/searchNL.do',
       params: {
         getPlaceRequest_doclibCode: 'PORTAL_ACTIVITY',//配库码
         getSchoolRequest_doclibCode: 'PORTAL_SCHOOL',//配库码
@@ -120,7 +120,7 @@ export default {
     /* 作品列表配置 */
     work_activitydetail_05: {
       module1: {
-        url: BASE_URL + 'spc/prodb/getWorkList.do',
+        url: CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         params: {
           getListParam_doclibCode: 'PORTAL_WORKS',
@@ -188,7 +188,7 @@ export default {
         isDevelopment: false,
       },
       module2: {
-        url: BASE_URL + 'spc/prodb/getWorkList.do',
+        url: CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         params: {
           getListParam_doclibCode: 'PORTAL_WORKS',
@@ -242,7 +242,7 @@ export default {
 
     },
     work_activitydetail_06: {
-      url: BASE_URL + 'comment/getActivityDiscussDetail.do',
+      url: CONFIG.BASE_URL + 'comment/getActivityDiscussDetail.do',
       params: {
         paging_pageSizes: [15, 30, 50, 100],
         requestParam_memberType: '4',
@@ -263,12 +263,12 @@ export default {
     },
     review: { // 查询活动评论列表
       queryreview: {
-        url: BASE_URL + 'comment/comments.do',
+        url: CONFIG.BASE_URL + 'comment/comments.do',
         params: {
           pubId: '',
           pageIndex: 1,
           pageSize: 15,
-          siteId: SITE_CONFIG.siteId
+          siteId: CONFIG.SITE_CONFIG.siteId
         },
         reviewType: [{ // 评论角色配置
           type: '1',
@@ -279,12 +279,12 @@ export default {
         }]
       },
       addreview: { // 添加资讯、图书、活动评论（索引库里有）
-        url: BASE_URL + 'comment/addComment.do',
+        url: CONFIG.BASE_URL + 'comment/addComment.do',
         params: {
           pubId: '',
           loginName: '',
           content: '',
-          siteId: SITE_CONFIG.siteId,
+          siteId: CONFIG.SITE_CONFIG.siteId,
           starNum: '0',
           deviceName: 'PC',
           parentId: '0',
@@ -300,10 +300,10 @@ export default {
   },
   informationDetail: {
     work_informationdetail_02: {
-      getDetailUrl: BASE_URL + 'book/getWorkDetail.do',
-      getPreAndNextUrl: BASE_URL + 'spc/prodb/activity/prevNextNews.do',
-      collectUrl: BASE_URL + 'collection/addWorkCollect.do',
-      attachUrl:BASE_URL + 'dynamicFile/file.do',
+      getDetailUrl: CONFIG.BASE_URL + 'spc/prodb/detail.do',
+      getPreAndNextUrl: CONFIG.BASE_URL + 'spc/prodb/activity/prevNextNews.do',
+      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do',
+      attachUrl:CONFIG.BASE_URL + 'dynamicFile/file.do',
       show: ['time', 'collect', 'share', 'abstract', 'download'],/* 显示功能配置 */
       attachTypeCode:'original',/* 附件类型 */
       params:{

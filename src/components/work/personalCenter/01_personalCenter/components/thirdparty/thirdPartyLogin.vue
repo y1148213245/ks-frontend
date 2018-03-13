@@ -24,7 +24,7 @@ export default {
     _this.url = getUrlStr("url");
     if (_this.token) {
       window.localStorage.setItem("token", _this.token);
-      Get(BASE_URL + "checkToken.do").then(function(rep) {
+      Get(CONFIG.BASE_URL + "checkToken.do").then(function(rep) {
         let datas = rep.data.data;
         if (datas && datas.checkStatus == "1") {
             window.location.href = _this.url;

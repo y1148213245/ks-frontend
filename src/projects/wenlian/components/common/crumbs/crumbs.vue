@@ -6,28 +6,28 @@
 </template>
 
 <script>
-    export default {
-        name: "wenlian_common_crumbs",
-        reused:true,
-        data:function(){
-          return {
-            title:''
-          }
-        },
-        created:function(){
-          this.$bus.$on("setCrumbs",this.getCrumbd);
-        },
-        methods:{
-          getCrumbd:function(param){
-            this.title=CRUMB_TYPE.find(function(item){
-              return item.name==param;
-            }).title;
-            this.$nextTick(()=>{
-              document.title=this.title;
-            })
-          }
-        }
+export default {
+  name: "wenlian_common_crumbs",
+  reused: true,
+  data: function () {
+    return {
+      title: ''
     }
+  },
+  created: function () {
+    this.$bus.$on("setCrumbs", this.getCrumbd);
+  },
+  methods: {
+    getCrumbd: function (param) {
+      this.title = CONFIG.CRUMB_TYPE.find(function (item) {
+        return item.name == param;
+      }).title;
+      this.$nextTick(() => {
+        document.title = this.title;
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

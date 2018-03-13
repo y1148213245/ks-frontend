@@ -27,8 +27,8 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_03: {
-      url: BASE_URL + 'spc/prodb/activity/activityNews.do',
-      getPicUrl:BASE_URL + 'dynamicFile/stream.do?recordID=191748',
+      url: CONFIG.BASE_URL + 'spc/prodb/activity/activityNews.do',
+      getPicUrl:CONFIG.BASE_URL + 'dynamicFile/stream.do?recordID=191748',
       params:{
         getListParam_pageNo:'1',
         getListParam_pageSize:'10',

@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 15:34:23 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-27 11:20:30
+ * @Last Modified by: song
+ * @Last Modified time: 2018-03-12 14:17:36
  */
 
 import component from '../fuwen.vue'
@@ -30,7 +30,7 @@ const prod = {
   activityDetail: {
     work_activitydetail_02: {
       "module": {
-        url: BASE_URL + 'spc/prodb/getPublicize.do',
+        url: CONFIG.BASE_URL + 'spc/prodb/getPublicize.do',
         topic: '奖项设置',//辅文标题
         keys: {
           topic: 'topic',//辅文标题字段

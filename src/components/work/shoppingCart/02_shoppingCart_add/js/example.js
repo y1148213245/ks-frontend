@@ -22,11 +22,11 @@ const dev = {
   const prod = {
     shoppingCart: {
         shoppingCart_02: {
-        url: BASE_URL + 'api/book/getBookDetail.do',
+        url: CONFIG.BASE_URL + 'api/book/getBookDetail.do',
         params: {
             loginName: "",
             pubId: "",
-            siteId: SITE_CONFIG.siteId,
+            siteId: CONFIG.SITE_CONFIG.siteId,
         },
         bookType: '91',  // 纸质书
         ebookType: '94', // 电子书

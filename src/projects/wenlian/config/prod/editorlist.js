@@ -1,18 +1,18 @@
 /*
  * @Author: yan.chaoming
  * @Date: 2018-01-08 17:25:11
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-08 18:05:29
+ * @Last Modified by: song
+ * @Last Modified time: 2018-03-12 14:17:13
  */
 export default {
   name: 'editorlist',
   list_pic: {
     ui_list_pic_15: {
-      url: BASE_URL + 'spc/cms/col/getColNextLevelNode',
+      url: CONFIG.BASE_URL + 'spc/cms/col/getColNextLevelNode',
       param: {
         colId:'118'
       },
-      resultUrl:`${BASE_URL}spc/cms/publish/list.do`,
+      resultUrl:`${CONFIG.BASE_URL}spc/cms/publish/list.do`,
       resultParam:{
         pageNo: '1',
         pageSize: '10',

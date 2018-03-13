@@ -248,8 +248,8 @@ export default {
     this.VueExamples = VueExamples();
     this.clientHeight = document.documentElement.clientHeight - 80;
     try {
-      if (SITE_NAME) { // 站点名字
-        this.siteName = SITE_NAME;
+      if ($_$.SITE_NAME) { // 站点名字
+        this.siteName = $_$.SITE_NAME;
       }
     } catch (error) {
       console.log(error);
@@ -267,10 +267,18 @@ export default {
       this.$refs[configForm].validate(valid => {
         if (valid) {
           $_$[this.configForm.namespace] = this.currentComponent.prod;
+          // console.log($_$);
           this.editConfigModel = false;
+          /* var bodyContent = this.code.indexOf('<body') !== -1 ? this.code.substring(this.code.indexOf('<body'), this.code.indexOf('</body>')) : '';
+          var uiComponent = bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) ? bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) : [];
+          var workComponent = bodyContent.match(/<work_.*?>(.*?)<\/work_.*?>/g) ? bodyContent.match(/<work_.*?>(.*?)<\/work_.*?>/g) : [];
+          var componentWrapper = uiComponent.concat(workComponent);
+          console.log(componentWrapper); 
+          // TODO 当前页面有多个组件
+          
           if (this.code.indexOf('namespace') === -1) { // 有命名空间就不再重复添加
             this.code = this.code.replace('<' + this.currentComponent.name, '<' + this.currentComponent.name + ' namespace="' + this.currentComponent.name + '"');  // ？？？ 这样的话namespace相当于还是不能外部编辑 只能代码编写
-          }
+          }*/
           this.saveCode(false);
         } else {
           return false;
@@ -287,7 +295,6 @@ export default {
       this.activeFile = file;
       this.showItem = item ? item : this.showItem;
       this.toggleOperation(this.showItem);
-      this.usedComponents = {};
     },
     toggleOperation (item) { // 切换中间区域的操作: 预览、编程、替换、发布
       if (item === 'public') { //  发布操作
@@ -317,9 +324,11 @@ export default {
       this.noData = this.activeFile ? false : true;  // 中间预览区要兼容没有数据的情况
       if (!this.noData) {  // 有数据才执行
         this.reviewContext = this.configUrl + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName;
+        // this.reviewContext = 'http://172.19.36.57:8084/spc/' + this.siteName + '/pages/' + this.activeFile;
         Get(this.configUrl + 'files/edit?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
           var datas = res.data;
           if (datas.success && datas.content) {
+            this.usedComponents = {};
             this.code = datas.content;
             /* 扫描已用组件标签 先用正则匹配 再用字符串方法筛出标签名 */
             let bodyContent = datas.content.indexOf('<body') !== -1 ? datas.content.substring(datas.content.indexOf('<body'), datas.content.indexOf('</body>')) : '';
@@ -334,9 +343,14 @@ export default {
               workComArray.push(workComponent[j].substring(workComponent[j].indexOf('</'), workComponent[j].length).replace('</', '').replace('>', ''));
             }
             let exampleArray = uiComArray.concat(workComArray);  // 将两个数组拼成一个
-            for (var k = 0; k < exampleArray.length; k++) {
+            for (var k = 0, len = exampleArray.length; k < len; k++) {
               this.usedComponents[exampleArray[k]] = this.examples[exampleArray[k]];
-              delete this.unusedComponents[exampleArray[k]]
+              delete this.unusedComponents[exampleArray[k]];
+              /* 强制添加不可更改的命名空间 namespace 格式只能是 namespace = "pagename" 或 namespace="pagename"  */
+              var con = this.code.substring(this.code.indexOf('<' + exampleArray[k]), this.code.indexOf('</' + exampleArray[k]));
+              if (con.indexOf("namespace") === -1) { // 没有命名空间的组件 直接添加 有命名空间不做修改
+                this.code = this.code.replace('<' + exampleArray[k], '<' + exampleArray[k] + ' namespace="' + this.activeFile.substring(0, this.activeFile.indexOf('.html')) + '"');
+              }
             }
             this.$forceUpdate();
           }
@@ -372,12 +386,13 @@ export default {
       };
       Post(this.configUrl + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent) + '&projectName=' + this.siteName).then((res) => {
         if (res.data.success) {
+          this.toggleOperation(this.showItem);
           if (status == false) {  // 配置组件的时候是隐形进行编辑文件的操作 所以不需要提示操作成功
             return false;
           }
           this.$message({
             type: "success",
-            message: "操作成功"
+            message: "操作成功（注：命名空间 namespace 不支持修改）"
           });
         } else {
           this.$message({
@@ -611,6 +626,15 @@ body {
   padding: 10px 5px;
   color: #7f7f7f;
   font-size: 14px;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  background-color: #fff;
+  z-index: 999;
+}
+
+.components_pagemanagement .leftList .listNav .listWrapper {
+  margin-top: 40px;
 }
 
 .components_pagemanagement .leftList .listNav .operation {

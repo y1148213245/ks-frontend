@@ -144,7 +144,7 @@ export default {
       let loginName = 'loginName=' + this.member.loginName;
       let resourceType = 'resourceType=' + this.detail[this.keys.resourceType];
       let resourceId = 'resourceId=' + this.detail[this.keys.resourceId];
-      let siteId = 'operateType=0&siteId=' + SITE_CONFIG.siteId
+      let siteId = 'operateType=0&siteId=' + CONFIG.SITE_CONFIG.siteId
       let url = this.projectConfig.collectUrl + '?' + loginName + '&' + resourceType + '&' + resourceId + '&' + siteId
       /* 收藏请求 */
       Post(url).then(rep => {

@@ -70,7 +70,7 @@
         let params = URL.parse(document.URL, true);
         let categoryNum = params.query.cascadeId ? params.query.cascadeId.replace(/~/g, '_') : '';
         let colId = this.colId || '';
-        let condition = '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + SITE_CONFIG.siteId + '"}';
+        let condition = '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}';
         condition += ',{BOOK_BOOK_CASCADID:"' + categoryNum + '",op:"lk"}';
         condition += colId ? ',{pub_col_id:"' + colId + '"}' : '';
         condition += ']';

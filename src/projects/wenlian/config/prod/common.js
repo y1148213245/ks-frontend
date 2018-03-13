@@ -26,11 +26,11 @@ export default {
 			},
 			historyrecord: {
 				title: '浏览历史',
-				url: BASE_URL + "browserHistory/getHistoryList.do",
+				url: CONFIG.BASE_URL + "browserHistory/getHistoryList.do",
         params: {
 					num: 3,
 					username: "",
-					siteId: SITE_CONFIG.siteId
+					siteId: CONFIG.SITE_CONFIG.siteId
         },
 				href:"./bookdetail.html?pubId="
 			}

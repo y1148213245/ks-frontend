@@ -24,7 +24,7 @@ const dev = {
 const prod = {
   bookdetail: {
     bookdetail_03: {
-      url: BASE_URL + 'spc/prodb/detail.do',
+      url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
       params: {
         doclibCode: '',
         docID: '',

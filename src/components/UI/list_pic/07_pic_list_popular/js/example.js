@@ -23,7 +23,7 @@ const dev = {
 
 const prod = {
   popularBook: {
-    url: BASE_URL + "spc/cms/publish/list.do",
+    url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
     param: {
       condition: "[{pub_col_id:'57'},{pub_status:'1'}]",
       groupBy: "pub_resource_id",

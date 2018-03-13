@@ -20,7 +20,7 @@ const dev = {
 
 const prod = {
   picListEditor: {
-    url: BASE_URL + "spc/cms/publish/list.do",
+    url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
     param: {
       conditions: "[{pub_col_id:'117'}]",
       groupBy: "pub_resource_id",

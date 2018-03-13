@@ -105,7 +105,7 @@ export default {
       var params = {
         loginName: member.loginName ? member.loginName : '',
         pubId: this.pubId,
-        siteId: SITE_CONFIG.siteId
+        siteId: CONFIG.SITE_CONFIG.siteId
       };
       this.$store.dispatch('bookDetail/' + type.BOOK_DETAIL, params);
       this.$store.dispatch('bookDetail/' + type.CART_NUMS, member.loginName);
@@ -172,7 +172,7 @@ export default {
           productId: prod_id,
           pubId: id,
           operateType: operateTypeValue,
-          siteId: SITE_CONFIG.siteId
+          siteId: CONFIG.SITE_CONFIG.siteId
         },
 
         myCallback: function () {
@@ -202,7 +202,7 @@ export default {
             _this.$store.dispatch('bookDetail/' + type.BOOK_DETAIL, {
               pubId: params.param.pubId,
               loginName: params.param.loginName,
-              siteId: SITE_CONFIG.siteId
+              siteId: CONFIG.SITE_CONFIG.siteId
             });
           }
         }
@@ -213,7 +213,7 @@ export default {
       if (!probationUrl) {  // 没有试读地址的情况
         return false;
       }
-      var url = READ_CONFIG.baseURL + '?bookId=' + bookId + '&readType=' + readType + '&userName=&siteType=0';
+      var url = CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType + '&userName=&siteType=0';
       window.open(url);
     }
   },
@@ -247,7 +247,7 @@ function addCart (contentType, this_value, loginName) {
       pubId: pubId,
       colId: colId, //栏目id
       number: number,
-      siteId: SITE_CONFIG.siteId
+      siteId: CONFIG.SITE_CONFIG.siteId
     },
     myCallback: function () {
       if (this.addCartInfo === '1') { //电子书加入成功

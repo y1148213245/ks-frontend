@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2018-01-04 16:44:27 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-19 14:37:57
+ * @Last Modified by: song
+ * @Last Modified time: 2018-03-12 14:18:06
  * 搜索结果列表
  */
  
@@ -25,7 +25,7 @@ const dev = {
 const prod = {
   search: {
     search_result_04: {
-      url: BASE_URL + 'spc/cms/publish/list.do',
+      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
       param: {
         conditions: "[{pub_site_id:'2'},{pub_status:'1'}]",
         groupBy: 'pub_resource_id',

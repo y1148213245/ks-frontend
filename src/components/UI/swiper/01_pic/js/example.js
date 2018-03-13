@@ -26,7 +26,7 @@ const prod = {
 		pic_01: {
 			height: "480px",
 			interval: 5000,
-			url: BASE_URL + 'spc/cms/publish/list.do',
+			url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
 			params: {
 				conditions: "[{'pub_col_id':'225'}]",
 				orderBy: 'pub_a_order asc pub_lastmodified desc id asc',

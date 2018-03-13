@@ -23,10 +23,10 @@ const dev = {
 const prod = {
   shoppingCart: {
     shoppingCart_01: {
-      url: BASE_URL + 'cart/getCartAndActivity.do',
+      url: CONFIG.BASE_URL + 'cart/getCartAndActivity.do',
       params: {
         loginName: "",
-        siteId: SITE_CONFIG.siteId,
+        siteId: CONFIG.SITE_CONFIG.siteId,
         timeStamp: new Date().getTime(), // 加时间戳是为了不从缓存里取数据
       },
       bookType: '91', // 纸质书

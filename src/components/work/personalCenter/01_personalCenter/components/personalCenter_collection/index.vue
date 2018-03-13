@@ -61,7 +61,7 @@ export default {
   reused: true,
   props: ["namespace"],
   mounted: function() {
-    this.siteId = SITE_CONFIG.siteId;
+    this.siteId = CONFIG.SITE_CONFIG.siteId;
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
     });

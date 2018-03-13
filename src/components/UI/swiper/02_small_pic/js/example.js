@@ -24,7 +24,7 @@ const dev = {
 const prod = {
   swiper: {
     smallPic_02: {
-      url: BASE_URL + 'spc/cms/publish/list.do',
+      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
       params: {
         conditions: "[{pub_resource_type:'BOOK'}]",
         orderBy: "BOOK_PUBDATE desc",

@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2018-01-02 13:56:35 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-01-03 08:56:56
+ * @Last Modified by: song
+ * @Last Modified time: 2018-03-12 14:17:44
  * 作者展示
  */
 
@@ -25,7 +25,7 @@ const dev = {
 
 const prod = {
   list_pic_11: {
-    url: BASE_URL + 'spc/cms/publish/list.do',
+    url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
     param: {
       conditions: "[{pub_col_id:'116'},{pub_status:'1'}]",
       groupBy: 'pub_resource_id',

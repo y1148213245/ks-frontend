@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 10:48:04 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-27 11:08:00
+ * @Last Modified by: song
+ * @Last Modified time: 2018-03-12 14:17:30
  */
 
 
@@ -30,7 +30,7 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_01: {
-      url: BASE_URL + 'spc/cms/publish/detail.do',
+      url: CONFIG.BASE_URL + 'spc/cms/publish/detail.do',
       keys: {
         title:'PORTAL_ACTIVITY_SYS_TOPIC',//标题字段
         content:'PORTAL_ACTIVITY_DESCRIPTION',//内容字段

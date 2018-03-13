@@ -1458,7 +1458,7 @@
             bankName: this.curSelectedInvoice.bankName,
             bankAccount: this.curSelectedInvoice.bankAccount,
             remark: "",
-            siteId: SITE_CONFIG.siteId,
+            siteId: CONFIG.SITE_CONFIG.siteId,
             splitOrderList: temp,
             totalPrice: this.orderDetail.totalMoney + this.orderDetail.saveAmount, // 商品总价（不含优惠运费）
             couponsOrder: this.selectedCouponsPassword, // 优惠券的密码 如果有两张 以数组形式传递
@@ -1481,7 +1481,7 @@
                   // 支付宝支付
                   loadingTag.close();
                   window.open(
-                    BASE_URL +
+                    CONFIG.BASE_URL +
                     "/epay/getPayForm.do?orderId=" +
                     argus.orderId +
                     "&loginName=" +
@@ -1493,7 +1493,7 @@
                 } else if (_this.payMethod === "0") {
                   // 微信支付
                   axios.get(
-                    BASE_URL +
+                    CONFIG.BASE_URL +
                     "/epay/getPayForm.do?orderId=" +
                     argus.orderId +
                     "&loginName=" +

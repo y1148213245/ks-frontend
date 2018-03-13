@@ -69,7 +69,7 @@
           window.location.href = "./login.html";
           return;
         }
-        var url = GO_CONTRIBUTE.baseURL + "authorName=" + this.member.loginName;
+        var url = CONFIG.GO_CONTRIBUTE_URL + "authorName=" + this.member.loginName;
         window.open(url);
       }
     }

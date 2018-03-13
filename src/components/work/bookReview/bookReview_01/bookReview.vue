@@ -137,7 +137,7 @@ export default {
         paramsObj.pubId = param.pubId;
         paramsObj.pageIndex = param.pageIndex;
         paramsObj.pageSize = param.pageSize;
-        paramsObj.siteId = SITE_CONFIG.siteId;
+        paramsObj.siteId = CONFIG.SITE_CONFIG.siteId;
       }
       Get(queryConfig.url, { params: paramsObj }).then((rep) => {
         var data = rep.data.data;

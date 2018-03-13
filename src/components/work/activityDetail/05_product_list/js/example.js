@@ -36,7 +36,7 @@ const dev = {
 const prod = {
   common: {
     vote_03: {  // 投票组件
-      url: BASE_URL + 'spc/prodb/activity/vote.do?',
+      url: CONFIG.BASE_URL + 'spc/prodb/activity/vote.do?',
       params: {
         browserId: '', // 浏览器指纹
         docID: '',

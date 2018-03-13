@@ -89,7 +89,7 @@ export default {
       if (url.indexOf("History") !== -1) {
         let param = Object.assign({}, this.CONFIG.params);
         param.username = loginName;
-        Get(BASE_URL + '/browserHistory/addBrowserHistory.do?pubId=' + this.query.pubId + '&loginName=' + loginName).then((repsonse) => {
+        Get(CONFIG.BASE_URL + '/browserHistory/addBrowserHistory.do?pubId=' + this.query.pubId + '&loginName=' + loginName).then((repsonse) => {
           if (repsonse.data.result === '1') {
             this.gethistorylist(param);
           }
@@ -124,7 +124,7 @@ export default {
     },
     deleteHistoryByUser () {
       if (this.member.loginName) {
-        Get(BASE_URL + 'browserHistory/deleteHistoryByUser.do?&loginName=' + this.member.loginName).then((rep) => {
+        Get(CONFIG.BASE_URL + 'browserHistory/deleteHistoryByUser.do?&loginName=' + this.member.loginName).then((rep) => {
           if (rep.data.result === "1") {
             this.$message({
               type: "success",

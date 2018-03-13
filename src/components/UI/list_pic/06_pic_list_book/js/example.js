@@ -30,7 +30,7 @@ const prod = {
   picListBook: {
     hotsalebank: {
       title: '热销排行',
-      url: BASE_URL + "spc/cms/publish/list.do",
+      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'131'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -43,11 +43,11 @@ const prod = {
     },
     historyrecord: {
       title: '浏览历史',
-      url: BASE_URL + "browserHistory/getHistoryList.do",
+      url: CONFIG.BASE_URL + "browserHistory/getHistoryList.do",
       params: {
         num: 3,
         username: "",
-        siteId: SITE_CONFIG.siteId
+        siteId: CONFIG.SITE_CONFIG.siteId
       },
       href: "./bookdetail.html?pubId="
     }

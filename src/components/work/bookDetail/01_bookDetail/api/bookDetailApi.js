@@ -3,7 +3,7 @@
  */
 import Vue from 'vue';
 import axios from 'axios';
-// import { SITE_CONFIG } from "projectsConfig/config.dev.js";
+// import { CONFIG.SITE_CONFIG } from "projectsConfig/config.dev.js";
 
 export default {
   /**
@@ -11,7 +11,7 @@ export default {
    * @param cb
    */
   viewBookDetailInfo(params, cb) {
-    var url = BASE_URL + "book/getBookDetail.do?pubId=" + params.pubId + '&loginName=' + params.loginName;
+    var url = CONFIG.BASE_URL + "book/getBookDetail.do?pubId=" + params.pubId + '&loginName=' + params.loginName;
     axios.get(url).then(function (response) {
       if (response.data.result == "1" && cb && cb instanceof Function) {
         cb({
@@ -26,7 +26,7 @@ export default {
    * @param cb
    */
   addCartInfos(params, cb) {
-    var url = BASE_URL + 'cart/addCart.do?number=' + params.number + '&loginName=' + params.loginName + '&activityId=' + 0 + '&pubId=' + params.pubId + "&colId=" + params.colId + '&siteId=' + SITE_CONFIG.siteId;
+    var url = CONFIG.BASE_URL + 'cart/addCart.do?number=' + params.number + '&loginName=' + params.loginName + '&activityId=' + 0 + '&pubId=' + params.pubId + "&colId=" + params.colId + '&siteId=' + CONFIG.SITE_CONFIG.siteId;
     axios.get(url).then(function (response) {
       if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
         Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
@@ -55,7 +55,7 @@ export default {
    * @param cb
    */
   addCollectOrLikeInfo(params, cb) {
-    var collect_url = BASE_URL + 'collection/addCollect.do?loginName=' + params.loginName + '&pubId=' + params.pubId + '&operateType=' + params.operateType + '&productId=' + params.productId + '&siteId=' + SITE_CONFIG.siteId;
+    var collect_url = CONFIG.BASE_URL + 'collection/addCollect.do?loginName=' + params.loginName + '&pubId=' + params.pubId + '&operateType=' + params.operateType + '&productId=' + params.productId + '&siteId=' + CONFIG.SITE_CONFIG.siteId;
     axios.post(collect_url).then(function (response) {
       if (cb && cb instanceof Function) {
         if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
@@ -79,7 +79,7 @@ export default {
    * @param cb
    */
   viewCarts(loginName, cb) {
-    var url = BASE_URL + "cart/getCartAndActivity.do?loginName=" + loginName + '&siteId=' + SITE_CONFIG.siteId;
+    var url = CONFIG.BASE_URL + "cart/getCartAndActivity.do?loginName=" + loginName + '&siteId=' + CONFIG.SITE_CONFIG.siteId;
     axios.get(url).then(function (response) {
       var number = 0;
       // if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
@@ -112,9 +112,9 @@ export default {
    */
   viewEbookPubId(params, cb)
   {
-    var url = BASE_URL + 'spc/cms/publish/list.do';
+    var url = CONFIG.BASE_URL + 'spc/cms/publish/list.do';
     var param = {
-      conditions: '[{pub_resource_type:"' + params.resourseType + '"},{pub_resource_id:"' + params.resourceId + '"},{pub_content_type:"' + params.contentType + '"},{pub_site_id:"' + SITE_CONFIG.siteId + '"}]',
+      conditions: '[{pub_resource_type:"' + params.resourseType + '"},{pub_resource_id:"' + params.resourceId + '"},{pub_content_type:"' + params.contentType + '"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]',
       orderBy: "pub_a_order asc pub_lastmodified desc id asc",
       pageNo: params.pageIndex + "",
       pageSize: "15",
@@ -139,7 +139,7 @@ export default {
    * @param cb
    */
   cancelHistoryInfo(params, cb) {
-    var url = BASE_URL + 'browserHistory/deleteHistoryByUser.do?loginName=' + params;
+    var url = CONFIG.BASE_URL + 'browserHistory/deleteHistoryByUser.do?loginName=' + params;
     axios.get(url).then(function (response) {
       if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
         Vue.prototype.$alert("登录失效，请您重新登录。", "系统提示", {
@@ -160,7 +160,7 @@ export default {
    * @param cb
    */
   addHistoryInfo(params, cb) {
-    var url = BASE_URL + 'browserHistory/addBrowserHistory.do?pubId=' + params.pubId + '&loginName=' + params.loginName;
+    var url = CONFIG.BASE_URL + 'browserHistory/addBrowserHistory.do?pubId=' + params.pubId + '&loginName=' + params.loginName;
     var query_url = '/browserHistory/getHistoryList.do?num=' + params.num + '&username=' + params.loginName;
     axios.get(url).then(function (response) {
       if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
@@ -186,7 +186,7 @@ export default {
    * @param cb
    */
   viewBookIntroduction(params, cb) {
-    var url = BASE_URL + "spc/prodb/publicize.do?doclibCode=" + params.doclibCod + "&docID=" + params.docID;
+    var url = CONFIG.BASE_URL + "spc/prodb/publicize.do?doclibCode=" + params.doclibCod + "&docID=" + params.docID;
     axios.get(url).then(function (response) {
       if (cb && cb instanceof Function)
         cb({ bookIntroduction: response.data });

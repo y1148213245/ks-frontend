@@ -844,7 +844,7 @@ export default {
     };
   },
   mounted() {
-    this.siteId = SITE_CONFIG.siteId;
+    this.siteId = CONFIG.SITE_CONFIG.siteId;
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
     });
@@ -1519,7 +1519,7 @@ export default {
           if (_this.payMethod === "1") {
             // 支付宝支付
             window.open(
-              BASE_URL +
+              CONFIG.BASE_URL +
                 "epay/getVirtualCoinPayForm.do?price=" +
                 this.value +
                 "&loginName=" +
@@ -1535,7 +1535,7 @@ export default {
             // 微信支付
             axios
               .get(
-                BASE_URL +
+                CONFIG.BASE_URL +
                   "epay/getVirtualCoinPayForm.do?price=" +
                   this.value +
                   "&loginName=" +
@@ -1606,7 +1606,7 @@ export default {
     },
     uploadUrl: function() {
       return (
-        BASE_URL + "/user/uploadHeadPic.do?loginName=" + this.account.loginName
+        CONFIG.BASE_URL + "/user/uploadHeadPic.do?loginName=" + this.account.loginName
       );
     },
     //详情页
@@ -1736,7 +1736,7 @@ export default {
       if (setStatus == 1) {
         this.open();
         window.setTimeout(function() {
-          Get(BASE_URL + "logout.do").then(rep => {
+          Get(CONFIG.BASE_URL + "logout.do").then(rep => {
             if (Number(rep.status) === 200) {
               window.location.href = "./login.html";
             }

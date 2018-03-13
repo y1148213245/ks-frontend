@@ -106,7 +106,7 @@ export default {
   reused: true,
   props: ["namespace"],
   mounted: function() {
-    this.siteId = SITE_CONFIG.siteId;
+    this.siteId = CONFIG.SITE_CONFIG.siteId;
     this.$store.dispatch("personalCenter/queryUser", {
       // 先去vuex获取一下用户信息
       loadedCallBack: this.loadCallBack

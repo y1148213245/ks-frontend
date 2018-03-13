@@ -14,7 +14,7 @@ const dev = {
 };
 const prod = {
   queryEditorList: {
-    url: BASE_URL + 'spc/cms/publish/list.do',
+    url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
     params: {
       conditions: '[{pub_col_id:226}]',
       pageNo: '1',

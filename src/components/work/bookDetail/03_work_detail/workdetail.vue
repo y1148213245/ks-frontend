@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: song
- * @Last Modified time: 2018-03-02 16:16:36
+ * @Last Modified time: 2018-03-12 14:20:03
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
@@ -113,7 +113,7 @@ export default {
         });
         return false;
       }
-      Post(this.CONFIG.collectUrl + '?loginName=' + this.member.loginName + '&resourceType=' + this.resourceType + '&resourceId=' + this.resourceId + '&operateType=0&siteId=' + SITE_CONFIG.siteId).then(rep => {
+      Post(this.CONFIG.collectUrl + '?loginName=' + this.member.loginName + '&resourceType=' + this.resourceType + '&resourceId=' + this.resourceId + '&operateType=0&siteId=' + CONFIG.SITE_CONFIG.siteId).then(rep => {
         if (rep.data.result === "1") { // 操作成功
           this.queryWorkInfo(this.member.loginName);
           this.$message({

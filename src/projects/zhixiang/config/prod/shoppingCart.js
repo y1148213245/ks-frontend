@@ -7,10 +7,10 @@
     name: "shoppingCart",
     shoppingCart: {
         shoppingCart_01: {
-        url: BASE_URL + 'cart/getCartAndActivity.do',
+        url: CONFIG.BASE_URL + 'cart/getCartAndActivity.do',
         params: {
             loginName: "",
-            siteId: SITE_CONFIG.siteId,
+            siteId: CONFIG.SITE_CONFIG.siteId,
             timeStamp: ""
         },
         bookType: '91',  // 纸质书

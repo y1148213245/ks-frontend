@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-02-05 14:00:38 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-09 09:50:19
+ * @Last Modified by: song
+ * @Last Modified time: 2018-03-12 14:16:55
  */
 
 export default {
@@ -15,7 +15,7 @@ export default {
   },
   common: {
     vote_03: {  // 投票组件
-      url: BASE_URL + 'spc/prodb/activity/vote.do?',
+      url: CONFIG.BASE_URL + 'spc/prodb/activity/vote.do?',
       params: {
         browserId: '', // 浏览器指纹
         docID: '',

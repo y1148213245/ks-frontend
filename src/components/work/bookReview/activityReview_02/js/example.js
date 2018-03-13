@@ -23,14 +23,14 @@ var prod = {
   /* 作品配置信息 */
   review: { // 查询作品评论列表
     queryreview: {
-      url: BASE_URL + 'comment/getWorksComment.do',
+      url: CONFIG.BASE_URL + 'comment/getWorksComment.do',
       params: {
         resourceType: '',
         resourceId: '',
         type: '1', //1：老师  2：普通
         pageIndex: 1,
         pageSize: 15,
-        siteId: SITE_CONFIG.siteId
+        siteId: CONFIG.SITE_CONFIG.siteId
       },
       reviewType: [{ // 评论角色配置
         type: '1',
@@ -41,12 +41,12 @@ var prod = {
       }]
     },
     addreview: { // 添加作品评论 索引库里面没有作品
-      url: BASE_URL + 'comment/addWorksComment.do',
+      url: CONFIG.BASE_URL + 'comment/addWorksComment.do',
       params: {
         pubId: '', //  所以pubId为空
         loginName: '',
         content: '',
-        siteId: SITE_CONFIG.siteId,
+        siteId: CONFIG.SITE_CONFIG.siteId,
         parentId: '0',
         starNum: '0',
         type: '1',
@@ -61,12 +61,12 @@ var prod = {
   /* 图书、资讯、活动配置信息 */
   review: { // 查询活动评论列表
     queryreview: {
-      url: BASE_URL + 'comment/comments.do',
+      url: CONFIG.BASE_URL + 'comment/comments.do',
       params: {
         pubId: '',
         pageIndex: 1,
         pageSize: 15,
-        siteId: SITE_CONFIG.siteId
+        siteId: CONFIG.SITE_CONFIG.siteId
       },
       reviewType: [{ // 评论角色配置
         type: '1',
@@ -77,12 +77,12 @@ var prod = {
       }]
     },
     addreview: { // 添加资讯、图书、活动评论（索引库里有）
-      url: BASE_URL + 'comment/addComment.do',
+      url: CONFIG.BASE_URL + 'comment/addComment.do',
       params: {
         pubId: '',
         loginName: '',
         content: '',
-        siteId: SITE_CONFIG.siteId,
+        siteId: CONFIG.SITE_CONFIG.siteId,
         starNum: '0',
         deviceName: 'PC',
         parentId: '0',

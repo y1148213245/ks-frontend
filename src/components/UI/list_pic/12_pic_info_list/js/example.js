@@ -21,8 +21,8 @@ const  dev = {
 
 const prod = {
   pic_info_list_12: {
-    url: BASE_URL + "book/getBookDetail.do",
-    introductionUrl: BASE_URL+"spc/prodb/publicize.do",
+    url: CONFIG.BASE_URL + "book/getBookDetail.do",
+    introductionUrl: CONFIG.BASE_URL+"spc/prodb/publicize.do",
     params: {
       pubId: "",
       loginName:"",

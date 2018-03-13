@@ -5,14 +5,14 @@ export default {
   name: 'information',
   information_info_content: {
     queryDetail: {
-      url: BASE_URL + 'spc/cms/publish/detail.do',
+      url: CONFIG.BASE_URL + 'spc/cms/publish/detail.do',
       params: {
         pubId: '2715',
         loginName: ''
       }
     },
     collectOrLike: {
-      url: BASE_URL + 'collection/addCollect.do',
+      url: CONFIG.BASE_URL + 'collection/addCollect.do',
       params: {
         loginName: '',
         pubId: '',

@@ -509,7 +509,7 @@ export default {
                 // 支付宝支付
                 loading.close();
                 window.open(
-                  BASE_URL +
+                  CONFIG.BASE_URL +
                     "/epay/getPayForm.do?orderId=" +
                     argus.orderId +
                     "&loginName=" +
@@ -523,7 +523,7 @@ export default {
                 // 微信支付
                 axios
                   .get(
-                    BASE_URL +
+                    CONFIG.BASE_URL +
                       "/epay/getPayForm.do?orderId=" +
                       argus.orderId +
                       "&loginName=" +

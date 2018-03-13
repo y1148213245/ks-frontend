@@ -28,7 +28,7 @@ var prod = {
   bookreview: {
     bookreview_01: {
       queryComments: {  // 查询评论
-        url: BASE_URL + 'comment/comments.do',
+        url: CONFIG.BASE_URL + 'comment/comments.do',
         params: {
           pubId: "",
           pageIndex: 0,
@@ -36,7 +36,7 @@ var prod = {
         }
       },
       addComment: {  // 添加评论
-        url: BASE_URL + 'comment/addComment.do',
+        url: CONFIG.BASE_URL + 'comment/addComment.do',
         params: {
           pubId: "",
           loginName: "",
@@ -44,7 +44,7 @@ var prod = {
           starNum: "",
           deviceName: "pc",  // 设备类型
           colId: "",
-          siteId: SITE_CONFIG.siteId,
+          siteId: CONFIG.SITE_CONFIG.siteId,
           type: "1",
           parentId: "0",
         }

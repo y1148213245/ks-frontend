@@ -89,7 +89,7 @@ export default {
   },
   // components: {},
   mounted() {
-    this.siteId = SITE_CONFIG.siteId;
+    this.siteId = CONFIG.SITE_CONFIG.siteId;
     var hash = window.location.hash;
     if (hash) {
       var tag = hash.substring(hash.indexOf("#") + 1, hash.length);

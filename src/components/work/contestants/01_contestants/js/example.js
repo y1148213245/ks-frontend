@@ -21,7 +21,7 @@ const dev = {
 const prod = {
   contestants: {
     contestants_01: {
-      url: BASE_URL + '',
+      url: CONFIG.BASE_URL + '',
       params: {}
     }
   }

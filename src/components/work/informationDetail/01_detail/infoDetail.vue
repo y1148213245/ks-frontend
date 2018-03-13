@@ -8,7 +8,7 @@
     <!--<span>{{newsDetailInfo.information_a_pubTime | formatDate}}</span>-->
     <div style="text-align: center;">
       <span v-if="keys.information_SYS_AUTHORS"><span v-if="keys.show_key">作者：</span>{{newsDetailInfo[keys.information_SYS_AUTHORS]}}</span>
-      <span style="margin-left: 16px;" v-if="keys.information_a_pubTime"><span v-if="keys.show_key">创建日期：</span>{{newsDetailInfo[keys.information_a_pubTime] | formatTime}}</span>
+      <span style="margin-left: 16px;" v-if="keys.information_a_pubTime"><span v-if="keys.show_key">创建日期：</span>{{newsDetailInfo[keys.information_a_pubTime] | formatDate}}</span>
       <span style="margin-left: 16px;"
             v-if="keys.information_a_source">来源：{{newsDetailInfo[keys.information_a_source]}}</span>
       <a style="margin-left: 16px;" v-if="keys.information_collect" href="javascript:;" @click="addCollect()">收藏</a>
@@ -36,6 +36,7 @@
   import URL from "url";
   import PROJECT_CONFIG from "projectConfig";
   import {Get, Post} from "@common";
+  import moment from "moment";
 
   export default {
     name: 'work_informationdetail_01',
@@ -80,7 +81,7 @@
       addCollect() {
         let param = Object.assign({}, this.collectOrLikeConfig, {
           pubId: this.pubId,
-          siteId: SITE_CONFIG.siteId
+          siteId: CONFIG.SITE_CONFIG.siteId
         });
         Post(this.collectOrLikeConfig.url, param).then((rep) => {
           alert("收藏成功");
@@ -88,38 +89,11 @@
       }
     },
     filters: {
-      formatDate: function (time) {
-        if (time) {
-          let date = new Date(time)
-          return formatDate(date, 'yyyy-MM-dd')
-        } else {
-          return ''
+      formatDate: function (value) {
+        if (value) {
+          return moment(value).format("YYYY-MM-DD");
         }
-
-        function formatDate(date, fmt) {
-          if (/(y+)/.test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
-          }
-          let o = {
-            'M+': date.getMonth() + 1,
-            'd+': date.getDate(),
-            'h+': date.getHours(),
-            'm+': date.getMinutes(),
-            's+': date.getSeconds()
-          }
-          for (let k in o) {
-            if (new RegExp(`(${k})`).test(fmt)) {
-              let str = o[k] + ''
-              fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str))
-            }
-          }
-          return fmt
-        }
-
-        function padLeftZero(str) {
-          return ('00' + str).substr(str.length)
-        }
-      }
+      },
     }
   }
 

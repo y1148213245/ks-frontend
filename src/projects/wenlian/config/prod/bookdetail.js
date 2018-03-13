@@ -4,7 +4,7 @@ export default {
   list_pic: {
     /* list_pic_04_pic_list: {
       historylist:{
-        url: BASE_URL + "browserHistory/getHistoryList.do",
+        url: CONFIG.BASE_URL + "browserHistory/getHistoryList.do",
         params: {
           num:3
         },
@@ -13,7 +13,7 @@ export default {
     }, */
     list_pic_16_relative: {
       title: '相关图书',
-        url: BASE_URL + "spc/cms/publish/related.do",
+        url: CONFIG.BASE_URL + "spc/cms/publish/related.do",
         params: {
           pubId: '',
           size: 3,
@@ -22,7 +22,7 @@ export default {
   },
   common: {
     get_coupons_02: { // 领取优惠券
-      url: BASE_URL + "user/pickCoupons.do",
+      url: CONFIG.BASE_URL + "user/pickCoupons.do",
       params: {
         loginName: "",
         couponId: ""
@@ -38,16 +38,16 @@ export default {
   bookreview: {
     bookreview_01: {
       queryComments: {  // 查询评论
-        url: BASE_URL + 'comment/comments.do',
+        url: CONFIG.BASE_URL + 'comment/comments.do',
         params: {
           pubId: "",
           pageIndex: 1,
           pageSize: 15,
-          siteId: SITE_CONFIG.siteId,
+          siteId: CONFIG.SITE_CONFIG.siteId,
         }
       },
       addComment: {  // 添加评论
-        url: BASE_URL + 'comment/addComment.do',
+        url: CONFIG.BASE_URL + 'comment/addComment.do',
         params: {
           pubId: "",
           loginName: "",
@@ -55,7 +55,7 @@ export default {
           starNum: 0,
           deviceName: "pc",  // 设备类型
           colId: "",
-          siteId: SITE_CONFIG.siteId,
+          siteId: CONFIG.SITE_CONFIG.siteId,
           type: "1",
           parentId: "0",
           activityId: '',

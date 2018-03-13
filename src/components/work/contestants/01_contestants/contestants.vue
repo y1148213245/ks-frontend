@@ -265,7 +265,7 @@ export default {
   },
   created() {
     var _this = this;
-    Get(BASE_URL + "checkToken.do").then(function(rep) {
+    Get(CONFIG.BASE_URL + "checkToken.do").then(function(rep) {
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
         _this.teacherID = datas.id;

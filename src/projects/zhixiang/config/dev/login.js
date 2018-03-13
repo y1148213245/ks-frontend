@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2017-12-25 18:29:08 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2017-12-26 16:42:56
+ * @Last Modified by: song
+ * @Last Modified time: 2018-03-12 14:17:21
  */
 export default {
   name: "login",
@@ -15,8 +15,8 @@ export default {
 	    toMainPages:"./index.html",
 	    toLoginPages:"./login.html",
 	    findPassword:{
-		    findPasswordUrl:BASE_URL + "user/findPassword.do?email=",
-		    setPasswordUrl:BASE_URL + "user/setPassword1.do?email=",
+		    findPasswordUrl:CONFIG.BASE_URL + "user/findPassword.do?email=",
+		    setPasswordUrl:CONFIG.BASE_URL + "user/setPassword1.do?email=",
 		    href:"../pages/login.html"
 	    },
     }

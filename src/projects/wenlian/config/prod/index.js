@@ -36,7 +36,7 @@ export default {
       colId: 59
     },
     list_pic_11: {
-      url: BASE_URL + '/spc/cms/publish/list.do',
+      url: CONFIG.BASE_URL + '/spc/cms/publish/list.do',
       param: {
         conditions: "[{pub_col_id:'116'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -64,7 +64,7 @@ export default {
       infoDetailHref: "../pages/informationInfo.html?pubId=",
     },
     pic_advert_05: {
-      url: BASE_URL + 'spc/cms/publish/list.do',
+      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
       params: {
         conditions: "[{pub_col_id:'214'}]",
         groupBy: "pub_resource_id",

@@ -6,7 +6,7 @@ export default {
   name: "recommend",
   list_pic: {
     ui_list_pic_05: {
-      url: BASE_URL + "spc/cms/publish/list.do",
+      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
       params: {
         conditions: "[{pub_resource_type:'BOOK'},{pub_status:'1'},{pub_col_id:51},{pub_site_id:'1'}]",
         orderBy: "pub_a_order asc pub_lastmodified desc id asc",
@@ -20,7 +20,7 @@ export default {
       broadcastName: 'queryClassificationList'
     },
     list_pic_04_pic_list: {
-      url: BASE_URL + "spc/cms/publish/list.do",
+      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
       params: {
         conditions: "[{pub_resource_type:'BOOK'}]",
         groupBy: "pub_resource_id",
@@ -33,7 +33,7 @@ export default {
   },
   classification: {
     classification_01: {
-      url: BASE_URL + "spc/prodb/tree-leve-one-code.do",
+      url: CONFIG.BASE_URL + "spc/prodb/tree-leve-one-code.do",
       params: {
         code: "BOOK",
       },

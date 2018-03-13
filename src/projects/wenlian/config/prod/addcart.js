@@ -2,11 +2,11 @@ export default {
   name: 'addcart',
   shoppingCart: {
     shoppingCart_02: {
-      url: BASE_URL + 'api/book/getBookDetail.do',
+      url: CONFIG.BASE_URL + 'api/book/getBookDetail.do',
       params: {
         loginName: "",
         pubId: "",
-        siteId: SITE_CONFIG.siteId,
+        siteId: CONFIG.SITE_CONFIG.siteId,
       },
       bookType: '91', // 纸质书
       ebookType: '94', // 电子书
@@ -15,7 +15,7 @@ export default {
   picListBook: {
     userbook: {
       title: '购买该书的用户还买',
-      url: BASE_URL + "cart/getOtherBookList.do",
+      url: CONFIG.BASE_URL + "cart/getOtherBookList.do",
       params: {
         pubId: "",
         loginName: "",
@@ -25,7 +25,7 @@ export default {
     },
     otherbook: {
       title: '该作者其他图书',
-      url: BASE_URL + "spc/cms/publish/list.do",
+      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
       params: {
         conditions: "[{pub_resource_type:'BOOK'},{pub_site_id:'2'}]",
         groupBy: "pub_resource_id",

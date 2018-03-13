@@ -2,23 +2,23 @@
  * @Author: song 
  * @Date: 2018-02-06 11:12:46 
  * @Last Modified by: song
- * @Last Modified time: 2018-03-02 15:23:56
+ * @Last Modified time: 2018-03-12 14:20:09
  */
 export default {
   name: "productiondetail",
   bookdetail: {
     bookdetail_03: {
-      // url: BASE_URL + 'spc/prodb/detail.do',
-      url: BASE_URL + 'book/getWorkDetail.do',  // 查询作品详情
-      collectUrl: BASE_URL + 'collection/addWorkCollect.do', // 添加作品收藏
+      // url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
+      url: CONFIG.BASE_URL + 'book/getWorkDetail.do',  // 查询作品详情
+      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do', // 添加作品收藏
       /* collectParams: {
         loginName: '',
         resourceId: '',
         resourceType: '',
         operateType: '0',
-        siteId: SITE_CONFIG.siteId
+        siteId: CONFIG.SITE_CONFIG.siteId
       }, */
-      loadUrl: BASE_URL + 'dynamicFile/file.do?recordID=',  // 下载附件类型文章
+      loadUrl: CONFIG.BASE_URL + 'dynamicFile/file.do?recordID=',  // 下载附件类型文章
       params: {
         doclibCode: '',
         docID: '',
@@ -39,14 +39,14 @@ export default {
   },
   review: {  // 查询作品评论列表
     queryreview: {
-      url: BASE_URL + 'comment/getWorksComment.do',
+      url: CONFIG.BASE_URL + 'comment/getWorksComment.do',
       params: {
         resourceType: '',
         resourceId: '',
         type: '1',    //1：老师  2：普通
         pageIndex: 1,
         pageSize: 15,
-        siteId: SITE_CONFIG.siteId
+        siteId: CONFIG.SITE_CONFIG.siteId
       },
       reviewType: [{  // 评论角色配置
         type: '1',
@@ -57,12 +57,12 @@ export default {
       }]
     },
     addreview: {  // 添加作品评论 索引库里面没有作品
-      url: BASE_URL + 'comment/addWorksComment.do',
+      url: CONFIG.BASE_URL + 'comment/addWorksComment.do',
       params: {
         pubId: '',  //  所以pubId为空
         loginName: '',
         content: '',
-        siteId: SITE_CONFIG.siteId,
+        siteId: CONFIG.SITE_CONFIG.siteId,
         parentId: '0',
         starNum: '0',
         type: '1',

@@ -24,7 +24,7 @@ const prod = {
   swiper: {
     'modules': {
       pic_word_03: {
-        url: BASE_URL + 'spc/cms/publish/list.do',
+        url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
         params: {
           conditions: "[{pub_resource_type:'BOOK'},{pub_col_id:'240'}]",
           orderBy: 'pub_a_order asc pub_lastmodified desc id asc',

@@ -352,7 +352,7 @@ export default {
     },
     shidu: function(bookId, readType, bookName) {
       var url =
-        READ_CONFIG.baseURL +
+        CONFIG.READ_URL +
         "bookId=" +
         bookId +
         "&readType=" +
@@ -488,7 +488,7 @@ function addCart (contentType, this_value, loginName) {
       pubId: pubId,
       colId: colId, //栏目id
       number: number,
-      siteId: SITE_CONFIG.siteId
+      siteId: CONFIG.SITE_CONFIG.siteId
     },
     myCallback: function() {
       if (this.addCartInfo === "1") {
