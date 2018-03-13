@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-09 18:25:33
+ * @Last Modified time: 2018-03-12 11:13:34
  */
 export default {
   name: "activityrace",
@@ -300,7 +300,7 @@ export default {
   },
   informationDetail: {
     work_informationdetail_02: {
-      getDetailUrl: BASE_URL + 'spc/prodb/detail.do',
+      getDetailUrl: BASE_URL + 'book/getWorkDetail.do',
       getPreAndNextUrl: BASE_URL + 'spc/prodb/activity/prevNextNews.do',
       collectUrl: BASE_URL + 'collection/addWorkCollect.do',
       attachUrl:BASE_URL + 'dynamicFile/file.do',
@@ -318,6 +318,7 @@ export default {
         attachList :'ATTACH_LIST',/* 附件列表字段 */
         fileRecordID:'fileRecordID',/*  附件id字段名 */
         attachTypeCode:'attachTypeCode',/* 附件类型字段名 */
+        isCollect:'isCollect',/* 是否被收藏字段名 */
         
         eventListenData_preNextConfig_activityId:'activityID',/* 事件传入的上一篇下一篇查询参数 活动id字段名 */
         eventListenData_preNextConfig_pageNo:'page',
@@ -326,6 +327,7 @@ export default {
         
         getDetailRequestParam_doclibCode: 'doclibCode',//库码字段名
         getDetailRequestParam_docID: 'docID',//资源字段名,
+        getDetailRequestParam_loginName:'loginName',//登陆名
        
         getPreNextRequestParam_newsID:'newsID',/* 上一篇下一篇查询参数 新闻id字段名 */
         getPreNextRequestParam_activityId:'activityID',/* 上一篇下一篇查询参数 活动id字段名 */

@@ -8,7 +8,7 @@
       <!-- <span v-if="keys.author"><span v-if="keys.show_key">作者：</span>{{detail[keys.author]}}</span> -->
       <span style="margin-left: 16px;" v-if="isShow('time')"><span>创建日期：</span>{{detail[keys.time] | formatTime}}</span>
       <!-- <span style="margin-left: 16px;" v-if="keys.source">来源：{{detail[keys.source]}}</span> -->
-      <a style="margin-left: 16px;" v-if="isShow('collect')" href="javascript:;" @click="addCollect()">收藏</a>
+      <a style="margin-left: 16px;" v-if="isShow('collect')" href="javascript:;" @click="addCollect()">{{detail[keys.isCollect] == 1 ?'已收藏':'收藏'}}</a>
       <a href="http://www.jiathis.com/share" style="margin-left: 16px;" v-if="isShow('share')"
          class="search_04-content-list-entry_box-orthers-share" target="_blank">分享</a>
     </div>
@@ -53,7 +53,7 @@ export default {
       preNextData: '',/* 上一篇下一篇数据 */
       detail: '',/* 新闻详情 */
       attach: '',/* 附件详情 */
-      attachUrl:''/* 附件链接 */
+      attachUrl: ''/* 附件链接 */
     };
   },
 
@@ -78,8 +78,6 @@ export default {
     },
     /* 加载参数 */
     getParam (data, preNextParam) {
-      console.log('详情参数打印:');
-      console.log(data);
       this.detail = '';
       let keys = this.keys;
       let driveMode = this.projectConfig.driveMode;
@@ -113,17 +111,17 @@ export default {
     loadData (params) {
       this.newsListItemCache = params;
       let url = this.projectConfig.getDetailUrl;
+
+      let loginName = this.keys.getDetailRequestParam_loginName + '=' + (this.member.loginName || '');
       let doclibCode = this.keys.getDetailRequestParam_doclibCode + '=' + this.projectConfig.params.getDetailRequestParam_doclibCode;
       let docID = this.keys.getDetailRequestParam_docID + '=' + params.docID;
 
-      url += '?' + doclibCode + '&' + docID;
+      url += '?' + doclibCode + '&' + docID + '&' + loginName;
       Get(url).then((resp) => {
-        console.log('详情打印:');
-        console.log(resp.data);
         this.detail = resp.data;
 
         let attachList = this.detail[this.keys.attachList];
-        if (attachList.length>0) {
+        if (attachList.length > 0) {
           let arr = attachList.filter((entry) => {
             return entry[this.keys.attachTypeCode] == this.projectConfig.attachTypeCode
           })
@@ -156,10 +154,15 @@ export default {
             message: rep.data.data.msg
           });
           this.loadData(this.newsListItemCache);
-        } else {
+        } else if (rep.error.errorCode == '403') {
+          this.$message({
+            type: "info",
+            message: "登录超时,请您登陆"
+          });
+        }else {
           this.$message({
             type: "error",
-            message: "操作失败"
+            message: "服务器维护中"
           });
         }
       });
@@ -210,7 +213,7 @@ export default {
       }
     },
     /* 获取附件下载链接 */
-    getAttachUrl(){
+    getAttachUrl () {
       let recordID = this.keys.getAttachParam_recordID + '=' + this.attach[this.keys.fileRecordID];
       let url = this.projectConfig.attachUrl + '?' + recordID;
       this.attachUrl = url;
