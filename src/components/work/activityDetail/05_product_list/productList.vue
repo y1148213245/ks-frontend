@@ -33,6 +33,29 @@
       </div>
     </template>
   </div>
+
+   <div v-else-if="viewType == 'classification'">
+    <template v-for="(name,i) in projectConfig.classification.titles">
+      <div class="work_activitydetail_05-classification-item" :key="i">
+        <div class="work_activitydetail_05-classification-item-name">{{name}}</div>
+        <!-- v-if="item[projectConfig.classification.key] == name" -->
+        <template v-for="(item,index) in list" >
+          <div class="work_activitydetail_05-item" :key="index">
+            <el-row>
+              <el-col :span="24">
+                <el-row>
+                  <el-col :span="8" class="work_activitydetail_05-title_box"><div class="work_activitydetail_05-title" v-text="item[keys.title]" @click="toProductDetail(item)"></div></el-col>
+                  <el-col :span="8" class="work_activitydetail_05-author_box"><div v-text="item[keys.author] || '暂无作者'"></div></el-col>
+                  <el-col :span="8" class="work_activitydetail_05-date_box"><div>{{item[keys.date] | formatTime}}</div></el-col>
+                </el-row>
+                <div v-text="item[keys.abstract] || '暂无简介'"></div>
+              </el-col>
+            </el-row>
+          </div>
+        </template>
+      </div>
+    </template>
+  </div>
  </div>
 </template>
 
@@ -237,5 +260,11 @@ export default {
 }
 .work_activitydetail_05-vote_box button {
   width: 40%;
+}
+.work_activitydetail_05-classification-item-name{
+  padding: 20px 0;
+  height: 50px;
+  line-height: 50px;
+  font-size: 24px;
 }
 </style>

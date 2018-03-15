@@ -79,7 +79,7 @@
       </div>
       <div style="display:inline-block;margin-left:30px;">
         <span>地区：</span>
-        <el-select v-model="addressInformaitionValue" placeholder="请选择参赛地区" filterable>
+        <el-select v-model="addressInformaitionValue" placeholder="请选择参赛地区" filterable  @change="updateSchool">
           <el-option
           v-for="item in addressInformaition"
           :key="item"
@@ -90,7 +90,7 @@
       </div>
       <div  style="display:inline-block;margin-left:30px;">
       <span>组别：</span>
-        <el-select v-model="classInformaitionValue" placeholder="请选择参赛组别" filterable>
+        <el-select v-model="classInformaitionValue" placeholder="请选择参赛组别" filterable  @change="updateSchool">
           <el-option
           v-for="item in classInformaition"
           :key="item"
@@ -100,9 +100,18 @@
         </el-select>
       </div>
 
-      <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm">
+      <div  style="display:inline-block;margin-left:30px;">
+      <span>学校：</span>
+      <el-select v-model="schoolInformaitionValue" placeholder="请选择学校"  filterable >
+         <el-option v-for="(item,index) in schoolArr" :label="item.label" :value="item.SYS_TOPIC" :key="index"></el-option>
+      </el-select>
+      </div>
+
+
+       <div  style="display:inline-block;margin-left:30px;">
+      <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
       <div class="ac_linetext" style="margin-top:10px;">
-        <div class="ac_input" style="display:inline-block;margin-left:18px;">
+        <!-- <div class="ac_input" style="display:inline-block;margin-left:18px;">
         <el-form-item label="学校：" prop="school">
         <el-input
         placeholder="请填写学校"
@@ -110,7 +119,7 @@
         clearable>
         </el-input>
         </el-form-item>
-        </div>
+        </div> -->
         <div class="ac_input">
         <el-form-item label="教师：" prop="teacher">
         <el-input
@@ -122,6 +131,7 @@
         </div>
       </div>
       </el-form>
+      </div>
     </el-card>
     <el-button type="primary" class="ac_to_next" @click="submitAddSupplementForm('addSupplementForm')">下一步</el-button>
   </div>
@@ -148,13 +158,13 @@
             :action="upLoadUrl()"
             name="file"
             :on-preview="handlePreview"
-            :on-remove="handleRemove"
             :before-remove="beforeRemove"
             :on-success="upLoadingSuccess"
             multiple
             :limit="1"
             :on-exceed="handleExceed"
-            :file-list="addAnnexWorksForm.files">
+            :file-list="addAnnexWorksForm.files"
+            :before-upload="beforeAvatarUpload">
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
@@ -172,6 +182,11 @@
   </div>
   <div class="ac_last_text" v-show="active == 2">
      <span><i class="el-icon-success"></i>你的作品已提交成功</span>
+     <div class="where_to_go">
+     <el-button type="primary" round @click="toIndex">前往首页</el-button>
+     <el-button type="primary" round @click="toPersonal">前往参与的活动</el-button>
+     </div>
+
   </div>
 
 
@@ -199,12 +214,15 @@ export default {
       currentRow: "",
       attachID: "",
       worktype: "",
+      keys: null,
+      schoolArr: [],
       CONFIG: null,
       active: 0,
       addressInformaition: null,
       addressInformaitionValue: null,
       classInformaition: null,
       classInformaitionValue: null,
+      schoolInformaitionValue: null,
       customToolbar: [
         // 自定义编辑器工具栏
         ["bold", "italic", "underline"], // 字体样式：粗体、斜体、下划线
@@ -266,19 +284,22 @@ export default {
   created() {
     var _this = this;
     Get(CONFIG.BASE_URL + "checkToken.do").then(function(rep) {
+      console.log(rep);
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
         _this.teacherID = datas.id;
         _this.loginName = datas.loginName;
+        _this.queryParticipants();
       } else {
         alert("请登录");
+        let url = "./login.html";
+        window.location.href = url;
       }
     });
   },
 
   mounted() {
     this.CONFIG = PROJECT_CONFIG[this.namespace].contestants.contestants_01;
-    this.queryParticipants();
     this.queryRelatedInformation();
   },
   components: {
@@ -295,6 +316,49 @@ export default {
         }
       }).then(rep => {
         this.participantsList = rep.data.data;
+      });
+    },
+    //查询学校
+    updateSchool() {
+      let doclibCode =
+        this.CONFIG.supplementaryInformation.keys.getSchoolRequest_doclibCode +
+        "=" +
+        this.CONFIG.supplementaryInformation.params.getSchoolRequest_doclibCode; //配库码
+      let relations =
+        this.CONFIG.supplementaryInformation.keys.getSchoolRequest_relations +
+        "=" +
+        this.CONFIG.supplementaryInformation.params.getSchoolRequest_relations; //并且，或者
+      let cols =
+        this.CONFIG.supplementaryInformation.keys.getSchoolRequest_cols +
+        "=" +
+        this.CONFIG.supplementaryInformation.params.getSchoolRequest_cols; //字段名
+      let symbols =
+        this.CONFIG.supplementaryInformation.keys.getSchoolRequest_symbols +
+        "=" +
+        this.CONFIG.supplementaryInformation.params.getSchoolRequest_symbols; //匹配模式，包含，等于，不等于
+      let vals =
+        this.CONFIG.supplementaryInformation.keys.getSchoolRequest_vals +
+        "=" +
+        this.addressInformaitionValue +
+        "," +
+        this.classInformaitionValue; //值
+
+      let url =
+        this.CONFIG.supplementaryInformation.getSchoolUrl +
+        "?" +
+        doclibCode +
+        "&" +
+        relations +
+        "&" +
+        cols +
+        "&" +
+        symbols +
+        "&" +
+        vals;
+      Get(url).then(resp => {
+        this.schoolInformaitionValue = ""; //清空学校
+        this.schoolArr = resp.data.content;
+        console.log(this.schoolArr);
       });
     },
     queryRelatedInformation() {
@@ -342,7 +406,7 @@ export default {
           message: "请选择组别"
         });
         return false;
-      } else if (this.addSupplementForm.school == "") {
+      } else if (this.schoolInformaitionValue == "") {
         this.$message({
           type: "error",
           message: "请选择填写学校"
@@ -414,6 +478,16 @@ export default {
       // 上传地址
       return "http://172.19.57.153/spc-portal-web/dynamicFile/upload.do?";
     },
+    beforeAvatarUpload(file) {
+      const isDOCX =
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        "	application/msword";
+      if (!isDOCX) {
+        this.$message.error("上传头像图片只能是 doc或docx 格式!");
+      }
+      return isDOCX;
+    },
     upLoadingSuccess(res, file) {
       // 上传成功回调
       console.log(res);
@@ -462,7 +536,7 @@ export default {
             paramsObj.metaMap.POTHUNTER_IDNUMBER = this.currentRow.identifyId; //	参赛人身份证号
             paramsObj.metaMap.AREA = this.addressInformaitionValue; //	参赛地区
             paramsObj.metaMap.CLASS = this.classInformaitionValue; //	参赛组别
-            paramsObj.metaMap.SCHOOL = this.addSupplementForm.school; //	参赛人学校
+            paramsObj.metaMap.SCHOOL = this.schoolInformaitionValue; //	参赛人学校
             paramsObj.metaMap.GUIDE_TEACHER = this.addSupplementForm.teacher; //	参赛人指导教师
             paramsObj.metaMap.SYS_TOPIC = this.addAnnexWorksForm.title; //	参赛作品标题
             paramsObj.metaMap.DESCRIPTION = this.addAnnexWorksForm.synopsis; //	参赛作品简介
@@ -491,6 +565,14 @@ export default {
         }
       });
     },
+    toIndex() {
+      let url = "./index.html";
+      window.location.href = url;
+    },
+    toPersonal() {
+      let url = "./personalcenter.html#joinactivity";
+      window.location.href = url;
+    },
     sexFormat: function(row, column) {
       var date = row[column.property];
       if (date == 1) {
@@ -500,17 +582,11 @@ export default {
       }
     },
     // 上传附件
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
     handlePreview(file) {
       console.log(file);
     },
     handleExceed(files, fileList) {
       this.$message.warning(`只能上传一个参赛作品附件`);
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
     }
   }
 };
@@ -586,5 +662,8 @@ export default {
 }
 .work_contestants_01_main .ac_button {
   float: right;
+}
+.work_contestants_01_main .ac_last_text .where_to_go {
+  margin-top: 30px;
 }
 </style>

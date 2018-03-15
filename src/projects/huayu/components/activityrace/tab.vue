@@ -19,37 +19,59 @@
       </div>
       <!-- 参赛作品 -->
       <div  v-show="currentShowIndex == 3">
-        
-        <el-col :span="20" class="components_acitivityrace_tab-join_box">
-          <!-- 参赛作品条件 -->
-          <work_activitydetail_04 namespace="activityrace"></work_activitydetail_04>
-          <!-- 参赛作品列表 -->
-          <work_activitydetail_05 namespace="activityrace" module="module1"></work_activitydetail_05>
-          
+        <el-col :span="24" class="components_acitivityrace_tab-product_nav">
+          <el-col :span="12">
+            <div class="components_acitivityrace_tab-product_nav-item" :class="{'components_acitivityrace_tab-product_nav-item--active':productNav_active}" @click="productNavChange(true)">参赛作品</div>
+          </el-col>
+          <el-col :span="12">
+            <div class="components_acitivityrace_tab-product_nav-item" :class="{'components_acitivityrace_tab-product_nav-item--active':!productNav_active}" @click="productNavChange(false)">获奖作品</div>
+          </el-col>
         </el-col>
-        <el-col :span="4">
-          <div class="components_acitivityrace-notice">
-            <div class="components_acitivityrace-notice-title_box">
-              <span>公告</span>
+        <div v-show="productNav_active">
+          <el-col :span="20" class="components_acitivityrace_tab-join_box">
+            <!-- 参赛作品条件 -->
+            <work_activitydetail_04 namespace="activityrace"></work_activitydetail_04>
+            <!-- 参赛作品列表 -->
+            <work_activitydetail_05 namespace="activityrace" module="module1"></work_activitydetail_05>
+          </el-col>
+          <el-col :span="4">
+            <div class="components_acitivityrace-notice">
+              <div class="components_acitivityrace-notice-title_box">
+                <span>公告</span>
+              </div>
+              <!-- 公告 -->
+              <work_activitydetail_02 namespace="activityrace" module="module2"></work_activitydetail_02>
             </div>
-            <!-- 公告 -->
-            <work_activitydetail_02 namespace="activityrace" module="module2"></work_activitydetail_02>
-          </div>
-          <div class="components_acitivityrace-good_products">
-            <div class="components_acitivityrace-good_products-title_box">
-              <span>优秀作品展示</span>
+            <div class="components_acitivityrace-good_products">
+              <div class="components_acitivityrace-good_products-title_box">
+                <span>优秀作品展示</span>
+              </div>
+              <!-- 优秀参赛作品列表 -->
+              <work_activitydetail_05 namespace="activityrace" module="module2" viewType="simple"></work_activitydetail_05>
             </div>
-            <!-- 优秀参赛作品列表 -->
-            <work_activitydetail_05 namespace="activityrace" module="module2" viewType="simple"></work_activitydetail_05>
-          </div>
-        </el-col>
-
+          </el-col>
+        </div>
+        <div v-show="!productNav_active">
+          <el-col :span="24" class="components_acitivityrace_tab-join_box">
+            <!-- 参赛作品条件 -->
+            <work_activitydetail_04 namespace="activityrace"></work_activitydetail_04>
+            <!-- 参赛作品列表 -->
+            <work_activitydetail_05 namespace="activityrace" module="classification" viewType="classification"></work_activitydetail_05>
+          </el-col>
+        </div>
       </div>
 			
 
 			<!-- 名师指导 -->
 			<work_activitydetail_06 v-show="currentShowIndex == 4"  namespace="activityrace"></work_activitydetail_06>
    </div>
+   <el-row>
+      <el-col :span="24">
+        <!-- 活动评论组件 区别于作品评论 -->
+        <work_bookreview_02 namespace="activityrace" :is-show-diff=false></work_bookreview_02>
+        <!-- END 活动评论组件 区别于作品评论 -->
+       </el-col>
+   </el-row>
  </div>
 </template>
 
@@ -67,6 +89,7 @@ export default {
       currentShowIndex: 1,
       isShowJoin: true,
       isNewsDetail:false,
+      productNav_active:true,
     }
   },
 
@@ -88,7 +111,11 @@ export default {
     },
     backNewsList(){
       this.isNewsDetail = false;
+    },
+    productNavChange(val){
+      this.productNav_active = val;
     }
+
   }
 }
 </script>
@@ -110,6 +137,23 @@ export default {
 }
 .components_acitivityrace_tab-title--active {
   color: brown;
+}
+.components_acitivityrace_tab-product_nav{
+  text-align: center;
+  padding: 20px;
+}
+.components_acitivityrace_tab-product_nav-item{
+  margin: 0 auto;
+  width: 170px;
+  height: 50px;
+  line-height: 50px;
+  background-color: #F2F2F2;
+  color: #BCBCBC;
+  cursor: pointer;
+}
+.components_acitivityrace_tab-product_nav-item--active{
+  background-color: #363636;
+  color: white;
 }
 .components_acitivityrace_tab-join_box {
   padding: 10px;

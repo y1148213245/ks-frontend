@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
- * @Last Modified by: song
- * @Last Modified time: 2018-03-12 14:20:10
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-03-14 10:57:27
  */
 export default {
   name: "activityrace",
@@ -162,7 +162,7 @@ export default {
         keys: {
           title: 'SYS_TOPIC',
           author: 'POTHUNTER_NAME',
-          date: 'VOTE_COUNT',
+          date: 'SYS_CREATED',
           abstract: 'DESCRIPTION',
           teacherCommentNum: 'DIS_COUNT_NUM',
           voteNum: 'VOTE_COUNT',
@@ -214,7 +214,7 @@ export default {
         keys: {
           title: 'SYS_TOPIC',
           author: 'POTHUNTER_NAME',
-          date: 'VOTE_COUNT',
+          date: 'SYS_CREATED',
           abstract: 'DESCRIPTION',
           teacherCommentNum: 'DIS_COUNT_NUM',
           voteNum: 'VOTE_COUNT',
@@ -237,6 +237,77 @@ export default {
         },
         eventName_listenLoadedData: 'eventName_loadedDatas',
         eventName_listenSearch: '',
+        isDevelopment: false,
+      },
+      'classification': {
+        url:CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
+        toProductDetailUrl: 'productiondetail.html',
+        classification:{/* 分类配置,无则不配置 */
+          titles:['一等奖','二等奖','三等奖'],
+          key:'AWARD',/* 对应数据的字段 */
+        },
+        params: {
+          getListParam_doclibCode: 'PORTAL_WORKS',
+          getListParamOptions:{//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
+            activityId:{
+              getListParam_relations: '1',
+              getListParam_cols: 'ACTIVITYID',
+              getListParam_symbols: '2',
+              getListParam_memberType: '4',
+            },
+            'place':{//扩展属性名
+              getListParam_relations: '1',
+              getListParam_cols: 'AREA',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+            'school':{
+              getListParam_relations: '1',
+              getListParam_cols: 'SCHOOL',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+            'group':{
+              getListParam_relations: '1',
+              getListParam_cols: 'CLASS',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+            'searchText':{
+              getListParam_relations: '1',
+              getListParam_cols: 'SYS_TOPIC',
+              getListParam_symbols: '1',
+              getListParam_memberType: '4',
+            },
+          },
+          toProductDetailParam_resourceType: 'PORTAL_WORKS'
+        },
+        keys: {
+          title: 'SYS_TOPIC',
+          author: 'POTHUNTER_NAME',
+          date: 'SYS_CREATED',
+          abstract: 'DESCRIPTION',
+          teacherCommentNum: 'DIS_COUNT_NUM',
+          voteNum: 'VOTE_COUNT',
+          resourceId: 'SYS_DOCUMENTID',
+          resourceName: 'SYS_TOPIC',
+          activityId: 'ACTIVITYID',
+          eventListienLoadDatas_activityId:'pub_resource_id',
+          eventListienSearchDatas:['place','school','group','searchText'],//扩展查询参数
+          getListParam_doclibCode:'doclibCode',
+          getListParam_relations:'relations',
+          getListParam_cols:'cols',
+          getListParam_symbols:'symbols',
+          getListParam_vals:'vals',
+          getListParam_memberType:'memberType',
+          toProductDetailParam_resourceType: 'resourceType',
+          toProductDetailParam_resourceId: 'resourceId',
+          toProductDetailParam_colId: 'colId',
+          toProductDetailParam_resourceName: 'resourceName',
+          toProductDetailParam_activityId: 'activityId',
+        },
+        eventName_listenLoadedData: 'eventName_loadedDatas',
+        eventName_listenSearch: 'eventName_search',
         isDevelopment: false,
       }
 
@@ -261,42 +332,7 @@ export default {
       },
       eventName_listen: 'loadSearchResult',
     },
-    review: { // 查询活动评论列表
-      queryreview: {
-        url: CONFIG.BASE_URL + 'comment/comments.do',
-        params: {
-          pubId: '',
-          pageIndex: 1,
-          pageSize: 15,
-          siteId: CONFIG.SITE_CONFIG.siteId
-        },
-        reviewType: [{ // 评论角色配置
-          type: '1',
-          name: '教师点评'
-        }, {
-          type: '2',
-          name: '用户点评'
-        }]
-      },
-      addreview: { // 添加资讯、图书、活动评论（索引库里有）
-        url: CONFIG.BASE_URL + 'comment/addComment.do',
-        params: {
-          pubId: '',
-          loginName: '',
-          content: '',
-          siteId: CONFIG.SITE_CONFIG.siteId,
-          starNum: '0',
-          deviceName: 'PC',
-          parentId: '0',
-          type: '1',
-          colId: '',
-          memberType: '', // 1:普通人员 2：机构人员 3：评委老师 4：评论老师 5：学生
-          resourceName: '', // 值可以为空
-          resourceType: '', // 值可以为空
-          resourceId: '', // 值可以为空
-        }
-      }
-    }
+    
   },
   informationDetail: {
     work_informationdetail_02: {
@@ -358,6 +394,54 @@ export default {
         // }
       },
       eventName_back: 'eventName_backNewsList',
+    }
+  },
+  review: { // 查询活动评论列表
+    getParamType:'event',/* event:事件取参 ,href:地址栏取参 */
+    listenEvent:{
+      name:'eventName_loadedDatas',
+      keys:{
+        pubId:'id',
+        colId:'pub_col_id',
+        resourceName:'pub_resource_name',
+        resourceType:'pub_resource_type',
+        resourceId:'pub_resource_id',
+        activityId:'id',
+      }
+    },
+    queryreview: {
+      url: CONFIG.BASE_URL + 'comment/comments.do',
+      params: {
+        pubId: '',
+        pageIndex: 1,
+        pageSize: 15,
+        siteId: CONFIG.SITE_CONFIG.siteId
+      },
+      reviewType: [{ // 评论角色配置
+        type: '1',
+        name: '教师点评'
+      }, {
+        type: '2',
+        name: '用户点评'
+      }]
+    },
+    addreview: { // 添加资讯、图书、活动评论（索引库里有）
+      url: CONFIG.BASE_URL + 'comment/addComment.do',
+      params: {
+        pubId: '',
+        loginName: '',
+        content: '',
+        siteId: CONFIG.SITE_CONFIG.siteId,
+        starNum: '0',
+        deviceName: 'PC',
+        parentId: '0',
+        type: '1',
+        colId: '',
+        memberType: '', // 1:普通人员 2：机构人员 3：评委老师 4：评论老师 5：学生
+        resourceName: '', // 值可以为空
+        resourceType: '', // 值可以为空
+        resourceId: '', // 值可以为空
+      }
     }
   }
 }

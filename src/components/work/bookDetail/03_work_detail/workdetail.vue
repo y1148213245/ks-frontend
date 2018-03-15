@@ -2,12 +2,12 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: song
- * @Last Modified time: 2018-03-12 14:20:03
+ * @Last Modified time: 2018-03-13 18:19:19
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
   <div class="work_bookdetail_03">
-    <components_common_header></components_common_header>
+    <components_common_header v-if="!isMobile"></components_common_header>
     <div class="topTitle">
       <div class="title" v-text="workInfo[keys.title] || '暂无'"></div>
       <div class="vote">
@@ -41,7 +41,7 @@
       <div v-text="workInfo[keys.content]"></div>
     </div>
     <div class="workOperation">
-      <el-button size="medium" @click="addCollect()">
+      <el-button size="medium" @click="addCollect()" v-if="!isMobile">
         <i class="el-icon-star-off"></i>
         <span v-if="workInfo[keys.isCollect] == '1'">已收藏</span>
         <span v-else>收藏文章</span>
@@ -51,11 +51,11 @@
         <span>下载文章</span>
       </el-button>
     </div>
-    <div class="qrcode">
+    <div class="qrcode" v-if="!isMobile">
       <qrcode :value="url" :size="120"></qrcode>
       <div>微信扫一扫分享</div>
     </div>
-    <work_bookreview_02 namespace="productiondetail"></work_bookreview_02>
+    <work_bookreview_02 v-if="!isMobile" namespace="productiondetail"></work_bookreview_02>
   </div>
 </template>
 
@@ -80,6 +80,7 @@ export default {
       commentNum: 0, // 评论数
       resourceType: '',
       resourceId: '',
+      isMobile: false,  // 移动端状态 默认false
     };
   },
   components: {
@@ -98,10 +99,11 @@ export default {
     });
   },
   mounted () {
-    this.url = window.location.href;
+    this.url = window.location.href + '&isMobile=true';  // 扫描二维码上移动端 去除收藏和评论功能 因为这些功能需要登录才能用
     var queryObj = URL.parse(document.URL, true).query;
     this.resourceType = queryObj.resourceType;
     this.resourceId = queryObj.resourceId;
+    this.isMobile = queryObj.isMobile ? true : false;  // 是否在移动端
   },
 
   methods: {

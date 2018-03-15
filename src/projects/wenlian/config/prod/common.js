@@ -13,7 +13,7 @@ export default {
 		picListBook: {
 			hotsalebank: { 
 				title: '热销排行',
-				url:"http://172.19.57.153/portal/api/spc/cms/publish/list.do",
+				url: CONFIG.BASE_URL+"spc/cms/publish/list.do",
 				param:{
 					conditions: "[{pub_col_id:'131'},{pub_status:'1'}]",
 					groupBy: "pub_resource_id",
@@ -36,7 +36,7 @@ export default {
 			}
 		},
 		picListEditor:{
-			url:"http://172.19.57.153/portal/api/spc/cms/publish/list.do",
+			url:CONFIG.BASE_URL +"spc/cms/publish/list.do",
 			param:{
 				conditions: "[{pub_col_id:'117'}]",
 				groupBy: "pub_resource_id",
@@ -49,7 +49,7 @@ export default {
 			locationHref:"./authordetail.html?pubId="
 		},
 		popularBook:{
-			url:"http://172.19.57.153/portal/api/spc/cms/publish/list.do",
+			url:CONFIG.BASE_URL+"/spc/cms/publish/list.do",
 			param:{
 				conditions: "[{pub_col_id:'57'},{pub_status:'1'}]",
 				groupBy: "pub_resource_id",
@@ -62,7 +62,7 @@ export default {
 			href:"./bookdetail.html?pubId="
 		},
 		refinedBook:{
-			url:"http://172.19.57.153/portal/api/spc/cms/publish/list.do",
+			url:CONFIG.BASE_URL+"spc/cms/publish/list.do",
 			param:{
 				conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
 				groupBy: "pub_resource_id",

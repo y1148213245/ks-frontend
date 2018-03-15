@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-02-05 13:56:44 
- * @Last Modified by: song
- * @Last Modified time: 2018-03-02 10:17:36
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-03-14 11:05:04
  */
 <!-- 活动评论组件 -->
 <template>
@@ -58,6 +58,8 @@ export default {
   },
   data () {
     return {
+      CONFIG: null,
+      keys: null,
       review: '',  // 评论内容
       reviewList: [], // 评论列表
       showType: '1',  // 显示哪一种类型的评论：教师评论 or 普通用户评论 
@@ -79,20 +81,43 @@ export default {
     })
   },
   mounted () {
-    let queryObj = URL.parse(document.URL, true).query;
-    this.pubId = queryObj.pubId;
-    this.colId = queryObj.colId;
-    this.resourceName = queryObj.resourceName;
-    this.resourceType = queryObj.resourceType;
-    this.resourceId = queryObj.resourceId;
-    this.activityId = queryObj.activityId;
-    this.CONFIG = PROJECT_CONFIG[this.namespace].review;
-    this.reviewType = this.CONFIG.queryreview.reviewType;
-    this.queryReviewList(); // 不传tye的时候查询的是所有评论 为了获取总的评论数
-    this.queryReviewList(this.showType);  // 查询评论列表
+    this.initConfig()
   },
 
   methods: {
+    initConfig () {
+      this.CONFIG = PROJECT_CONFIG[this.namespace].review;
+      this.keys = this.CONFIG.listenEvent.keys;
+      this.reviewType = this.CONFIG.queryreview.reviewType;
+      if(this.CONFIG.getParamType == 'event'){
+        this.$bus.on(this.CONFIG.listenEvent.name,this.getEventParam)
+      }else if(this.CONFIG.getParamType == 'href'){
+        this.getHrefParam ();
+      }
+    },
+    getEventParam (data) {
+      this.pubId = data[this.keys.pubId];
+      this.colId = data[this.keys.colId];
+      this.resourceName = data[this.keys.resourceName];
+      this.resourceType = data[this.keys.resourceType];
+      this.resourceId = data[this.keys.resourceId];
+      this.activityId = data[this.keys.activityId];
+
+      this.queryReviewList(); // 不传tye的时候查询的是所有评论 为了获取总的评论数
+      this.queryReviewList(this.showType);  // 查询评论列表
+    },
+    getHrefParam () {
+      let queryObj = URL.parse(document.URL, true).query;
+      this.pubId = queryObj.pubId;
+      this.colId = queryObj.colId;
+      this.resourceName = queryObj.resourceName;
+      this.resourceType = queryObj.resourceType;
+      this.resourceId = queryObj.resourceId;
+      this.activityId = queryObj.activityId;
+
+      this.queryReviewList(); // 不传tye的时候查询的是所有评论 为了获取总的评论数
+      this.queryReviewList(this.showType);  // 查询评论列表
+    },
     queryReviewList (type) {  // 查询评论列表
       let paramsObj = Object.assign({}, this.CONFIG.queryreview.params);
       paramsObj.type = type ? type : '';

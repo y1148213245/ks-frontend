@@ -5,7 +5,7 @@ export default {
   name: "index",
   list_pic: {
     picListBookShow: {
-      url: "http://172.19.57.153/portal/api/spc/cms/publish/list.do",
+      url: CONFIG.BASE_URL+"spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -21,7 +21,7 @@ export default {
       colId: 59
     },
     picListRefinedBook: {
-      url: "http://172.19.57.153/portal/api/spc/cms/publish/list.do",
+      url: CONFIG.BASE_URL+"spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -30,7 +30,7 @@ export default {
         pageSize: "15",
         searchText: ""
       },
-      baseURL: "http://172.19.57.153/portal/reader",
+      baseURL: CONFIG.READ_URL,
       href: "./bookList.html?colId=",
       bookDetail: "./bookdetail.html?pubId=",
       colId: 59
@@ -52,7 +52,7 @@ export default {
   },
   swiper: {
     pic_noWords_04: {
-      url: 'http://172.19.57.153/portal/api/spc/cms/publish/list.do',
+      url: CONFIG.BASE_URL+'spc/cms/publish/list.do',
       params: {
         conditions: "[{pub_col_id:'83'}]",
         groupBy: "pub_resource_id",

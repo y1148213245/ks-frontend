@@ -151,13 +151,9 @@
        </div>
      </div>
      <!-- 修改配置文件的模态弹窗 -->
-     <el-dialog title="组件配置信息" :visible.sync="editConfigModel" :model="configForm" :rules="configRules">
+     <el-dialog title="编辑组件配置信息" :visible.sync="editConfigModel">
       <div>
-        <el-form  :model="configForm" :rules="configRules" :label-position="labelPosition" ref="configForm">
-          <el-form-item label="组件命名空间(namespace)" prop="namespace">
-            <el-input v-model="configForm.namespace" style="width: 200px;" :disabled="true"></el-input>
-          </el-form-item>
-        </el-form>
+        <textarea id="prodConfig" v-html="currentComponent.prod" style="width: 100%; min-height: 200px;"></textarea>
       </div>
 
       <span slot="footer" class="dialog-footer">
@@ -204,19 +200,13 @@ export default {
       }, {
         name: '编程',
         type: 'coding'
-      }/* , {
-        name: '替换',
-        type: 'change'
-      } */, {
+      }, {
         name: '发布',
         type: 'public'
       }, {
         name: '在线查看',
         type: 'view'
-      }/* , {
-        name: '删除',
-        type: 'delete'
-      } */],
+      }],
       configUrl: 'http://172.19.57.153:8085/spc/api/',  // 请求url
       // configUrl: 'http://172.19.36.57:8084/spc/api/',  //  ff本地ip
       reviewContext: '',  // iframe里面的内容 呈现源码
@@ -229,14 +219,8 @@ export default {
       siteName: '',  // 站点名 用于区分不同的站点
       VueExamples: {},           // 扫描出来的vue文件的全部内容 截取的是template模块
       editConfigModel: false,  // 编辑组件配置文件信息的模态弹窗
-      labelPosition: 'right',
-      configForm: {
-        namespace: '',
-      },
-      configRules: {
-        namespace: { required: true, message: '请填写组件命名空间', trigger: 'blur' }
-      },
-      currentComponent: {}
+      currentComponent: {},
+      usedComTagArr: [], // 已用组件数据集合
     };
   },
 
@@ -260,30 +244,32 @@ export default {
   methods: {
     showConfig (com) { // 显示当前组件的配置文件 支持编辑
       this.currentComponent = this.examples[com];
-      this.configForm.namespace = this.currentComponent.name;
       this.editConfigModel = true;
     },
-    confirmConfig (configForm) {  // 确定修改组件配置信息
-      this.$refs[configForm].validate(valid => {
-        if (valid) {
-          $_$[this.configForm.namespace] = this.currentComponent.prod;
-          // console.log($_$);
-          this.editConfigModel = false;
-          /* var bodyContent = this.code.indexOf('<body') !== -1 ? this.code.substring(this.code.indexOf('<body'), this.code.indexOf('</body>')) : '';
-          var uiComponent = bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) ? bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) : [];
-          var workComponent = bodyContent.match(/<work_.*?>(.*?)<\/work_.*?>/g) ? bodyContent.match(/<work_.*?>(.*?)<\/work_.*?>/g) : [];
-          var componentWrapper = uiComponent.concat(workComponent);
-          console.log(componentWrapper); 
-          // TODO 当前页面有多个组件
-          
-          if (this.code.indexOf('namespace') === -1) { // 有命名空间就不再重复添加
-            this.code = this.code.replace('<' + this.currentComponent.name, '<' + this.currentComponent.name + ' namespace="' + this.currentComponent.name + '"');  // ？？？ 这样的话namespace相当于还是不能外部编辑 只能代码编写
-          }*/
-          this.saveCode(false);
-        } else {
-          return false;
+    confirmConfig () {  // 确定修改组件配置信息
+      var key = "";
+      var value = {};
+      for (var i = 0, len = this.usedComTagArr.length; i < len; i++) {
+        if (this.usedComTagArr[i].indexOf('<' + this.currentComponent.name) !== -1) { // 修改的当前组件
+          key = this.usedComTagArr[i].substring(this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace'))) + 1, this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace')) + 1));
+          value = document.getElementById('prodConfig').innerHTML;
+          break;
         }
-      });
+      }
+      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=' + key + '&value=' + value).then((res) => {
+        if (res.data && res.data.success) {
+          this.$message({
+            type: "success",
+            message: "修改成功"
+          });
+        } else {
+          this.$message({
+            type: "info",
+            message: "修改失败，请稍后重试"
+          });
+        }
+        this.editConfigModel = false;
+      })
     },
     toggleListType (tab, event) { // 切换显示列表：页面列表、样式列表、图片列表
       this.activeType = tab && tab.name ? tab.name : this.activeType;
@@ -323,8 +309,7 @@ export default {
       this.showItem = item;
       this.noData = this.activeFile ? false : true;  // 中间预览区要兼容没有数据的情况
       if (!this.noData) {  // 有数据才执行
-        this.reviewContext = this.configUrl + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName;
-        // this.reviewContext = 'http://172.19.36.57:8084/spc/' + this.siteName + '/pages/' + this.activeFile;
+        this.reviewContext = this.activeType === 'html' ? (this.configUrl + '../' + this.siteName + '/pages/' + this.activeFile) : (this.configUrl + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName);
         Get(this.configUrl + 'files/edit?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
           var datas = res.data;
           if (datas.success && datas.content) {
@@ -343,6 +328,7 @@ export default {
               workComArray.push(workComponent[j].substring(workComponent[j].indexOf('</'), workComponent[j].length).replace('</', '').replace('>', ''));
             }
             let exampleArray = uiComArray.concat(workComArray);  // 将两个数组拼成一个
+            this.usedComTagArr = [];
             for (var k = 0, len = exampleArray.length; k < len; k++) {
               this.usedComponents[exampleArray[k]] = this.examples[exampleArray[k]];
               delete this.unusedComponents[exampleArray[k]];
@@ -351,6 +337,8 @@ export default {
               if (con.indexOf("namespace") === -1) { // 没有命名空间的组件 直接添加 有命名空间不做修改
                 this.code = this.code.replace('<' + exampleArray[k], '<' + exampleArray[k] + ' namespace="' + this.activeFile.substring(0, this.activeFile.indexOf('.html')) + '"');
               }
+              con = this.code.substring(this.code.indexOf('<' + exampleArray[k]), this.code.indexOf('</' + exampleArray[k]));
+              this.usedComTagArr.push(con);
             }
             this.$forceUpdate();
           }
@@ -639,7 +627,7 @@ body {
 
 .components_pagemanagement .leftList .listNav .operation {
   display: inline-block;
-  width: 23.7%;
+  width: 22.7%;
   text-align: center;
   cursor: pointer;
 }

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="Cache-Control" content="max-age=3000" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0,minimal-ui, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta content="black" name="apple-mobile-web-app-status-bar-style">
+  <meta name="format-detection" content="telephone=no,email=no"/>
+  <meta name="screen-orientation" content="portrait">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!--em标准js代码，请放在页面的最上方，前面最好不要再有JS代码或JS文件-->
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <script type="text/javascript" src="../assets/js/public.js"></script>
+  <!-- <link type="text/css" rel="stylesheet" href="../assets/css/common.css" />
+  <link type="text/css" rel="stylesheet" href="../assets/css/customStyle.css" />
+  <link type="text/css" rel="stylesheet" href="../assets/css/flexslider.css" />
+  <link type="text/css" rel="stylesheet" href="../assets/css/css.css" /> -->
+
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <title>首页</title>
+</head>
+
+<body style="overflow: hidden;">
+<div id="app">
+  <!--公用 header-->
+  <!-- <mobile_zx_header></mobile_zx_header> -->
+  <!--公用 header-->
+
+  <!--hm_banner 轮播图-->
+    <!--几张banner图大小要一样-->
+  <!-- <div class="hm_banner">
+    <mobile_zx_carousel :col_id='132'></mobile_zx_carousel>
+  </div> -->
+  <!--hm_banner 轮播图-->
+
+  <!--首页推荐的列表-->
+  <!-- <div class="class_con">
+    <mobile_zx_newbookshelf :col_id='110'></mobile_zx_newbookshelf>
+
+    <div class="class_con_r">
+      <mobile_zx_newfreebook :col_id='111'></mobile_zx_newfreebook>
+      <mobile_zx_newsalebook :col_id='112'></mobile_zx_newsalebook>
+    </div>
+  </div> -->
+
+  <!--重磅推荐-->
+  <!-- <mobile_zx_superrecommend :col_id='104'></mobile_zx_superrecommend>
+  <mobile_zx_hot :col_id='105'></mobile_zx_hot> -->
+  <ui_mobile_list_01 namespace="index" module="zhongbang"></ui_mobile_list_01>
+  <!--重磅推荐-->
+
+  <!--广告-->
+  <!-- <mobile_zx_advert :col_id='133'></mobile_zx_advert> -->
+  <!--广告-->
+
+  <!--新书抢先看-->
+  <!-- <mobile_zx_newbook :col_id='106'></mobile_zx_newbook> -->
+  <!--新书抢先看-->
+
+  <!--最新特价-->
+  <!-- <mobile_zx_newsale :col_id='107'></mobile_zx_newsale> -->
+  <!--最新特价-->
+
+  <!--免费专区-->
+  <!-- <div class="zbtj" style="padding-bottom: 1.2rem;">
+    <mobile_zx_freebook :col_id='108'></mobile_zx_freebook>
+  </div> -->
+  <!--免费专区-->
+
+</div>
+
+</body>
+<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/js/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="../assets/js/mobileInterface.js"></script>
+</html>

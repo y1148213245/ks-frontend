@@ -48,6 +48,10 @@ const prod = {
       'module1': {
         url: 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
+        classification:{/* 分类配置,无则不配置 */
+          titles:['一等奖','二等奖','三等奖'],
+          key:'AWARD',/* 对应数据的字段 */
+        },
         params: {
           getListParam_doclibCode: 'PORTAL_WORKS',
           getListParamOptions:{//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
@@ -82,7 +86,7 @@ const prod = {
               getListParam_memberType: '4',
             },
           },
-          getListParamOptions_fixed:{/* 固定条件配置 */
+          getListParamOptions_fixed:{/* 固定条件配置,无则不配置 */
             IS_EXCELLENTWORK:{//例
               getListParam_relations: '1',
               getListParam_cols: 'IS_EXCELLENTWORK',
@@ -96,7 +100,7 @@ const prod = {
         keys: {
           title: 'SYS_TOPIC',
           author: 'POTHUNTER_NAME',
-          date: 'VOTE_COUNT',
+          date: 'SYS_CREATED',
           abstract: 'DESCRIPTION',
           teacherCommentNum: 'DIS_COUNT_NUM',
           voteNum: 'VOTE_COUNT',
@@ -117,8 +121,8 @@ const prod = {
           toProductDetailParam_resourceName: 'resourceName',
           toProductDetailParam_activityId: 'activityId',
         },
-        eventName_listenLoadedData: '',
-        eventName_listenSearch: '',
+        eventName_listenLoadedData: 'eventName_loadedDatas',
+        eventName_listenSearch: 'eventName_search',
         isDevelopment: false,
       }
 

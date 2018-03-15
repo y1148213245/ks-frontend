@@ -513,7 +513,7 @@ export default {
   // 参与的活动
   myWorks(params) {
     var url =
-      "http://172.19.36.197:9092/spc-portal-web/spc/prodb/activity/myWorks.do?loginName=" +
+      BASE_URL +"spc/prodb/activity/myWorks.do?loginName=" +
       params.loginName +
       "&status=" +
       (params.status || "") +

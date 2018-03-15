@@ -60,6 +60,18 @@ var prod = {
   },
   /* 图书、资讯、活动配置信息 */
   review: { // 查询活动评论列表
+    getParamType:'event',/* event:事件取参 ,href:地址栏取参 */
+    listenEvent:{/* getParamType值为event时配置,否则不配置 */
+      name:'dwadwa',
+      keys:{
+        pubId:'id',
+        colId:'pub_col_id',
+        resourceName:'pub_resource_name',
+        resourceType:'pub_resource_type',
+        resourceId:'pub_resource_id',
+        activityId:'id',
+      }
+    },
     queryreview: {
       url: CONFIG.BASE_URL + 'comment/comments.do',
       params: {
@@ -92,7 +104,7 @@ var prod = {
         resourceName: '', // 值可以为空
         resourceType: '', // 值可以为空
         resourceId: '', // 值可以为空
-      }
+      },
     }
   },
 }

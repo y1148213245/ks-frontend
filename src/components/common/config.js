@@ -12,6 +12,4 @@ var CONFIG = (function () {
 	return Object.assign({}, _configs, typeof $_$ !== "undefined"? $_$ : {})
 })();
 
-window.GLOBAL_PROJECT_CONFIG = CONFIG;
-
 export default CONFIG ;

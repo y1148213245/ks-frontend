@@ -1,0 +1,19 @@
+.rankIcon {
+  background: url(../img/rank.png) no-repeat;
+  background-size: 19px 19px;
+}
+/*.class_con_r_free {
+  padding: 0.3rem 0.55rem 0.25rem 0.55rem!important;
+}
+
+.class_con_r_sale {
+  padding: 0.3rem 0.55rem 0.29rem 0.55rem!important;
+}*/
+
+.hm_banner .slides a {
+  height: 3.19rem!important;
+}
+
+.hm_banner .slides img {
+  height: 3.19rem!important;
+}
