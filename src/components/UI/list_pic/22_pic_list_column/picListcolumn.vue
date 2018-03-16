@@ -33,13 +33,13 @@ export default {
     }
   },
   mounted:function(){
-    this.projectConfig=PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_22;
-    this.keys=this.projectConfig.keys;
+    this.CONFIG=PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_22;
+    this.keys=this.CONFIG.keys;
     this.getList();
   },
   methods:{
     getList:function(){
-      let url=this.projectConfig.url+"?colId="+this.projectConfig.params.colId;
+      let url=this.CONFIG.url+"?colId="+this.CONFIG.params.colId;
       Post(url).then((rep)=>{
         if(rep && rep.data.data instanceof Array){
           this.activityList=rep.data.data;
@@ -47,7 +47,7 @@ export default {
       });
     },
     goList:function(id){
-      return this.projectConfig.activityListUrl+"?colId="+id;
+      return this.CONFIG.activityListUrl+"?colId="+id;
     }
   }
 };

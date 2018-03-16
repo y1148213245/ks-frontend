@@ -18,7 +18,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       keys: null,
       fuwen: {},
     };
@@ -28,18 +28,18 @@ export default {
 
   created () {
     this.initConfig();
-    this.projectConfig.isDevelopment ? this.loadData() : this.$bus.on(this.projectConfig.eventName_listen, this.loadData)
+    this.CONFIG.isDevelopment ? this.loadData() : this.$bus.on(this.CONFIG.eventName_listen, this.loadData)
   },
 
   mounted () { },
 
   methods: {
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_02[this.module];
-      this.keys = this.projectConfig.keys;
+      this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_02[this.module];
+      this.keys = this.CONFIG.keys;
     },
     loadData (data) {
-      let url = this.projectConfig.url
+      let url = this.CONFIG.url
       if (data) {
         let queryParam_docId = this.keys.requestUrlParam_docId + '=' + data[this.keys.eventName_listen_resourceId]
         let queryParam_code = this.keys.requestUrlParam_code + '=' + data[this.keys.eventName_listen_resourceType]
@@ -52,7 +52,7 @@ export default {
 
         for (let index = 0, len = datas.length; index < len; index++) {
           const element = datas[index];
-          if (element[this.keys.topic] == this.projectConfig.topic) {
+          if (element[this.keys.topic] == this.CONFIG.topic) {
             fuwen = element;
             break;
           }

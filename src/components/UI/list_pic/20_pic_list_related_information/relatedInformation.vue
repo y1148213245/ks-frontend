@@ -29,7 +29,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       relateNews: [],
       pubId: '',
     };
@@ -46,20 +46,20 @@ export default {
 
   methods: {
     initConfig () {
-      let projectConfig = PROJECT_CONFIG[this.namespace].list_pic.work_list_pic_20;
-      this.projectConfig = JSON.parse(JSON.stringify(projectConfig));
+      let CONFIG = PROJECT_CONFIG[this.namespace].list_pic.work_list_pic_20;
+      this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
       this.pubId = URL.parse(document.URL, true).query.pubId;
     },
     loadData () {
       let _this = this;
-      let url = this.projectConfig.url + this.pubId;
+      let url = this.CONFIG.url + this.pubId;
       Get(url).then(function (response) {
 
         _this.relateNews = response.data.data.result;
       })
     },
     toDetail(id){
-      window.location.href = this.projectConfig.toDetailUrl + id;
+      window.location.href = this.CONFIG.toDetailUrl + id;
     }
   },
   filters: {

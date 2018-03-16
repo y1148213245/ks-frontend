@@ -123,7 +123,10 @@
        <!-- 右侧组件列表区 -->
        <div class="rightList">
          <div class="rightListTop listArea">
-           <div class="title">已用组件列表</div>
+           <div class="title">
+             <span>已用组件列表</span>
+             <el-button size="mini" style="float: right; margin-top: 6px;" @click="globalConfig()">全局配置</el-button>
+           </div>
            <div class="conponentsCon">
              <ul class="usedComUl">
                <li v-if="JSON.stringify(usedComponents) !== '{}'" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}">
@@ -150,7 +153,7 @@
          </div>
        </div>
      </div>
-     <!-- 修改配置文件的模态弹窗 -->
+     <!-- 修改组件配置文件的模态弹窗 -->
      <el-dialog title="编辑组件配置信息" :visible.sync="editConfigModel">
       <div>
         <textarea id="prodConfig" v-html="currentComponent.prod" style="width: 100%; min-height: 200px;"></textarea>
@@ -158,7 +161,20 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="editConfigModel = false">取 消</el-button>
-        <el-button type="primary" @click="confirmConfig('configForm')">确 定</el-button>
+        <el-button type="primary" @click="confirmConfig()">确 定</el-button>
+      </span>
+      
+     </el-dialog>
+
+     <!-- 修改全局配置文件， 即config/index.js的模态弹窗 -->
+     <el-dialog title="编辑全局配置信息" :visible.sync="editGlobalConfigModel">
+      <div>
+        <textarea id="globalConfig" v-html="CONFIG" style="width: 100%; min-height: 200px;"></textarea>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editGlobalConfigModel = false">取 消</el-button>
+        <el-button type="primary" @click="confirmGlobalConfig()">确 定</el-button>
       </span>
       
      </el-dialog>
@@ -221,6 +237,8 @@ export default {
       editConfigModel: false,  // 编辑组件配置文件信息的模态弹窗
       currentComponent: {},
       usedComTagArr: [], // 已用组件数据集合
+      editGlobalConfigModel: false,  // 编辑全局配置文件信息的模态弹窗
+      CONFIG: null, // 全局配置对象
     };
   },
 
@@ -246,6 +264,10 @@ export default {
       this.currentComponent = this.examples[com];
       this.editConfigModel = true;
     },
+    globalConfig () {  // 显示当前项目的全局配置
+      this.editGlobalConfigModel = true;
+      this.CONFIG = CONFIG;
+    },
     confirmConfig () {  // 确定修改组件配置信息
       var key = "";
       var value = {};
@@ -269,6 +291,24 @@ export default {
           });
         }
         this.editConfigModel = false;
+      })
+    },
+    confirmGlobalConfig () {
+      var key = 'CONFIG';
+      var value = document.getElementById('globalConfig').innerHTML;
+      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=' + key + '&value=' + value).then((res) => {
+        if (res.data && res.data.success) {
+          this.$message({
+            type: "success",
+            message: "修改成功"
+          });
+        } else {
+          this.$message({
+            type: "info",
+            message: "修改失败，请稍后重试"
+          });
+        }
+        this.editGlobalConfigModel = false;
       })
     },
     toggleListType (tab, event) { // 切换显示列表：页面列表、样式列表、图片列表

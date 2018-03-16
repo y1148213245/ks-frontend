@@ -30,7 +30,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       keys: null,
       detail: {},
       isActive: null,
@@ -52,13 +52,13 @@ export default {
 
   methods: {
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_01;
-      this.keys = this.projectConfig.keys;
+      this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_01;
+      this.keys = this.CONFIG.keys;
 
     },
     loadDatas () {
       let keys = this.keys;
-      let url = this.projectConfig.url;
+      let url = this.CONFIG.url;
       let query = URL.parse(document.URL, true).query;
       if (query[keys.requestUrlParam_pubId]) {
         let queryParam_pubId = keys.requestUrlParam_pubId + '=' + query[keys.requestUrlParam_pubId];
@@ -68,7 +68,7 @@ export default {
         let data = resp.data.data;
         this.detail = data;
         if (this.detail) {
-          this.$bus.emit(this.projectConfig.eventName_loadedDatas, data);
+          this.$bus.emit(this.CONFIG.eventName_loadedDatas, data);
 
           //判断活动过期
           let thisTimestamp = new Date().getTime();
@@ -82,8 +82,8 @@ export default {
       })
     },
     toUploadPage () {
-      if (this.projectConfig.toUploadPagUrl) {
-        let url = this.projectConfig.toUploadPagUrl;
+      if (this.CONFIG.toUploadPagUrl) {
+        let url = this.CONFIG.toUploadPagUrl;
         if (this.keys.toUploadPageUrlParam_docId) {
           let queryParam_docId = this.keys.toUploadPageUrlParam_docId + '=' + this.detail[this.keys.resourceId];
           url += '?' + queryParam_docId;

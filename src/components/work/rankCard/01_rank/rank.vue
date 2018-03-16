@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="rankcard_01">
-    <template v-for="(rule,index) in projectConfig.rules">
+    <template v-for="(rule,index) in CONFIG.rules">
       <span :key="index" class="rankcard_01_nav" :class="{'rankcard_01_nav--on':currentShow==index}" @click="changeOrderParam(rule.orderBy,index)" v-text="rule.title"></span>
     </template>
   </div>
@@ -17,7 +17,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       currentShow: 0,
     };
   },
@@ -32,12 +32,12 @@ export default {
 
   methods: {
     initConfig () {
-      let projectConfig = PROJECT_CONFIG[this.namespace].rankCard.rank_01;
-      this.projectConfig = JSON.parse(JSON.stringify(projectConfig));
+      let CONFIG = PROJECT_CONFIG[this.namespace].rankCard.rank_01;
+      this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
     },
     changeOrderParam (orderBy, index) {
       this.currentShow = index;
-      this.$bus.emit(this.projectConfig.eventName, { orderBy });
+      this.$bus.emit(this.CONFIG.eventName, { orderBy });
     }
   }
 }

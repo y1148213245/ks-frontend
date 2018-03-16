@@ -34,7 +34,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: {},
+      CONFIG: {},
       list: [],
     };
   },
@@ -50,13 +50,13 @@ export default {
 
   methods: {
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].list_pic.list_pic_11
+      this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_11
     },
     toDetail (id) {
-      window.location.href = this.projectConfig.detailHref + id + "&currentType=author#";
+      window.location.href = this.CONFIG.detailHref + id + "&currentType=author#";
     },
     loadDatas () {
-      Post(this.projectConfig.url, this.projectConfig.param).then((rep) => {
+      Post(this.CONFIG.url, this.CONFIG.param).then((rep) => {
         this.list = rep.data.result;
         this.callback();
       })

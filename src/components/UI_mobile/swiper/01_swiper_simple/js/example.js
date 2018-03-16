@@ -1,22 +1,17 @@
-import component from '../xScroll_list.vue'
+import component from '../swiper_simple.vue'
 const name = component.name;  // 组件标签名
-const title = '图书列表组件';  // 组件title
-const description = `
-横向展示,可左右滑动
-
-参数配置:
-  可修改conditions下的pub_col_id切换栏目
-`;  // 组件描述信息
+const title = '轮播图组件';  // 组件title
+const description = `轮播图组件`;  // 组件描述信息
 const dev = {
-  list: {
-    ui_mobile_list_01: {
+  swiper: {
+    ui_mobile_swiper_01: {
       url: '',
     }
   }
 };
 const prod = {
-  list: {
-    ui_mobile_list_01: {
+  swiper: {
+    ui_mobile_swiper_01: {
       'module1': {
         getList: {
           url: 'spc/cms/publish/list.do',
@@ -28,16 +23,15 @@ const prod = {
               { pub_col_id: 104 }
             ],
             groupBy: "pub_resource_id",
-            orderBy: "pub_a_order asc pub_lastmodified desc",
+            orderBy: "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
             pageNo: "1",
             pageSize: "10",
             searchText: "",
           },
           keys:{
             id:'id',
-            title: "BOOK_SYS_TOPIC",
             pic:'pub_picBig',
-            author:'BOOK_SYS_AUTHORS',
+            poster:'pub_POSTER'
           }
         },
         getColDetail:{
@@ -51,7 +45,7 @@ const prod = {
     }
   }
 };
-const platform = 'mobile';
-const pageType = ['index','channel'];
+const platform = 'PC';
+const pageType = ['list'];
 const resourceType = ['book'];
 export { name, title, dev, prod, description, platform, pageType, resourceType };

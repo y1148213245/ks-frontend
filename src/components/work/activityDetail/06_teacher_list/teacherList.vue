@@ -14,7 +14,7 @@
       </div>
     </template>
     <div>
-      <ui_pagination :pageMessage="{totalCount}" :excuteFunction="toPaging" :pageSizes="this.projectConfig.params.paging_pageSizes"></ui_pagination>
+      <ui_pagination :pageMessage="{totalCount}" :excuteFunction="toPaging" :pageSizes="this.CONFIG.params.paging_pageSizes"></ui_pagination>
     </div>
  </div>
 </template>
@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       keys: null,
       list:[],
       totalCount:0,
@@ -43,7 +43,7 @@ export default {
 
   created () { 
     this.initConfig();
-    this.projectConfig.isDevelopment ? this.loadData() : this.$bus.on(this.projectConfig.eventName_listen,this.loadData); 
+    this.CONFIG.isDevelopment ? this.loadData() : this.$bus.on(this.CONFIG.eventName_listen,this.loadData); 
     this.loadData()//临时
   },
 
@@ -51,19 +51,19 @@ export default {
 
   methods: {
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_06;
-      this.keys = this.projectConfig.keys;
+      this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_06;
+      this.keys = this.CONFIG.keys;
     },
     loadData(activityDetail){
       if(activityDetail){
         this.activityDetailCache = activityDetail;
       }
       let param_activityId = this.keys.requestParam_activityId + '=601948';
-      let param_memberType = this.keys.requestParam_memberType + '=' +  this.projectConfig.params.requestParam_memberType;
-      let param_pageNo = this.keys.requestParam_pageNo + '=' + this.projectConfig.params.requestParam_pageNo;
-      let param_pageSize = this.keys.requestParam_pageSize + '=' + this.projectConfig.params.requestParam_pageSize;
+      let param_memberType = this.keys.requestParam_memberType + '=' +  this.CONFIG.params.requestParam_memberType;
+      let param_pageNo = this.keys.requestParam_pageNo + '=' + this.CONFIG.params.requestParam_pageNo;
+      let param_pageSize = this.keys.requestParam_pageSize + '=' + this.CONFIG.params.requestParam_pageSize;
 
-      let url = this.projectConfig.url + '?' + param_activityId + '&' + param_memberType + '&' + param_pageNo + '&' + param_pageSize;
+      let url = this.CONFIG.url + '?' + param_activityId + '&' + param_memberType + '&' + param_pageNo + '&' + param_pageSize;
       Get(url).then((resp)=>{
         let data = resp.data.data;
         this.list = data;
@@ -71,8 +71,8 @@ export default {
       })
     },
     toPaging({pageNo,pageSize}){
-      this.projectConfig.params.requestParam_pageNo = pageNo;
-      this.projectConfig.params.requestParam_pageSize = pageSize;
+      this.CONFIG.params.requestParam_pageNo = pageNo;
+      this.CONFIG.params.requestParam_pageSize = pageSize;
       this.loadData();
     }
   }

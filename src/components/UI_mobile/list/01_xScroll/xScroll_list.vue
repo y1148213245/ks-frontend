@@ -35,7 +35,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       listKeys: null,
       list: [],
       colDetail: {},
@@ -55,12 +55,12 @@ export default {
 
   methods: {
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].list.ui_mobile_list_01[this.module];
-      this.listKeys = this.projectConfig.getList.keys;
-      this.colDetailKeys = this.projectConfig.getColDetail.keys;
+      this.CONFIG = PROJECT_CONFIG[this.namespace].list.ui_mobile_list_01[this.module];
+      this.listKeys = this.CONFIG.getList.keys;
+      this.colDetailKeys = this.CONFIG.getColDetail.keys;
     },
     loadColDetail () {
-      let getColDetailConfig = this.projectConfig.getColDetail;
+      let getColDetailConfig = this.CONFIG.getColDetail;
       let url = getColDetailConfig.url;
       Post(url).then((resp) => {
         this.colDetail = resp.data.data;
@@ -69,7 +69,7 @@ export default {
 
     },
     loadList () {
-      let getListConfig = this.projectConfig.getList;
+      let getListConfig = this.CONFIG.getList;
       let url = getListConfig.url;
       getListConfig.params.conditions = JSON.stringify(getListConfig.params.conditions);
       Post(url, getListConfig.params).then((resp) => {
@@ -134,6 +134,9 @@ export default {
 }
 .ui_list_01-scroll-list li:first-child {
   margin-left: 0;
+}
+.ui_list_01-scroll-list li:last-child {
+  margin-right: 0.6rem;
 }
 .ui_list_01-scroll-list-li {
   display: inline-block;

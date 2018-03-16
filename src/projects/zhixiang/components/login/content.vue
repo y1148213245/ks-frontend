@@ -186,7 +186,7 @@ export default {
     };
 
     return {
-      projectConfig: null,
+      CONFIG: null,
       code: "",
       member: {
         loginName: "",
@@ -213,7 +213,7 @@ export default {
 
   methods: {
     initConfig () {
-      this.projectConfig =
+      this.CONFIG =
         PROJECT_CONFIG[this.namespace].login.components_login_content;
     },
     backMain () {
@@ -231,11 +231,11 @@ export default {
     },
     loginSuccessCallback () {
       var url = document.referrer;
-      if (this.projectConfig) {
-        if (this.projectConfig["loginSuccessHref"]) {
-          window.location.href = this.projectConfig["loginSuccessHref"];
+      if (this.CONFIG) {
+        if (this.CONFIG["loginSuccessHref"]) {
+          window.location.href = this.CONFIG["loginSuccessHref"];
         } else {
-          let loginSuccessDontHrefPage = this.projectConfig["loginSuccessDontHrefPage"];
+          let loginSuccessDontHrefPage = this.CONFIG["loginSuccessDontHrefPage"];
           if (loginSuccessDontHrefPage) {
             let dont = loginSuccessDontHrefPage["dont"];
             let to = loginSuccessDontHrefPage["to"];

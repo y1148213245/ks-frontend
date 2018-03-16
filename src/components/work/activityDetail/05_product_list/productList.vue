@@ -35,10 +35,10 @@
   </div>
 
    <div v-else-if="viewType == 'classification'">
-    <template v-for="(name,i) in projectConfig.classification.titles">
+    <template v-for="(name,i) in CONFIG.classification.titles">
       <div class="work_activitydetail_05-classification-item" :key="i">
         <div class="work_activitydetail_05-classification-item-name">{{name}}</div>
-        <!-- v-if="item[projectConfig.classification.key] == name" -->
+        <!-- v-if="item[CONFIG.classification.key] == name" -->
         <template v-for="(item,index) in list" >
           <div class="work_activitydetail_05-item" :key="index">
             <el-row>
@@ -80,7 +80,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       keys: null,
       list: [],
       totalCount: 0,
@@ -95,8 +95,8 @@ export default {
   created () {
     this.initConfig();
     this.loadCondition();
-    this.projectConfig.isDevelopment ? this.loadData() : this.$bus.on(this.projectConfig.eventName_listenLoadedData, this.loadData);
-    this.$bus.on(this.projectConfig.eventName_listenSearch, this.loadCondition);
+    this.CONFIG.isDevelopment ? this.loadData() : this.$bus.on(this.CONFIG.eventName_listenLoadedData, this.loadData);
+    this.$bus.on(this.CONFIG.eventName_listenSearch, this.loadCondition);
   },
 
   mounted () { },
@@ -107,11 +107,11 @@ export default {
       console.log(this.docId);
     },
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_05[this.module];
-      this.keys = this.projectConfig.keys;
+      this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_05[this.module];
+      this.keys = this.CONFIG.keys;
     },
     loadCondition (conditions) {//缓存条件
-      let params = this.projectConfig.params;
+      let params = this.CONFIG.params;
       let keys = this.keys;
       let eventListien_SearchDatasKeyArr = keys.eventListienSearchDatas;
       let condition = null;
@@ -125,7 +125,7 @@ export default {
       let vals = '';
 
       let keyArr = [mustKey];/* 查询条件配置 key数组,通过其中配置的值来组装哪些字段的参数 */
-      let getListParamOptions_fixed = this.projectConfig.params.getListParamOptions_fixed;/* 查询字段的具体值配置 */
+      let getListParamOptions_fixed = this.CONFIG.params.getListParamOptions_fixed;/* 查询字段的具体值配置 */
       if (getListParamOptions_fixed) {
         for (const key in getListParamOptions_fixed) {
           keyArr.push(key);
@@ -177,16 +177,16 @@ export default {
       }
     },
     toProductDetail (product) {
-      let param_resourceType = this.keys.toProductDetailParam_resourceType + '=' + this.projectConfig.params.toProductDetailParam_resourceType;
+      let param_resourceType = this.keys.toProductDetailParam_resourceType + '=' + this.CONFIG.params.toProductDetailParam_resourceType;
       let param_resourceId = this.keys.toProductDetailParam_resourceId + '=' + product[this.keys.resourceId];
       let param_resourceName = this.keys.toProductDetailParam_resourceName + '=' + product[this.keys.resourceName];
       let param_activityId = this.keys.toProductDetailParam_activityId + '=' + product[this.keys.activityId];
 
-      let url = this.projectConfig.toProductDetailUrl + '?' + param_resourceType + '&' + param_resourceId + '&' + param_resourceName + '&' + param_activityId + '&colId=';
+      let url = this.CONFIG.toProductDetailUrl + '?' + param_resourceType + '&' + param_resourceId + '&' + param_resourceName + '&' + param_activityId + '&colId=';
       window.location.href = url;
     },
     loadData (activityDetail) {
-      let params = this.projectConfig.params;//配置参数
+      let params = this.CONFIG.params;//配置参数
       let condition = this.conditionCache;//缓存的条件
       let keys = this.keys;//字段配置
 
@@ -204,7 +204,7 @@ export default {
         vals += condition[keys.getListParam_vals];
       }
 
-      let url = this.projectConfig.url + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + memberType + '&' + vals;
+      let url = this.CONFIG.url + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + memberType + '&' + vals;
 
       Get(url).then((resp) => {
         let data = resp.data.data.content;

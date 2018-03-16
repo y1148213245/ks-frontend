@@ -24,7 +24,7 @@
       }
     },
     mounted: function () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].pagination.ui_pagination_01;
+      this.CONFIG = PROJECT_CONFIG[this.namespace].pagination.ui_pagination_01;
       let query = URL.parse(document.URL, true).query;
       this.params = Object.assign({}, query);
       this.params.id = this.params.pubId;
@@ -33,19 +33,19 @@
     },
     methods: {
       getPreNext: function () {
-        Post(this.projectConfig.url, this.params).then((rep) => {
+        Post(this.CONFIG.url, this.params).then((rep) => {
           //上一篇
           let prev = Object.assign({}, this.params);
           prev.pubId = rep.data.prev;
           delete prev.id;
           this.prev = rep.data.prev ? false : true;
-          this.urls.prev = this.projectConfig.prevNextUrl + Querystring.stringify(prev);
+          this.urls.prev = this.CONFIG.prevNextUrl + Querystring.stringify(prev);
           //下一篇
           let next = Object.assign({}, this.params);
           next.pubId = rep.data.next;
           delete next.id;
           this.next = rep.data.next ? false : true;
-          this.urls.next = this.projectConfig.prevNextUrl + Querystring.stringify(next);
+          this.urls.next = this.CONFIG.prevNextUrl + Querystring.stringify(next);
         })
       },
       returnList: function () {

@@ -17,7 +17,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null
+      CONFIG: null
     };
   },
 
@@ -31,7 +31,7 @@ export default {
 
   methods: {
     initConfig () {
-      // this.projectConfig = PROJECT_CONFIG[this.namespace]
+      // this.CONFIG = PROJECT_CONFIG[this.namespace]
     }
   }
 }

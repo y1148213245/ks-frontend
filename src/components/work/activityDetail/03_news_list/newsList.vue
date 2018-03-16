@@ -29,7 +29,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       keys: null,
       list: [],
       activityDetailCache: null,
@@ -44,17 +44,17 @@ export default {
 
   created () {
     this.initConfig();
-    this.projectConfig.isDevelopment ? this.loadDatas() : this.$bus.on(this.projectConfig.eventName_listen, this.loadDatas);
+    this.CONFIG.isDevelopment ? this.loadDatas() : this.$bus.on(this.CONFIG.eventName_listen, this.loadDatas);
   },
 
   mounted () { },
 
   methods: {
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_03;
-      this.keys = this.projectConfig.keys;
-      this.pagingConfig.pageNo = this.projectConfig.params.getListParam_pageNo;
-      this.pagingConfig.pageSize = this.projectConfig.params.getListParam_pageSize;
+      this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_03;
+      this.keys = this.CONFIG.keys;
+      this.pagingConfig.pageNo = this.CONFIG.params.getListParam_pageNo;
+      this.pagingConfig.pageSize = this.CONFIG.params.getListParam_pageSize;
     },
     loadDatas (activityDetail) {
       let keys = this.keys;
@@ -65,9 +65,9 @@ export default {
       let activityID = keys.getListParam_activityID + '=' + this.activityDetailCache[keys.eventListenData_activityId];
       let pageNo = keys.getListParam_pageNo + '=' + this.pagingConfig.pageNo;
       let pageSize = keys.getListParam_pageSize + '=' + this.pagingConfig.pageSize;
-      let orderBy = keys.getListParam_orderBy + '=' + this.projectConfig.params.getListParam_orderBy;
+      let orderBy = keys.getListParam_orderBy + '=' + this.CONFIG.params.getListParam_orderBy;
 
-      let url = this.projectConfig.url + '?' + activityID + '&' + pageNo + '&' + pageSize + '&' + orderBy;
+      let url = this.CONFIG.url + '?' + activityID + '&' + pageNo + '&' + pageSize + '&' + orderBy;
       Get(url).then((resp) => {
         let data = resp.data.data;
         this.list = data;
@@ -75,17 +75,17 @@ export default {
     },
     toDetail (item) {
       let keys = this.keys;
-      if (this.projectConfig.toDetailMode.event) {
+      if (this.CONFIG.toDetailMode.event) {
         /* 组装列表的查询条件 */
         let listConfig = {
           [keys.getListParam_activityID]: this.activityDetailCache[keys.eventListenData_activityId],
           [keys.getListParam_pageNo]: this.pagingConfig.pageNo,
           [keys.getListParam_pageSize]: this.pagingConfig.pageSize,
-          [keys.getListParam_orderBy]: this.projectConfig.params.getListParam_orderBy
+          [keys.getListParam_orderBy]: this.CONFIG.params.getListParam_orderBy
         }
-        this.$bus.emit(this.projectConfig.toDetailMode.event.name, item, listConfig)
-      } else if (this.projectConfig.toDetailMode.href) {
-        let hrefMode = this.projectConfig.toDetailMode.href;
+        this.$bus.emit(this.CONFIG.toDetailMode.event.name, item, listConfig)
+      } else if (this.CONFIG.toDetailMode.href) {
+        let hrefMode = this.CONFIG.toDetailMode.href;
         let params = hrefMode.params;
         let url = hrefMode.url + '?';
 
@@ -100,7 +100,7 @@ export default {
     },
     /* 获取新闻图片 */
     getPicUrl (coverId) {
-      let url = this.projectConfig.getPicUrl;
+      let url = this.CONFIG.getPicUrl;
       url += '?' + this.keys.getPicParam_coverId + '=' + coverId;
       return url;
     }

@@ -1,7 +1,7 @@
 <!--  -->
 <template>
  <div class="search_04">
-    <div v-if="projectConfig.isShowTotalCountTag" class="search_04-search_totalcount">共<span class="search_04-search_totalcount-num" v-text="totalCount"></span>件商品</div>
+    <div v-if="CONFIG.isShowTotalCountTag" class="search_04-search_totalcount">共<span class="search_04-search_totalcount-num" v-text="totalCount"></span>件商品</div>
     
     <div class="search_04-content">
       <div class="search_04-content-list">
@@ -68,7 +68,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       pageSizes: null,    /* 分页数组 */
       currentPage: 1,   /* 分页组件当前页 */
       totalCount: 0,    /* 总数 */
@@ -82,7 +82,7 @@ export default {
   created () {
     this.initConfig();
     this.initDate();
-    this.$bus.$on(this.projectConfig.eventName_loadDate, this.getSearchResult);
+    this.$bus.$on(this.CONFIG.eventName_loadDate, this.getSearchResult);
   },
 
   mounted () {
@@ -93,19 +93,19 @@ export default {
 
   methods: {
     initConfig () {
-      let projectConfig = PROJECT_CONFIG[this.namespace].search.search_result_04;
-      this.projectConfig = JSON.parse(JSON.stringify(projectConfig));
+      let CONFIG = PROJECT_CONFIG[this.namespace].search.search_result_04;
+      this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
 
     },
     initDate () {
-      this.pageSizes = this.projectConfig.pageSizes || [10, 20, 50, 100];
+      this.pageSizes = this.CONFIG.pageSizes || [10, 20, 50, 100];
       this.locationQuery = URL.parse(document.URL, true).query;
     },
     toPage ({ pageNo, pageSize }) {
       this.getSearchResult({ pageNo, pageSize });
     },
     getSearchResult ({ pageNo, pageSize, conditions, orderBy, searchText, currentPage }) {
-      let config = this.projectConfig;
+      let config = this.CONFIG;
       let param = config.param;
 
       this.currentPage = currentPage ? currentPage : this.currentPage;//改变分页组件当前页
@@ -124,7 +124,7 @@ export default {
       })
     },
     toDetail (pubId) {
-      window.location.href = this.projectConfig.detailHref + pubId;
+      window.location.href = this.CONFIG.detailHref + pubId;
     }
   },
   filters: {

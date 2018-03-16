@@ -26,5 +26,6 @@ var $_$ = {
     51: {
       url: '../pages/recommend.html'
     }
-  }
+  },
+  SITE_NAME: 'site-153'
 };

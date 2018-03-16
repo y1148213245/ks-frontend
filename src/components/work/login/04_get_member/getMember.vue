@@ -1,12 +1,12 @@
 <!-- 获取登陆信息 -->
 <template>
  <div class="work_login_04">
-   <a v-if="!member.loginName" :href="projectConfig.toLoginHref" class="work_login_04-login">
+   <a v-if="!member.loginName" :href="CONFIG.toLoginHref" class="work_login_04-login">
      <slot>
        [登陆]
      </slot>
    </a>
-   <a v-if="member.loginName" :href="projectConfig.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
+   <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
  </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
     };
   },
 
@@ -47,7 +47,7 @@ export default {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION,
     }),
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].login.work_login_04
+      this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_04
     }
   }
 }

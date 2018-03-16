@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       list: null,
       totalCount: 0,
       pageNo: 0,
@@ -69,7 +69,7 @@ export default {
   methods: {
     initConfig () {
       let config = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_15;
-      this.projectConfig = config;
+      this.CONFIG = config;
       this.pageNo = config.param.pageNo;
       this.pageSize = config.param.pageSize;
       this.pageSizes = config.pageSizes;
@@ -80,7 +80,7 @@ export default {
       this.loadCols();
     },
     loadCols() {
-      let url=this.projectConfig.url+'?colId='+this.projectConfig.param.colId;
+      let url=this.CONFIG.url+'?colId='+this.CONFIG.param.colId;
       Post(url).then((rep)=>{
         this.cols = rep.data.data;
         if (this.cols && this.cols instanceof Array && this.cols.length > 0) {
@@ -94,21 +94,21 @@ export default {
         values += ' OR ' + this.cols[i].id;
       }
       this.conditions = "[{pub_col_id:" + values + ",op:'in'}]";
-      let param=Object.assign({},this.projectConfig.resultParam,{conditions: this.conditions});
-      Post(this.projectConfig.resultUrl,param).then((rep)=>{
+      let param=Object.assign({},this.CONFIG.resultParam,{conditions: this.conditions});
+      Post(this.CONFIG.resultUrl,param).then((rep)=>{
         this.list = rep.data.result;
         this.totalCount = rep.data.totalCount;
       })
     },
     toDetail (id) {
-      window.location.href = this.projectConfig.toDetailHref + id;
+      window.location.href = this.CONFIG.toDetailHref + id;
     },
     goContribute (value) {
       if (!(this.member && this.member.loginName)) {
         window.location.href = "./login.html";
         return;
       }
-      var url = this.projectConfig.contributeBaseUrl + "authorName=" + this.member.loginName + "&userName=" + value;
+      var url = this.CONFIG.contributeBaseUrl + "authorName=" + this.member.loginName + "&userName=" + value;
       window.open(url);
     }
   }

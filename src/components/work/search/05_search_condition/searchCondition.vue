@@ -50,7 +50,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       bookName: '',
       author: '',
       isbn: '',
@@ -79,11 +79,11 @@ export default {
 
   methods: {
     initConfig () {
-      let projectConfig = PROJECT_CONFIG[this.namespace].search.search_condition_05;
-      this.projectConfig = JSON.parse(JSON.stringify(projectConfig));
+      let CONFIG = PROJECT_CONFIG[this.namespace].search.search_condition_05;
+      this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
     },
     toSearch () {
-      let conditions = "[" + this.projectConfig.conditions;
+      let conditions = "[" + this.CONFIG.conditions;
       conditions += this.bookName ? `,{pub_resource_name:'${this.bookName}'}` : "";
       conditions += this.author ? `,{BOOK_SYS_AUTHORS:'${this.author}'}` : "";
       conditions += this.isbn ? `,{BOOK_ISBN:'${this.isbn}'}` : "";
@@ -91,7 +91,7 @@ export default {
       conditions += this.pubDateFrom && this.pubDateTo ? `,{BOOK_PUBDATE:'${this.unFmtDate(this.pubDateFrom)},${this.unFmtDate(this.pubDateTo)}',op:'to'}` : "";
       conditions += "]";
 
-      this.$bus.emit(this.projectConfig.eventName, { conditions });
+      this.$bus.emit(this.CONFIG.eventName, { conditions });
     },
     picker_from (val) {
       this.pubDateFrom = val;

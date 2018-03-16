@@ -47,7 +47,7 @@
     data() {
       return {
         newsDetailInfo: {},
-        projectConfig: null,
+        CONFIG: null,
         pubId: '',
         keys: null,
         collectOrLikeConfig: null,
@@ -61,20 +61,20 @@
     },
     methods: {
       initConfig() {
-        let projectConfig = PROJECT_CONFIG[this.namespace].informationDetail.work_informationdetail_01;
-        this.projectConfig = JSON.parse(JSON.stringify(projectConfig));
-        this.collectOrLikeConfig = this.projectConfig.collectOrLike;
-        this.keys = this.projectConfig.keys;
+        let CONFIG = PROJECT_CONFIG[this.namespace].informationDetail.work_informationdetail_01;
+        this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
+        this.collectOrLikeConfig = this.CONFIG.collectOrLike;
+        this.keys = this.CONFIG.keys;
         let urlQuery = URL.parse(document.URL, true).query;
         this.pubId = urlQuery.pubId;
         this.loadData();
       },
       loadData() {
         let _this = this;
-        let param = Object.assign({}, this.projectConfig.params, {
+        let param = Object.assign({}, this.CONFIG.params, {
           pubId: this.pubId,
         });
-        Get(this.projectConfig.url, {"params": param}).then(function (resp) {
+        Get(this.CONFIG.url, {"params": param}).then(function (resp) {
           _this.newsDetailInfo = resp.data.data
         })
       },

@@ -70,6 +70,7 @@ const prod = {
           metaMap: {
             // ACTIVITYLIBID:"PORTAL_ACTIVITY",
             ACTIVITYID: "",
+            ACTIVITY_NAME : "",//活动名称
             POTHUNTER_NAME: "", //参赛人姓名
             POTHUNTER_SEX: "", //参赛人性别
             POTHUNTER_PHONENUMBER: "", //参赛人手机号

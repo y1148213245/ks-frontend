@@ -180,7 +180,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       echarts: require('echarts/lib/echarts'),
       tableData: [{
         name: '教育局XXX做出重ddddddddddddddddddddddddddddddddddddddddddddddd要指示',
@@ -254,7 +254,7 @@ export default {
 
   methods: {
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace]
+      this.CONFIG = PROJECT_CONFIG[this.namespace]
     },
     toProductList (row) {
       this.currentShow = 'productList'

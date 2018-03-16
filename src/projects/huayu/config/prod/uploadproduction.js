@@ -11,7 +11,7 @@ export default {
     contestants_01: {
       competitionList: {
         url:
-          "http://172.19.57.153/portal/api/user/getActivityMemberByTeacher.do?",
+        CONFIG.BASE_URL + "/user/getActivityMemberByTeacher.do?",
         params: {
           teacherId: "",
           pageNo: "1",
@@ -20,17 +20,40 @@ export default {
       },
       //查询补充信息接口
       supplementaryInformation: {
-        url: "http://172.19.92.76:8080/spc-portal-web/spc/prodb/detail.do?",
+        url: CONFIG.BASE_URL + "/spc/prodb/detail.do?",
+        getSchoolUrl:CONFIG.BASE_URL +'spc/prodb/searchNL.do',
         params: {
+          getPlaceRequest_doclibCode:'PORTAL_ACTIVITY',//配库码
+          getSchoolRequest_doclibCode:'PORTAL_SCHOOL',//配库码
+          getSchoolRequest_relations:'1,1',//1并且，2或者
+          getSchoolRequest_cols:'AREA,CLASS',//字段名
+          getSchoolRequest_symbols:'1,1',//匹配模式，1包含，2等于，3不等于
           doclibCode: "PORTAL_ACTIVITY",
           docID: ""
-        }
+        },
+        keys: {
+          output_place: 'place',
+          output_school: 'school',
+          output_group: 'group',
+          output_searchText: 'searchText',
+          school_name:'SYS_TOPIC',
+          eventData_docID:'pub_resource_id',//事件接受参数数据，资源id
+          getPlaceRequest_doclibCode:'doclibCode',
+          getPlaceRequest_docID:'docID',//资源id
+          getPlaceRequestBack_areas:'AREALIMT',
+          getPlaceRequestBack_classes:'CLASSLIMT',
+          getSchoolRequest_doclibCode:'doclibCode',
+          getSchoolRequest_relations:'relations',
+          getSchoolRequest_cols:'cols',
+          getSchoolRequest_symbols:'symbols',
+          getSchoolRequest_vals:'vals',//值
+        },
       }, 
       //附件上传接口
-      upLoadUrl: "http://172.19.57.153/spc-portal-web/dynamicFile/upload.do?", 
+      upLoadUrl: "/dynamicFile/upload.do?", 
       // 汇总上传接口
       informationUploading: {
-        url: "http://172.19.92.76:8080/portal/api/spc/prodb/saveItem.do?",
+        url: CONFIG.BASE_URL + "/spc/prodb/saveItem.do?",
         params: {
           doclibCode: "PORTAL_WORKS",
           metaMap: {

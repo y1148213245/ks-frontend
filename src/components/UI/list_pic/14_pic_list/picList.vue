@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       list: null,
       totalCount: 0,
       pageNo: 0,
@@ -54,7 +54,7 @@ export default {
   methods: {
     initConfig () {
       let config = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_14;
-      this.projectConfig = config;
+      this.CONFIG = config;
       this.pageNo = config.param.pageNo;
       this.pageSize = config.param.pageSize;
       this.pageSizes = config.pageSizes;
@@ -65,7 +65,7 @@ export default {
       this.loadDatas();
     },
     loadDatas () {
-      let configParams = this.projectConfig.param
+      let configParams = this.CONFIG.param
       let param = {
         conditions: configParams.conditions,
         groupBy: configParams.groupBy,
@@ -74,7 +74,7 @@ export default {
         pageSize: this.pageSize,
         searchText: ''
       }
-      Post(this.projectConfig.url, param).then((req) => {
+      Post(this.CONFIG.url, param).then((req) => {
         let data = req.data.result;
         this.totalCount = req.data.totalCount;
         if (data && data instanceof Array && data.length >= 0) {
@@ -83,7 +83,7 @@ export default {
       })
     },
     toDetail (id) {
-      window.location.href = this.projectConfig.toDetailHref + id + "&currentType=author#";
+      window.location.href = this.CONFIG.toDetailHref + id + "&currentType=author#";
     }
   }
 }

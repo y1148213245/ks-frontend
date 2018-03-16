@@ -49,7 +49,7 @@ export default {
   },
   data () {
     return {
-      projectConfig: null,
+      CONFIG: null,
       keys: null,
       formData: {
         place: '',
@@ -67,21 +67,21 @@ export default {
 
   created () {
     this.initConfig();
-    this.projectConfig.isDevelopment ? this.loadDatas() : this.$bus.on(this.projectConfig.eventName_listenLoadedData, this.loadDatas);
+    this.CONFIG.isDevelopment ? this.loadDatas() : this.$bus.on(this.CONFIG.eventName_listenLoadedData, this.loadDatas);
   },
 
   mounted () { },
 
   methods: {
     initConfig () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_04;
-      this.keys = this.projectConfig.keys;
+      this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_04;
+      this.keys = this.CONFIG.keys;
     },
     loadDatas (activityDetail) {
-      let doclibCode = this.keys.getPlaceRequest_doclibCode + '=' + this.projectConfig.params.getPlaceRequest_doclibCode;
+      let doclibCode = this.keys.getPlaceRequest_doclibCode + '=' + this.CONFIG.params.getPlaceRequest_doclibCode;
       let docID = this.keys.getPlaceRequest_docID + '=' + activityDetail[this.keys.eventData_docID];
 
-      let url = this.projectConfig.url + '?' + doclibCode + '&' + docID;
+      let url = this.CONFIG.url + '?' + doclibCode + '&' + docID;
       Get(url).then((resp) => {
         let data = resp.data;
         if (data[this.keys.getPlaceRequestBack_areas]) {
@@ -94,13 +94,13 @@ export default {
     },
     updateSchool () {
 
-      let doclibCode = this.keys.getSchoolRequest_doclibCode + '=' + this.projectConfig.params.getSchoolRequest_doclibCode;//配库码
-      let relations = this.keys.getSchoolRequest_relations + '=' + this.projectConfig.params.getSchoolRequest_relations;//并且，或者
-      let cols = this.keys.getSchoolRequest_cols + '=' + this.projectConfig.params.getSchoolRequest_cols;//字段名
-      let symbols = this.keys.getSchoolRequest_symbols + '=' + this.projectConfig.params.getSchoolRequest_symbols;//匹配模式，包含，等于，不等于
+      let doclibCode = this.keys.getSchoolRequest_doclibCode + '=' + this.CONFIG.params.getSchoolRequest_doclibCode;//配库码
+      let relations = this.keys.getSchoolRequest_relations + '=' + this.CONFIG.params.getSchoolRequest_relations;//并且，或者
+      let cols = this.keys.getSchoolRequest_cols + '=' + this.CONFIG.params.getSchoolRequest_cols;//字段名
+      let symbols = this.keys.getSchoolRequest_symbols + '=' + this.CONFIG.params.getSchoolRequest_symbols;//匹配模式，包含，等于，不等于
       let vals = this.keys.getSchoolRequest_vals + '=' + this.formData.place + ',' + this.formData.group;//值
 
-      let url = this.projectConfig.getSchoolUrl + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + vals;
+      let url = this.CONFIG.getSchoolUrl + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + vals;
       Get(url).then((resp) => {
         this.formData.school = '';//清空学校
         this.schoolArr = resp.data.content;
@@ -115,7 +115,7 @@ export default {
         [this.keys.output_group]: formData.group,
         [this.keys.output_searchText]: formData.searchText,
       }
-      this.$bus.emit(this.projectConfig.eventName_search, param);
+      this.$bus.emit(this.CONFIG.eventName_search, param);
     }
   }
 }

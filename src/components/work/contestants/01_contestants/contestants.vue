@@ -111,15 +111,6 @@
        <div  style="display:inline-block;margin-left:30px;">
       <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
       <div class="ac_linetext" style="margin-top:10px;">
-        <!-- <div class="ac_input" style="display:inline-block;margin-left:18px;">
-        <el-form-item label="学校：" prop="school">
-        <el-input
-        placeholder="请填写学校"
-        v-model="addSupplementForm.school"
-        clearable>
-        </el-input>
-        </el-form-item>
-        </div> -->
         <div class="ac_input">
         <el-form-item label="教师：" prop="teacher">
         <el-input
@@ -157,14 +148,14 @@
             class="upload-demo"
             :action="upLoadUrl()"
             name="file"
+            :before-upload="beforeFileUpload"
             :on-preview="handlePreview"
-            :before-remove="beforeRemove"
             :on-success="upLoadingSuccess"
             multiple
             :limit="1"
             :on-exceed="handleExceed"
             :file-list="addAnnexWorksForm.files"
-            :before-upload="beforeAvatarUpload">
+            >
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
@@ -214,6 +205,7 @@ export default {
       currentRow: "",
       attachID: "",
       worktype: "",
+      topic: "",
       keys: null,
       schoolArr: [],
       CONFIG: null,
@@ -377,6 +369,7 @@ export default {
         }
       }).then(rep => {
         this.worktype = rep.data.WORKTYPE;
+        this.topic = rep.data.SYS_TOPIC;
         this.relatedInformationList = rep.data;
         this.addressInformaition = rep.data.AREALIMT.split(/;/);
         this.classInformaition = rep.data.CLASSLIMT.split(/;/);
@@ -478,15 +471,15 @@ export default {
       // 上传地址
       return "http://172.19.57.153/spc-portal-web/dynamicFile/upload.do?";
     },
-    beforeAvatarUpload(file) {
+    beforeFileUpload(file) {
       const isDOCX =
         file.type ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        "	application/msword";
-      if (!isDOCX) {
-        this.$message.error("上传头像图片只能是 doc或docx 格式!");
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+      const isDOC = file.type === "application/msword";
+      if (!isDOCX && !isDOC) {
+        this.$message.error("上传作品文件只能是 doc或docx 格式!");
       }
-      return isDOCX;
+      return isDOCX || isDOC;
     },
     upLoadingSuccess(res, file) {
       // 上传成功回调
@@ -530,6 +523,7 @@ export default {
               this.CONFIG.informationUploading.params
             );
             paramsObj.metaMap.ACTIVITYID = this.docId;
+            paramsObj.metaMap.ACTIVITY_NAME = this.topic; //活动名称
             paramsObj.metaMap.POTHUNTER_NAME = this.currentRow.userName; //参赛人姓名
             paramsObj.metaMap.POTHUNTER_SEX = this.currentRow.gender.toString(); //参赛人性别
             paramsObj.metaMap.POTHUNTER_PHONENUMBER = this.currentRow.mobileNum; //参赛人手机号

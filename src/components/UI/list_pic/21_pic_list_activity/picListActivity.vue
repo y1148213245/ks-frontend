@@ -42,9 +42,9 @@
       };
     },
     mounted: function () {
-      this.projectConfig = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_21;
-      this.keys=this.projectConfig.keys;
-      this.params = Object.assign({}, this.projectConfig.params);
+      this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_21;
+      this.keys=this.CONFIG.keys;
+      this.params = Object.assign({}, this.CONFIG.params);
       let pubColId = JSON.parse(this.params.conditions);
       pubColId[0]["pub_col_id"] = URL.parse(document.URL, true).query.colId;
       this.params.conditions = JSON.stringify(pubColId);
@@ -52,7 +52,7 @@
     },
     methods: {
       getData: function () {
-        Post(this.projectConfig.url, this.params).then((req) => {
+        Post(this.CONFIG.url, this.params).then((req) => {
           let data = req.data.result;
           let currentTime = new Date().getTime();
           if (data && data instanceof Array && data.length > 0) {
@@ -68,7 +68,7 @@
         })
       },
       goDetail:function(id){
-        return this.projectConfig.detailHref+"?pubId="+id;
+        return this.CONFIG.detailHref+"?pubId="+id;
       }
     }
   };
