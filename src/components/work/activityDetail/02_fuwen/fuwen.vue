@@ -1,7 +1,16 @@
 <!-- 辅文详情 -->
 <template>
  <div class="work_activitydetail_02">
-   <div class="work_activitydetail_02-content" v-html="fuwen[keys.content]"></div>
+   
+   <div v-if="CONFIG.showType && CONFIG.showType=='simple'">
+    <div class="work_activitydetail_02-content_simple" :class="{'work_activitydetail_02-content_simple--close':!isUnfold}" v-html="fuwen[keys.content]">
+
+    </div>
+    <div class="work_activitydetail_02-content_simple-text_box" @click="contentIsUnfold">
+      <span class="work_activitydetail_02-content_simple-text_box-text">{{this.isUnfold?'收起':'展开'}}</span>
+    </div>
+   </div>
+   <div v-else class="work_activitydetail_02-content" v-html="fuwen[keys.content]"></div>
  </div>
 </template>
 
@@ -21,6 +30,7 @@ export default {
       CONFIG: null,
       keys: null,
       fuwen: {},
+      isUnfold:false
     };
   },
 
@@ -59,6 +69,9 @@ export default {
         }
         this.fuwen = fuwen;
       })
+    },
+    contentIsUnfold(){
+      this.isUnfold = !this.isUnfold
     }
   }
 }
@@ -71,5 +84,16 @@ export default {
 .work_activitydetail_02-content {
   width: 100%;
   position: relative;
+}
+.work_activitydetail_02-content_simple{
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.work_activitydetail_02-content_simple--close{
+  max-height: 100px;
+}
+.work_activitydetail_02-content_simple-text_box{
+  text-align: right;
 }
 </style>

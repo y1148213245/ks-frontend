@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: song
- * @Last Modified time: 2018-03-13 18:19:19
+ * @Last Modified time: 2018-03-16 17:45:02
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
@@ -37,7 +37,7 @@
     <div class="abstract">
       <div v-text="workInfo[keys.abstract]"></div>
     </div>
-    <div class="info" v-if="workInfo[keys.content]">   <!-- 表单类型的作品 -->
+    <div class="info" v-if="workInfo[keys.content] && workInfo[keys.isHide] =='是'">   <!-- 表单类型的作品 -->
       <div v-text="workInfo[keys.content]"></div>
     </div>
     <div class="workOperation">
@@ -46,7 +46,7 @@
         <span v-if="workInfo[keys.isCollect] == '1'">已收藏</span>
         <span v-else>收藏文章</span>
       </el-button>
-      <el-button size="medium" v-if="workInfo[keys.attachment] && workInfo[keys.attachment].length>0"  @click="loadWork(workInfo[keys.attachment][0].fileRecordID)">  <!-- 附件类型的作品 -->
+      <el-button size="medium" v-if="workInfo[keys.attachment] && workInfo[keys.attachment].length>0 && !workInfo[keys.isHide] =='是'"  @click="loadWork(workInfo[keys.attachment][0].fileRecordID)">  <!-- 附件类型的作品 -->
         <i class="el-icon-download"></i>
         <span>下载文章</span>
       </el-button>

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 11:12:46 
  * @Last Modified by: song
- * @Last Modified time: 2018-03-12 14:20:09
+ * @Last Modified time: 2018-03-16 17:43:55
  */
 export default {
   name: "productiondetail",
@@ -34,6 +34,7 @@ export default {
         attachment: 'ATTACH_LIST', // 附件信息
         docId: 'SYS_DOCUMENTID', // 作品docId
         isCollect: 'isCollect',    // 作品是否收藏
+        isHide: 'IS_HIDE' // 是否允许显示正文 or 是否允许下载附件
       }
     }
   },

@@ -8,8 +8,10 @@ var CONFIG = {
 	SITE_CONFIG: {
 		siteId: 5,
 		chId: 0
-	}
+	},
+	APP:1
 }
 
 var $_$ = {
+	SITE_NAME: 'site-155',
 };

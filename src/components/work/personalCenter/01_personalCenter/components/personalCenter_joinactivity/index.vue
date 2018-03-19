@@ -76,10 +76,17 @@
       :formatter="worksScore"  
       >
     </el-table-column>
-    <el-table-column label="操作"  align="center" width="160" fixed="right">
+    <el-table-column label="操作"  align="center" width="190" fixed="right">
         <template slot-scope="scope">
-        <el-button @click="handleEdit(scope.$index, scope.row)">查看作品</el-button>
-        </template>
+        <el-button @click="handleEdit(scope.$index, scope.row)" size="small">查看作品</el-button>
+        <!-- <el-switch
+          v-model="isHide"
+          active-text="按月付费"
+          inactive-text="按年付费">
+        </el-switch> -->
+        <el-button @click="setIsHide(scope.row.SYS_DOCUMENTID,scope.row.IS_HIDE)" v-show="scope.row.IS_HIDE != '是'" type="error" size="small">隐藏作品</el-button>
+        <el-button @click="setIsHide(scope.row.SYS_DOCUMENTID,scope.row.IS_HIDE)" v-show="scope.row.IS_HIDE == '是'" type="error" size="small">公开作品</el-button>
+        </template>     
     </el-table-column>
   </el-table>
     </el-col>
@@ -217,6 +224,7 @@ export default {
           { validator: ValidateRules.mobileCheck, trigger: "blur" }
         ]
       },
+      isHide: false, //作品是否公开
       enrolman: false, //管理报名人页面
       additions: false, //新增人员弹窗
       editorsDialog: false, //编辑人员弹窗
@@ -247,6 +255,36 @@ export default {
       }
       return moment(date).format("YYYY-MM-DD HH:mm:ss");
     },
+    // 设置是否公开
+    setIsHide(id, state) {
+      var setState;
+      if (state != "是") {
+        this.setState = "是";
+      } else {
+        this.setState = "否";
+      }
+      var params = {
+        doclibCode: "PORTAL_WORKS",
+        docID: String(id),
+        metaMap: {
+          IS_HIDE: this.setState
+        }
+      };
+      api.setHide(params).then(response => {
+        if (response.data.status == "success") {
+          this.$store.dispatch("personalCenter/activityList", {});
+          this.$message({
+            type: "success",
+            message: "设置成功!"
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "设置失败!"
+          });
+        }
+      });
+    },
     // 状态筛选
     handleCommand(command) {
       var params = {
@@ -258,7 +296,11 @@ export default {
     },
     handleEdit(index, row) {
       console.log(index, row);
-      let url = "./productiondetail.html?resourceType=PORTAL_WORKS&resourceId="+row.SYS_DOCUMENTID+"&colId=&resourceName="+row.SYS_TOPIC;
+      let url =
+        "./productiondetail.html?resourceType=PORTAL_WORKS&resourceId=" +
+        row.SYS_DOCUMENTID +
+        "&colId=&resourceName=" +
+        row.SYS_TOPIC;
       window.location.href = url;
     },
     // 获取报名人列表

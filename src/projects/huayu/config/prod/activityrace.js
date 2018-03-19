@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-05 14:11:10 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-14 10:57:27
+ * @Last Modified time: 2018-03-16 18:26:39
  */
 export default {
   name: "activityrace",
@@ -46,6 +46,7 @@ export default {
       },
       module2: {
         url: CONFIG.BASE_URL + 'spc/prodb/getPublicize.do',
+        showType:'simple',/* simple 表示展示部分内容 附带展开收起按钮，不需要则不配置*/
         topic: '公告',
         keys: {
           topic: 'topic',
@@ -169,7 +170,12 @@ export default {
           resourceId: 'SYS_DOCUMENTID',
           resourceName: 'SYS_TOPIC',
           activityId: 'ACTIVITYID',
+          voteDescription:'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
+          
           eventListienLoadDatas_activityId: 'pub_resource_id',
+          eventListienLoadDatas_voteSwitch:'PORTAL_ACTIVITY_PRAISE_SWITCH',
+          eventListienLoadDatas_endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
+          
           eventListienSearchDatas: ['place', 'school', 'group', 'searchText'],//扩展查询参数
           getListParam_doclibCode: 'doclibCode',
           getListParam_relations: 'relations',

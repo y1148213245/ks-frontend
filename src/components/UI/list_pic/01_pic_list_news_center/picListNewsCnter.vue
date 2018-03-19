@@ -219,7 +219,7 @@ h4 {
 .news-thumb1 p {
   margin-top: 4px;
 }
-p {
+.ui_list_pic_01_pic_list_page p {
   margin: 0 0 10px;
 }
 </style>

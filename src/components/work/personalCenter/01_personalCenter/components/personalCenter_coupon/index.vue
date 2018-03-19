@@ -248,7 +248,7 @@ export default {
   text-align: center;
 }
 
-.main_right {
+#couponsCom .main_right {
   width: 880px;
   overflow: hidden;
   margin: 0 auto;

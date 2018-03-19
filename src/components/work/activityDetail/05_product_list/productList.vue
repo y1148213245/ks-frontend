@@ -2,7 +2,7 @@
 <template>
  <div class="work_activitydetail_05">
    <div v-if="viewType == 'complete'">
-    <div class="work_activitydetail_05-totalcount">总数<span v-text="totalCount"></span></div>
+    <div class="work_activitydetail_05-totalcount">总数<span v-text="totalCount" class="work_activitydetail_05-totalcount_text"></span></div>
     <template v-for="(item,index) in list">
       <div class="work_activitydetail_05-item" :key="index">
         <el-row>
@@ -12,14 +12,18 @@
               <el-col :span="8" class="work_activitydetail_05-author_box"><div v-text="item[keys.author] || '暂无作者'"></div></el-col>
               <el-col :span="8" class="work_activitydetail_05-date_box"><div>{{item[keys.date] | formatTime}}</div></el-col>
             </el-row>
-            <div v-text="item[keys.abstract] || '暂无简介'"></div>
-            <div>共<span v-text="item[keys.teacherCommentNum]"></span>篇教师点评</div>
+            <div class="work_activitydetail_05-abstract" v-text="item[keys.abstract] || '暂无简介'"></div>
+            <div class="work_activitydetail_05-comment">共<span class="work_activitydetail_05-comment-text" v-text="item[keys.teacherCommentNum]"></span>篇教师点评</div>
           </el-col>
-          <el-col :span="6" class="work_activitydetail_05-vote_box">
-            <div>
-              <work_common_03 :namespace="namespace" v-on:vote="totalVoteNum" :docid="item[keys.resourceId]" @click="getDocid(item[keys.resourceId])"></work_common_03>
+          <el-col :span="6" class="work_activitydetail_05-vote_box" v-show="activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '开'">
+            <div v-show="activityIsActive">
+              <work_common_03 class="work_activitydetail_05-vote_box-content" :namespace="namespace" v-on:vote="totalVoteNum" :docid="item[keys.resourceId]" @click="getDocid(item[keys.resourceId])"></work_common_03>
+              <div class="work_activitydetail_05-vote_box-content-illustrate">
+                <i class="el-icon-question"></i>
+                <div class="work_activitydetail_05-vote_box-content-illustrate-content" v-text="item[keys.voteDescription] || '暂无说明'"></div>
+              </div>
             </div>
-            <div><span v-text="item[keys.voteNum]"></span>票</div>
+            <div class="work_activitydetail_05-vote_box-num"><span class="work_activitydetail_05-vote_box-num_text" v-text="item[keys.voteNum]"></span>赞</div>
             </el-col>
         </el-row>
       </div>
@@ -86,6 +90,8 @@ export default {
       totalCount: 0,
       activityDetailCache: null,
       conditionCache: null,
+      isIllustrateActive: false,
+      activityIsActive:false,
     };
   },
 
@@ -104,7 +110,6 @@ export default {
   methods: {
     getDocid (id) {
       this.docId = id;
-      console.log(this.docId);
     },
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_05[this.module];
@@ -192,6 +197,13 @@ export default {
 
       if (activityDetail) {
         this.activityDetailCache = activityDetail; //缓存数据
+        //判断活动过期
+          let thisTimestamp = new Date().getTime();
+          if (thisTimestamp < this.activityDetailCache[this.keys.eventListienLoadDatas_endDate]) {
+            this.activityIsActive = true;
+          } else {
+            this.activityIsActive = false;
+          }
       }
 
       let doclibCode = keys.getListParam_doclibCode + '=' + params.getListParam_doclibCode;
@@ -242,6 +254,9 @@ export default {
   margin: 10px 0;
   font-size: 14px;
 }
+.work_activitydetail_05-totalcount_text{
+
+}
 .work_activitydetail_05-item {
   margin-top: 10px;
 }
@@ -255,13 +270,45 @@ export default {
 .work_activitydetail_05-date_box {
   text-align: right;
 }
+.work_activitydetail_05-abstract{
+
+}
 .work_activitydetail_05-vote_box {
   text-align: center;
 }
-.work_activitydetail_05-vote_box button {
-  width: 40%;
+.work_activitydetail_05-vote_box-content {
+  display: inline-block;
+  width: 70%;
 }
-.work_activitydetail_05-classification-item-name{
+.work_activitydetail_05-vote_box-content .is-dark {
+  background-color: tomato;
+}
+.el-tooltip__popper.is-dark {
+  background-color: tomato;
+}
+.work_activitydetail_05-vote_box-content-illustrate {
+  display: inline-block;
+  position: relative;
+}
+.work_activitydetail_05-vote_box-content-illustrate-content {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  display: none;
+  width: 200px;
+  padding: 5px;
+  background-color: #e15616;
+  color: white;
+  z-index: 100;
+}
+.work_activitydetail_05-vote_box-content-illustrate:hover
+  .work_activitydetail_05-vote_box-content-illustrate-content {
+  display: block;
+}
+.work_activitydetail_05-vote_box button {
+  width: 90%;
+}
+.work_activitydetail_05-classification-item-name {
   padding: 20px 0;
   height: 50px;
   line-height: 50px;

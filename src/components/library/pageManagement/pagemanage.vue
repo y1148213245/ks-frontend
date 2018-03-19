@@ -278,7 +278,7 @@ export default {
           break;
         }
       }
-      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=' + key + '&value=' + value).then((res) => {
+      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=$_$.' + key + '&value=' + value).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",

@@ -23,7 +23,10 @@ const dev = {
           date: 'date',
           abstract: 'abstract',
           teacherCommentNum: 'teacherCommentNum',
-          voteNum: 'voteNum'
+          voteNum: 'voteNum',
+          voteSwitch:'PORTAL_ACTIVITY_PRAISE_SWITCH',
+          voteDescription:'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
+
         },
         eventName_listenLoadedData: '',
         eventName_listenSearch: '',
@@ -107,7 +110,12 @@ const prod = {
           resourceId: 'SYS_DOCUMENTID',
           resourceName: 'SYS_TOPIC',
           activityId: 'ACTIVITYID',
+          voteDescription:'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
+          
           eventListienLoadDatas_activityId:'pub_resource_id',
+          eventListienLoadDatas_voteSwitch:'PORTAL_ACTIVITY_PRAISE_SWITCH',
+          eventListienLoadDatas_endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
+          
           eventListienSearchDatas:['place','school','group','searchText'],//扩展查询参数
           getListParam_doclibCode:'doclibCode',
           getListParam_relations:'relations',

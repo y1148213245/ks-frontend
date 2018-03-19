@@ -65,7 +65,7 @@
 			<!-- 名师指导 -->
 			<work_activitydetail_06 v-show="currentShowIndex == 4"  namespace="activityrace"></work_activitydetail_06>
    </div>
-   <el-row>
+   <el-row v-show="activityDetail.PORTAL_ACTIVITY_IS_COMMENT=='是'">
       <el-col :span="24">
         <!-- 活动评论组件 区别于作品评论 -->
         <work_bookreview_02 namespace="activityrace" :is-show-diff=false></work_bookreview_02>
@@ -88,16 +88,18 @@ export default {
     return {
       currentShowIndex: 1,
       isShowJoin: true,
-      isNewsDetail:false,
-      productNav_active:true,
+      isNewsDetail: false,
+      productNav_active: true,
+      activityDetail: {},
     }
   },
 
   computed: {},
 
   created () {
-    this.$bus.on('eventName_toNewsDetail',this.toNewsDetail)
-    this.$bus.on('eventName_backNewsList',this.backNewsList)
+    this.$bus.on('eventName_toNewsDetail', this.toNewsDetail)
+    this.$bus.on('eventName_backNewsList', this.backNewsList)
+    this.$bus.on('eventName_loadedDatas', this.getActivityDetail);
   },
 
   mounted () { },
@@ -106,14 +108,33 @@ export default {
     change (index) {
       this.currentShowIndex = index;
     },
-    toNewsDetail(){
+    toNewsDetail () {
       this.isNewsDetail = true;
     },
-    backNewsList(){
+    backNewsList () {
       this.isNewsDetail = false;
     },
-    productNavChange(val){
-      this.productNav_active = val;
+    productNavChange (val) {
+      if (val) {
+        this.productNav_active = val;
+      } else {
+        if (this.activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY == '是') {
+          this.productNav_active = val
+        } else {
+          this.$message(
+            {
+              type:'info',
+              message:'请等待评审'
+            }
+          )
+          this.productNav_active = true;
+        }
+
+      }
+
+    },
+    getActivityDetail (detail) {
+      this.activityDetail = detail;
     }
 
   }
@@ -138,20 +159,20 @@ export default {
 .components_acitivityrace_tab-title--active {
   color: brown;
 }
-.components_acitivityrace_tab-product_nav{
+.components_acitivityrace_tab-product_nav {
   text-align: center;
   padding: 20px;
 }
-.components_acitivityrace_tab-product_nav-item{
+.components_acitivityrace_tab-product_nav-item {
   margin: 0 auto;
   width: 170px;
   height: 50px;
   line-height: 50px;
-  background-color: #F2F2F2;
-  color: #BCBCBC;
+  background-color: #f2f2f2;
+  color: #bcbcbc;
   cursor: pointer;
 }
-.components_acitivityrace_tab-product_nav-item--active{
+.components_acitivityrace_tab-product_nav-item--active {
   background-color: #363636;
   color: white;
 }

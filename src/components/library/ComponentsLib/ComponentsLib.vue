@@ -132,7 +132,7 @@ export default {
 					//筛选组件
 					if (component.resourceType) { //判断是否有选中的资源类别 兼容组件有资源类别属性
 
-						if (!resourceTypeArr  || resourceTypeArr === 'unlimited') {
+						if (!resourceTypeArr || resourceTypeArr === 'unlimited') {
 							isResultArr[0] = true;
 						} else {
 							if (component.resourceType.indexOf(resourceTypeArr) === -1) { // 判断是否为不存在
@@ -191,13 +191,13 @@ export default {
 	}
 };  
 </script>
-<style>
-* {
-  margin: 0px;
+<style scoped>
+
+*{
+	 margin: 0px;
   padding: 0px;
   box-sizing: border-box;
 }
-
 .common_components_lib .titleHead {
   width: 100%;
   overflow: hidden;
@@ -286,8 +286,8 @@ export default {
   width: 100%;
   height: 200px;
   overflow-y: scroll;
-	border: none;
-	font-size: 14px;
+  border: none;
+  font-size: 14px;
 }
 
 .common_components_lib textarea {

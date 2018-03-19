@@ -2,12 +2,12 @@
  * @Author: song 
  * @Date: 2018-02-06 10:01:47 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-09 11:24:22
+ * @Last Modified time: 2018-03-16 18:36:45
  */
 <!-- 投票组件  -->
 <template>
   <div class="work_common_03">
-    <el-button type="primary" size="large" @click="doVote()">投上一票</el-button>
+    <el-button type="primary" size="large" @click="doVote()">点赞</el-button>
   </div>
 </template>
 
@@ -42,7 +42,7 @@ export default {
               this.$emit('vote', res.data.data, this.docid);  // 子组件向父组件传值
               this.$message({
                 type: "success",
-                message: "投票成功"
+                message: "点赞成功"
               });
             } else if (res.data.error && res.data.error.errorCode === "-1") {  // 投票失败
               this.$message({
@@ -52,7 +52,7 @@ export default {
             } else {  // 投票失败
               this.$message({
                 type: "error",
-                message: "投票失败"
+                message: "已点赞"
               });
             }
           })
