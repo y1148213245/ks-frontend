@@ -278,7 +278,7 @@ export default {
           break;
         }
       }
-      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=$_$.' + key + '&value=' + value).then((res) => {
+      Post(CONFIG.PAGE_MANAGEMENT_URL + 'project/config?projectName=' + this.siteName + '&key=$_$.' + key + '&value=' + value).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",
@@ -296,7 +296,7 @@ export default {
     confirmGlobalConfig () {
       var key = 'CONFIG';
       var value = document.getElementById('globalConfig').innerHTML;
-      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=' + key + '&value=' + value).then((res) => {
+      Post(CONFIG.PAGE_MANAGEMENT_URL + 'project/config?projectName=' + this.siteName + '&key=' + key + '&value=' + value).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",
@@ -325,7 +325,7 @@ export default {
     toggleOperation (item) { // 切换中间区域的操作: 预览、编程、替换、发布
       if (item === 'public') { //  发布操作
         let loadingTag = this.$loading({ lock: true, spinner: "el-icon-loading", text: '加载中...' }); // loading
-        Get(this.configUrl + 'project/release?projectName=' + this.siteName).then((res) => {
+        Get(CONFIG.PAGE_MANAGEMENT_URL + 'project/release?projectName=' + this.siteName).then((res) => {
           loadingTag.close();
           if (res.data && res.data.success) {
             this.$message({
@@ -349,8 +349,8 @@ export default {
       this.showItem = item;
       this.noData = this.activeFile ? false : true;  // 中间预览区要兼容没有数据的情况
       if (!this.noData) {  // 有数据才执行
-        this.reviewContext = this.activeType === 'html' ? (this.configUrl + '../' + this.siteName + '/pages/' + this.activeFile) : (this.configUrl + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName);
-        Get(this.configUrl + 'files/edit?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
+        this.reviewContext = this.activeType === 'html' ? (CONFIG.PAGE_MANAGEMENT_URL + '../' + this.siteName + '/pages/' + this.activeFile) : (CONFIG.PAGE_MANAGEMENT_URL + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName);
+        Get(CONFIG.PAGE_MANAGEMENT_URL + 'files/edit?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
           var datas = res.data;
           if (datas.success && datas.content) {
             this.usedComponents = {};
@@ -391,7 +391,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        Delete(this.configUrl + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
+        Delete(CONFIG.PAGE_MANAGEMENT_URL + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
           if (res.data.success) {
             this.queryLists();
             this.$message({
@@ -412,7 +412,7 @@ export default {
         fileName: this.activeFile,
         fileContent: this.code,
       };
-      Post(this.configUrl + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent) + '&projectName=' + this.siteName).then((res) => {
+      Post(CONFIG.PAGE_MANAGEMENT_URL + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent) + '&projectName=' + this.siteName).then((res) => {
         if (res.data.success) {
           this.toggleOperation(this.showItem);
           if (status == false) {  // 配置组件的时候是隐形进行编辑文件的操作 所以不需要提示操作成功
@@ -435,7 +435,7 @@ export default {
     },
     upLoadUrl () {  // 上传地址
       return (
-        this.configUrl + 'files?projectName=' + this.siteName
+        CONFIG.PAGE_MANAGEMENT_URL + 'files?projectName=' + this.siteName
       );
     },
     beforeUpload (file) {  // 上传前要校验格式
@@ -491,7 +491,7 @@ export default {
     },
     importUrl () {   // 导入地址
       return (
-        this.configUrl + 'project/import?projectName=' + this.siteName
+        CONFIG.PAGE_MANAGEMENT_URL + 'project/import?projectName=' + this.siteName
       );
     },
     importProgress () {  // 导入过程
@@ -534,14 +534,14 @@ export default {
       return typeMatch;
     },
     downloadFile () {  // 导出
-      Get(this.configUrl + 'project/export?projectName=' + this.siteName).then((res) => {
+      Get(CONFIG.PAGE_MANAGEMENT_URL + 'project/export?projectName=' + this.siteName).then((res) => {
         if (res.status === 200) {
-          window.location.href = this.configUrl + 'project/export?projectName=' + this.siteName;
+          window.location.href = CONFIG.PAGE_MANAGEMENT_URL + 'project/export?projectName=' + this.siteName;
         }
       })
     },
     queryLists () {  // 查询左侧列表
-      Get(this.configUrl + 'files/list?type=' + this.activeType + '&projectName=' + this.siteName).then(res => {
+      Get(CONFIG.PAGE_MANAGEMENT_URL + 'files/list?type=' + this.activeType + '&projectName=' + this.siteName).then(res => {
         let datas = res.data;
         if (datas && datas.list) {
           this.activeLists = datas.list;
@@ -553,7 +553,7 @@ export default {
     },
     importResource () {  // 开发者模式 导入资源
       return (
-        this.configUrl + 'project/import/assets'
+        CONFIG.PAGE_MANAGEMENT_URL + 'project/import/assets'
       )
     },
     importResourceSuccess (res, file) { // 导入资源成功

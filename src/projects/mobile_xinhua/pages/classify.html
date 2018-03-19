@@ -1,51 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html style="font-size: 50px;">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta http-equiv="Cache-Control" content="max-age=3000"/>
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0,minimal-ui, maximum-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Cache-Control" content="max-age=3000" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0,minimal-ui, maximum-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta content="black" name="apple-mobile-web-app-status-bar-style">
-  <meta name="format-detection" content="telephone=no,email=no"/>
+  <meta name="format-detection" content="telephone=no,email=no" />
   <meta name="screen-orientation" content="portrait">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <script type="text/javascript" src="../assets/config/index.js"></script>
-  <script type="text/javascript" src="../assets/js/public.js"></script>
-  <script type="text/javascript" src="../assets/js/jquery.min.js"></script>
-  <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script type="text/javascript" src="../assets/js/mobileInterface.js"></script>
-  <link type="text/css" rel="stylesheet" href="../assets/css/common.css"/>
-  <link type="text/css" rel="stylesheet" href="../assets/css/css.css"/>
+  <script type="text/javascript" src="../../assets/js/mobileInterface.js"></script>
   <title>图书分类</title>
-  <script type="text/javascript">
-    $(document).ready(function () {
-//切换
-      $(".booklist_subnav span").click(function () {
-        var _index = $(this).index();
-
-        $(".booklist_subnav span").eq(_index).children().addClass('color_c400').parent().siblings().children().removeClass('color_c400');
-        $(".booklist_list").eq(_index).show().siblings('.booklist_list').hide();
-
-      });
-    });
-  </script>
 </head>
+
 <body>
-<div id="mobile_zx">
-  <!--图书分类公用头部-->
-  <mobile_zx_classifyhead></mobile_zx_classifyhead>
-  <!--图书分类公用头部 END-->
-  <div class="header_g90"></div>
-
-  <!--图书分类-->
-  <mobile_zx_classify></mobile_zx_classify>
-  <!--图书分类 END-->
-
-  <!--<div class="footer_g"></div>-->
-  <!--首页公用底部-->
-  <!--<mobile_zx_footer></mobile_zx_footer>-->
-  <!--首页公用底部 END-->
-</div>
+  <div id="app">
+    <!-- 图书分类组件 -->
+    <ui_mobile_classification_01 namespace="classify"></ui_mobile_classification_01>
+    <!-- 图书分类组件 -->
+  </div>
 </body>
+
 </html>

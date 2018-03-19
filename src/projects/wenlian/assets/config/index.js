@@ -11,6 +11,7 @@ var CONFIG = {
   READ_URL: "/spc-reader",  // 临时打包
   
   GO_CONTRIBUTE_URL: "http://192.168.6.21:8080/wenlian/ssoWenlianLogin.do?",
+  PAGE_MANAGEMENT_URL: "http://172.19.57.153:8085/spc/api/",  // 页面管理系统地址
 	SITE_CONFIG: {
 		siteId: 2,
   	chId: 0

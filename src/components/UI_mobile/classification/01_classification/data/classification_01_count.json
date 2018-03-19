@@ -1,0 +1,36 @@
+{
+  "last": 15,
+  "prePage": 1,
+  "nextPage": 1,
+  "start": 0,
+  "pageSize": 15,
+  "description": "查询成功！",
+  "hasNext": false,
+  "totalCount": 0,
+  "hasPre": false,
+  "result": [{
+    "BOOK_BOOK_CASCADID_1": [{
+      "88340": 29
+    }, {
+      "81047": 17
+    }, {
+      "81043": 15
+    }, {
+      "81675": 12
+    }, {
+      "81046": 10
+    }, {
+      "81048": 10
+    }, {
+      "81720": 10
+    }, {
+      "81044": 8
+    }, {
+      "81045": 3
+    }]
+  }],
+  "pageNo": 1,
+  "success": true,
+  "totalPages": 0,
+  "first": 1
+}

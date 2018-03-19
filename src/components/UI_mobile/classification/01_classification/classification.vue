@@ -1,0 +1,122 @@
+<!-- tushu  -->
+<template>
+  <div class="ui_mobile_classification_01">  <!--一级分类-->
+    <a class="ui_mobile_classification_a" v-for="(item, index) in classifyList" :key="index" @click="toSecondary(item)">
+      <p class="ui_mobile_classification_bgpic"></p>
+      <div class="ui_mobile_classification_con">
+        <p class="ui_mobile_classification_text" v-text="item[keys.text]"></p>
+        <p class="ui_mobile_classification_count">{{countsList[item[keys.cascadeId]] | formatCount}}</p>
+      </div>
+    </a>
+    </div>
+</template>
+
+<script>
+import { Get, Post } from "@common";
+import PROJECT_CONFIG from "projectConfig";
+import $ from "jquery";
+
+export default {
+  name: 'ui_mobile_classification_01',
+  props: ['namespace'],
+  reused: true,
+  data () {
+    return {
+      CONFIG: null,
+      classifyList: [],  // 图书分类
+      keys: {},
+      countList: {}, // 存放处理后的分类总数
+    };
+  },
+
+  mounted () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].classification.classification_01;
+    this.keys = this.CONFIG.queryClassification.keys;
+    this.queryClassificationList();
+    this.queryCount();
+  },
+
+  methods: {
+    queryClassificationList () { // 图书分类查询
+      Get(this.CONFIG.queryClassification.url, { params: this.CONFIG.queryClassification.params }).then(rep => {
+        var datas = rep.data;
+        if (datas && datas instanceof Array && datas.length > 0) {
+          this.classifyList = datas;
+        }
+      });
+    },
+    queryCount () {  // 查各个分类下书的总数
+      Post(this.CONFIG.queryCount.url, this.CONFIG.queryCount.params).then(rep => {
+        var datas = rep.data.result;
+        if (datas && datas instanceof Array && datas.length > 0) {
+          var data = datas[0].BOOK_BOOK_CASCADID_1;
+          data.forEach((item, index) => {
+            this.countsList = $.extend(this.countsList, item);
+          })
+        }
+      });
+    }
+  }
+}
+
+</script>
+<style>
+.ui_mobile_classification_01 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+}
+
+.ui_mobile_classification_a {
+  position: relative;
+  width: 3.3rem;
+  margin-top: 0.25rem;
+  text-decoration: none;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+  outline: none；;
+}
+
+.ui_mobile_classification_bgpic {
+  width: 3.3rem;
+  height: 2rem;
+  background: url(./data/img/bookclass.png) no-repeat;
+  background-size: 3.3rem 2rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.ui_mobile_classification_con {
+  position: absolute;
+  top: 0.52rem;
+  right: 0.42rem;
+}
+
+.ui_mobile_classification_text {
+  font-size: 0.44rem;
+  color: #ffffff;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.ui_mobile_classification_count {
+  text-align: right;
+  color: #ffffff;
+  font-size: 0.24rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+</style>
