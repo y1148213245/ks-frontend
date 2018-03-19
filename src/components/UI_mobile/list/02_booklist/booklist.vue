@@ -1,7 +1,8 @@
 <!-- Created by song 2018/3/15 图书列表组件 -->
 <template>
   <div class="ui_mobile_list_02">
-    <div class="ui_mobile_list_02_subnav" v-if="listType == 'colId'">
+
+    <div class="ui_mobile_list_02_subnav" v-if="listType == 'colId'"> <!-- 按栏目查图书列表 -->
       <span class="ui_mobile_list_02_read" :class="{ui_mobile_list_02_active:indexValue==0?true:false}" @click="toBookList('pub_read_num desc',0)">热门</span>
       <span class="ui_mobile_list_02_star" :class="{ui_mobile_list_02_active:indexValue==1?true:false}" @click="toBookList('pub_star_num desc',1)">好评</span>
       <span class="ui_mobile_list_02_pricecon"><span class="ui_mobile_list_02_saleprice" :class="{ui_mobile_list_02_active:indexValue==2?true:false}" @click="toBookList('prod_sale_price asc',2)">价格</span><a
@@ -10,7 +11,14 @@
       class="ui_mobile_list_02_desc"></i></a></span>
       <span :class="{ui_mobile_list_02_active:indexValue==3?true:false}" @click="toBookList('BOOK_PUBDATE desc',3)">新书</span>
     </div>
-    <div></div>
+
+    <div class="ui_mobile_list_02_sortCon" v-if="listType == 'cascadId'"> <!-- 按分类查图书列表 -->
+      <div class="ui_mobile_list_02_sort" id="screenBox">
+        <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyArr" :key="index" v-text="item"></span>
+      </div>
+      <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyArr && classifyArr.length > 4">更多</a>
+    </div>
+
     <div class="ui_mobile_list_02_booklist">
       <div v-if="bookList && bookList.length > 0">
         <dl class="ui_mobile_list_02_booklistcon" v-for="(ebook, index) in bookList" :key="index">
@@ -31,6 +39,7 @@
       <div class="f28 color_3333" style="text-align: center" v-else>暂无数据</div>
       <div class="f28 color_3333" style="text-align: center" v-if="noMore">没有更多啦~</div>
     </div>
+
   </div>
 </template>
 
@@ -50,21 +59,25 @@ export default {
       bookList: [],  // 图书列表
       indexValue: 0, // 当前选中筛选条件：热门、好评、价格、新书
       noMore: false,
-      colId: '',
+      colId: '', // 栏目
+      cascadId: '', // 分类
       listType: '', // 列表类型
       orderParam: 'pub_read_num desc', // 排序类型
       totalCount: 0, // 总数
       pageNo: "1",
       pageSize: "10",
+      classifyArr: [],
     };
   },
 
   mounted () {
     let query = URL.parse(document.URL, true).query;
-    this.colId = query.colId;  // 按栏目查的时候从地址栏获取colId
+    this.colId = query.colId ? query.colId : "";  // 按栏目查的时候从地址栏获取colId
+    this.cascadId = query.cascadId ? query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
     this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01;
     this.keys = this.CONFIG.keys;
     this.listType = this.CONFIG.listType;
+    this.classifyArr = this.CONFIG.classifyArr;
     this.loadBookList();
     /*检测滚动条*/
     $(window).scroll(() => {
@@ -81,7 +94,7 @@ export default {
           this.loadBookList();
         }
       }
-      if (this.pageNo === pageNoMax) {
+      if (this.pageNo == pageNoMax) {
         this.noMore = true;
       }
     });
@@ -90,7 +103,7 @@ export default {
   methods: {
     loadBookList () { // 获取图书列表数据
       let paramsObj = Object.assign({}, this.CONFIG.params);
-      paramsObj.conditions = '[{pub_resource_type:"BOOK"},{pub_col_id:' + this.colId + '},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]';
+      paramsObj.conditions = '[{pub_resource_type:"BOOK"},{pub_col_id:"' + this.colId + '"},{BOOK_BOOK_CASCADID:"' + this.cascadId + '",op:"lk"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]';
       paramsObj.orderBy = this.orderParam;
       paramsObj.pageNo = this.pageNo;
       Post(this.CONFIG.url, paramsObj).then((res) => {
@@ -115,7 +128,16 @@ export default {
       this.scroll = true;
       this.noMore = false;
       this.pageNo = 1;
-    }
+    },
+    showMore () { // 查看更多 按分类查时的功能
+      if ($('#moreBtn').html() == "收起") {
+        $("#screenBox").css("height", "");
+        $('#moreBtn').html("更多");
+      } else {
+        $("#screenBox").css("height", "auto");
+        $('#moreBtn').html("收起");
+      }
+    },
   }
 }
 </script>
@@ -262,5 +284,41 @@ export default {
 .ui_mobile_list_02_price {
   color: #c40001;
   font-size: 0.28rem;
+}
+
+.ui_mobile_list_02_sortCon {
+  background-color: #f5f7fa;
+  overflow: hidden;
+  width: 7.5rem;
+  margin-bottom: 0.2rem;
+  margin-top: 0.25rem;
+}
+
+.ui_mobile_list_02_sort {
+  float: left;
+  height: 0.6rem;
+  margin: 0.3rem 0 0 0;
+  overflow: hidden;
+  width: 6.06rem;
+}
+
+.ui_mobile_list_02_sortitem {
+  color: #717b8b;
+  float: left;
+  font-size: 0.26rem;
+  margin: 0 0 0.3rem 0;
+  white-space: nowrap;
+  width: 1.5rem;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
+}
+
+.ui_mobile_list_02_more {
+  color: #c92e36;
+  float: left;
+  font-size: 0.26rem;
+  margin-top: 0.3rem;
 }
 </style>

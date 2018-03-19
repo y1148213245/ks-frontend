@@ -27,7 +27,8 @@ export default {
         author: 'BOOK_SYS_AUTHORS', // 作者
         abstract: 'BOOK_SYNOPSIS', // 摘要
         price: 'prod_member_price', // 价格
-      }
+      },
+      classifyArr: ['JAVA', 'C', 'JavaScript', '线性代数', '高等数学'],
     }
   }
 };
