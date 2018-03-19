@@ -1,6 +1,6 @@
 <!-- 图书详情页组件 created by song 2018/1/2 -->
 <template>
-  <section id="info-book" class="col_full">
+  <section id="info-book" class="col_full work_bookdetail_01_content">
     <div class="container clearfix book-detail">
       <div class="col-md-4  noleftpadding">
         <!-- Product Single - Gallery
@@ -580,17 +580,17 @@ input[type="number"] {
   color: #000;
 }
 
-p,
-pre,
-ul,
-ol,
-dl,
-dd,
-blockquote,
-address,
-table,
-fieldset,
-form {
+.work_bookdetail_01_content p,
+.work_bookdetail_01_content pre,
+.work_bookdetail_01_content ul,
+.work_bookdetail_01_content ol,
+.work_bookdetail_01_content dl,
+.work_bookdetail_01_content dd,
+.work_bookdetail_01_content blockquote,
+.work_bookdetail_01_content address,
+.work_bookdetail_01_content table,
+.work_bookdetail_01_content fieldset,
+.work_bookdetail_01_content form {
   margin-bottom: 30px;
   padding-left: 0px;
 }

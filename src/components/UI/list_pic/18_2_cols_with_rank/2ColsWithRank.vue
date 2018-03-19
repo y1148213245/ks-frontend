@@ -348,7 +348,7 @@
   .ui_list_pic_18_2_cols_with_rank_skin .main_box .list_wrapper .content .attr_wrapper .operate ._share {
     border-top: 1px solid #d2d2d2;
     border-bottom: 1px solid #d2d2d2;
-    background: url(./assets/img/bg_005.png) 1px 90px;
+    background: url(./data/bg_005.png) 1px 90px;
   }
 
   .ui_list_pic_18_2_cols_with_rank_skin .main_box .list_wrapper .content .attr_wrapper .operate ._share:hover {

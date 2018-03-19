@@ -297,7 +297,7 @@ export default {
 }
 
 .ui_list_pic_07_skin .listDl .listDd .other .share {
-  background-image: url(/assets/img/bg_005.png);
+  background-image: url(./data/bg_005.png);
   border-style: solid;
   border-color: #d2d2d2;
   cursor: pointer;

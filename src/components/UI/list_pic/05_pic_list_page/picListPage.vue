@@ -98,7 +98,7 @@ export default {
 }
 </script>
 <style>
-div {
+.ui_pic_list_05 div {
   display: block;
 }
 
@@ -106,7 +106,7 @@ div {
   min-height: 1648px;
 }
 
-* {
+.ui_pic_list_05 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -172,7 +172,7 @@ div {
   height: auto;
 }
 
-a {
+.ui_pic_list_05 a {
   text-decoration: none !important;
 }
 
@@ -236,7 +236,7 @@ a {
   margin-bottom: 4px;
 }
 
-label {
+.ui_pic_list_05 label {
   display: inline-block;
   max-width: 100%;
   margin-bottom: 5px;

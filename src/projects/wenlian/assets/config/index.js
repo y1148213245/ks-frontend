@@ -4,8 +4,8 @@
 
 var CONFIG = {
   // BASE_URL: "http://172.19.57.153/portal/api/",
-  BASE_URL: "http://172.19.92.94:8080/portal/api/",
-  // BASE_URL: "/portal/api/",//临时打包
+  // BASE_URL: "http://172.19.92.94:8080/portal/api/",
+  BASE_URL: "/portal/api/",//临时打包
   
   // READ_URL: "http://172.19.57.153:8945/spc-reader",  // 阅读地址
   READ_URL: "/spc-reader",  // 临时打包

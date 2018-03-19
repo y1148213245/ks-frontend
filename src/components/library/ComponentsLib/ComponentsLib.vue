@@ -191,9 +191,8 @@ export default {
 	}
 };  
 </script>
-<style scoped>
-
-*{
+<style>
+.common_components_lib *{
 	 margin: 0px;
   padding: 0px;
   box-sizing: border-box;

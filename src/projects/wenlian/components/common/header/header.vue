@@ -24,7 +24,7 @@
 
     <div class="header_top2">
       <div class="twowrap">
-        <div class="logoCon"><a href="/pages/index.html"><img src="/assets/img/logo.jpg" alt=""></a></div>
+        <div class="logoCon"><a href="/pages/index.html"><img src="../../../assets/img/logo.jpg" alt=""></a></div>
         <div class="searchCon">
           <div class="myshop">
             <a class="cartIcon" @click="goToCart()">

@@ -148,7 +148,7 @@ export default {
 }
 </style>
 <style>
-* {
+.ui_list_pic_01_pic_list_page * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -176,7 +176,7 @@ export default {
   float: left;
   border: 1px solid #dcdcdc;
 }
-a {
+.ui_list_pic_01_pic_list_page a {
   text-decoration: none !important;
 }
 .news-hot a img {
@@ -189,7 +189,7 @@ a {
 .news-hot h3 {
   margin-top: 8px;
 }
-h3 {
+.ui_list_pic_01_pic_list_page h3 {
   font-size: 18px;
   font-weight: 600;
   line-height: 1.5;
@@ -210,7 +210,7 @@ h3 {
 .news-thumb1 h4 {
   margin-bottom: 0px;
 }
-h4 {
+.ui_list_pic_01_pic_list_page h4 {
   margin-top: 10px;
   font-family: inherit;
   font-weight: 500;
