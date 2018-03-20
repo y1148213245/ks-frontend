@@ -55,7 +55,8 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'core',
-    assetsPublicPath: '/portal/sites/wenlian/',
+    // assetsPublicPath: '/portal/sites/wenlian/',
+    assetsPublicPath: '../',
     
     // assetsSubDirectory: 'static',
     // assetsPublicPath: '/portal/sites/ming/',

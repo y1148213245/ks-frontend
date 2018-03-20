@@ -6,6 +6,7 @@
     <el-step title="上传作品" icon="el-icon-upload"></el-step>
     <el-step title="完成" icon="el-icon-check"></el-step>
   </el-steps>
+
     <div v-show="active == 0">
       <el-card class="box-card" :body-style="{ padding: '0 0 0 10px' }">
       <div slot="header" class="clearfix">
@@ -68,6 +69,36 @@
         align="center"
         prop="identifyId"
         label="身份证号"
+        show-overflow-tooltip>
+      </el-table-column>
+    </el-table>
+    <el-table
+        :data="participantsedList"
+        max-height="288"
+        style="width: 700px"
+        :row-class-name="setParticipantsListTableCellClassName"
+        @current-change="handleCurrentChange">
+      <el-table-column
+        align="center"
+        prop="userName"
+        label="已参赛"
+        
+        width="120">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="gender"
+        width="120"
+        :formatter="sexFormat">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="mobileNum"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="identifyId"
         show-overflow-tooltip>
       </el-table-column>
     </el-table>
@@ -196,7 +227,7 @@ export default {
   props: {
     namespace: String
   },
-  data() {
+  data () {
     return {
       // loginName: null,
       docId: "",
@@ -270,12 +301,13 @@ export default {
         content: ""
       },
       additions: false,
-      participantsList: []
+      participantsList: [],
+      participantsedList: []
     };
   },
-  created() {
+  created () {
     var _this = this;
-    Get(CONFIG.BASE_URL + "checkToken.do").then(function(rep) {
+    Get(CONFIG.BASE_URL + "checkToken.do").then(function (rep) {
       console.log(rep);
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
@@ -290,7 +322,7 @@ export default {
     });
   },
 
-  mounted() {
+  mounted () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].contestants.contestants_01;
     this.queryRelatedInformation();
   },
@@ -298,7 +330,7 @@ export default {
     VueEditor
   },
   methods: {
-    queryParticipants() {
+    queryParticipants () {
       // 查询参赛人列表
       Get(this.CONFIG.competitionList.url, {
         params: {
@@ -307,11 +339,49 @@ export default {
           pageSize: "99"
         }
       }).then(rep => {
-        this.participantsList = rep.data.data;
+        let participantsArr = [];
+        let participantsedArr = [];
+        let participantsList = rep.data.data;
+        Get(this.CONFIG.competitionList.competitionedUrl, {
+          params: {
+            loginName: this.loginName,
+            pageSize: '1',
+            page: '99',
+            pageable: '1'
+          }
+        }).then(resp => {
+          // console.log(resp.data);
+          let participantsedList = resp.data.data;
+          for (let i = 0, len = participantsList.length; i < len; i++) {
+            let participant = participantsList[i];
+            let isParticipant = false;
+            for (let j = 0, len = participantsedList.length; j < len; j++) {
+              let participantsed = participantsedList[j];
+              if (participant.userName == participantsed.POTHUNTER_NAME) {
+                isParticipant = false;
+                break;
+              } else {
+                isParticipant = true;
+              }
+            }
+            if (isParticipant) {
+              participantsArr.push(participant);
+            } else {
+              participantsedArr.push(participant)
+            }
+          }
+          this.participantsedList = participantsedArr;
+          this.participantsList = participantsArr;
+        })
+
       });
     },
+    setParticipantsListTableCellClassName (row, rowIndex) {
+      console.log(row);
+      return 'work_contestants_01-cell--disable'
+    },
     //查询学校
-    updateSchool() {
+    updateSchool () {
       let doclibCode =
         this.CONFIG.supplementaryInformation.keys.getSchoolRequest_doclibCode +
         "=" +
@@ -353,9 +423,9 @@ export default {
         console.log(this.schoolArr);
       });
     },
-    queryRelatedInformation() {
+    queryRelatedInformation () {
       // 查询补充信息
-      var getUrlStr = function(name) {
+      var getUrlStr = function (name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
         if (r != null) return unescape(r[2]);
@@ -375,12 +445,12 @@ export default {
         this.classInformaition = rep.data.CLASSLIMT.split(/;/);
       });
     },
-    handleCurrentChange(currentRow) {
+    handleCurrentChange (currentRow) {
       console.log(currentRow);
       this.currentRow = currentRow;
     },
     // 提交参赛信息
-    submitAddSupplementForm() {
+    submitAddSupplementForm () {
       if (this.currentRow === "") {
         this.$message({
           type: "error",
@@ -416,7 +486,7 @@ export default {
       }
     },
     // 增加参赛人信息
-    submitAddParticipantsForm(addParticipantsForm) {
+    submitAddParticipantsForm (addParticipantsForm) {
       this.$refs[addParticipantsForm].validate(valid => {
         if (valid) {
           var param = {
@@ -442,15 +512,16 @@ export default {
                   type: "success",
                   message: "学生添加成功!"
                 });
-                Get(this.CONFIG.competitionList.url, {
-                  params: {
-                    teacherId: this.teacherID,
-                    pageNo: "1",
-                    pageSize: "99"
-                  }
-                }).then(rep => {
-                  this.participantsList = rep.data.data;
-                });
+                this.queryParticipants();
+                /*  Get(this.CONFIG.competitionList.url, {
+                   params: {
+                     teacherId: this.teacherID,
+                     pageNo: "1",
+                     pageSize: "99"
+                   }
+                 }).then(rep => {
+                   this.participantsList = rep.data.data;
+                 }); */
               }
               this.additions = false;
               this.$refs[addParticipantsForm].resetFields(); //清空表单
@@ -464,14 +535,14 @@ export default {
         }
       });
     },
-    previouStep() {
+    previouStep () {
       this.active = 0;
     },
-    upLoadUrl() {
+    upLoadUrl () {
       // 上传地址
       return "http://172.19.57.153/spc-portal-web/dynamicFile/upload.do?";
     },
-    beforeFileUpload(file) {
+    beforeFileUpload (file) {
       const isDOCX =
         file.type ===
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -481,7 +552,7 @@ export default {
       }
       return isDOCX || isDOC;
     },
-    upLoadingSuccess(res, file) {
+    upLoadingSuccess (res, file) {
       // 上传成功回调
       console.log(res);
       if ((res.Status = "success")) {
@@ -499,7 +570,7 @@ export default {
       }
     },
     // 添加附件类参赛作品
-    submitAddAnnexWorksForm(addAnnexWorksForm) {
+    submitAddAnnexWorksForm (addAnnexWorksForm) {
       this.$refs[addAnnexWorksForm].validate(valid => {
         if (valid) {
           if (this.worktype == "附件" && this.attachID == "") {
@@ -559,15 +630,15 @@ export default {
         }
       });
     },
-    toIndex() {
+    toIndex () {
       let url = "./index.html";
       window.location.href = url;
     },
-    toPersonal() {
+    toPersonal () {
       let url = "./personalcenter.html#joinactivity";
       window.location.href = url;
     },
-    sexFormat: function(row, column) {
+    sexFormat: function (row, column) {
       var date = row[column.property];
       if (date == 1) {
         return "男";
@@ -576,16 +647,16 @@ export default {
       }
     },
     // 上传附件
-    handlePreview(file) {
+    handlePreview (file) {
       console.log(file);
     },
-    handleExceed(files, fileList) {
+    handleExceed (files, fileList) {
       this.$message.warning(`只能上传一个参赛作品附件`);
     }
   }
 };
 </script>
-<style scoped>
+<style>
 .work_contestants_01_main .el-steps--simple {
   background: #ecf0f1;
   color: #5e8242;
@@ -593,6 +664,9 @@ export default {
 .work_contestants_01_main {
   width: 700px;
   margin: 0 auto;
+}
+.work_contestants_01-cell--disable {
+  background-color: #c0c4cc !important;
 }
 .work_contestants_01_main .el-table__body-wrapper {
   overflow: auto;

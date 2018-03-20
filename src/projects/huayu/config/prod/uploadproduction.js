@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-02-08 15:34:54 
- * @Last Modified by: song
- * @Last Modified time: 2018-02-08 15:36:07
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-03-20 10:16:43
  */
 /* 上传作品 */
 export default {
@@ -12,6 +12,7 @@ export default {
       competitionList: {
         url:
         CONFIG.BASE_URL + "/user/getActivityMemberByTeacher.do?",
+        competitionedUrl: CONFIG.BASE_URL + 'spc/prodb/activity/myWorks.do?loginName=william&pageSize=1&page=10&pageable=1',
         params: {
           teacherId: "",
           pageNo: "1",

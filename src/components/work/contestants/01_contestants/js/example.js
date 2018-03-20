@@ -22,12 +22,13 @@ const prod = {
   contestants: {
     contestants_01: {
       competitionList: {
-        url: CONFIG.BASE_URL + "/user/getActivityMemberByTeacher.do?",
+        url: CONFIG.BASE_URL + "/user/getActivityMemberByTeacher.do?",/* 获取参赛人 */
+        competitionedUrl: CONFIG.BASE_URL + 'spc/prodb/activity/myWorks.do',/* 获取已参赛人url */
         params: {
           teacherId: "",
           pageNo: "1",
           pageSize: "8"
-        }
+        },
       },
       //查询补充信息接口
       supplementaryInformation: {
@@ -70,7 +71,7 @@ const prod = {
           metaMap: {
             // ACTIVITYLIBID:"PORTAL_ACTIVITY",
             ACTIVITYID: "",
-            ACTIVITY_NAME : "",//活动名称
+            ACTIVITY_NAME: "",//活动名称
             POTHUNTER_NAME: "", //参赛人姓名
             POTHUNTER_SEX: "", //参赛人性别
             POTHUNTER_PHONENUMBER: "", //参赛人手机号
