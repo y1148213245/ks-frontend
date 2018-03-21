@@ -19,7 +19,8 @@ export default {
         author: 'BOOK_SYS_AUTHORS', // 作者
         abstract: 'BOOK_SYNOPSIS', // 摘要
         price: 'prod_member_price', // 价格
-      }
+      },
+      eveName: "showSearchResult" // 搜索组件要传递搜索内容给搜索结果（即图书列表组件）组件，这里通过发广播的形式进行组件之间的通信
     }
   }
 };

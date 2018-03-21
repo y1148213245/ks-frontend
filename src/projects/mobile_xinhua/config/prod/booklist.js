@@ -9,7 +9,7 @@ export default {
     booklist_01: {
       url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
       params: {
-        conditions: '[{pub_resource_type:"BOOK"},{pub_col_id:""},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"},{BOOK_BOOK_CASCADID:"",op:"lk"}]',
+        conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]',
         groupBy: "pub_resource_id", // 为了去重
         orderBy: "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc", // 默认传这个值 为了与后台顺序一致
         pageNo: "1",
@@ -19,7 +19,7 @@ export default {
       listType: 'colId', // 列表有两种类型： ‘colId’按栏目查、‘cascadId’按分类查
       showItem: ['picture', 'bookname', 'author', 'abstract', 'price'], // 控制显示哪些项
       display: {  // template 固定显示内容
-        author: '作者:',
+        author: '作者：',
       },
       keys: { // 接口请求字段兼容
         picture: 'pub_picSmall', // 封面图
@@ -28,7 +28,7 @@ export default {
         abstract: 'BOOK_SYNOPSIS', // 摘要
         price: 'prod_member_price', // 价格
       },
-      classifyArr: ['JAVA', 'C', 'JavaScript', '线性代数', '高等数学'],
+      eveName: "showSearchResult" // 搜索组件要传递搜索内容给搜索结果（即图书列表组件）组件，这里通过发广播的形式进行组件之间的通信
     }
   }
 };

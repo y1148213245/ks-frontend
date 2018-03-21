@@ -192,11 +192,10 @@ export default {
 };  
 </script>
 <style>
-.common_components_lib *{
-	 margin: 0px;
-  padding: 0px;
+.common_components_lib {
   box-sizing: border-box;
 }
+
 .common_components_lib .titleHead {
   width: 100%;
   overflow: hidden;

@@ -4,7 +4,7 @@
     <a href="javascript:void(0);"  class="work_mobile_header_01_cart"><i class="work_mobile_header_01_cart_i"></i></a>
     <!--work_mobile_header_active-->
     <a class="work_mobile_header_01_recommend " v-for="item,index in display" @click="goPage(item.url,item.name)" :class="{work_mobile_header_01_active:isActive===item.name}">{{item.name}}</a>
-    <a class="work_mobile_header_01_search" :href="CONFIG.toSearch"><i class="work_mobile_header_01_search_i"></i></a>
+    <a class="work_mobile_header_01_search" :href="CONFIG && CONFIG.toSearch"><i class="work_mobile_header_01_search_i"></i></a>
   </div>
 </template>
 

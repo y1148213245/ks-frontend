@@ -13,10 +13,13 @@
     </div>
 
     <div class="ui_mobile_list_02_sortCon" v-if="listType == 'cascadId'"> <!-- 按分类查图书列表 -->
-      <div class="ui_mobile_list_02_sort" id="screenBox">
-        <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyArr" :key="index" v-text="item"></span>
+      <div class="ui_mobile_list_02_sort" id="screenBox" v-if="classifyBook && classifyBook.length > 0">
+        <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyBook" :key="index" v-text="item.text" @click="loadBookList(item.cascadeId)"></span>
       </div>
-      <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyArr && classifyArr.length > 4">更多</a>
+      <div class="ui_mobile_list_02_sort" id="screenBox" v-else>
+        <span class="ui_mobile_list_02_nosub">暂无二级分类</span>
+      </div>
+      <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyBook && classifyBook.length > 4">更多</a>
     </div>
 
     <div class="ui_mobile_list_02_booklist">
@@ -36,8 +39,8 @@
           </dd>
         </dl>
       </div>
-      <div class="f28 color_3333" style="text-align: center" v-else>暂无数据</div>
-      <div class="f28 color_3333" style="text-align: center" v-if="noMore">没有更多啦~</div>
+      <div class="ui_mobile_list_02_none" v-else>暂无数据</div>
+      <div class="ui_mobile_list_02_none" v-if="noMore">没有更多啦~</div>
     </div>
 
   </div>
@@ -47,6 +50,7 @@
 import URL from 'url'
 import PROJECT_CONFIG from 'projectConfig'
 import { Post, Get } from '@common'
+import $ from 'jquery'
 
 export default {
   name: 'ui_mobile_list_02',
@@ -62,23 +66,33 @@ export default {
       colId: '', // 栏目
       cascadId: '', // 分类
       listType: '', // 列表类型
-      orderParam: 'pub_read_num desc', // 排序类型
+      orderParam: '', // 排序类型
       totalCount: 0, // 总数
       pageNo: "1",
       pageSize: "10",
-      classifyArr: [],
+      classifyBook: null,  // 分类
+      searchText: '',  // 搜索内容
     };
   },
-
+  created () {
+    this.$bus.on('showSearchResult', (data) => {
+      this.searchText = data;
+      this.toBookList(this.orderParam, this.indexValue);
+    });
+  },
   mounted () {
     let query = URL.parse(document.URL, true).query;
     this.colId = query.colId ? query.colId : "";  // 按栏目查的时候从地址栏获取colId
     this.cascadId = query.cascadId ? query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
+    this.orderParam = query.cascadId ? "BOOK_PUBDATE desc" : "pub_read_num desc";
     this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01;
     this.keys = this.CONFIG.keys;
     this.listType = this.CONFIG.listType;
     this.classifyArr = this.CONFIG.classifyArr;
-    this.loadBookList();
+    this.loadBookList(this.cascadId);
+    if (this.cascadId) {
+      this.queryClassificationList();
+    }
     /*检测滚动条*/
     $(window).scroll(() => {
       let clientHeight = $(window).height();   // 屏幕可视高度
@@ -91,7 +105,7 @@ export default {
         if (this.pageNo < pageNoMax) {   // 当前页小于翻页最大值
           this.noMore = false;
           this.pageNo = parseInt(this.pageNo) + 1 + '';
-          this.loadBookList();
+          this.loadBookList(this.cascadId);
         }
       }
       if (this.pageNo == pageNoMax) {
@@ -101,15 +115,19 @@ export default {
   },
 
   methods: {
-    loadBookList () { // 获取图书列表数据
+    loadBookList (cascadId) { // 获取图书列表数据
       let paramsObj = Object.assign({}, this.CONFIG.params);
-      paramsObj.conditions = '[{pub_resource_type:"BOOK"},{pub_col_id:"' + this.colId + '"},{BOOK_BOOK_CASCADID:"' + this.cascadId + '",op:"lk"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]';
+      if (this.searchText) {
+        paramsObj.searchText = this.searchText;
+      } else {
+        paramsObj.conditions = this.colId ? '[{pub_resource_type:"BOOK"},{pub_col_id:"' + this.colId + '"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]' : '[{pub_resource_type:"BOOK"},{BOOK_BOOK_CASCADID:"' + cascadId.replace('~', '_') + '",op:"lk"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]';
+      }
       paramsObj.orderBy = this.orderParam;
       paramsObj.pageNo = this.pageNo;
       Post(this.CONFIG.url, paramsObj).then((res) => {
         if (res.data.success) { // 请求成功
           var datas = res.data.result;
-          this.totalCount = res.data.totalCount;  // 
+          this.totalCount = res.data.totalCount;
           if (datas && datas instanceof Array && datas.length > 0) {
             this.bookList = this.bookList.concat(datas);
             this.scroll = true;
@@ -117,17 +135,29 @@ export default {
         }
       })
     },
+    queryClassificationList () { // 图书分类查询
+      Get(this.CONFIG.queryClassification.url, { params: this.CONFIG.queryClassification.params }).then(rep => {
+        var datas = rep.data;
+        if (datas && datas instanceof Array && datas.length > 0) {
+          for (var i = 0, len = datas.length; i < len; i++) {
+            if (datas[i].cascadeId == this.cascadId) {
+              this.classifyBook = datas[i].children;
+            }
+          }
+        }
+      });
+    },
     toBookList (orderParam, thisValue) {
       this.initData();
       this.orderParam = orderParam;
       this.indexValue = thisValue;
-      this.loadBookList();
+      this.loadBookList(this.cascadId);
     },
     initData () {    // 初始化数据操作
       this.bookList = [];
       this.scroll = true;
       this.noMore = false;
-      this.pageNo = 1;
+      this.pageNo = "1";
     },
     showMore () { // 查看更多 按分类查时的功能
       if ($('#moreBtn').html() == "收起") {
@@ -142,6 +172,10 @@ export default {
 }
 </script>
 <style>
+.ui_mobile_list_02 {
+  padding-top: 0.95rem;
+}
+
 .ui_mobile_list_02_subnav {
   display: -webkit-box;
   display: -webkit-flex;
@@ -156,7 +190,7 @@ export default {
   font-weight: 500;
   font-size: 0.3rem;
   padding-bottom: 0.25rem;
-  padding-top: 0.3rem;
+  padding-top: 0.4rem;
   margin-bottom: 0.2rem;
 }
 
@@ -204,6 +238,7 @@ export default {
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
+  margin-top: 0;
   margin-bottom: 0.2rem;
 }
 
@@ -244,6 +279,7 @@ export default {
   -ms-flex-pack: justify;
   justify-content: space-between;
   font-weight: 500;
+  margin-left: 0;
 }
 
 .ui_mobile_list_02_booklistimg {
@@ -259,6 +295,8 @@ export default {
   word-break: break-all;
   overflow: hidden;
   white-space: normal;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .ui_mobile_list_02_bookname {
@@ -284,6 +322,8 @@ export default {
 .ui_mobile_list_02_price {
   color: #c40001;
   font-size: 0.28rem;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .ui_mobile_list_02_sortCon {
@@ -300,6 +340,16 @@ export default {
   margin: 0.3rem 0 0 0;
   overflow: hidden;
   width: 6.06rem;
+}
+
+.ui_mobile_list_02_nosub {
+  float: left;
+  height: 0.6rem;
+  margin-left: 0.3rem;
+  overflow: hidden;
+  width: 6.06rem;
+  color: #333333;
+  font-size: 0.28rem;
 }
 
 .ui_mobile_list_02_sortitem {
@@ -320,5 +370,12 @@ export default {
   float: left;
   font-size: 0.26rem;
   margin-top: 0.3rem;
+}
+
+.ui_mobile_list_02_none {
+  text-align: center;
+  color: #5b5b5b;
+  font-weight: 500;
+  font-size: 0.3rem;
 }
 </style>

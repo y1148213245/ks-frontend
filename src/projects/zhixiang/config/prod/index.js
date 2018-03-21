@@ -71,5 +71,11 @@ export default {
     },
     picLinkUrl: "./bookdetail.html?pubId=",
     columnId: "51"
+  },
+  navigation: {
+    navigation_02: {
+      toCartUrl: '../pages/shoppingcart.html', // 去购物车
+      toLoginUrl: '../pages/login.html', // 去登陆
+    }
   }
 };

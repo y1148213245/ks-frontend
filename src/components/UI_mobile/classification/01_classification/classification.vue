@@ -1,7 +1,7 @@
 <!-- tushu  -->
 <template>
   <div class="ui_mobile_classification_01">  <!--一级分类-->
-    <a class="ui_mobile_classification_a" v-for="(item, index) in classifyList" :key="index" @click="toSecondary(item)">
+    <a class="ui_mobile_classification_a" v-for="(item, index) in classifyList" :key="index" @click="toClassifyBook(item[keys.cascadeId])">
       <p class="ui_mobile_classification_bgpic"></p>
       <div class="ui_mobile_classification_con">
         <p class="ui_mobile_classification_text" v-text="item[keys.text]"></p>
@@ -55,6 +55,9 @@ export default {
           })
         }
       });
+    },
+    toClassifyBook (id) { // 去二级分类图书列表
+      window.location.href = this.CONFIG.queryClassification.toClassifyBookUrl + '?cascadId=' + id;
     }
   }
 }
@@ -77,6 +80,7 @@ export default {
   justify-content: space-between;
   padding-left: 0.2rem;
   padding-right: 0.2rem;
+  padding-top: 0.95rem;
 }
 
 .ui_mobile_classification_a {

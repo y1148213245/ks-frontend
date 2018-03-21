@@ -1,17 +1,17 @@
 <template>
-  <div :class="{'ui_mobile_list_03_l':classFloat==='left' , 'ui_mobile_list_03_r':classFloat==='right'}">
-    <a>
-      <div>
-        <p class="ui_mobile_list_03_p f30">{{navName}}</p>
-        <p class="ui_mobile_list_03_title color_8b8b f18 mb20 mt15">{{CONFIG.title}}</p>
-        <span :class="{'ui_mobile_list_03_l_decorate' : classFloat==='left'}"></span>
-        <p :class="{'ui_mobile_list_03_r_decorate':classFloat==='right'}"></p>
-      </div>
-      <div :class="{'ui_mobile_list_03_img_l':classFloat==='left' , 'ui_mobile_list_03_img_r':classFloat==='right'}" v-if="bookInfo.pub_picBig">
-        <img :src="bookInfo.pub_picBig" @click="appbook(bookInfo.id)">
-      </div>
-    </a>
-  </div>
+    <div :class="{'ui_mobile_list_03_l':classFloat==='left' , 'ui_mobile_list_03_r':classFloat==='right'}">
+      <a class="ui_mobile_list_03_a">
+        <div :class="{'ui_mobile_list_03_r_div':classFloat==='right'}">
+          <p class="ui_mobile_list_03_p f30" :style="{color:titleColor}">{{navName}}</p>
+          <p class="ui_mobile_list_03_title color_8b8b f18 mb20 mt15">{{CONFIG && CONFIG.title}}</p>
+          <span :class="{'ui_mobile_list_03_l_decorate' : classFloat==='left'}"></span>
+          <p :class="{'ui_mobile_list_03_r_decorate':classFloat==='right'}"></p>
+        </div>
+        <div :class="{'ui_mobile_list_03_img_l':classFloat==='left' , 'ui_mobile_list_03_img_r':classFloat==='right'}" v-if="bookInfo && bookInfo.pub_picBig">
+          <img :src="bookInfo && bookInfo.pub_picBig" @click="appbook(bookInfo.id)">
+        </div>
+      </a>
+    </div>
 </template>
 
 <script>
@@ -31,12 +31,14 @@
         bookInfo: {},
         navName:'',
         CONFIG:null,
-        classFloat:null
+        classFloat:null,
+        titleColor:''
       }
     },
     mounted: function () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].list.ui_mobile_list_03[this.module];
       this.keys = this.CONFIG.keys;
+      this.titleColor=this.CONFIG.titleColor;
       this.classFloat=this.CONFIG.classFloat;
       this.params = Object.assign({}, this.CONFIG.params);
       let condition = JSON.parse(this.params.conditions);
@@ -68,10 +70,10 @@
         })
       },
       getNavData: function () {
-        Get(this.CONFIG.navUrl, {"params": this.navParams}).then((response) => {
-          let data = response.data;
+        Post(this.CONFIG.navUrl, {"params": this.navParams}).then((response) => {
+          let data = response.data.data;
           data.filter((item) => {
-            if (item.id === this.CONFIG) {
+            if (item.id === this.CONFIG.colId) {
               this.navName=item.name;
             }
           })
@@ -92,7 +94,6 @@
   padding-bottom: 0.25rem;
 }
   .ui_mobile_list_03_r{
-    float: left;
     padding: 0.4rem 0.55rem .15rem 0.55rem;
     border-bottom: 1px solid #d9d9d9;
     display: -webkit-box;
@@ -107,6 +108,11 @@
     -moz-box-direction: normal;
     -ms-flex-direction: column;
     /* flex-direction: column; */
+  }
+  .ui_mobile_list_03_a{
+    display: block;
+    width: 100%;
+    height: 100%;
   }
   .f30{
     font-size: 0.3rem;
@@ -143,12 +149,26 @@
     -moz-background-size: 5rem 5rem;
     background-size: 5rem 5rem;
   }
+  .ui_mobile_list_03_img_l img,
+  .ui_mobile_list_03_img_r img{
+    width: 100%;
+  }
+.ui_mobile_list_03_img_l img{
+  height: 2.02rem;
+}
+.ui_mobile_list_03_img_l img{
+  height: 1.42rem;
+}
   .ui_mobile_list_03_img_l{
     width: 1.44rem;
      height: 2.02rem;
      margin: 0 auto;
   }
+  .ui_mobile_list_03_r_div{
+    float:left
+  }
   .ui_mobile_list_03_img_r{
+    float: left;
     width: 1.07rem;
     height: 1.42rem;
     margin-left: 0.6rem;

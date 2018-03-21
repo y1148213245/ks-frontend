@@ -24,7 +24,7 @@ const dev = {
           text: "text", // 分类名
           children: "children", // 分类下的子类
         },
-        broadcastName: 'queryClassificationList'
+        toClassifyBookUrl: '../pages/classifybook.html'
       },
       queryCount: {
         url: "/data/classification_01_count.json", // 各个分类下对应有几本书

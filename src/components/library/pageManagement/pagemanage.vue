@@ -19,6 +19,7 @@
             <el-tab-pane v-for="(list, index) in listArray" :label="list.name" :key="index" :name="list.type">
               <div class="listCon">
                 <div class="listHead">
+                  <span class="operation" @click="createNew()"><i class="el-icon-plus"></i><span>新建</span></span>
                   <span class="operation">
                     <el-upload
                       class="upload-demo"
@@ -157,6 +158,7 @@
      <el-dialog title="编辑组件配置信息" :visible.sync="editConfigModel">
       <div>
         <textarea id="prodConfig" v-html="currentComponent.prod" style="width: 100%; min-height: 200px;"></textarea>
+        <!-- <codemirror v-model="currentComponent.prod"></codemirror> -->
       </div>
 
       <span slot="footer" class="dialog-footer">
@@ -170,11 +172,28 @@
      <el-dialog title="编辑全局配置信息" :visible.sync="editGlobalConfigModel">
       <div>
         <textarea id="globalConfig" v-html="CONFIG" style="width: 100%; min-height: 200px;"></textarea>
+        <!-- <codemirror v-model="CONFIG"></codemirror> -->
       </div>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="editGlobalConfigModel = false">取 消</el-button>
         <el-button type="primary" @click="confirmGlobalConfig()">确 定</el-button>
+      </span>
+      
+     </el-dialog>
+
+     <!-- 新建文件的模态弹窗 -->
+     <el-dialog title="新建文件" :visible.sync="createNewModel">
+      <div>
+        
+        <span>文件名：</span>
+        <el-input v-model="newFileName" placeholder="请输入文件名称" style="display: inline-block; width: 160px;"></el-input>
+        <span>.html</span>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="createNewModel = false">取 消</el-button>
+        <el-button type="primary" @click="confirmCreateNew()">确 定</el-button>
       </span>
       
      </el-dialog>
@@ -223,7 +242,7 @@ export default {
         name: '在线查看',
         type: 'view'
       }],
-      configUrl: 'http://172.19.57.153:8085/spc/api/',  // 请求url
+      // configUrl: 'http://172.19.57.153:8085/spc/api/',  // 请求url
       // configUrl: 'http://172.19.36.57:8084/spc/api/',  //  ff本地ip
       reviewContext: '',  // iframe里面的内容 呈现源码
       noData: true,
@@ -239,6 +258,8 @@ export default {
       usedComTagArr: [], // 已用组件数据集合
       editGlobalConfigModel: false,  // 编辑全局配置文件信息的模态弹窗
       CONFIG: null, // 全局配置对象
+      createNewModel: false,  // 新建文件的模态弹窗
+      newFileName: '', // 新建文件名称
     };
   },
 
@@ -260,13 +281,35 @@ export default {
   },
 
   methods: {
+    createNew () {  // 新建文件
+      this.createNewModel = true;
+    },
+    confirmCreateNew () {  // 确定新建文件
+      Post(CONFIG.PAGE_MANAGEMENT_URL + 'files/add?projectName=' + this.siteName + '&fileName=' + this.newFileName).then((res) => {
+        if (res.data && res.data.success) {
+          this.$message({
+            type: "success",
+            message: "添加成功"
+          });
+        } else {
+          var errorMsg = res.data && res.data.reason ? res.data.reason : '操作失败，请稍后重试';
+          this.$message({
+            type: "info",
+            message: errorMsg
+          });
+        }
+      })
+      this.createNewModel = false;
+      this.newFileName = '';
+      this.queryLists();
+    },
     showConfig (com) { // 显示当前组件的配置文件 支持编辑
       this.currentComponent = this.examples[com];
       this.editConfigModel = true;
     },
     globalConfig () {  // 显示当前项目的全局配置
       this.editGlobalConfigModel = true;
-      this.CONFIG = CONFIG;
+      this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
     },
     confirmConfig () {  // 确定修改组件配置信息
       var key = "";
@@ -274,7 +317,7 @@ export default {
       for (var i = 0, len = this.usedComTagArr.length; i < len; i++) {
         if (this.usedComTagArr[i].indexOf('<' + this.currentComponent.name) !== -1) { // 修改的当前组件
           key = this.usedComTagArr[i].substring(this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace'))) + 1, this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace')) + 1));
-          value = document.getElementById('prodConfig').innerHTML;
+          value = document.getElementById('prodConfig').value;
           break;
         }
       }
@@ -293,9 +336,9 @@ export default {
         this.editConfigModel = false;
       })
     },
-    confirmGlobalConfig () {
+    confirmGlobalConfig () {  // 确定修改全局配置文件信息
       var key = 'CONFIG';
-      var value = document.getElementById('globalConfig').innerHTML;
+      var value = document.getElementById('globalConfig').value;
       Post(CONFIG.PAGE_MANAGEMENT_URL + 'project/config?projectName=' + this.siteName + '&key=' + key + '&value=' + value).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
@@ -667,7 +710,7 @@ body {
 
 .components_pagemanagement .leftList .listNav .operation {
   display: inline-block;
-  width: 22.7%;
+  width: 18%;
   text-align: center;
   cursor: pointer;
 }
