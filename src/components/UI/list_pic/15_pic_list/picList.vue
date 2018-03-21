@@ -108,7 +108,7 @@ export default {
         window.location.href = "./login.html";
         return;
       }
-      var url = this.CONFIG.contributeBaseUrl + "authorName=" + this.member.loginName + "&userName=" + value;
+      var url = CONFIG.GO_CONTRIBUTE_URL + "authorName=" + this.member.loginName + "&userName=" + value;
       window.open(url);
     }
   }

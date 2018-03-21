@@ -24,7 +24,7 @@
 
     <div class="header_top2">
       <div class="twowrap">
-        <div class="logoCon"><a href="/pages/index.html"><img src="../../../assets/img/logo.jpg" alt=""></a></div>
+        <div class="logoCon"><a href="./index.html"><img src="../../../assets/img/logo.jpg" alt=""></a></div>
         <div class="searchCon">
           <div class="myshop">
             <a class="cartIcon" @click="goToCart()">
@@ -43,10 +43,10 @@
           </div>
           <div class="hotWordCon">
             <span class="hotSearchWord">热门搜索:</span>
-            <div v-for="(item, index) in hotWordList" :key="index">
+            <div style="float:left" v-for="(item, index) in hotWordList" :key="index">
               <a class="info" @click="goToSearchResultByHW(item.information_SYS_TOPIC || '')" v-text="item.information_SYS_TOPIC" :title="item.information_SYS_TOPIC"
                  href="javascript:"></a>
-              <span class="search-word_block&#45;&#45;float" style="display: inline-block;" v-if="index < hotWordList.length - 1">|</span>
+              <span class="search-word_block" style="display: inline-block;" v-if="index < hotWordList.length - 1">|</span>
             </div>
           </div>
         </div>
@@ -449,7 +449,7 @@ export default {
     float: left;
 }
 
-.components_header .header_top2 .searchBox .hotWordCon {
+.components_header .header_top2 .hotWordCon {
     height: 40px;
     overflow: hidden;
     line-height: 32px;

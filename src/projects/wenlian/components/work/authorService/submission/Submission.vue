@@ -27,7 +27,7 @@
         <a v-html="entry && entry.information_SYS_TOPIC || ''" :href="getEditorDetailUrl(entry)" class="tgfs_con_tit line-h35 mt10 scoped_tg_html"></a>
         <div v-html="entry.information_a_content" class="scoped_tg_content"></div>
         <p class="color_8d8c line-h35 goContribute">
-          <a @click="contribute()" href="javascript:void(0)" class="qtg fr pl15 pr15 color_fff f14">去投稿</a>
+          <a @click="contribute(entry.information_a_collaborator)" href="javascript:void(0)" class="qtg fr pl15 pr15 color_fff f14">去投稿</a>
         </p>
       </div>
     </template>
@@ -116,12 +116,12 @@
       getEditorDetailUrl: function (editor) {
         return 'authordetail.html?pubId=' + editor.id + '&currentType=editor' + '#'
       },
-      contribute: function () {
+      contribute: function (value) {
         if (!this.member.loginName) {
-          window.location.href = "login.html";
+          window.location.href = "./login.html";
           return;
         }
-        let url = CONFIG.GO_CONTRIBUTE_URL + 'authorName=' + this.member.loginName;
+        let url = CONFIG.GO_CONTRIBUTE_URL + 'authorName=' + this.member.loginName + "&userName=" + value;
         window.open(url);
       }
     }

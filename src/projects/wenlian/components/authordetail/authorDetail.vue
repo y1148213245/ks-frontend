@@ -6,7 +6,7 @@
         <dd class="fl">
           <p class="zzxq_detail_tit mb10"><span class="xm color_424" v-html="authorInfo.information_SYS_TOPIC  || ''"></span>
             <span v-if="authorInfo.currentType == 'editor'" class="bg_ca00 qtg fr pl15 pr15 color_fff f14 line-h35">
-                  <a href="javascript:void(0)" @click="goContribute" class="color_fff">去投稿</a>
+                  <a href="javascript:void(0)" @click="goContribute(authorInfo.information_a_collaborator)" class="color_fff">去投稿</a>
                 </span>
           </p>
           <p class="zzxq_detail_subtit"><span class="tubiao"></span><span v-text="authorInfo.information_a_tag || ''"></span></p>
@@ -60,7 +60,7 @@
           }
         })
       },
-      goContribute() {
+      goContribute(value) {
         if (!this.member.loginName) {
           this.$message({
             message: '请登录,登录完了才能投稿~',
@@ -69,7 +69,7 @@
           window.location.href = "./login.html";
           return;
         }
-        var url = CONFIG.GO_CONTRIBUTE_URL + "authorName=" + this.member.loginName;
+        var url = CONFIG.GO_CONTRIBUTE_URL + "authorName=" + this.member.loginName + "&userName=" + value;
         window.open(url);
       }
     }

@@ -18,49 +18,54 @@
 </template>
 
 <script>
-  import {Post,DrawImage} from "@common";
-  import PROJECT_CONFIG from "projectConfig";
-  import Swiper from 'swiper';
-  export default {
-    name: "ui_swiper_04_pic_nowords",
-    reused:true,
-    props: ["namespace"],
-    data:function(){
-      return {
-        picList:[],
-        CONFIG: null,
-      }
+import { Post, DrawImage } from "@common";
+import PROJECT_CONFIG from "projectConfig";
+import Swiper from 'swiper';
+export default {
+  name: "ui_swiper_04_pic_nowords",
+  reused: true,
+  props: ["namespace"],
+  data: function () {
+    return {
+      picList: [],
+      CONFIG: null,
+    }
+  },
+  created: function () {
+    this.getData();
+  },
+  methods: {
+    getData: function () {
+      let CONFIG = PROJECT_CONFIG[this.namespace].swiper.pic_noWords_04;
+      this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
+      Post(CONFIG.url, CONFIG.params).then((rep) => {
+        this.picList = rep.data.result;
+        this.$nextTick(this.initSwiper);
+      })
     },
-    created:function(){
-      this.getData();
+    initSwiper: function () {
+      new Swiper(".swiper-container", {
+        slidesPerView: 4,
+        loop: true,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+          paginationAsRange: true
+        },
+      })
     },
-    methods:{
-      getData:function(){
-        let CONFIG =  PROJECT_CONFIG[this.namespace].swiper.pic_noWords_04;
-        this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
-        Post(CONFIG.url,CONFIG.params).then((rep)=>{
-          this.picList=rep.data.result;
-          this.$nextTick(this.initSwiper);
-        })
-      },
-      initSwiper: function () {
-          new Swiper(".swiper-container", {
-            slidesPerView: 4,
-            loop:true,
-            pagination: {
-              el: ".swiper-pagination",
-              clickable: true,
-              paginationAsRange:true
-            },
-          })
-      },
-      toDetail(id) {
-        window.location.href = this.CONFIG.infoDetailHref + id;
-      }
+    toDetail (id) {
+      window.location.href = this.CONFIG.infoDetailHref + id;
     }
   }
+}
 </script>
 
-<style scoped>
+<style>
 
+.ui_swiper_04_pic_nowords .index_recommend_imgBox {
+  /* display: inline-block;
+  width: 282px;
+  height: 148px; */
+}
 </style>
