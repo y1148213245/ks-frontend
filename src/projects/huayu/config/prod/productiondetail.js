@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-02-06 11:12:46 
- * @Last Modified by: song
- * @Last Modified time: 2018-03-16 17:43:55
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-03-21 13:26:59
  */
 export default {
   name: "productiondetail",
@@ -39,6 +39,7 @@ export default {
     }
   },
   review: {  // 查询作品评论列表
+    getParamType:'href',/* event:事件取参 ,href:地址栏取参 */
     queryreview: {
       url: CONFIG.BASE_URL + 'comment/getWorksComment.do',
       params: {

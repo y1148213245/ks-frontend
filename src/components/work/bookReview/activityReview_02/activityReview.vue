@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 13:56:44 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-14 11:05:04
+ * @Last Modified time: 2018-03-21 13:46:26
  */
 <!-- 活动评论组件 -->
 <template>
@@ -87,13 +87,14 @@ export default {
   methods: {
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].review;
-      this.keys = this.CONFIG.listenEvent.keys;
       this.reviewType = this.CONFIG.queryreview.reviewType;
       if(this.CONFIG.getParamType == 'event'){
+        this.keys = this.CONFIG.listenEvent.keys;
         this.$bus.on(this.CONFIG.listenEvent.name,this.getEventParam)
       }else if(this.CONFIG.getParamType == 'href'){
         this.getHrefParam ();
       }
+      
     },
     getEventParam (data) {
       this.pubId = data[this.keys.pubId];
@@ -159,6 +160,7 @@ export default {
       } else {  // 其他详情（活动、资讯详情） 可以理解为默认情况
         paramsObj.pubId = this.pubId;
       }
+      
       Post(this.CONFIG.addreview.url, paramsObj).then(rep => {
         if (rep.data.result === '1') {  //请求成功
           this.queryReviewList();
@@ -168,7 +170,13 @@ export default {
             type: "success",
             message: '添加评论成功'
           });
-        } else {
+        } else if(rep.data.error){
+          let msg = rep.data.error.errorMsg;
+          this.$message({
+            type: "error",
+            message: msg
+          });
+        }else{
           this.$message({
             type: "error",
             message: '添加评论失败'
