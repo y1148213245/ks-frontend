@@ -6,8 +6,8 @@ module.exports = {
 	concurrentProject: process.env.PROJECT_ENV || "mobile_xinhua",
 	proxy: {
 		'/portal/file': {
-			// target: 'http://172.19.57.153',
-			target: 'http://172.19.92.76:8080',//华育服务器代理
+			target: 'http://172.19.57.153',
+			// target: 'http://172.19.92.76:8080',//华育服务器代理
 			// pathRewrite: {'^/portal/file' : ''},
 			changeOrigin: true
 		},

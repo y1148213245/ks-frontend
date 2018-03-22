@@ -2,14 +2,14 @@
 
   <div class="ui_mobile_list_04">
     <!--热门推荐-->
-    <div class="ui_mobile_list_04_search_hot">
-      <div class="ui_mobile_list_04_search_hot_column">
-        <div class="ui_mobile_list_04_title">
-          <i class="ui_mobile_list_04_search_hot_column_1"></i>
-          热门推荐
-          <i class="ui_mobile_list_04_search_hot_column_2"></i>
-        </div>
+    <div class="ui_mobile_list_04_search_hot_column">
+      <div class="ui_mobile_list_04_title">
+        <i class="ui_mobile_list_04_search_hot_column_1"></i>
+        热门推荐
+        <i class="ui_mobile_list_04_search_hot_column_2"></i>
       </div>
+    </div>
+    <div class="ui_mobile_list_04_search_hot">
       <div class="ui_mobile_list_04_hotBookWrapper" v-if="getHotBookList && getHotBookList.length>0">
         <div class="ui_mobile_list_04_hotBook" v-for="(item, index) in getHotBookList"
              @click="appbook(item[keys.BookId])">
@@ -56,10 +56,8 @@
       queryClassificationList() {
         Post(this.CONFIG.url, this.CONFIG.params).then(rep => {
           var datas = rep.data.result;
-          console.log(datas);
           if (datas && datas instanceof Array && datas.length > 0) {
             this.getHotBookList = datas.slice(0, this.CONFIG.maxNumber);
-            console.log(this.getHotBookList);
           }
         });
       }

@@ -1,6 +1,6 @@
-<!--头部购物车图标 获取购物车信息-->
+<!-- Created by song 2018/3/19 头部购物车图标 获取购物车信息 -->
 <template>
-  <div class="ui_classification_01">
+  <div class="ui_navigation_02">
     <span class="ui_navigation_02_img" @click="toShoppingCart()"></span>
     <span class="ui_navigation_02_text" v-text="totalCount"></span>
   </div>
@@ -82,7 +82,7 @@ export default {
 </script>
 
 <style>
-.ui_classification_01 {
+.ui_navigation_02 {
   position: relative;
   font-size: 13px;
   display: inline-block;

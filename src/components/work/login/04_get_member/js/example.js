@@ -12,7 +12,7 @@ const dev = {
   }
 };
 const prod = {
-  activityDetail: {
+  login: {
     work_login_04: {
       toLoginHref:'',
       toPersonalCenterHref:''

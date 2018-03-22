@@ -55,8 +55,11 @@ export default {
     loadList () {
       let getListConfig = this.CONFIG.getList;
       let url = getListConfig.url;
-      getListConfig.params.conditions = JSON.stringify(getListConfig.params.conditions);
-      Post(url, getListConfig.params).then((resp) => {
+      let params = null;
+      !this.CONFIG.isDevelopment ? (getListConfig.params.conditions = JSON.stringify(getListConfig.params.conditions)) : '';
+      !this.CONFIG.isDevelopment ? (params = getListConfig.params) : '';
+      Post(url, params).then((resp) => {
+        console.log(resp)
         this.list = resp.data.result;
       })
     },

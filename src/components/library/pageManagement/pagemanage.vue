@@ -229,7 +229,7 @@ export default {
       activeFile: '',      // 当前选中的文件 默认选中页面列表下的第一个文件
       activeLists: [],     // 左侧列表 数组
       showItem: 'review',  // 选中的操作 默认选中预览
-      handleLists: [{      // 中间操作对象： 预览、编程呢个、替换、发布、删除
+      handleLists: [{      // 中间操作对象： 预览、编程、替换、发布、删除
         name: '预览',
         type: 'review'
       }, {
@@ -244,6 +244,7 @@ export default {
       }],
       // configUrl: 'http://172.19.57.153:8085/spc/api/',  // 请求url
       // configUrl: 'http://172.19.36.57:8084/spc/api/',  //  ff本地ip
+      configUrl: '',
       reviewContext: '',  // iframe里面的内容 呈现源码
       noData: true,
       usedComponents: {},
@@ -264,6 +265,7 @@ export default {
   },
 
   mounted () {
+    this.configUrl = CONFIG.PAGE_MANAGEMENT_URL;
     let query = URL.parse(document.URL, true).query;
     this.debugModel = query && query.debug && query.debug == '790118' ? true : false;  // 暗号对上 进入debug模式
     this.examples = ScanExamples();
@@ -285,7 +287,7 @@ export default {
       this.createNewModel = true;
     },
     confirmCreateNew () {  // 确定新建文件
-      Post(CONFIG.PAGE_MANAGEMENT_URL + 'files/add?projectName=' + this.siteName + '&fileName=' + this.newFileName).then((res) => {
+      Post(this.configUrl + 'files/add?projectName=' + this.siteName + '&fileName=' + this.newFileName).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",
@@ -321,7 +323,7 @@ export default {
           break;
         }
       }
-      Post(CONFIG.PAGE_MANAGEMENT_URL + 'project/config?projectName=' + this.siteName + '&key=$_$.' + key + '&value=' + value).then((res) => {
+      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=$_$.' + key + '&value=' + value).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",
@@ -339,7 +341,8 @@ export default {
     confirmGlobalConfig () {  // 确定修改全局配置文件信息
       var key = 'CONFIG';
       var value = document.getElementById('globalConfig').value;
-      Post(CONFIG.PAGE_MANAGEMENT_URL + 'project/config?projectName=' + this.siteName + '&key=' + key + '&value=' + value).then((res) => {
+      this.configUrl = JSON.parse(value).PAGE_MANAGEMENT_URL;
+      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=' + key + '&value=' + value).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",
@@ -351,8 +354,9 @@ export default {
             message: "修改失败，请稍后重试"
           });
         }
-        this.editGlobalConfigModel = false;
+
       })
+      this.editGlobalConfigModel = false;
     },
     toggleListType (tab, event) { // 切换显示列表：页面列表、样式列表、图片列表
       this.activeType = tab && tab.name ? tab.name : this.activeType;
@@ -368,7 +372,7 @@ export default {
     toggleOperation (item) { // 切换中间区域的操作: 预览、编程、替换、发布
       if (item === 'public') { //  发布操作
         let loadingTag = this.$loading({ lock: true, spinner: "el-icon-loading", text: '加载中...' }); // loading
-        Get(CONFIG.PAGE_MANAGEMENT_URL + 'project/release?projectName=' + this.siteName).then((res) => {
+        Get(this.configUrl + 'project/release?projectName=' + this.siteName).then((res) => {
           loadingTag.close();
           if (res.data && res.data.success) {
             this.$message({
@@ -392,14 +396,15 @@ export default {
       this.showItem = item;
       this.noData = this.activeFile ? false : true;  // 中间预览区要兼容没有数据的情况
       if (!this.noData) {  // 有数据才执行
-        this.reviewContext = this.activeType === 'html' ? (CONFIG.PAGE_MANAGEMENT_URL + '../' + this.siteName + '/pages/' + this.activeFile) : (CONFIG.PAGE_MANAGEMENT_URL + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName);
-        Get(CONFIG.PAGE_MANAGEMENT_URL + 'files/edit?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
+        this.reviewContext = this.activeType === 'html' ? (this.configUrl + '../' + this.siteName + '/pages/' + this.activeFile) : (this.configUrl + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName);
+        Get(this.configUrl + 'files/edit?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
           var datas = res.data;
           if (datas.success && datas.content) {
             this.usedComponents = {};
             this.code = datas.content;
             /* 扫描已用组件标签 先用正则匹配 再用字符串方法筛出标签名 */
-            let bodyContent = datas.content.indexOf('<body') !== -1 ? datas.content.substring(datas.content.indexOf('<body'), datas.content.indexOf('</body>')) : '';
+            // let bodyContent = datas.content.indexOf('<body') !== -1 ? datas.content.substring(datas.content.indexOf('<body'), datas.content.indexOf('</body>')) : '';
+            let bodyContent = datas.content;
             var uiComponent = bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) ? bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) : [];
             var uiComArray = [];  // ui组件列表
             for (var i = 0; i < uiComponent.length; i++) {
@@ -434,7 +439,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        Delete(CONFIG.PAGE_MANAGEMENT_URL + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
+        Delete(this.configUrl + 'files?fileName=' + this.activeFile + '&projectName=' + this.siteName).then((res) => {
           if (res.data.success) {
             this.queryLists();
             this.$message({
@@ -455,7 +460,7 @@ export default {
         fileName: this.activeFile,
         fileContent: this.code,
       };
-      Post(CONFIG.PAGE_MANAGEMENT_URL + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent) + '&projectName=' + this.siteName).then((res) => {
+      Post(this.configUrl + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent) + '&projectName=' + this.siteName).then((res) => {
         if (res.data.success) {
           this.toggleOperation(this.showItem);
           if (status == false) {  // 配置组件的时候是隐形进行编辑文件的操作 所以不需要提示操作成功
@@ -478,7 +483,7 @@ export default {
     },
     upLoadUrl () {  // 上传地址
       return (
-        CONFIG.PAGE_MANAGEMENT_URL + 'files?projectName=' + this.siteName
+        this.configUrl + 'files?projectName=' + this.siteName
       );
     },
     beforeUpload (file) {  // 上传前要校验格式
@@ -534,7 +539,7 @@ export default {
     },
     importUrl () {   // 导入地址
       return (
-        CONFIG.PAGE_MANAGEMENT_URL + 'project/import?projectName=' + this.siteName
+        this.configUrl + 'project/import?projectName=' + this.siteName
       );
     },
     importProgress () {  // 导入过程
@@ -577,14 +582,14 @@ export default {
       return typeMatch;
     },
     downloadFile () {  // 导出
-      Get(CONFIG.PAGE_MANAGEMENT_URL + 'project/export?projectName=' + this.siteName).then((res) => {
+      Get(this.configUrl + 'project/export?projectName=' + this.siteName).then((res) => {
         if (res.status === 200) {
-          window.location.href = CONFIG.PAGE_MANAGEMENT_URL + 'project/export?projectName=' + this.siteName;
+          window.location.href = this.configUrl + 'project/export?projectName=' + this.siteName;
         }
       })
     },
     queryLists () {  // 查询左侧列表
-      Get(CONFIG.PAGE_MANAGEMENT_URL + 'files/list?type=' + this.activeType + '&projectName=' + this.siteName).then(res => {
+      Get(this.configUrl + 'files/list?type=' + this.activeType + '&projectName=' + this.siteName).then(res => {
         let datas = res.data;
         if (datas && datas.list) {
           this.activeLists = datas.list;
@@ -596,7 +601,7 @@ export default {
     },
     importResource () {  // 开发者模式 导入资源
       return (
-        CONFIG.PAGE_MANAGEMENT_URL + 'project/import/assets'
+        this.configUrl + 'project/import/assets'
       )
     },
     importResourceSuccess (res, file) { // 导入资源成功
@@ -827,6 +832,7 @@ body {
 .components_pagemanagement .mainFooter .contentCon .CodeMirror {
   height: 100%;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .components_pagemanagement .codemirror .vue-codemirror {

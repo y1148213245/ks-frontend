@@ -89,6 +89,35 @@ export default {
     }
   },
   swiper: {
+    ui_mobile_swiper_01: {
+      'top': {
+        isDevelopment:true,
+        toDetailType: {
+          type:'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
+          phone: {
+            functionName: 'appbook',/* app方法名 */
+            values:['id'],/* 配置轮播图数据中的字段名，用来取值给app方法传参 */
+          },
+          href: {/* 转跳页面 */
+            url:'',
+            keys:{
+              'pubId':'pubId'/* 左侧为转跳参数；右侧配置轮播图数据中的字段名，用来取值 */
+            },
+            fixedKeys:{
+              'app':'1'/* 左侧为转跳参数；右侧为值 */
+            }
+          }
+        },
+        getList: {
+          url: '../data/ui_mobile_swiper_01.json',
+          keys: {
+            id: 'id',
+            pic: 'pub_picBig',/* 封面字段 */
+            poster: 'pub_POSTER'/* 海报字段 */
+          }
+        },
+      }
+    },
     ui_mobile_swiper_02: {
       url: '../data/swiper_02_advert.json',
       keys: { //接口字段兼容

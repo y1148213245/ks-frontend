@@ -29,7 +29,7 @@
     },
 
     methods: {
-      queryClassificationList() { // 图书分类查询
+      queryClassificationList() {
         Post(this.CONFIG.url, this.CONFIG.params).then(rep => {
           var datas = rep.data.result;
           if (datas && datas instanceof Array && datas.length > 0) {

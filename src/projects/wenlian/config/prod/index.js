@@ -3,9 +3,17 @@
  */
 export default {
   name: "index",
+  navigation: {
+    navigation_03: {
+      url: `${CONFIG.BASE_URL}spc/cms/col/getColNextLevelNode`,
+      params: {
+        colId: '39', // 栏目ID
+      }
+    }
+  },
   list_pic: {
     picListBookShow: {
-      url: CONFIG.BASE_URL+"spc/cms/publish/list.do",
+      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -21,7 +29,7 @@ export default {
       colId: 59
     },
     picListRefinedBook: {
-      url: CONFIG.BASE_URL+"spc/cms/publish/list.do",
+      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -52,7 +60,7 @@ export default {
   },
   swiper: {
     pic_noWords_04: {
-      url: CONFIG.BASE_URL+'spc/cms/publish/list.do',
+      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
       params: {
         conditions: "[{pub_col_id:'83'}]",
         groupBy: "pub_resource_id",
