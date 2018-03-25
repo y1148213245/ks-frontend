@@ -1,7 +1,9 @@
 <!-- Created by song 2018/3/15 图书列表组件 -->
 <template>
   <div class="ui_mobile_list_02">
-
+    <div class="ui_mobile_list_02-title" v-if="CONFIG && CONFIG.title && CONFIG.title.isShow">
+      <!-- <i class="phb_ico_01 mr10"></i> -->
+      {{CONFIG.title && CONFIG.title.name}}</div>
     <div class="ui_mobile_list_02_subnav" v-if="listType == 'colId'"> <!-- 按栏目查图书列表 -->
       <span class="ui_mobile_list_02_read" :class="{ui_mobile_list_02_active:indexValue==0?true:false}" @click="toBookList('pub_read_num desc',0)">热门</span>
       <span class="ui_mobile_list_02_star" :class="{ui_mobile_list_02_active:indexValue==1?true:false}" @click="toBookList('pub_star_num desc',1)">好评</span>
@@ -14,7 +16,7 @@
 
     <div class="ui_mobile_list_02_sortCon" v-if="listType == 'cascadId'"> <!-- 按分类查图书列表 -->
       <div class="ui_mobile_list_02_sort" id="screenBox" v-if="classifyBook && classifyBook.length > 0">
-        <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyBook" :key="index" v-text="item.text" @click="loadBookList(item.cascadeId)"></span>
+        <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyBook" :key="index" v-text="item.text" @click="loadBookList(item.cascadeId, true)"></span>
       </div>
       <div class="ui_mobile_list_02_sort" id="screenBox" v-else>
         <span class="ui_mobile_list_02_nosub">暂无二级分类</span>
@@ -24,12 +26,12 @@
 
     <div class="ui_mobile_list_02_booklist">
       <div v-if="bookList && bookList.length > 0">
-        <dl class="ui_mobile_list_02_booklistcon" v-for="(ebook, index) in bookList" :key="index">
+        <dl class="ui_mobile_list_02_booklistcon" v-for="(ebook, index) in bookList" :key="index" v-if="CONFIG.showNum?index < CONFIG.showNum:true">
           <dt class="ui_mobile_list_02_booklistdt" v-if="CONFIG.showItem.indexOf('picture') !== -1 ? true : false">
-            <img class="ui_mobile_list_02_booklistimg" :src="ebook[keys.picture]" @click="appbook(ebook.id)">
+            <img class="ui_mobile_list_02_booklistimg" :src="ebook[keys.picture]" @click="toDetail(ebook)">
           </dt>
           <dd class="ui_mobile_list_02_booklistdd">
-            <p class="ui_mobile_list_02_bookname" @click="appbook(ebook.id)" v-if="CONFIG.showItem.indexOf('bookname') !== -1 ? true : false">{{ebook[keys.bookname]}}</p>
+            <p class="ui_mobile_list_02_bookname" @click="toDetail(ebook)" v-if="CONFIG.showItem.indexOf('bookname') !== -1 ? true : false">{{ebook[keys.bookname]}}<span class="ui_mobile_list_02-name_icon" v-text="index+1" v-if="index<5"></span></p>
             <p class="ui_mobile_list_02_author" v-if="CONFIG.showItem.indexOf('author') !== -1 ? true : false">
               <span v-text="CONFIG.display.author"></span>
               <span>{{ebook[keys.author]}}</span>
@@ -42,7 +44,11 @@
       <div class="ui_mobile_list_02_none" v-else>暂无数据</div>
       <div class="ui_mobile_list_02_none" v-if="noMore">没有更多啦~</div>
     </div>
-
+    <div class="ui_mobile_list_02-more" v-if="CONFIG && CONFIG.toMoreList && CONFIG.toMoreList.isShow">
+      <a href="javascript:void(0)" @click="toMoreLink" >更多排行
+        <i class="ui_mobile_list_02-more-icon"></i>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -54,7 +60,7 @@ import $ from 'jquery'
 
 export default {
   name: 'ui_mobile_list_02',
-  props: ['namespace'],
+  props: ['namespace', 'module'],
   reused: true,
   data () {
     return {
@@ -84,8 +90,9 @@ export default {
     let query = URL.parse(document.URL, true).query;
     this.colId = query.colId ? query.colId : "";  // 按栏目查的时候从地址栏获取colId
     this.cascadId = query.cascadId ? query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
-    this.orderParam = query.cascadId ? "BOOK_PUBDATE desc" : "pub_read_num desc";
-    this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01;
+    // this.orderParam = query.cascadId ? "BOOK_PUBDATE desc" : "pub_read_num desc";
+    this.orderParam = query.orderBy ? query.orderBy : this.orderParam;
+    this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01[this.module];
     this.keys = this.CONFIG.keys;
     this.listType = this.CONFIG.listType;
     this.classifyArr = this.CONFIG.classifyArr;
@@ -115,21 +122,37 @@ export default {
   },
 
   methods: {
-    loadBookList (cascadId) { // 获取图书列表数据
+    loadBookList (cascadId, isNOConcat) { // 获取图书列表数据 isNOConcat: 是否需要拼接数据
       let paramsObj = Object.assign({}, this.CONFIG.params);
       if (this.searchText) {
         paramsObj.searchText = this.searchText;
-      } else {
-        paramsObj.conditions = this.colId ? '[{pub_resource_type:"BOOK"},{pub_col_id:"' + this.colId + '"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]' : '[{pub_resource_type:"BOOK"},{BOOK_BOOK_CASCADID:"' + cascadId.replace('~', '_') + '",op:"lk"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]';
       }
-      paramsObj.orderBy = this.orderParam;
+      if (this.colId) {
+        paramsObj.conditions.push({ pub_col_id: this.colId });
+      }
+      if (cascadId) {
+        let isHas = false;
+        paramsObj.conditions.map((item) => {
+          if (item.hasOwnProperty('BOOK_BOOK_CASCADID')) {
+            item.BOOK_BOOK_CASCADID = cascadId.replace('~', '_')
+            isHas = true;
+          }
+        })
+        if (!isHas) paramsObj.conditions.push({ BOOK_BOOK_CASCADID: cascadId.replace('~', '_'), op: "lk" });
+      }
+      if (this.orderParam) {
+        paramsObj.orderBy = this.orderParam;
+      } else {
+        this.orderParam = paramsObj.orderBy;
+      }
+      paramsObj.conditions = JSON.stringify(paramsObj.conditions);
       paramsObj.pageNo = this.pageNo;
       Post(this.CONFIG.url, paramsObj).then((res) => {
         if (res.data.success) { // 请求成功
           var datas = res.data.result;
           this.totalCount = res.data.totalCount;
-          if (datas && datas instanceof Array && datas.length > 0) {
-            this.bookList = this.bookList.concat(datas);
+          if (datas && datas instanceof Array) {
+            this.bookList = isNOConcat ? datas : this.bookList.concat(datas);
             this.scroll = true;
           }
         }
@@ -159,6 +182,46 @@ export default {
       this.noMore = false;
       this.pageNo = "1";
     },
+    toMoreLink () {
+      let config = this.CONFIG.toMoreList;
+      let url = config.url + '?';
+      let _this = this;
+      for (const key in config.keys) {
+        const element = config.keys[key];
+        url += key + '=' + _this[element] + '&';
+      }
+      for (const key in config.fixedKeys) {
+        const element = config.fixedKeys[key];
+        url += key + '=' + element + '&';
+      }
+
+      url = url.substring(0, url.length - 1);
+      window.location.href = url;
+    },
+    toDetail (item) {
+      let toDetailType = this.CONFIG.toDetailType;
+      if (toDetailType.type == 'phone') {
+        let params = '';
+        for (let index = 0; index < toDetailType.phone.values.length; index++) {
+          const element = toDetailType.phone.values[index];
+          params += item[element] + ',';
+        }
+        params = params.substring(0, params.length - 1)
+        eval(toDetailType.phone.functionName + '(' + params + ')')
+      } else if (toDetailType.type == 'href') {
+        let url = toDetailType.href.url + '?';
+        for (const key in toDetailType.href.keys) {
+          const element = toDetailType.href.keys[key];
+          url += key + '=' + item[element] + '&';
+        }
+        for (const key in toDetailType.href.fixedKeys) {
+          const element = toDetailType.href.fixedKeys[key];
+          url += key + '=' + element + '&';
+        }
+        url = url.substring(0, url.length - 1)
+        window.location.href = url;
+      }
+    },
     showMore () { // 查看更多 按分类查时的功能
       if ($('#moreBtn').html() == "收起") {
         $("#screenBox").css("height", "");
@@ -172,10 +235,16 @@ export default {
 }
 </script>
 <style>
-.ui_mobile_list_02 {
+/* .ui_mobile_list_02 {
   padding-top: 0.95rem;
+} */
+.ui_mobile_list_02-title {
+  padding-top: 0.3rem;
+  /* padding-bottom: 0.2rem; */
+  padding-left: 0.32rem;
+  color: #333333;
+  font-size: 0.28rem;
 }
-
 .ui_mobile_list_02_subnav {
   display: -webkit-box;
   display: -webkit-flex;
@@ -229,7 +298,7 @@ export default {
 }
 
 .ui_mobile_list_02_booklist {
-  padding: 0rem 0.2rem 0.3rem 0.2rem;
+  /* padding: 0rem 0.2rem 0.3rem 0.2rem; */
 }
 
 .ui_mobile_list_02_booklistcon {
@@ -240,6 +309,10 @@ export default {
   display: flex;
   margin-top: 0;
   margin-bottom: 0.2rem;
+  padding: 0.3rem 0.5rem;
+  -moz-box-shadow: 0 10px 10px -10px #f5f5f5 inset;
+  -webkit-box-shadow: 0 10px 10px -10px #f5f5f5 inset;
+  box-shadow: 0 10px 10px -10px #f5f5f5 inset;
 }
 
 .ui_mobile_list_02_booklistdt {
@@ -298,7 +371,23 @@ export default {
   margin-top: 0;
   margin-bottom: 0;
 }
-
+.ui_mobile_list_02_bookname {
+  position: relative;
+  padding-right: 20px;
+}
+.ui_mobile_list_02-name_icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: url(./data/img/rank.png) no-repeat;
+  background-size: 19px 19px;
+}
 .ui_mobile_list_02_bookname {
   -webkit-line-clamp: 2;
   color: #333333;
@@ -377,5 +466,26 @@ export default {
   color: #5b5b5b;
   font-weight: 500;
   font-size: 0.3rem;
+}
+.ui_mobile_list_02-more {
+  text-align: center;
+  border-bottom: 1px solid #dddfe6;
+  font-size: 0.28rem;
+  padding-bottom: 0.3rem;
+}
+.ui_mobile_list_02-more-icon {
+  display: inline-block;
+  margin-left: 0.15rem;
+  width: 0.14rem;
+  height: 0.24rem;
+  background: url(./data/img/bg_ico.png) no-repeat;
+  background-position: -4.15rem -4.75rem;
+  vertical-align: middle;
+  -webkit-background-size: 5rem 5rem;
+  -moz-background-size: 5rem 5rem;
+  background-size: 5rem 5rem;
+}
+.ui_mobile_list_02-more a {
+  color: #939393;
 }
 </style>

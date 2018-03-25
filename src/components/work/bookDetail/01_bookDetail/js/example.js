@@ -22,7 +22,10 @@ const dev = {
 };
 
 const prod = {
-  
+  bookContentType: { // 书的类型  纸书：91 电子书 94
+    bookType: '91',
+    ebookType: '94',
+  }
 };
 
 const platform = 'PC';

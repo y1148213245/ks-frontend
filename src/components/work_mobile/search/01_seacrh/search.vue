@@ -57,6 +57,7 @@ input::-webkit-search-cancel-button {
 
 .work_mobile_search_01 {
   width: 7.5rem;
+  box-sizing: border-box;
   background: #fff;
   display: -webkit-box;
   display: -webkit-flex;

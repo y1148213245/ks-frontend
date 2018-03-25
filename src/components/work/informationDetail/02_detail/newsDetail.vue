@@ -1,7 +1,7 @@
 <!-- 新闻详情组件，不依赖页面 -->
 <template>
  <!--新闻中心-->
-  <div class="work_informationdetail_01">
+  <div class="work_informationdetail_02">
     <h3 style="text-align: center;" v-if="keys.topic"
         v-text="detail[keys.topic]"></h3>
     <div style="text-align: center;">
@@ -24,10 +24,10 @@
       <span v-if="keys.abstract" v-text="detail[keys.abstract] || '暂无摘要'"
             :title="detail[keys.abstract]"></span>
     </div>
-    <div class="work_informationdetail_01-nav">
-      <a class="work_informationdetail_01-nav-pre" @click="toPre">&lt;&lt;上一篇</a>
+    <div class="work_informationdetail_02-nav">
+      <a class="work_informationdetail_02-nav-pre" @click="toPre">&lt;&lt;上一篇</a>
       <a href="javascript:;" @click="returnList()">返回列表</a>
-      <a class="work_informationdetail_01-nav-next" @click="toNext">下一篇&gt;&gt;</a>
+      <a class="work_informationdetail_02-nav-next" @click="toNext">下一篇&gt;&gt;</a>
     </div>
   </div>
 </template>
@@ -222,20 +222,20 @@ export default {
 }
 </script>
 <style>
-.work_informationdetail_01 {
+.work_informationdetail_02 {
   min-height: 600px;
 }
 
-.work_informationdetail_01 .html-feild {
+.work_informationdetail_02 .html-feild {
   position: relative;
 }
-.work_informationdetail_01-nav {
+.work_informationdetail_02-nav {
   text-align: center;
 }
-.work_informationdetail_01-nav-pre {
+.work_informationdetail_02-nav-pre {
   float: left;
 }
-.work_informationdetail_01-nav-next {
+.work_informationdetail_02-nav-next {
   float: right;
 }
 </style>

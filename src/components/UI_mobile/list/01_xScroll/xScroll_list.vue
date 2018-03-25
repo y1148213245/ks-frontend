@@ -11,8 +11,8 @@
       <ul class="ui_list_01-scroll-list">
         <li class="ui_list_01-scroll-list-li" v-for="(item, index) in list" v-if="index<7" :key="index">
           <a class="ui_list_01-scroll-list-a">
-            <img class="ui_list_01-scroll-list-img" :src="item[listKeys.pic]" @click="appbook(item[listKeys.id])">
-            <p class="ui_list_01-scroll-list-title" @click="appbook(item[listKeys.id])">{{item[listKeys.title]}}</p>
+            <img class="ui_list_01-scroll-list-img" :src="item[listKeys.pic]" @click="toDetail(item)">
+            <p class="ui_list_01-scroll-list-title" @click="toDetail(item)">{{item[listKeys.title]}}</p>
             <p class="ui_list_01-scroll-list-author">{{item[listKeys.author]}}</p>
           </a>
         </li>
@@ -61,7 +61,7 @@ export default {
     },
     loadColDetail () {
       let getColDetailConfig = this.CONFIG.getColDetail;
-      let url = getColDetailConfig.url;
+      let url = getColDetailConfig.url + '?colId=' + getColDetailConfig.params.colId;
       Post(url).then((resp) => {
         this.colDetail = resp.data.data;
         // this.list = resp.data.result;
@@ -76,12 +76,32 @@ export default {
         this.list = resp.data.result;
       })
     },
-    toMoreBookList () {
-
+    toMoreBookList (id) {
+      window.location.href = this.CONFIG.toMoreList.url + '?colId='+id;
     },
-    /* 调用移动端图书详情 */
-    appbook (pubId) {
-      appbook(pubId);
+    toDetail (item) {
+      let toDetailType = this.CONFIG.toDetailType;
+      if (toDetailType.type == 'phone') {
+        let params = '';
+        for (let index = 0; index < toDetailType.phone.values.length; index++) {
+          const element = toDetailType.phone.values[index];
+          params += item[element] + ',';
+        }
+        params = params.substring(0, params.length - 1)
+        eval(toDetailType.phone.functionName + '(' + params + ')')
+      } else if (toDetailType.type == 'href') {
+        let url  = toDetailType.href.url+'?';
+        for (const key in toDetailType.href.keys) {
+            const element = toDetailType.href.keys[key];
+            url += key + '=' + item[element] + '&';
+        }
+        for (const key in toDetailType.href.fixedKeys) {
+            const element = toDetailType.href.fixedKeys[key];
+            url += key + '=' + element + '&';
+        }
+        url = url.substring(0,url.length-1)
+        window.location.href = url;
+      }
     }
   }
 }
@@ -89,6 +109,7 @@ export default {
 <style>
 .ui_list_01 {
   font-size: 48px;
+  overflow: hidden;
 }
 .ui_list_01-col_title {
   margin: 0.4rem 0.3rem 0.3rem 0.3rem;

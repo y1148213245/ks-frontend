@@ -2,7 +2,7 @@
 <template>
   <div class="ui_navigation_03">
     <ul class="ui_navigation_03_ul">
-      <li v-for="(item, index) in columnHead" :key="index">
+      <li v-for="(item, ind) in columnHead" :key="ind" :class="{ui_navigation_03_li: index == ind}" @click="selectColumn(ind)">
         <a :href="item.url">
           <span v-text="item.name"></span>
         </a>
@@ -23,6 +23,7 @@ export default {
     return {
       CONFIG: null,
       columnHead: [],
+      index: 0,
     };
   },
 
@@ -38,12 +39,21 @@ export default {
           this.columnHead = datas;
         }
       });
+    },
+    selectColumn (ind) {
+      this.index = ind;
     }
   }
 };
 </script>
 
 <style>
+.ui_navigation_03_li:hover {
+  background-color: #c50000;
+}
 
+.ui_navigation_03_li {
+  background-color: #c50000;
+}
 </style>
 

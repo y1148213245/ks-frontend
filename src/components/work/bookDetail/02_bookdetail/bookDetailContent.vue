@@ -96,6 +96,7 @@ export default {
   },
   mounted () {
     this.pubId = URL.parse(window.location.href, true).query.pubId;
+    this.CONFIG =  PROJECT_CONFIG[this.namespace].book_detail.book_detail_02
     this.buyBookUrl = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02.buyBookUrl;
     this.probationUrl = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02.probationUrl;
     
@@ -213,7 +214,7 @@ export default {
       if (!probationUrl) {  // 没有试读地址的情况
         return false;
       }
-      var url = CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType + '&userName=&siteType=0';
+      var url = this.CONFIG.READ_URL || CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType + '&userName=&siteType=0';
       window.open(url);
     }
   },

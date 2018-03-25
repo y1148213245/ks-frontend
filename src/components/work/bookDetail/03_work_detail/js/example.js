@@ -16,7 +16,33 @@ const description = `作品详情`;
 const dev = {
   bookdetail: {
     bookdetail_03: {
-      url: '../data/work_detail_03_data.json'
+      url: '../data/work_detail_03_data.json',
+      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do', // 添加作品收藏
+      /* collectParams: {
+        loginName: '',
+        resourceId: '',
+        resourceType: '',
+        operateType: '0',
+        siteId: CONFIG.SITE_CONFIG.siteId
+      }, */
+      loadUrl: CONFIG.BASE_URL + 'dynamicFile/file.do?recordID=',  // 下载附件类型文章
+      params: {
+        doclibCode: '',
+        docID: '',
+      },
+      keys: {
+        title: 'SYS_TOPIC',       // 作品标题
+        author: 'POTHUNTER_NAME', // 作品作者
+        // commentNum: '',     // 评论数 评论数通过调评论接口获得
+        voteNum: 'VOTE_COUNT', // 投票数
+        raceType: 'CLASS',     // 参赛类别
+        abstract: 'DESCRIPTION',   // 作品简介
+        content: 'TEXTCONTENT',    // 正文内容
+        attachment: 'ATTACH_LIST', // 附件信息
+        docId: 'SYS_DOCUMENTID', // 作品docId
+        isCollect: 'isCollect',    // 作品是否收藏
+        isHide: 'IS_HIDE' // 是否允许显示正文 or 是否允许下载附件
+      }
     }
   }
 };
@@ -24,13 +50,33 @@ const dev = {
 const prod = {
   bookdetail: {
     bookdetail_03: {
-      url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
+      // url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
+      url: CONFIG.BASE_URL + 'book/getWorkDetail.do',  // 查询作品详情
+      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do', // 添加作品收藏
+      /* collectParams: {
+        loginName: '',
+        resourceId: '',
+        resourceType: '',
+        operateType: '0',
+        siteId: CONFIG.SITE_CONFIG.siteId
+      }, */
+      loadUrl: CONFIG.BASE_URL + 'dynamicFile/file.do?recordID=',  // 下载附件类型文章
       params: {
         doclibCode: '',
         docID: '',
       },
       keys: {
-        
+        title: 'SYS_TOPIC',       // 作品标题
+        author: 'POTHUNTER_NAME', // 作品作者
+        // commentNum: '',     // 评论数 评论数通过调评论接口获得
+        voteNum: 'VOTE_COUNT', // 投票数
+        raceType: 'CLASS',     // 参赛类别
+        abstract: 'DESCRIPTION',   // 作品简介
+        content: 'TEXTCONTENT',    // 正文内容
+        attachment: 'ATTACH_LIST', // 附件信息
+        docId: 'SYS_DOCUMENTID', // 作品docId
+        isCollect: 'isCollect',    // 作品是否收藏
+        isHide: 'IS_HIDE' // 是否允许显示正文 or 是否允许下载附件
       }
     }
   }

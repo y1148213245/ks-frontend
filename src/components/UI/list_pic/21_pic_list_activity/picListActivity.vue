@@ -1,4 +1,4 @@
-<!-- 作者列表 -->
+<!-- 活动列表展示页 -->
 <template>
   <div class="ui_pic_list_21 ui_pic_list_21_main">
     <el-row>

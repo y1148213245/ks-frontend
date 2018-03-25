@@ -13,11 +13,19 @@ const title = "搜索组件";  // 组件title
 const description = `按类别搜索，比如搜资讯或者图书`;  // 组件描述信息
 
 const dev = {
-  
+  search:{
+		Category_Search: {
+			searchHrefPage: "./searchResult.html"
+		}
+	}
 };
 
 const prod = {
-  
+  search:{
+		Category_Search: {
+			searchHrefPage: "./searchResult.html"
+		}
+	}
 };
 
 export default {

@@ -11,10 +11,15 @@ const dev = {
     bookdetail_01: {
       url: '../data/bookdetail_01_bookdetail.json',
       keys: { //接口字段兼容
-        pic:"pub_picBig",
-        Bookname: "pub_resource_name",
-        author: "BOOK_SYS_AUTHORS",
-        BookId:"id",
+         pic: "bigPic",
+        title:"resourceName",
+        author: "author",
+        memberPrice:"memberPrice",
+        bookPrice:"bookPrice",
+        bookSize:'bookSize',
+        starNum:"starNum",
+        bookmemory:"bookPrice",
+        abstract:'bookAbstract',
       },
     }
   }
@@ -23,16 +28,16 @@ const dev = {
 const prod = {
   bookdetail: {
     bookdetail_01: {
-      url: CONFIG.BASE_URL + "book/getBookDetail.do",
-      params: {
-        pubId: "",
-        loginName:"",
-      },
+      url: CONFIG.BASE_URL + "mobileBook/getBookDetail.do",
       keys: { //接口字段兼容
-        pic:"pub_picBig",
-        Bookname: "pub_resource_name",
-        author: "BOOK_SYS_AUTHORS",
-        BookId:"id"
+        pic: "bigPic",
+        title:"resourceName",
+        author: "author",
+        memberPrice:"memberPrice",
+        bookPrice:"bookPrice",
+        starNum:"starNum",
+        bookmemory:"bookPrice",
+        abstract:'bookAbstract',
       },
     }
   }

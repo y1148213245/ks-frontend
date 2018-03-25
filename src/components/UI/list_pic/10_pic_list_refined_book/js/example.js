@@ -14,28 +14,33 @@ const title = "精品图书组件";
 const description = `精品图书`;
 
 const dev = {
-  picListRefinedBook: {
-    url: "/data/ui_list_pic_10.json",
-    href: "./bookList.html?colId=",
-    bookDetail: "./bookdetail.html?pubId=",
-    colId: 59
+  list_pic: {
+    picListRefinedBook: {
+      url: "/data/ui_list_pic_10.json",
+      href: "./bookList.html?colId=",
+      bookDetail: "./bookdetail.html?pubId=",
+      colId: 59
+    }
   }
 }
 
 const prod = {
-  picListRefinedBook: {
-    url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
-    param: {
-      conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
-      groupBy: "pub_resource_id",
-      orderBy: "pub_a_order asc pub_lastmodified desc id asc",
-      pageNo: "1",
-      pageSize: "15",
-      searchText: ""
-    },
-    href: "./bookList.html?colId=",
-    bookDetail: "./bookdetail.html?pubId=",
-    colId: 59
+  list_pic: {
+    picListRefinedBook: {
+      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      READ_URL: '',
+      param: {
+        conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
+        groupBy: "pub_resource_id",
+        orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+        pageNo: "1",
+        pageSize: "15",
+        searchText: ""
+      },
+      href: "./bookList.html?colId=",
+      bookDetail: "./bookdetail.html?pubId=",
+      colId: 59
+    }
   }
 }
 
@@ -43,4 +48,13 @@ const platform = 'PC';
 const pageType = ['index', 'channel'];
 const resourceType = ['book'];
 
-export {name, title, dev, prod, description, platform, pageType, resourceType};
+export {
+  name,
+  title,
+  dev,
+  prod,
+  description,
+  platform,
+  pageType,
+  resourceType
+};

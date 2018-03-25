@@ -6,6 +6,7 @@
        [登陆]
      </slot>
    </a>
+   <span>欢迎回来！</span></span>
    <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
  </div>
 </template>

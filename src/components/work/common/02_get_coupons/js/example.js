@@ -13,11 +13,27 @@ const title = "优惠券组件";  // 组件title
 const description = `领取优惠券，一个模态弹窗`;  // 组件描述信息
 
 const dev = {
-  
+  common:{
+    get_coupons_02: { // 领取优惠券
+      url: CONFIG.BASE_URL + "user/pickCoupons.do",
+      params: {
+        loginName: "",
+        couponId: ""
+      }
+    }
+  }
 };
 
 const prod = {
-  
+  common:{
+    get_coupons_02: { // 领取优惠券
+      url: CONFIG.BASE_URL + "user/pickCoupons.do",
+      params: {
+        loginName: "",
+        couponId: ""
+      }
+    }
+  }
 };
 
 

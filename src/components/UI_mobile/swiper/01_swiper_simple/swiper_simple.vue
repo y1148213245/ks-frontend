@@ -59,7 +59,6 @@ export default {
       !this.CONFIG.isDevelopment ? (getListConfig.params.conditions = JSON.stringify(getListConfig.params.conditions)) : '';
       !this.CONFIG.isDevelopment ? (params = getListConfig.params) : '';
       Post(url, params).then((resp) => {
-        console.log(resp)
         this.list = resp.data.result;
       })
     },
@@ -74,7 +73,17 @@ export default {
         params = params.substring(0, params.length - 1)
         eval(toDetailType.phone.functionName + '(' + params + ')')
       } else if (toDetailType.type == 'href') {
-
+        let url  = toDetailType.href.url+'?';
+        for (const key in toDetailType.href.keys) {
+            const element = toDetailType.href.keys[key];
+            url += key + '=' + item[element] + '&';
+        }
+        for (const key in toDetailType.href.fixedKeys) {
+            const element = toDetailType.href.fixedKeys[key];
+            url += key + '=' + element + '&';
+        }
+        url = url.substring(0,url.length-1)
+        window.location.href = url;
       }
     }
   }

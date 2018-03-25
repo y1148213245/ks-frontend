@@ -2,9 +2,9 @@
   <div id="carousel" class="jdt ui_swiper_04_pic_nowords">
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item, index) in picList">
-          <div class="slide">
-            <div class="testi-image">
+        <div class="swiper-slide" v-for="num in picList_group" :key="num">
+          <div class="ui_swiper_04_pic_nowords-slide">
+            <div class="ui_swiper_04_pic_nowords-slide-item" v-for="(item,index) in picList" :key="index" v-if="index>=num*4 && index<(num+1)*4">
               <a class="index_recommend_imgBox">
                 <img class="index_recommend_img" :src="picList && picList[index] && picList[index].pub_picSmall" onload="DrawImage(this,282,148)" alt="暂无封面" @click="toDetail(item.id)" style="cursor: pointer;">
               </a>
@@ -28,6 +28,7 @@ export default {
   data: function () {
     return {
       picList: [],
+      picList_group: 0,
       CONFIG: null,
     }
   },
@@ -40,12 +41,13 @@ export default {
       this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
       Post(CONFIG.url, CONFIG.params).then((rep) => {
         this.picList = rep.data.result;
+        this.picList_group = Math.ceil(this.picList.length / 4)
         this.$nextTick(this.initSwiper);
       })
     },
     initSwiper: function () {
       new Swiper(".swiper-container", {
-        slidesPerView: 4,
+        // slidesPerView: 4,
         loop: true,
         pagination: {
           el: ".swiper-pagination",
@@ -62,10 +64,15 @@ export default {
 </script>
 
 <style>
-
+.ui_swiper_04_pic_nowords-slide {
+  width: 100%;
+}
+.ui_swiper_04_pic_nowords-slide-item{
+  display: inline-block;
+}
 .ui_swiper_04_pic_nowords .index_recommend_imgBox {
-  /* display: inline-block;
+  display: inline-block;
   width: 282px;
-  height: 148px; */
+  height: 148px;
 }
 </style>

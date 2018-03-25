@@ -13,11 +13,21 @@ const title = "图书详情组件";  // 组件title
 const description = `图书详情组件`;
 
 const dev = {
-  
+  book_detail: {
+    book_detail_02: {
+      buyBookUrl: 'http://book.dangdang.com/', // 购买纸书 跳转至当当网首页
+      probationUrl: '/ebook/read.jsp',         //试读地址
+    }
+  }
 };
 
 const prod = {
-  
+  book_detail: {
+    book_detail_02: {
+      buyBookUrl: 'http://book.dangdang.com/', // 购买纸书 跳转至当当网首页
+      probationUrl: '/ebook/read.jsp',         //试读地址
+    }
+  }
 };
 
 const platform = 'PC';

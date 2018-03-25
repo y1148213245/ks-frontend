@@ -308,6 +308,23 @@ export default {
     showConfig (com) { // 显示当前组件的配置文件 支持编辑
       this.currentComponent = this.examples[com];
       this.editConfigModel = true;
+      var configCon = '';
+      for (var i = 0, len = this.usedComTagArr.length; i < len; i++) {
+        if (this.usedComTagArr[i].indexOf(this.currentComponent.name) !== -1) {
+          configCon = this.usedComTagArr[i].substring(this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace'))) + 1, this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace')) + 1));
+        }
+      }
+      var itemConfig = {};
+      var subItemConfig = {};
+      for (let item in this.currentComponent.prod) {  // 遍历找出两层对象结构如：classification: { classification_01: { ... }}
+        itemConfig = item;
+        for (let subItem in this.currentComponent.prod[item]) {
+          subItemConfig = subItem;
+        }
+      }
+      if ($_$[configCon] && $_$[configCon][itemConfig] && $_$[configCon][itemConfig]) {
+        this.currentComponent.prod[itemConfig][subItemConfig] = $_$[configCon][itemConfig][subItemConfig];
+      }
     },
     globalConfig () {  // 显示当前项目的全局配置
       this.editGlobalConfigModel = true;
@@ -468,7 +485,7 @@ export default {
           }
           this.$message({
             type: "success",
-            message: "操作成功（注：命名空间 namespace 不支持修改）"
+            message: "操作成功"
           });
         } else {
           this.$message({
@@ -710,7 +727,7 @@ body {
 }
 
 .components_pagemanagement .leftList .listNav .listWrapper {
-  margin-top: 40px;
+  margin-top: 46px;
 }
 
 .components_pagemanagement .leftList .listNav .operation {

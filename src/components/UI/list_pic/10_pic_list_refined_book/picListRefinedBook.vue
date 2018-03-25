@@ -53,7 +53,7 @@ export default {
     },
     freeRead (bookId, readType, bookName) {
       //				后期切换成指定页面
-      window.location.href = this.CONFIG.baseURL + '/ebook/read.jsp?bookId=' + bookId + '&readType=' + readType + '&bookName=' + bookName;
+      window.location.href = this.CONFIG.READ_URL || CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType + '&bookName=' + bookName;
     },
     toDetailPage: function (pubId) {
       //				后期切换成指定页面

@@ -31,8 +31,9 @@ var prod = {
         url: CONFIG.BASE_URL + 'comment/comments.do',
         params: {
           pubId: "",
-          pageIndex: 0,
-          pageSize: 15
+          pageIndex: 1,
+          pageSize: 15,
+          siteId: CONFIG.SITE_CONFIG.siteId,
         }
       },
       addComment: {  // 添加评论
@@ -41,12 +42,13 @@ var prod = {
           pubId: "",
           loginName: "",
           content: "",
-          starNum: "",
+          starNum: 0,
           deviceName: "pc",  // 设备类型
           colId: "",
           siteId: CONFIG.SITE_CONFIG.siteId,
           type: "1",
           parentId: "0",
+          activityId: '',
         }
       }
     }

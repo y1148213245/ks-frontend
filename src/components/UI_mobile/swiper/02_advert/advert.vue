@@ -2,7 +2,7 @@
   <div class="ui_mobile_swiper_02">
     <a class="ui_mobile_swiper_02_a">
       <span>{{advertList[keys.pic]}}</span>
-      <img class="ui_mobile_swiper_02_img" :src="item && item[keys.pic]" v-for="(item, index) in advertList"/>
+      <img class="ui_mobile_swiper_02_img" :src="item && item[keys.pic]" v-for="(item, index) in advertList" :key="index"/>
     </a>
   </div>
 </template>

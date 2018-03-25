@@ -66,7 +66,7 @@ export default {
                 groupBy: "pub_resource_id",
                 orderBy: "pub_read_num desc",
                 pageNo: "1",
-                pageSize: "4",
+                pageSize: this.number || "15",
                 searchText: ""
             }).then((rep) => {
                 this.list = rep.data.result;

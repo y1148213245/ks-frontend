@@ -6,16 +6,16 @@ const description = `活动详情组件
 const dev = {
   login: {
     work_login_04: {
-      toLoginHref:'',
-      toPersonalCenterHref:''
+      toLoginHref:'../pages/login.html',
+      toPersonalCenterHref:'../pages/personalcenter.html'
     }
   }
 };
 const prod = {
   login: {
     work_login_04: {
-      toLoginHref:'',
-      toPersonalCenterHref:''
+      toLoginHref:'../pages/login.html',
+      toPersonalCenterHref:'../pages/personalcenter.html'
     }
   }
 };

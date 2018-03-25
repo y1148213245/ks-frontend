@@ -107,7 +107,7 @@ export default {
         /* 列表排序？ */
         orderBy: "pub_a_order asc pub_lastmodified desc id asc",
         /* 图书列表页URL */
-        bookListUrl: "/pages/bookList.html",
+        bookListUrl: "../pages/bookList.html",
         navCategory: [],  // 图书分类导航
         navColArray: [],  // 栏目导航
         hotWordList: [],  // 热门搜索关键词
