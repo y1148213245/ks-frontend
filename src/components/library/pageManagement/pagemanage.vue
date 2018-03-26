@@ -130,7 +130,7 @@
            </div>
            <div class="conponentsCon">
              <ul class="usedComUl">
-               <li v-if="JSON.stringify(usedComponents) !== '{}'" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}">
+               <li v-if="JSON.stringify(usedComponents) !== '{}' && com" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}">
                  <el-button size="mini" @click="showConfig(com.name)">配置</el-button>
                  <span v-text="com.title + '（' + com.name + '）'" @click="showComponentDetail(com)"></span>
                </li>
@@ -172,6 +172,7 @@
      <el-dialog title="编辑全局配置信息" :visible.sync="editGlobalConfigModel">
       <div>
         <textarea id="globalConfig" v-html="CONFIG" style="width: 100%; min-height: 200px;"></textarea>
+        
         <!-- <codemirror v-model="CONFIG"></codemirror> -->
       </div>
 
@@ -449,6 +450,7 @@ export default {
           }
         })
       }
+      // console.log(this.usedComponents);
     },
     deleteFile () {  // 删除文件
       this.$confirm("删除后不可恢复，您确定要删除该文件吗？", "系统提示", {

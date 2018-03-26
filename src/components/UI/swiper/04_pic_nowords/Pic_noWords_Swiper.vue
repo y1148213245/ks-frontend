@@ -4,11 +4,13 @@
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="num in picList_group" :key="num">
           <div class="ui_swiper_04_pic_nowords-slide">
-            <div class="ui_swiper_04_pic_nowords-slide-item" v-for="(item,index) in picList" :key="index" v-if="index>=num*4 && index<(num+1)*4">
-              <a class="index_recommend_imgBox">
-                <img class="index_recommend_img" :src="picList && picList[index] && picList[index].pub_picSmall" onload="DrawImage(this,282,148)" alt="暂无封面" @click="toDetail(item.id)" style="cursor: pointer;">
-              </a>
-            </div>
+            <el-col :span="6" style="text-align:center;" v-for="(item,index) in picList" :key="index" v-if="index>=(num-1)*4 && index<(num)*4">
+              <div class="ui_swiper_04_pic_nowords-slide-item">
+                <a class="index_recommend_imgBox">
+                  <img class="index_recommend_img" :src="picList && picList[index] && picList[index].pub_picSmall" onload="DrawImage(this,282,148)" alt="暂无封面" @click="toDetail(item.id)" style="cursor: pointer;">
+                </a>
+              </div>
+            </el-col>
           </div>
         </div>
       </div>

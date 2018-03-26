@@ -2,8 +2,8 @@
 <template>
   <div class="ui_navigation_03">
     <ul class="ui_navigation_03_ul">
-      <li v-for="(item, ind) in columnHead" :key="ind" :class="{ui_navigation_03_li: index == ind}" @click="selectColumn(ind)">
-        <a :href="item.url">
+      <li v-for="(item, ind) in columnHead" :key="ind" :class="{ui_navigation_03_li: showColId == item.id || ind == firstColumn}">
+        <a :href="item.url + '?colId=' + item.id" target="_blank">
           <span v-text="item.name"></span>
         </a>
       </li>
@@ -13,7 +13,8 @@
 
 <script type="text/ecmascript-6">
 import PROJECT_CONFIG from "projectConfig";
-import { Post } from '@common'
+import { Post } from '@common';
+import URL from "url";
 
 export default {
   name: "ui_navigation_03",
@@ -23,12 +24,14 @@ export default {
     return {
       CONFIG: null,
       columnHead: [],
-      index: 0,
+      firstColumn: 0,  // 默认选中第一个栏目
+      showColId: "",
     };
   },
-
   mounted () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].navigation.navigation_03;
+    this.showColId = URL.parse(document.URL, true).query.colId;
+    this.firstColumn = this.showColId ? -1 : 0;
     this.queryColumnHead();
   },
   methods: {
@@ -39,9 +42,6 @@ export default {
           this.columnHead = datas;
         }
       });
-    },
-    selectColumn (ind) {
-      this.index = ind;
     }
   }
 };

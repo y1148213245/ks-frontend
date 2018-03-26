@@ -1,6 +1,6 @@
 <!--  -->
-<template class="components_header">
-  <div class="threewrap ui_classification_02">
+<template>
+  <div class="ui_classification_02">
         <div class="ui_classification_02_all" @click="showAllCata()">
           <span class="ui_classification_02_allCata">全部分类</span>
           <i :class="{'el-icon-arrow-down': !detailshow}"></i>

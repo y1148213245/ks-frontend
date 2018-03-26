@@ -5,7 +5,7 @@
       <p class="ui_mobile_classification_bgpic"></p>
       <div class="ui_mobile_classification_con">
         <p class="ui_mobile_classification_text" v-text="item[keys.text]"></p>
-        <p class="ui_mobile_classification_count">{{countsList[item[keys.cascadeId]] | formatCount}}</p>
+        <p class="ui_mobile_classification_count">{{ keys && keys.cascadeId && item[keys.cascadeId] ? countsList[item[keys.cascadeId]]: 0 | formatCount}}</p>
       </div>
     </a>
     </div>

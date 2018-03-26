@@ -31,7 +31,7 @@ export default {
       hotsalebank: {
         title: '热销排行',
         // url:"http://172.19.57.153/portal/api/spc/cms/publish/list.do",
-        URL:`${CONFIG.BASE_URL}spc/cms/publish/list.do`,
+        url:`${CONFIG.BASE_URL}spc/cms/publish/list.do`,
         params:{
           conditions: "[{pub_col_id:'131'},{pub_status:'1'}]",
           groupBy: "pub_resource_id",
