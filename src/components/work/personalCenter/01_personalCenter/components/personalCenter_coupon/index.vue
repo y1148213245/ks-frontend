@@ -1,6 +1,6 @@
 <!--个人中心优惠券 edit by song 2017/11/28-->
 <template>
-  <div class="main_right fl" id="couponsCom">
+  <div class="fl" id="couponsCom">
     <div class="wzdh_yhq f14 color_6f6">
       <div class="wzdh_yhq_con">
         <!--<div class="wzdh_yhq_con_all f16">

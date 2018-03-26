@@ -155,7 +155,7 @@
        </div>
      </div>
      <!-- 修改组件配置文件的模态弹窗 -->
-     <el-dialog title="编辑组件配置信息" :visible.sync="editConfigModel">
+     <el-dialog title="编辑组件配置信息" v-if="editConfigModel" :visible.sync="editConfigModel">
       <div>
         <textarea id="prodConfig" v-html="currentComponent.prod" style="width: 100%; min-height: 200px;"></textarea>
         <!-- <codemirror v-model="currentComponent.prod"></codemirror> -->
@@ -169,7 +169,7 @@
      </el-dialog>
 
      <!-- 修改全局配置文件， 即config/index.js的模态弹窗 -->
-     <el-dialog title="编辑全局配置信息" :visible.sync="editGlobalConfigModel">
+     <el-dialog title="编辑全局配置信息" v-if="editGlobalConfigModel" :visible.sync="editGlobalConfigModel">
       <div>
         <textarea id="globalConfig" v-html="CONFIG" style="width: 100%; min-height: 200px;"></textarea>
         
@@ -307,7 +307,8 @@ export default {
       this.queryLists();
     },
     showConfig (com) { // 显示当前组件的配置文件 支持编辑
-      this.currentComponent = this.examples[com];
+      this.currentComponent = null;
+      this.currentComponent = this.examples[com];//当前组件
       this.editConfigModel = true;
       var configCon = '';
       for (var i = 0, len = this.usedComTagArr.length; i < len; i++) {

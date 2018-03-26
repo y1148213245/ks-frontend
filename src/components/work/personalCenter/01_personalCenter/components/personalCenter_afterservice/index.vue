@@ -62,7 +62,6 @@
     </el-table-column>
     
   </el-table>
-      {{returnGoodsList}}
     </el-col>
 </div>
 

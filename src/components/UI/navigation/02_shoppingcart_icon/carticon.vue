@@ -1,7 +1,8 @@
 <!-- Created by song 2018/3/19 头部购物车图标 获取购物车信息 -->
 <template>
-  <div class="ui_navigation_02">
-    <span class="ui_navigation_02_img" @click="toShoppingCart()"></span>
+  <div class="ui_navigation_02" @click="toShoppingCart()">
+    <span class="ui_navigation_02_img"></span>
+    <span class="ui_navigation_02_tips" v-if="CONFIG && CONFIG.tips" v-text="CONFIG.tips"></span>
     <span class="ui_navigation_02_text" v-text="totalCount"></span>
   </div>
 </template>
@@ -111,6 +112,11 @@ export default {
   text-align: center;
   white-space: nowrap;
   border: 1px solid #fff;
+}
+
+.ui_navigation_02_tips {
+  vertical-align: top;
+  cursor: pointer;
 }
 </style>
 

@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     initConfig () {
-      this.navs = PROJECT_CONFIG[this.namespace].navList;
+      this.navs = PROJECT_CONFIG[this.namespace].personalcenter.personalcenter_01.navList;
     },
     initCurrentShow() {
       let param = this.getHtmlParams();
@@ -126,13 +126,16 @@ table {
 .cl {
   clear: both;
 }
-</style>
-<style scoped>
+
 .box {
   width: 1100px;
   margin: 20px auto;
 }
 .center_container {
   overflow: hidden;
+}
+
+.center_container .main_right {
+  width: 100%;
 }
 </style>

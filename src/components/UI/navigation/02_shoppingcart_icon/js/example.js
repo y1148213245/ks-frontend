@@ -16,6 +16,7 @@ const dev = {
   navigation: {
     navigation_02: {
       toCartUrl: '../pages/shoppingcart.html', // 去购物车
+      tips: "我的购物车",  // 中间的提示文字 可以为空
       toLoginUrl: '../pages/login.html', // 去登陆
     }
   }
@@ -25,6 +26,7 @@ const prod = {
   navigation: {
     navigation_02: {
       toCartUrl: '../pages/shoppingcart.html', // 去购物车
+      tips: "我的购物车",  // 中间的提示文字 可以为空
       toLoginUrl: '../pages/login.html', // 去登陆
     }
   }
