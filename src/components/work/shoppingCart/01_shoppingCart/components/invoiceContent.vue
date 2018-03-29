@@ -39,48 +39,12 @@
               <el-form-item label="银行账户" prop="bankAccount">
                 <el-input v-model="invoiceConForm.bankAccount" id="bankAccount"></el-input>
               </el-form-item>
-              <div class="invoiceConSureDiv">
-                <el-button type="primary" @click="confirmAddInvoice('invoiceConForm')" id="invoiceConSure">确 定</el-button>
-              </div>
-
-              <!--<div>-->
-                <!--<span class="invoiceInfo"><span style="color: red;">* </span>单位名称：</span>-->
-                <!--<input id="receiptTitle" type="text" v-model="curInvoice.receiptTitle" @blur="checkReceiptTitle()">-->
-                <!--<span class="warningInfo" v-if="receiptTitle">请填写单位名称</span>-->
-              <!--</div>-->
-              <!--<div>-->
-                <!--<span class="invoiceInfo"><span style="color: red;">* </span>纳税人识别码：</span>-->
-                <!--<input id="taxpayerCode" type="text" v-model="curInvoice.taxpayerCode" @blur="checkTaxpayerCode()"-->
-                       <!--@keypress="checkTaxPayer($event)" maxlength="20">-->
-                <!--<span class="warningInfo" v-if="taxpayerCode">请填写纳税人识别号</span>-->
-              <!--</div>-->
-              <!--<div>-->
-                <!--<span class="invoiceInfo"><span style="color: red;">* </span>注册地址：</span>-->
-                <!--<input id="companyAddress" type="text" v-model="curInvoice.companyAddress" @blur="checkCompanyAddress()">-->
-                <!--<span class="warningInfo" v-if="companyAddress">请填写注册地址</span>-->
-              <!--</div>-->
-              <!--<div>-->
-                <!--<span class="invoiceInfo"><span style="color: red;">* </span>注册电话：</span>-->
-                <!--<input id="companyPhone" type="number" v-model="curInvoice.companyPhone" @blur="checkCompanyPhone()"-->
-                       <!--@keypress="checkNumberTypes($event)">-->
-                <!--<span class="warningInfo" v-if="companyPhone">请填写注册电话</span>-->
-              <!--</div>-->
-              <!--<div>-->
-                <!--<span class="invoiceInfo"><span style="color: red;">* </span>开户银行：</span>-->
-                <!--<input id="bankName" type="text" v-model="curInvoice.bankName" @blur="checkBankName()">-->
-                <!--<span class="warningInfo" v-if="bankName">请填写开户银行</span>-->
-              <!--</div>-->
-              <!--<div>-->
-                <!--<span class="invoiceInfo"><span style="color: red;">* </span>银行账户：</span>-->
-                <!--<input id="bankAccount" type="number" v-model="curInvoice.bankAccount" @blur="checkBankAccount()"-->
-                       <!--@keypress="checkAccountType($event)" maxlength="21">-->
-                <!--<span class="warningInfo" v-if="bankAccount">请填写银行账户</span>-->
-              <!--</div>-->
-              <!--<div slot="footer" class="dialog-footer">-->
-                <!--<el-button type="primary" @click="confirmAddInvoice()">确 定</el-button>-->
-              <!--</div>-->
             </el-form>
-            </div>
+          </div>
+
+          <div class="invoiceConSureDiv">
+            <el-button type="primary" @click="confirmAddInvoice('invoiceConForm')" id="invoiceConSure">确 定</el-button>
+          </div>
         </el-dialog>
         <!-- END 选择发票类型弹框 -->
         <div class="orderContents">

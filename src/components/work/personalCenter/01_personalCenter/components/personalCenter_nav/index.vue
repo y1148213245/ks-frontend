@@ -85,6 +85,7 @@ export default {
     showComponent(index) {
       this.updateCurrentShow(this.navs[index].tag);
       window.location.hash = this.navs[index].tag;
+      
     }
   },
   // components: {},

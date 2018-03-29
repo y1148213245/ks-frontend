@@ -3,8 +3,8 @@
  */
 
 var CONFIG = {
-	BASE_URL: "http://172.19.57.153/spc-portal-app/",
-	READ_URL: 'http://172.19.57.153/portal/reader/yuezhi/read.jsp',  // 阅读地址
+	BASE_URL: "http://test.founder.com.cn/ynxh/spc-portal-app/",
+	READ_URL: 'http://test.founder.com.cn/ynxh/portal/reader/yuezhi/read.jsp',  // 阅读地址
 	PAGE_MANAGEMENT_URL: "http://172.19.92.76:8085/spc/api/",  // 页面管理系统地址
 	SITE_CONFIG: {
 		siteId: 5,
@@ -14,7 +14,6 @@ var CONFIG = {
 }
 
 var $_$ = {
-	SITE_NAME: 'site-101',
 	search: {
 		hotbookrecommend: {
 			hotbookrecommend_01: {
@@ -221,7 +220,7 @@ var $_$ = {
 		}
 	},
 	bookrank: {
-		booklist_01: {
+		booklist: {
 			booklist_01: {
 				'changxiao': {
 					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
@@ -585,7 +584,7 @@ var $_$ = {
 								pub_status: '1'
 							},
 							{
-								pub_site_id: '5'
+								pub_site_id: CONFIG.SITE_CONFIG.siteId
 							},
 							{
 								pub_col_id: 104
@@ -645,7 +644,7 @@ var $_$ = {
 								pub_status: '1'
 							},
 							{
-								pub_site_id: '5'
+								pub_site_id: CONFIG.SITE_CONFIG.siteId
 							},
 							{
 								pub_col_id: 106
@@ -705,7 +704,7 @@ var $_$ = {
 								pub_status: '1'
 							},
 							{
-								pub_site_id: '5'
+								pub_site_id: CONFIG.SITE_CONFIG.siteId
 							},
 							{
 								pub_col_id: 107
@@ -765,7 +764,7 @@ var $_$ = {
 								pub_status: '1'
 							},
 							{
-								pub_site_id: '5'
+								pub_site_id: CONFIG.SITE_CONFIG.siteId
 							},
 							{
 								pub_col_id: 108
@@ -817,18 +816,18 @@ var $_$ = {
 			},
 			ui_mobile_list_03: {
 				newbook: {
-					url: CONFIG.BASE_URL+'spc/cms/publish/list.do',
+					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
 					params: {
-						conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":"5"},{"pub_col_id":110}]',
+						conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":' + CONFIG.SITE_CONFIG.siteId + '},{"pub_col_id":110}]',
 						groupBy: "pub_resource_id",
 						orderBy: "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 						pageNo: "1",
 						pageSize: "10",
 						searchText: "",
 					},
-					navUrl: CONFIG.BASE_URL+'spc/cms/col/getAllColBySiteId.do',
+					navUrl: CONFIG.BASE_URL + 'spc/cms/col/getAllColBySiteId.do',
 					navParams: {
-						siteId: 5,
+						siteId: CONFIG.SITE_CONFIG.siteId,
 						chId: 0
 					},
 					keys: {
@@ -858,18 +857,18 @@ var $_$ = {
 					},
 				},
 				newfree: {
-					url: CONFIG.BASE_URL+'spc/cms/publish/list.do',
+					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
 					params: {
-						conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":"5"},{"pub_col_id":111}]',
+						conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":' + CONFIG.SITE_CONFIG.siteId + '},{"pub_col_id":111}]',
 						groupBy: "pub_resource_id",
 						orderBy: "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 						pageNo: "1",
 						pageSize: "10",
 						searchText: "",
 					},
-					navUrl: CONFIG.BASE_URL+'spc/cms/col/getAllColBySiteId.do',
+					navUrl: CONFIG.BASE_URL + 'spc/cms/col/getAllColBySiteId.do',
 					navParams: {
-						siteId: 5,
+						siteId: CONFIG.SITE_CONFIG.siteId,
 						chId: 0
 					},
 					keys: {
@@ -899,18 +898,18 @@ var $_$ = {
 					},
 				},
 				newsale: {
-					url: CONFIG.BASE_URL+'/spc/cms/publish/list.do',
+					url: CONFIG.BASE_URL + '/spc/cms/publish/list.do',
 					params: {
-						conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":"5"},{"pub_col_id":112}]',
+						conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":' + CONFIG.SITE_CONFIG.siteId + '},{"pub_col_id":112}]',
 						groupBy: "pub_resource_id",
 						orderBy: "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 						pageNo: "1",
 						pageSize: "10",
 						searchText: "",
 					},
-					navUrl: CONFIG.BASE_URL+'spc/cms/col/getAllColBySiteId.do',
+					navUrl: CONFIG.BASE_URL + 'spc/cms/col/getAllColBySiteId.do',
 					navParams: {
-						siteId: 5,
+						siteId: CONFIG.SITE_CONFIG.siteId,
 						chId: 0
 					},
 					keys: {
@@ -997,7 +996,7 @@ var $_$ = {
 							conditions: [/* 条件配置 */
 								{ pub_resource_type: 'BOOK' },
 								{ pub_status: '1' },
-								{ pub_site_id: '5' },
+								{ pub_site_id: CONFIG.SITE_CONFIG.siteId  },
 								{ pub_col_id: 132 }
 							],
 							groupBy: "pub_resource_id",

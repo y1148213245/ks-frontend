@@ -45,21 +45,28 @@ export default {
     }),
     login: function () {
       this.action_login({ member: this.member }).then((rep) => {
-        if (!rep.data) {
-          this.loginValid();
-        } else if (rep.data.checkStatus == 0 || rep.data.checkStatus == "0") {
+        if (rep.data.result && rep.data.result == '1') {
+          if (rep.data.checkStatus == 0 || rep.data.checkStatus == "0") {
+            this.$message({
+              type: "error",
+              message: "账号已被冻结，请联系管理员"
+            });
+          } else {
+            let query = URL.parse(document.URL, true).query;
+            let url = query["service"];
+            if (url && url.indexOf("login.html") == -1) {
+              window.location.href = url;
+            } else {
+              window.location.href = "./index.html";
+            }
+          }
+        } else if (rep.data.result && rep.data.result == '0') {
           this.$message({
             type: "error",
-            message: "账号已被冻结，请联系管理员"
+            message: rep.data.error && rep.data.error.errorMsg ? rep.data.error.errorMsg : '登录失败'
           });
         } else {
-          let query = URL.parse(document.URL, true).query;
-          let url = query["service"];
-          if (url && url.indexOf("login.html") == -1) {
-            window.location.href = url;
-          } else {
-            window.location.href = "./index.html";
-          }
+          this.loginValid();
         }
       });
     },

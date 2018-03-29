@@ -2,13 +2,13 @@
     <div class="ui_mobile_list_03" :class="{'ui_mobile_list_03_l':classFloat==='left' , 'ui_mobile_list_03_r':classFloat==='right'}">
       <a class="ui_mobile_list_03_a">
         <div :class="{'ui_mobile_list_03_r_div':classFloat==='right'}">
-          <p class="ui_mobile_list_03_p f30"  @click="toDetail(bookInfo)" :style="{color:titleColor}">{{navName}}</p>
-          <p class="ui_mobile_list_03_title color_8b8b f18 mb20 mt15">{{CONFIG && CONFIG.title}}</p>
+          <p class="ui_mobile_list_03_p"  @click="toDetail(bookInfo)" :style="{color:titleColor}">{{navName}}</p>
+          <p class="ui_mobile_list_03_title">{{CONFIG && CONFIG.title}}</p>
           <span :class="{'ui_mobile_list_03_l_decorate' : classFloat==='left'}"></span>
           <p :class="{'ui_mobile_list_03_r_decorate':classFloat==='right'}"></p>
         </div>
         <div :class="{'ui_mobile_list_03_img_l':classFloat==='left' , 'ui_mobile_list_03_img_r':classFloat==='right'}" v-if="bookInfo && bookInfo[keys.pub_picBig]">
-          <img :src="bookInfo && bookInfo[keys.pub_picBig]" @click="toDetail(bookInfo)">
+          <img class="ui_mobile_list_03-img" :src="bookInfo && bookInfo[keys.pub_picBig]" @click="toDetail(bookInfo)" alt="暂无图片">
         </div>
       </a>
     </div>
@@ -112,6 +112,7 @@ export default {
   float: left;
   width: 2.78rem;
   border-right: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
   border-top: 0rem;
   text-align: center;
   padding-top: 0.65rem;
@@ -131,6 +132,7 @@ export default {
   -moz-box-orient: vertical;
   -moz-box-direction: normal;
   -ms-flex-direction: column;
+  overflow: hidden;
   /* flex-direction: column; */
 }
 .ui_mobile_list_03_a {
@@ -138,19 +140,16 @@ export default {
   width: 100%;
   height: 100%;
 }
-.f30 {
+.ui_mobile_list_03_p {
   font-size: 0.3rem;
 }
-.color_8b8b {
+.ui_mobile_list_03-img {
+  font-size: 0.2rem;
+}
+.ui_mobile_list_03_title {
   color: #8b8b8b;
-}
-.f18 {
   font-size: 0.18rem;
-}
-.mb20 {
   margin-bottom: 0.2rem;
-}
-.mt15 {
   margin-top: 0.15rem;
 }
 .ui_mobile_list_03_r_decorate {
@@ -194,7 +193,7 @@ export default {
 .ui_mobile_list_03_img_r {
   float: left;
   width: 1.07rem;
-  height: 1.42rem;
-  margin-left: 0.6rem;
+  height: 1.44rem;
+  margin-left: 0.5rem;
 }
 </style>

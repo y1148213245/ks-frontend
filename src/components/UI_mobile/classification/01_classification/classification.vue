@@ -2,7 +2,7 @@
 <template>
   <div class="ui_mobile_classification_01">  <!--一级分类-->
     <a class="ui_mobile_classification_a" v-for="(item, index) in classifyList" :key="index" @click="toClassifyBook(item[keys.cascadeId])">
-      <p class="ui_mobile_classification_bgpic"></p>
+      <p class="ui_mobile_classification_bgpic" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></p>
       <div class="ui_mobile_classification_con">
         <p class="ui_mobile_classification_text" v-text="item[keys.text]"></p>
         <p class="ui_mobile_classification_count">{{ keys && keys.cascadeId && item[keys.cascadeId] ? countsList[item[keys.cascadeId]]: 0 | formatCount}}</p>
@@ -22,14 +22,16 @@ export default {
   reused: true,
   data () {
     return {
+      bgmUrl: "",
       CONFIG: null,
       classifyList: [],  // 图书分类
       keys: {},
-      countList: {}, // 存放处理后的分类总数
+      countsList: {}, // 存放处理后的分类总数
     };
   },
 
   mounted () {
+    this.bgmUrl = require('./data/img/bookclass.png');
     this.CONFIG = PROJECT_CONFIG[this.namespace].classification.classification_01;
     this.keys = this.CONFIG.queryClassification.keys;
     this.queryClassificationList();
@@ -97,7 +99,7 @@ export default {
 .ui_mobile_classification_bgpic {
   width: 3.3rem;
   height: 2rem;
-  background: url(./data/img/bookclass.png) no-repeat;
+  background-repeat: no-repeat;
   background-size: 3.3rem 2rem;
   margin-top: 0px;
   margin-bottom: 0px;

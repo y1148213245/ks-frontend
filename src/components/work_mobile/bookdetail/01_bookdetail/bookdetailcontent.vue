@@ -26,7 +26,7 @@
     </div>
 
     <div class="work_mobile_bookdetail_01_free_read">
-      <el-button @click="toRead">免费试读</el-button>
+      <el-button @click="toRead(bookInfo.resourceId, 0, bookInfo.bookFreeDownLoadPath)" :class="{work_mobile_bookdetail_01_noProbation: !probation}">免费试读</el-button>
     </div>
 
     <div class="work_mobile_bookdetail_01_content_validity">内容简介:</div>
@@ -57,6 +57,7 @@ export default {
       config: $_$,
       value1: null,
       bookInfo: '',
+      probation: true,  // 是否可以试读
     };
   },
   created: function () {
@@ -75,16 +76,22 @@ export default {
   methods: {
     loadData () {
       let url = this.CONFIG.url;
-      Get(url, {        params: {
-          pubId: this.pubId,
-          loginName: ''
-        }      }).then(resp => {
+      var paramsObj = {
+        pubId: this.pubId,
+        loginName: ''
+      }
+      Get(url, { params: paramsObj }).then((resp) => {
         this.bookInfo = resp.data.data;
+        this.probation = this.bookInfo.bookFreeDownLoadPath ? true : false;
       })
 
     },
-    toRead(){
-      window.location.href = CONFIG.READ_URL;
+    toRead (bookId, readType, probationUrl) {
+      if (!probationUrl) {  // 没有试读地址的情况
+        return false;
+      }
+      var url = CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+      window.location.href = url;
     }
   },
 }
@@ -172,5 +179,9 @@ export default {
 .work_mobile_bookdetail_01_book_synopsis {
   font-size: 0.26rem;
   padding: 0.1rem 0.4rem;
+}
+
+.work_mobile_bookdetail_01_noProbation {
+  background-color: #ccc;
 }
 </style>

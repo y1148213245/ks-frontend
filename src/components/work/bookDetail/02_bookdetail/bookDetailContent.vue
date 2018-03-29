@@ -64,7 +64,7 @@
   <!--图书其他内容-->
   <div class="otherInfoWrapper">
     <div class="otherInfo">
-      <p><span>出版时间：{{bookInfo.pubTime | formatDate}}</span><span>ISBN：{{bookInfo.isbn}}</span><span>版次：{{bookInfo.bookVersion}}</span><span>页数：{{bookInfo.pageNums}}</span>
+      <p><span>出版时间：{{bookInfo.pubTime | formatDateNEW}}</span><span>ISBN：{{bookInfo.isbn}}</span><span>版次：{{bookInfo.bookVersion}}</span><span>页数：{{bookInfo.pageNums}}</span>
       </p>
       <p><span>字数：{{bookInfo.bookWords}}</span></p>
     </div>
@@ -80,6 +80,7 @@ import * as type from "@work/bookDetail/common/interfaces.js";
 import Vue from 'vue';
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
+import moment from "moment";
 
 export default {
   name: "work_bookdetail_02_content",
@@ -96,10 +97,10 @@ export default {
   },
   mounted () {
     this.pubId = URL.parse(window.location.href, true).query.pubId;
-    this.CONFIG =  PROJECT_CONFIG[this.namespace].book_detail.book_detail_02
+    this.CONFIG = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02
     this.buyBookUrl = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02.buyBookUrl;
     this.probationUrl = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02.probationUrl;
-    
+
   },
   created: function () {
     this.getMemberInfo().then((member) => {
@@ -121,6 +122,13 @@ export default {
         return Number(value).toFixed(2);
       } else {
         return '0.00';
+      }
+    },
+    formatDate (value) {
+      if (value) {
+        return moment(Number(value)).format("YYYY-MM-DD");  // 只接收Number类型
+      } else {
+        return '暂无日期';
       }
     }
   },

@@ -30,9 +30,9 @@
               </p>
               <p class="search_04-content-list-entry_box-synopsis" v-text="entry.BOOK_SYNOPSIS || '暂无摘要'"
                   :title="entry.BOOK_SYNOPSIS"></p>
-              <p class="search_04-content-list-entry_box-orther_shop">
+              <!-- <p class="search_04-content-list-entry_box-orther_shop">
                 <a href="javascript:void(0)" class="search_04-content-list-entry_box-orther_shop-a" @click="toDetail(entry.id)">第三方购买</a>
-              </p>
+              </p> -->
               <p class="search_04-content-list-entry_box-orthers"><!--<span class="sc shoucang">收藏</span>-->
                 <a href="http://www.jiathis.com/share"
                     class="search_04-content-list-entry_box-orthers-share" target="_blank">分享</a>

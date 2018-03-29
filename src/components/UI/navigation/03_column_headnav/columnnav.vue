@@ -3,7 +3,7 @@
   <div class="ui_navigation_03">
     <ul class="ui_navigation_03_ul">
       <li v-for="(item, ind) in columnHead" :key="ind" :class="{ui_navigation_03_li: showColId == item.id || ind == firstColumn}">
-        <a :href="item.url + '?colId=' + item.id" target="_blank">
+        <a :href="item.url + '?navColId=' + item.id" :target="CONFIG.targetType ? CONFIG.targetType : '_blank'">
           <span v-text="item.name"></span>
         </a>
       </li>
@@ -30,7 +30,7 @@ export default {
   },
   mounted () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].navigation.navigation_03;
-    this.showColId = URL.parse(document.URL, true).query.colId;
+    this.showColId = URL.parse(document.URL, true).query.navColId;
     this.firstColumn = this.showColId ? -1 : 0;
     this.queryColumnHead();
   },

@@ -554,7 +554,7 @@ Vue.prototype.$ajax = axios;
 export default {
   name: "personalCenter_account",
   reused: true,
-  props: ["namespace"],
+  props: ["namespace","parentConfig"],
   props: {
     detailUrl: {
       type: String
@@ -697,6 +697,7 @@ export default {
       }
     };
     return {
+      CONFIG:null,
       title: [
         "main",
         "pointRecords",
@@ -842,6 +843,9 @@ export default {
       contactorError: "", //新建收货地址--收货人验证信息
       goodsInfo: [] //新建收货地址--验证信息
     };
+  },
+  created(){
+    this.CONFIG = this.parentConfig.account;
   },
   mounted() {
     this.siteId = CONFIG.SITE_CONFIG.siteId;

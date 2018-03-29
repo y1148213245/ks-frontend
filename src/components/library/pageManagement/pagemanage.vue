@@ -79,7 +79,20 @@
               :on-success="importResourceSuccess"
               :before-upload="beforeImport">
               <i class="el-icon-upload"></i>
-              <span>导入资源</span>
+              <span>导入公共组件资源</span>
+            </el-upload>
+          </div>
+          <div class="reviewAreaDiv">
+            <el-upload
+              class="upload-demo"
+              :action="importProjectResource()"
+              name="file"
+              :show-file-list="false"
+              :on-progress="importProgress"
+              :on-success="importResourceSuccess"
+              :before-upload="beforeImport">
+              <i class="el-icon-upload"></i>
+              <span>导入项目组件资源</span>
             </el-upload>
           </div>
          </div>
@@ -130,7 +143,7 @@
            </div>
            <div class="conponentsCon">
              <ul class="usedComUl">
-               <li v-if="JSON.stringify(usedComponents) !== '{}' && com" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}">
+               <li v-if="JSON.stringify(usedComponents) !== '{}' && com && com.name" v-for="(com, vkey, index) in usedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}">
                  <el-button size="mini" @click="showConfig(com.name)">配置</el-button>
                  <span v-text="com.title + '（' + com.name + '）'" @click="showComponentDetail(com)"></span>
                </li>
@@ -145,7 +158,7 @@
            </div>
            <div class="conponentsCon">
              <ul class="usedComUl">
-               <li v-if="JSON.stringify(unusedComponents) !== '{}'" v-for="(com, vkey, index) in unusedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}">
+               <li v-if="JSON.stringify(unusedComponents) !== '{}' && com && com.name" v-for="(com, vkey, index) in unusedComponents" :key="index" :title="com.title + '（' + com.name + '）'" :class="{onFileName: activeFile == com.name}">
                  <span v-text="com.title + '（' + com.name + '）'" @click="showComponentDetail(com)"></span>
                </li>
                <li v-if="JSON.stringify(unusedComponents) === '{}'">暂无未用组件</li>
@@ -204,6 +217,7 @@
  <script>
 import ScanExamples from "@common/scans/ScanExamples";
 import VueExamples from "@common/scans/ScanVues";
+import ProdExamples from "@common/scans/ScanProds";
 import { Get, Post, Delete } from "@common";
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
@@ -250,7 +264,7 @@ export default {
       noData: true,
       usedComponents: {},
       unusedComponents: {},
-      debugModel: false,  // debug模式 暗号 790118
+      debugModel: false,  // debug模式 暗号 19790118
       imgUrl: "",         // 组件截图
       showComponents: null,   // 中间区域当前展示的组件
       siteName: '',  // 站点名 用于区分不同的站点
@@ -268,10 +282,11 @@ export default {
   mounted () {
     this.configUrl = CONFIG.PAGE_MANAGEMENT_URL;
     let query = URL.parse(document.URL, true).query;
-    this.debugModel = query && query.debug && query.debug == '790118' ? true : false;  // 暗号对上 进入debug模式
+    this.debugModel = query && query.debug && query.debug == '19790118' ? true : false;  // 暗号对上 进入debug模式
     this.examples = ScanExamples();
     this.unusedComponents = ScanExamples();
     this.VueExamples = VueExamples();
+    // console.log(ProdExamples());
     this.clientHeight = document.documentElement.clientHeight - 80;
     try {
       if ($_$.SITE_NAME) { // 站点名字
@@ -307,8 +322,20 @@ export default {
       this.queryLists();
     },
     showConfig (com) { // 显示当前组件的配置文件 支持编辑
+      /* TODO: 项目组件没有修改配置的入口  */
+      /* FIXME: 获取组件配置方式
+        获取组件配置优先级： config/index.js $_$变量  >>  prod/xxx.js  >>  js/example.js
+        $_$: 修改之后直接写进$_$变量上 初次编辑组件配置 就新增对象 再次编辑 就修改  拿导航组件举例 新增对象的结构如下  
+              namespace: {
+                navigation: {
+                  navifation_01：{ ... }
+                  }
+              }
+        prod/xxx.js：项目实际跑的配置文件
+        js/example.js：样例配置文件
+      */
       this.currentComponent = null;
-      this.currentComponent = this.examples[com];//当前组件
+      this.currentComponent = this.examples[com]; //当前组件 表示默认取 js/example.js
       this.editConfigModel = true;
       var configCon = '';
       for (var i = 0, len = this.usedComTagArr.length; i < len; i++) {
@@ -316,6 +343,7 @@ export default {
           configCon = this.usedComTagArr[i].substring(this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace'))) + 1, this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace')) + 1));
         }
       }
+      debugger
       var itemConfig = {};
       var subItemConfig = {};
       for (let item in this.currentComponent.prod) {  // 遍历找出两层对象结构如：classification: { classification_01: { ... }}
@@ -324,7 +352,7 @@ export default {
           subItemConfig = subItem;
         }
       }
-      if ($_$[configCon] && $_$[configCon][itemConfig] && $_$[configCon][itemConfig]) {
+      if ($_$[configCon] && $_$[configCon][itemConfig] && $_$[configCon][itemConfig]) {  // 如果config/index.js $_$变量中有就从这里取
         this.currentComponent.prod[itemConfig][subItemConfig] = $_$[configCon][itemConfig][subItemConfig];
       }
     },
@@ -451,7 +479,7 @@ export default {
           }
         })
       }
-      // console.log(this.usedComponents);
+      // console.log(this.usedComponents); // 项目组件undefined问题 导致报错：Cannot read property 'name' of undefined"
     },
     deleteFile () {  // 删除文件
       this.$confirm("删除后不可恢复，您确定要删除该文件吗？", "系统提示", {
@@ -619,22 +647,27 @@ export default {
         }
       })
     },
-    importResource () {  // 开发者模式 导入资源
+    importResource () {  // 开发者模式 导入公共组件资源
       return (
-        this.configUrl + 'project/import/assets'
+        this.configUrl + 'project/import/vue/common'
       )
     },
-    importResourceSuccess (res, file) { // 导入资源成功
+    importProjectResource () {  // 开发者模式 导入项目组件资源
+      return (
+        this.configUrl + 'project/import/vue/project?projectName=' + this.siteName
+      )
+    },
+    importResourceSuccess (res, file) {  // 导入资源成功
       this.loading.close();
-      if (res.status === 200) {
-        toggleListType(this.activeType);
+      if (res.success) {
+        this.toggleListType(this.activeType);
         this.$message({
           type: "success",
           message: "资源导入成功"
         });
       } else {
         this.$message({
-          type: "info",
+          type: "error",
           message: "资源导入失败，请重试"
         });
       }
@@ -769,7 +802,7 @@ body {
   margin-left: 20px;
   height: 30px;
   line-height: 30px;
-  width: 100px;
+  padding: 0px 10px;
   text-align: center;
   border: 1px solid #ddd;
   border-radius: 8px;

@@ -3,11 +3,11 @@
  <div class="work_activitydetail_03">
    <template v-for="(item,index) in  list">
     <div class="work_activitydetail_03-item" :key="index">
-      <div class="work_activitydetail_03-item-title" v-text="item[keys.title]" @click="toDetail(item)"></div>
       <div class="work_activitydetail_03-item-img_box">
         <img class="work_activitydetail_03-item-img" :src="getPicUrl(item[keys.picId])" alt="暂无图片">
       </div>
       <div class="work_activitydetail_03-item-content">
+        <div class="work_activitydetail_03-item-title" v-text="item[keys.title]" @click="toDetail(item)"></div>
         <span class="work_activitydetail_03-item-content-date">{{item[keys.date] | formatTime}}</span>
         <div class="work_activitydetail_03-item-content-abstract" v-text="item[keys.abstract]"></div>
       </div>

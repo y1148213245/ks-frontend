@@ -16,6 +16,7 @@ const dev = {
   navigation: {
     navigation_03: {
       url: "../data/navigation_03_cloumn_headnav.json",
+      targetType: '_blank',
       params: {
         colId: '39', // 栏目ID
       }
@@ -27,6 +28,7 @@ const prod = {
   navigation: {
     navigation_03: {
       url: `${CONFIG.BASE_URL}spc/cms/col/getColNextLevelNode`,
+      targetType: '_blank',
       params: {
         colId: '39', // 栏目ID
       }

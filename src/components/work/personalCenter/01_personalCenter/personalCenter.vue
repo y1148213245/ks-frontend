@@ -5,7 +5,7 @@
     </el-tooltip> -->
     <div class="center_container">
       <vnav style="margin-right: 20px;" :navs="navs" :current-show-index="currentShowIndex"></vnav>
-      <component :is="currentShow" :detail-url="detailUrl" :show_star="show_star"></component>
+      <component :is="currentShow" :detail-url="detailUrl" :show_star="show_star" :parent-config="CONFIG"></component>
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ import afterservice from "./components/personalCenter_afterservice";
 import coupon from "./components/personalCenter_coupon";
 import note from "./components/personalCenter_note";
 import PROJECT_CONFIG from "projectConfig";
-import ThemePicker from './components/ThemePicker'
+import ThemePicker from './components/ThemePicker';
 export default {
   name: "work_personalcenter_01",
   reused: true,
@@ -53,6 +53,7 @@ export default {
   },
   data: function() {
     return {
+      CONFIG:null,
       currentShowIndex: "0",
       navs:null,
     }
@@ -64,7 +65,8 @@ export default {
   },
   methods: {
     initConfig () {
-      this.navs = PROJECT_CONFIG[this.namespace].personalcenter.personalcenter_01.navList;
+      this.CONFIG = PROJECT_CONFIG[this.namespace].personalcenter.personalcenter_01;
+      this.navs = this.CONFIG.navList;
     },
     initCurrentShow() {
       let param = this.getHtmlParams();

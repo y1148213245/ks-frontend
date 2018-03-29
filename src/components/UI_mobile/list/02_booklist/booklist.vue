@@ -9,8 +9,8 @@
       <span class="ui_mobile_list_02_star" :class="{ui_mobile_list_02_active:indexValue==1?true:false}" @click="toBookList('pub_star_num desc',1)">好评</span>
       <span class="ui_mobile_list_02_pricecon"><span class="ui_mobile_list_02_saleprice" :class="{ui_mobile_list_02_active:indexValue==2?true:false}" @click="toBookList('prod_sale_price asc',2)">价格</span><a
       href="javascript:void(0)" @click="toBookList('prod_sale_price asc',2)"><i
-      class="ui_mobile_list_02_asc"></i></a><a href="javascript:void(0)" @click="toBookList('prod_sale_price desc',2)"><i
-      class="ui_mobile_list_02_desc"></i></a></span>
+      class="ui_mobile_list_02_asc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a><a href="javascript:void(0)" @click="toBookList('prod_sale_price desc',2)"><i
+      class="ui_mobile_list_02_desc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a></span>
       <span :class="{ui_mobile_list_02_active:indexValue==3?true:false}" @click="toBookList('BOOK_PUBDATE desc',3)">新书</span>
     </div>
 
@@ -31,7 +31,7 @@
             <img class="ui_mobile_list_02_booklistimg" :src="ebook[keys.picture]" @click="toDetail(ebook)">
           </dt>
           <dd class="ui_mobile_list_02_booklistdd">
-            <p class="ui_mobile_list_02_bookname" @click="toDetail(ebook)" v-if="CONFIG.showItem.indexOf('bookname') !== -1 ? true : false">{{ebook[keys.bookname]}}<span class="ui_mobile_list_02-name_icon" v-text="index+1" v-if="index<5"></span></p>
+            <p class="ui_mobile_list_02_bookname" @click="toDetail(ebook)" v-if="CONFIG.showItem.indexOf('bookname') !== -1 ? true : false">{{ebook[keys.bookname]}}<span class="ui_mobile_list_02-name_icon"  :style="{ backgroundImage: 'url(' + rankbgmUrl + ')'}"  v-text="index+1" v-if="index<5"></span></p>
             <p class="ui_mobile_list_02_author" v-if="CONFIG.showItem.indexOf('author') !== -1 ? true : false">
               <span v-text="CONFIG.display.author"></span>
               <span>{{ebook[keys.author]}}</span>
@@ -64,6 +64,8 @@ export default {
   reused: true,
   data () {
     return {
+      bgmUrl: "",
+      rankbgmUrl: "",
       CONFIG: null,  // 组件配置
       keys: null,    // 接口字段
       bookList: [],  // 图书列表
@@ -87,6 +89,8 @@ export default {
     });
   },
   mounted () {
+    this.bgmUrl = require('./data/img/bg_ico.png');
+    this.rankbgmUrl = require('./data/img/rank.png');
     let query = URL.parse(document.URL, true).query;
     this.colId = query.colId ? query.colId : "";  // 按栏目查的时候从地址栏获取colId
     this.cascadId = query.cascadId ? query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
@@ -277,12 +281,16 @@ export default {
 
 .ui_mobile_list_02_asc {
   top: 0;
-  background: url(./data/img/bg_ico.png) no-repeat -1.19rem -0.95rem;
+  background-position: -1.19rem -0.95rem;
+  background-repeat: no-repeat;
+  /* background: url(./data/img/bg_ico.png) no-repeat -1.19rem -0.95rem; */
 }
 
 .ui_mobile_list_02_desc {
   bottom: 0;
-  background: url(./data/img/bg_ico.png) no-repeat -1.19rem -1.13rem;
+  background-position: -1.19rem -1.13rem;
+  background-repeat: no-repeat;
+  /* background: url(./data/img/bg_ico.png) no-repeat -1.19rem -1.13rem; */
 }
 
 .ui_mobile_list_02_asc,
@@ -385,7 +393,8 @@ export default {
   position: absolute;
   right: 0;
   top: 0;
-  background: url(./data/img/rank.png) no-repeat;
+  background-repeat: no-repeat;
+  /* background: url(./data/img/rank.png) no-repeat; */
   background-size: 19px 19px;
 }
 .ui_mobile_list_02_bookname {

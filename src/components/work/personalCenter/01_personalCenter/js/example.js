@@ -101,7 +101,12 @@ const prod = {
           icon: "el-icon-edit-outline",
           tag: "note"
         }
-      ]
+      ],
+      subConfig:{
+        'account':{
+          
+        }
+      }
     }
   }
 
