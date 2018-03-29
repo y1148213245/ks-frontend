@@ -35,12 +35,12 @@ export default {
   name: "book",
   reused: true,
   props: ["namespace"],
-  data() {
+  data () {
     return {
       // readConfig: READ_CONFIG
     };
   },
-  mounted: function() {
+  mounted: function () {
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
     });
@@ -51,7 +51,7 @@ export default {
     })
   },
   methods: {
-    loadedCallBack() {
+    loadedCallBack () {
       var param = {
         pageIndex: 1,
         pageSize: 8,
@@ -59,7 +59,7 @@ export default {
       };
       this.$store.dispatch("personalCenter/querybookShelfInfo", param);
     },
-    pagingF: function({ pageNo, pageSize }) {
+    pagingF: function ({ pageNo, pageSize }) {
       var param = {
         pageIndex: pageNo,
         pageSize: pageSize,
@@ -67,14 +67,16 @@ export default {
       };
       this.$store.dispatch("personalCenter/querybookShelfInfo", param);
     },
-    toRead(bookId, readType, bookName) {
+    toRead (bookId, readType, bookName) {
       var url =
         CONFIG.READ_URL +
-        "bookId=" +
+        "?bookId=" +
         bookId +
         "&readType=" +
         readType +
-        "&userName=&siteType=0";
+        '&bookName=' + 
+        bookName +
+        "&userName=&siteType=" + CONFIG.READ_CONFIG.siteType;
       window.open(url);
     }
   }

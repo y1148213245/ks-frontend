@@ -36,7 +36,7 @@ const prod = {
         doclibCode: "",
         docID: ""
       },
-      picLinkUrl: ''
+      moreUrl: "../pages/bookList.html?colId=264", // 查看更多
     }
   }
 }

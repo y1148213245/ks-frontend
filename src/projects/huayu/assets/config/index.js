@@ -14,5 +14,5 @@ var CONFIG = {
 }
 
 var $_$ = {
-	SITE_NAME: 'site-153'
+
 };

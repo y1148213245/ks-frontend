@@ -259,7 +259,7 @@ export default {
       config: $_$
     };
   },
-  created: function() {
+  created: function () {
     this.getMemberInfo().then(member => {
       var params = {
         loginName: this.isLogin ? this.isLogin : "",
@@ -350,14 +350,14 @@ export default {
         }
       }
     },
-    shidu: function(bookId, readType, bookName) {
+    shidu: function (bookId, readType, bookName) {
       var url =
         CONFIG.READ_URL +
         "bookId=" +
         bookId +
         "&readType=" +
         readType +
-        "&userName=&siteType=0";
+        "&userName=&siteType=" + CONFIG.READ_CONFIG.siteType;
       window.open(url);
     },
     //收藏or点赞
@@ -380,7 +380,7 @@ export default {
           contentType: contentType
         },
 
-        myCallback: function() {
+        myCallback: function () {
           if (this.collectOrLikeInfo == "1") {
             if (this.message.code === "00") {
               _this.$message({
@@ -414,7 +414,7 @@ export default {
     }
   },
   filters: {
-    formatMoney: function(val) {
+    formatMoney: function (val) {
       if (val !== null && val !== undefined) {
         return Number(val).toFixed(2);
       } else {
@@ -490,7 +490,7 @@ function addCart (contentType, this_value, loginName) {
       number: number,
       siteId: CONFIG.SITE_CONFIG.siteId
     },
-    myCallback: function() {
+    myCallback: function () {
       if (this.addCartInfo === "1") {
         _this.$message({
           message: this.cartMessage,

@@ -3,7 +3,7 @@
         <h6 class="titleHead" v-text="title"></h6>
         <div class="listWrapper">
             <div class="" name="data_column_block">
-                <dl class="listCon" v-for="(entry,index) in list" v-if="index<(number || 4)" :key="index">
+                <dl class="listCon" v-for="(entry, index) in list" v-if="index<(number || 4)" :key="index">
                     <dt class="listDt">
                         <a :href="(CONFIG && CONFIG.href)+entry.id">
                             <img :src="entry && entry.pub_picBig" onload="DrawImage(this,70,84)" alt="暂无封面"/>
@@ -128,8 +128,14 @@ export default {
                     }
                 })
             } else {
-                CookieUtils.delCookie("history");
-                this.list = "";
+                var tempList = JSON.parse(window.localStorage.getItem('newHistoryLog'));
+                for (var i = 0, len = tempList.length; i < len; i++) {
+                    if (tempList[i].pubId == pubId) {
+                        tempList.splice(i, 1);  // Array.splice(index, length, [item]) 用于替换、删除、添加  会改变原始数组
+                    }
+                }
+                window.localStorage.setItem('newHistoryLog', JSON.stringify(tempList));
+                this.list = tempList;
             }
 
         }
@@ -144,33 +150,19 @@ export default {
             if (this.modulename === 'historyrecord') {
                 var loginName = this.member.loginName;
                 if (!loginName) {    //未登录时 历史浏览记录存 cookie
-                    var queryCookie = JSON.parse(CookieUtils.getCookie('history'));
-                    //取 cookie
-                    if (queryCookie == null) {
-                        queryCookie = [];
-                    }
-                    //控制重复添加浏览历史数据
-                    var flag = true;
-                    for (var i = 0; i < queryCookie.length; i++) {
-                        if (newv.pubId == queryCookie[i].id) {
+                    var queryStorage = JSON.parse(window.localStorage.getItem('newHistoryLog')) ? JSON.parse(window.localStorage.getItem('newHistoryLog')) : [];
+                    var flag = true; // 控制是否添加该条数据进入浏览历史记录 去重操作
+                    for (let i in queryStorage) {
+                        if (newv.pubId == queryStorage[i].id) {
                             flag = false;
                         }
                     }
-                    var obj = {
-                        BOOK_SYS_TOPIC: newv.resourceName,
-                        BOOK_SYS_AUTHORS: newv.author,
-                        prod_sale_price: newv.productPrice,
-                        id: newv.pubId,
-                        pub_content_type: newv.contentType,
-                        pub_col_id: newv.colId,
-                        pub_picBig: newv.bigPic
-                    };
                     if (flag) {
-                        queryCookie.unshift(obj);
-                        //存 cookie
+                        queryStorage.unshift(newv);  // 返回长度
+                        queryStorage.splice(this.number - 1, queryStorage.length - this.number)
                     }
-                    CookieUtils.setCookie("history", JSON.stringify(queryCookie), 1);
-                    this.list = (JSON.parse(CookieUtils.getCookie('history')));
+                    window.localStorage.setItem('newHistoryLog', JSON.stringify(queryStorage)); //存
+                    this.list = JSON.parse(window.localStorage.getItem('newHistoryLog'));
                 }
             }
         }

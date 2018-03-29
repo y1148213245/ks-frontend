@@ -55,8 +55,7 @@
     },
     methods: {
       viewAll:function(){
-        let url="./bookList.html?colId=130";
-        window.location.href = url;
+        window.location.href = this.CONFIG.moreUrl;
       },
       getBookInfo: function (param) {
         let bookInfo = [];
@@ -132,7 +131,7 @@
         window.location.href = url;
       },
       shidu:function(bookId,readType,bookName){
-        var url = this.CONFIG.READ_URL|| CONFIG.READ_URL+'?bookId='+bookId+'&readType='+readType+'&bookName='+bookName;
+        var url = this.CONFIG.READ_URL|| CONFIG.READ_URL+'?bookId='+bookId+'&readType='+readType+'&bookName='+bookName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
         window.open(url);
       },
       jianjie:function(value){

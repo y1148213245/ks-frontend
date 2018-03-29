@@ -85,14 +85,23 @@ export default {
     },
     otherbook (author) { // 该作者其它图书 list.do接口
       let params = Object.assign({}, this.CONFIG.params);
-      params.searchText = "BOOK_SYS_AUTHORS:" + author;
+      let isHas = false;
+      params.conditions.map((item) => {
+        if (item.hasOwnProperty('BOOK_SYS_AUTHORS')) {
+          item.BOOK_SYS_AUTHORS = author
+          isHas = true;
+        }
+      })
+      if (!isHas) params.conditions.push({ BOOK_SYS_AUTHORS: author });
+
+      params.conditions = JSON.stringify(params.conditions);
       Post(this.CONFIG.url, params).then((rep) => {
         if (rep.data.success && rep.data.result.length > 0) {
           var tempList = [];
           var data = rep.data.result;
           for (var i = 0; i < data.length; i++) {
             tempList.push({
-              bigPic: data[i].pub_POSTER.length ? data[i].pub_POSTER[0] : "",
+              bigPic: data[i].pub_POSTER && data[i].pub_POSTER.length ? data[i].pub_POSTER[0] : "",
               pubId: data[i].id,
               resourceName: data[i].pub_resource_name,
               author: data[i].BOOK_SYS_AUTHORS,
@@ -119,7 +128,7 @@ export default {
   },
   watch: {
     member: function (newValue, oldVlue) {
-      if (newValue.loginName && newValue.loginName != oldVlue.loginName  && this.modulename == 'userbook') {
+      if (newValue.loginName && newValue.loginName != oldVlue.loginName && this.modulename == 'userbook') {
         this.userbook(newValue.loginName);
       }
     }

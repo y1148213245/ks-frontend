@@ -60,7 +60,7 @@ export default {
             }
         },
         shidu: function (bookId, readType, bookName) {
-            var url = this.CONFIG.READ_URL || CONFIG.READ_URL  + '?bookId=' + bookId + '&readType=' + readType + '&bookName=' + bookName;
+            var url = this.CONFIG.READ_URL || CONFIG.READ_URL  + '?bookId=' + bookId + '&readType=' + readType + '&bookName=' + bookName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
             window.open(url);
         }
     }

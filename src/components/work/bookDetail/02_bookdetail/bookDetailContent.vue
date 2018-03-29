@@ -222,7 +222,7 @@ export default {
       if (!probationUrl) {  // 没有试读地址的情况
         return false;
       }
-      var url = this.CONFIG.READ_URL || CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType + '&userName=&siteType=0';
+      var url = this.CONFIG.READ_URL || CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType +'&bookName=' + bookName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
       window.open(url);
     }
   },

@@ -1438,7 +1438,7 @@
             orderCode: "",
             payAmount: this.allEbook === true && this.needInvoice === "0" ? this.orderDetail.totalMoney + this.orderDetail.saveAmount : this.orderDetail.totalMoney + this.orderDetail.saveAmount + this.selectedDelivery.deliveryPrice, // 应付金额 = 商品总价 + 运费
             payCode: "",
-            payMethod: this.payMethod, // 支付方式： 0 微信支付 1 支付宝支付
+            payMethod: this.payMethod, // 支付方式： 2 微信支付 1 支付宝支付 // edit by mmc 2018/3/29
             payRemark: this.payremark, // 订单备注
             payStatus: "",
             payTime: null,
@@ -1490,7 +1490,7 @@
                     argus.payMethodId,
                     "_self"
                   );
-                } else if (_this.payMethod === "0") {
+                } else if (_this.payMethod === "2") {
                   // 微信支付
                   axios.get(
                     CONFIG.BASE_URL +
