@@ -11,7 +11,7 @@
           <img :src="bookInfo.bigPic" alt="暂无图片" onload="DrawImage(this,150,150)">
         </dt>
         <dd class="bookInfoDd">
-          <p class="toDetail" v-on:click="toDetail()" v-text="bookInfo.productName"></p>
+          <p class="toDetail" v-on:click="toDetail(bookInfo.pubId)" v-text="bookInfo.productName"></p>
           <p class="author">作者: {{bookInfo.author}}</p>
           <p class="ebook" v-if="CONFIG && CONFIG.ebookType && bookInfo.contentType === CONFIG.ebookType">数字商品</p>
           <p class="redirect">
@@ -52,9 +52,12 @@ export default {
   mounted () {
     this.pubId = URL.parse(window.location.href, true).query.pubId;
     this.CONFIG = PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_02;
-
   },
-  methods: {},
+  methods: {
+    toDetail(pubId) { // 去图书详情页
+      window.location.href = this.CONFIG.toDetailUrl + '?pubId=' + pubId;
+    }
+  },
   watch: {
     bookInfo: function (newValue, oldValue) {
       if (newValue.BOOK_SYS_AUTHORS !== undefined) {

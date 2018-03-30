@@ -1,7 +1,7 @@
 <!-- tushu  -->
 <template>
   <div class="ui_mobile_classification_01">  <!--一级分类-->
-    <a class="ui_mobile_classification_a" v-for="(item, index) in classifyList" :key="index" @click="toClassifyBook(item[keys.cascadeId])">
+    <a class="ui_mobile_classification_a" v-for="(item, index) in classifyList" :key="index" @click="toClassifyBook(item)">
       <p class="ui_mobile_classification_bgpic" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></p>
       <div class="ui_mobile_classification_con">
         <p class="ui_mobile_classification_text" v-text="item[keys.text]"></p>
@@ -58,8 +58,20 @@ export default {
         }
       });
     },
-    toClassifyBook (id) { // 去二级分类图书列表
-      window.location.href = this.CONFIG.queryClassification.toClassifyBookUrl + '?cascadId=' + id;
+    toClassifyBook (item) { // 去二级分类图书列表
+      let config = this.CONFIG.toMoreList;
+      let url = config.url + '?';
+      for (const key in config.keys) {
+        const element = config.keys[key];
+        url += key + '=' + item[element] + '&';
+      }
+      for (const key in config.fixedKeys) {
+        const element = config.fixedKeys[key];
+        url += key + '=' + element + '&';
+      }
+
+      url = url.substring(0, url.length - 1);
+      window.location.href = url;
     }
   }
 }

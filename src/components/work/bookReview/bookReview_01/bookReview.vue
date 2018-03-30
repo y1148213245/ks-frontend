@@ -106,7 +106,6 @@ export default {
       paramsObj.content = content;
       paramsObj.starNum = starNum;
       paramsObj.colId = bookDetail.colId;
-      debugger
       Post(queryConfig.url, paramsObj).then((rep) => {
         var result = rep.data.result;
         if (result === "1") {

@@ -607,6 +607,7 @@ export default {
             paramsObj.metaMap.DESCRIPTION = this.addAnnexWorksForm.synopsis; //	参赛作品简介
             paramsObj.metaMap.TEXTCONTENT = this.addAnnexWorksForm.content; //	参赛作品正文
             paramsObj.metaMap.ATTACHID = this.attachID.toString(); //文件附件ID
+            paramsObj.metaMap.RESOURCEID = this.attachID.toString(); //文件附件ID
             paramsObj.attachMap[0].FILERECORDID = this.attachID.toString(); //文件附件ID
             paramsObj.metaMap.COMMITUSER = this.loginName; //	提交用户
             paramsObj.metaMap.WORKSTYPE = this.worktype; //	文件类型

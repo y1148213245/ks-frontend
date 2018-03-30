@@ -10,6 +10,7 @@ export default {
       },
       bookType: '91', // 纸质书
       ebookType: '94', // 电子书
+      toDetailUrl: '../pages/bookdetail.html'
     }
   },
   picListBook: {

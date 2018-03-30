@@ -4,7 +4,7 @@
     <div class="ui_list_01-col_title">
       <i class="ui_list_01-col_title-ico"></i>
       {{colDetail[colDetailKeys.name]}}
-      <a href="javascript:void(0);" @click="toMoreBookList(colDetail[colDetailKeys.id])" class="ui_list_01-col_title-more">更多></a>
+      <a href="javascript:void(0);" @click="toMoreBookList(colDetail)" class="ui_list_01-col_title-more">更多></a>
     </div>
     <!--slider_scroll-->
     <div class="ui_list_01-scroll">
@@ -76,8 +76,22 @@ export default {
         this.list = resp.data.result;
       })
     },
-    toMoreBookList (id) {
-      window.location.href = this.CONFIG.toMoreList.url + '?colId='+id;
+    toMoreBookList (colDetail) {
+
+      let config = this.CONFIG.toMoreList;
+      let url = config.url + '?';
+
+      for (const key in config.keys) {
+        const element = config.keys[key];
+        url += key + '=' + colDetail[element] + '&';
+      }
+      for (const key in config.fixedKeys) {
+        const element = config.fixedKeys[key];
+        url += key + '=' + element + '&';
+      }
+
+      url = url.substring(0, url.length - 1);
+      window.location.href = url;
     },
     toDetail (item) {
       let toDetailType = this.CONFIG.toDetailType;
@@ -87,7 +101,7 @@ export default {
           const element = toDetailType.phone.values[index];
           params += item[element] + ',';
         }
-        params = params.substring(0, params.length - 1)
+        params = params.substring(0, params.length - 1);
         eval(toDetailType.phone.functionName + '(' + params + ')')
       } else if (toDetailType.type == 'href') {
         let url  = toDetailType.href.url+'?';

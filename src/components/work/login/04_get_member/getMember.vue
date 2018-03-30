@@ -3,7 +3,7 @@
  <div class="work_login_04">
    <a v-if="!member.loginName" :href="CONFIG.toLoginHref" class="work_login_04-login">
      <slot>
-       [登陆]
+       [登录]
      </slot>
    </a>
    <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>

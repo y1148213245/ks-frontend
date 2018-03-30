@@ -211,6 +211,7 @@ export default {
           params += item[element] + ',';
         }
         params = params.substring(0, params.length - 1)
+        console.log(toDetailType.phone.functionName + '(' + params + ')');
         eval(toDetailType.phone.functionName + '(' + params + ')')
       } else if (toDetailType.type == 'href') {
         let url = toDetailType.href.url + '?';

@@ -85,7 +85,6 @@ export default {
     showComponent(index) {
       this.updateCurrentShow(this.navs[index].tag);
       window.location.hash = this.navs[index].tag;
-      
     }
   },
   // components: {},
@@ -95,7 +94,10 @@ export default {
     if (hash) {
       var tag = hash.substring(hash.indexOf("#") + 1, hash.length);
       this.updateCurrentShow(tag);
+    } else {
+      this.updateCurrentShow(this.navs[0].tag);
     }
+
   }
 };
 </script>

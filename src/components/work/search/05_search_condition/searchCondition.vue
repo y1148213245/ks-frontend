@@ -101,7 +101,7 @@ export default {
     },
     unFmtDate (str) {
       let timestamp = Date.parse(new Date(str));
-      timestamp = timestamp / 1000;
+      // timestamp = timestamp / 1000;
       return timestamp;
     }
   }

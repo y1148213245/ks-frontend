@@ -16,7 +16,7 @@
 
             </p>
             <p class="author f14 book_chuban_text">作者：<span v-text="bookDetailInfo && bookDetailInfo.author"></span></p>
-            <p class="banquan book_chuban_text"> 出版社：{{bookDetailInfo && bookDetailInfo.bookCopyright | notAvailable}}</p>
+            <p class="banquan book_chuban_text"> 出版社：{{bookDetailInfo && bookDetailInfo.BOOK_PRESS_NAME | notAvailable}}</p>
             <p class="chuban"> 出版时间：{{bookDetailInfo && bookDetailInfo.pubTime | formatDate}}</p>
             <p class="price f16">￥{{bookDetailInfo && bookDetailInfo.memberPrice | filterFun}}<span>￥{{bookDetailInfo && bookDetailInfo.ebPrice | filterFun}}</span>
             </p>

@@ -53,14 +53,14 @@ export default {
     toDetail (item) {
       let toDetailType = this.CONFIG.toDetailType;
       if (toDetailType.type == 'phone') {
-        // let params = '';
-        // for (let index = 0; index < toDetailType.phone.values.length; index++) {
-        //   const element = toDetailType.phone.values[index];
-        //   params += item[element] + ',';
-        // }
-        // params = params.substring(0, params.length - 1)
-        // eval(toDetailType.phone.functionName + '(' + params + ')')
-        sendMsg("{\"bookid\":\"" + item.id + "\"}");
+        let params = '';
+        for (let index = 0; index < toDetailType.phone.values.length; index++) {
+          const element = toDetailType.phone.values[index];
+          params += item[element] + ',';
+        }
+        params = params.substring(0, params.length - 1)
+        eval(toDetailType.phone.functionName + '(' + params + ')')
+        // sendMsg("{\"bookid\":\"" + item.id + "\"}");
       } else if (toDetailType.type == 'href') {
         let url = toDetailType.href.url + '?';
         for (const key in toDetailType.href.keys) {

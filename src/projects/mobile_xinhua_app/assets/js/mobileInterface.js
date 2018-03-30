@@ -81,7 +81,6 @@ if (browser.versions.ios || browser.versions.iPhone || browser.versions.iPad) {
  * @param str
  */
 function sendMsg(str){
-//	alert(browserType);
 	if(browserType=="Androidapp"){
 		window.androidJsInterface.sendToAndroid(str);
 	}else if(browserType=="IOSapp"){

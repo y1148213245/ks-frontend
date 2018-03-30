@@ -24,7 +24,15 @@ const dev = {
           text: "text", // 分类名
           children: "children", // 分类下的子类
         },
-        toClassifyBookUrl: '../pages/classifybook.html'
+      },
+      toMoreList: {
+        "url": "./booklist.html",
+        "keys": {
+          "cascadId": "cascadeId"
+        },
+        "fixedKeys": {
+          "app": 1
+        }
       },
       queryCount: {
         url: "/data/classification_01_count.json", // 各个分类下对应有几本书
