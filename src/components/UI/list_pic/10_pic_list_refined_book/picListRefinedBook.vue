@@ -124,7 +124,7 @@ export default {
 .ui_pic_list_10 .refineDd .author {
   display: inline-block;
   max-width: 250px;
-  line-height: 12px;
+  line-height: 16px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
