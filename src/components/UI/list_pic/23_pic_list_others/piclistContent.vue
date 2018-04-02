@@ -1,14 +1,11 @@
 <!-- 购买该书的用户还买  / 该作者其他图书 Created by song 2018/1/18 -->
-
-<!-- 2018/03/31 已重新封装改组件  -->
-
-
+<!-- Edit by song 2018/03/31 TODO: 字段兼容还没做 -->
 <template>
-  <div class="ui_pic_list_19 ui_pic_list_19_skin">
-        <div class="titleHead" v-text="title"></div>
+  <div class="ui_list_pic_23 ui_list_pic_23_skin">
+        <div class="titleHead" v-if="CONFIG && CONFIG.title" v-text="CONFIG.title"></div>
         <div class="listWrapper">
           <div v-if="booklist && booklist.length>0">
-            <dl class="listDl" v-for="(entry, index) in booklist" v-if="index < 4" :key="index">
+            <dl class="listDl" v-for="(entry, index) in booklist" v-if="index < CONFIG.maxNum" :key="index">
               <dt class="listDt">
                 <img class="dtImg" :src="entry.bigPic"  alt="暂无图片" onload="DrawImage(this,90,130)"/>
               </dt>
@@ -45,13 +42,12 @@ import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 
 export default {
-  name: "components_pic_list",
+  name: "ui_list_pic_23",
   reused: true,
   props: ['namespace', 'modulename'],
   data () {
     return {
       CONFIG: null,
-      title: '',
       booklist: [],
       pubId: '',
     };
@@ -71,9 +67,7 @@ export default {
   },
   mounted () {
     this.pubId = URL.parse(window.location.href, true).query.pubId;
-    let moduleName = this.modulename;
-    this.CONFIG = PROJECT_CONFIG[this.namespace].picListBook[moduleName];
-    this.title = this.CONFIG.title;
+    this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_23[this.modulename];
   },
 
   methods: {
@@ -99,13 +93,15 @@ export default {
       if (!isHas) params.conditions.push({ BOOK_SYS_AUTHORS: author });
 
       params.conditions = JSON.stringify(params.conditions);
+      // params.conditions = "[{pub_resource_type:'BOOK'},{pub_site_id:" + CONFIG.SITE_CONFIG.siteId + "}, {BOOK_SYS_AUTHORS:'" + author + "'}]";
       Post(this.CONFIG.url, params).then((rep) => {
         if (rep.data.success && rep.data.result.length > 0) {
           var tempList = [];
           var data = rep.data.result;
           for (var i = 0; i < data.length; i++) {
             tempList.push({
-              bigPic: data[i].pub_POSTER && data[i].pub_POSTER.length ? data[i].pub_POSTER[0] : "",
+              // bigPic: data[i].pub_POSTER && data[i].pub_POSTER.length ? data[i].pub_POSTER[0] : "",
+              bigPic: data[i].pub_picBig,  // 封面图
               pubId: data[i].id,
               resourceName: data[i].pub_resource_name,
               author: data[i].BOOK_SYS_AUTHORS,
@@ -123,10 +119,10 @@ export default {
   },
   filters: {
     formatMoney: function (value) {
-      if (value) {
-        return "¥ " + parseFloat(value).toFixed(2);
+      if (value == '' || value == undefined) { //如果后台没有返回价格值 系统给置成0元
+        return "¥ 0.00";
       } else {
-        return "¥ " + value;
+        return "¥ " + parseFloat(value).toFixed(2);
       }
     }
   },
@@ -142,49 +138,49 @@ export default {
 </script>
 <style>
 /* 结构样式 */
-.ui_pic_list_19 {
+.ui_list_pic_23 {
   margin-top: 35px;
   clear: both;
 }
 
-.ui_pic_list_19 .titleHead {
+.ui_list_pic_23 .titleHead {
   padding-left: 15px;
   height: 48px;
   line-height: 48px;
 }
 
-.ui_pic_list_19 .listWrapper {
+.ui_list_pic_23 .listWrapper {
   padding: 20px 32px;
   border-width: 1px;
   border-top: 0px;
   overflow: hidden;
 }
 
-.ui_pic_list_19 .listWrapper .listDl {
+.ui_list_pic_23 .listWrapper .listDl {
   padding-right: 15px;
   float: left;
   margin-top: 0;
   margin-bottom: 20px;
 }
 
-.ui_pic_list_19 .listDl .listDt {
+.ui_list_pic_23 .listDl .listDt {
   padding-right: 15px;
   float: left;
   line-height: 1.42857143;
 }
 
-.ui_pic_list_19 .listDl .listDd {
+.ui_list_pic_23 .listDl .listDd {
   width: 136px;
   float: left;
 }
 
-.ui_pic_list_19 .listDl .listDd .resourceName {
+.ui_list_pic_23 .listDl .listDd .resourceName {
   padding-top: 10px;
   padding-bottom: 10px;
   margin: 0 0 10px;
 }
 
-.ui_pic_list_19 .resourceName .resourceLink {
+.ui_list_pic_23 .resourceName .resourceLink {
   display: inline-block;
   width: 136px;
   overflow: hidden;
@@ -192,7 +188,7 @@ export default {
   text-overflow: ellipsis;
 }
 
-.ui_pic_list_19 .listDl .author {
+.ui_list_pic_23 .listDl .author {
   display: inline-block;
   width: 136px;
   overflow: hidden;
@@ -201,31 +197,31 @@ export default {
   margin: 0 0 10px;
 }
 
-.ui_pic_list_19 .listDl .priceCon {
+.ui_list_pic_23 .listDl .priceCon {
   padding-bottom: 3px;
   margin: 0 0 10px;
 }
 
-.ui_pic_list_19 .listDl .priceCon .memberPrice {
+.ui_list_pic_23 .listDl .priceCon .memberPrice {
   margin-right: 4px;
 }
 
-.ui_pic_list_19 .listDl .star {
+.ui_list_pic_23 .listDl .star {
   margin: 0 0 10px;
 }
 
-.ui_pic_list_19_skin .listDl .star i {
+.ui_list_pic_23_skin .listDl .star i {
   margin-right: 2px;
 }
 
-.ui_pic_list_19 .listDl .star .comment {
+.ui_list_pic_23 .listDl .star .comment {
   float: right;
   margin-top: -21px;
   margin-left: 79px;
   position: absolute;
 }
 
-.ui_pic_list_19 .listDl .abstract {
+.ui_list_pic_23 .listDl .abstract {
   width: 136px;
   max-height: 66px;
   overflow: hidden;
@@ -239,55 +235,55 @@ export default {
 /* end 结构样式 */
 
 /* 皮肤样式 */
-.ui_pic_list_19_skin .titleHead {
+.ui_list_pic_23_skin .titleHead {
   font-size: 14px;
   color: #737373;
   background: #eaeaea;
   font-weight: bold;
 }
 
-.ui_pic_list_19_skin .listWrapper {
+.ui_list_pic_23_skin .listWrapper {
   border-style: solid;
   border-color: #d7d7d7;
 }
 
-.ui_pic_list_19_skin .listWrapper .listDl.listDt {
+.ui_list_pic_23_skin .listWrapper .listDl.listDt {
   font-weight: bold;
 }
 
-.ui_pic_list_19_skin .listDl .listDd .resourceName {
+.ui_list_pic_23_skin .listDl .listDd .resourceName {
   font-size: 14px;
 }
 
-.ui_pic_list_19_skin .resourceName .resourceLink {
+.ui_list_pic_23_skin .resourceName .resourceLink {
   color: #c50000;
   text-decoration: none;
 }
 
-.ui_pic_list_19_skin .resourceName .author {
+.ui_list_pic_23_skin .resourceName .author {
   color: #8d8c8c;
 }
 
-.ui_pic_list_19_skin .listDl .priceCon .memberPrice {
+.ui_list_pic_23_skin .listDl .priceCon .memberPrice {
   color: #c50000;
 }
 
-.ui_pic_list_19_skin .listDl .priceCon .ebPrice {
+.ui_list_pic_23_skin .listDl .priceCon .ebPrice {
   text-decoration: line-through;
   color: #9c9595;
   font-size: 10px;
 }
 
-.ui_pic_list_19_skin .listDl .abstract {
+.ui_list_pic_23_skin .listDl .abstract {
   color: #878787;
   font-size: 10px;
 }
 
-.ui_pic_list_19_skin .listDl .star i {
+.ui_list_pic_23_skin .listDl .star i {
   font-size: 13px;
 }
 
-.ui_pic_list_19_skin .listDl .star .comment {
+.ui_list_pic_23_skin .listDl .star .comment {
   color: #515151;
 }
 /* end 皮肤样式 */

@@ -9,18 +9,18 @@
 
 /********************** start 精品图书组件 ************************/
 
-.wenlian_common_refine_skin {
+.ui_pic_list_24_excellent {
   border-top-style: solid;
   border-top-color: #da0b2d;
 }
 
-.wenlian_common_refine_skin .index_jpts_name {
+.ui_pic_list_24_excellent .ui_pic_list_24_excellent_name {
   color: #7e7e7e;
   font-size: 18px;
   background: url(../img/bg_001.png) no-repeat;
 }
 
-.wenlian_common_refine .index_jpts_head .more {
+.ui_pic_list_24_excellent .ui_pic_list_24_excellent_head .ui_pic_list_24_excellent_more {
   font-size: 12px;
 }
 

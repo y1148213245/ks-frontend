@@ -15,7 +15,7 @@
                             <a :href="(CONFIG && CONFIG.href)+entry.id" class="hot_sell_text" v-text="entry.pub_resource_name" :title="entry.pub_resource_name"></a>
                         </p>
                         <p class="hitcount" v-if="modulename === 'hotsalebank'">点击量:{{entry.pub_read_num || 0}}</p>
-                        <p :class="{lineHeight: modulename === 'historyrecord'}">价格:￥<span class="price">{{entry.prod_member_price?Number(entry.prod_member_price).toFixed(2):'0.00'}}</span></p>
+                        <p :class="{lineHeight: modulename === 'historyrecord'}">价格:￥<span class="price">{{entry.ebPrice?Number(entry.ebPrice).toFixed(2):'0.00'}}</span></p>
                         <p class="delete" v-if="modulename === 'historyrecord'">
                             <a href="javascript:void(0)" @click="deleteOneHistory(entry.id)"></a>
                         </p>
@@ -113,7 +113,7 @@ export default {
         },
         deleteOneHistory (pubId) {
             if (this.member.loginName) {
-                Get(CONFIG.BASE_URL + 'browserHistory/deleteOneHistory.do?&loginName=' + this.member.loginName + '&pubId=' + pubId + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
+                Get(CONFIG.BASE_URL + 'browserHistory/deleteOneHistory.do?&loginName=' + this.member.loginName + '&pubId=' + pubId).then((rep) => {
                     if (rep.data.result === "1") {
                         this.$message({
                             type: "success",
@@ -129,6 +129,7 @@ export default {
                 })
             } else {
                 var tempList = JSON.parse(window.localStorage.getItem('newHistoryLog'));
+                debugger
                 for (var i = 0, len = tempList.length; i < len; i++) {
                     if (tempList[i].pubId == pubId) {
                         tempList.splice(i, 1);  // Array.splice(index, length, [item]) 用于替换、删除、添加  会改变原始数组

@@ -32,8 +32,8 @@ var state = {
   deliveryList: [],   // 配送方式
   commitInfo: {},     // 提交订单 生成订单号
   favoriteStatus: {}, // 添加收藏
-  virtualCoin: 0,     // 虚拟币
-  rmbCoin: 0,         // 虚拟币兑换人民币
+  virtualCoin: 0,     // 下载币
+  rmbCoin: 0,         // 下载币兑换人民币
   changeActivity: false, //更换活动状态
   couponsList: [],    // 优惠券列表
 };

@@ -22,7 +22,7 @@ export default {
       (params.pageSize || 8);
     return axios.get(url);
   },
-  /*查询虚拟币*/
+  /*查询下载币*/
   queryVirtualMoney(params) {
     var url =
       CONFIG.BASE_URL +
@@ -93,7 +93,7 @@ export default {
     var url = CONFIG.BASE_URL + "cart/getPayMethod.do";
     return axios.get(url);
   },
-  /*虚拟币充值*/
+  /*下载币充值*/
   // RechargeVirtual(params) {
   // var url =CONFIG.BASE_URL+'rechargeVirtualCoin/rechargeByLoginName.do?loginName=' + params.loginName + '&coinValue=' + params.paynum * 100 + '&siteId=' + CONFIG.SITE_CONFIG.siteId;
   // var url = 'http://172.19.36.70/portal/api/epay/getVirtualCoinPayForm.do?price=1&loginName=1&payMethodId=1&siteId=1'
@@ -269,7 +269,7 @@ export default {
       CONFIG.SITE_CONFIG.siteId;
     return axios.get(url);
   },
-  /*积分兑换虚拟币*/
+  /*积分兑换下载币*/
   exchangeVirtualCoin(params) {
     var url =
       CONFIG.BASE_URL +

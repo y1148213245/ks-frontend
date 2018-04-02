@@ -19,7 +19,7 @@
     <!--评论内容-->
     <div class="bookReviewWrapper" v-if="commentList && commentList.length > 0" v-for="queryComment in commentList">
       <div class="personalImg">
-        <img onload="DrawImage(this,35,35)" :src="queryComment.picture || '../../assets/img/people.jpg'" alt="暂无头像"/>
+        <img onload="DrawImage(this,35,35)" :src="queryComment.picture || defaultPic" alt="暂无头像"/>
       </div>
       <div class="reviewLists">
         <div>
@@ -57,9 +57,11 @@ export default {
       starValue: 0, // 评分默认分数
       CONFIG: null,
       commentList: [], // 评论列表
+      defaultPic: "",  // 用户默认头像
     }
   },
   mounted () {
+    this.defaultPic = require('./assets/img/people.jpg');  // 处理静态资源打包问题
     this.pubId = URL.parse(document.URL, true).query.pubId;
     this.CONFIG = PROJECT_CONFIG[this.namespace].bookreview.bookreview_01;
     var params = {

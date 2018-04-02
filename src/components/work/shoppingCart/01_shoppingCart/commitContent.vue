@@ -14,8 +14,8 @@
         <span v-if="commitInfo.status == 1"> 支付成功</span>
         <span v-if="commitInfo.status == 0"> 支付失败</span>
       </div>
-      <div class="orderCode" v-if="commitInfo.type==='virtualCoin'"> <!--虚拟币充值订单-->
-        <span>虚拟币充值</span>
+      <div class="orderCode" v-if="commitInfo.type==='virtualCoin'"> <!--下载币充值订单-->
+        <span>下载币充值</span>
         <span v-text="commitInfo.code"></span>
         <span v-if="commitInfo.status == 1">成功</span>
         <span v-if="commitInfo.status == 0">失败</span>
@@ -54,7 +54,7 @@
     },
     methods: {
       viewMyOrder: function () {
-        window.location.href = '../pages/personalcenter.html';  // 虚拟币订单需要跳转到我的账号
+        window.location.href = '../pages/personalcenter.html';  // 下载币订单需要跳转到我的账号
         if (this.commitInfo.type === 'order') {          // 商品订单需要跳转到我的订单
           window.location.href = '../pages/personalcenter.html#list';
         }

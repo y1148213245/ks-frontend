@@ -12,10 +12,10 @@
   
     <div class="briefIntro" v-for="(item, index) in titleList" :key="index" v-show="indexValue === item.ind">
       <div v-for="(introduction, ind) in bookIntroduction" v-if="introduction.topic == item.title" :key="ind">
-        <span :class="{showBriefIntro:item.flag}" v-html="introduction.content"></span>
-        <span style="display:none;" class="con-all" v-html="introduction.content"></span>
+        <span class="briefIntro_content" :class="{showBriefIntro:item.flag}" v-html="introduction.content"></span>
+        <!-- <span style="display:none;" class="con-all" v-html="introduction.content"></span> -->
       </div>
-      <a class="showAllIntro" @click="showAllEve(item)"><span>显示全部</span><i class="btnDown" :class="{'btnUp':!item.flag && indexValue == item.ind}"></i></a>
+      <a class="showAllIntro" @click="showAllEve(item)"><span>{{!item.flag && indexValue == item.ind?'收起全部':'显示全部'}}</span><i class="btnDown" :class="{'btnUp':!item.flag && indexValue == item.ind}"></i></a>
     </div>
 
   </div>
@@ -61,12 +61,13 @@ export default {
       this.indexValue = index;
     },
     showAllEve (item) {
-      item.flag = !item.flag;
-      if (item.flag) {
-        $(".showAllIntro").children("span").html("显示全部")
-      } else {
-        $(".showAllIntro").children("span").html("收起全部")
-      }
+      // item.flag = !item.flag;
+      this.$set(item,'flag',!item.flag)
+      // if (item.flag) {
+      //   $(".showAllIntro").children("span").html("显示全部")
+      // } else {
+      //   $(".showAllIntro").children("span").html("收起全部")
+      // }
     },
   },
   filters: {
@@ -112,10 +113,12 @@ export default {
 .work_bookdetail_02_related .showBriefIntro {
   display: inline-block;
   width: 100%;
-  height: 100px;
+  max-height: 100px;
   overflow: hidden;
 }
-
+.work_bookdetail_02_related .briefIntro_content{
+  min-height: 100px;
+}
 .work_bookdetail_02_related .briefIntro .showAllIntro {
   float: right;
 }

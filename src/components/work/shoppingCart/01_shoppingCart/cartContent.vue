@@ -356,16 +356,16 @@
             <span>应付：{{orderDetail.bookTotalMoney + orderDetail.ebookTotalMoney | formatMoney}}</span>
           </div>
           <div class="virtual">
-            <span>共有 {{virtualCoin}} 虚拟币</span>
+            <span>共有 {{virtualCoin}} 下载币</span>
             <span>使用</span>
             <input type="number" id="virtualCoin" v-on:input="getRmbCoin()"
                    @keypress="checkVirtual($event)" oninput="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}">
-            <span>虚拟币</span>
+            <span>下载币</span>
           </div>
-          <div class="coinremark">1虚拟币=0.1元</div>
+          <div class="coinremark">1下载币=0.1元</div>
           <div class="orderDetail" :class="{hideTrans:allEbook === true && needInvoice === '0'}">
             <div class="disc">优惠：- {{orderDetail.bookSaveMoney + orderDetail.ebookSaveMoney | formatMoney}}</div>
-            <div class="vir">虚拟币：- {{rmbCoin | formatMoney}}</div>
+            <div class="vir">下载币：- {{rmbCoin | formatMoney}}</div>
             <div class="transWay dropup" v-show="allEbook === false || needInvoice === '1'">
               <span>配送方式：</span>
               <div class="transwayDrop">
@@ -523,8 +523,8 @@
         paymentList: "shoppingcart/getPaymentList",        // 获取支付方式
         deliveryList: "shoppingcart/getDeliveryList",      // 获取配送方式
         commitInfo: "shoppingcart/getCommitInfo",          // 获取订单号
-        virtualCoin: "shoppingcart/getVirtualCoin",        // 获取用户虚拟币总数量
-        rmbCoin: "shoppingcart/getRmbCoin",                // 获取用户虚拟币兑换人民币
+        virtualCoin: "shoppingcart/getVirtualCoin",        // 获取用户下载币总数量
+        rmbCoin: "shoppingcart/getRmbCoin",                // 获取用户下载币兑换人民币
         couponsList: "shoppingcart/getCouponsList"         // 用户优惠券列表
       }),
       recordOrder: function () {
@@ -634,7 +634,7 @@
           this.showFixedClearing = false;
         }
       },
-      loadCallBack: function () {   // 一进页面就要通过查询用户之后立即执行的操作 比如：查询商品列表、虚拟币、优惠券
+      loadCallBack: function () {   // 一进页面就要通过查询用户之后立即执行的操作 比如：查询商品列表、下载币、优惠券
         /* var _this = this;
         var params = {
           param: {
@@ -656,7 +656,7 @@
           }
         }; */
         // this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, params);              // 购物车商品列表
-        this.$store.dispatch("shoppingcart/" + type.QUERY_VIRTUAL_COIN, this.member.loginName); // 虚拟币数量
+        this.$store.dispatch("shoppingcart/" + type.QUERY_VIRTUAL_COIN, this.member.loginName); // 下载币数量
         this.$store.dispatch("shoppingcart/" + type.QUERY_COUPONS, { loginName: this.member.loginName, type: "noUse" }); // 优惠券列表
         var eleTop; // 元素距离窗口最上边的高度
         var clientHeight; // 屏幕可视高度
@@ -1423,7 +1423,7 @@
         }
         var params = {
           param: {
-            balanceAmount: this.$store.state.shoppingcart.rmbCoin, // 使用虚拟币抵扣金额
+            balanceAmount: this.$store.state.shoppingcart.rmbCoin, // 使用下载币抵扣金额
             createTime: null,
             deliveryAddress: this.curSelectedAddress ? this.curSelectedAddress.province + this.curSelectedAddress.city + this.curSelectedAddress.county + this.curSelectedAddress.address : "",
             deliveryContact: this.curSelectedAddress ? this.curSelectedAddress.phone : "",
@@ -1444,7 +1444,7 @@
             payTime: null,
             payType: 1, // 0线下支付  1在线支付
             payUser: "",
-            realAmount: curRealAmount, // 实付金额 = 商品总价 + 运费 - 商品各种活动优惠 - 使用虚拟币抵扣金额
+            realAmount: curRealAmount, // 实付金额 = 商品总价 + 运费 - 商品各种活动优惠 - 使用下载币抵扣金额
             receiptId:
               this.curSelectedInvoice.receiptType == 1 ? this.curSelectedInvoice.receiptId : "",
             receiptType: this.curSelectedInvoice.receiptType,
@@ -1548,7 +1548,7 @@
         this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
         let loadingTag = _this.$loading({ fullscreen: true });
       },
-      getRmbCoin: function () {         // input框内容变化事件  实时兑换虚拟币为人民币
+      getRmbCoin: function () {         // input框内容变化事件  实时兑换下载币为人民币
         var _this = this;
         if ($("#virtualCoin").val() == "") { // 清空输入框
           _this.$store.state.shoppingcart.rmbCoin = 0;
@@ -1556,7 +1556,7 @@
         }
         var virtual = Number($("#virtualCoin").val());
         if (virtual > _this.virtualCoin) {
-          _this.$alert("虚拟币不足~", "系统提示", {
+          _this.$alert("下载币不足~", "系统提示", {
             confirmButtonText: "确定"
           });
           _this.$store.state.shoppingcart.rmbCoin = _this.virtualCoin;
@@ -1566,19 +1566,19 @@
         var params = {
           param: virtual,
           myCallbacks: function () {
-            if (this.rmbCoin) {  // 虚拟币兑换成功
+            if (this.rmbCoin) {  // 下载币兑换成功
               var payAmount = _this.orderDetail.totalMoney + _this.selectedDelivery.deliveryPrice; // 默认实付=应付-优惠活动+运费
               if (_this.allEbook && _this.needInvoice === "0") {
                 // 全是电子书并且不需要发票
                 payAmount = _this.orderDetail.bookTotalMoney + _this.orderDetail.ebookTotalMoney - _this.orderDetail.bookSaveMoney - _this.orderDetail.ebookSaveMoney;
               }
               if (this.rmbCoin < 0){
-                _this.$alert("虚拟币优惠数额不能小于0噢~", "系统提示", {
+                _this.$alert("下载币优惠数额不能小于0噢~", "系统提示", {
                   confirmButtonText: "确定"
                 });
               }
               if (this.rmbCoin > payAmount) {
-                _this.$alert("虚拟币优惠数额不得大于实付金额噢~", "系统提示", {
+                _this.$alert("下载币优惠数额不得大于实付金额噢~", "系统提示", {
                   confirmButtonText: "确定"
                 });
                 var rate = $("#virtualCoin").val() / _this.$store.state.shoppingcart.rmbCoin.toFixed(3); // 计算转换率
@@ -1591,7 +1591,7 @@
         };
         this.$store.dispatch("shoppingcart/" + type.GET_RMB_COIN, params);
       },
-      checkVirtual: function (event) {  //  键盘按下事件 控制虚拟币输入框只能输入数字
+      checkVirtual: function (event) {  //  键盘按下事件 控制下载币输入框只能输入数字
         if (!String.fromCharCode(event.keyCode).match(/\d/)) {
           event.preventDefault();
         }

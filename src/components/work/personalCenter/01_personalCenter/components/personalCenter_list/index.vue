@@ -124,7 +124,7 @@
                             <div v-if="Aitem.payStatus==1" style="display:inline-block;margin-left:30px;">已付款：<span>￥{{Aitem.realAmount || 0 }}</span></div>
                             <div v-if="Aitem.payStatus==0 && Aitem.status==1">待支付：<span>￥{{Aitem.realAmount}}</span></div>
                           </div>
-                          <div class="realAmount" v-show="Aitem.balanceAmount!='0.00'" style="display:inline-block">虚拟币抵扣：<span>￥{{Aitem.balanceAmount || 0 }}</span></div>
+                          <div class="realAmount" v-show="Aitem.balanceAmount!='0.00'" style="display:inline-block">下载币抵扣：<span>￥{{Aitem.balanceAmount || 0 }}</span></div>
                           <div class="realAmount" v-show="Aitem.couposAmount!='null' && Aitem.couposAmount!='0.00'">优惠券减免：<span>￥{{Aitem.couposAmount || 0 }}</span></div>
                           <div class="realAmount" v-show="Aitem.orderList[0].activityRemark && Aitem.orderList[0].activityRemark!='0.00'">活动减免：<span>￥{{Aitem.orderList[0].activityRemark || 0 }}</span></div>
                         </div>
@@ -173,7 +173,7 @@
                     <p>支付方式：
                         <span v-if="item.payMethod==0">微信支付</span>
                         <span v-if="item.payMethod==1">支付宝</span>
-                        <span v-if="item.payMethod==3">虚拟币</span>
+                        <span v-if="item.payMethod==3">下载币</span>
                     </p>
                     <p>商品总计：<span>{{item.orderTotalPrice | filterFun}}</span></p>
                     <p>运费总计：<span>{{item.deliveryPrice}}元</span></p>

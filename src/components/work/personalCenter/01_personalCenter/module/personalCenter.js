@@ -9,7 +9,7 @@ var state = {
   currentShow: "account", //当前显示组件
   account: {}, //详情
   pointRecord: [], //积分详情
-  virtualMoney: [], //虚拟币详情
+  virtualMoney: [], //下载币详情
   addresses: [], //地址详情
   paymentList: [], //支付方式
   orderList: [], //订单列表
@@ -96,7 +96,7 @@ var actions = {
       commit("setPointRecord", pointRecord);
     });
   },
-  /*查询虚拟币详情*/
+  /*查询下载币详情*/
   queryVirtualMoney({ commit, getters }, params) {
     params.loginName = getters.getMember.loginName;
     api.queryVirtualMoney(params).then(function(response) {
@@ -220,7 +220,7 @@ var actions = {
       params.cb(setStatus);
     });
   },
-  /*虚拟币充值*/
+  /*下载币充值*/
   // RechargeVirtual({commit, getters}, params) {
   //   params.loginName = getters.getMember.loginName;
   //   api.RechargeVirtual(params).then(function (response) {
@@ -330,7 +330,7 @@ var actions = {
       commit("setMyComment", myComment);
     });
   },
-  /*虚拟币积分兑换接口*/
+  /*下载币积分兑换接口*/
   exchangeVirtualCoin({ commit, getters }, params) {
     params.loginName = getters.getMember.loginName;
     api.exchangeVirtualCoin(params).then(function(response) {

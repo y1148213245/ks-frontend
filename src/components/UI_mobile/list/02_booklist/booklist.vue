@@ -455,7 +455,7 @@ export default {
   color: #717b8b;
   float: left;
   font-size: 0.26rem;
-  margin: 0 0 0.3rem 0;
+  margin: 0 0.4rem 0.3rem;
   white-space: nowrap;
   width: 1.5rem;
   display: block;

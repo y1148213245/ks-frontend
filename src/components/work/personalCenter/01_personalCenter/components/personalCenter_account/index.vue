@@ -23,9 +23,9 @@
             <el-button type="primary" @click="showCurrent(1)" class="butt">查看积分</el-button>
           </li>
           <li>
-            <span class="center_te">虚拟币</span>:
+            <span class="center_te">下载币</span>:
             <span>{{account && account.virtualCoin || "0" }}</span>
-            <el-button type="primary" @click="showCurrent(2)" class="butt">查看虚拟币</el-button>
+            <el-button type="primary" @click="showCurrent(2)" class="butt">查看下载币</el-button>
           </li>
         </ul>
         <hr>
@@ -469,25 +469,25 @@
           </div>
       <el-button type="primary" @click="back" class="butt_back">返回</el-button>
     </div>
-    <!--查看虚拟币-->
+    <!--查看下载币-->
     <div v-show="currentShow=='virtualMoney'">
       <div class="num">
         <ul>
           <el-radio-group v-model="value">
             <li>
-              <el-radio :label="5">5元 &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp兑换500虚拟币</el-radio>
+              <el-radio :label="5">5元 &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp兑换500下载币</el-radio>
             </li>
             <li>
-              <el-radio :label="10">10元 &nbsp &nbsp &nbsp &nbsp 兑换1000虚拟币</el-radio>
+              <el-radio :label="10">10元 &nbsp &nbsp &nbsp &nbsp 兑换1000下载币</el-radio>
             </li>
             <li>
-              <el-radio :label="20">20元 &nbsp &nbsp &nbsp &nbsp 兑换2000虚拟币</el-radio>
+              <el-radio :label="20">20元 &nbsp &nbsp &nbsp &nbsp 兑换2000下载币</el-radio>
             </li>
             <li>
-              <el-radio :label="50">50元 &nbsp &nbsp &nbsp &nbsp 兑换5000虚拟币</el-radio>
+              <el-radio :label="50">50元 &nbsp &nbsp &nbsp &nbsp 兑换5000下载币</el-radio>
             </li>
             <li>
-              <el-radio :label="100">100元 &nbsp &nbsp &nbsp 兑换10000虚拟币</el-radio>
+              <el-radio :label="100">100元 &nbsp &nbsp &nbsp 兑换10000下载币</el-radio>
             </li>
           </el-radio-group>
         </ul>
@@ -513,7 +513,7 @@
       </div>
       <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
     </div>
-    <!--虚拟币充值-->
+    <!--下载币充值-->
     <div v-show="currentShow=='virtualPay'">
       <div class="pay">
         <el-row>
@@ -521,7 +521,7 @@
             <div class="grid-content bg-purple">&nbsp &nbsp &nbsp支付项目</div>
           </el-col>
         </el-row>
-        <h3>&nbsp &nbsp &nbsp充值虚拟币 {{this.value}}0</h3>
+        <h3>&nbsp &nbsp &nbsp充值下载币 {{this.value}}0</h3>
         <el-row>
           <el-col :span="24">
             <div class="grid-content bg-purple">&nbsp &nbsp &nbsp支付方式</div>
@@ -951,7 +951,7 @@ export default {
     showCurrent(index) {
       this.currentShow = this.title[index];
     },
-    /*虚拟币分页*/
+    /*下载币分页*/
     virtualPaging({ pagesNo, pageSize }) {
       var param = {
         loginName: "",
@@ -1501,7 +1501,7 @@ export default {
         this.$refs[formName].resetFields();
       });
     },
-    /*虚拟币充值*/
+    /*下载币充值*/
     selectPayWay: function(item, id) {
       console.log(item);
       this.payWay = id;

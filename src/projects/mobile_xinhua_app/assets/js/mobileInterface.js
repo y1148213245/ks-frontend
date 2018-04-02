@@ -54,6 +54,8 @@ var browser = {
 	}(),
 	language : (navigator.browserLanguage || navigator.language).toLowerCase()
 };
+// window.document.getElementById('console').innerHTML = JSON.stringify(browser.versions);
+
 var browserType = "else";
 if (browser.versions.ios || browser.versions.iPhone || browser.versions.iPad) {
 	browserType = "IOS";

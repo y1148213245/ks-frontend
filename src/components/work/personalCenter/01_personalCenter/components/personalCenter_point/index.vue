@@ -4,8 +4,8 @@
 <div class="main_right fl">
 	<div class="wzdh_jf f14 color_6f6">
 		<div class="color_6f6 line-h24">您现在有积分:<span class="re30">{{account.payPoints}}</span></div>
-    <div class="color_6f6 line-h24">您现在有虚拟币: <span class="re30">{{account.virtualCoin}}</span></div>
-		<div class="color_6f6 line-h24">1积分=1虚拟币 </div>
+    <div class="color_6f6 line-h24">您现在有下载币: <span class="re30">{{account.virtualCoin}}</span></div>
+		<div class="color_6f6 line-h24">1积分=1下载币 </div>
 		<div class="wzdh_jf_duih">
 			<div class="wzdh_jf_duih_01">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="elform">
@@ -13,7 +13,7 @@
           <span>积分：</span>
           <el-input style="width: 200px;" type="text" v-model.number="ruleForm.number" auto-complete="off"
                     placeholder="请输入兑换积分数量" class="inputwid"></el-input>
-          <div style="display:inline-block"><span>兑换</span><span class="re30">{{ruleForm.number}}</span>虚拟币<i class="jf_duih_03"></i></div>
+          <div style="display:inline-block"><span>兑换</span><span class="re30">{{ruleForm.number}}</span>下载币<i class="jf_duih_03"></i></div>
         </el-form-item>
         <div class="col_full nobottommargin btnbox">
             <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>

@@ -73,6 +73,7 @@ export default {
   -ms-flex-pack: distribute;
   justify-content: space-around;
   margin: 0.1rem 0 0.1rem 0;
+  margin-top: 0.2rem;
   color: #5b5b5b;
 }
 .work_mobile_header_01 a {

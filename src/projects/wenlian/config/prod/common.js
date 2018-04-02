@@ -30,7 +30,7 @@ export default {
         params: {
 					num: 3,
 					username: "",
-					siteId: CONFIG.SITE_CONFIG.siteId
+					// siteId: CONFIG.SITE_CONFIG.siteId
         },
 				href:"./bookdetail.html?pubId="
 			}
