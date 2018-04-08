@@ -370,7 +370,12 @@ export default {
           break;
         }
       }
-      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=$_$.' + key + '&value=' + value).then((res) => {
+      let params = {
+        projectName:this.siteName,
+        key:'$_$.'+key,
+        value:value
+      }
+      Post(this.configUrl + 'project/config',params).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",
@@ -389,7 +394,12 @@ export default {
       var key = 'CONFIG';
       var value = document.getElementById('globalConfig').value;
       this.configUrl = JSON.parse(value).PAGE_MANAGEMENT_URL;
-      Post(this.configUrl + 'project/config?projectName=' + this.siteName + '&key=' + key + '&value=' + value).then((res) => {
+      let params = {
+        projectName:this.siteName,
+        key:key,
+        value:value
+      }
+      Post(this.configUrl + 'project/config',params).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",

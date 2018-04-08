@@ -4,11 +4,17 @@
 
 <script>
   import URL from "url";
+  import PROJECT_CONFIG from "projectConfig";
   export default {
     name: "components_aboutus_handleurl",
     reused:true,
+    props:{
+      namespace:String
+    },
     mounted:function(){
-      this.$bus.$emit("setCrumbs","aboutus");
+      this.CONFIG=PROJECT_CONFIG[this.namespace].crumbs;
+      this.getCrumbdEmit=this.CONFIG.getCrumbdEmit;
+      this.$bus.$emit(this.getCrumbdEmit,"aboutus");
     }
   }
 </script>

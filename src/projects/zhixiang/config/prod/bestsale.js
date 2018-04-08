@@ -27,9 +27,9 @@ export default {
 			styleType: "show4"
 		}
 	},
-	components: {
-		categoryList: {
-			url: CONFIG.BASE_URL + "/spc/prodb/tree-leve-one-code.do?code=BOOK"
-		}
-	}
+  components: {
+    categoryList: {
+      url: "/data/components_bestsale_categoryList.json"
+    }
+  }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="main_news">
+  <div class="work_information_info_content">
     <div class="news_nav  f14 line-h35 color_9b9 mt18 ml12">
       您的位置:
       <a href="../pages/index.html" class="color_9b9 ">首页</a>>>
@@ -145,4 +145,5 @@
   .scoped_title_info{
     text-align: center;
   }
+
 </style>

@@ -1,8 +1,8 @@
 /*
- * @Author: yan.chaoming 
- * @Date: 2018-02-05 14:11:10 
+ * @Author: yan.chaoming
+ * @Date: 2018-02-05 14:11:10
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-16 18:26:39
+ * @Last Modified time: 2018-04-08 09:53:16
  */
 export default {
   name: "activityrace",
@@ -24,6 +24,7 @@ export default {
         endDate: 'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
         resourceId: 'pub_resource_id',
         illustration: 'pub_illustration',
+        reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',//评奖时间
         requestUrlParam_pubId: 'pubId',
         toUploadPageUrlParam_docId: 'docId',
       },
@@ -62,7 +63,7 @@ export default {
     /* 大赛新闻列表配置 */
     work_activitydetail_03: {
       url: CONFIG.BASE_URL + 'spc/prodb/activity/activityNews.do',
-      getPicUrl:CONFIG.BASE_URL + 'dynamicFile/stream.do',   
+      getPicUrl:CONFIG.BASE_URL + 'dynamicFile/stream.do',
       params: {
         getListParam_pageNo: '1',
         getListParam_pageSize: '10',
@@ -157,7 +158,15 @@ export default {
               getListParam_memberType: '4',
             },
           },
-
+          getListParamOptions_fixed:{/* 固定条件配置 */
+            SYS_CURRENTSTATUS:{//例
+              getListParam_relations: "1",
+              getListParam_cols: "SYS_CURRENTSTATUS",
+              getListParam_symbols: "2",
+              getListParam_memberType:"4",
+              getListParam_vals:"已审核",
+            },
+          },
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
         },
         keys: {
@@ -171,11 +180,12 @@ export default {
           resourceName: 'SYS_TOPIC',
           activityId: 'ACTIVITYID',
           voteDescription:'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
-          
+
           eventListienLoadDatas_activityId: 'pub_resource_id',
           eventListienLoadDatas_voteSwitch:'PORTAL_ACTIVITY_PRAISE_SWITCH',
           eventListienLoadDatas_endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
-          
+          eventListienLoadDatas_voteDescription:"PORTAL_ACTIVITY_PRAISE_DESCRIPTION",
+
           eventListienSearchDatas: ['place', 'school', 'group', 'searchText'],//扩展查询参数
           getListParam_doclibCode: 'doclibCode',
           getListParam_relations: 'relations',
@@ -318,6 +328,7 @@ export default {
       }
 
     },
+    /* 教师评论列表 */
     work_activitydetail_06: {
       url: CONFIG.BASE_URL + 'comment/getActivityDiscussDetail.do',
       params: {
@@ -336,9 +347,11 @@ export default {
         requestParam_pageNo: 'pageNo',
         requestParam_pageSize: 'pageSize',
       },
-      eventName_listen: 'loadSearchResult',
+      eventName_listen: 'eventName_loadedDatas',
     },
-    
+    work_acitivityrace_07:{
+      tabArr:['奖项设置','大赛新闻','参赛作品','名师指导']
+    }
   },
   informationDetail: {
     work_informationdetail_02: {
@@ -361,22 +374,22 @@ export default {
         fileRecordID:'fileRecordID',/*  附件id字段名 */
         attachTypeCode:'attachTypeCode',/* 附件类型字段名 */
         isCollect:'isCollect',/* 是否被收藏字段名 */
-        
+
         eventListenData_preNextConfig_activityId:'activityID',/* 事件传入的上一篇下一篇查询参数 活动id字段名 */
         eventListenData_preNextConfig_pageNo:'page',
         eventListenData_preNextConfig_pageSize:'pageSize',
         eventListenData_preNextConfig_orderBy:'orderBy',
-        
+
         getDetailRequestParam_doclibCode: 'doclibCode',//库码字段名
         getDetailRequestParam_docID: 'docID',//资源字段名,
         getDetailRequestParam_loginName:'loginName',//登陆名
-       
+
         getPreNextRequestParam_newsID:'newsID',/* 上一篇下一篇查询参数 新闻id字段名 */
         getPreNextRequestParam_activityId:'activityID',/* 上一篇下一篇查询参数 活动id字段名 */
         getPreNextRequestParam_pageNo:'page',/* 上一篇下一篇查询参数 页码字段名 */
         getPreNextRequestParam_pageSize:'pageSize',/* 上一篇下一篇查询参数 页容字段名 */
         getPreNextRequestParam_orderBy:'orderBy',/* 上一篇下一篇查询参数 排序字段名 */
-        
+
         preNextData_preId:'prev',/* 上一篇下一篇数据 上一篇id字段名 */
         preNextData_nextId:'next',/* 上一篇下一篇数据 下一篇id字段名 */
 

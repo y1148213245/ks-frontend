@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 13:56:44 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-21 13:46:26
+ * @Last Modified time: 2018-04-08 09:19:30
  */
 <!-- 活动评论组件 -->
 <template>
@@ -141,6 +141,13 @@ export default {
     },
     doReview () {  // 添加评论
       let paramsObj = Object.assign({}, this.CONFIG.addreview.params);
+      if (this.member && !this.member.loginName) {  // 没有填写评论内容不得提交评论
+        this.$message({
+          type: "info",
+          message: '请登陆'
+        });
+        return false;
+      }
       if (this.review == '') {  // 没有填写评论内容不得提交评论
         this.$message({
           type: "info",
@@ -170,8 +177,8 @@ export default {
             type: "success",
             message: '添加评论成功'
           });
-        } else if(rep.data.error){
-          let msg = rep.data.error.errorMsg;
+        } else if(rep.data.errorMsg){
+          let msg = rep.data.errorMsg;
           this.$message({
             type: "error",
             message: msg

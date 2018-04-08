@@ -15,6 +15,7 @@
 <script type="text/ecmascript-6">
   import {mapGetters} from "vuex";
   import URL from "url";
+  import PROJECT_CONFIG from "projectConfig";
 
   export default{
     name: 'work_author_service_navigate',
@@ -26,18 +27,18 @@
     watch: {
       cols: function (newV, oldV) {
         if (newV !== oldV && newV && newV.length) {
-          this.$bus.$emit('colChange', newV[0]);
+          this.$bus.$emit(this.colChangeEmit, newV[0]);
         }
       }
     },
     created: function () {
     },
     mounted: function () {
-
+      this.colChangeEmit=PROJECT_CONFIG[this.namespace].colChangeEmit;
     },
     methods: {
       colChange: function (col) {
-        this.$bus.$emit('colChange', col);
+        this.$bus.$emit(this.colChangeEmit, col);
       }
     }
   }

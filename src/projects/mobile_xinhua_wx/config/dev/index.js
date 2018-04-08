@@ -2,6 +2,21 @@ export default {
   name: "index",
   header: {
     work_mobile_header_01: {
+      toCartType:{
+        type:'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
+          phone: {
+            functionName: '',/* app方法名 */
+            values:[],/* 配置轮播图数据中的字段名，用来取值给app方法传参 */
+          },
+          href: {/* 转跳页面 */
+            url:'',
+            keys:{/* 左侧为转跳参数；右侧配置轮播图数据中的字段名，用来取值 */
+            },
+            fixedKeys:{/* 左侧为转跳参数；右侧为值 */
+            }
+          }
+      },
+      showItem: ['nav', 'search'], // 控制显示哪些项 购物车 导航 搜索
       display: [{ //控制头部菜单栏展示
         name: "推荐",
         url: "./index.html"

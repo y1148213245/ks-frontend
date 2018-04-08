@@ -1482,7 +1482,7 @@
                   loadingTag.close();
                   window.open(
                     CONFIG.BASE_URL +
-                    "/epay/getPayForm.do?orderId=" +
+                    "epay/getPayForm.do?orderId=" +
                     argus.orderId +
                     "&loginName=" +
                     _this.member.loginName +
@@ -1494,7 +1494,7 @@
                   // 微信支付
                   axios.get(
                     CONFIG.BASE_URL +
-                    "/epay/getPayForm.do?orderId=" +
+                    "epay/getPayForm.do?orderId=" +
                     argus.orderId +
                     "&loginName=" +
                     _this.member.loginName +
@@ -1584,7 +1584,7 @@
                 var rate = $("#virtualCoin").val() / _this.$store.state.shoppingcart.rmbCoin.toFixed(3); // 计算转换率
                 _this.$store.state.shoppingcart.rmbCoin = payAmount;
                 virtual = _this.virtualCoin;
-                $("#virtualCoin").val(payAmount * rate);
+                $("#virtualCoin").val((payAmount * rate).toFixed(2));
               }
             }
           }

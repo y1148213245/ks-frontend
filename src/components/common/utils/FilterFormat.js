@@ -20,7 +20,8 @@ Vue.filter('formatTimeNEW', function (time) {
     let date = new Date(parseInt(time));
     return formatDate(date, 'yyyy年MM月dd日 hh:mm')
   }
-  function formatDate (date, fmt) {
+
+  function formatDate(date, fmt) {
     if (/(y+)/.test(fmt)) {
       fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
     }
@@ -39,7 +40,17 @@ Vue.filter('formatTimeNEW', function (time) {
     }
     return fmt
   }
-  function padLeftZero (str) {
+
+  function padLeftZero(str) {
     return ('00' + str).substr(str.length)
+  }
+});
+
+// 价格保留两位小数  ￥xx.xx形式
+Vue.filter('formatPriceNew', function (value) {
+  if (value) {
+    return '￥' + Number(value).toFixed(2);
+  } else {
+    return '￥0.00';
   }
 });

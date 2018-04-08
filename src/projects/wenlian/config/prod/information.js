@@ -65,6 +65,9 @@ export default {
           parentId: "0",
           activityId: '',
         }
+      },
+      keys:{
+        information_a_content:"information_a_text"
       }
     }
   },

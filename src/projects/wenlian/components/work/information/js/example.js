@@ -44,4 +44,9 @@ const prod = {
   }
 };
 
+
+const platform = 'PC';
+const pageType = ['index', 'channel'];
+const resourceType = ['book', 'information'];
+
 export {name, title, dev, prod, description};

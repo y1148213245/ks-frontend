@@ -115,10 +115,9 @@
       },
       initSwiper: function () {
         new Swiper(".swiper-container", {
-          autoplay: true,
-          loop: true,
-          delay: 10,
-          effect : 'fade'
+          autoplay: 2000,  // 轮播延迟 单位：毫秒
+          loop: true,      // 循环
+          effect: 'fade'  // 切换效果：slide（位移切换） fade（淡入）
         })
         // var mydom = $('.swiper-slide');
         // mydom.soChange({

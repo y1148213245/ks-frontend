@@ -4,7 +4,7 @@ const title = '头部菜单栏'; // 组件title
 const description = `
 横向展示,可左右滑动
 
-参数配置:
+参数配置: 购物车、导航文字、搜索按钮是可配置的，通过 showItem: ['cart', 'nav', 'search']配置，不需要显示哪个相应去除字符串就行。
 `; // 组件描述信息
 const dev = {
   header: {
@@ -23,6 +23,7 @@ const dev = {
             }
           }
       },
+      showItem: ['cart', 'nav', 'search'], // 控制显示哪些项 购物车 导航 搜索
       display: [{ //控制头部菜单栏展示
         name: "推荐",
         url: "./index.html"

@@ -45,8 +45,8 @@
       queryOrder() {
         axios.get(CONFIG.BASE_URL + '/order/getParentOrder.do?orderCode=' + this.orderCode).then(function (response) {
           var data = response.data.data;
-          if (data.payStatus === '1') {  // 支付成功跳转生成订单页面 支付失败继续请求
-            window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/" + payStatus + '/order';
+          if (data && data.payStatus && data.payStatus === '1') {  // 支付成功跳转生成订单页面 支付失败继续请求
+            window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/" + data.payStatus + '/order';
           }
         })
       }

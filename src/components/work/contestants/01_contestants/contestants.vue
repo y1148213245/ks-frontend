@@ -308,7 +308,6 @@ export default {
   created () {
     var _this = this;
     Get(CONFIG.BASE_URL + "checkToken.do").then(function (rep) {
-      console.log(rep);
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
         _this.teacherID = datas.id;
@@ -547,10 +546,20 @@ export default {
         file.type ===
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
       const isDOC = file.type === "application/msword";
-      if (!isDOCX && !isDOC) {
-        this.$message.error("上传作品文件只能是 doc或docx 格式!");
+      const isText = file.type === "text/plain";
+      const isPdf = file.type === "application/pdf";
+
+      let size = file.size / 1024;
+
+      if (!isDOCX && !isDOC && !isText && !isPdf) {
+        this.$message.error("上传作品文件只能是 doc、docx、txt或pdf格式!");
+        if (size > 10240) {
+          this.$message.error("上传作品文件不能超过10M!");
+          return false
+        }
       }
-      return isDOCX || isDOC;
+
+      return isDOCX || isDOC || isText || isPdf;
     },
     upLoadingSuccess (res, file) {
       // 上传成功回调

@@ -149,6 +149,7 @@ export default {
   margin-top: 10px;
   width: 100%;
   min-height: 500px;
+  overflow: hidden;
 }
 .components_acitivityrace_tab-item {
   padding: 20px 0;

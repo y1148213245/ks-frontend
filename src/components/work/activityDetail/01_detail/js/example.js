@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 10:48:04 
- * @Last Modified by: song
- * @Last Modified time: 2018-03-12 14:17:30
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-04-04 15:38:04
  */
 
 
@@ -21,6 +21,7 @@ const dev = {
         endDate:'endDate',//结束日期字段
         resourceId:'resourceId',//资源id字段
         illustration:'illustration',//轮播图字段
+        reviewDate:'reviewDate'//评奖时间
       },
       eventName_loadedDatas:'eventName_loadedDatas',//详情数据加载后触发的事件
       toUploadPagUrl:'',//上传页链接
@@ -37,6 +38,7 @@ const prod = {
         endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',//结束日期字段
         resourceId:'pub_resource_id',//资源id字段
         illustration:'pub_illustration',//轮播图字段
+        reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',//评奖时间
         requestUrlParam_pubId:'pubId',//请求活动详情参数：活动发布id字段
         toUploadPageUrlParam_docId:'docId',//去上传页面参数：活动资源id字段
       },

@@ -1,4 +1,4 @@
-<!--  -->
+<!-- 高级检索 -->
 <template>
  <div id="search-high-condition" class="work_search_05">
     <table border="0" class="work_search_05-table">
@@ -84,7 +84,7 @@ export default {
     },
     toSearch () {
       let conditions = "[" + this.CONFIG.conditions;
-      conditions += this.bookName ? `,{pub_resource_name:'${this.bookName}'}` : "";
+      conditions += this.bookName ? `,{pub_resource_name:'*${this.bookName}*'}` : "";  // 加*是为了模糊查询到数据
       conditions += this.author ? `,{BOOK_SYS_AUTHORS:'${this.author}'}` : "";
       conditions += this.isbn ? `,{BOOK_ISBN:'${this.isbn}'}` : "";
       conditions += this.priceFrom && this.priceTo ? `,{BOOK_EB_PRICE:'${this.priceFrom},${this.priceTo}',op:'to'}` : "";

@@ -5,27 +5,22 @@
     <div class="work_activitydetail_05-totalcount">总数<span v-text="totalCount" class="work_activitydetail_05-totalcount_text"></span></div>
     <template v-for="(item,index) in list">
       <div class="work_activitydetail_05-item" :key="index">
-        <el-row>
-          <el-col :span="18">
-            <el-row>
-              <el-col :span="8" class="work_activitydetail_05-title_box"><div class="work_activitydetail_05-title" v-text="item[keys.title]" @click="toProductDetail(item)"></div></el-col>
-              <el-col :span="8" class="work_activitydetail_05-author_box"><div v-text="item[keys.author] || '暂无作者'"></div></el-col>
-              <el-col :span="8" class="work_activitydetail_05-date_box"><div>{{item[keys.date] | formatTime}}</div></el-col>
-            </el-row>
-            <div class="work_activitydetail_05-abstract" v-text="item[keys.abstract] || '暂无简介'"></div>
-            <div class="work_activitydetail_05-comment">共<span class="work_activitydetail_05-comment-text" v-text="item[keys.teacherCommentNum]"></span>篇教师点评</div>
-          </el-col>
-          <el-col :span="6" class="work_activitydetail_05-vote_box" v-show="activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '开'">
-            <div v-show="activityIsActive">
-              <work_common_03 class="work_activitydetail_05-vote_box-content" :namespace="namespace" v-on:vote="totalVoteNum" :docid="item[keys.resourceId]" @click="getDocid(item[keys.resourceId])"></work_common_03>
-              <div class="work_activitydetail_05-vote_box-content-illustrate">
-                <i class="el-icon-question"></i>
-                <div class="work_activitydetail_05-vote_box-content-illustrate-content" v-text="item[keys.voteDescription] || '暂无说明'"></div>
-              </div>
-            </div>
-            <div class="work_activitydetail_05-vote_box-num"><span class="work_activitydetail_05-vote_box-num_text" v-text="item[keys.voteNum]"></span>赞</div>
-            </el-col>
-        </el-row>
+        <h2 class="work_activitydetail_05-title" v-text="item[keys.title]" @click="toProductDetail(item)"></h2>
+        <time class="work_activitydetail_05-date_box">{{item[keys.date] | formatTime}}</time>
+        <p class="work_activitydetail_05-abstract" v-text="item[keys.abstract] || '暂无简介'"></p>
+        <div class="work_activitydetail_05-info_box">
+          <span class="work_activitydetail_05-info_box-author_span"><label class="work_activitydetail_05-info_box-author_label">作者：</label>{{item[keys.author] || '暂无作者'}}</span>
+          <span class="work_activitydetail_05-info_box-comment_span"><i class="work_activitydetail_05-info_box-comment_icon"></i>{{item[keys.teacherCommentNum]}}<label class="work_activitydetail_05-info_box-comment_label">评论</label></span>
+          <span class="work_activitydetail_05-info_box-vote_span"><i class="work_activitydetail_05-info_box-vote_icon"></i>{{item[keys.voteNum]}}<label class="work_activitydetail_05-info_box-vote_label">赞</label></span>
+        </div>
+        
+        <div class="work_activitydetail_05-vote_box" v-show="activityIsActive && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '是'">
+          <work_common_03 class="work_activitydetail_05-vote_box-content" :namespace="namespace" v-on:vote="totalVoteNum" :docid="item[keys.resourceId]" @click="getDocid(item[keys.resourceId])"></work_common_03>
+          <div class="work_activitydetail_05-vote_box-content-illustrate">
+            <i class="el-icon-question"></i>
+            <div class="work_activitydetail_05-vote_box-content-illustrate-content" v-html="activityDetailCache[keys.eventListienLoadDatas_voteDescription] || '暂无说明'"></div>
+          </div>
+        </div>
       </div>
     </template>
     <ui_pagination :pageMessage="{totalCount}" layout="prev, pager, next, jumper"></ui_pagination>

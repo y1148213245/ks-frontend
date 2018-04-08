@@ -9,7 +9,10 @@
           <div class="num">
             <el-rate v-model="getEb.pub_star_num" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
           </div>
-          <div><font class="price">￥{{getEb.BOOK_EB_PRICE | filterFun}}</font></div>
+          <div>
+            <font class="price">{{getEb.prod_member_price | formatPriceNew}}</font><!-- 会员价 -->
+            <span class="star_pic_info_13_member_price">{{getEb.BOOK_EB_PRICE | formatPriceNew}}</span><!-- 原价 -->
+          </div>
         </div>
       </li>
     </ul>
@@ -101,4 +104,10 @@
     line-height: 24px;
     color: #dd2a48;
   }
+
+  .star_pic_info_13_member_price {
+    color: #9c9595;
+    text-decoration: line-through;
+  }
+
 </style>

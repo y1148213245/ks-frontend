@@ -19,11 +19,20 @@ export default {
         },
         toClassifyBookUrl: '../pages/classifybook.html'
       },
+      toMoreList: {
+        "url": "./booklist.html",
+        "keys": {
+          "cascadId": "cascadeId"
+        },
+        "fixedKeys": {
+          "app": 1
+        }
+      },
       queryCount: {
         url: CONFIG.BASE_URL + "spc/cms/publish/listCount.do", // 各个分类下对应有几本书
         params: {
           conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"},{BOOK_BOOK_CASCADID:"",op:"lk"}]',
-          facetFields: "BOOK_BOOK_CASCADID_1",  // 按书分类ID查询
+          facetFields: "BOOK_BOOK_CASCADID_1", // 按书分类ID查询
           groupBy: "pub_resource_id", // 为了去重
           orderBy: "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc", // 默认传这个值 为了与后台顺序一致
           pageNo: "1",

@@ -1,8 +1,8 @@
 <template>
   <div class="work_mobile_header_01">
-    <a href="javascript:void(0);" @click="toCart" class="work_mobile_header_01_cart"><i class="work_mobile_header_01_cart_i" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a>
-    <a class="work_mobile_header_01_recommend " v-for="(item,index) in display" @click="goPage(item.url,item.name)" :class="{work_mobile_header_01_active:isActive===item.name}" :key=index>{{item.name}}</a>
-    <a class="work_mobile_header_01_search" :href="CONFIG && CONFIG.toSearch"><i class="work_mobile_header_01_search_i" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a>
+    <a v-if="CONFIG && CONFIG.showItem.indexOf('cart') != -1" href="javascript:void(0);" @click="toCart" class="work_mobile_header_01_cart"><i class="work_mobile_header_01_cart_i" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a>
+    <a v-if="CONFIG && CONFIG.showItem.indexOf('nav') != -1" class="work_mobile_header_01_recommend " v-for="(item,index) in display" @click="goPage(item.url,item.name)" :class="{work_mobile_header_01_active:isActive===item.name}" :key=index>{{item.name}}</a>
+    <a v-if="CONFIG && CONFIG.showItem.indexOf('search') != -1" class="work_mobile_header_01_search" :href="CONFIG && CONFIG.toSearch"><i class="work_mobile_header_01_search_i" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a>
   </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
       window.location.href = url;
       this.isActive = name
     },
-    toCart(){
+    toCart () {
       let toCartType = this.CONFIG.toCartType;
       let item = {};//数据预留对象，待需求
       if (toCartType.type == 'phone') {
@@ -44,16 +44,16 @@ export default {
         params = params.substring(0, params.length - 1);
         eval(toCartType.phone.functionName + '(' + params + ')')
       } else if (toCartType.type == 'href') {
-        let url  = toCartType.href.url+'?';
+        let url = toCartType.href.url + '?';
         for (const key in toCartType.href.keys) {
-            const element = toCartType.href.keys[key];
-            url += key + '=' + item[element] + '&';
+          const element = toCartType.href.keys[key];
+          url += key + '=' + item[element] + '&';
         }
         for (const key in toCartType.href.fixedKeys) {
-            const element = toCartType.href.fixedKeys[key];
-            url += key + '=' + element + '&';
+          const element = toCartType.href.fixedKeys[key];
+          url += key + '=' + element + '&';
         }
-        url = url.substring(0,url.length-1)
+        url = url.substring(0, url.length - 1)
         window.location.href = url;
       }
     }

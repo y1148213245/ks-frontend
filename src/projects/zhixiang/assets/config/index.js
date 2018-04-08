@@ -3,13 +3,18 @@
  */
 
 var CONFIG = {
-	BASE_URL: "http://172.19.57.153/portal/api/",
-  READ_URL: 'http://172.19.57.153/portal/reader/yuezhi/read.jsp?',  // 阅读地址
+  // BASE_URL: "http://172.19.57.153/portal/api/",
+  BASE_URL:"../../../api/",
+  // READ_URL: 'http://172.19.57.153/portal/reader/yuezhi/read.jsp?',  // 阅读地址
+  READ_URL:"../../../reader/yuezhi/read.jsp?",
   PAGE_MANAGEMENT_URL: "http://172.19.92.76:8085/spc/api/",  // 页面管理系统地址
 	SITE_CONFIG: {
   siteId: 1,
   chId: 0
-	}
+  },
+  READ_CONFIG: {
+    siteType: 0,  // 0 网站 1 微信
+  },
 }
 
 var $_$ = {

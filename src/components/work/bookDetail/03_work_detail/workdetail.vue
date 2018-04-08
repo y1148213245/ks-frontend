@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
- * @Last Modified by: song
- * @Last Modified time: 2018-03-16 17:45:02
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-04-04 17:49:17
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
@@ -22,12 +22,14 @@
         <span v-text="workInfo[keys.author] || '暂无'"></span>
       </div>
       <div class="comment">
+        <i class="work_bookdetail_03-comment-icon"></i>
         <span v-text="commentNum"></span>
         <span>评论</span>
       </div>
       <div class="voteNum">
+        <i class="work_bookdetail_03-vote-icon"></i>
         <span v-text="workInfo[keys.voteNum]"></span>
-        <span>票数</span>
+        <span>赞</span>
       </div>
       <div class="type">
         <span>参赛类别：</span>
@@ -37,8 +39,8 @@
     <div class="abstract">
       <div v-text="workInfo[keys.abstract]"></div>
     </div>
-    <div class="info" v-if="workInfo[keys.content] && workInfo[keys.isHide] =='是'">   <!-- 表单类型的作品 -->
-      <div v-text="workInfo[keys.content]"></div>
+    <div class="info" v-if="workInfo[keys.content] && !(workInfo[keys.isHide] =='是')">   <!-- 表单类型的作品 -->
+      <div v-html="workInfo[keys.content]"></div>
     </div>
     <div class="workOperation">
       <el-button size="medium" @click="addCollect()" v-if="!isMobile">
@@ -46,7 +48,7 @@
         <span v-if="workInfo[keys.isCollect] == '1'">已收藏</span>
         <span v-else>收藏文章</span>
       </el-button>
-      <el-button size="medium" v-if="workInfo[keys.attachment] && workInfo[keys.attachment].length>0 && !workInfo[keys.isHide] =='是'"  @click="loadWork(workInfo[keys.attachment][0].fileRecordID)">  <!-- 附件类型的作品 -->
+      <el-button size="medium" v-if="workInfo[keys.attachment] && workInfo[keys.attachment].length>0 && !(workInfo[keys.isHide] =='是')"  @click="loadWork(workInfo[keys.attachment][0].fileRecordID)">  <!-- 附件类型的作品 -->
         <i class="el-icon-download"></i>
         <span>下载文章</span>
       </el-button>

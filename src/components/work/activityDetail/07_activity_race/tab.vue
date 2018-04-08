@@ -1,0 +1,218 @@
+<!-- 标签导航-->
+<template>
+  <div class="work_activityrace_tab">
+    <el-row>
+      <el-col :span="6" v-for="(item,index) in tabArr" :key="index">
+        <div class="work_activityrace_tab-item" :class="{'work_activityrace_tab-title--active':currentShowIndex == index+1}" @click="change(index+1)">{{item}}</div>
+      </el-col>
+    </el-row>
+    <div class="work_activityrace_tab-content">
+      <!-- 奖项设置 -->
+      <work_activitydetail_02 v-show="currentShowIndex == 1" :namespace="namespace" module="module1"></work_activitydetail_02>
+
+      <div  v-show="currentShowIndex == 2">
+        <!-- 大赛新闻 -->
+        <work_activitydetail_03 :namespace="namespace"  v-show="!isNewsDetail"></work_activitydetail_03>
+        <!-- 新闻详情 -->
+        <work_informationdetail_02 :namespace="namespace" v-show="isNewsDetail"></work_informationdetail_02>
+        <div class="components_acitivityrace-right">
+          <div class="components_acitivityrace-notice">
+              <div class="components_acitivityrace-notice-title_box">
+                  <span>公告</span>
+                </div>
+                <!-- 公告 -->
+              <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
+          </div>
+          <div class="components_acitivityrace-good_products">
+            <div class="components_acitivityrace-good_products-title_box">
+                <span>优秀作品展示</span>
+            </div>
+                <!-- 优秀参赛作品列表 -->
+            <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
+          </div>
+        </div>
+      </div>
+      <!-- 参赛作品 -->
+      <div  v-show="currentShowIndex == 3">
+        <el-col :span="24" class="work_activityrace_tab-product_nav">
+          <el-col :span="12">
+            <div class="work_activityrace_tab-product_nav-item" :class="{'work_activityrace_tab-product_nav-item--active':productNav_active}" @click="productNavChange(true)">参赛作品</div>
+          </el-col>
+          <el-col :span="12">
+            <div class="work_activityrace_tab-product_nav-item" :class="{'work_activityrace_tab-product_nav-item--active':!productNav_active}" @click="productNavChange(false)">获奖作品</div>
+          </el-col>
+        </el-col>
+        <div v-show="productNav_active">
+          <el-col :span="20" class="work_activityrace_tab-join_box">
+            <!-- 参赛作品条件 -->
+            <work_activitydetail_04 :namespace="namespace"></work_activitydetail_04>
+            <!-- 参赛作品列表 -->
+            <work_activitydetail_05 :namespace="namespace" module="module1"></work_activitydetail_05>
+          </el-col>
+          <el-col :span="4">
+            <div class="components_acitivityrace-notice">
+              <div class="components_acitivityrace-notice-title_box">
+                <span>公告</span>
+              </div>
+              <!-- 公告 -->
+              <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
+            </div>
+            <div class="components_acitivityrace-good_products">
+              <div class="components_acitivityrace-good_products-title_box">
+                <span>优秀作品展示</span>
+              </div>
+              <!-- 优秀参赛作品列表 -->
+              <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
+            </div>
+          </el-col>
+        </div>
+        <div v-show="!productNav_active">
+          <el-col :span="24" class="work_activityrace_tab-join_box">
+            <!-- 参赛作品条件 -->
+            <work_activitydetail_04 :namespace="namespace"></work_activitydetail_04>
+            <!-- 参赛作品列表 -->
+            <work_activitydetail_05 :namespace="namespace" module="classification" viewType="classification"></work_activitydetail_05>
+          </el-col>
+        </div>
+      </div>
+
+
+      <!-- 名师指导 -->
+      <work_activitydetail_06 v-show="currentShowIndex == 4"  :namespace="namespace"></work_activitydetail_06>
+    </div>
+    <el-row v-show="activityDetail.PORTAL_ACTIVITY_IS_COMMENT=='是'">
+      <el-col :span="24">
+        <!-- 活动评论组件 区别于作品评论 -->
+        <work_bookreview_02 :namespace="namespace" :is-show-diff=false></work_bookreview_02>
+        <!-- END 活动评论组件 区别于作品评论 -->
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+import URL from 'url'
+import PROJECT_CONFIG from 'projectConfig'
+import { Post } from '@common'
+export default {
+  name: 'work_acitivityrace_07',
+  reused: true,
+  props: {
+    namespace: String,
+  },
+  data () {
+    return {
+      currentShowIndex: 1,
+      isShowJoin: true,
+      isNewsDetail: false,
+      productNav_active: true,
+      activityDetail: {},
+      tabArr: []
+    }
+  },
+
+  computed: {},
+
+  created () {
+    this.$bus.on('eventName_toNewsDetail', this.toNewsDetail)
+    this.$bus.on('eventName_backNewsList', this.backNewsList)
+    this.$bus.on('eventName_loadedDatas', this.getActivityDetail);
+  },
+
+  mounted () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_acitivityrace_07;
+    this.tabArr = this.CONFIG.tabArr;
+  },
+
+  methods: {
+    change (index) {
+      this.currentShowIndex = index;
+    },
+    toNewsDetail () {
+      this.isNewsDetail = true;
+    },
+    backNewsList () {
+      this.isNewsDetail = false;
+    },
+    productNavChange (val) {
+      if (val) {
+        this.productNav_active = val;
+      } else {
+        if (this.activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY == '是') {
+          this.productNav_active = val
+        } else {
+          this.$message(
+            {
+              type: 'info',
+              message: '请等待评审'
+            }
+          )
+          this.productNav_active = true;
+        }
+
+      }
+
+    },
+    getActivityDetail (detail) {
+      this.activityDetail = detail;
+    }
+
+  }
+}
+</script>
+<style>
+.work_activityrace_tab {
+  padding: 20px 0;
+  width: 100%;
+}
+.work_activityrace_tab-content {
+  margin-top: 10px;
+  width: 100%;
+  min-height: 500px;
+  overflow: hidden;
+}
+.work_activityrace_tab-item {
+  padding: 20px 0;
+  text-align: center;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.work_activityrace_tab-title--active {
+  color: brown;
+}
+.work_activityrace_tab-product_nav {
+  text-align: center;
+  padding: 20px;
+}
+.work_activityrace_tab-product_nav-item {
+  margin: 0 auto;
+  width: 170px;
+  height: 50px;
+  line-height: 50px;
+  background-color: #f2f2f2;
+  color: #bcbcbc;
+  cursor: pointer;
+}
+.work_activityrace_tab-product_nav-item--active {
+  background-color: #363636;
+  color: white;
+}
+.work_activityrace_tab-join_box {
+  padding: 10px;
+}
+.components_acitivityrace-notice {
+  padding: 10px;
+  border: 1px solid dimgray;
+}
+.components_acitivityrace-notice-title_box {
+  padding: 10px 0;
+}
+.components_acitivityrace-good_products {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid dimgray;
+}
+.components_acitivityrace-good_products-title_box {
+  padding: 10px 0;
+}
+</style>

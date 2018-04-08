@@ -9,7 +9,7 @@
       <div class="work_activitydetail_03-item-content">
         <div class="work_activitydetail_03-item-title" v-text="item[keys.title]" @click="toDetail(item)"></div>
         <span class="work_activitydetail_03-item-content-date">{{item[keys.date] | formatTime}}</span>
-        <div class="work_activitydetail_03-item-content-abstract" v-text="item[keys.abstract]"></div>
+        <div class="work_activitydetail_03-item-content-abstract" v-html="item[keys.abstract]"></div>
       </div>
     </div>
    </template>

@@ -72,7 +72,7 @@ export default {
 
           //判断活动过期
           let thisTimestamp = new Date().getTime();
-          if (thisTimestamp < data[this.keys.endDate]) {
+          if (thisTimestamp < data[this.keys.endDate] && thisTimestamp < data[this.keys.reviewDate]) {
             this.isActive = true;
           } else {
             this.isActive = false;
