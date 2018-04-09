@@ -62,12 +62,12 @@ import { mapActions } from "vuex";
 
 
 export default {
-	name: 'work_login_02_retrieve_password',
+	name: 'work_findPassword_01',
 	reused: true,
 	props: ['namespace'],
 	mounted: function () {
 		this.createCode();
-		this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_login_02.findPassword;
+		this.PROJECT = PROJECT_CONFIG[this.namespace].findPassword.work_findPassword_01;
 	},
 	data () {
 		var validateEmail = (rule, value, callback) => {

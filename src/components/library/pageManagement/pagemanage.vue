@@ -373,8 +373,9 @@ export default {
       let params = {
         projectName:this.siteName,
         key:'$_$.'+key,
-        value:value
+        value:JSON.parse(value)
       }
+      //"http://172.19.36.165:8084/spc/api/"
       Post(this.configUrl + 'project/config',params).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
@@ -397,7 +398,7 @@ export default {
       let params = {
         projectName:this.siteName,
         key:key,
-        value:value
+        value:JSON.parse(value)
       }
       Post(this.configUrl + 'project/config',params).then((res) => {
         if (res.data && res.data.success) {
@@ -518,7 +519,13 @@ export default {
         fileName: this.activeFile,
         fileContent: this.code,
       };
-      Post(this.configUrl + 'files/edit?fileName=' + data.fileName + '&fileContent=' + encodeURIComponent(data.fileContent) + '&projectName=' + this.siteName).then((res) => {
+      
+      let params = {
+        fileName:data.fileName,
+        fileContent:encodeURIComponent(data.fileContent),
+        projectName:this.siteName
+      }
+      Post(this.configUrl + 'files/edit',params).then((res) => {
         if (res.data.success) {
           this.toggleOperation(this.showItem);
           if (status == false) {  // 配置组件的时候是隐形进行编辑文件的操作 所以不需要提示操作成功

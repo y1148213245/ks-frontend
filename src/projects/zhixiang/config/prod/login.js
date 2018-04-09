@@ -12,14 +12,16 @@ export default {
 		work_login_02: {
 			loginUrl: CONFIG.BASE_URL + "login.do",
 			toMainPages: "./index.html",
-			toLoginPages: "./login.html",
-			findPassword: {
-				findPasswordUrl: CONFIG.BASE_URL + "user/findPassword.do?email=",
-				setPasswordUrl: CONFIG.BASE_URL + "user/setPassword1.do?email=",
-				href: "../pages/login.html"
-			},
+			toLoginPages: "./login.html"
 		}
 	},
+	findPassword: {
+    work_findPassword_01: {
+      findPasswordUrl: CONFIG.BASE_URL + "user/findPassword.do?email=",
+      setPasswordUrl: CONFIG.BASE_URL + "user/setPassword1.do?email=",
+      href: "../pages/login.html"
+    },
+  },
 	register:{
 		work_register_02:{
 			toLoginPages:'./login.html',
