@@ -343,7 +343,6 @@ export default {
           configCon = this.usedComTagArr[i].substring(this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace'))) + 1, this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace')) + 1));
         }
       }
-      debugger
       var itemConfig = {};
       var subItemConfig = {};
       for (let item in this.currentComponent.prod) {  // 遍历找出两层对象结构如：classification: { classification_01: { ... }}

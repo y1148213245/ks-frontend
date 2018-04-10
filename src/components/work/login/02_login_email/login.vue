@@ -38,6 +38,9 @@ export default {
 			}
 		};
 	},
+	created(){
+			$(".retrievePasswordBox").css("display", "none");
+	},
 	mounted: function () {
 		this.PROJECT = PROJECT_CONFIG[this.namespace].login.work_login_02;
 	},

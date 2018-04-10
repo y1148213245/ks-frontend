@@ -93,6 +93,12 @@ export default {
         for (const key in params) {
           url += key + '=' + item[params[key]] + '&';
         }
+        for (const key in hrefMode.activityParams) {
+          url += key + '=' + this.activityDetailCache[hrefMode.activityParams[key]] + '&';
+        }
+        for (const key in hrefMode.fixedParams) {
+          url += key + '=' + hrefMode.fixedParams[key] + '&';
+        }
         var _url = url.substring(0, url.length - 1);
         window.location.href = _url;
       }

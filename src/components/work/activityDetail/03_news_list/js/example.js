@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 16:27:52 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-07 18:19:25
+ * @Last Modified time: 2018-04-10 09:45:12
  */
 
 import component from '../newsList.vue'
@@ -51,9 +51,17 @@ const prod = {
           name:'eventName_toNewsDetail',/* 事件名 */
         },
         href:{
-          url:'',/* 转跳url */
+          url:'./newsdetail.html',/* 转跳url */
           params:{/* 查询参数 对象的key为参数名,value为从组件新闻数据中获取的字段名 */
-            'docID':''
+            'docID':'SYS_DOCUMENTID'
+          },
+          activityParams:{/* 查询参数 对象的key为参数名,value为从组件活动数据中获取的字段名 */
+            'activityID':'activityId'
+          },
+          fixedParams:{/* 查询参数 对象的key为参数名,value为值 */
+            'page':'1',
+            'pageSize':'10',
+            'orderBy':'SYS_DOCUMENTID DESC',
           }
         }
       },

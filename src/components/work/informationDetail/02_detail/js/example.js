@@ -65,7 +65,7 @@ const prod = {
         },
         /* 获取location参数加载数据 */
         locationMode: {
-          dataKeys: {
+          dataKeys: {/* 地址栏传入查询参数 新闻id参数名 */
             docID: 'docID',
           }
         }

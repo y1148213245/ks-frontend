@@ -25,9 +25,9 @@
             :title="detail[keys.abstract]"></span>
     </div>
     <div class="work_informationdetail_02-nav">
-      <a class="work_informationdetail_02-nav-pre" @click="toPre">&lt;&lt;上一篇</a>
+      <a class="work_informationdetail_02-nav-pre" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_preId]}" @click="toPre">&lt;&lt;上一篇</a>
       <a href="javascript:;" @click="returnList()">返回列表</a>
-      <a class="work_informationdetail_02-nav-next" @click="toNext">下一篇&gt;&gt;</a>
+      <a class="work_informationdetail_02-nav-next" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_nextId]}" @click="toNext">下一篇&gt;&gt;</a>
     </div>
   </div>
 </template>
@@ -93,13 +93,13 @@ export default {
         let query = URL.parse(document.URL, true).query;
 
         let params = {
-          docID: query[driveMode.locationMode.dataKeys.docID]
+          docID: data && data[driveMode.locationMode.dataKeys.docID] || query[driveMode.locationMode.dataKeys.docID]
         }
         this.preNextParamCache = {
           [keys.eventListenData_preNextConfig_activityId]: query[keys.eventListenData_preNextConfig_activityId],/* 事件或href传入的上一篇下一篇查询参数 活动id字段名 */
           [keys.eventListenData_preNextConfig_pageNo]: query[keys.eventListenData_preNextConfig_pageNo],
           [keys.eventListenData_preNextConfig_pageSize]: query[keys.eventListenData_preNextConfig_pageSize],
-          [eventListenData_preNextConfig_orderBy]: query[keys.eventListenData_preNextConfig_orderBy],
+          [keys.eventListenData_preNextConfig_orderBy]: query[keys.eventListenData_preNextConfig_orderBy],
         }
         this.loadData(params);
       }
@@ -192,14 +192,14 @@ export default {
     toPre () {
       let preId = this.preNextData[this.keys.preNextData_preId];
       if (preId) {
-        this.getParam({ [this.projectConfig.driveMode.eventMode.dataKeys.docID]: preId }, this.preNextParamCache)
+        this.getParam({ [this.projectConfig.driveMode.eventMode && this.projectConfig.driveMode.eventMode.dataKeys.docID || this.projectConfig.driveMode.locationMode.dataKeys.docID]: preId }, this.preNextParamCache)
       }
     },
     /* 下一篇 */
     toNext () {
       let nextId = this.preNextData[this.keys.preNextData_nextId];
       if (nextId) {
-        this.getParam({ [this.projectConfig.driveMode.eventMode.dataKeys.docID]: nextId }, this.preNextParamCache)
+        this.getParam({ [this.projectConfig.driveMode.eventMode && this.projectConfig.driveMode.eventMode.dataKeys.docID || this.projectConfig.driveMode.locationMode.dataKeys.docID]: nextId }, this.preNextParamCache)
       }
     },
     returnList () {
@@ -209,7 +209,7 @@ export default {
       if (eventMode) {
         this.$bus.emit(this.projectConfig.eventName_back)
       } else if (locationMode) {
-        window.location.go(-1); //返回刷新上一页
+        window.history.go(-1); //返回刷新上一页
       }
     },
     /* 获取附件下载链接 */

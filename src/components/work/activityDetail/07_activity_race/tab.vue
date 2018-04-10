@@ -12,9 +12,8 @@
 
       <div  v-show="currentShowIndex == 2">
         <!-- 大赛新闻 -->
-        <work_activitydetail_03 :namespace="namespace"  v-show="!isNewsDetail"></work_activitydetail_03>
-        <!-- 新闻详情 -->
-        <work_informationdetail_02 :namespace="namespace" v-show="isNewsDetail"></work_informationdetail_02>
+        <work_activitydetail_03 :namespace="namespace"></work_activitydetail_03>
+
         <div class="components_acitivityrace-right">
           <div class="components_acitivityrace-notice">
               <div class="components_acitivityrace-notice-title_box">
@@ -104,7 +103,6 @@ export default {
     return {
       currentShowIndex: 1,
       isShowJoin: true,
-      isNewsDetail: false,
       productNav_active: true,
       activityDetail: {},
       tabArr: []
@@ -114,8 +112,6 @@ export default {
   computed: {},
 
   created () {
-    this.$bus.on('eventName_toNewsDetail', this.toNewsDetail)
-    this.$bus.on('eventName_backNewsList', this.backNewsList)
     this.$bus.on('eventName_loadedDatas', this.getActivityDetail);
   },
 
@@ -127,12 +123,6 @@ export default {
   methods: {
     change (index) {
       this.currentShowIndex = index;
-    },
-    toNewsDetail () {
-      this.isNewsDetail = true;
-    },
-    backNewsList () {
-      this.isNewsDetail = false;
     },
     productNavChange (val) {
       if (val) {

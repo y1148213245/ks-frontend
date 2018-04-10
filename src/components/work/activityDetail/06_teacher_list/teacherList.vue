@@ -44,7 +44,6 @@ export default {
   created () { 
     this.initConfig();
     this.CONFIG.isDevelopment ? this.loadData() : this.$bus.on(this.CONFIG.eventName_listen,this.loadData); 
-    this.loadData()//临时
   },
 
   mounted () { },
@@ -58,7 +57,7 @@ export default {
       if(activityDetail){
         this.activityDetailCache = activityDetail;
       }
-      let param_activityId = this.keys.requestParam_activityId + '=601948';
+      let param_activityId = this.keys.requestParam_activityId + '=' + this.activityDetailCache[this.keys.eventName_listenData_activityId];
       let param_memberType = this.keys.requestParam_memberType + '=' +  this.CONFIG.params.requestParam_memberType;
       let param_pageNo = this.keys.requestParam_pageNo + '=' + this.CONFIG.params.requestParam_pageNo;
       let param_pageSize = this.keys.requestParam_pageSize + '=' + this.CONFIG.params.requestParam_pageSize;

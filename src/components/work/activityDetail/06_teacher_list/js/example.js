@@ -38,6 +38,7 @@ const prod = {
         requestParam_memberType:'memberType',
         requestParam_pageNo:'pageNo',
         requestParam_pageSize:'pageSize',
+        eventName_listenData_activityId:'pub_resource_id',
       },
       eventName_listen: 'loadSearchResult',
     }

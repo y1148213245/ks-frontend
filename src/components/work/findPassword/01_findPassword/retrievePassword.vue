@@ -1,5 +1,5 @@
 <template>
-  <div class="retrievePasswordBox" v-show="false">
+  <div class="retrievePasswordBox">
     <div class="cent">
       <el-steps :space="120" :active="active" finish-status="success" align-center>
         <el-step title="输入邮箱"></el-step>

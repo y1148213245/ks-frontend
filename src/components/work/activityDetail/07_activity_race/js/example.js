@@ -64,7 +64,7 @@ const dev = {
         searchText: 'searchText',
       },
       eventName_search: 'eventName_search',
-      isDevelopment:true,
+      isDevelopment: true,
     },
     work_activitydetail_05: {
       url: '/data/work_activitydetail_05.json',
@@ -92,72 +92,10 @@ const dev = {
       isDevelopment: true,
       eventName_listen: 'eventName_loadedDatas'
     },
-    work_acitivityrace_07:{
-      tabArr:['奖项设置','大赛新闻','参赛作品','名师指导']
+    work_acitivityrace_07: {
+      tabArr: ['奖项设置', '大赛新闻', '参赛作品', '名师指导']
     }
 
-  },
-  informationDetail: {
-    work_informationdetail_02: {
-      getDetailUrl: CONFIG.BASE_URL + 'spc/prodb/detail.do',
-      getPreAndNextUrl: CONFIG.BASE_URL + 'spc/prodb/activity/prevNextNews.do',
-      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do',
-      attachUrl:CONFIG.BASE_URL + 'dynamicFile/file.do',
-      show: ['time', 'collect', 'share', 'abstract', 'download'],/* 显示功能配置 */
-      attachTypeCode:'original',/* 附件类型 */
-      params:{
-        getDetailRequestParam_doclibCode:'PORTAL_ACTIVITYNEWS'/* 库码 */
-      },
-      keys: {
-        topic: 'SYS_TOPIC',
-        time: 'SYS_CREATED',
-        content: 'TEXTCONTENT',
-        resourceType:'doclibCode',/* 资源库码字段名 */
-        resourceId:'SYS_DOCUMENTID',/* 资源id */
-        attachList :'ATTACH_LIST',/* 附件列表字段 */
-        fileRecordID:'fileRecordID',/*  附件id字段名 */
-        attachTypeCode:'attachTypeCode',/* 附件类型字段名 */
-        isCollect:'isCollect',/* 是否被收藏字段名 */
-
-        eventListenData_preNextConfig_activityId:'activityID',/* 事件传入的上一篇下一篇查询参数 活动id字段名 */
-        eventListenData_preNextConfig_pageNo:'page',
-        eventListenData_preNextConfig_pageSize:'pageSize',
-        eventListenData_preNextConfig_orderBy:'orderBy',
-
-        getDetailRequestParam_doclibCode: 'doclibCode',//库码字段名
-        getDetailRequestParam_docID: 'docID',//资源字段名,
-        getDetailRequestParam_loginName:'loginName',//登陆名
-
-        getPreNextRequestParam_newsID:'newsID',/* 上一篇下一篇查询参数 新闻id字段名 */
-        getPreNextRequestParam_activityId:'activityID',/* 上一篇下一篇查询参数 活动id字段名 */
-        getPreNextRequestParam_pageNo:'page',/* 上一篇下一篇查询参数 页码字段名 */
-        getPreNextRequestParam_pageSize:'pageSize',/* 上一篇下一篇查询参数 页容字段名 */
-        getPreNextRequestParam_orderBy:'orderBy',/* 上一篇下一篇查询参数 排序字段名 */
-
-        preNextData_preId:'prev',/* 上一篇下一篇数据 上一篇id字段名 */
-        preNextData_nextId:'next',/* 上一篇下一篇数据 下一篇id字段名 */
-
-        getAttachParam_recordID:'recordID',/* 获取附件链接参数:附件id参数名 */
-      },
-      /* 加载数据的方式，选一 */
-      driveMode: {
-        /* 事件驱动加载数据 */
-        eventMode: {
-          listenEventName: 'eventName_toNewsDetail',/* 监听时间名,加载数据 */
-          /* 要获取数据中的字段名 */
-          dataKeys: {
-            docID: 'SYS_DOCUMENTID',
-          }
-        },
-        /* 获取location参数加载数据 */
-        // locationMode: {
-        //   dataKeys: {
-        //     docID: '',
-        //   }
-        // }
-      },
-      eventName_back: 'eventName_backNewsList',
-    }
   },
   review: {
     queryreview: { // 查询评论组件
@@ -183,7 +121,7 @@ const prod = {
         title: 'PORTAL_ACTIVITY_SYS_TOPIC',//标题
         content: 'PORTAL_ACTIVITY_DESCRIPTION',//内容
         endDate: 'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
-        reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',//评奖时间
+        reviewDate: 'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',//评奖时间
         resourceId: 'pub_resource_id',
         illustration: 'pub_illustration',
         requestUrlParam_pubId: 'pubId',
@@ -208,7 +146,7 @@ const prod = {
       },
       module2: {
         url: CONFIG.BASE_URL + 'spc/prodb/getPublicize.do',
-        showType:'simple',/* simple 表示展示部分内容 附带展开收起按钮，不需要则不配置*/
+        showType: 'simple',/* simple 表示展示部分内容 附带展开收起按钮，不需要则不配置*/
         topic: '公告',
         keys: {
           topic: 'topic',
@@ -224,7 +162,7 @@ const prod = {
     /* 大赛新闻列表配置 */
     work_activitydetail_03: {
       url: CONFIG.BASE_URL + 'spc/prodb/activity/activityNews.do',
-      getPicUrl:CONFIG.BASE_URL + 'dynamicFile/stream.do',
+      getPicUrl: CONFIG.BASE_URL + 'dynamicFile/stream.do',
       params: {
         getListParam_pageNo: '1',
         getListParam_pageSize: '10',
@@ -236,16 +174,27 @@ const prod = {
         date: "SYS_CREATED",
         abstract: "ABSTRACT",
         eventListenData_activityId: 'pub_resource_id',
-        getPicParam_coverId:'recordID',
+        getPicParam_coverId: 'recordID',
         getListParam_activityID: 'activityID',
         getListParam_pageNo: 'page',
         getListParam_pageSize: 'pageSize',
         getListParam_orderBy: 'orderBy',
       },
       toDetailMode: {/* 去详情页模式 ，选其一：'event'抛出事件传入参数，'href' href转跳 */
-        event: {
-          name: 'eventName_toNewsDetail',/* 事件名 */
-        },
+        href: {
+          url: './newsdetail.html',/* 转跳url */
+          params: {/* 查询参数 对象的key为参数名,value为从组件新闻数据中获取的字段名 */
+            'docID': 'SYS_DOCUMENTID'
+          },
+          activityParams: {/* 查询参数 对象的key为参数名,value为从组件活动数据中获取的字段名 */
+            'activityID': 'activityId'
+          },
+          fixedParams: {/* 查询参数 对象的key为参数名,value为值 */
+            'page': '1',
+            'pageSize': '10',
+            'orderBy': 'SYS_DOCUMENTID DESC',
+          }
+        }
       },
       eventName_listen: 'eventName_loadedDatas'
     },
@@ -332,11 +281,11 @@ const prod = {
           resourceId: 'SYS_DOCUMENTID',
           resourceName: 'SYS_TOPIC',
           activityId: 'ACTIVITYID',
-          voteDescription:'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
+          voteDescription: 'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
 
           eventListienLoadDatas_activityId: 'pub_resource_id',
-          eventListienLoadDatas_voteSwitch:'PORTAL_ACTIVITY_PRAISE_SWITCH',
-          eventListienLoadDatas_endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
+          eventListienLoadDatas_voteSwitch: 'PORTAL_ACTIVITY_PRAISE_SWITCH',
+          eventListienLoadDatas_endDate: 'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
 
           eventListienSearchDatas: ['place', 'school', 'group', 'searchText'],//扩展查询参数
           getListParam_doclibCode: 'doclibCode',
@@ -368,13 +317,13 @@ const prod = {
               getListParam_memberType: '4',
             }
           },
-          getListParamOptions_fixed:{/* 固定条件配置 */
-            IS_EXCELLENTWORK:{//例
+          getListParamOptions_fixed: {/* 固定条件配置 */
+            IS_EXCELLENTWORK: {//例
               getListParam_relations: '1',
               getListParam_cols: 'IS_EXCELLENTWORK',
               getListParam_symbols: '2',
               getListParam_memberType: '4',
-              getListParam_vals:'是',
+              getListParam_vals: '是',
             },
           },
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
@@ -408,40 +357,40 @@ const prod = {
         isDevelopment: false,
       },
       'classification': {
-        url:CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
+        url: CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
-        classification:{/* 分类配置,无则不配置 */
-          titles:['一等奖','二等奖','三等奖'],
-          key:'AWARD',/* 对应数据的字段 */
+        classification: {/* 分类配置,无则不配置 */
+          titles: ['一等奖', '二等奖', '三等奖'],
+          key: 'AWARD',/* 对应数据的字段 */
         },
         params: {
           getListParam_doclibCode: 'PORTAL_WORKS',
-          getListParamOptions:{//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
-            activityId:{
+          getListParamOptions: {//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
+            activityId: {
               getListParam_relations: '1',
               getListParam_cols: 'ACTIVITYID',
               getListParam_symbols: '2',
               getListParam_memberType: '4',
             },
-            'place':{//扩展属性名
+            'place': {//扩展属性名
               getListParam_relations: '1',
               getListParam_cols: 'AREA',
               getListParam_symbols: '1',
               getListParam_memberType: '4',
             },
-            'school':{
+            'school': {
               getListParam_relations: '1',
               getListParam_cols: 'SCHOOL',
               getListParam_symbols: '1',
               getListParam_memberType: '4',
             },
-            'group':{
+            'group': {
               getListParam_relations: '1',
               getListParam_cols: 'CLASS',
               getListParam_symbols: '1',
               getListParam_memberType: '4',
             },
-            'searchText':{
+            'searchText': {
               getListParam_relations: '1',
               getListParam_cols: 'SYS_TOPIC',
               getListParam_symbols: '1',
@@ -460,14 +409,14 @@ const prod = {
           resourceId: 'SYS_DOCUMENTID',
           resourceName: 'SYS_TOPIC',
           activityId: 'ACTIVITYID',
-          eventListienLoadDatas_activityId:'pub_resource_id',
-          eventListienSearchDatas:['place','school','group','searchText'],//扩展查询参数
-          getListParam_doclibCode:'doclibCode',
-          getListParam_relations:'relations',
-          getListParam_cols:'cols',
-          getListParam_symbols:'symbols',
-          getListParam_vals:'vals',
-          getListParam_memberType:'memberType',
+          eventListienLoadDatas_activityId: 'pub_resource_id',
+          eventListienSearchDatas: ['place', 'school', 'group', 'searchText'],//扩展查询参数
+          getListParam_doclibCode: 'doclibCode',
+          getListParam_relations: 'relations',
+          getListParam_cols: 'cols',
+          getListParam_symbols: 'symbols',
+          getListParam_vals: 'vals',
+          getListParam_memberType: 'memberType',
           toProductDetailParam_resourceType: 'resourceType',
           toProductDetailParam_resourceId: 'resourceId',
           toProductDetailParam_colId: 'colId',
@@ -500,84 +449,22 @@ const prod = {
       },
       eventName_listen: 'loadSearchResult',
     },
-    work_acitivityrace_07:{
-      tabArr:['奖项设置','大赛新闻','参赛作品','名师指导']
+    work_acitivityrace_07: {
+      tabArr: ['奖项设置', '大赛新闻', '参赛作品', '名师指导']
     }
 
-  },
-  informationDetail: {
-    work_informationdetail_02: {
-      getDetailUrl: CONFIG.BASE_URL + 'spc/prodb/detail.do',
-      getPreAndNextUrl: CONFIG.BASE_URL + 'spc/prodb/activity/prevNextNews.do',
-      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do',
-      attachUrl:CONFIG.BASE_URL + 'dynamicFile/file.do',
-      show: ['time', 'collect', 'share', 'abstract', 'download'],/* 显示功能配置 */
-      attachTypeCode:'original',/* 附件类型 */
-      params:{
-        getDetailRequestParam_doclibCode:'PORTAL_ACTIVITYNEWS'/* 库码 */
-      },
-      keys: {
-        topic: 'SYS_TOPIC',
-        time: 'SYS_CREATED',
-        content: 'TEXTCONTENT',
-        resourceType:'doclibCode',/* 资源库码字段名 */
-        resourceId:'SYS_DOCUMENTID',/* 资源id */
-        attachList :'ATTACH_LIST',/* 附件列表字段 */
-        fileRecordID:'fileRecordID',/*  附件id字段名 */
-        attachTypeCode:'attachTypeCode',/* 附件类型字段名 */
-        isCollect:'isCollect',/* 是否被收藏字段名 */
-
-        eventListenData_preNextConfig_activityId:'activityID',/* 事件传入的上一篇下一篇查询参数 活动id字段名 */
-        eventListenData_preNextConfig_pageNo:'page',
-        eventListenData_preNextConfig_pageSize:'pageSize',
-        eventListenData_preNextConfig_orderBy:'orderBy',
-
-        getDetailRequestParam_doclibCode: 'doclibCode',//库码字段名
-        getDetailRequestParam_docID: 'docID',//资源字段名,
-        getDetailRequestParam_loginName:'loginName',//登陆名
-
-        getPreNextRequestParam_newsID:'newsID',/* 上一篇下一篇查询参数 新闻id字段名 */
-        getPreNextRequestParam_activityId:'activityID',/* 上一篇下一篇查询参数 活动id字段名 */
-        getPreNextRequestParam_pageNo:'page',/* 上一篇下一篇查询参数 页码字段名 */
-        getPreNextRequestParam_pageSize:'pageSize',/* 上一篇下一篇查询参数 页容字段名 */
-        getPreNextRequestParam_orderBy:'orderBy',/* 上一篇下一篇查询参数 排序字段名 */
-
-        preNextData_preId:'prev',/* 上一篇下一篇数据 上一篇id字段名 */
-        preNextData_nextId:'next',/* 上一篇下一篇数据 下一篇id字段名 */
-
-        getAttachParam_recordID:'recordID',/* 获取附件链接参数:附件id参数名 */
-      },
-      /* 加载数据的方式，选一 */
-      driveMode: {
-        /* 事件驱动加载数据 */
-        eventMode: {
-          listenEventName: 'eventName_toNewsDetail',/* 监听时间名,加载数据 */
-          /* 要获取数据中的字段名 */
-          dataKeys: {
-            docID: 'SYS_DOCUMENTID',
-          }
-        },
-        /* 获取location参数加载数据 */
-        // locationMode: {
-        //   dataKeys: {
-        //     docID: '',
-        //   }
-        // }
-      },
-      eventName_back: 'eventName_backNewsList',
-    }
   },
   review: { // 查询活动评论列表
-    getParamType:'event',/* event:事件取参 ,href:地址栏取参 */
-    listenEvent:{
-      name:'eventName_loadedDatas',
-      keys:{
-        pubId:'id',
-        colId:'pub_col_id',
-        resourceName:'pub_resource_name',
-        resourceType:'pub_resource_type',
-        resourceId:'pub_resource_id',
-        activityId:'id',
+    getParamType: 'event',/* event:事件取参 ,href:地址栏取参 */
+    listenEvent: {
+      name: 'eventName_loadedDatas',
+      keys: {
+        pubId: 'id',
+        colId: 'pub_col_id',
+        resourceName: 'pub_resource_name',
+        resourceType: 'pub_resource_type',
+        resourceId: 'pub_resource_id',
+        activityId: 'id',
       }
     },
     queryreview: {
@@ -614,13 +501,12 @@ const prod = {
         resourceId: '', // 值可以为空
       }
     }
-  },
-  tabArr:['奖项设置','大赛新闻','参赛作品','名师指导']
+  }
 };
 
 const platform = 'PC';
 const pageType = ['list'];
 const resourceType = ['activity'];
 
-export {name, title, dev, prod, description, platform, pageType, resourceType};
+export { name, title, dev, prod, description, platform, pageType, resourceType };
 
