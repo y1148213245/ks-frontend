@@ -23,7 +23,7 @@ const dev = {
 const prod = {
   hotbookrecommend: {
     hotbookrecommend_01: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       params: {
         conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_col_id:"113"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]',//热门推荐栏目id为113
         groupBy: "pub_resource_id",

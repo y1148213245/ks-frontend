@@ -22,7 +22,7 @@ const dev = {
 var prod = {
   common: {
     vote_03: {
-      url: CONFIG.BASE_URL + '',
+      url:  '',
       params: {
         pubId: '',
         loginName: '',

@@ -30,7 +30,7 @@ const prod = {
   activityDetail: {
     work_activitydetail_02: {
       "module": {
-        url: CONFIG.BASE_URL + 'spc/prodb/getPublicize.do',
+        url:  'spc/prodb/getPublicize.do',
         showType:'simple',/* simple 表示展示部分内容 附带展开收起按钮，不需要则不配置*/
         topic: '奖项设置',//辅文标题
         keys: {

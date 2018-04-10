@@ -8,7 +8,7 @@ export default {
     pic_01: {
       height: "480px",
       interval: 5000,
-      url: CONFIG.BASE_URL + '/spc/cms/publish/list.do',
+      url:  '/spc/cms/publish/list.do',
       params: {
         conditions: "[{'pub_col_id':'239'}]",
         orderBy: 'pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc',
@@ -21,7 +21,7 @@ export default {
       height: "480px",
       width: "200px",
       interval: 5000,
-      url: CONFIG.BASE_URL + '/spc/cms/publish/list.do',
+      url:  '/spc/cms/publish/list.do',
       params: {
         conditions: "[{pub_resource_type:'BOOK'},{pub_site_id:'1'}]",
         orderBy: "BOOK_PUBDATE desc",
@@ -34,7 +34,7 @@ export default {
     },
     'module1': {
       pic_word_03: {
-        url: CONFIG.BASE_URL + '/spc/cms/publish/list.do',
+        url:  '/spc/cms/publish/list.do',
         params: {
           conditions: "[{pub_resource_type:'BOOK'},{pub_col_id:'240'}]",
           orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
@@ -47,7 +47,7 @@ export default {
     },
     'module2': {
       pic_word_03: {
-        url: CONFIG.BASE_URL + '/spc/cms/publish/list.do',
+        url:  '/spc/cms/publish/list.do',
         params: {
           conditions: "[{pub_resource_type:'BOOK'},{pub_col_id:'241'}]",
           orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
@@ -61,7 +61,7 @@ export default {
 
   },
   indexBestSale: {
-    url: CONFIG.BASE_URL + '/spc/cms/publish/list.do',
+    url:  '/spc/cms/publish/list.do',
     params: {
       conditions: "[{pub_resource_type:'BOOK'},{pub_site_id:'1'}]",
       orderBy: 'pub_sales_num desc',

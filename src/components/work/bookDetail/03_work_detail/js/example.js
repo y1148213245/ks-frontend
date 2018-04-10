@@ -17,7 +17,7 @@ const dev = {
   bookdetail: {
     bookdetail_03: {
       url: '../data/work_detail_03_data.json',
-      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do', // 添加作品收藏
+      collectUrl:  'collection/addWorkCollect.do', // 添加作品收藏
       /* collectParams: {
         loginName: '',
         resourceId: '',
@@ -25,7 +25,7 @@ const dev = {
         operateType: '0',
         siteId: CONFIG.SITE_CONFIG.siteId
       }, */
-      loadUrl: CONFIG.BASE_URL + 'dynamicFile/file.do?recordID=',  // 下载附件类型文章
+      loadUrl:  'dynamicFile/file.do?recordID=',  // 下载附件类型文章
       params: {
         doclibCode: '',
         docID: '',
@@ -50,9 +50,9 @@ const dev = {
 const prod = {
   bookdetail: {
     bookdetail_03: {
-      // url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
-      url: CONFIG.BASE_URL + 'book/getWorkDetail.do',  // 查询作品详情
-      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do', // 添加作品收藏
+      // url:  'spc/prodb/detail.do',
+      url:  'book/getWorkDetail.do',  // 查询作品详情
+      collectUrl:  'collection/addWorkCollect.do', // 添加作品收藏
       /* collectParams: {
         loginName: '',
         resourceId: '',
@@ -60,7 +60,7 @@ const prod = {
         operateType: '0',
         siteId: CONFIG.SITE_CONFIG.siteId
       }, */
-      loadUrl: CONFIG.BASE_URL + 'dynamicFile/file.do?recordID=',  // 下载附件类型文章
+      loadUrl:  'dynamicFile/file.do?recordID=',  // 下载附件类型文章
       params: {
         doclibCode: '',
         docID: '',

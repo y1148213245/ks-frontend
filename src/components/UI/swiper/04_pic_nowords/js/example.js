@@ -18,7 +18,7 @@ const dev = {
 const prod = {
   swiper: {
     pic_noWords_04: {
-      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+      url:  'spc/cms/publish/list.do',
       params: {
         conditions: "[{pub_col_id:'83'}]",
         groupBy: "pub_resource_id",

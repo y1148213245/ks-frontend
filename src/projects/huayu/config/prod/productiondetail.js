@@ -8,9 +8,9 @@ export default {
   name: "productiondetail",
   bookdetail: {
     bookdetail_03: {
-      // url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
-      url: CONFIG.BASE_URL + 'book/getWorkDetail.do',  // 查询作品详情
-      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do', // 添加作品收藏
+      // url:  'spc/prodb/detail.do',
+      url:  'book/getWorkDetail.do',  // 查询作品详情
+      collectUrl:  'collection/addWorkCollect.do', // 添加作品收藏
       /* collectParams: {
         loginName: '',
         resourceId: '',
@@ -18,7 +18,7 @@ export default {
         operateType: '0',
         siteId: CONFIG.SITE_CONFIG.siteId
       }, */
-      loadUrl: CONFIG.BASE_URL + 'dynamicFile/file.do?recordID=',  // 下载附件类型文章
+      loadUrl:  'dynamicFile/file.do?recordID=',  // 下载附件类型文章
       params: {
         doclibCode: '',
         docID: '',
@@ -41,7 +41,7 @@ export default {
   review: {  // 查询作品评论列表
     getParamType:'href',/* event:事件取参 ,href:地址栏取参 */
     queryreview: {
-      url: CONFIG.BASE_URL + 'comment/getWorksComment.do',
+      url:  'comment/getWorksComment.do',
       params: {
         resourceType: '',
         resourceId: '',
@@ -59,7 +59,7 @@ export default {
       }]
     },
     addreview: {  // 添加作品评论 索引库里面没有作品
-      url: CONFIG.BASE_URL + 'comment/addWorksComment.do',
+      url:  'comment/addWorksComment.do',
       params: {
         pubId: '',  //  所以pubId为空
         loginName: '',

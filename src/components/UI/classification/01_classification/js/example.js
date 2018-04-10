@@ -22,7 +22,7 @@ const dev = {
 const prod = {
   classification: {
     classification_01: {
-      url: CONFIG.BASE_URL + "spc/prodb/tree-leve-one-code.do",
+      url:  "spc/prodb/tree-leve-one-code.do",
       params: {
         code: "BOOK",
       },

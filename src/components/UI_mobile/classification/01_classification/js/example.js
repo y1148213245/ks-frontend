@@ -54,7 +54,7 @@ const prod = {
   classification: {
     classification_01: {
       queryClassification: {
-        url: CONFIG.BASE_URL + "spc/prodb/treeByCode.do", // 请求分类
+        url:  "spc/prodb/treeByCode.do", // 请求分类
         params: {
           code: "BOOK",
         },
@@ -75,7 +75,7 @@ const prod = {
         }
       },
       queryCount: {
-        url: CONFIG.BASE_URL + "spc/cms/publish/listCount.do", // 各个分类下对应有几本书
+        url:  "spc/cms/publish/listCount.do", // 各个分类下对应有几本书
         params: {
           conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"},{BOOK_BOOK_CASCADID:"",op:"lk"}]',
           facetFields: "BOOK_BOOK_CASCADID_1", // 按书分类ID查询

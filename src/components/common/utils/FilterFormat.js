@@ -54,3 +54,12 @@ Vue.filter('formatPriceNew', function (value) {
     return '￥0.00';
   }
 });
+
+ // 处理分类下书的总数 “共 xx 本” 形式
+Vue.filter('formatCount', function (value) {
+  if (value == null || value == undefined) { // 返回为空
+    return '共 0 本';
+  } else {
+    return '共 ' + value + ' 本';
+  }
+});

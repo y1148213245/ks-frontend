@@ -31,7 +31,7 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_01: {
-      url: CONFIG.BASE_URL + 'spc/cms/publish/detail.do',
+      url:  'spc/cms/publish/detail.do',
       keys: {
         title:'PORTAL_ACTIVITY_SYS_TOPIC',//标题字段
         content:'PORTAL_ACTIVITY_DESCRIPTION',//内容字段

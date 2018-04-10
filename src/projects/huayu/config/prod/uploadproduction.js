@@ -11,8 +11,8 @@ export default {
     contestants_01: {
       competitionList: {
         url:
-        CONFIG.BASE_URL + "/user/getActivityMemberByTeacher.do?",
-        competitionedUrl: CONFIG.BASE_URL + 'spc/prodb/activity/myWorks.do?loginName=william&pageSize=1&page=10&pageable=1',
+         "/user/getActivityMemberByTeacher.do?",
+        competitionedUrl:  'spc/prodb/activity/myWorks.do?loginName=william&pageSize=1&page=10&pageable=1',
         params: {
           teacherId: "",
           pageNo: "1",
@@ -21,8 +21,8 @@ export default {
       },
       //查询补充信息接口
       supplementaryInformation: {
-        url: CONFIG.BASE_URL + "/spc/prodb/detail.do?",
-        getSchoolUrl:CONFIG.BASE_URL +'spc/prodb/searchNL.do',
+        url:  "/spc/prodb/detail.do?",
+        getSchoolUrl:'spc/prodb/searchNL.do',
         params: {
           getPlaceRequest_doclibCode:'PORTAL_ACTIVITY',//配库码
           getSchoolRequest_doclibCode:'PORTAL_SCHOOL',//配库码
@@ -54,7 +54,7 @@ export default {
       upLoadUrl: "/dynamicFile/upload.do?", 
       // 汇总上传接口
       informationUploading: {
-        url: CONFIG.BASE_URL + "/spc/prodb/saveItem.do?",
+        url:  "/spc/prodb/saveItem.do?",
         params: {
           doclibCode: "PORTAL_WORKS",
           metaMap: {

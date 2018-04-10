@@ -31,7 +31,7 @@ const prod = {
   picListBook: {
     userbook: {
       title: '购买该书的用户还买',
-      url: CONFIG.BASE_URL + "cart/getOtherBookList.do",
+      url:  "cart/getOtherBookList.do",
       params: {
         pubId: "",
         loginName: "",
@@ -41,7 +41,7 @@ const prod = {
     },
     otherbook: {
       title: '该作者其他图书',
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       params: {
         conditions: "[{pub_resource_type:'BOOK'},{pub_site_id:'2'}]",
         groupBy: "pub_resource_id",

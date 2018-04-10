@@ -33,7 +33,7 @@ let mutations = {
 
 let actions = {
 	[interfaces.ACTION_LOGIN]({commit}, params) {
-		return Post(CONFIG.BASE_URL + "login.do", params.member).then(function (rep) {
+		return Post( "login.do", params.member).then(function (rep) {
 			let datas = rep.data
 			if (datas.data && (datas.data.checkStatus == "1" || datas.data.checkStatus == 1)) {
 				commit("updateMember", datas.data);
@@ -58,7 +58,7 @@ let actions = {
 	[interfaces.ACTION_LOGOUT]: function () {
 		window.localStorage.removeItem('token');
 		window.sessionStorage.removeItem('token');
-		return Get( CONFIG.BASE_URL + '/logout.do');
+		return Get(  '/logout.do');
 	},
 	getTotalAmount({commit, state}, amount) {
 		state.cartTotalAmount = amount;
@@ -67,7 +67,7 @@ let actions = {
 };
 
 var keepSession = function (commit) {
-	return Get(CONFIG.BASE_URL + 'checkToken.do')
+	return Get( 'checkToken.do')
 		.then(function (rep) {
 			let datas = rep.data;
 			let _member = datas.data || {};

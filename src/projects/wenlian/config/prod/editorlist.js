@@ -8,7 +8,7 @@ export default {
   name: 'editorlist',
   list_pic: {
     ui_list_pic_15: {
-      url: CONFIG.BASE_URL + 'spc/cms/col/getColNextLevelNode',
+      url:  'spc/cms/col/getColNextLevelNode',
       param: {
         colId:'118'
       },

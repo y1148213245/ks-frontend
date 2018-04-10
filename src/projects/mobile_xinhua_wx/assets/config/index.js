@@ -20,7 +20,7 @@ var $_$ = {
 	search: {
 		hotbookrecommend: {
 			hotbookrecommend_01: {
-				url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+				url:  "spc/cms/publish/list.do",
 				params: {
 					conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_col_id:"113"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]', //热门推荐栏目id为113
 					groupBy: "pub_resource_id",
@@ -60,7 +60,7 @@ var $_$ = {
 		booklist: {
 			booklist_01: {
 				'searchList': {
-					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+					url:  'spc/cms/publish/list.do',
 					params: {
 						conditions: [
 							{ pub_resource_type: "BOOK" },
@@ -120,7 +120,7 @@ var $_$ = {
 	bookdetail: {
 		bookdetail: {
 			bookdetail_01: {
-				url: CONFIG.BASE_URL + "mobileBook/getBookDetail.do",
+				url:  "mobileBook/getBookDetail.do",
 				params: {
 					pubId: "",
 					loginName: "",
@@ -141,7 +141,7 @@ var $_$ = {
 		},
 		relatebooklist: {
 			relatebooklist_01: {
-				url: CONFIG.BASE_URL + "spc/cms/publish/related.do",
+				url:  "spc/cms/publish/related.do",
 				params: {
 					size: "3",
 					pubId: "52",
@@ -176,7 +176,7 @@ var $_$ = {
 		booklist: {
 			booklist_01: {
 				'list': {
-					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+					url:  'spc/cms/publish/list.do',
 					params: {
 						conditions: [
 							{ pub_resource_type: "BOOK" },
@@ -226,7 +226,7 @@ var $_$ = {
 		booklist: {
 			booklist_01: {
 				'changxiao': {
-					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+					url:  'spc/cms/publish/list.do',
 					params: {
 						conditions: [
 							{ pub_resource_type: "BOOK" },
@@ -285,7 +285,7 @@ var $_$ = {
 					},
 				},
 				'renqi': {
-					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+					url:  'spc/cms/publish/list.do',
 					params: {
 						conditions: [
 							{ pub_resource_type: "BOOK" },
@@ -344,7 +344,7 @@ var $_$ = {
 					},
 				},
 				'xinshu': {
-					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+					url:  'spc/cms/publish/list.do',
 					params: {
 						conditions: [
 							{ pub_resource_type: "BOOK" },
@@ -409,7 +409,7 @@ var $_$ = {
 		booklist: {
 			booklist_01: {
 				'moreRank': {
-					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+					url:  'spc/cms/publish/list.do',
 					params: {
 						conditions: [
 							{ pub_resource_type: "BOOK" },
@@ -470,7 +470,7 @@ var $_$ = {
 		classification: {
 			classification_01: {
 				queryClassification: {
-					url: CONFIG.BASE_URL + "spc/prodb/treeByCode.do", // 请求分类
+					url:  "spc/prodb/treeByCode.do", // 请求分类
 					params: {
 						code: "BOOK",
 					},
@@ -491,7 +491,7 @@ var $_$ = {
         }
       },
 				queryCount: {
-					url: CONFIG.BASE_URL + "spc/cms/publish/listCount.do", // 各个分类下对应有几本书
+					url:  "spc/cms/publish/listCount.do", // 各个分类下对应有几本书
 					params: {
 						conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"},{BOOK_BOOK_CASCADID:"",op:"lk"}]',
 						facetFields: "BOOK_BOOK_CASCADID_1",  // 按书分类ID查询
@@ -510,7 +510,7 @@ var $_$ = {
 		booklist: {
 			booklist_01: {
 				"class": {
-					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+					url:  'spc/cms/publish/list.do',
 					params: {
 						conditions: [
 							{ pub_resource_type: "BOOK" },
@@ -537,7 +537,7 @@ var $_$ = {
 					},
 					classifyArr: ['JAVA', 'C', 'JavaScript', '线性代数', '高等数学'],
 					queryClassification: {
-						url: CONFIG.BASE_URL + "spc/prodb/treeByCode.do", // 请求分类
+						url:  "spc/prodb/treeByCode.do", // 请求分类
 						params: {
 							code: "BOOK",
 						},
@@ -587,7 +587,7 @@ var $_$ = {
 			ui_mobile_list_01: {
 				'zhongbang': {
 					getList: {
-						url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+						url:  'spc/cms/publish/list.do',
 						params: { /* 参数配置 */
 							conditions: [ /* 条件配置 */ {
 								pub_resource_type: 'BOOK'
@@ -616,7 +616,7 @@ var $_$ = {
 						}
 					},
 					getColDetail: {
-						url: CONFIG.BASE_URL + 'spc/cms/col/getColumnByIdForSite',
+						url:  'spc/cms/col/getColumnByIdForSite',
 						params: {
 							colId: 266
 						},
@@ -647,7 +647,7 @@ var $_$ = {
 				},
 				'xinshu': {
 					getList: {
-						url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+						url:  'spc/cms/publish/list.do',
 						params: { /* 参数配置 */
 							conditions: [ /* 条件配置 */ {
 								pub_resource_type: 'BOOK'
@@ -676,7 +676,7 @@ var $_$ = {
 						}
 					},
 					getColDetail: {
-						url: CONFIG.BASE_URL + 'spc/cms/col/getColumnByIdForSite',
+						url:  'spc/cms/col/getColumnByIdForSite',
 						params: {
 							colId: 268
 						},
@@ -707,7 +707,7 @@ var $_$ = {
 				},
 				'zuixin': {
 					getList: {
-						url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+						url:  'spc/cms/publish/list.do',
 						params: { /* 参数配置 */
 							conditions: [ /* 条件配置 */ {
 								pub_resource_type: 'BOOK'
@@ -736,7 +736,7 @@ var $_$ = {
 						}
 					},
 					getColDetail: {
-						url: CONFIG.BASE_URL + 'spc/cms/col/getColumnByIdForSite',
+						url:  'spc/cms/col/getColumnByIdForSite',
 						params: {
 							colId: 269
 						},
@@ -767,7 +767,7 @@ var $_$ = {
 				},
 				'mianfei': {
 					getList: {
-						url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+						url:  'spc/cms/publish/list.do',
 						params: { /* 参数配置 */
 							conditions: [ /* 条件配置 */ {
 								pub_resource_type: 'BOOK'
@@ -796,7 +796,7 @@ var $_$ = {
 						}
 					},
 					getColDetail: {
-						url: CONFIG.BASE_URL + 'spc/cms/col/getColumnByIdForSite',
+						url:  'spc/cms/col/getColumnByIdForSite',
 						params: {
 							colId: 270
 						},
@@ -828,7 +828,7 @@ var $_$ = {
 			},
 			ui_mobile_list_03: {
 				newbook: {
-					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+					url:  'spc/cms/publish/list.do',
 					params: {
 						conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":' + CONFIG.SITE_CONFIG.siteId + '},{"pub_col_id":272}]',
 						groupBy: "pub_resource_id",
@@ -837,7 +837,7 @@ var $_$ = {
 						pageSize: "10",
 						searchText: "",
 					},
-					navUrl: CONFIG.BASE_URL + 'spc/cms/col/getAllColBySiteId.do',
+					navUrl:  'spc/cms/col/getAllColBySiteId.do',
 					navParams: {
 						siteId: CONFIG.SITE_CONFIG.siteId,
 						chId: 0
@@ -869,7 +869,7 @@ var $_$ = {
 					},
 				},
 				newfree: {
-					url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+					url:  'spc/cms/publish/list.do',
 					params: {
 						conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":' + CONFIG.SITE_CONFIG.siteId + '},{"pub_col_id":273}]',
 						groupBy: "pub_resource_id",
@@ -878,7 +878,7 @@ var $_$ = {
 						pageSize: "10",
 						searchText: "",
 					},
-					navUrl: CONFIG.BASE_URL + 'spc/cms/col/getAllColBySiteId.do',
+					navUrl:  'spc/cms/col/getAllColBySiteId.do',
 					navParams: {
 						siteId: CONFIG.SITE_CONFIG.siteId,
 						chId: 0
@@ -910,7 +910,7 @@ var $_$ = {
 					},
 				},
 				newsale: {
-					url: CONFIG.BASE_URL + '/spc/cms/publish/list.do',
+					url:  '/spc/cms/publish/list.do',
 					params: {
 						conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":' + CONFIG.SITE_CONFIG.siteId + '},{"pub_col_id":274}]',
 						groupBy: "pub_resource_id",
@@ -919,7 +919,7 @@ var $_$ = {
 						pageSize: "10",
 						searchText: "",
 					},
-					navUrl: CONFIG.BASE_URL + 'spc/cms/col/getAllColBySiteId.do',
+					navUrl:  'spc/cms/col/getAllColBySiteId.do',
 					navParams: {
 						siteId:CONFIG.SITE_CONFIG.siteId,
 						chId: 0
@@ -985,7 +985,7 @@ var $_$ = {
 		},
 		swiper: {
 			ui_mobile_swiper_02: {
-				url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+				url:  "spc/cms/publish/list.do",
 				params: {
 					conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"},{pub_col_id:277}]', //广告栏目id为133
 					groupBy: "pub_resource_id",
@@ -1018,7 +1018,7 @@ var $_$ = {
 						}
 					},
 					getList: {
-						url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+						url:  'spc/cms/publish/list.do',
 						params: {/* 参数配置 */
 							conditions: [/* 条件配置 */
 								{ pub_resource_type: 'BOOK' },

@@ -24,7 +24,7 @@ const dev = {
 const prod = {
   _3colsWithSort: {
     queryBookList: {
-      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+      url:  'spc/cms/publish/list.do',
       params: {
         conditions: '',
         orderBy: '',

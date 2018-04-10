@@ -22,7 +22,7 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_06: {
-      url: CONFIG.BASE_URL + 'comment/getActivityDiscussDetail.do',
+      url:  'comment/getActivityDiscussDetail.do',
       params:{
         paging_pageSizes:[15,30,50,100],
         requestParam_memberType:'4',

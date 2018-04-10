@@ -8,10 +8,10 @@ export default {
   name: "newsdetail",
   informationDetail: {
     work_informationdetail_02: {
-      getDetailUrl: CONFIG.BASE_URL + 'spc/prodb/detail.do',
-      getPreAndNextUrl: CONFIG.BASE_URL + 'spc/prodb/activity/prevNextNews.do',
-      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do',
-      attachUrl:CONFIG.BASE_URL + 'dynamicFile/file.do',
+      getDetailUrl:  'spc/prodb/detail.do',
+      getPreAndNextUrl:  'spc/prodb/activity/prevNextNews.do',
+      collectUrl:  'collection/addWorkCollect.do',
+      attachUrl: 'dynamicFile/file.do',
       show: ['time', 'collect', 'share', 'abstract', 'download'],/* 显示功能配置 */
       attachTypeCode:'original',/* 附件类型 */
       params:{

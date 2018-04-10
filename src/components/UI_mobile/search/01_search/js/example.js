@@ -41,7 +41,7 @@ const prod = {
       eveName: "showSearchResult", // 搜索组件要传递搜索内容给搜索结果（即图书列表组件）组件，这里通过发广播的形式进行组件之间的通信
       hotbookrecommend: {
         hotbookrecommend_01: {
-          url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+          url:  "spc/cms/publish/list.do",
           params: {
             conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_col_id:"113"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"}]',//热门推荐栏目id为113
             groupBy: "pub_resource_id",
@@ -77,7 +77,7 @@ const prod = {
       booklist: {
         booklist_01: {
           'module': {
-            url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+            url:  'spc/cms/publish/list.do',
             params: {
               conditions: [
                 { pub_resource_type: "BOOK" },

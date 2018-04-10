@@ -23,7 +23,7 @@ const dev = {
 const prod = {
   shoppingCart: {
     shoppingCart_01: {
-      url: CONFIG.BASE_URL + 'cart/getCartAndActivity.do',
+      url:  'cart/getCartAndActivity.do',
       params: {
         loginName: "",
         siteId: CONFIG.SITE_CONFIG.siteId,

@@ -9,7 +9,7 @@ export default {
   booklist: {
     booklist_01: {
       'changxiao': {
-        url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+        url:  'spc/cms/publish/list.do',
         params: {
           conditions: [
             { pub_resource_type: "BOOK" },
@@ -68,7 +68,7 @@ export default {
         },
       },
       'renqi': {
-        url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+        url:  'spc/cms/publish/list.do',
         params: {
           conditions: [
             { pub_resource_type: "BOOK" },
@@ -127,7 +127,7 @@ export default {
         },
       },
       'xinshu': {
-        url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+        url:  'spc/cms/publish/list.do',
         params: {
           conditions: [
             { pub_resource_type: "BOOK" },

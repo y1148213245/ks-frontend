@@ -15,8 +15,8 @@ export default {
 	    toMainPages:"./index.html",
 	    toLoginPages:"./login.html",
 	    findPassword:{
-		    findPasswordUrl:CONFIG.BASE_URL + "user/findPassword.do?email=",
-		    setPasswordUrl:CONFIG.BASE_URL + "user/setPassword1.do?email=",
+		    findPasswordUrl: "user/findPassword.do?email=",
+		    setPasswordUrl: "user/setPassword1.do?email=",
 		    href:"../pages/login.html"
 	    },
     }

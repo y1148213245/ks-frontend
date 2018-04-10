@@ -2,7 +2,7 @@ export default {
   name: "bookdetail",
   bookdetail: {
     bookdetail_01: {
-      url: CONFIG.BASE_URL + "mobileBook/getBookDetail.do",
+      url:  "mobileBook/getBookDetail.do",
       params: {
         pubId: "",
         loginName:"",
@@ -23,7 +23,7 @@ export default {
   },
   relatebooklist: {
     relatebooklist_01: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/related.do",
+      url:  "spc/cms/publish/related.do",
       params: {
         size: "3",
         pubId: "52",

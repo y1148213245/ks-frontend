@@ -21,7 +21,7 @@ const dev = {
 const prod = {
   swiper: {
     ui_mobile_swiper_02: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       params: {
         conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"},{pub_col_id:133}]',//广告栏目id为133
         groupBy: "pub_resource_id",

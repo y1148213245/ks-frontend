@@ -28,7 +28,7 @@ const dev = {
 const prod = {
   bookdetail: {
     bookdetail_01: {
-      url: CONFIG.BASE_URL + "mobileBook/getBookDetail.do",
+      url:  "mobileBook/getBookDetail.do",
       keys: { //接口字段兼容
         pic: "bigPic",
         title:"resourceName",

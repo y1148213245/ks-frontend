@@ -5,7 +5,7 @@ export default {
   name: "index",
   list_pic: {
     list_pic_24: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -18,7 +18,7 @@ export default {
       colId: 59, // 精品图书栏目id
     },
     picListBookShow: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -34,7 +34,7 @@ export default {
       colId: 59
     },
     picListRefinedBook: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -49,7 +49,7 @@ export default {
       colId: 59
     },
     /* picListBookShow: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -65,7 +65,7 @@ export default {
       colId: 59
     },
     picListRefinedBook: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -80,7 +80,7 @@ export default {
       colId: 59
     }, */
     list_pic_11: {
-      url: CONFIG.BASE_URL + '/spc/cms/publish/list.do',
+      url:  '/spc/cms/publish/list.do',
       param: {
         conditions: "[{pub_col_id:'116'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",
@@ -95,7 +95,7 @@ export default {
     list_pic_23: {
       userbook: {
         title: '购买该书的用户还买',
-        url: CONFIG.BASE_URL + "cart/getOtherBookList.do",
+        url:  "cart/getOtherBookList.do",
         params: {
           pubId: "",
           loginName: "",
@@ -105,7 +105,7 @@ export default {
       },
       otherbook: {
         title: '该作者其他图书',
-        url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+        url:  "spc/cms/publish/list.do",
         params: {
           conditions: [{
               pub_resource_type: 'BOOK'
@@ -127,7 +127,7 @@ export default {
   },
   swiper: {
     pic_noWords_04: {
-      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+      url:  'spc/cms/publish/list.do',
       params: {
         conditions: "[{pub_col_id:'83'}]",
         groupBy: "pub_resource_id",
@@ -139,7 +139,7 @@ export default {
       infoDetailHref: "../pages/informationInfo.html?pubId=",
     },
     pic_advert_05: {
-      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+      url:  'spc/cms/publish/list.do',
       params: {
         conditions: "[{pub_col_id:'214'}]",
         groupBy: "pub_resource_id",

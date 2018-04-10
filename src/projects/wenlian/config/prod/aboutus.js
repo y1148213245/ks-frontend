@@ -19,7 +19,7 @@ export default {
       title: '关于我们',
     }]
   },
-  // url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+  // url:  'spc/cms/publish/list.do',
   url:`${CONFIG.BASE_URL}spc/cms/publish/list.do`,
   params: {
     conditions:"[{pub_col_id:'40'}]",

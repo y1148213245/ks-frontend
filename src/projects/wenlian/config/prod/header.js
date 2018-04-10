@@ -6,12 +6,12 @@ export default {
   common: {
     header: {
       queryMember: {
-        url: CONFIG.BASE_URL + '../data/common_header.json',
+        url:  '../data/common_header.json',
         params: {}
       },
       queryHotWord: {
         /* 查询热门搜索关键词 栏目是 115 类型是资讯 */
-        url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+        url:  "spc/cms/publish/list.do",
         params: {
           conditions: "[{pub_col_id:'115'}, {pub_status:'1'}]",
           groupBy: "",
@@ -25,7 +25,7 @@ export default {
       },
       queryNavCols: {
         /* 查询栏目导航 */
-        url: CONFIG.BASE_URL + 'spc/cms/col/getAllColBySiteId.do',
+        url:  'spc/cms/col/getAllColBySiteId.do',
         params: {
           siteId: 2,
           chId: 0
@@ -34,13 +34,13 @@ export default {
       },
       queryNavCategory: {
         /* 查询图书分类导航 */
-        url: CONFIG.BASE_URL + 'spc/prodb/treeByCode.do',
+        url:  'spc/prodb/treeByCode.do',
         params: {
           code: "BOOK",
           layer: 2
         }
       },
-      logoutUrl: CONFIG.BASE_URL + 'logout.do'
+      logoutUrl:  'logout.do'
     }
   }
 }

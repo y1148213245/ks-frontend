@@ -9,7 +9,7 @@ export default {
   booklist: {
     booklist_01: {
       'moreRank': {
-        url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+        url:  'spc/cms/publish/list.do',
         params: {
           conditions: [
             { pub_resource_type: "BOOK" },

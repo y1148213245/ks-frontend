@@ -21,7 +21,7 @@ const dev = {
 
 const prod = {
 	picListBook:{
-		url:CONFIG.BASE_URL+"spc/cms/publish/list.do",
+		url:"spc/cms/publish/list.do",
 		param:{
 			conditions: "[{pub_col_id:'131'},{pub_status:'1'}]",
 			groupBy: "pub_resource_id",

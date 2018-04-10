@@ -9,7 +9,7 @@ export default {
   name: 'authorlist',
 	list_pic: {
 		ui_list_pic_14: {
-			url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+			url:  'spc/cms/publish/list.do',
 			toDetailHref:'./detail.html?pubId=',
 			pageSizes:[10,20,50,100],
 		}

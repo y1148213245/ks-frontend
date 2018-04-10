@@ -20,7 +20,7 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_04: {
-      url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
+      url:  'spc/prodb/detail.do',
       getSchoolUrl:'spc/prodb/searchNL.do',
       params:{
         getPlaceRequest_doclibCode:'PORTAL_ACTIVITY',//配库码

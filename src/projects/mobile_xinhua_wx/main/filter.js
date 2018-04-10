@@ -8,11 +8,11 @@ Vue.filter('formatPrice', function (value) { // 处理书的价格
   }
 });
 
-Vue.filter('formatCount', function (value) { // 处理分类下书的总数
+/* Vue.filter('formatCount', function (value) { // 处理分类下书的总数
   if (value == null || value == 'undefined') { // 返回为空
     return '共 0 本';
   } else {
     return '共 ' + value + ' 本';
   }
-});
+}); */
 

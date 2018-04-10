@@ -22,7 +22,7 @@ const dev = {
 const prod = {
   list_pic: {
     ui_list_pic_01_news_center: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       params: {
         conditions: "[{pub_col_id:46},{information_a_type:0}]",
         orderBy: "pub_a_order asc pub_lastmodified desc id asc",

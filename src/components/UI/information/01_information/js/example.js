@@ -54,7 +54,7 @@ const prod = {  // 详情组件内含评论组件 评论组件作为子组件 �
     information_01: {
       showItem: ['like', 'collect', 'share', 'review'], // 控制显示哪些项： like（点赞）  collect （收藏）  share （分享）
       queryDetail: { // 查询资讯详情 
-        url: CONFIG.BASE_URL + 'spc/cms/publish/detail.do',
+        url:  'spc/cms/publish/detail.do',
         params: { // 请求参数
           pubId: '',
           loginName: ''
@@ -74,7 +74,7 @@ const prod = {  // 详情组件内含评论组件 评论组件作为子组件 �
         },
       },
       collectOrLike: { // 收藏 / 点赞
-        url: CONFIG.BASE_URL + 'collection/addCollect.do',
+        url:  'collection/addCollect.do',
         params: {
           loginName: '',
           pubId: '',

@@ -2,13 +2,13 @@
  * @Author: yan.chaoming
  * @Date: 2018-02-05 14:11:10
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-02-26 14:31:55
+ * @Last Modified time: 2018-04-10 15:02:40
  */
 export default {
   name: "activityrace",
   common: {
     vote_03: {  // 投票组件
-      url: CONFIG.BASE_URL + 'spc/prodb/activity/vote.do?',
+      url:  'spc/prodb/activity/vote.do?',
       params: {
         browserId: '', // 浏览器指纹
         docID: '',
@@ -42,7 +42,7 @@ export default {
         eventName_listen: "eventName_loadedDatas",
       },
       module2: {
-        url: CONFIG.BASE_URL + 'spc/prodb/getPublicize.do',
+        url:  'spc/prodb/getPublicize.do',
         showType:'simple',/* simple 表示展示部分内容 附带展开收起按钮，不需要则不配置*/
         topic: '公告',
         keys: {
@@ -58,7 +58,7 @@ export default {
     },
     work_activitydetail_03: {
       url: '/data/work_activitydetail_03.json',
-      getPicUrl:CONFIG.BASE_URL + 'dynamicFile/stream.do',
+      getPicUrl: 'dynamicFile/stream.do',
       params: {
         getListParam_pageNo: '1',
         getListParam_pageSize: '10',
@@ -84,8 +84,8 @@ export default {
       eventName_listen: 'eventName_loadedDatas'
     },
     work_activitydetail_04: {
-      url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
-      getSchoolUrl: CONFIG.BASE_URL + 'spc/prodb/searchNL.do',
+      url:  'spc/prodb/detail.do',
+      getSchoolUrl:  'spc/prodb/searchNL.do',
       params: {
         getPlaceRequest_doclibCode: 'PORTAL_ACTIVITY',//配库码
         getSchoolRequest_doclibCode: 'PORTAL_SCHOOL',//配库码
@@ -188,7 +188,7 @@ export default {
         isDevelopment: false,
       },
       module2: {
-        url: CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
+        url:  'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         params: {
           getListParam_doclibCode: 'PORTAL_WORKS',
@@ -240,7 +240,7 @@ export default {
         isDevelopment: false,
       },
       'classification': {
-        url:CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
+        url: 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         classification:{/* 分类配置,无则不配置 */
           titles:['一等奖','二等奖','三等奖'],
@@ -335,10 +335,10 @@ export default {
   },
   informationDetail: {
     work_informationdetail_02: {
-      getDetailUrl: CONFIG.BASE_URL + 'spc/prodb/detail.do',
-      getPreAndNextUrl: CONFIG.BASE_URL + 'spc/prodb/activity/prevNextNews.do',
-      collectUrl: CONFIG.BASE_URL + 'collection/addWorkCollect.do',
-      attachUrl:CONFIG.BASE_URL + 'dynamicFile/file.do',
+      getDetailUrl:  'spc/prodb/detail.do',
+      getPreAndNextUrl:  'spc/prodb/activity/prevNextNews.do',
+      collectUrl:  'collection/addWorkCollect.do',
+      attachUrl: 'dynamicFile/file.do',
       show: ['time', 'collect', 'share', 'abstract', 'download'],/* 显示功能配置 */
       attachTypeCode:'original',/* 附件类型 */
       params:{

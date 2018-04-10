@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 16:27:52 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-10 09:45:12
+ * @Last Modified time: 2018-04-10 15:02:35
  */
 
 import component from '../newsList.vue'
@@ -27,8 +27,8 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_03: {
-      url: CONFIG.BASE_URL + 'spc/prodb/activity/activityNews.do',
-      getPicUrl:CONFIG.BASE_URL + 'dynamicFile/stream.do?recordID=191748',
+      url:  'spc/prodb/activity/activityNews.do',
+      getPicUrl: 'dynamicFile/stream.do?recordID=191748',
       params:{
         getListParam_pageNo:'1',
         getListParam_pageSize:'10',

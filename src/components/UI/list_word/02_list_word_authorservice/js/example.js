@@ -54,7 +54,7 @@ const prod = {
   colChangeEmit:'colChange', //导航事件触发
   submission: {
     queryEditorList: {
-      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+      url:  'spc/cms/publish/list.do',
       params: {
         conditions: '[{pub_col_id:226}]',
         pageNo: '1',

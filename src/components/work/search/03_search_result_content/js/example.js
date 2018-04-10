@@ -39,7 +39,7 @@ const dev = {
 const prod = {
   search:{
     search_result_content_03: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       paramsAll: {
         conditions: "[{pub_site_id:'1'}]",
         groupBy:"pub_resource_id",

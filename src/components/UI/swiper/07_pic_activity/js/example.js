@@ -26,7 +26,7 @@ const dev = {
 const prod = {
   swiper: {
     swiper_07: {
-      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+      url:  'spc/cms/publish/list.do',
       params: {
         conditions: "[{pub_col_id:'253'}]",   // 华育活动轮播图id=253
 				orderBy: 'pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc',  // 默认orderBy
@@ -40,7 +40,7 @@ const prod = {
         bigPicture: 'pub_picBig',
         pubId: 'id',
       },
-      relatedZXurl: CONFIG.BASE_URL + 'spc/cms/publish/relatedZX.do',
+      relatedZXurl:  'spc/cms/publish/relatedZX.do',
       relatedZXparams: {
         pubId: '',
       },

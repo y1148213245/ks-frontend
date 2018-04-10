@@ -15,7 +15,7 @@ export default {
   },
   common: {
     vote_03: {  // 投票组件
-      url: CONFIG.BASE_URL + 'spc/prodb/activity/vote.do?',
+      url:  'spc/prodb/activity/vote.do?',
       params: {
         browserId: '', // 浏览器指纹
         docID: '',

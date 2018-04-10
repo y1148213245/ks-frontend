@@ -2,7 +2,7 @@ export default {
   name: 'addcart',
   shoppingCart: {
     shoppingCart_02: {
-      url: CONFIG.BASE_URL + 'api/book/getBookDetail.do',
+      url:  'api/book/getBookDetail.do',
       params: {
         loginName: "",
         pubId: "",
@@ -17,7 +17,7 @@ export default {
     list_pic_23: {
       userbook: {
         title: '购买该书的用户还买',
-        url: CONFIG.BASE_URL + "cart/getOtherBookList.do",
+        url:  "cart/getOtherBookList.do",
         params: {
           pubId: "",
           loginName: "",
@@ -27,7 +27,7 @@ export default {
       },
       otherbook: {
         title: '该作者其他图书',
-        url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+        url:  "spc/cms/publish/list.do",
         params: {
           conditions: [
             {pub_resource_type:'BOOK'},

@@ -10,7 +10,7 @@ export default {
     ui_mobile_list_01: {
       'zhongbang': {
         getList: {
-          url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+          url:  'spc/cms/publish/list.do',
           params: { /* 参数配置 */
             conditions: [ /* 条件配置 */ {
                 pub_resource_type: 'BOOK'
@@ -39,7 +39,7 @@ export default {
           }
         },
         getColDetail: {
-          url: CONFIG.BASE_URL + 'spc/cms/col/getColumnByIdForSite',
+          url:  'spc/cms/col/getColumnByIdForSite',
           params:{
             colId:104
           },
@@ -70,7 +70,7 @@ export default {
       },
       'xinshu':{
         getList: {
-          url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+          url:  'spc/cms/publish/list.do',
           params: { /* 参数配置 */
             conditions: [ /* 条件配置 */ {
                 pub_resource_type: 'BOOK'
@@ -99,7 +99,7 @@ export default {
           }
         },
         getColDetail: {
-          url: CONFIG.BASE_URL + 'spc/cms/col/getColumnByIdForSite',
+          url:  'spc/cms/col/getColumnByIdForSite',
           params:{
             colId:106
           },
@@ -130,7 +130,7 @@ export default {
       },
       'zuixin':{
         getList: {
-          url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+          url:  'spc/cms/publish/list.do',
           params: { /* 参数配置 */
             conditions: [ /* 条件配置 */ {
                 pub_resource_type: 'BOOK'
@@ -159,7 +159,7 @@ export default {
           }
         },
         getColDetail: {
-          url: CONFIG.BASE_URL + 'spc/cms/col/getColumnByIdForSite',
+          url:  'spc/cms/col/getColumnByIdForSite',
           params:{
             colId:107
           },
@@ -190,7 +190,7 @@ export default {
       },
       'mianfei':{
         getList: {
-          url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+          url:  'spc/cms/publish/list.do',
           params: { /* 参数配置 */
             conditions: [ /* 条件配置 */ {
                 pub_resource_type: 'BOOK'
@@ -219,7 +219,7 @@ export default {
           }
         },
         getColDetail: {
-          url: CONFIG.BASE_URL + 'spc/cms/col/getColumnByIdForSite',
+          url:  'spc/cms/col/getColumnByIdForSite',
           params:{
             colId:108
           },
@@ -393,7 +393,7 @@ export default {
   },
   swiper: {
     ui_mobile_swiper_02: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       params: {
         conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"},{pub_col_id:133}]', //广告栏目id为133
         groupBy: "pub_resource_id",
@@ -426,7 +426,7 @@ export default {
           }
         },
         getList: {
-          url: CONFIG.BASE_URL +'spc/cms/publish/list.do',
+          url: 'spc/cms/publish/list.do',
           params: {/* 参数配置 */
             conditions: [/* 条件配置 */
               { pub_resource_type: 'BOOK' },

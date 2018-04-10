@@ -15,7 +15,7 @@ const description = `领取优惠券，一个模态弹窗`;  // 组件描述信�
 const dev = {
   common:{
     get_coupons_02: { // 领取优惠券
-      url: CONFIG.BASE_URL + "user/pickCoupons.do",
+      url:  "user/pickCoupons.do",
       params: {
         loginName: "",
         couponId: ""
@@ -27,7 +27,7 @@ const dev = {
 const prod = {
   common:{
     get_coupons_02: { // 领取优惠券
-      url: CONFIG.BASE_URL + "user/pickCoupons.do",
+      url:  "user/pickCoupons.do",
       params: {
         loginName: "",
         couponId: ""

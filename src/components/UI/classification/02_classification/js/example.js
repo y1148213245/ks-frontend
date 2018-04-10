@@ -22,7 +22,7 @@ const dev = {
 const prod = {
   classification: {
     classification_02: { // 图书分类导航
-      url: CONFIG.BASE_URL + 'spc/prodb/treeByCode.do',
+      url:  'spc/prodb/treeByCode.do',
       params: {
         code: "BOOK",
         layer: 2

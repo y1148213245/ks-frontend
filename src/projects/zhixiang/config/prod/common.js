@@ -48,7 +48,7 @@ export default {
 				},
 			],
 			showItemFromColId:['46','48','49','51','54','56'],
-			url: CONFIG.BASE_URL + 'spc/cms/col/getAllColBySiteId.do?siteId=1&chId=0'
+			url:  'spc/cms/col/getAllColBySiteId.do?siteId=1&chId=0'
 		}
 	}
 }

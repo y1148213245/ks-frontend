@@ -22,8 +22,8 @@ const prod = {
   contestants: {
     contestants_01: {
       competitionList: {
-        url: CONFIG.BASE_URL + "/user/getActivityMemberByTeacher.do?",/* 获取参赛人 */
-        competitionedUrl: CONFIG.BASE_URL + 'spc/prodb/activity/myWorks.do',/* 获取已参赛人url */
+        url:  "/user/getActivityMemberByTeacher.do?",/* 获取参赛人 */
+        competitionedUrl:  'spc/prodb/activity/myWorks.do',/* 获取已参赛人url */
         params: {
           teacherId: "",
           pageNo: "1",
@@ -32,8 +32,8 @@ const prod = {
       },
       //查询补充信息接口
       supplementaryInformation: {
-        url: CONFIG.BASE_URL + "/spc/prodb/detail.do?",
-        getSchoolUrl: CONFIG.BASE_URL + "spc/prodb/searchNL.do",
+        url:  "/spc/prodb/detail.do?",
+        getSchoolUrl:  "spc/prodb/searchNL.do",
         params: {
           getPlaceRequest_doclibCode: "PORTAL_ACTIVITY", //配库码
           getSchoolRequest_doclibCode: "PORTAL_SCHOOL", //配库码
@@ -65,7 +65,7 @@ const prod = {
       upLoadUrl: "/dynamicFile/upload.do?",
       // 汇总上传接口
       informationUploading: {
-        url: CONFIG.BASE_URL + "/spc/prodb/saveItem.do?",
+        url:  "/spc/prodb/saveItem.do?",
         params: {
           doclibCode: "PORTAL_WORKS",
           metaMap: {

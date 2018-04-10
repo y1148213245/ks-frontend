@@ -8,7 +8,7 @@ export default {
   booklist: {
     booklist_01: {
       "class": {
-        url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+        url:  'spc/cms/publish/list.do',
         params: {
           conditions: [
             { pub_resource_type: "BOOK" },
@@ -35,7 +35,7 @@ export default {
         },
         classifyArr: ['JAVA', 'C', 'JavaScript', '线性代数', '高等数学'],
         queryClassification: {
-          url: CONFIG.BASE_URL + "spc/prodb/treeByCode.do", // 请求分类
+          url:  "spc/prodb/treeByCode.do", // 请求分类
           params: {
             code: "BOOK",
           },

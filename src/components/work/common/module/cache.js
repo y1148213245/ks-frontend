@@ -14,7 +14,7 @@ let getters = {
 
 let actions = {
   setNavCols: ({commit}) => {
-    Get(CONFIG.BASE_URL + 'spc/cms/col/getAllColBySiteId.do?siteId=2&chId=0').then(rep => {
+    Get( 'spc/cms/col/getAllColBySiteId.do?siteId=2&chId=0').then(rep => {
       let data = rep.data.data;
       if (data && data instanceof Array && data.length > 0) {
         commit('setNavCols', data);

@@ -9,7 +9,7 @@ export default {
   name: 'authorlist',
 	list_pic: {
 		ui_list_pic_14: {
-			url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+			url:  'spc/cms/publish/list.do',
 			param: {
 				conditions: "[{pub_col_id:'116'},{pub_status:'1'}]",
 				groupBy: 'pub_resource_id',

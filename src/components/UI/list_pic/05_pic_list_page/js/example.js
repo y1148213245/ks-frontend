@@ -23,7 +23,7 @@ const dev = {
 const prod = {
 	list_pic: {
 		ui_list_pic_05: {
-			url: CONFIG.BASE_URL + 'cms/publish/list.do',
+			url:  'cms/publish/list.do',
 			params: {
 				conditions: "[{pub_resource_type:'BOOK'},{pub_status:'1'},{pub_col_id:51}]",
 				orderBy:"pub_a_order asc pub_lastmodified desc id asc",

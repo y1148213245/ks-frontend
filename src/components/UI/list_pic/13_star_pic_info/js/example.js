@@ -24,7 +24,7 @@ const dev = {
 const prod = {
   list_pic: {
     star_pic_info_13: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       params: {
         conditions: "[{pub_col_id:'131'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",

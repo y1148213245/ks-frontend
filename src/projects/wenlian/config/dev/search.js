@@ -8,7 +8,7 @@ export default {
   name: 'search',
   search: {
     search_result_04: {
-      url: CONFIG.BASE_URL + 'spc/cms/publish/list.do',
+      url:  'spc/cms/publish/list.do',
       pageSizes:[10, 20, 50, 100],
       eventName_loadDate:'loadSearchResult',
     }

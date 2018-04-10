@@ -41,7 +41,7 @@ export default {
   bookreview: { // 评论
     bookreview_01: {
       queryComments: { // 查询评论
-        url: CONFIG.BASE_URL + 'comment/comments.do',
+        url:  'comment/comments.do',
         params: {
           pubId: "",
           pageIndex: 1,
@@ -50,7 +50,7 @@ export default {
         }
       },
       addComment: { // 添加评论
-        url: CONFIG.BASE_URL + 'comment/addComment.do',
+        url:  'comment/addComment.do',
         params: {
           pubId: "",
           loginName: "",

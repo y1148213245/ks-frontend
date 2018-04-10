@@ -9,7 +9,7 @@ export default {
     information_01: {
       showItem: ['like', 'collect', 'share', 'review'], // 控制显示哪些项： like（点赞）  collect （收藏）  share （分享）
       queryDetail: { // 查询资讯详情 
-        url: CONFIG.BASE_URL + 'spc/cms/publish/detail.do',
+        url:  'spc/cms/publish/detail.do',
         params: { // 请求参数
           pubId: '',
           loginName: ''
@@ -29,7 +29,7 @@ export default {
         },
       },
       collectOrLike: { // 收藏 / 点赞
-        url: CONFIG.BASE_URL + 'collection/addCollect.do',
+        url:  'collection/addCollect.do',
         params: {
           loginName: '',
           pubId: '',
@@ -43,7 +43,7 @@ export default {
   bookreview: { // 评论
     bookreview_01: {
       queryComments: { // 查询评论
-        url: CONFIG.BASE_URL + 'comment/comments.do',
+        url:  'comment/comments.do',
         params: {
           pubId: "",
           pageIndex: 1,
@@ -52,7 +52,7 @@ export default {
         }
       },
       addComment: { // 添加评论
-        url: CONFIG.BASE_URL + 'comment/addComment.do',
+        url:  'comment/addComment.do',
         params: {
           pubId: "",
           loginName: "",

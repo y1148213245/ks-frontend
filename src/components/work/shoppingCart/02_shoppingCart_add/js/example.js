@@ -25,7 +25,7 @@ const dev = {
 const prod = {
   shoppingCart: {
     shoppingCart_02: {
-      url: CONFIG.BASE_URL + 'api/book/getBookDetail.do',
+      url:  'api/book/getBookDetail.do',
       params: {
         loginName: "",
         pubId: "",

@@ -489,12 +489,12 @@ export default {
             /* 扫描已用组件标签 先用正则匹配 再用字符串方法筛出标签名 */
             // let bodyContent = datas.content.indexOf('<body') !== -1 ? datas.content.substring(datas.content.indexOf('<body'), datas.content.indexOf('</body>')) : '';
             let bodyContent = datas.content;
-            var uiComponent = bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) ? bodyContent.match(/<ui_.*?>(.*?)<\/ui_.*?>/g) : [];
+            var uiComponent = bodyContent.match(/<ui_.*?>([\s\S]*?.*?[\s\S]*?)<\/ui_.*?>/g) ? bodyContent.match(/<ui_.*?>([\s\S]*?.*?[\s\S]*?)<\/ui_.*?>/g) : [];
             var uiComArray = [];  // ui组件列表
             for (var i = 0; i < uiComponent.length; i++) {
               uiComArray.push(uiComponent[i].substring(uiComponent[i].indexOf('</'), uiComponent[i].length).replace('</', '').replace('>', ''));
             }
-            var workComponent = bodyContent.match(/<work_.*?>(.*?)<\/work_.*?>/g) ? bodyContent.match(/<work_.*?>(.*?)<\/work_.*?>/g) : [];
+            var workComponent = bodyContent.match(/<work_.*?>([\s\S]*?.*?[\s\S]*?)<\/work_.*?>/g) ? bodyContent.match(/<work_.*?>([\s\S]*?.*?[\s\S]*?)<\/work_.*?>/g) : [];
             var workComArray = []; // work组件列表
             for (var j = 0; j < workComponent.length; j++) {
               workComArray.push(workComponent[j].substring(workComponent[j].indexOf('</'), workComponent[j].length).replace('</', '').replace('>', ''));

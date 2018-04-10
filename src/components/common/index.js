@@ -22,7 +22,8 @@ try {
 
 var _axios = axios.create({
   timeout: 10000,
-  withCredentials: true
+  withCredentials: true,
+  baseURL:CONFIG.BASE_URL
 });
 _axios.defaults.headers.token = getToken();
 

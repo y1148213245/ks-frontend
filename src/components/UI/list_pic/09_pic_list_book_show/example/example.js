@@ -28,7 +28,7 @@ const dev = {
 const prod = {
   list_pic: {
     picListBookShow: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/list.do",
+      url:  "spc/cms/publish/list.do",
       READ_URL: '',
       param: {
         conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",

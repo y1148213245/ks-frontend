@@ -25,7 +25,7 @@ const prod = {
   list_pic: {
     list_pic_16_relative: {
       title: '相关图书',
-      url: CONFIG.BASE_URL + "spc/cms/publish/related.do",
+      url:  "spc/cms/publish/related.do",
       params: {
         pubId: '',
         size: 3,

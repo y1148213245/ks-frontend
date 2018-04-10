@@ -23,7 +23,7 @@ const dev = {
 const prod = {
   relatebooklist: {
     relatebooklist_01: {
-      url: CONFIG.BASE_URL + "spc/cms/publish/related.do",
+      url:  "spc/cms/publish/related.do",
       params: {
         size: "3",
         pubId: "52",

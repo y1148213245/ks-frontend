@@ -23,7 +23,7 @@ var prod = {
   /* 作品配置信息 */
   review: { // 查询作品评论列表
     queryreview: {
-      url: CONFIG.BASE_URL + 'comment/getWorksComment.do',
+      url:  'comment/getWorksComment.do',
       params: {
         resourceType: '',
         resourceId: '',
@@ -41,7 +41,7 @@ var prod = {
       }]
     },
     addreview: { // 添加作品评论 索引库里面没有作品
-      url: CONFIG.BASE_URL + 'comment/addWorksComment.do',
+      url:  'comment/addWorksComment.do',
       params: {
         pubId: '', //  所以pubId为空
         loginName: '',
@@ -73,7 +73,7 @@ var prod = {
       }
     },
     queryreview: {
-      url: CONFIG.BASE_URL + 'comment/comments.do',
+      url:  'comment/comments.do',
       params: {
         pubId: '',
         pageIndex: 1,
@@ -89,7 +89,7 @@ var prod = {
       }]
     },
     addreview: { // 添加资讯、图书、活动评论（索引库里有）
-      url: CONFIG.BASE_URL + 'comment/addComment.do',
+      url:  'comment/addComment.do',
       params: {
         pubId: '',
         loginName: '',

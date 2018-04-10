@@ -23,7 +23,7 @@ export default {
     _this.token = getUrlStr("token");
     _this.url = getUrlStr("url");
 
-    Get(CONFIG.BASE_URL + "/logout.do").then(function(rep) {
+    Get( "/logout.do").then(function(rep) {
       window.localStorage.removeItem("token");
       window.sessionStorage.removeItem("token");
       window.location.href = _this.url;

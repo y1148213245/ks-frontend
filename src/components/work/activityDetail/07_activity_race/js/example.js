@@ -14,7 +14,7 @@ const description = `华育活动竞赛项目组件`;  // 组件描述信息
 const dev = {
   common: {
     vote_03: {  // 投票组件
-      url: CONFIG.BASE_URL + 'spc/prodb/activity/vote.do?',
+      url:  'spc/prodb/activity/vote.do?',
       params: {
         browserId: '', // 浏览器指纹
         docID: '',
@@ -107,7 +107,7 @@ const dev = {
 const prod = {
   common: {
     vote_03: {  // 投票组件
-      url: CONFIG.BASE_URL + 'spc/prodb/activity/vote.do?',
+      url:  'spc/prodb/activity/vote.do?',
       params: {
         browserId: '', // 浏览器指纹
         docID: '',
@@ -116,7 +116,7 @@ const prod = {
   },
   activityDetail: {
     work_activitydetail_01: {
-      url: CONFIG.BASE_URL + 'spc/cms/publish/detail.do',
+      url:  'spc/cms/publish/detail.do',
       keys: {
         title: 'PORTAL_ACTIVITY_SYS_TOPIC',//标题
         content: 'PORTAL_ACTIVITY_DESCRIPTION',//内容
@@ -132,7 +132,7 @@ const prod = {
     },
     work_activitydetail_02: {
       module1: {
-        url: CONFIG.BASE_URL + 'spc/prodb/getPublicize.do',
+        url:  'spc/prodb/getPublicize.do',
         topic: '奖项设置',
         keys: {
           topic: 'topic',
@@ -145,7 +145,7 @@ const prod = {
         eventName_listen: "eventName_loadedDatas",
       },
       module2: {
-        url: CONFIG.BASE_URL + 'spc/prodb/getPublicize.do',
+        url:  'spc/prodb/getPublicize.do',
         showType: 'simple',/* simple 表示展示部分内容 附带展开收起按钮，不需要则不配置*/
         topic: '公告',
         keys: {
@@ -161,8 +161,8 @@ const prod = {
     },
     /* 大赛新闻列表配置 */
     work_activitydetail_03: {
-      url: CONFIG.BASE_URL + 'spc/prodb/activity/activityNews.do',
-      getPicUrl: CONFIG.BASE_URL + 'dynamicFile/stream.do',
+      url:  'spc/prodb/activity/activityNews.do',
+      getPicUrl:  'dynamicFile/stream.do',
       params: {
         getListParam_pageNo: '1',
         getListParam_pageSize: '10',
@@ -200,8 +200,8 @@ const prod = {
     },
     /* 作品列表筛选配置 */
     work_activitydetail_04: {
-      url: CONFIG.BASE_URL + 'spc/prodb/detail.do',
-      getSchoolUrl: CONFIG.BASE_URL + 'spc/prodb/searchNL.do',
+      url:  'spc/prodb/detail.do',
+      getSchoolUrl:  'spc/prodb/searchNL.do',
       params: {
         getPlaceRequest_doclibCode: 'PORTAL_ACTIVITY',//配库码
         getSchoolRequest_doclibCode: 'PORTAL_SCHOOL',//配库码
@@ -232,7 +232,7 @@ const prod = {
     /* 作品列表配置 */
     work_activitydetail_05: {
       module1: {
-        url: CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
+        url:  'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         params: {
           getListParam_doclibCode: 'PORTAL_WORKS',
@@ -305,7 +305,7 @@ const prod = {
         isDevelopment: false,
       },
       module2: {
-        url: CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
+        url:  'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         params: {
           getListParam_doclibCode: 'PORTAL_WORKS',
@@ -357,7 +357,7 @@ const prod = {
         isDevelopment: false,
       },
       'classification': {
-        url: CONFIG.BASE_URL + 'spc/prodb/getWorkList.do',
+        url:  'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         classification: {/* 分类配置,无则不配置 */
           titles: ['一等奖', '二等奖', '三等奖'],
@@ -430,7 +430,7 @@ const prod = {
 
     },
     work_activitydetail_06: {
-      url: CONFIG.BASE_URL + 'comment/getActivityDiscussDetail.do',
+      url:  'comment/getActivityDiscussDetail.do',
       params: {
         paging_pageSizes: [15, 30, 50, 100],
         requestParam_memberType: '4',
@@ -468,7 +468,7 @@ const prod = {
       }
     },
     queryreview: {
-      url: CONFIG.BASE_URL + 'comment/comments.do',
+      url:  'comment/comments.do',
       params: {
         pubId: '',
         pageIndex: 1,
@@ -484,7 +484,7 @@ const prod = {
       }]
     },
     addreview: { // 添加资讯、图书、活动评论（索引库里有）
-      url: CONFIG.BASE_URL + 'comment/addComment.do',
+      url:  'comment/addComment.do',
       params: {
         pubId: '',
         loginName: '',
