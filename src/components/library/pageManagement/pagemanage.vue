@@ -170,7 +170,7 @@
      <!-- 修改组件配置文件的模态弹窗 -->
      <el-dialog title="编辑组件配置信息" v-if="editConfigModel" :visible.sync="editConfigModel">
       <div>
-        <textarea id="prodConfig" v-html="currentComponent.prod" style="width: 100%; min-height: 200px;"></textarea>
+        <textarea id="prodConfig" v-html="currentComponent" style="width: 100%; min-height: 200px;"></textarea>
         <!-- <codemirror v-model="currentComponent.prod"></codemirror> -->
       </div>
 
@@ -270,7 +270,8 @@ export default {
       siteName: '',  // 站点名 用于区分不同的站点
       VueExamples: {},           // 扫描出来的vue文件的全部内容 截取的是template模块
       editConfigModel: false,  // 编辑组件配置文件信息的模态弹窗
-      currentComponent: {},
+      currentComponent: {},  // 当前选中组件 用于支撑显示模态弹窗里的配置内容
+      currentExamples: {},   // 记录当前选中的组件
       usedComTagArr: [], // 已用组件数据集合
       editGlobalConfigModel: false,  // 编辑全局配置文件信息的模态弹窗
       CONFIG: null, // 全局配置对象
@@ -286,7 +287,7 @@ export default {
     this.examples = ScanExamples();
     this.unusedComponents = ScanExamples();
     this.VueExamples = VueExamples();
-    // console.log(ProdExamples());
+    this.ProdExamples = ProdExamples();
     this.clientHeight = document.documentElement.clientHeight - 80;
     try {
       if ($_$.SITE_NAME) { // 站点名字
@@ -322,6 +323,7 @@ export default {
       this.queryLists();
     },
     showConfig (com) { // 显示当前组件的配置文件 支持编辑
+      this.currentExamples = this.examples[com];
       /* TODO: 项目组件没有修改配置的入口  */
       /* FIXME: 获取组件配置方式
         获取组件配置优先级： config/index.js $_$变量  >>  prod/xxx.js  >>  js/example.js
@@ -334,26 +336,52 @@ export default {
         prod/xxx.js：项目实际跑的配置文件
         js/example.js：样例配置文件
       */
-      this.currentComponent = null;
-      this.currentComponent = this.examples[com]; //当前组件 表示默认取 js/example.js
+      this.currentComponent = {};   // 当前选中的组件
       this.editConfigModel = true;
       var configCon = '';
       for (var i = 0, len = this.usedComTagArr.length; i < len; i++) {
-        if (this.usedComTagArr[i].indexOf(this.currentComponent.name) !== -1) {
+        if (this.usedComTagArr[i].indexOf(this.examples[com].name) !== -1) {
           configCon = this.usedComTagArr[i].substring(this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace'))) + 1, this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace')) + 1));
         }
       }
-      var itemConfig = {};
-      var subItemConfig = {};
-      for (let item in this.currentComponent.prod) {  // 遍历找出两层对象结构如：classification: { classification_01: { ... }}
-        itemConfig = item;
-        for (let subItem in this.currentComponent.prod[item]) {
-          subItemConfig = subItem;
+      if (this.examples[com].childComponents && this.examples[com].childComponents.length > 0) { // 有子组件的复合组件
+        for (var i = 0, len = this.examples[com].childComponents.length; i < len; i++) {
+          var componentName = this.examples[com].childComponents[i];
+          this.dealCurComponent(configCon, componentName);
+        }
+      } else {  // 没有子组件的简单组件
+        this.dealCurComponent(configCon, com);
+      }
+
+    },
+    dealCurComponent (configCon, com) {
+      var curConfig = {};
+      var itemConfig = "";
+      var subItemConfig = "";
+      for (let item in this.examples[com].prod) {  // 遍历找出两层对象结构如：classification: { classification_01: { ... }}
+        itemConfig = item;  // 第一层key 如: classification
+        for (let subItem in this.examples[com].prod[item]) {
+          subItemConfig = subItem; // 第二层key 如：classification_01
         }
       }
-      if ($_$[configCon] && $_$[configCon][itemConfig] && $_$[configCon][itemConfig]) {  // 如果config/index.js $_$变量中有就从这里取
-        this.currentComponent.prod[itemConfig][subItemConfig] = $_$[configCon][itemConfig][subItemConfig];
+
+      curConfig[itemConfig] = curConfig[itemConfig] ? curConfig[itemConfig] : {};
+      if ($_$[configCon] && $_$[configCon][itemConfig] && $_$[configCon][itemConfig][subItemConfig]) {  // config/index.js $_$变量
+        curConfig[itemConfig][subItemConfig] = $_$[configCon][itemConfig][subItemConfig];
+      } else if (this.ProdExamples[configCon] && this.ProdExamples[configCon][itemConfig] && this.ProdExamples[configCon][itemConfig][subItemConfig]) { // prod/xxx.js
+        curConfig[itemConfig][subItemConfig] = this.ProdExamples[configCon][itemConfig][subItemConfig];
+      } else { // js/example.js
+        curConfig[itemConfig][subItemConfig] = this.examples[com].prod;
       }
+
+      for(let key in this.examples[com].prod[itemConfig][subItemConfig]) {  // 遍历处理组件升级问题
+        if(!curConfig[itemConfig][subItemConfig].hasOwnProperty(key)) {  // 组件升级新增属性
+          curConfig[itemConfig][subItemConfig][key] = this.examples[com].prod[itemConfig][subItemConfig][key];
+        }
+      }
+      
+      this.currentComponent[itemConfig] = this.currentComponent[itemConfig] ? this.currentComponent[itemConfig] : {};
+      this.currentComponent[itemConfig][subItemConfig] = curConfig[itemConfig][subItemConfig];
     },
     globalConfig () {  // 显示当前项目的全局配置
       this.editGlobalConfigModel = true;
@@ -363,19 +391,18 @@ export default {
       var key = "";
       var value = {};
       for (var i = 0, len = this.usedComTagArr.length; i < len; i++) {
-        if (this.usedComTagArr[i].indexOf('<' + this.currentComponent.name) !== -1) { // 修改的当前组件
+        if (this.usedComTagArr[i].indexOf('<' + this.currentExamples.name) !== -1) { // 修改的当前组件
           key = this.usedComTagArr[i].substring(this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace'))) + 1, this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace')) + 1));
           value = document.getElementById('prodConfig').value;
           break;
         }
       }
       let params = {
-        projectName:this.siteName,
-        key:'$_$.'+key,
-        value:JSON.parse(value)
-      }
-      //"http://172.19.36.165:8084/spc/api/"
-      Post(this.configUrl + 'project/config',params).then((res) => {
+        projectName: this.siteName,
+        key: '$_$.' + key,
+        value: JSON.parse(value)
+      };
+      Post(this.configUrl + 'project/config', params).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",
@@ -395,11 +422,11 @@ export default {
       var value = document.getElementById('globalConfig').value;
       this.configUrl = JSON.parse(value).PAGE_MANAGEMENT_URL;
       let params = {
-        projectName:this.siteName,
-        key:key,
-        value:JSON.parse(value)
+        projectName: this.siteName,
+        key: key,
+        value: JSON.parse(value)
       }
-      Post(this.configUrl + 'project/config',params).then((res) => {
+      Post(this.configUrl + 'project/config', params).then((res) => {
         if (res.data && res.data.success) {
           this.$message({
             type: "success",
@@ -518,13 +545,13 @@ export default {
         fileName: this.activeFile,
         fileContent: this.code,
       };
-      
+
       let params = {
-        fileName:data.fileName,
-        fileContent:encodeURIComponent(data.fileContent),
-        projectName:this.siteName
+        fileName: data.fileName,
+        fileContent: encodeURIComponent(data.fileContent),
+        projectName: this.siteName
       }
-      Post(this.configUrl + 'files/edit',params).then((res) => {
+      Post(this.configUrl + 'files/edit', params).then((res) => {
         if (res.data.success) {
           this.toggleOperation(this.showItem);
           if (status == false) {  // 配置组件的时候是隐形进行编辑文件的操作 所以不需要提示操作成功

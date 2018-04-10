@@ -9,7 +9,7 @@ const name = component.name; // 组件标签名
 
 const title = "资讯详情组件"; // 组件title
 
-const description = `资讯详情组件，通过点击首页资讯进入，显示资讯详情和评论列表组件。`; // 组件描述信息
+const description = `资讯详情组件，通过点击首页资讯进入，显示资讯详情和评论列表组件。详情组件内含评论组件。`; // 组件描述信息
 
 const dev = {
   information: {
@@ -46,38 +46,10 @@ const dev = {
       },
 
     }
-  },
-  bookreview: { // 评论
-    bookreview_01: {
-      queryComments: { // 查询评论
-        url: CONFIG.BASE_URL + 'comment/comments.do',
-        params: {
-          pubId: "",
-          pageIndex: 1,
-          pageSize: 15,
-          siteId: CONFIG.SITE_CONFIG.siteId,
-        }
-      },
-      addComment: { // 添加评论
-        url: CONFIG.BASE_URL + 'comment/addComment.do',
-        params: {
-          pubId: "",
-          loginName: "",
-          content: "",
-          starNum: 0,
-          deviceName: "pc", // 设备类型
-          colId: "",
-          siteId: CONFIG.SITE_CONFIG.siteId,
-          type: "1",
-          parentId: "0",
-          activityId: '',
-        }
-      }
-    }
-  },
+  }
 };
 
-const prod = {
+const prod = {  // 详情组件内含评论组件 评论组件作为子组件 配置不要提到父组件里面
   information: {
     information_01: {
       showItem: ['like', 'collect', 'share', 'review'], // 控制显示哪些项： like（点赞）  collect （收藏）  share （分享）
@@ -111,37 +83,12 @@ const prod = {
         }
       },
     }
-  },
-  bookreview: { // 评论
-    bookreview_01: {
-      queryComments: { // 查询评论
-        url: CONFIG.BASE_URL + 'comment/comments.do',
-        params: {
-          pubId: "",
-          pageIndex: 1,
-          pageSize: 15,
-          siteId: CONFIG.SITE_CONFIG.siteId,
-        }
-      },
-      addComment: { // 添加评论
-        url: CONFIG.BASE_URL + 'comment/addComment.do',
-        params: {
-          pubId: "",
-          loginName: "",
-          content: "",
-          starNum: 0,
-          deviceName: "pc", // 设备类型
-          colId: "",
-          siteId: CONFIG.SITE_CONFIG.siteId,
-          type: "1",
-          parentId: "0",
-          activityId: '',
-        }
-      }
-    }
-  },
+  }
 
 };
+
+// 该父组件所包含的子组件，第一个是该父组件本身的组件name
+const childComponents = ["ui_information_01", "work_bookreview_01"]; 
 
 const platform = 'PC';
 const pageType = ['detail', 'channel'];
@@ -153,6 +100,7 @@ export {
   dev,
   prod,
   description,
+  childComponents,
   platform,
   pageType,
   resourceType

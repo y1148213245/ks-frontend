@@ -7,10 +7,10 @@
       </span>
     </div>
     <!-- 精品图书上半部分 -->
-    <ui_list_pic_10_refined_book namespace="index" :refined-book="list"></ui_list_pic_10_refined_book>
+    <ui_list_pic_10_refined_book :namespace="namespace" :refined-book="list"></ui_list_pic_10_refined_book>
 
     <!-- 精品图书下半部分 -->
-    <ui_list_pic_09_book_show namespace="index" :book-show="list"></ui_list_pic_09_book_show>
+    <ui_list_pic_09_book_show :namespace="namespace" :book-show="list"></ui_list_pic_09_book_show>
   </div>
 </template>
 
