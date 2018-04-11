@@ -27,7 +27,7 @@ const dev = {
 const prod = {
   navigation: {
     navigation_03: {
-      url: `${CONFIG.BASE_URL}spc/cms/col/getColNextLevelNode`,
+      url: `spc/cms/col/getColNextLevelNode`,
       targetType: '_blank',
       params: {
         colId: '39', // 栏目ID

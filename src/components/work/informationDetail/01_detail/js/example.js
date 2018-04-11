@@ -20,7 +20,7 @@ const dev = {
 const prod = {
 	informationDetail: {
     work_informationdetail_01: {
-      url: `${CONFIG.BASE_URL}spc/cms/publish/detail.do`,
+      url: `spc/cms/publish/detail.do`,
       params: {
         pubId: '',
         loginName: ''
@@ -35,7 +35,7 @@ const prod = {
         information_share: 'information_share'
       },
       collectOrLike: {
-        url: `${CONFIG.BASE_URL}collection/addCollect.do`,
+        url: `collection/addCollect.do`,
         params: {
           pubId: '',
           operateType: '0',

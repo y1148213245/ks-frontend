@@ -146,7 +146,7 @@ const prod = {
   list: {
     ui_mobile_list_03: {
       newbook: {
-        url: `${CONFIG.BASE_URL}spc/cms/publish/list.do`,
+        url: `spc/cms/publish/list.do`,
         params: {
           conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":"5"},{"pub_col_id":110}]',
           groupBy: "pub_resource_id",
@@ -155,7 +155,7 @@ const prod = {
           pageSize: "10",
           searchText: "",
         },
-        navUrl: `${CONFIG.BASE_URL}spc/cms/col/getAllColBySiteId.do`,
+        navUrl: `spc/cms/col/getAllColBySiteId.do`,
         navParams: {
           siteId: 5,
           chId: 0
@@ -170,7 +170,7 @@ const prod = {
         classFloat: 'left'
       },
       newfree: {
-        url: `${CONFIG.BASE_URL}spc/cms/publish/list.do`,
+        url: `spc/cms/publish/list.do`,
         params: {
           conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":"5"},{"pub_col_id":111}]',
           groupBy: "pub_resource_id",
@@ -179,7 +179,7 @@ const prod = {
           pageSize: "10",
           searchText: "",
         },
-        navUrl: `${CONFIG.BASE_URL}spc/cms/col/getAllColBySiteId.do`,
+        navUrl: `spc/cms/col/getAllColBySiteId.do`,
         navParams: {
           siteId: 5,
           chId: 0
@@ -194,7 +194,7 @@ const prod = {
         classFloat: 'right'
       },
       newsale: {
-        url: `${CONFIG.BASE_URL}/spc/cms/publish/list.do`,
+        url: `/spc/cms/publish/list.do`,
         params: {
           conditions: "[{pub_resource_type:'BOOK'},{pub_status:'1'},{pub_site_id:'5'},{pub_col_id:112}]",
           groupBy: "pub_resource_id",
@@ -203,7 +203,7 @@ const prod = {
           pageSize: "10",
           searchText: "",
         },
-        navUrl: `${CONFIG.BASE_URL}spc/cms/col/getAllColBySiteId.do`,
+        navUrl: `spc/cms/col/getAllColBySiteId.do`,
         navParams: {
           siteId: 5,
           chId: 0

@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming
  * @Date: 2018-03-14 15:29:43
- * @Last Modified by: song
- * @Last Modified time: 2018-04-03 16:45:10
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-04-11 17:24:18
  */
 export default {
   name: 'index',
@@ -251,7 +251,7 @@ export default {
     },
     ui_mobile_list_03: {
       newbook: {
-        url: `${CONFIG.BASE_URL}spc/cms/publish/list.do`,
+        url: `spc/cms/publish/list.do`,
         params: {
           conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":"5"},{"pub_col_id":110}]',
           groupBy: "pub_resource_id",
@@ -260,7 +260,7 @@ export default {
           pageSize: "10",
           searchText: "",
         },
-        navUrl: `${CONFIG.BASE_URL}spc/cms/col/getAllColBySiteId.do`,
+        navUrl: `spc/cms/col/getAllColBySiteId.do`,
         navParams: {
           siteId: 5,
           chId: 0
@@ -292,7 +292,7 @@ export default {
         },
       },
       newfree: {
-        url: `${CONFIG.BASE_URL}spc/cms/publish/list.do`,
+        url: `spc/cms/publish/list.do`,
         params: {
           conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":"5"},{"pub_col_id":111}]',
           groupBy: "pub_resource_id",
@@ -301,7 +301,7 @@ export default {
           pageSize: "10",
           searchText: "",
         },
-        navUrl: `${CONFIG.BASE_URL}spc/cms/col/getAllColBySiteId.do`,
+        navUrl: `spc/cms/col/getAllColBySiteId.do`,
         navParams: {
           siteId: 5,
           chId: 0
@@ -333,7 +333,7 @@ export default {
         },
       },
       newsale: {
-        url: `${CONFIG.BASE_URL}/spc/cms/publish/list.do`,
+        url: `/spc/cms/publish/list.do`,
         params: {
           conditions: '[{"pub_resource_type":"BOOK"},{"pub_status":"1"},{"pub_site_id":"5"},{"pub_col_id":112}]',
           groupBy: "pub_resource_id",
@@ -342,7 +342,7 @@ export default {
           pageSize: "10",
           searchText: "",
         },
-        navUrl: `${CONFIG.BASE_URL}spc/cms/col/getAllColBySiteId.do`,
+        navUrl: `spc/cms/col/getAllColBySiteId.do`,
         navParams: {
           siteId: 5,
           chId: 0

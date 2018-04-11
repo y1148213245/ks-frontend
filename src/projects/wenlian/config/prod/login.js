@@ -8,7 +8,7 @@ export default {
   name: 'login',
   login: {
     work_login_01: {
-      loginUrl: `${CONFIG.BASE_URL}login.do`
+      loginUrl: `login.do`
     }
   }
 };

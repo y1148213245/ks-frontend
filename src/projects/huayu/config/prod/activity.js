@@ -30,7 +30,7 @@ export default {
   },
   list_pic:{
     ui_list_pic_22:{
-      url:`${CONFIG.BASE_URL}spc/cms/col/getColNextLevelNode`,
+      url:`spc/cms/col/getColNextLevelNode`,
       params:{
         colId:'248'
       },

@@ -12,7 +12,7 @@ export default {
       param: {
         colId:'118'
       },
-      resultUrl:`${CONFIG.BASE_URL}spc/cms/publish/list.do`,
+      resultUrl:`spc/cms/publish/list.do`,
       resultParam:{
         pageNo: '1',
         pageSize: '10',

@@ -1,15 +1,15 @@
 /*
  * @Author: song
  * @Date: 2018-02-06 11:12:46
- * @Last Modified by: song
- * @Last Modified time: 2018-03-12 14:16:56
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-04-11 17:24:22
  */
 export default {
   name: "informationdetail",
   informationDetail: {
     work_informationdetail_01: {
-      // url: `${CONFIG.BASE_URL}spc/cms/publish/detail.do?pubId=`,
-      url: `${CONFIG.BASE_URL}spc/cms/publish/detail.do`,
+      // url: `spc/cms/publish/detail.do?pubId=`,
+      url: `spc/cms/publish/detail.do`,
       params: {
         pubId: '',
         loginName: ''
@@ -24,7 +24,7 @@ export default {
         information_share: 'information_share'
       },
       collectOrLike: {
-        url: `${CONFIG.BASE_URL}collection/addCollect.do`,
+        url: `collection/addCollect.do`,
         params: {
           pubId: '',
           operateType: '0',
@@ -35,7 +35,7 @@ export default {
   },
   pagination: {
     ui_pagination_01: {
-      url: `${CONFIG.BASE_URL}spc/cms/publish/searchNext.do`,
+      url: `spc/cms/publish/searchNext.do`,
       params:{
         conditions:'',
         orderBy:'',

@@ -23,9 +23,9 @@ export default {
     common: {
       getCrumbEmit:'setCrumbs',  //事件触发
       // url:  'spc/cms/publish/detail.do',
-      url:`${CONFIG.BASE_URL}spc/cms/publish/detail.do`,
+      url:`spc/cms/publish/detail.do`,
       // swiperUrl: 'spc/cms/publish/list.do',
-      swiperUrl:`${CONFIG.BASE_URL}spc/cms/publish/relatedZX.do`,
+      swiperUrl:`spc/cms/publish/relatedZX.do`,
       params: {
         pubId:'',
         loginName:''

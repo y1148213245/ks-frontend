@@ -20,7 +20,7 @@ export default {
     }]
   },
   // url:  'spc/cms/publish/list.do',
-  url:`${CONFIG.BASE_URL}spc/cms/publish/list.do`,
+  url:`spc/cms/publish/list.do`,
   params: {
     conditions:"[{pub_col_id:'40'}]",
     groupBy:"pub_resource_id",

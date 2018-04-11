@@ -8,7 +8,7 @@
 <script type="text/ecmascript-6">
 	import axios from "axios";
 	import URL from "url";
-	import CONFIG from "projectConfig";
+	import PROJECT_CONFIG from "projectConfig";
 
 	export default {
 		name: "components_bestsale_categorylist",
@@ -20,13 +20,13 @@
 			}
 		},
 		created: function () {
-			this.CATA_CONFIG = CONFIG[this.namespace].components.categoryList;
+			this.CATA_CONFIG = PROJECT_CONFIG[this.namespace].components.categoryList;
 
 			this.queryCategory();
 		},
 		methods: {
 			queryCategory: function () {
-				axios.get(this.CATA_CONFIG.url)
+				axios.get(CONFIG.BASE_URL + this.CATA_CONFIG.url)
 						.then((response) => {
 							if (response.data && response.data instanceof Array && response.data.length > 0) {
 								this.categoryList = response.data;

@@ -7,12 +7,16 @@
         <img class="work_activitydetail_03-item-img" :src="getPicUrl(item[keys.picId])" alt="暂无图片">
       </div>
       <div class="work_activitydetail_03-item-content">
-        <div class="work_activitydetail_03-item-title" v-text="item[keys.title]" @click="toDetail(item)"></div>
+        <div class="work_activitydetail_03-item-title" v-text="item[keys.title]" @click="showDetail(item)"></div>
         <span class="work_activitydetail_03-item-content-date">{{item[keys.date] | formatTime}}</span>
         <div class="work_activitydetail_03-item-content-abstract" v-html="item[keys.abstract]"></div>
       </div>
     </div>
    </template>
+
+   <el-dialog title="jiji" :visible.sync="dialogTableVisible">
+    dwadwa
+   </el-dialog>
  </div>
 </template>
 
@@ -33,6 +37,7 @@ export default {
       keys: null,
       list: [],
       activityDetailCache: null,
+      dialogTableVisible:false,
       pagingConfig: {
         pageNo: '',
         pageSize: '',
@@ -68,10 +73,13 @@ export default {
       let orderBy = keys.getListParam_orderBy + '=' + this.CONFIG.params.getListParam_orderBy;
 
       let url = this.CONFIG.url + '?' + activityID + '&' + pageNo + '&' + pageSize + '&' + orderBy;
-      Get(CONFIG.BASE_URL+url).then((resp) => {
+      Get(CONFIG.BASE_URL + url).then((resp) => {
         let data = resp.data.data;
         this.list = data;
       })
+    },
+    showDetail(item){
+      this.dialogTableVisible = true;
     },
     toDetail (item) {
       let keys = this.keys;
