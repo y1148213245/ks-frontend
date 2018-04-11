@@ -53,7 +53,7 @@
         this.queryEditorParams.conditions = '[{pub_col_id:' + editRoom.id + '}]';
       },
       queryInfo: function () {
-        Post(this.CONFIG.queryEditorList.url, this.queryEditorParams).then(rep => {
+        Post(CONFIG.BASE_URL+this.CONFIG.queryEditorList.url, this.queryEditorParams).then(rep => {
           if (rep && rep.data && rep.data.success && rep.data.result && rep.data.result.length) {
             this.content = rep.data.result[0];
           }

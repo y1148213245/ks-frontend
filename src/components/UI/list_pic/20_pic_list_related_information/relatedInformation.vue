@@ -53,7 +53,7 @@ export default {
     loadData () {
       let _this = this;
       let url = this.CONFIG.url + this.pubId;
-      Get(url).then(function (response) {
+      Get(CONFIG.BASE_URL+url).then(function (response) {
 
         _this.relateNews = response.data.data.result;
       })

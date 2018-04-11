@@ -117,7 +117,7 @@ export default {
         });
         return false;
       }
-      Post(this.CONFIG.collectUrl + '?loginName=' + this.member.loginName + '&resourceType=' + this.resourceType + '&resourceId=' + this.resourceId + '&operateType=0&siteId=' + CONFIG.SITE_CONFIG.siteId).then(rep => {
+      Post(CONFIG.BASE_URL+this.CONFIG.collectUrl + '?loginName=' + this.member.loginName + '&resourceType=' + this.resourceType + '&resourceId=' + this.resourceId + '&operateType=0&siteId=' + CONFIG.SITE_CONFIG.siteId).then(rep => {
         if (rep.data.result === "1") { // 操作成功
           this.queryWorkInfo(this.member.loginName);
           this.$message({
@@ -137,7 +137,7 @@ export default {
     },
     queryWorkInfo (loginName) {  // 作品详情信息查询
       loginName = loginName ? loginName : '';
-      Get(this.CONFIG.url + '?loginName=' + loginName + '&doclibCode=' + this.resourceType + '&docID=' + this.resourceId).then(rep => {
+      Get(CONFIG.BASE_URL+this.CONFIG.url + '?loginName=' + loginName + '&doclibCode=' + this.resourceType + '&docID=' + this.resourceId).then(rep => {
         if (rep.data) {
           this.workInfo = rep.data;
         }

@@ -56,7 +56,7 @@
   },
   methods: {
     queryData: function () {
-      Post(this.CONFIG.url, this.CONFIG.params || {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.params || {
           conditions: "[{pub_resource_type:'BOOK'}]",
           orderBy: 'pub_a_order asc pub_lastmodified desc id asc',
           pageNo: "1",

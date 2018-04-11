@@ -68,7 +68,7 @@ export default {
       let orderBy = keys.getListParam_orderBy + '=' + this.CONFIG.params.getListParam_orderBy;
 
       let url = this.CONFIG.url + '?' + activityID + '&' + pageNo + '&' + pageSize + '&' + orderBy;
-      Get(url).then((resp) => {
+      Get(CONFIG.BASE_URL+url).then((resp) => {
         let data = resp.data.data;
         this.list = data;
       })

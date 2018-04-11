@@ -522,5 +522,10 @@ export default {
       "&page=" +
       (params.page || "99");
     return axios.get(url);
-  }
+  },
+   // 设置公开
+  setHide(params) {
+    var url = CONFIG.BASE_URL + "spc/prodb/saveItem.do";
+    return axios.post(url, params);
+  },
 };

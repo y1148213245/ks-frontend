@@ -37,7 +37,7 @@ export default {
         if (res) { // returns unique browser fingerprint as 32-bit Integer
           let params = Object.assign({}, this.CONFIG.params);
           params.docID = this.docid;
-          Get(this.CONFIG.url, { params: params }).then(res => {
+          Get(CONFIG.BASE_URL+this.CONFIG.url, { params: params }).then(res => {
             if (res.data.result === "1") { // 投票成功
               this.$emit('vote', res.data.data, this.docid);  // 子组件向父组件传值
               this.$message({

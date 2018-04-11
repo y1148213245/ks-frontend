@@ -115,7 +115,7 @@ export default {
       param.orderBy = orderBy ? orderBy : param.orderBy;
       param.searchText = searchText ? searchText : (this.locationQuery && this.locationQuery.searchText || '');
 
-      Post(config.url, param).then((req) => {
+      Post(CONFIG.BASE_URL+config.url, param).then((req) => {
         let data = req.data.result;
         this.totalCount = req.data.totalCount;
         if (data && data instanceof Array && data.length >= 0) {

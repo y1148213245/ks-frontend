@@ -42,7 +42,7 @@
         let params=Object.assign({},CONFIG.swiperParams);
         let pubId=URL.parse(document.URL,true).query.pubId;
         params.pubId=pubId;
-        Get(CONFIG.swiperUrl,{"params":params}).then((rep)=>{
+        Get(CONFIG.BASE_URL+CONFIG.swiperUrl,{"params":params}).then((rep)=>{
           let data=rep.data.result;
           if(data && data instanceof Array){
             this.swiperList=data;
@@ -59,7 +59,7 @@
         // author[0].BOOK_SYS_AUTHORS=topic;
         // let authorArr=JSON.stringify(author.concat(authorOther));
         // params.conditions=authorArr;
-        // Post(CONFIG.swiperUrl,params).then((rep)=>{
+        // Post(CONFIG.BASE_URL+CONFIG.swiperUrl,params).then((rep)=>{
         //   let data=rep.data.result;
         //   if(data && data instanceof Array){
         //     this.swiperList=data;

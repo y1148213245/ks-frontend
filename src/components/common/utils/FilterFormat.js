@@ -63,3 +63,12 @@ Vue.filter('formatCount', function (value) {
     return '共 ' + value + ' 本';
   }
 });
+
+ // 处理 “暂无作者” 形式
+ Vue.filter('formatAuthor', function (value) {
+  if (!value) { // 返回为空
+    return '暂无作者';
+  } else {
+    return value;
+  }
+});

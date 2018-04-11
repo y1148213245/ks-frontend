@@ -52,7 +52,7 @@
     },
     methods: {
       getData: function () {
-        Post(this.CONFIG.url, this.params).then((req) => {
+        Post(CONFIG.BASE_URL+this.CONFIG.url, this.params).then((req) => {
           let data = req.data.result;
           let currentTime = new Date().getTime();
           if (data && data instanceof Array && data.length > 0) {

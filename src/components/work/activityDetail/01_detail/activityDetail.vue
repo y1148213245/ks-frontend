@@ -64,7 +64,7 @@ export default {
         let queryParam_pubId = keys.requestUrlParam_pubId + '=' + query[keys.requestUrlParam_pubId];
         url += '?' + queryParam_pubId + '&loginName=' + (this.member.loginName || '');
       }
-      Get(url).then((resp) => {
+      Get(CONFIG.BASE_URL+url).then((resp) => {
         let data = resp.data.data;
         this.detail = data;
         if (this.detail) {

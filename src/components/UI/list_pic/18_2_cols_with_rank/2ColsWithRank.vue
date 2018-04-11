@@ -86,7 +86,7 @@ export default {
     searchPage: function ({ pageNo, pageSize }) {
       this.searchParams.pageNo = pageNo || '1';
       this.searchParams.pageSize = pageSize || '15';
-      Post(this.CONFIG.queryBookList.url, this.searchParams).then(rep => {
+      Post(CONFIG.BASE_URL+this.CONFIG.queryBookList.url, this.searchParams).then(rep => {
         if (rep.data && rep.data.success) {
           this.resultPage = rep.data;
           this.resultList = rep.data.result;

@@ -84,7 +84,7 @@
       },
       queryInformation: function () {
         let url = this.parseUrlAndParamsToStr(this.CONFIG.queryDetail.url, {pubId: this.pubId, loginName: this.member && this.member.loginName || ''});
-        Get(url).then(rep => {
+        Get(CONFIG.BASE_URL+url).then(rep => {
           if (rep.data && rep.data.success) {
             this.information = rep.data.data;
             // console.log(this.information);
@@ -108,7 +108,7 @@
         };
 
         let url = this.parseUrlAndParamsToStr(this.CONFIG.collectOrLike.url, param);
-        Post(url).then((rep) => {
+        Post(CONFIG.BASE_URL+url).then((rep) => {
           if (1 === Number(rep.data && rep.data.result)) {
             if (rep.data.data.code === '00') {
               this.information.isCollect = '1';

@@ -117,7 +117,7 @@ export default {
       let docID = this.keys.getDetailRequestParam_docID + '=' + params.docID;
 
       url += '?' + doclibCode + '&' + docID + '&' + loginName;
-      Get(url).then((resp) => {
+      Get(CONFIG.BASE_URL+url).then((resp) => {
         this.detail = resp.data;
 
         let attachList = this.detail[this.keys.attachList];
@@ -147,7 +147,7 @@ export default {
       let siteId = 'operateType=0&siteId=' + CONFIG.SITE_CONFIG.siteId
       let url = this.projectConfig.collectUrl + '?' + loginName + '&' + resourceType + '&' + resourceId + '&' + siteId
       /* 收藏请求 */
-      Post(url).then(rep => {
+      Post(CONFIG.BASE_URL+url).then(rep => {
         if (rep.data.result === "1") { // 操作成功
           this.$message({
             type: "success",
@@ -183,7 +183,7 @@ export default {
       let orderBy = keys.getPreNextRequestParam_orderBy + '=' + preNextParam[keys.eventListenData_preNextConfig_orderBy];
 
       url += '?' + activityId + '&' + newID + '&' + pageNo + '&' + pageSize + '&' + orderBy
-      Get(url).then((resp) => {
+      Get(CONFIG.BASE_URL+url).then((resp) => {
         let data = resp.data.data;
         this.preNextData = data;
       })

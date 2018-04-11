@@ -33,7 +33,7 @@
               title = query.category == "BOOK"  ? "图书" : "资讯";
             }
             console.log(title);
-            Post(CONFIG.url,param).then((req) => {
+            Post(CONFIG.BASE_URL+CONFIG.url,param).then((req) => {
               this.resultList=req.data;
               Object.assign(this.resultList,{"title":title});
             })

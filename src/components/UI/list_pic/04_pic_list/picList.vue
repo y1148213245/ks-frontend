@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     hotBook: function () {
-      Post(this.CONFIG.url, this.CONFIG.params).then((rep) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.params).then((rep) => {
         var data = rep.data.result;
         var hasData = rep.status === 200 && data && Object.prototype.toString.call(data) === "[object Array]" && data.length > 0;
         if (hasData) {
@@ -75,7 +75,7 @@ export default {
       if (this.CONFIG.url.indexOf("related") !== -1) {
         let bookParam = Object.assign({}, this.CONFIG.params);
         bookParam.pubId = this.query.pubId;
-        Get(this.CONFIG.url, { "params": bookParam }).then((rep) => {
+        Get(CONFIG.BASE_URL+this.CONFIG.url, { "params": bookParam }).then((rep) => {
           var data = rep.data.data.bookcat;
           var hasData = data && Object.prototype.toString.call(data) === "[object Array]" && data.length > 0 ? true : false;
           if (hasData) {
@@ -89,7 +89,7 @@ export default {
       if (url.indexOf("History") !== -1) {
         let param = Object.assign({}, this.CONFIG.params);
         param.username = loginName;
-        Get( '/browserHistory/addBrowserHistory.do?pubId=' + this.query.pubId + '&loginName=' + loginName).then((repsonse) => {
+        Get(CONFIG.BASE_URL+ '/browserHistory/addBrowserHistory.do?pubId=' + this.query.pubId + '&loginName=' + loginName).then((repsonse) => {
           if (repsonse.data.result === '1') {
             this.gethistorylist(param);
           }
@@ -98,7 +98,7 @@ export default {
       }
     },
     gethistorylist (param) {
-      Get(this.CONFIG.url, { params: param }).then((rep) => {
+      Get(CONFIG.BASE_URL+this.CONFIG.url, { params: param }).then((rep) => {
         var data = rep.data.data;
         var hasData = rep.status === 200 && data && Object.prototype.toString.call(data) === "[object Array]" && data.length > 0 ? true : false;
         if (hasData) {
@@ -124,7 +124,7 @@ export default {
     },
     deleteHistoryByUser () {
       if (this.member.loginName) {
-        Get( 'browserHistory/deleteHistoryByUser.do?&loginName=' + this.member.loginName).then((rep) => {
+        Get(CONFIG.BASE_URL+ 'browserHistory/deleteHistoryByUser.do?&loginName=' + this.member.loginName).then((rep) => {
           if (rep.data.result === "1") {
             this.$message({
               type: "success",

@@ -76,7 +76,7 @@ export default {
       }
     },
     queryClassificationList () {
-      Post(this.CONFIG.url, this.CONFIG.params).then(rep => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.params).then(rep => {
         var datas = rep.data.result;
         if (datas && datas instanceof Array && datas.length > 0) {
           this.getHotBookList = datas.slice(0, this.CONFIG.maxNumber);

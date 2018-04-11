@@ -55,7 +55,7 @@
         },
         methods:{
           getResourceType:function(){
-            Get(this.resourceTypeConfig.url).then((rep)=>{
+            Get(CONFIG.BASE_URL+this.resourceTypeConfig.url).then((rep)=>{
               if(rep.data && rep.data instanceof Array){
                 this.resourceTypeList=rep.data;
                 this.changeNote(rep.data[0].docLibCode);  //默认显示第一条
@@ -64,7 +64,7 @@
           },
           changeNote:function(id){
             let params=Object.assign({},this.resourceNoteConfig.params,{doclibCode:id});
-            Get(this.resourceNoteConfig.url,{"params":params}).then((rep)=>{
+            Get(CONFIG.BASE_URL+this.resourceNoteConfig.url,{"params":params}).then((rep)=>{
               let data=rep.data.fields;
               if(data && data instanceof Array){
                 this.resourceNoteList=data.map(item => {

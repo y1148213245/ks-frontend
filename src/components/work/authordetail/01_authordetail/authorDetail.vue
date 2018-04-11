@@ -56,7 +56,7 @@
     methods:{
       getAuthorInfo:function(param){
         let params=Object.assign({},CONFIG.params,param);
-        Get(CONFIG.url,{"params":params}).then((rep)=>{
+        Get(CONFIG.BASE_URL+CONFIG.url,{"params":params}).then((rep)=>{
           let data=rep.data.data;
           if(data){
             data.currentType=param.currentType;

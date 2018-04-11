@@ -36,6 +36,13 @@
               <span v-text="CONFIG.display.author"></span>
               <span>{{ebook[keys.author]}}</span>
             </p>
+            <!-- 测试数据 -->
+            <p style="line-height: 12px; margin-top: 0px; margin-bottom: 0px;">
+              <span v-if="ebook.pub_read_num !== undefined" style="color: orangered; font-size: 14px;">read:{{ebook.pub_read_num}}</span>
+              <span v-if="ebook.pub_star_num !== undefined"
+                    style="color: orangered; font-size: 14px;display: inline;">star:{{ebook.pub_star_num}}</span>
+              <span v-if="ebook.BOOK_PUBDATE !== undefined" style="color: orangered; font-size: 14px;">PUBDATE: {{ebook.BOOK_PUBDATE}}</span>
+            </p>
             <p class="ui_mobile_list_02_abstract" v-if="CONFIG.showItem.indexOf('abstract') !== -1 ? true : false">{{ebook[keys.abstract]}}</p>
             <p class="ui_mobile_list_02_price" v-if="CONFIG.showItem.indexOf('price') !==-1 ? true : false">{{ebook[keys.price] | formatPrice}}</p>
           </dd>
@@ -151,7 +158,7 @@ export default {
       }
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);
       paramsObj.pageNo = this.pageNo;
-      Post(this.CONFIG.url, paramsObj).then((res) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, paramsObj).then((res) => {
         if (res.data.success) { // 请求成功
           var datas = res.data.result;
           this.totalCount = res.data.totalCount;
@@ -163,7 +170,7 @@ export default {
       })
     },
     queryClassificationList () { // 图书分类查询
-      Get(this.CONFIG.queryClassification.url, { params: this.CONFIG.queryClassification.params }).then(rep => {
+      Get(CONFIG.BASE_URL+this.CONFIG.queryClassification.url, { params: this.CONFIG.queryClassification.params }).then(rep => {
         var datas = rep.data;
         if (datas && datas instanceof Array && datas.length > 0) {
           for (var i = 0, len = datas.length; i < len; i++) {
@@ -265,7 +272,7 @@ export default {
   font-size: 0.3rem;
   padding-bottom: 0.25rem;
   padding-top: 0.4rem;
-  margin-bottom: 0.2rem;
+  /* margin-bottom: 0.2rem; */
 }
 
 .ui_mobile_list_02_active {

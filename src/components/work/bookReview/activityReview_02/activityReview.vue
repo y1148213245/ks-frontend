@@ -128,7 +128,7 @@ export default {
       } else {   // 其他详情（活动、资讯详情） 可以理解为默认情况
         paramsObj.pubId = this.pubId;
       }
-      Get(this.CONFIG.queryreview.url, { params: paramsObj }).then(rep => {
+      Get(CONFIG.BASE_URL+this.CONFIG.queryreview.url, { params: paramsObj }).then(rep => {
         if (rep.data.result === '1') {  //请求成功
           if (paramsObj.type === '') { // 查询评论总数
             this.$bus.$emit('commentNum', rep.data.totalCount);  // 活动评论组件（子）向作品详情组件（父）组件传值 通过发广播形式
@@ -168,7 +168,7 @@ export default {
         paramsObj.pubId = this.pubId;
       }
       
-      Post(this.CONFIG.addreview.url, paramsObj).then(rep => {
+      Post(CONFIG.BASE_URL+this.CONFIG.addreview.url, paramsObj).then(rep => {
         if (rep.data.result === '1') {  //请求成功
           this.queryReviewList();
           this.queryReviewList(this.showType);

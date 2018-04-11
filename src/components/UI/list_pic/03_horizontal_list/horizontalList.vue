@@ -83,7 +83,7 @@ export default {
 						.replace(/#\{cascadeId\}/g, this.catalog_info.cascadeId)
 				});
 
-			Post(this.CONFIG.queryItemList.url, param).then((response) => {
+			Post(CONFIG.BASE_URL+this.CONFIG.queryItemList.url, param).then((response) => {
 				if (response.data && response.data.result && response.data.result instanceof Array) {
 					this.recommendList = response.data.result;
 				}

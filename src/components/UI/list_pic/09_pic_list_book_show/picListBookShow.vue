@@ -47,7 +47,7 @@ export default {
             if (this.bookShow && this.bookShow instanceof Array && this.bookShow.length > 0) {
                 this.list = this.bookShow;
             } else {
-                Post(this.CONFIG.url, this.CONFIG.params || {
+                Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.params || {
                     conditions: "[{pub_col_id:'59'},{pub_status:'1'}]",
                     groupBy: "pub_resource_id",
                     orderBy: "pub_a_order asc pub_lastmodified desc id asc",

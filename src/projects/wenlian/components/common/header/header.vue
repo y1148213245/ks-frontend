@@ -166,7 +166,7 @@ export default {
       },
       queryHotWord: function () {
         var maxNum = this.CONFIG.queryHotWord.num; // 控制最多显示数量
-        Post(this.CONFIG.queryHotWord.url, this.CONFIG.queryHotWord.params).then((rep) => {
+        Post(CONFIG.BASE_URL+this.CONFIG.queryHotWord.url, this.CONFIG.queryHotWord.params).then((rep) => {
           var datas = rep.data.result;
           if (datas && datas instanceof Array && datas.length > 0) {
             this.hotWordList = datas.length > maxNum ? datas.slice(0, maxNum - 1) : datas;
@@ -174,7 +174,7 @@ export default {
         });
       },
       queryNavCategory: function () {
-        Get(this.CONFIG.queryNavCategory.url, {"params": this.CONFIG.queryNavCategory.params}).then((response) => {
+        Get(CONFIG.BASE_URL+this.CONFIG.queryNavCategory.url, {"params": this.CONFIG.queryNavCategory.params}).then((response) => {
           var data = response.data;
           if (data && data.length) {
             this.navCategory = data;
@@ -183,7 +183,7 @@ export default {
       },
       queryNavCols: function () {
         var navColArr = this.CONFIG.queryNavCols.navColArr;
-        Get(this.CONFIG.queryNavCols.url, {"params": this.CONFIG.queryNavCols.params}).then(rep => {
+        Get(CONFIG.BASE_URL+this.CONFIG.queryNavCols.url, {"params": this.CONFIG.queryNavCols.params}).then(rep => {
           var datas = rep.data.data;  // 返回的是后台所有的栏目
           if (datas && datas instanceof Array && datas.length > 0) {
             for (let i = 0; i < navColArr.length; i++) {
@@ -206,7 +206,7 @@ export default {
         window.location.href = sub.url + '?colId=' + sub.id;
       },
       doLogout: function () {  // 登出
-        Get(this.CONFIG.logoutUrl).then(rep => {
+        Get(CONFIG.BASE_URL+this.CONFIG.logoutUrl).then(rep => {
           if (Number(rep.status) === 200) {
             window.location.href = '../pages/index.html';
           }

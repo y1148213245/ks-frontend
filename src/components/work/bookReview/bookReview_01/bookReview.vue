@@ -108,7 +108,7 @@ export default {
       paramsObj.content = content;
       paramsObj.starNum = starNum;
       paramsObj.colId = bookDetail.colId;
-      Post(queryConfig.url, paramsObj).then((rep) => {
+      Post(CONFIG.BASE_URL+queryConfig.url, paramsObj).then((rep) => {
         var result = rep.data.result;
         if (result === "1") {
           var msg = rep.data.data.msg;
@@ -141,7 +141,7 @@ export default {
         paramsObj.pageSize = param.pageSize;
         paramsObj.siteId = CONFIG.SITE_CONFIG.siteId;
       }
-      Get(queryConfig.url, { params: paramsObj }).then((rep) => {
+      Get(CONFIG.BASE_URL+queryConfig.url, { params: paramsObj }).then((rep) => {
         var data = rep.data.data;
         if (data && data instanceof Array && data.length > 0) {
           this.commentList = data;

@@ -58,7 +58,7 @@ export default {
       let params = null;
       !this.CONFIG.isDevelopment ? (getListConfig.params.conditions = JSON.stringify(getListConfig.params.conditions)) : '';
       !this.CONFIG.isDevelopment ? (params = getListConfig.params) : '';
-      Post(url, params).then((resp) => {
+      Post(CONFIG.BASE_URL+url, params).then((resp) => {
         this.list = resp.data.result;
       })
     },

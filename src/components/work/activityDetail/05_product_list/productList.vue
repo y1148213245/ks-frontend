@@ -213,7 +213,7 @@ export default {
 
       let url = this.CONFIG.url + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + memberType + '&' + vals;
 
-      Get(url).then((resp) => {
+      Get(CONFIG.BASE_URL+url).then((resp) => {
         let data = resp.data.data.content;
         this.list = data;
         this.totalCount = resp.data.data.totalElements

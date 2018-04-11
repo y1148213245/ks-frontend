@@ -63,7 +63,7 @@ export default {
       let param_pageSize = this.keys.requestParam_pageSize + '=' + this.CONFIG.params.requestParam_pageSize;
 
       let url = this.CONFIG.url + '?' + param_activityId + '&' + param_memberType + '&' + param_pageNo + '&' + param_pageSize;
-      Get(url).then((resp)=>{
+      Get(CONFIG.BASE_URL+url).then((resp)=>{
         let data = resp.data.data;
         this.list = data;
         this.totalCount = parseInt(resp.data.totalCount);

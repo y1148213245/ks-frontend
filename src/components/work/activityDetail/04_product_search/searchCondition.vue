@@ -82,7 +82,7 @@ export default {
       let docID = this.keys.getPlaceRequest_docID + '=' + activityDetail[this.keys.eventData_docID];
 
       let url = this.CONFIG.url + '?' + doclibCode + '&' + docID;
-      Get(url).then((resp) => {
+      Get(CONFIG.BASE_URL+url).then((resp) => {
         let data = resp.data;
         if (data[this.keys.getPlaceRequestBack_areas]) {
           this.placeArr = data[this.keys.getPlaceRequestBack_areas].split(';');
@@ -101,7 +101,7 @@ export default {
       let vals = this.keys.getSchoolRequest_vals + '=' + this.formData.place + ',' + this.formData.group;//值
 
       let url = this.CONFIG.getSchoolUrl + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + vals;
-      Get(url).then((resp) => {
+      Get(CONFIG.BASE_URL+url).then((resp) => {
         this.formData.school = '';//清空学校
         this.schoolArr = resp.data.content;
       })

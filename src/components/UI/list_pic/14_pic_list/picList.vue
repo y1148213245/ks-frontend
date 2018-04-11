@@ -74,7 +74,7 @@ export default {
         pageSize: this.pageSize,
         searchText: ''
       }
-      Post(this.CONFIG.url, param).then((req) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, param).then((req) => {
         let data = req.data.result;
         this.totalCount = req.data.totalCount;
         if (data && data instanceof Array && data.length >= 0) {

@@ -60,7 +60,7 @@ export default {
       param.conditions = query.category !== '0' ? param.conditions + query.category + "'}]" : param.conditions;
       param.searchText = query.searchText;
 
-      Post(CONFIG.url, param).then((req) => {
+      Post(CONFIG.BASE_URL+CONFIG.url, param).then((req) => {
         let data = req.data.result;
         this.totalCount = req.data.totalCount;
         if (data && data instanceof Array && data.length > 0) {

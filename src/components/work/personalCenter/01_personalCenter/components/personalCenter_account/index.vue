@@ -1740,7 +1740,7 @@ export default {
       if (setStatus == 1) {
         this.open();
         window.setTimeout(function() {
-          Get(CONFIG.BASE_URL + "logout.do").then(rep => {
+          Get(CONFIG.BASE_URL+CONFIG.BASE_URL + "logout.do").then(rep => {
             if (Number(rep.status) === 200) {
               window.location.href = "./login.html";
             }

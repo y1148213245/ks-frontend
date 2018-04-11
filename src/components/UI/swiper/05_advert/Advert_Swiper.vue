@@ -27,7 +27,7 @@
     },
     methods: {
       queryAdvertInfo: function () {
-        Post(this.CONFIG.url, this.CONFIG.params || {
+        Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.params || {
             conditions: "[{pub_col_id:'214'}]",
             groupBy: "pub_resource_id",
             orderBy: "pub_a_order asc pub_lastmodified desc id asc",

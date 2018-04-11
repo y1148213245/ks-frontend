@@ -40,7 +40,7 @@ export default {
     queryRelative (pubId) {
       let params = Object.assign({}, this.CONFIG.params);
       params.pubId = pubId;
-      Get(this.CONFIG.url, { "params": params }).then((rep) => {
+      Get(CONFIG.BASE_URL+this.CONFIG.url, { "params": params }).then((rep) => {
         var data = rep.data.data;
         var hasData = data && Object.prototype.toString.call(data) === "[object Object]" ? true : false;
         if (hasData) {

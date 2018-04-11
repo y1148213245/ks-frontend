@@ -39,9 +39,9 @@ export default {
   },
   methods: {
     getData: function () {
-      let CONFIG = PROJECT_CONFIG[this.namespace].swiper.pic_noWords_04;
-      this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
-      Post(CONFIG.url, CONFIG.params).then((rep) => {
+      let vCONFIG = PROJECT_CONFIG[this.namespace].swiper.pic_noWords_04;
+      this.CONFIG = JSON.parse(JSON.stringify(vCONFIG));
+      Post(CONFIG.BASE_URL+vCONFIG.url, vCONFIG.params).then((rep) => {
         this.picList = rep.data.result;
         this.picList_group = Math.ceil(this.picList.length / 4)
         this.$nextTick(this.initSwiper);

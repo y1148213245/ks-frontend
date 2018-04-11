@@ -19,11 +19,9 @@ try {
 } catch (error) {
 	console.log(error);
 }
-
 var _axios = axios.create({
   timeout: 10000,
-  withCredentials: true,
-  baseURL:CONFIG.BASE_URL
+  withCredentials: true
 });
 _axios.defaults.headers.token = getToken();
 

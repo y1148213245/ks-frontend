@@ -54,7 +54,7 @@ export default {
       this.showAll = !this.showAll;
     },
     queryNavCategory () {
-      Get(this.CONFIG.url, { "params": this.CONFIG.params }).then((res) => {
+      Get(CONFIG.BASE_URL+this.CONFIG.url, { "params": this.CONFIG.params }).then((res) => {
         var data = res.data;
         if (data && data.length) {
           this.navCategory = data;

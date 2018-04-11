@@ -40,7 +40,7 @@ export default {
   methods:{
     getList:function(){
       let url=this.CONFIG.url+"?colId="+this.CONFIG.params.colId;
-      Post(url).then((rep)=>{
+      Post(CONFIG.BASE_URL+url).then((rep)=>{
         if(rep && rep.data.data instanceof Array){
           this.activityList=rep.data.data;
         }

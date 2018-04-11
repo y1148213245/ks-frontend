@@ -13,7 +13,7 @@
           <a class="ui_list_01-scroll-list-a">
             <img class="ui_list_01-scroll-list-img" :src="item[listKeys.pic]" @click="toDetail(item)">
             <p class="ui_list_01-scroll-list-title" @click="toDetail(item)">{{item[listKeys.title]}}</p>
-            <p class="ui_list_01-scroll-list-author">{{item[listKeys.author]}}</p>
+            <p class="ui_list_01-scroll-list-author">{{item[listKeys.author] | formatAuthor}}</p>
           </a>
         </li>
       </ul>
@@ -62,7 +62,7 @@ export default {
     loadColDetail () {
       let getColDetailConfig = this.CONFIG.getColDetail;
       let url = getColDetailConfig.url + '?colId=' + getColDetailConfig.params.colId;
-      Post(url).then((resp) => {
+      Post(CONFIG.BASE_URL+url).then((resp) => {
         this.colDetail = resp.data.data;
         // this.list = resp.data.result;
       })
@@ -72,7 +72,7 @@ export default {
       let getListConfig = this.CONFIG.getList;
       let url = getListConfig.url;
       getListConfig.params.conditions = JSON.stringify(getListConfig.params.conditions);
-      Post(url, getListConfig.params).then((resp) => {
+      Post(CONFIG.BASE_URL+url, getListConfig.params).then((resp) => {
         this.list = resp.data.result;
       })
     },

@@ -95,6 +95,9 @@
               <span>导入项目组件资源</span>
             </el-upload>
           </div>
+          <div class="reviewAreaDiv" @click="selectSkin()">
+            <span>选为皮肤</span>
+          </div>
          </div>
          <div class="handle" v-if="showItem === 'component'">
            <div class="handleLeft">
@@ -116,7 +119,6 @@
                 <iframe :src="reviewContext"></iframe>
              </div>
              <div class="codemirror" v-if="showItem == 'coding' && !noData">
-                <!-- codemirror-->
                 <codemirror v-model="code"></codemirror>
              </div>
              <div class="component" v-if="showItem == 'component' && !noData">
@@ -171,7 +173,6 @@
      <el-dialog title="编辑组件配置信息" v-if="editConfigModel" :visible.sync="editConfigModel">
       <div>
         <textarea id="prodConfig" v-html="currentComponent" style="width: 100%; min-height: 200px;"></textarea>
-        <!-- <codemirror v-model="currentComponent.prod"></codemirror> -->
       </div>
 
       <span slot="footer" class="dialog-footer">
@@ -185,8 +186,6 @@
      <el-dialog title="编辑全局配置信息" v-if="editGlobalConfigModel" :visible.sync="editGlobalConfigModel">
       <div>
         <textarea id="globalConfig" v-html="CONFIG" style="width: 100%; min-height: 200px;"></textarea>
-        
-        <!-- <codemirror v-model="CONFIG"></codemirror> -->
       </div>
 
       <span slot="footer" class="dialog-footer">
@@ -208,6 +207,24 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="createNewModel = false">取 消</el-button>
         <el-button type="primary" @click="confirmCreateNew()">确 定</el-button>
+      </span>
+      
+     </el-dialog>
+
+     <!-- 选为皮肤的模态弹窗 -->
+     <el-dialog title="选为皮肤" :visible.sync="selectSkinModel">
+      <el-form :model="skinForm" :rules="ruleForm" ref="skinForm">
+        <el-form-item label="皮肤名称" prop="skinName">
+          <el-input v-model="skinForm.skinName" placeholder="请输入皮肤描述信息" style="width: 50%;"></el-input>
+        </el-form-item>
+        <el-form-item label="皮肤描述" prop="skinDescription">
+          <el-input v-model="skinForm.skinDescription" placeholder="请输入皮肤描述信息" style="width: 50%;"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelSelectSkin('skinForm')">取 消</el-button>
+        <el-button type="primary" @click="confirmSelectSkin('skinForm')">确 定</el-button>
       </span>
       
      </el-dialog>
@@ -277,13 +294,26 @@ export default {
       CONFIG: null, // 全局配置对象
       createNewModel: false,  // 新建文件的模态弹窗
       newFileName: '', // 新建文件名称
+      selectSkinModel: false,  // 选为皮肤模态弹窗
+      skinForm: {
+        skinName: "", // 皮肤名称
+        skinDescription: "", // 皮肤描述信息
+      },
+      ruleForm: {
+        skinName: [
+          { required: true, message: '请输入皮肤名称', trigger: 'blur' }
+        ],
+        skinDescription: [
+          { required: true, message: '请输入皮肤描述信息', trigger: 'blur' }
+        ],
+      }
     };
   },
 
   mounted () {
     this.configUrl = CONFIG.PAGE_MANAGEMENT_URL;
     let query = URL.parse(document.URL, true).query;
-    this.debugModel = query && query.debug && query.debug == '19790118' ? true : false;  // 暗号对上 进入debug模式
+    this.debugModel = query && query.debug && query.debug == 'zhixiang323' ? true : false;  // 暗号对上 进入debug模式
     this.examples = ScanExamples();
     this.unusedComponents = ScanExamples();
     this.VueExamples = VueExamples();
@@ -374,12 +404,12 @@ export default {
         curConfig[itemConfig][subItemConfig] = this.examples[com].prod;
       }
 
-      for(let key in this.examples[com].prod[itemConfig][subItemConfig]) {  // 遍历处理组件升级问题
-        if(!curConfig[itemConfig][subItemConfig].hasOwnProperty(key)) {  // 组件升级新增属性
+      for (let key in this.examples[com].prod[itemConfig][subItemConfig]) {  // 遍历处理组件升级问题
+        if (!curConfig[itemConfig][subItemConfig].hasOwnProperty(key)) {  // 组件升级新增属性
           curConfig[itemConfig][subItemConfig][key] = this.examples[com].prod[itemConfig][subItemConfig][key];
         }
       }
-      
+
       this.currentComponent[itemConfig] = this.currentComponent[itemConfig] ? this.currentComponent[itemConfig] : {};
       this.currentComponent[itemConfig][subItemConfig] = curConfig[itemConfig][subItemConfig];
     },
@@ -700,6 +730,37 @@ export default {
         this.configUrl + 'project/import/vue/project?projectName=' + this.siteName
       )
     },
+    selectSkin () {  // 开发者模式 选为皮肤
+      this.selectSkinModel = true;
+    },
+    cancelSelectSkin (formName) {  // 取消选为皮肤的操作
+      this.$refs[formName].resetFields();
+    },
+    confirmSelectSkin (formName) { // 确定选为皮肤的操作
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let loading = this.$loading({ fullscreen: true });
+          this.selectSkinModel = false;
+          Get(this.configUrl + 'project/selectAsSkin?projectName=' + this.siteName + '&name=' + this.skinForm.skinName + '&describe=' + this.skinForm.skinDescription).then((res) => {
+            loading.close();
+            if (res.data && res.data.success) {
+              this.$message({
+                type: "success",
+                message: "操作成功"
+              });
+            } else {
+              var errorMsg = res.data && res.data.reason ? res.data.reason : '操作失败，请稍后重试';
+              this.$message({
+                type: "info",
+                message: errorMsg
+              });
+            }
+          })
+        } else {
+          return false;
+        }
+      });
+    },
     importResourceSuccess (res, file) {  // 导入资源成功
       this.loading.close();
       if (res.success) {
@@ -850,6 +911,7 @@ body {
   border: 1px solid #ddd;
   border-radius: 8px;
   color: #7f7f7f;
+  cursor: pointer;
 }
 
 .components_pagemanagement .mainContent .handle {

@@ -28,7 +28,7 @@
               </div>
               <div class="namePrice">
                 <div v-text="item.productName" :title="item.productName"></div>
-                <div>价格：￥ <span v-text="item.productPrice"></span></div>
+                <div>价格：<span>{{item.productPrice | formatPriceNew}}</span></div>
               </div>
               <div class="readBox">
                 <a target="_blank" v-bind:href="'../pages/bookdetail.html?pubId=' + item.pubId">购买</a>

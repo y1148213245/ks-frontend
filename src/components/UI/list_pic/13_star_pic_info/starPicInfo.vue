@@ -37,7 +37,7 @@
       },
       methods:{
         getBookList: function () {
-          Post(this.CONFIG.url,this.CONFIG.params).then((rep)=>{
+          Post(CONFIG.BASE_URL+this.CONFIG.url,this.CONFIG.params).then((rep)=>{
             let data=rep.data.result;
             if(data && data instanceof Array && data.length>0){
               this.getQueryEbook=data;

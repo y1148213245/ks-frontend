@@ -53,7 +53,7 @@
     },
     methods:{
         queryData:function(){
-            Post(this.CONFIG.url, this.CONFIG.params || {
+            Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.params || {
                         conditions: "[{pub_resource_type:'BOOK'}]",
                         orderBy: null,
                         pageNo: "1",

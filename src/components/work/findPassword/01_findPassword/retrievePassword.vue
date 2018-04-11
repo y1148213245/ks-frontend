@@ -191,7 +191,7 @@ export default {
 						cb: this.findPasswordCallb
 					};
 					let loading = Vue.prototype.$loading({ text: "正在加载中..." });
-					Get(this.PROJECT.findPasswordUrl + params.email).then(function (response) {
+					Get(CONFIG.BASE_URL+this.PROJECT.findPasswordUrl + params.email).then(function (response) {
 						let findStatus = response.data.result;
 						let findNum = response.data.data;
 						params.cb(findStatus, findNum, response);
@@ -251,7 +251,7 @@ export default {
 						checkPass: this.ruleForm.checkPass,
 						cb: this.setPasswordCallb
 					};
-					Post(this.PROJECT.setPasswordUrl + params.email + '&password=' + params.checkPass).then(function (response) {
+					Post(CONFIG.BASE_URL+this.PROJECT.setPasswordUrl + params.email + '&password=' + params.checkPass).then(function (response) {
 						let setStatus = response.data.result;
 						params.cb(setStatus);
 					});

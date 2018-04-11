@@ -111,7 +111,7 @@ export default {
       let param = Object.assign({}, this.CONFIG.params);
       param.couponId = list.id;
       param.loginName = this.member.loginName;
-      Get(this.CONFIG.url, { params: param }).then(rep => {
+      Get(CONFIG.BASE_URL+this.CONFIG.url, { params: param }).then(rep => {
         let couponStatus = rep.data.result === "1" ? rep.data.data : false;
         if (couponStatus.code === "success") {
           this.$message({

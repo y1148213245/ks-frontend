@@ -34,6 +34,22 @@ const prod = {
         pic: "pub_picBig",
       },
       maxNum: 1, // 取多少个数据
+      toDetailType: {
+        type:'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
+        phone: {
+          functionName: 'appbook',/* app方法名 */
+          values:['id'],/* 配置轮播图数据中的字段名，用来取值给app方法传参 */
+        },
+        href: {/* 转跳页面 */
+          url:'',
+          keys:{
+            'pubId':'pubId'/* 左侧为转跳参数；右侧配置轮播图数据中的字段名，用来取值 */
+          },
+          fixedKeys:{
+            'app':'1'/* 左侧为转跳参数；右侧为值 */
+          }
+        }
+      },
     }
   }
 };

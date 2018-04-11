@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         hotsalebank: function () {
-            Post(this.CONFIG.url, this.CONFIG.params || {
+            Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.params || {
                 conditions: "[{pub_col_id:'131'},{pub_status:'1'}]",
                 groupBy: "pub_resource_id",
                 orderBy: "pub_read_num desc",
@@ -80,7 +80,7 @@ export default {
         }, */
         addgethistorylist: function (loginName) {
             let pubId = URL.parse(document.URL, true).query.pubId;
-            Get( '/browserHistory/addBrowserHistory.do?pubId=' + pubId + '&loginName=' + loginName).then((repsonse) => {
+            Get(CONFIG.BASE_URL+ '/browserHistory/addBrowserHistory.do?pubId=' + pubId + '&loginName=' + loginName).then((repsonse) => {
                 if (repsonse.data.result === '1') {
                     this.gethistorylist(loginName);
                 }
@@ -89,7 +89,7 @@ export default {
         gethistorylist (loginName) {
             let param = Object.assign({}, this.CONFIG.params);
             param.username = loginName;
-            Get(this.CONFIG.url, { params: param }).then((rep) => {
+            Get(CONFIG.BASE_URL+this.CONFIG.url, { params: param }).then((rep) => {
                 var data = rep.data.data;
                 var hasData = rep.status === 200 && data && Object.prototype.toString.call(data) === "[object Array]" && data.length > 0 ? true : false;
                 if (hasData) {
@@ -113,7 +113,7 @@ export default {
         },
         deleteOneHistory (pubId) {
             if (this.member.loginName) {
-                Get( 'browserHistory/deleteOneHistory.do?&loginName=' + this.member.loginName + '&pubId=' + pubId).then((rep) => {
+                Get(CONFIG.BASE_URL+ 'browserHistory/deleteOneHistory.do?&loginName=' + this.member.loginName + '&pubId=' + pubId).then((rep) => {
                     if (rep.data.result === "1") {
                         this.$message({
                             type: "success",

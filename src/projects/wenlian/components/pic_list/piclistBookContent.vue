@@ -81,7 +81,7 @@ export default {
       let paramsObj = Object.assign({}, this.CONFIG.params);
       paramsObj.loginName = loginName;
       paramsObj.pubId = this.pubId;
-      Get(this.CONFIG.url, { params: paramsObj }).then((rep) => {
+      Get(CONFIG.BASE_URL+this.CONFIG.url, { params: paramsObj }).then((rep) => {
         if (rep.data.result === '1') {
           this.booklist = rep.data.data;
         }
@@ -99,7 +99,7 @@ export default {
       if (!isHas) params.conditions.push({ BOOK_SYS_AUTHORS: author });
 
       params.conditions = JSON.stringify(params.conditions);
-      Post(this.CONFIG.url, params).then((rep) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, params).then((rep) => {
         if (rep.data.success && rep.data.result.length > 0) {
           var tempList = [];
           var data = rep.data.result;

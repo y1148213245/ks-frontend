@@ -68,7 +68,7 @@
               resolve(bookInfo);
             } else {
               bookParam.pubId = param[i];
-              Get(_this.CONFIG.url, {"params": bookParam}).then((rep) => {
+              Get(CONFIG.BASE_URL+_this.CONFIG.url, {"params": bookParam}).then((rep) => {
                 let data = rep.data.data;
                 if (data) {
                   bookInfo.push(data);
@@ -97,7 +97,7 @@
             } else {
               bookParam.doclibCode = param[i].type;
               bookParam.docID = param[i].id;
-              Get(_this.CONFIG.introductionUrl, {"params": bookParam}).then((rep) => {
+              Get(CONFIG.BASE_URL+_this.CONFIG.introductionUrl, {"params": bookParam}).then((rep) => {
                 let content=JSON.parse(JSON.stringify(rep)).data.filter(function(data){
                   return data.topic=="内容简介";
                 })[0].content;

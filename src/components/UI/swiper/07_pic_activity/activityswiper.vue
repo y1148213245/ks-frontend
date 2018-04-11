@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     querySwpierList () {
-      Post(this.CONFIG.url, this.CONFIG.params).then(rep => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.params).then(rep => {
         var data = rep.data.result;
         if (data && data instanceof Array && data.length > 0) {
           this.swiperList = data;
@@ -49,7 +49,7 @@ export default {
     toRelatedZX (pubId) {
       let params = Object.assign({}, this.CONFIG.relatedZXparams);
       params.pubId = pubId;
-      Get(this.CONFIG.relatedZXurl, { params: params }).then(rep => {
+      Get(CONFIG.BASE_URL+this.CONFIG.relatedZXurl, { params: params }).then(rep => {
         var data = rep.data.data.result;
         if (data && data instanceof Array && data.length > 0) {
           let relatedId = data[0].id;

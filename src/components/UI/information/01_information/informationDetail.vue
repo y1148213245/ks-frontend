@@ -84,7 +84,7 @@ export default {
       paramsObj.loginName = this.member.loginName;
       paramsObj.pubId = this.pubId; */
 
-      Get(this.CONFIG.queryDetail.url + '?loginName=' + this.member.loginName + '&pubId=' + this.pubId).then(rep => {
+      Get(CONFIG.BASE_URL+this.CONFIG.queryDetail.url + '?loginName=' + this.member.loginName + '&pubId=' + this.pubId).then(rep => {
         if (rep.data && rep.data.success) {
           this.information = rep.data.data;
         }
@@ -104,7 +104,7 @@ export default {
       paramsObj.pubId = this.pubId;
       paramsObj.loginName = operateType;  // 操作类型  点赞：1   收藏：0 */
 
-      Post(this.CONFIG.collectOrLike.url + '?loginName=' + this.member.loginName + '&pubId=' + this.pubId + '&operateType=' + operateType + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.collectOrLike.url + '?loginName=' + this.member.loginName + '&pubId=' + this.pubId + '&operateType=' + operateType + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
         if (rep.data && rep.data.result == '1') {  // 操作成功
           this.queryInformation();
           this.$message({

@@ -81,7 +81,7 @@ export default {
         paramsObj.pageNo = param.pageNo;
         paramsObj.pageSize = param.pageSize;
       }
-      Post(this.CONFIG.url, paramsObj).then((rep) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, paramsObj).then((rep) => {
 
         var datas = rep.data.result;
         var loadDatas = [];

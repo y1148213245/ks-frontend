@@ -107,7 +107,7 @@
       queryEditorPage: function (pageNum, pageSize) {
         this.queryEditorParams.pageNo = pageNum;
         this.queryEditorParams.pageSize = pageSize;
-        Post(this.CONFIG.queryEditorList.url, this.queryEditorParams).then(rep => {
+        Post(CONFIG.BASE_URL+this.CONFIG.queryEditorList.url, this.queryEditorParams).then(rep => {
           if (rep && rep.data && rep.data.success) {
             this.editorPage = rep.data;
           }

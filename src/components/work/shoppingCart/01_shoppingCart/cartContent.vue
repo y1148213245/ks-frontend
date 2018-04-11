@@ -359,7 +359,7 @@
             <span>共有 {{virtualCoin}} 下载币</span>
             <span>使用</span>
             <input type="number" id="virtualCoin" v-on:input="getRmbCoin()"
-                   @keypress="checkVirtual($event)" oninput="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}">
+                   @keypress="checkVirtual($event)">
             <span>下载币</span>
           </div>
           <div class="coinremark">1下载币=0.1元</div>
@@ -1576,6 +1576,8 @@
                 _this.$alert("下载币优惠数额不能小于0噢~", "系统提示", {
                   confirmButtonText: "确定"
                 });
+                $("#virtualCoin").val(0);
+                _this.$store.state.shoppingcart.rmbCoin = 0;
               }
               if (this.rmbCoin > payAmount) {
                 _this.$alert("下载币优惠数额不得大于实付金额噢~", "系统提示", {

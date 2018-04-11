@@ -74,7 +74,7 @@
         let param = Object.assign({}, this.CONFIG.params, {
           pubId: this.pubId,
         });
-        Get(this.CONFIG.url, {"params": param}).then(function (resp) {
+        Get(CONFIG.BASE_URL+this.CONFIG.url, {"params": param}).then(function (resp) {
           _this.newsDetailInfo = resp.data.data
         })
       },
@@ -83,7 +83,7 @@
           pubId: this.pubId,
           siteId: CONFIG.SITE_CONFIG.siteId
         });
-        Post(this.collectOrLikeConfig.url, param).then((rep) => {
+        Post(CONFIG.BASE_URL+this.collectOrLikeConfig.url, param).then((rep) => {
           alert("收藏成功");
         })
       }

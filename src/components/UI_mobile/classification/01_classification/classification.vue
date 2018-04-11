@@ -41,7 +41,7 @@ export default {
   methods: {
     queryClassificationList () { // 图书分类查询
       let loading = this.$loading({ fullscreen: true });
-      Get(this.CONFIG.queryClassification.url, { params: this.CONFIG.queryClassification.params }).then(rep => {
+      Get(CONFIG.BASE_URL+this.CONFIG.queryClassification.url, { params: this.CONFIG.queryClassification.params }).then(rep => {
         var datas = rep.data;
         if (datas && datas instanceof Array && datas.length > 0) {
           this.classifyList = datas;
@@ -50,7 +50,7 @@ export default {
       });
     },
     queryCount () {  // 查各个分类下书的总数
-      Post(this.CONFIG.queryCount.url, this.CONFIG.queryCount.params).then(rep => {
+      Post(CONFIG.BASE_URL+this.CONFIG.queryCount.url, this.CONFIG.queryCount.params).then(rep => {
         var datas = rep.data.result;
         if (datas && datas instanceof Array && datas.length > 0) {
           var data = datas[0].BOOK_BOOK_CASCADID_1;

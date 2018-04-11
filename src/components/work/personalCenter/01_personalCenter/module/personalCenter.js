@@ -56,7 +56,7 @@ var actions = {
   /*查询账户信息*/
   queryUser({ commit }, param) {
     /*登陆验证*/
-    return Get( "checkToken.do").then(function(rep) {
+    return Get(CONFIG.BASE_URL+ "checkToken.do").then(function(rep) {
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
         commit("setMember", datas);

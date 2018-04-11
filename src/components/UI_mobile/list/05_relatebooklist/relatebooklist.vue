@@ -65,7 +65,7 @@ export default {
       }
     },
     queryClassificationList () {
-      Get(this.CONFIG.url, { params: this.CONFIG.params }).then(rep => {
+      Get(CONFIG.BASE_URL+this.CONFIG.url, { params: this.CONFIG.params }).then(rep => {
         var datas = rep.data.data.bookcat;
         if (datas && datas instanceof Array && datas.length > 0) {
           this.getRelateBookList = datas.slice(0, this.CONFIG.maxRelateNumber);

@@ -56,7 +56,7 @@ export default {
       window.location.href = this.CONFIG.detailHref + id + "&currentType=author#";
     },
     loadDatas () {
-      Post(this.CONFIG.url, this.CONFIG.param).then((rep) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.param).then((rep) => {
         this.list = rep.data.result;
         this.callback();
       })

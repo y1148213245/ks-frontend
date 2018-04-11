@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     queryColumnHead () {  // 查询栏目
-      Post(this.CONFIG.url + '?colId=' + this.CONFIG.params.colId).then((rep) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url + '?colId=' + this.CONFIG.params.colId).then((rep) => {
         var datas = rep.data.data;
         if (rep.data.success && datas && datas.length > 0) {
           this.columnHead = datas;

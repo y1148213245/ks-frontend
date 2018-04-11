@@ -5,7 +5,9 @@
         <i class="el-icon-arrow-left work_mobile_search_01_backicon"></i>
       </a>
       <span class="work_mobile_search_01_search">
-       <el-input v-model="searchText" placeholder="请输入您要搜索的图书名" type="search" @keyup.enter.native="doSearch()"></el-input>
+       <form action="">
+        <el-input v-model="searchText" placeholder="请输入您要搜索的图书名" type="search" @keyup.enter.native="doSearch()"></el-input>
+       </form>
        <i class="el-icon-close work_mobile_search_01_clear" @click="doClear()"></i>
 			</span>
       <span class="work_mobile_search_01_searchtext" @click="doSearch()">搜索</span>
@@ -99,6 +101,8 @@ input::-webkit-search-cancel-button {
   padding: 0.15rem 0.6rem 0.15rem 0.4rem;
   border: 1px solid #7a7a7a;
   border-radius: 0.5rem;
+  height: 0.8rem;
+  line-height: 0.8rem;
 }
 
 .work_mobile_search_01_clear {

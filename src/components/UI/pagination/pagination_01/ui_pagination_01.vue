@@ -33,7 +33,7 @@
     },
     methods: {
       getPreNext: function () {
-        Post(this.CONFIG.url, this.params).then((rep) => {
+        Post(CONFIG.BASE_URL+this.CONFIG.url, this.params).then((rep) => {
           //上一篇
           let prev = Object.assign({}, this.params);
           prev.pubId = rep.data.prev;

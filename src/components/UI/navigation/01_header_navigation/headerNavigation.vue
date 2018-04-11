@@ -45,7 +45,7 @@
     },
     methods:{
         initNavigation:function(){
-            Get(this.CONFIG.url).then((rep) => {
+            Get(CONFIG.BASE_URL+this.CONFIG.url).then((rep) => {
                 
                 let shows = this.showItemFromColId;
                 let datas = rep.data.data

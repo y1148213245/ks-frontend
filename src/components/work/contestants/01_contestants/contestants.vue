@@ -307,7 +307,7 @@ export default {
   },
   created () {
     var _this = this;
-    Get( "checkToken.do").then(function (rep) {
+    Get(CONFIG.BASE_URL+ "checkToken.do").then(function (rep) {
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
         _this.teacherID = datas.id;
@@ -331,7 +331,7 @@ export default {
   methods: {
     queryParticipants () {
       // 查询参赛人列表
-      Get(this.CONFIG.competitionList.url, {
+      Get(CONFIG.BASE_URL+this.CONFIG.competitionList.url, {
         params: {
           teacherId: this.teacherID,
           pageNo: "1",
@@ -341,7 +341,7 @@ export default {
         let participantsArr = [];
         let participantsedArr = [];
         let participantsList = rep.data.data;
-        Get(this.CONFIG.competitionList.competitionedUrl, {
+        Get(CONFIG.BASE_URL+this.CONFIG.competitionList.competitionedUrl, {
           params: {
             loginName: this.loginName,
             pageSize: '1',
@@ -416,7 +416,7 @@ export default {
         symbols +
         "&" +
         vals;
-      Get(url).then(resp => {
+      Get(CONFIG.BASE_URL+url).then(resp => {
         this.schoolInformaitionValue = ""; //清空学校
         this.schoolArr = resp.data.content;
         console.log(this.schoolArr);
@@ -431,7 +431,7 @@ export default {
         return null;
       };
       this.docId = getUrlStr("docId");
-      Get(this.CONFIG.supplementaryInformation.url, {
+      Get(CONFIG.BASE_URL+this.CONFIG.supplementaryInformation.url, {
         params: {
           doclibCode: "PORTAL_ACTIVITY",
           docID: this.docId
@@ -512,7 +512,7 @@ export default {
                   message: "学生添加成功!"
                 });
                 this.queryParticipants();
-                /*  Get(this.CONFIG.competitionList.url, {
+                /*  Get(CONFIG.BASE_URL+this.CONFIG.competitionList.url, {
                    params: {
                      teacherId: this.teacherID,
                      pageNo: "1",
@@ -620,7 +620,7 @@ export default {
             paramsObj.attachMap[0].FILERECORDID = this.attachID.toString(); //文件附件ID
             paramsObj.metaMap.COMMITUSER = this.loginName; //	提交用户
             paramsObj.metaMap.WORKSTYPE = this.worktype; //	文件类型
-            Post(this.CONFIG.informationUploading.url, paramsObj).then(rep => {
+            Post(CONFIG.BASE_URL+this.CONFIG.informationUploading.url, paramsObj).then(rep => {
               var datas = rep.data.result;
               console.log(rep.data.status);
               if (rep.data.status == "success") {

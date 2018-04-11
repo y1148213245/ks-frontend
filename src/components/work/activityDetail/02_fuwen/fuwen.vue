@@ -56,7 +56,7 @@ export default {
         url += '?' + queryParam_docId + '&' + queryParam_code;
       }
       
-      Get(url).then((resp) => {
+      Get(CONFIG.BASE_URL+url).then((resp) => {
         let datas = resp.data;
         let fuwen = {}
 

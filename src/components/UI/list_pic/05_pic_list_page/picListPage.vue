@@ -62,7 +62,7 @@ export default {
       } else {
         this.CONFIG.params.conditions = (param == "-1") ? conditions + "]" : conditions + ",{BOOK_BOOK_CASCADID:" + param + ",op:'lk'}]";
       }
-      Post(this.CONFIG.url, paramsObj).then((rep) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, paramsObj).then((rep) => {
         var datas = rep.data.result;
         var loadDatas = [];
         if (datas && datas instanceof Array && datas.length > 0) {

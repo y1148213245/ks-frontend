@@ -80,7 +80,7 @@ export default {
         pubId: this.pubId,
         loginName: ''
       }
-      Get(url, { params: paramsObj }).then((resp) => {
+      Get(CONFIG.BASE_URL+url, { params: paramsObj }).then((resp) => {
         this.bookInfo = resp.data.data;
         this.probation = this.bookInfo.bookFreeDownLoadPath ? true : false;
       })

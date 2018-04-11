@@ -46,7 +46,7 @@ export default {
       if (this.refinedBook && this.refinedBook instanceof Array && this.refinedBook.length > 0) {
         this.refinedBookList = this.refinedBook;
       } else {
-        Post(this.CONFIG.url, this.CONFIG.param).then((rep) => {
+        Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.param).then((rep) => {
           this.refinedBookList = rep.data.result;
         });
       }

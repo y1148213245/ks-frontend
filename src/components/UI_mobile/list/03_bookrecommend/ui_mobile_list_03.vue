@@ -83,7 +83,7 @@ export default {
       }
     },
     getBookData: function () {
-      Post(this.CONFIG.url, this.params).then((response) => {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, this.params).then((response) => {
         let data = response.data.result;
         if (data && data instanceof Array) {
           this.bookInfo = response.data.result[0];
@@ -91,7 +91,7 @@ export default {
       })
     },
     getNavData: function () {
-      Get(this.CONFIG.navUrl, { "params": this.navParams }).then((response) => {
+      Get(CONFIG.BASE_URL+this.CONFIG.navUrl, { "params": this.navParams }).then((response) => {
         let data = response.data.data;
         data.filter((item) => {
           if (item.id === this.CONFIG.colId) {
@@ -111,6 +111,8 @@ export default {
 .ui_mobile_list_03_l {
   float: left;
   width: 2.78rem;
+  height: 4rem;
+  box-sizing: border-box;
   border-right: 1px solid #d9d9d9;
   border-bottom: 1px solid #d9d9d9;
   border-top: 0rem;
@@ -134,6 +136,8 @@ export default {
   -ms-flex-direction: column;
   overflow: hidden;
   /* flex-direction: column; */
+  height: 2rem;
+  box-sizing: border-box;
 }
 .ui_mobile_list_03_a {
   display: block;

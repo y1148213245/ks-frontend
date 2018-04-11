@@ -81,7 +81,7 @@ export default {
     },
     loadCols() {
       let url=this.CONFIG.url+'?colId='+this.CONFIG.param.colId;
-      Post(url).then((rep)=>{
+      Post(CONFIG.BASE_URL+url).then((rep)=>{
         this.cols = rep.data.data;
         if (this.cols && this.cols instanceof Array && this.cols.length > 0) {
           this.loadList();
@@ -95,7 +95,7 @@ export default {
       }
       this.conditions = "[{pub_col_id:" + values + ",op:'in'}]";
       let param=Object.assign({},this.CONFIG.resultParam,{conditions: this.conditions});
-      Post(this.CONFIG.resultUrl,param).then((rep)=>{
+      Post(CONFIG.BASE_URL+this.CONFIG.resultUrl,param).then((rep)=>{
         this.list = rep.data.result;
         this.totalCount = rep.data.totalCount;
       })

@@ -22,7 +22,7 @@
     props:["namespace"],
     mounted:function(){
       let CONFIG=PROJECT_CONFIG[this.namespace];
-      Post(CONFIG.url,CONFIG.params).then((req)=>{
+      Post(CONFIG.BASE_URL+CONFIG.url,CONFIG.params).then((req)=>{
         this.aboutList=req.data.result[0];
       });
     }

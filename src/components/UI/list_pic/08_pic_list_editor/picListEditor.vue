@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     queryData: function () {
-      Post(this.CONFIG.url, this.CONFIG.params || {
+      Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.params || {
         conditions: "[{pub_col_id:'117'}]",
         groupBy: "pub_resource_id",
         orderBy: "pub_a_order asc pub_lastmodified desc id asc",

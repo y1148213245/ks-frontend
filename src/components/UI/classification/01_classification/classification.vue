@@ -37,7 +37,7 @@ export default {
   methods: {
     queryClassificationList(param) {
       // 书籍分类列表查询
-      Get(this.CONFIG.url, {params: this.CONFIG.params}).then(rep => {
+      Get(CONFIG.BASE_URL+this.CONFIG.url, {params: this.CONFIG.params}).then(rep => {
         var datas = rep.data;
         var ebookCategory = [];
         if (datas && datas instanceof Array && datas.length > 0) {
