@@ -23,6 +23,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
+    babel: "babel-polyfill",
     app: './src/projects/' + baseConfig.concurrentProject + "/main/index.js",
     project: './src/projects/' + baseConfig.concurrentProject + "/main/project.js",
   },

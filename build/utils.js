@@ -136,7 +136,7 @@ exports.htmlPlugin = function () {
 			// 文件名称
 			filename: _path,
 			// 页面模板需要加对应的js脚本，如果不加这行则每个页面都会引入所有的js脚本
-			chunks: ['manifest', 'vendor', "project", "app"],
+			chunks: ["babel", 'manifest', 'vendor', "project", "app"],
 			chunksSortMode: 'manual',
 			inject: true
 		};
