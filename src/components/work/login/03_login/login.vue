@@ -46,7 +46,7 @@ export default {
     login: function () {
       this.action_login({ member: this.member }).then((rep) => {
         if (rep.data.result && rep.data.result == '1') {
-          if (rep.data.checkStatus == 0 || rep.data.checkStatus == "0") {
+          if (rep.data.data.checkStatus == 0 || rep.data.data.checkStatus == "0") {
             this.$message({
               type: "error",
               message: "账号已被冻结，请联系管理员"
@@ -56,6 +56,8 @@ export default {
             let url = query["service"];
             if (url && url.indexOf("login.html") == -1) {
               window.location.href = url;
+            } else if (document.referrer && document.referrer.indexOf("login.html") == -1) {
+              window.location.href = document.referrer
             } else {
               window.location.href = "./index.html";
             }

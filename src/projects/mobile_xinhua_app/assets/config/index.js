@@ -470,7 +470,6 @@ var $_$ = {
 					url:  "spc/prodb/treeByCode.do", // 请求分类
 					params: {
 						code: "BOOK",
-						timeStamp: new Date().getTime(),
 					},
 					keys: { // 字段兼容
 						cascadeId: "cascadeId", // 分类Id
@@ -537,7 +536,6 @@ var $_$ = {
 						url:  "spc/prodb/treeByCode.do", // 请求分类
 						params: {
 							code: "BOOK",
-							timeStamp: new Date().getTime(),
 						},
 						keys: { // 字段兼容
 							cascadeId: "cascadeId", // 分类Id

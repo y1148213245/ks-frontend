@@ -42,7 +42,9 @@ export default {
   methods: {
     queryClassificationList () { // 图书分类查询
       let loading = this.$loading({ fullscreen: true });
-      Get(CONFIG.BASE_URL+this.CONFIG.queryClassification.url, { params: this.CONFIG.queryClassification.params }).then(rep => {
+      let paramsObj = Object.assign({}, this.CONFIG.queryClassification.params);
+      paramsObj.timeStamp = new Date().getTime();  // 添加时间戳防止返回的时候从缓存里面取数据
+      Get(CONFIG.BASE_URL+this.CONFIG.queryClassification.url, { params: paramsObj }).then(rep => {
         var datas = rep.data;
         if (datas && datas instanceof Array && datas.length > 0) {
           this.classifyList = datas;

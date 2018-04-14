@@ -19,7 +19,7 @@
 <script>
 import URL from 'url'
 import PROJECT_CONFIG from 'projectConfig'
-import { Post } from '@common'
+import { _axios,Post } from '@common'
 import { mapGetters, mapActions } from 'vuex'
 import * as interfaces from "@work/login/common/interfaces.js"
 
@@ -73,7 +73,9 @@ export default {
           eval(str)
         }
       }else{
-        window.location.reload(true);
+        _axios.defaults.headers.token = '';
+        this.getMemberInfo();
+        location.reload(true);
       }
     }
   }

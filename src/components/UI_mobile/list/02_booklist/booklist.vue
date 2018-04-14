@@ -49,7 +49,7 @@
         </dl>
       </div>
       <div class="ui_mobile_list_02_none" v-else>暂无数据</div>
-      <div class="ui_mobile_list_02_none" v-if="noMore && !CONFIG.showNum">没有更多啦~</div>
+      <div class="ui_mobile_list_02_none" v-if="bookList && bookList.length >0 && noMore && !CONFIG.showNum">没有更多啦~</div>
     </div>
     <div class="ui_mobile_list_02-more" v-if="CONFIG && CONFIG.toMoreList && CONFIG.toMoreList.isShow">
       <a href="javascript:void(0)" @click="toMoreLink" >更多排行
