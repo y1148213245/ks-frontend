@@ -5,7 +5,8 @@
       <p class="ui_mobile_classification_bgpic" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></p>
       <div class="ui_mobile_classification_con">
         <p class="ui_mobile_classification_text" v-text="item[keys.text]"></p>
-        <p class="ui_mobile_classification_count">{{ keys && keys.cascadeId && item[keys.cascadeId] ? countsList[item[keys.cascadeId]]: 0 | formatCount}}</p>
+        <p class="ui_mobile_classification_count" v-if="keys && keys.cascadeId && item[keys.cascadeId]">{{ countsList[item[keys.cascadeId]] | formatCount}}</p>
+        <p class="ui_mobile_classification_count" v-else>共 0 本</p>
       </div>
     </a>
     </div>

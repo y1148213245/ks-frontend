@@ -51,7 +51,14 @@ const prod = {
           }
         },
         toMoreList:{
-          url:'./booklist.html'
+          isShow: true,//是否显示
+          url: './booklist.html',//链接
+          keys: { //动态参数，左为参数名，右为内部数据的字段名
+            colId: 'id'
+          },
+          fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+            app: 1
+          }
         },
         toDetailType: {
           type:'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/

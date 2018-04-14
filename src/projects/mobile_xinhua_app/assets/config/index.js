@@ -79,7 +79,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract', 'price'], // 控制显示哪些项
@@ -249,7 +249,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract'], // 控制显示哪些项
@@ -308,7 +308,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract'], // 控制显示哪些项
@@ -367,7 +367,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract'], // 控制显示哪些项
@@ -428,7 +428,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract'], // 控制显示哪些项
@@ -470,6 +470,7 @@ var $_$ = {
 					url:  "spc/prodb/treeByCode.do", // 请求分类
 					params: {
 						code: "BOOK",
+						timeStamp: new Date().getTime(),
 					},
 					keys: { // 字段兼容
 						cascadeId: "cascadeId", // 分类Id
@@ -489,8 +490,16 @@ var $_$ = {
 						pageSize: "10",
 						searchText: null
 					},
-				}
-
+				},
+				toMoreList: {
+					"url": "./classifybook.html",
+					"keys": {
+						"cascadId": "cascadeId"
+					},
+					"fixedKeys": {
+						"app": 1
+					}
+				},
 			}
 		}
 	},
@@ -528,6 +537,7 @@ var $_$ = {
 						url:  "spc/prodb/treeByCode.do", // 请求分类
 						params: {
 							code: "BOOK",
+							timeStamp: new Date().getTime(),
 						},
 						keys: { // 字段兼容
 							cascadeId: "cascadeId", // 分类Id
@@ -613,8 +623,15 @@ var $_$ = {
 							name: 'name',
 						}
 					},
-					toMoreList: {
-						url: './booklist.html'
+					toMoreList:{
+						isShow: true,//是否显示
+						url: './booklist.html',//链接
+						keys: { //动态参数，左为参数名，右为内部数据的字段名
+							colId: 'id'
+						},
+						fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+							app: 1
+						}
 					},
 					toDetailType: {
 						type: 'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -673,8 +690,15 @@ var $_$ = {
 							name: 'name',
 						}
 					},
-					toMoreList: {
-						url: './booklist.html'
+					toMoreList:{
+						isShow: true,//是否显示
+						url: './booklist.html',//链接
+						keys: { //动态参数，左为参数名，右为内部数据的字段名
+							colId: 'id'
+						},
+						fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+							app: 1
+						}
 					},
 					toDetailType: {
 						type: 'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -733,8 +757,15 @@ var $_$ = {
 							name: 'name',
 						}
 					},
-					toMoreList: {
-						url: './booklist.html'
+					toMoreList:{
+						isShow: true,//是否显示
+						url: './booklist.html',//链接
+						keys: { //动态参数，左为参数名，右为内部数据的字段名
+							colId: 'id'
+						},
+						fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+							app: 1
+						}
 					},
 					toDetailType: {
 						type: 'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -793,8 +824,15 @@ var $_$ = {
 							name: 'name',
 						}
 					},
-					toMoreList: {
-						url: './booklist.html'
+					toMoreList:{
+						isShow: true,//是否显示
+						url: './booklist.html',//链接
+						keys: { //动态参数，左为参数名，右为内部数据的字段名
+							colId: 'id'
+						},
+						fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+							app: 1
+						}
 					},
 					toDetailType: {
 						type: 'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -986,6 +1024,22 @@ var $_$ = {
 					pic: "pub_picBig",
 				},
 				maxNum: 1, // 取多少个数据
+				toDetailType: {
+					type:'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
+					phone: {
+						functionName: 'appbook',/* app方法名 */
+						values:['id'],/* 配置轮播图数据中的字段名，用来取值给app方法传参 */
+					},
+					href: {/* 转跳页面 */
+						url:'',
+						keys:{
+							'pubId':'pubId'/* 左侧为转跳参数；右侧配置轮播图数据中的字段名，用来取值 */
+						},
+						fixedKeys:{
+							'app':'1'/* 左侧为转跳参数；右侧为值 */
+						}
+					}
+				},
 			},
 			ui_mobile_swiper_01: {
 				'top': {

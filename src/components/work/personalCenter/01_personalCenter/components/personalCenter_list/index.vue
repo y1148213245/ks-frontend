@@ -35,10 +35,11 @@
                                     <i class="el-icon-time"></i> {{Aitem.createTime.split('.')[0]}}</span>
                                 <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:50px;">订单号：{{Aitem.parentOrderCode}}</span>
                                 <!-- <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:50px;" v-if="Aitem.orderList[0].deliveryPerson">收货人：{{Aitem.orderList[0].deliveryPerson}}</span> -->
-                                <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==0 && Aitem.status==1">订单状态：待付款</span>
+                                <!-- 隐藏总单的订单状态 -->
+                                <!-- <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==0 && Aitem.status==1">订单状态：待付款</span>
                                 <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==1">订单状态：进行中</span>
                                 <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==5">订单状态：已完成</span>
-                                <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==0 && Aitem.status==2">订单状态：已取消</span>
+                                <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==0 && Aitem.status==2">订单状态：已取消</span> -->
                             </div>
 
                             <div v-for="(item,index) in Aitem.orderList" :key="index">
@@ -126,7 +127,7 @@
                           </div>
                           <div class="realAmount" v-show="Aitem.balanceAmount!='0.00'" style="display:inline-block">下载币抵扣：<span>￥{{Aitem.balanceAmount || 0 }}</span></div>
                           <div class="realAmount" v-show="Aitem.couposAmount!='null' && Aitem.couposAmount!='0.00'">优惠券减免：<span>￥{{Aitem.couposAmount || 0 }}</span></div>
-                          <div class="realAmount" v-show="Aitem.orderList[0].activityRemark && Aitem.orderList[0].activityRemark!='0.00'">活动减免：<span>￥{{Aitem.orderList[0].activityRemark || 0 }}</span></div>
+                          <div class="realAmount" v-show="Aitem.orderList[0] && Aitem.orderList[0].activityRemark && Aitem.orderList[0].activityRemark!='0.00'">活动减免：<span>￥{{Aitem.orderList[0] && Aitem.orderList[0] && Aitem.orderList[0].activityRemark || 0 }}</span></div>
                         </div>
                     </div>
                 </div>

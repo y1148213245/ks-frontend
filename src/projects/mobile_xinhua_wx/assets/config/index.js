@@ -82,7 +82,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract', 'price'], // 控制显示哪些项
@@ -252,7 +252,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract'], // 控制显示哪些项
@@ -311,7 +311,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract'], // 控制显示哪些项
@@ -370,7 +370,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract'], // 控制显示哪些项
@@ -431,7 +431,7 @@ var $_$ = {
 							orderBy: 'orderParam'
 						},
 						fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+							app: 1
 						}
 					},
 					showItem: ['picture', 'bookname', 'author', 'abstract'], // 控制显示哪些项
@@ -473,6 +473,7 @@ var $_$ = {
 					url:  "spc/prodb/treeByCode.do", // 请求分类
 					params: {
 						code: "BOOK",
+						timeStamp: new Date().getTime(),
 					},
 					keys: { // 字段兼容
 						cascadeId: "cascadeId", // 分类Id
@@ -540,6 +541,7 @@ var $_$ = {
 						url:  "spc/prodb/treeByCode.do", // 请求分类
 						params: {
 							code: "BOOK",
+							timeStamp: new Date().getTime(),
 						},
 						keys: { // 字段兼容
 							cascadeId: "cascadeId", // 分类Id
@@ -626,7 +628,14 @@ var $_$ = {
 						}
 					},
 					toMoreList: {
-						url: './booklist.html'
+						isShow: true,//是否显示
+						url: './booklist.html',//链接
+						keys: { //动态参数，左为参数名，右为内部数据的字段名
+							colId: 'id'
+						},
+						fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+							app: 1
+						}
 					},
 					toDetailType: {
 						type: 'href',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -686,7 +695,14 @@ var $_$ = {
 						}
 					},
 					toMoreList: {
-						url: './booklist.html'
+						isShow: true,//是否显示
+						url: './booklist.html',//链接
+						keys: { //动态参数，左为参数名，右为内部数据的字段名
+							colId: 'id'
+						},
+						fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+							app: 1
+						}
 					},
 					toDetailType: {
 						type: 'href',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -746,7 +762,14 @@ var $_$ = {
 						}
 					},
 					toMoreList: {
-						url: './booklist.html'
+						isShow: true,//是否显示
+						url: './booklist.html',//链接
+						keys: { //动态参数，左为参数名，右为内部数据的字段名
+							colId: 'id'
+						},
+						fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+							app: 1
+						}
 					},
 					toDetailType: {
 						type: 'href',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -806,7 +829,14 @@ var $_$ = {
 						}
 					},
 					toMoreList: {
-						url: './booklist.html'
+						isShow: true,//是否显示
+						url: './booklist.html',//链接
+						keys: { //动态参数，左为参数名，右为内部数据的字段名
+							colId: 'id'
+						},
+						fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+							app: 1
+						}
 					},
 					toDetailType: {
 						type: 'href',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/

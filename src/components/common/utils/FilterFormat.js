@@ -55,7 +55,7 @@ Vue.filter('formatPriceNew', function (value) {
   }
 });
 
- // 处理分类下书的总数 “共 xx 本” 形式
+// 处理分类下书的总数 “共 xx 本” 形式
 Vue.filter('formatCount', function (value) {
   if (value == null || value == undefined) { // 返回为空
     return '共 0 本';
@@ -64,11 +64,19 @@ Vue.filter('formatCount', function (value) {
   }
 });
 
- // 处理 “暂无作者” 形式
- Vue.filter('formatAuthor', function (value) {
+// 处理 “暂无作者” 形式
+Vue.filter('formatAuthor', function (value) {
   if (!value) { // 返回为空
     return '暂无作者';
   } else {
     return value;
   }
+});
+
+// 处理成 “暂无” 形式
+Vue.filter('notAvailableNew', function (value) {
+  if (!value) {
+    return '暂无';
+  }
+  return value;
 });

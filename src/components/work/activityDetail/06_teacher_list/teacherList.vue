@@ -4,15 +4,19 @@
     <template v-for="(item,index) in list">
       <div class="work_activitydetail_06-item" :key="index">
         <div class="work_activitydetail_06-img_box">
-          <img :src="item[keys.picUrl]" alt="暂无头像" class="work_activitydetail_06-img">
+          <img :src="item[keys.picUrl]" alt="暂无头像" class="work_activitydetail_06-img" @click="showDetail(item)">
         </div>
         <div class="work_activitydetail_06-content">
-          <div class="work_activitydetail_06-title" v-text="item[keys.name]"></div>
+          <div class="work_activitydetail_06-title" v-text="item[keys.name]" @click="showDetail(item)"></div>
           <div class="work_activitydetail_06-commentProduct">点评了文章《<span v-text="item[keys.commentProduct]"></span>》</div>
           <div class="work_activitydetail_06-commentContent" v-text="item[keys.commentContent]"></div>
         </div>
       </div>
     </template>
+    <el-dialog :visible.sync="dialogTableVisible">
+      <img src="" alt="暂无图片">
+      <p></p>
+    </el-dialog>
     <div>
       <ui_pagination :pageMessage="{totalCount}" :excuteFunction="toPaging" :pageSizes="this.CONFIG.params.paging_pageSizes"></ui_pagination>
     </div>
@@ -27,23 +31,24 @@ export default {
   name: 'work_activitydetail_06',
   reused: true,
   props: {
-    namespace:String,
+    namespace: String,
   },
   data () {
     return {
       CONFIG: null,
       keys: null,
-      list:[],
-      totalCount:0,
-      activityDetailCache:null,
+      list: [],
+      totalCount: 0,
+      dialogTableVisible: false,
+      activityDetailCache: null,
     };
   },
 
   computed: {},
 
-  created () { 
+  created () {
     this.initConfig();
-    this.CONFIG.isDevelopment ? this.loadData() : this.$bus.on(this.CONFIG.eventName_listen,this.loadData); 
+    this.CONFIG.isDevelopment ? this.loadData() : this.$bus.on(this.CONFIG.eventName_listen, this.loadData);
   },
 
   mounted () { },
@@ -53,23 +58,26 @@ export default {
       this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_06;
       this.keys = this.CONFIG.keys;
     },
-    loadData(activityDetail){
-      if(activityDetail){
+    loadData (activityDetail) {
+      if (activityDetail) {
         this.activityDetailCache = activityDetail;
       }
       let param_activityId = this.keys.requestParam_activityId + '=' + this.activityDetailCache[this.keys.eventName_listenData_activityId];
-      let param_memberType = this.keys.requestParam_memberType + '=' +  this.CONFIG.params.requestParam_memberType;
+      let param_memberType = this.keys.requestParam_memberType + '=' + this.CONFIG.params.requestParam_memberType;
       let param_pageNo = this.keys.requestParam_pageNo + '=' + this.CONFIG.params.requestParam_pageNo;
       let param_pageSize = this.keys.requestParam_pageSize + '=' + this.CONFIG.params.requestParam_pageSize;
 
       let url = this.CONFIG.url + '?' + param_activityId + '&' + param_memberType + '&' + param_pageNo + '&' + param_pageSize;
-      Get(CONFIG.BASE_URL+url).then((resp)=>{
+      Get(CONFIG.BASE_URL + url).then((resp) => {
         let data = resp.data.data;
         this.list = data;
         this.totalCount = parseInt(resp.data.totalCount);
       })
     },
-    toPaging({pageNo,pageSize}){
+    showDetail (item) {
+      // this.dialogTableVisible = true;
+    },
+    toPaging ({ pageNo, pageSize }) {
       this.CONFIG.params.requestParam_pageNo = pageNo;
       this.CONFIG.params.requestParam_pageSize = pageSize;
       this.loadData();
@@ -79,36 +87,34 @@ export default {
 
 </script>
 <style>
-.work_activitydetail_06{
+.work_activitydetail_06 {
   width: 100%;
 }
-.work_activitydetail_06-item{
+.work_activitydetail_06-item {
   margin-top: 10px;
   width: 100%;
   overflow: hidden;
 }
-.work_activitydetail_06-img_box{
+.work_activitydetail_06-img_box {
   float: left;
   width: 100px;
 }
-.work_activitydetail_06-img{
+.work_activitydetail_06-img {
   width: 100px;
   height: 100px;
 }
-.work_activitydetail_06-content{
+.work_activitydetail_06-content {
   margin-left: 100px;
   padding-left: 20px;
 }
-.work_activitydetail_06-title{
-
+.work_activitydetail_06-title {
 }
-.work_activitydetail_06-commentProduct{
+.work_activitydetail_06-commentProduct {
   margin-top: 10px;
   font-size: 12px;
 }
-.work_activitydetail_06-commentContent{
+.work_activitydetail_06-commentContent {
   margin-top: 10px;
   font-size: 12px;
-
 }
 </style>

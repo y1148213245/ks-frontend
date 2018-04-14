@@ -28,12 +28,12 @@ Vue.use(VueCodemirror);
 new Vue({
 	el: '#app',
 	store,
-	created(){
+	created () {
 		//引入全局components
 		ScanVues();
 		//项目目录下的components
-		if(window.GLOBAL_PROJECT_VUES){
-			for(var _name in window.GLOBAL_PROJECT_VUES) {
+		if (window.GLOBAL_PROJECT_VUES) {
+			for (var _name in window.GLOBAL_PROJECT_VUES) {
 				let item = window.GLOBAL_PROJECT_VUES[_name];
 				if (item.name && item.reused) {
 					Vue.component(item.name, item);

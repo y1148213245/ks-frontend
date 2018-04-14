@@ -7,7 +7,15 @@ const dev = {
   login: {
     work_login_04: {
       toLoginHref:'../pages/login.html',
-      toPersonalCenterHref:'../pages/personalcenter.html'
+      toPersonalCenterHref:'../pages/personalcenter.html',
+      toExit:{
+        type:'function',
+        href:'',
+        func:{
+          funcName:'',
+          params:[],
+        }
+      }
     }
   }
 };
@@ -15,7 +23,15 @@ const prod = {
   login: {
     work_login_04: {
       toLoginHref:'../pages/login.html',
-      toPersonalCenterHref:'../pages/personalcenter.html'
+      toPersonalCenterHref:'../pages/personalcenter.html',
+      toExit:{/* 退出配置 */
+        type:'function',/* function：调方法退出  href：转跳退出*/
+        href:'',
+        func:{
+          funcName:'',/* 方法名 */
+          params:[],/* 参数 */
+        }
+      }
     }
   }
 };

@@ -34,22 +34,22 @@
             <p class="ui_mobile_list_02_bookname" @click="toDetail(ebook)" v-if="CONFIG.showItem.indexOf('bookname') !== -1 ? true : false">{{ebook[keys.bookname]}}<span class="ui_mobile_list_02-name_icon"  :style="{ backgroundImage: 'url(' + rankbgmUrl + ')'}"  v-text="index+1" v-if="index<5"></span></p>
             <p class="ui_mobile_list_02_author" v-if="CONFIG.showItem.indexOf('author') !== -1 ? true : false">
               <span v-text="CONFIG.display.author"></span>
-              <span>{{ebook[keys.author]}}</span>
+              <span>{{ebook[keys.author] | formatAuthor}}</span>
             </p>
             <!-- 测试数据 -->
-            <p style="line-height: 12px; margin-top: 0px; margin-bottom: 0px;">
+            <!-- <p style="line-height: 12px; margin-top: 0px; margin-bottom: 0px;">
               <span v-if="ebook.pub_read_num !== undefined" style="color: orangered; font-size: 14px;">read:{{ebook.pub_read_num}}</span>
               <span v-if="ebook.pub_star_num !== undefined"
                     style="color: orangered; font-size: 14px;display: inline;">star:{{ebook.pub_star_num}}</span>
               <span v-if="ebook.BOOK_PUBDATE !== undefined" style="color: orangered; font-size: 14px;">PUBDATE: {{ebook.BOOK_PUBDATE}}</span>
-            </p>
+            </p> -->
             <p class="ui_mobile_list_02_abstract" v-if="CONFIG.showItem.indexOf('abstract') !== -1 ? true : false">{{ebook[keys.abstract]}}</p>
-            <p class="ui_mobile_list_02_price" v-if="CONFIG.showItem.indexOf('price') !==-1 ? true : false">{{ebook[keys.price] | formatPrice}}</p>
+            <p class="ui_mobile_list_02_price" v-if="CONFIG.showItem.indexOf('price') !==-1 ? true : false">{{ebook[keys.price] | formatPriceNew}}</p>
           </dd>
         </dl>
       </div>
       <div class="ui_mobile_list_02_none" v-else>暂无数据</div>
-      <div class="ui_mobile_list_02_none" v-if="noMore">没有更多啦~</div>
+      <div class="ui_mobile_list_02_none" v-if="noMore && !CONFIG.showNum">没有更多啦~</div>
     </div>
     <div class="ui_mobile_list_02-more" v-if="CONFIG && CONFIG.toMoreList && CONFIG.toMoreList.isShow">
       <a href="javascript:void(0)" @click="toMoreLink" >更多排行

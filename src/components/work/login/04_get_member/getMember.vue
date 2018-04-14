@@ -7,7 +7,12 @@
      </slot>
    </a>
    <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
-   <span v-if="member.loginName" style="float: right;">欢迎回来！</span>
+   <span v-if="member.loginName" class="work_login_04-info">欢迎回来！</span>
+   <a class="work_login_04-exit" v-if="member.loginName" href="javascipt:void(0)" @click="exit">
+     <slot name="exit">
+       退出
+     </slot>
+   </a>
  </div>
 </template>
 
@@ -49,6 +54,27 @@ export default {
     }),
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_04
+    },
+    exit () {
+      localStorage.setItem('token', '');
+      let toExit = this.CONFIG.toExit
+      if (toExit && toExit.type) {
+        if (toExit.type == 'href') {
+          window.location.href = toExit.href
+          return false
+        } else if (toExit.type == 'function') {
+          let func = toExit.func;
+          let str = func.funcName + '(this.member'
+          for (let index = 0; index < func.params.length; index++) {
+            const element = func.params[index];
+            str += ',' + '\'' + element + '\''
+          }
+          str += ')'
+          eval(str)
+        }
+      }else{
+        window.location.reload(true);
+      }
     }
   }
 }
@@ -58,5 +84,8 @@ export default {
 }
 .work_login_04-a {
   text-decoration: none;
+}
+.work_login_04-info {
+  float: left;
 }
 </style>

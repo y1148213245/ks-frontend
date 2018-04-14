@@ -6,7 +6,8 @@
       </a>
       <span class="work_mobile_search_01_search">
        <form action="">
-        <el-input v-model="searchText" placeholder="请输入您要搜索的图书名" type="search" @keyup.enter.native="doSearch()"></el-input>
+        <input v-model="searchText" placeholder="请输入您要搜索的图书名" type="search" @keydown="doSearchApp($event)"></input>
+        <input type="text" style="display: none;">
        </form>
        <i class="el-icon-close work_mobile_search_01_clear" @click="doClear()"></i>
 			</span>
@@ -33,6 +34,11 @@ export default {
   },
 
   methods: {
+    doSearchApp (ev) {
+      if (ev.keyCode === 13) {
+        this.doSearch();
+      }
+    },
     doSearch () {
       this.$emit('transSearchText', this.searchText);
       this.$bus.emit(this.CONFIG.eveName, this.searchText);
@@ -98,6 +104,7 @@ input::-webkit-search-cancel-button {
 }
 
 .work_mobile_search_01_search input {
+  width: 100%;
   padding: 0.15rem 0.6rem 0.15rem 0.4rem;
   border: 1px solid #7a7a7a;
   border-radius: 0.5rem;

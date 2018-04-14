@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2018-03-14 15:29:43
  * @Last Modified by: song
- * @Last Modified time: 2018-04-10 16:16:02
+ * @Last Modified time: 2018-04-13 15:59:04
  */
 export default {
   name: 'index',
@@ -49,7 +49,14 @@ export default {
           }
         },
         toMoreList:{
-          url:'./booklist.html'
+          isShow: true,//是否显示
+          url: './booklist.html',//链接
+          keys: { //动态参数，左为参数名，右为内部数据的字段名
+            colId: 'id'
+          },
+          fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+            app: 1
+          }
         },
         toDetailType: {
           type:'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -109,7 +116,14 @@ export default {
           }
         },
         toMoreList:{
-          url:'./booklist.html'
+          isShow: true,//是否显示
+          url: './booklist.html',//链接
+          keys: { //动态参数，左为参数名，右为内部数据的字段名
+            colId: 'id'
+          },
+          fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+            app: 1
+          }
         },
         toDetailType: {
           type:'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -169,7 +183,14 @@ export default {
           }
         },
         toMoreList:{
-          url:'./booklist.html'
+          isShow: true,//是否显示
+          url: './booklist.html',//链接
+          keys: { //动态参数，左为参数名，右为内部数据的字段名
+            colId: 'id'
+          },
+          fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+            app: 1
+          }
         },
         toDetailType: {
           type:'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/
@@ -229,7 +250,14 @@ export default {
           }
         },
         toMoreList:{
-          url:'./booklist.html'
+          isShow: true,//是否显示
+          url: './booklist.html',//链接
+          keys: { //动态参数，左为参数名，右为内部数据的字段名
+            colId: 'id'
+          },
+          fixedKeys: { //固定参数，左为参数名，右为参数值，可自行扩展。
+            app: 1
+          }
         },
         toDetailType: {
           type:'phone',/* 去详情页的方式配置，'phone'：调app接口，'href':链接转跳*/

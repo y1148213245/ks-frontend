@@ -85,7 +85,7 @@ export default {
     }).catch(function (error) { });
   },
   getPayment (data, cb) {
-    axios.get(CONFIG.BASE_URL + 'cart/getPayMethod.do').then(function (response) {
+    axios.get(CONFIG.BASE_URL + 'cart/getPayMethod.do' + '?siteId=' + CONFIG.SITE_CONFIG.siteId).then(function (response) {
       if (cb && cb instanceof Function) {
         cb({ paymentList: response.data.data });
       }

@@ -11,6 +11,7 @@ export default {
         url:  "spc/prodb/treeByCode.do", // 请求分类
         params: {
           code: "BOOK",
+          timeStamp: new Date().getTime(),
         },
         keys: { // 字段兼容
           cascadeId: "cascadeId", // 分类Id
@@ -20,7 +21,7 @@ export default {
         toClassifyBookUrl: '../pages/classifybook.html'
       },
       toMoreList: {
-        "url": "./booklist.html",
+        "url": "./classifybook.html",
         "keys": {
           "cascadId": "cascadeId"
         },

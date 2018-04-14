@@ -362,7 +362,7 @@
                    @keypress="checkVirtual($event)">
             <span>下载币</span>
           </div>
-          <div class="coinremark">1下载币=0.1元</div>
+          <div class="coinremark">1下载币=1元</div>
           <div class="orderDetail" :class="{hideTrans:allEbook === true && needInvoice === '0'}">
             <div class="disc">优惠：- {{orderDetail.bookSaveMoney + orderDetail.ebookSaveMoney | formatMoney}}</div>
             <div class="vir">下载币：- {{rmbCoin | formatMoney}}</div>
@@ -1389,7 +1389,7 @@
       },
       selectPayWay: function (item, index) { // 选择支付方式
         this.payWay = index;
-        this.payMethod = item.id + "";
+        this.payMethod = item.payCode + "";
       },
       commitOrder: function () {        // 最终提交订单
         var _this = this;
@@ -1438,7 +1438,7 @@
             orderCode: "",
             payAmount: this.allEbook === true && this.needInvoice === "0" ? this.orderDetail.totalMoney + this.orderDetail.saveAmount : this.orderDetail.totalMoney + this.orderDetail.saveAmount + this.selectedDelivery.deliveryPrice, // 应付金额 = 商品总价 + 运费
             payCode: "",
-            payMethod: this.payMethod, // 支付方式： 2 微信支付 1 支付宝支付 // edit by mmc 2018/3/29
+            payMethod: this.payMethod, // 支付方式： Weixin 微信支付 Alipay 支付宝支付 // edit by mmc 2018/3/29
             payRemark: this.payremark, // 订单备注
             payStatus: "",
             payTime: null,
@@ -1469,7 +1469,7 @@
               orderId: _this.commitInfo.orderId,
               orderCode: _this.commitInfo.orderCode,
               status: _this.commitInfo.status, // 订单状态
-              payMethodId: _this.commitInfo.payMethodId,
+              payMethodCode: _this.commitInfo.payMethodCode,
               paymentType: _this.commitInfo.paymentType // true需要跳转 false不需要
             };
 
@@ -1477,7 +1477,7 @@
               // 提交成功
               if (_this.commitInfo.paymentType) {
                 // 需要跳转支付宝支付/微信扫描二维码页面
-                if (_this.payMethod === "1") {
+                if (_this.payMethod === "Alipay") {
                   // 支付宝支付
                   loadingTag.close();
                   window.open(
@@ -1486,11 +1486,11 @@
                     argus.orderId +
                     "&loginName=" +
                     _this.member.loginName +
-                    "&payMethodId=" +
-                    argus.payMethodId,
+                    "&payMethodCode=" +
+                    argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId,
                     "_self"
                   );
-                } else if (_this.payMethod === "2") {
+                } else if (_this.payMethod === "Weixin") {
                   // 微信支付
                   axios.get(
                     CONFIG.BASE_URL +
@@ -1498,8 +1498,8 @@
                     argus.orderId +
                     "&loginName=" +
                     _this.member.loginName +
-                    "&payMethodId=" +
-                    argus.payMethodId
+                    "&payMethodCode=" +
+                    argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId
                   )
                     .then(function (response) {
                       var data = response.data.substring(
@@ -1659,7 +1659,7 @@
       },
       paymentList: function () {
         if (this.paymentList.length > 0) {
-          this.payMethod = this.paymentList[0].id + '';
+          this.payMethod = this.paymentList[0].payCode + '';
         }
       }
     }

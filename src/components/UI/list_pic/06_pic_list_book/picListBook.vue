@@ -14,8 +14,8 @@
                         <p class="title">
                             <a :href="(CONFIG && CONFIG.href)+entry.id" class="hot_sell_text" v-text="entry.pub_resource_name" :title="entry.pub_resource_name"></a>
                         </p>
-                        <p class="hitcount" v-if="modulename === 'hotsalebank'">点击量:{{entry.pub_read_num || 0}}</p>
-                        <p :class="{lineHeight: modulename === 'historyrecord'}">价格:￥<span class="price">{{entry.ebPrice?Number(entry.ebPrice).toFixed(2):'0.00'}}</span></p>
+                        <p class="hitcount" v-if="modulename === 'hotsalebank'">点击量：{{entry.pub_read_num || 0}}</p>
+                        <p :class="{lineHeight: modulename === 'historyrecord'}">价格：￥<span class="price">{{entry.BOOK_EB_PRICE?Number(entry.BOOK_EB_PRICE).toFixed(2):'0.00'}}</span></p>
                         <p class="delete" v-if="modulename === 'historyrecord'">
                             <a href="javascript:void(0)" @click="deleteOneHistory(entry.id)"></a>
                         </p>
@@ -99,7 +99,7 @@ export default {
                         var temp = {
                             pub_picBig: data[i].bigPic, // 封面图
                             pub_read_num: data[i].pub_read_num, //点击量
-                            prod_member_price: data[i].prod_member_price,  // 价格
+                            BOOK_EB_PRICE: data[i].ebPrice,  // 价格
                             pub_resource_name: data[i].resourceName, // 书名
                             id: data[i].pubId
                         };
@@ -129,7 +129,6 @@ export default {
                 })
             } else {
                 var tempList = JSON.parse(window.localStorage.getItem('newHistoryLog'));
-                debugger
                 for (var i = 0, len = tempList.length; i < len; i++) {
                     if (tempList[i].pubId == pubId) {
                         tempList.splice(i, 1);  // Array.splice(index, length, [item]) 用于替换、删除、添加  会改变原始数组
