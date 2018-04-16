@@ -93,7 +93,7 @@ const dev = {
       eventName_listen: 'eventName_loadedDatas'
     },
     work_acitivityrace_07: {
-      tabArr: ['奖项设置', '大赛新闻', '参赛作品', '名师指导']
+      tabArr: ['奖项设置', '大赛新闻', '参赛作品','获奖作品', '名师指导']
     }
 
   },

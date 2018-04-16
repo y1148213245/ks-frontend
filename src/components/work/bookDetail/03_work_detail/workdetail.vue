@@ -2,15 +2,14 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-04 17:49:17
+ * @Last Modified time: 2018-04-16 15:34:18
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
   <div class="work_bookdetail_03">
-    <components_common_header v-if="!isMobile"></components_common_header>
     <div class="topTitle">
       <div class="title" v-text="workInfo[keys.title] || '暂无'"></div>
-      <div class="vote">
+      <div class="vote" v-show="activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]=='是'">
         <!-- 投票组件 -->
         <work_common_03 namespace="common" v-on:vote="totalVoteNum" :docid="workInfo[keys.docId]"></work_common_03>
         <!-- END 投票组件 -->
@@ -26,7 +25,7 @@
         <span v-text="commentNum"></span>
         <span>评论</span>
       </div>
-      <div class="voteNum">
+      <div class="voteNum" v-show="activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]=='是'">
         <i class="work_bookdetail_03-vote-icon"></i>
         <span v-text="workInfo[keys.voteNum]"></span>
         <span>赞</span>
@@ -83,6 +82,7 @@ export default {
       resourceType: '',
       resourceId: '',
       isMobile: false,  // 移动端状态 默认false
+      activityDetail: '',
     };
   },
   components: {
@@ -99,6 +99,7 @@ export default {
     this.$bus.$on('commentNum', (data) => {
       this.commentNum = data;
     });
+    this.queryActivityInfo();
   },
   mounted () {
     this.url = window.location.href + '&isMobile=true';  // 扫描二维码上移动端 去除收藏和评论功能 因为这些功能需要登录才能用
@@ -117,7 +118,7 @@ export default {
         });
         return false;
       }
-      Post(CONFIG.BASE_URL+this.CONFIG.collectUrl + '?loginName=' + this.member.loginName + '&resourceType=' + this.resourceType + '&resourceId=' + this.resourceId + '&operateType=0&siteId=' + CONFIG.SITE_CONFIG.siteId).then(rep => {
+      Post(CONFIG.BASE_URL + this.CONFIG.collectUrl + '?loginName=' + this.member.loginName + '&resourceType=' + this.resourceType + '&resourceId=' + this.resourceId + '&operateType=0&siteId=' + CONFIG.SITE_CONFIG.siteId).then(rep => {
         if (rep.data.result === "1") { // 操作成功
           this.queryWorkInfo(this.member.loginName);
           this.$message({
@@ -137,11 +138,23 @@ export default {
     },
     queryWorkInfo (loginName) {  // 作品详情信息查询
       loginName = loginName ? loginName : '';
-      Get(CONFIG.BASE_URL+this.CONFIG.url + '?loginName=' + loginName + '&doclibCode=' + this.resourceType + '&docID=' + this.resourceId).then(rep => {
+      Get(CONFIG.BASE_URL + this.CONFIG.url + '?loginName=' + loginName + '&doclibCode=' + this.resourceType + '&docID=' + this.resourceId).then(rep => {
         if (rep.data) {
           this.workInfo = rep.data;
         }
       });
+    },
+    queryActivityInfo () {
+      let config = this.CONFIG.getActivityInfo;
+      let queryObj = URL.parse(document.URL, true).query;
+
+      let params = {
+        doclibCode: config.requestParams.doclibCode,
+        docID: queryObj.activityId
+      }
+      Get(CONFIG.BASE_URL + config.url, { params }).then(resp => {
+        this.activityDetail = resp.data;
+      })
     },
     loadWork (fileRecordID) {  // 下载附件类型的作品
       let loadUrl = this.CONFIG.loadUrl + fileRecordID;

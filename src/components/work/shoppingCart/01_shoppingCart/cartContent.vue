@@ -1579,7 +1579,7 @@
                 $("#virtualCoin").val(0);
                 _this.$store.state.shoppingcart.rmbCoin = 0;
               }
-              if (this.rmbCoin > payAmount) {
+              if (this.rmbCoin.toFixed(2) > payAmount) {
                 _this.$alert("下载币优惠数额不得大于实付金额噢~", "系统提示", {
                   confirmButtonText: "确定"
                 });

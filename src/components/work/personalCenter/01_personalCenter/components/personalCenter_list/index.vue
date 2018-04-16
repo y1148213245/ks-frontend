@@ -498,15 +498,16 @@ export default {
         myCallback: function() {
           var argus = {
             orderId: _this.commitInfo.orderId,
+            orderCode: _this.commitInfo.orderCode,
             status: _this.commitInfo.status, // 订单状态
-            payMethodId: _this.commitInfo.payMethodId,
+            payMethodCode: _this.commitInfo.payMethodCode,
             paymentType: _this.commitInfo.paymentType // true需要跳转 false不需要
           };
           if (this.commitInfo.submitStatus) {
             // 提交成功
             if (_this.commitInfo.paymentType) {
               // 需要跳转支付宝支付/微信扫描二维码页面
-              if (payMethod === "1") {
+              if (payMethod === "Alipay") {
                 // 支付宝支付
                 loading.close();
                 window.open(
@@ -515,12 +516,12 @@ export default {
                     argus.orderId +
                     "&loginName=" +
                     _this.member.loginName +
-                    "&payMethodId=" +
-                    argus.payMethodId,
+                    "&payMethodCode=" +
+                    argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId,
                   "_self"
                 );
                 window.history.pushState(null, null, "../pages/errorpage.html"); // 添加历史记录
-              } else if (payMethod === "0") {
+              } else if (payMethod === "Weixin") {
                 // 微信支付
                 axios
                   .get(
@@ -528,9 +529,8 @@ export default {
                       "/epay/getPayForm.do?orderId=" +
                       argus.orderId +
                       "&loginName=" +
-                      _this.member.loginName +
-                      "&payMethodId=" +
-                      argus.payMethodId
+                      _this.member.loginName + "&payMethodCode=" +
+                    argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId
                   )
                   .then(function(response) {
                     loading.close();
@@ -543,7 +543,7 @@ export default {
                       response.data.indexOf("</div>")
                     );
                     window.location.href =
-                      "../shoppingCart/QRcode.html?data=" +
+                      "../pages/qrcode.html?data=" +
                       data +
                       "&orderCode=" +
                       orderCode;

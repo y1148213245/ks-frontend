@@ -1,7 +1,7 @@
 <template>
   <!--优惠券领券弹窗页面组件-->
   <div id="getCoupon">
-    <div id="lq_light" class="lq_content">
+    <div id="lq_light" class="lq_content" :style="{backgroundImage: 'url(' + backgroundImg + ')'}">
       <div class="line-h24">
         <div class="lq_name color_fff">领券
           <a href="javascript:void(0)" @click="hideModel()" class="lq_close color_fff">关闭</a>
@@ -71,11 +71,13 @@ export default {
   },
   mounted: function() {
     this.CONFIG = PROJECT_CONFIG[this.namespace].common.get_coupons_02;
+    this.backgroundImg = require("./assets/img/lq_bg001.png");
   },
   data() {
     return {
       pubId: "",
-      CONFIG: {}
+      CONFIG: {},
+      backgroundImg: "", // 领券背景大红图
     };
   },
   computed: {
@@ -174,10 +176,11 @@ export default {
   position: absolute;
   top: 30%;
   left: 32%;
-  background-color: white;
+  /* background-color: white; */
   z-index: 1002;
   overflow: auto;
-  background: url(./assets/img/lq_bg001.png) no-repeat;
+  /* background: url(./assets/img/lq_bg001.png) no-repeat; */
+  background-repeat: no-repeat;
   width: 455px;
   height: 550px;
   background-size: 455px 550px;

@@ -77,6 +77,15 @@ const prod = {
         docId: 'SYS_DOCUMENTID', // 作品docId
         isCollect: 'isCollect',    // 作品是否收藏
         isHide: 'IS_HIDE' // 是否允许显示正文 or 是否允许下载附件
+      },
+      getActivityInfo:{/* 活动详情配置 */
+        url:'spc/prodb/detail.do',
+        requestParams:{/* 请求参数配置 */
+          doclibCode:'PORTAL_ACTIVITY'
+        },
+        dataKeys:{/* 返回数据的字段名配置 */
+          voteSwitch:'PRAISE_SWITCH'
+        }
       }
     }
   }

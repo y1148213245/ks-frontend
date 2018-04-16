@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2018-02-05 14:11:10
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-10 15:02:33
+ * @Last Modified time: 2018-04-16 11:17:55
  */
 export default {
   name: "activityrace",
@@ -175,7 +175,7 @@ export default {
               getListParam_cols: "SYS_CURRENTSTATUS",
               getListParam_symbols: "2",
               getListParam_memberType: "4",
-              getListParam_vals: "已审核",
+              getListParam_vals: "通过审核",
             },
           },
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
@@ -336,6 +336,9 @@ export default {
         eventName_listenLoadedData: 'eventName_loadedDatas',
         eventName_listenSearch: 'eventName_search',
         isDevelopment: false,
+        getAwardList: {/* 获取奖项列表配置 */
+          url: 'spc/prodb/searchNL.do'
+        }
       }
 
     },
@@ -362,7 +365,7 @@ export default {
       eventName_listen: 'eventName_loadedDatas',
     },
     work_acitivityrace_07: {
-      tabArr: ['奖项设置', '大赛新闻', '参赛作品', '名师指导']
+      tabArr: ['奖项设置', '大赛新闻', '参赛作品','获奖作品', '名师指导']
     }
   },
   informationDetail: {

@@ -77,8 +77,8 @@ export default {
   },
   //   姓名校验
   nameCheck: (rule, value, callback) => {
-    if (!value || !/^[\u4e00-\u9fa5]{2,4}$/i.test(value)) {
-      callback(new Error("请输入2-4个汉字"));
+    if (!value || !/^[A-Za-z0-9\u4e00-\u9fa5]{2,20}$/i.test(value)) {
+      callback(new Error("请输入2-20个字母或汉字"));
     } else {
       callback();
     }

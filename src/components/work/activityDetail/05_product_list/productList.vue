@@ -5,20 +5,24 @@
     <div class="work_activitydetail_05-totalcount">总数<span v-text="totalCount" class="work_activitydetail_05-totalcount_text"></span></div>
     <template v-for="(item,index) in list">
       <div class="work_activitydetail_05-item" :key="index">
-        <h2 class="work_activitydetail_05-title" v-text="item[keys.title]" @click="toProductDetail(item)"></h2>
+        <h2 class="work_activitydetail_05-title"><a v-text="item[keys.title]" @click="toProductDetail(item)" href="javascript:void(0)"></a></h2>
         <time class="work_activitydetail_05-date_box">{{item[keys.date] | formatTime}}</time>
         <p class="work_activitydetail_05-abstract" v-text="item[keys.abstract] || '暂无简介'"></p>
         <div class="work_activitydetail_05-info_box">
           <span class="work_activitydetail_05-info_box-author_span"><label class="work_activitydetail_05-info_box-author_label">作者：</label>{{item[keys.author] || '暂无作者'}}</span>
           <span class="work_activitydetail_05-info_box-comment_span"><i class="work_activitydetail_05-info_box-comment_icon"></i>{{item[keys.teacherCommentNum]}}<label class="work_activitydetail_05-info_box-comment_label">评论</label></span>
-          <span class="work_activitydetail_05-info_box-vote_span"><i class="work_activitydetail_05-info_box-vote_icon"></i>{{item[keys.voteNum]}}<label class="work_activitydetail_05-info_box-vote_label">赞</label></span>
+          <span class="work_activitydetail_05-info_box-vote_span" v-show="activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '是'"><i class="work_activitydetail_05-info_box-vote_icon"></i>{{item[keys.voteNum]}}<label class="work_activitydetail_05-info_box-vote_label">赞</label></span>
         </div>
         
         <div class="work_activitydetail_05-vote_box" v-show="activityIsActive && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '是'">
           <work_common_03 class="work_activitydetail_05-vote_box-content" :namespace="namespace" v-on:vote="totalVoteNum" :docid="item[keys.resourceId]" @click="getDocid(item[keys.resourceId])"></work_common_03>
           <div class="work_activitydetail_05-vote_box-content-illustrate">
-            <i class="el-icon-question"></i>
-            <div class="work_activitydetail_05-vote_box-content-illustrate-content" v-html="activityDetailCache[keys.eventListienLoadDatas_voteDescription] || '暂无说明'"></div>
+            <el-tooltip class="item" effect="dark" placement="right">
+              <p class="work_activitydetail_05-vote_box-content-illustrate_info" slot="content" v-html="activityDetailCache[keys.eventListienLoadDatas_voteDescription] || '暂无说明'"></p>
+              <i class="el-icon-question"></i>
+            </el-tooltip>
+            
+            <!-- <div class="work_activitydetail_05-vote_box-content-illustrate-content" v-html="activityDetailCache[keys.eventListienLoadDatas_voteDescription] || '暂无说明'"></div> -->
           </div>
         </div>
       </div>
@@ -27,33 +31,33 @@
   </div>
   <div v-else-if="viewType == 'simple'">
     <template v-for="(item,index) in list">
-      <div class="work_activitydetail_05-item" :key="index">
-        <div class="work_activitydetail_05-title" v-text="item[keys.title]" @click="toProductDetail(item)"></div>
+      <div class="work_activitydetail_05-simple-item" :key="index">
+        <h2 class="work_activitydetail_05-simple-title"><a v-text="item[keys.title]" @click="toProductDetail(item)" href="javascript:void(0)"></a></h2>
+        <span class="work_activitydetail_05-simple-span"><label class="work_activitydetail_05-simple-label">作者：</label>{{item[keys.author] || '暂无作者'}}</span>
       </div>
     </template>
   </div>
 
    <div v-else-if="viewType == 'classification'">
-    <template v-for="(name,i) in CONFIG.classification.titles">
-      <div class="work_activitydetail_05-classification-item" :key="i">
-        <div class="work_activitydetail_05-classification-item-name">{{name}}</div>
-        <!-- v-if="item[CONFIG.classification.key] == name" -->
-        <template v-for="(item,index) in list" >
-          <div class="work_activitydetail_05-item" :key="index">
-            <el-row>
-              <el-col :span="24">
-                <el-row>
-                  <el-col :span="8" class="work_activitydetail_05-title_box"><div class="work_activitydetail_05-title" v-text="item[keys.title]" @click="toProductDetail(item)"></div></el-col>
-                  <el-col :span="8" class="work_activitydetail_05-author_box"><div v-text="item[keys.author] || '暂无作者'"></div></el-col>
-                  <el-col :span="8" class="work_activitydetail_05-date_box"><div>{{item[keys.date] | formatTime}}</div></el-col>
-                </el-row>
-                <div v-text="item[keys.abstract] || '暂无简介'"></div>
-              </el-col>
-            </el-row>
-          </div>
-        </template>
+
+    <template v-for="(award,index) in awardList" v-if="award.products.length > 0">
+
+      <div class="work_activitydetail_05-classification-title">
+        <span v-text="award.title"></span>
       </div>
+      <el-table class="work_activitydetail_05-classification-table" :data="award.products">
+        <el-table-column :prop="keys.title" label="标题">
+          <template slot-scope="scope">
+          <a class="work_activitydetail_05-classification-table-a" href="javascript:void(0)" @click="toProductDetail(scope.row)">{{scope.row[keys.title]}}</a>
+          </template>
+        </el-table-column>
+        <el-table-column :prop="keys.author" label="作者"></el-table-column>
+        <el-table-column :prop="keys.date" :formatter="colFormatTime" label="时间"></el-table-column>
+        <el-table-column :prop="keys.abstract" label="简介"></el-table-column>
+      </el-table>
+
     </template>
+
   </div>
  </div>
 </template>
@@ -86,7 +90,8 @@ export default {
       activityDetailCache: null,
       conditionCache: null,
       isIllustrateActive: false,
-      activityIsActive:false,
+      activityIsActive: false,
+      awardList: [],
     };
   },
 
@@ -193,12 +198,12 @@ export default {
       if (activityDetail) {
         this.activityDetailCache = activityDetail; //缓存数据
         //判断活动过期
-          let thisTimestamp = new Date().getTime();
-          if (thisTimestamp < this.activityDetailCache[this.keys.eventListienLoadDatas_endDate]) {
-            this.activityIsActive = true;
-          } else {
-            this.activityIsActive = false;
-          }
+        let thisTimestamp = new Date().getTime();
+        if (thisTimestamp < this.activityDetailCache[this.keys.eventListienLoadDatas_endDate]) {
+          this.activityIsActive = true;
+        } else {
+          this.activityIsActive = false;
+        }
       }
 
       let doclibCode = keys.getListParam_doclibCode + '=' + params.getListParam_doclibCode;
@@ -213,10 +218,56 @@ export default {
 
       let url = this.CONFIG.url + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + memberType + '&' + vals;
 
-      Get(CONFIG.BASE_URL+url).then((resp) => {
+      Get(CONFIG.BASE_URL + url).then((resp) => {
         let data = resp.data.data.content;
         this.list = data;
         this.totalCount = resp.data.data.totalElements
+        if (this.CONFIG.getAwardList) {
+          this.loadAwardList()
+        }
+      })
+    },
+    loadAwardList () {
+      let url = this.CONFIG.getAwardList.url;
+      let params = {
+        doclibCode: 'PORTAL_AWARD',
+        relations: 1,
+        cols: 'ACTIVITYID',
+        symbols: 2,
+        vals: this.activityDetailCache[this.keys.eventListienLoadDatas_activityId],
+        status: 0,
+        page: 1,
+        size: 99,
+        pageable: 1
+      }
+      Get(CONFIG.BASE_URL + url, {
+        params
+      }).then((resp) => {
+        let data = resp.data.content;
+
+        let arr = [];
+        let list = this.list
+        for (let index = 0; index < data.length; index++) {
+          const element = data[index];
+          let award = {
+            title: '',
+            products: [],
+          }
+
+          let awardText = element.AWARD_TYPE + ':' + element.SYS_TOPIC;
+          award.title = awardText;
+
+          if (list && list instanceof Array) {
+            let arrAward = list.filter(entry => {
+              return entry.AWARD && entry.AWARD.indexOf(awardText) != -1
+            })
+            award.products = arrAward;
+            arr.push(award)
+          }
+
+        }
+
+        this.awardList = arr;
       })
     },
     /* 投票后刷新数量 */
@@ -226,6 +277,13 @@ export default {
       })
       if (arr.length > 0) {
         arr[0][this.keys.voteNum] = data;
+      }
+    },
+    colFormatTime (row, column, cellVal) {
+      if (cellVal) {
+        return Moment(cellVal).format("YYYY-MM-DD hh:mm")
+      } else {
+        return '暂无日期'
       }
     }
   },
@@ -249,8 +307,7 @@ export default {
   margin: 10px 0;
   font-size: 14px;
 }
-.work_activitydetail_05-totalcount_text{
-
+.work_activitydetail_05-totalcount_text {
 }
 .work_activitydetail_05-item {
   margin-top: 10px;
@@ -265,8 +322,7 @@ export default {
 .work_activitydetail_05-date_box {
   text-align: right;
 }
-.work_activitydetail_05-abstract{
-
+.work_activitydetail_05-abstract {
 }
 .work_activitydetail_05-vote_box {
   text-align: center;
@@ -307,6 +363,12 @@ export default {
   padding: 20px 0;
   height: 50px;
   line-height: 50px;
+  font-size: 24px;
+}
+.work_activitydetail_05-classification-table {
+  width: 100%;
+}
+.work_activitydetail_05-classification-title {
   font-size: 24px;
 }
 </style>

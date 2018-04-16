@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 11:12:46 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-21 13:26:59
+ * @Last Modified time: 2018-04-16 15:31:46
  */
 export default {
   name: "productiondetail",
@@ -35,6 +35,15 @@ export default {
         docId: 'SYS_DOCUMENTID', // 作品docId
         isCollect: 'isCollect',    // 作品是否收藏
         isHide: 'IS_HIDE' // 是否允许显示正文 or 是否允许下载附件
+      },
+      getActivityInfo:{/* 活动详情配置 */
+        url:'spc/prodb/detail.do',
+        requestParams:{/* 请求参数配置 */
+          doclibCode:'PORTAL_ACTIVITY'
+        },
+        dataKeys:{/* 返回数据的字段名配置 */
+          voteSwitch:'PRAISE_SWITCH'
+        }
       }
     }
   },

@@ -13,7 +13,7 @@
                   formatDay}}至{{item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] | formatDay}}
                 </time>
               </div>
-              <el-button type="text" class="button">{{item[keys.activityStatus]}}</el-button>
+              <el-button type="text" class="button" :class="{'activityIn': item[keys.activityStatus] == '进行中'}">{{item[keys.activityStatus]}}</el-button>
             </div>
           </div>
         </el-card>

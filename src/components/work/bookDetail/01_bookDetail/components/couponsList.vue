@@ -18,7 +18,7 @@
               </span>
             </span>
           </span>
-      <span class="ml22 gm_02" style="margin-left: 10px;"><a href="javascript:void(0)" @click="showCouponsModel()">领券</a></span>
+      <span class="ml22 gm_02" style="margin-left: 10px;"><a href="javascript:void(0)" @click="showCouponsModel()" :style="{backgroundImage: 'url(' + getCouponsImg + ')'}">领券</a></span>
     </p>
     <work_common_02 v-if="showModel" v-on:hideModel='hideModel' namespace="bookdetail"></work_common_02>
     <!-- 优惠券 END -->
@@ -41,10 +41,14 @@ export default {
   data () {
     return {
       showModel: false,
-      loginName: ''
+      loginName: '',
+      getCouponsImg: ""
     };
   },
   props: ["oneBookDetailInfo"],
+  mounted() {
+    this.getCouponsImg = require("../assets/img/bg_10.png");
+  },
   computed: {
     ...mapGetters("login", {
       isLogin: interfaces.GET_MEMBER_ISLOGIN,
@@ -66,8 +70,6 @@ export default {
     hideModel () {
       this.showModel = false;
     }
-  },
-  mounted () {
   },
   watch: {},
   filters: {
@@ -111,7 +113,7 @@ export default {
 }
 
 #detail_page_coupons p.cuxiao_3 .gm_02 a {
-  background-image: url(../assets/img/bg_10.png);
+  /* background-image: url(../assets/img/bg_10.png); */
   display: inline-block;
   width: 28px;
   cursor: pointer;

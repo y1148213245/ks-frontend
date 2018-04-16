@@ -1,11 +1,11 @@
 <!-- 标签导航-->
 <template>
   <div class="work_activityrace_tab">
-    <el-row>
-      <el-col :span="6" v-for="(item,index) in tabArr" :key="index">
-        <div class="work_activityrace_tab-item" :class="{'work_activityrace_tab-title--active':currentShowIndex == index+1}" @click="change(index+1)">{{item}}</div>
-      </el-col>
-    </el-row>
+    <nav class="work_activityrace_tab-nav">
+      <template v-for="(item,index) in tabArr">
+        <div :key="index" class="work_activityrace_tab-item" :class="{'work_activityrace_tab-title--active':currentShowIndex == index+1,'work_activityrace_tab-product_nav-item--hidden':activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != '是' && currentShowIndex == 4 }" @click="change(index+1)"><span>{{item}}</span></div>
+      </template>
+    </nav>
     <div class="work_activityrace_tab-content">
       <!-- 奖项设置 -->
       <work_activitydetail_02 v-show="currentShowIndex == 1" :namespace="namespace" module="module1"></work_activitydetail_02>
@@ -33,15 +33,6 @@
       </div>
       <!-- 参赛作品 -->
       <div  v-show="currentShowIndex == 3">
-        <el-col :span="24" class="work_activityrace_tab-product_nav">
-          <el-col :span="12">
-            <div class="work_activityrace_tab-product_nav-item" :class="{'work_activityrace_tab-product_nav-item--active':productNav_active}" @click="productNavChange(true)">参赛作品</div>
-          </el-col>
-          <el-col :span="12">
-            <div class="work_activityrace_tab-product_nav-item" :class="{'work_activityrace_tab-product_nav-item--active':!productNav_active}" @click="productNavChange(false)">获奖作品</div>
-          </el-col>
-        </el-col>
-        <div v-show="productNav_active">
           <el-col :span="20" class="work_activityrace_tab-join_box">
             <!-- 参赛作品条件 -->
             <work_activitydetail_04 :namespace="namespace"></work_activitydetail_04>
@@ -64,20 +55,34 @@
               <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
             </div>
           </el-col>
-        </div>
-        <div v-show="!productNav_active">
-          <el-col :span="24" class="work_activityrace_tab-join_box">
-            <!-- 参赛作品条件 -->
-            <work_activitydetail_04 :namespace="namespace"></work_activitydetail_04>
-            <!-- 参赛作品列表 -->
-            <work_activitydetail_05 :namespace="namespace" module="classification" viewType="classification"></work_activitydetail_05>
-          </el-col>
-        </div>
       </div>
+      
+      <!-- 获奖作品 -->
+      <work_activitydetail_05 v-show="currentShowIndex == 4"  :namespace="namespace" module="classification" viewType="classification"></work_activitydetail_05>
 
 
       <!-- 名师指导 -->
-      <work_activitydetail_06 v-show="currentShowIndex == 4"  :namespace="namespace"></work_activitydetail_06>
+      <div class="work_activityrace_tab-teacher_list" v-show="currentShowIndex == 5">
+        <el-col :span="20">
+          <work_activitydetail_06  :namespace="namespace"></work_activitydetail_06>
+        </el-col>
+        <el-col :span="4">
+          <div class="components_acitivityrace-notice">
+            <div class="components_acitivityrace-notice-title_box">
+              <span>公告</span>
+            </div>
+            <!-- 公告 -->
+            <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
+          </div>
+          <div class="components_acitivityrace-good_products">
+            <div class="components_acitivityrace-good_products-title_box">
+              <span>优秀作品展示</span>
+            </div>
+            <!-- 优秀参赛作品列表 -->
+            <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
+          </div>
+        </el-col>
+      </div>
     </div>
     <el-row v-show="activityDetail.PORTAL_ACTIVITY_IS_COMMENT=='是'">
       <el-col :span="24">
@@ -103,7 +108,7 @@ export default {
     return {
       currentShowIndex: 1,
       isShowJoin: true,
-      productNav_active: true,
+      productNav_hidden: true,
       activityDetail: {},
       tabArr: []
     }
@@ -122,23 +127,28 @@ export default {
 
   methods: {
     change (index) {
-      this.currentShowIndex = index;
-    },
-    productNavChange (val) {
-      if (val) {
-        this.productNav_active = val;
-      } else {
-        if (this.activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY == '是') {
-          this.productNav_active = val
-        } else {
+      if (index == 4) {
+        if (this.activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != '是') {
           this.$message(
             {
               type: 'info',
               message: '请等待评审'
             }
           )
-          this.productNav_active = true;
+        } else {
+          this.currentShowIndex = index;
         }
+      } else {
+        this.currentShowIndex = index;
+      }
+
+
+    },
+    productNavChange (val) {
+      if (val) {
+        this.productNav_hidden = val;
+      } else {
+
 
       }
 
@@ -162,8 +172,11 @@ export default {
   overflow: hidden;
 }
 .work_activityrace_tab-item {
+  display: inline-block;
+  width: 20%;
   padding: 20px 0;
   text-align: center;
+  box-sizing: border-box;
   border: 1px solid black;
   cursor: pointer;
 }

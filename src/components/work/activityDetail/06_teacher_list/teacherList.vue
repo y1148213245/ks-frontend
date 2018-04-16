@@ -4,18 +4,18 @@
     <template v-for="(item,index) in list">
       <div class="work_activitydetail_06-item" :key="index">
         <div class="work_activitydetail_06-img_box">
-          <img :src="item[keys.picUrl]" alt="暂无头像" class="work_activitydetail_06-img" @click="showDetail(item)">
+          <a href="javascript:void(0)"><img :src="item[keys.picUrl]" alt="暂无头像" class="work_activitydetail_06-img" @click="showDetail(item)"></a>
         </div>
         <div class="work_activitydetail_06-content">
-          <div class="work_activitydetail_06-title" v-text="item[keys.name]" @click="showDetail(item)"></div>
-          <div class="work_activitydetail_06-commentProduct">点评了文章《<span v-text="item[keys.commentProduct]"></span>》</div>
-          <div class="work_activitydetail_06-commentContent" v-text="item[keys.commentContent]"></div>
+          <h2 class="work_activitydetail_06-title"><a v-text="item[keys.name]" @click="showDetail(item)" href="javascript:void(0)"></a></h2>
+          <span class="work_activitydetail_06-commentProduct">点评了文章《<span v-text="item[keys.commentProduct]"></span>》</span>
+          <p class="work_activitydetail_06-commentContent" v-text="item[keys.commentContent]"></p>
         </div>
       </div>
     </template>
     <el-dialog :visible.sync="dialogTableVisible">
-      <img src="" alt="暂无图片">
-      <p></p>
+      <img class="work_activitydetail_06-member_img" src="./assets/img/work_activitydetail_06-default.jpg" alt="暂无图片">
+      <p class="work_activitydetail_06-member_introduction">静态数据：个人简介，是当事人全面而简洁地介绍自身情况的一种书面表达方式。求职过程中撰写的个人简介是求职者向欲供职单位全面、简洁、条理清晰地自我介绍、自我推荐的文书。简介是应用写作学研究的一种日常应用文体。</p>
     </el-dialog>
     <div>
       <ui_pagination :pageMessage="{totalCount}" :excuteFunction="toPaging" :pageSizes="this.CONFIG.params.paging_pageSizes"></ui_pagination>
@@ -75,7 +75,15 @@ export default {
       })
     },
     showDetail (item) {
-      // this.dialogTableVisible = true;
+      this.dialogTableVisible = true;
+     
+      Get(CONFIG.BASE_URL+'user/getMemberByName.do',{
+        params:{
+          loginName:'william'
+        }
+      }).then(resp=>{
+        // console.log(resp.data)
+      })
     },
     toPaging ({ pageNo, pageSize }) {
       this.CONFIG.params.requestParam_pageNo = pageNo;

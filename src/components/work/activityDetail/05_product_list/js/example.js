@@ -7,7 +7,7 @@ const dev = {
   activityDetail: {
     common: {
       vote_03: {  // 投票组件
-        url:'',
+        url: '',
         params: {
           browserId: '', // 浏览器指纹
           docID: '',
@@ -24,8 +24,8 @@ const dev = {
           abstract: 'abstract',
           teacherCommentNum: 'teacherCommentNum',
           voteNum: 'voteNum',
-          voteSwitch:'PORTAL_ACTIVITY_PRAISE_SWITCH',
-          voteDescription:'PRAISE_DESCRIPTION',
+          voteSwitch: 'PORTAL_ACTIVITY_PRAISE_SWITCH',
+          voteDescription: 'PRAISE_DESCRIPTION',
 
         },
         eventName_listenLoadedData: '',
@@ -39,7 +39,7 @@ const dev = {
 const prod = {
   common: {
     vote_03: {  // 投票组件
-      url:  'spc/prodb/activity/vote.do?',
+      url: 'spc/prodb/activity/vote.do?',
       params: {
         browserId: '', // 浏览器指纹
         docID: '',
@@ -51,51 +51,51 @@ const prod = {
       'module1': {
         url: 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
-        classification:{/* 分类配置,无则不配置 */
-          titles:['一等奖','二等奖','三等奖'],
-          key:'AWARD',/* 对应数据的字段 */
+        classification: {/* 分类配置,无则不配置 */
+          titles: ['一等奖', '二等奖', '三等奖'],
+          key: 'AWARD',/* 对应数据的字段 */
         },
         params: {
           getListParam_doclibCode: 'PORTAL_WORKS',
-          getListParamOptions:{//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
-            activityId:{
+          getListParamOptions: {//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
+            activityId: {
               getListParam_relations: '1',
               getListParam_cols: 'ACTIVITYID',
               getListParam_symbols: '2',
               getListParam_memberType: '4',
             },
-            'place':{//扩展属性名
+            'place': {//扩展属性名
               getListParam_relations: '1',
               getListParam_cols: 'AREA',
               getListParam_symbols: '1',
               getListParam_memberType: '4',
             },
-            'school':{
+            'school': {
               getListParam_relations: '1',
               getListParam_cols: 'SCHOOL',
               getListParam_symbols: '1',
               getListParam_memberType: '4',
             },
-            'group':{
+            'group': {
               getListParam_relations: '1',
               getListParam_cols: 'CLASS',
               getListParam_symbols: '1',
               getListParam_memberType: '4',
             },
-            'searchText':{
+            'searchText': {
               getListParam_relations: '1',
               getListParam_cols: 'SYS_TOPIC',
               getListParam_symbols: '1',
               getListParam_memberType: '4',
             },
           },
-          getListParamOptions_fixed:{/* 固定条件配置,无则不配置 */
-            IS_EXCELLENTWORK:{//例
+          getListParamOptions_fixed: {/* 固定条件配置,无则不配置 */
+            IS_EXCELLENTWORK: {//例
               getListParam_relations: '1',
               getListParam_cols: 'IS_EXCELLENTWORK',
               getListParam_symbols: '2',
               getListParam_memberType: '4',
-              getListParam_vals:'是',
+              getListParam_vals: '是',
             },
           },
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
@@ -110,19 +110,19 @@ const prod = {
           resourceId: 'SYS_DOCUMENTID',
           resourceName: 'SYS_TOPIC',
           activityId: 'ACTIVITYID',
-          
-          eventListienLoadDatas_activityId:'pub_resource_id',
-          eventListienLoadDatas_voteSwitch:'PORTAL_ACTIVITY_PRAISE_SWITCH',
-          eventListienLoadDatas_endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
-          eventListienLoadDatas_voteDescription:'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
-          
-          eventListienSearchDatas:['place','school','group','searchText'],//扩展查询参数
-          getListParam_doclibCode:'doclibCode',
-          getListParam_relations:'relations',
-          getListParam_cols:'cols',
-          getListParam_symbols:'symbols',
-          getListParam_vals:'vals',
-          getListParam_memberType:'memberType',
+
+          eventListienLoadDatas_activityId: 'pub_resource_id',
+          eventListienLoadDatas_voteSwitch: 'PORTAL_ACTIVITY_PRAISE_SWITCH',
+          eventListienLoadDatas_endDate: 'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
+          eventListienLoadDatas_voteDescription: 'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
+
+          eventListienSearchDatas: ['place', 'school', 'group', 'searchText'],//扩展查询参数
+          getListParam_doclibCode: 'doclibCode',
+          getListParam_relations: 'relations',
+          getListParam_cols: 'cols',
+          getListParam_symbols: 'symbols',
+          getListParam_vals: 'vals',
+          getListParam_memberType: 'memberType',
           toProductDetailParam_resourceType: 'resourceType',
           toProductDetailParam_resourceId: 'resourceId',
           toProductDetailParam_colId: 'colId',
@@ -132,6 +132,9 @@ const prod = {
         eventName_listenLoadedData: 'eventName_loadedDatas',
         eventName_listenSearch: 'eventName_search',
         isDevelopment: false,
+        getAwardList: {/* 获取奖项列表配置 */
+          url: 'spc/prodb/searchNL.do'
+        }
       }
 
     }

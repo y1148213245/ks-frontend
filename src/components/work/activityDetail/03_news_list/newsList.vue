@@ -7,7 +7,7 @@
         <img class="work_activitydetail_03-item-img" :src="getPicUrl(item[keys.picId])" alt="暂无图片">
       </div>
       <div class="work_activitydetail_03-item-content">
-        <div class="work_activitydetail_03-item-title" v-text="item[keys.title]" @click="toDetail(item)"></div>
+        <h2 class="work_activitydetail_03-item-title"><a href="javascript:void(0)" v-text="item[keys.title]" @click="toDetail(item)"></a></h2>
         <span class="work_activitydetail_03-item-content-date">{{item[keys.date] | formatTime}}</span>
         <div class="work_activitydetail_03-item-content-abstract" v-html="item[keys.abstract]"></div>
       </div>
