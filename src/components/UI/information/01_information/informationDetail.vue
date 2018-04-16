@@ -34,9 +34,9 @@
 					</span>
         </div>
         <div class="ui_information_01-news_nr" v-html="information[keys.content]"></div>
-        <div class="ui_information_01-news_infoImg">
+        <!-- <div class="ui_information_01-news_infoImg">
           <img :src="information[keys.picture]" onload="DrawImage(this,940,455)">
-        </div>
+        </div> -->
 
         <!-- 评论组件 -->
         <work_bookreview_01 namespace="information" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('review') !== -1 ? true : false"></work_bookreview_01>
