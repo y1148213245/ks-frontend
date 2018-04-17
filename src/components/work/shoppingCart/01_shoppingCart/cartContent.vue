@@ -358,8 +358,9 @@
           <div class="virtual">
             <span>共有 {{virtualCoin}} 下载币</span>
             <span>使用</span>
-            <input type="number" id="virtualCoin" v-on:input="getRmbCoin()"
-                   @keypress="checkVirtual($event)">
+            <!-- <input type="number" id="virtualCoin" v-on:input="getRmbCoin()"
+                   @keypress="checkVirtual($event)"> -->
+            <input type="text" id="virtualCoin" @keyup="checkVirtual()" v-model="downloadCoin">
             <span>下载币</span>
           </div>
           <div class="coinremark">1下载币=1元</div>
@@ -510,6 +511,7 @@
           bankName: "",           // 开户银行
           bankAccount: ""         // 开户账号
         },
+        downloadCoin: "", // 下载币
       };
     },
     computed: {
@@ -1548,20 +1550,19 @@
         this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
         let loadingTag = _this.$loading({ fullscreen: true });
       },
-      getRmbCoin: function () {         // input框内容变化事件  实时兑换下载币为人民币
+      getRmbCoin: function () {         // 实时兑换下载币为人民币
         var _this = this;
-        if ($("#virtualCoin").val() == "") { // 清空输入框
+        if (_this.downloadCoin == "") { // 清空输入框
           _this.$store.state.shoppingcart.rmbCoin = 0;
           return false;
         }
-        var virtual = Number($("#virtualCoin").val());
+        var virtual = Number(_this.downloadCoin);
         if (virtual > _this.virtualCoin) {
           _this.$alert("下载币不足~", "系统提示", {
             confirmButtonText: "确定"
           });
           _this.$store.state.shoppingcart.rmbCoin = _this.virtualCoin;
-          virtual = _this.virtualCoin;
-          $("#virtualCoin").val(_this.virtualCoin);
+          _this.downloadCoin = _this.virtualCoin;
         }
         var params = {
           param: virtual,
@@ -1576,27 +1577,37 @@
                 _this.$alert("下载币优惠数额不能小于0噢~", "系统提示", {
                   confirmButtonText: "确定"
                 });
-                $("#virtualCoin").val(0);
                 _this.$store.state.shoppingcart.rmbCoin = 0;
+                _this.downloadCoin = 0;
               }
               if (this.rmbCoin.toFixed(2) > payAmount) {
                 _this.$alert("下载币优惠数额不得大于实付金额噢~", "系统提示", {
                   confirmButtonText: "确定"
                 });
-                var rate = $("#virtualCoin").val() / _this.$store.state.shoppingcart.rmbCoin.toFixed(3); // 计算转换率
+                var rate = _this.downloadCoin / _this.$store.state.shoppingcart.rmbCoin.toFixed(3); // 计算转换率
                 _this.$store.state.shoppingcart.rmbCoin = payAmount;
-                virtual = _this.virtualCoin;
-                $("#virtualCoin").val((payAmount * rate).toFixed(2));
+                _this.downloadCoin = (payAmount * rate).toFixed(2); 
               }
             }
           }
         };
         this.$store.dispatch("shoppingcart/" + type.GET_RMB_COIN, params);
       },
-      checkVirtual: function (event) {  //  键盘按下事件 控制下载币输入框只能输入数字
-        if (!String.fromCharCode(event.keyCode).match(/\d/)) {
-          event.preventDefault();
+      checkVirtual: function () {  //  键盘按下事件 控制下载币输入框只能输入数字 和 小数点
+        if (this.downloadCoin != '' && this.downloadCoin.substr(0, 1) == '.') { //修复第一个字符是小数点 的情况 
+          this.downloadCoin = "";
         }
+        this.downloadCoin = this.downloadCoin.replace(/^0*(0\.|[1-9])/, '$1'); //解决 粘贴不生效  
+        this.downloadCoin = this.downloadCoin.replace(/[^\d.]/g, ""); //清除“数字”和“.”以外的字符  
+        this.downloadCoin = this.downloadCoin.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的       
+        this.downloadCoin = this.downloadCoin.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        this.downloadCoin = this.downloadCoin.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); //只能输入两个小数       
+        if (this.downloadCoin.indexOf(".") < 0 && this.downloadCoin != "") { //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+          if (this.downloadCoin.substr(0, 1) == '0' && this.downloadCoin.length == 2) {
+            this.downloadCoin = this.downloadCoin.substr(1, this.downloadCoin.length);
+          }
+        }
+        this.getRmbCoin();
       }
     },
     filters: {
@@ -1630,7 +1641,7 @@
       needInvoice: function (newValue, oldValue) { // 切换是否需要发票触发
         var _this = this;
         if (newValue !== oldValue && this.allEbook === true) {
-          $("#virtualCoin").val("");
+          _this.downloadCoin = "";
           if (newValue === "0") { // 不需要发票
             this.selectedDelivery.deliveryPrice = 0;
             this.$store.state.shoppingcart.rmbCoin = 0;

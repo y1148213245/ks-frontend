@@ -17,7 +17,7 @@
         <div class="work_activitydetail_05-vote_box" v-show="activityIsActive && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '是'">
           <work_common_03 class="work_activitydetail_05-vote_box-content" :namespace="namespace" v-on:vote="totalVoteNum" :docid="item[keys.resourceId]" @click="getDocid(item[keys.resourceId])"></work_common_03>
           <div class="work_activitydetail_05-vote_box-content-illustrate">
-            <el-tooltip class="item" effect="dark" placement="right">
+            <el-tooltip class="item" effect="dark" placement="top">
               <p class="work_activitydetail_05-vote_box-content-illustrate_info" slot="content" v-html="activityDetailCache[keys.eventListienLoadDatas_voteDescription] || '暂无说明'"></p>
               <i class="el-icon-question"></i>
             </el-tooltip>
