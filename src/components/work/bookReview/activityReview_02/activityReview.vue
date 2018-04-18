@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 13:56:44 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-08 09:19:30
+ * @Last Modified time: 2018-04-17 14:41:33
  */
 <!-- 活动评论组件 -->
 <template>
@@ -72,6 +72,10 @@ export default {
       resourceType: '',
       resourceId: '',
       totalCount: '',
+      pageMessage:{
+        pageNo:'',
+        pageSize:''
+      }
     };
   },
 
@@ -122,6 +126,8 @@ export default {
     queryReviewList (type) {  // 查询评论列表
       let paramsObj = Object.assign({}, this.CONFIG.queryreview.params);
       paramsObj.type = type ? type : '';
+      paramsObj.pageIndex = this.pageMessage.pageNo || paramsObj.pageIndex;
+      paramsObj.pageSize = this.pageMessage.pageSize || paramsObj.pageSize;
       if (this.namespace === 'productiondetail') {  // 作品详情
         paramsObj.resourceType = this.resourceType;
         paramsObj.resourceId = this.resourceId;
@@ -196,10 +202,8 @@ export default {
       this.queryReviewList(this.showType);
     },
     paging: function ({ pageNo, pageSize }) {
-      var param = {
-        pageNo: pageNo,
-        pageSize: pageSize
-      };
+      this.pageMessage.pageNo = pageNo;
+      this.pageMessage.pageSize = pageSize
       this.queryReviewList(this.showType);
     },
   }
