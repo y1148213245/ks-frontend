@@ -133,7 +133,18 @@ const prod = {
         eventName_listenSearch: 'eventName_search',
         isDevelopment: false,
         getAwardList: {/* 获取奖项列表配置 */
-          url: 'spc/prodb/searchNL.do'
+          url: 'spc/prodb/searchNL.do',
+          params: {
+            doclibCode: 'PORTAL_AWARD',
+            relations: 1,
+            cols: 'ACTIVITYID',
+            symbols: 2,
+            vals: '',
+            status: 0,
+            page: 1,
+            size: 99,
+            pageable: 1
+          }
         }
       }
 

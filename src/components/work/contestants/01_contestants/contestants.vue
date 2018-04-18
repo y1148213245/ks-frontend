@@ -641,7 +641,7 @@ export default {
       });
     },
     toIndex () {
-      let url = "./index.html";
+      let url = "./activity.html";
       window.location.href = url;
     },
     toPersonal () {

@@ -1,75 +1,78 @@
 <!-- 图书详情页组件 edit by song 2018/1/2 -->
 <template>
-<div class="work_bookdetail_02 work_bookdetail_02_skin">
-  <div class="navigation">
-    <span class="curPositionFixed">
-      <span>您的位置：</span>
-      <a class="indexPage" href="../pages/index.html">首页 </a>>>
-    </span>
-    <span class="curPositionUnfixed">
-      <a class="ebookPage" href="../pages/ebook.html">电子书城 </a>>>
-      <span v-text="bookInfo.resourceName"></span>
-    </span>
-    
-  </div>
+  <div class="work_bookdetail_02 work_bookdetail_02_skin">
+    <div class="navigation">
+      <span class="curPositionFixed">
+        <span>您的位置：</span>
+        <a class="indexPage" href="../pages/index.html">首页 </a>>>
+      </span>
+      <span class="curPositionUnfixed">
+        <a class="ebookPage" href="../pages/ebook.html">电子书城 </a>>>
+        <span v-text="bookInfo.resourceName"></span>
+      </span>
+      
+    </div>
 
-  <div class="bookDetailWrapper">
-    <!-- 图书基本信息-->
-    <dl class="bookDetailInfo">
-      <dt class="bookDetailDt">
-        <img class="bookDetailImg" onload="DrawImage(this,221,317)" :src="bookInfo.bigPic" alt="暂无封面">
-      </dt>
-      <dd class="bookDetailDd">
-        <p class="titleCon">
-          <span class="title" v-text="bookInfo.resourceName"></span>
+    <div class="bookDetailWrapper">
+      <!-- 图书基本信息-->
+      <dl class="bookDetailInfo">
+        <dt class="bookDetailDt">
+          <img class="bookDetailImg" onload="DrawImage(this,221,317)" :src="bookInfo.bigPic" alt="暂无封面">
+        </dt>
+        <dd class="bookDetailDd">
+          <p class="titleCon">
+            <span class="title" v-text="bookInfo.resourceName"></span>
 
-          <span class="likeOperation" @click="collectOrLike('1', bookInfo.contentType, bookInfo.pubId, bookInfo.productId)" :class="{likeActive: bookInfo.isLike == '1', likeUnactive: bookInfo.isLike == '0' || bookInfo.isLike == null || member.loginName == undefined}"></span>
+            <span class="likeOperation" @click="collectOrLike('1', bookInfo.contentType, bookInfo.pubId, bookInfo.productId)" :class="{likeActive: bookInfo.isLike == '1', likeUnactive: bookInfo.isLike == '0' || bookInfo.isLike == null || member.loginName == undefined}"></span>
 
-          <a href="http://www.jiathis.com/share" class="collectOperation share jiathis jiathis_txt jtico jtico_jiathis fr" target="_blank"></a>
-          
-          <span class="collectOperation" @click="collectOrLike('0', bookInfo.contentType, bookInfo.pubId, bookInfo.productId)" :class="{collectActive: bookInfo.isCollect == '1', collectUnactive: bookInfo.isCollect == '0' || bookInfo.isCollect == null || member.loginName == undefined}"></span>
-        </p>
+            <a href="http://www.jiathis.com/share" class="collectOperation share jiathis jiathis_txt jtico jtico_jiathis fr" target="_blank"></a>
+            
+            <span class="collectOperation" @click="collectOrLike('0', bookInfo.contentType, bookInfo.pubId, bookInfo.productId)" :class="{collectActive: bookInfo.isCollect == '1', collectUnactive: bookInfo.isCollect == '0' || bookInfo.isCollect == null || member.loginName == undefined}"></span>
+          </p>
 
-        <p class="price">
-          电子书价格:
-          <span class="newPrice">￥{{bookInfo.memberPrice | filterFun}}</span>
-          <span class="oldPrice">￥{{bookInfo.ebPrice | filterFun}}</span>
-        </p>
+          <p class="price">
+            电子书价格:
+            <span class="newPrice">￥{{bookInfo.memberPrice | filterFun}}</span>
+            <span class="oldPrice">￥{{bookInfo.ebPrice | filterFun}}</span>
+          </p>
 
-        <p class="promotion" v-if="bookInfo.activityList && bookInfo.activityList.length > 0">
-          <span>促销：</span>
-          <span class="fullcut">满额减</span>
-          <span class="fullcutInfo">
-            <em :class="{cx_01_on:index == 0 ? true : false}" @click="discount(index)" v-for="(activity,index) in bookInfo.activityList" :key="index">
-              <span v-text="activity.discountName"></span>
-            </em>
+          <p class="promotion" v-if="bookInfo.activityList && bookInfo.activityList.length > 0">
+            <span>促销：</span>
+            <span class="fullcut">满额减</span>
+            <span class="fullcutInfo">
+              <em :class="{cx_01_on:index == 0 ? true : false}" @click="discount(index)" v-for="(activity,index) in bookInfo.activityList" :key="index">
+                <span v-text="activity.discountName"></span>
+              </em>
+            </span>
+          </p>
+
+          <!-- 优惠券 封装成组件形式 -->
+          <work_01_bookdetail_coupons :oneBookDetailInfo="bookInfo" namespace="bookdetail" style="margin-bottom:10px;"></work_01_bookdetail_coupons>
+          <!-- 优惠券 END -->
+
+          <p class="paperPrice">纸书定价：￥{{bookInfo.bookPrice | filterFun}}<span class="buyBook"><a :href="buyBookUrl">购买纸书</a></span></p>
+
+          <p class="otherOpertion">
+
+            <a target="_blank" class="probation" :class="{notProbation: !bookInfo.bookFreeDownLoadPath}" @click="probation(bookInfo.resourceId, 0, bookInfo.resourceName, bookInfo.bookFreeDownLoadPath)"><i class="opertionIcon read"></i><span>免费试读</span></a>
+
+            <a class="addCart" @click="cart(bookInfo.contentType)"><i class="opertionIcon cart"></i><span>加入购物车</span></a>
+          </p>
+        </dd>
+      </dl>
+    </div>
+    <!--图书其他内容-->
+    <div class="otherInfoWrapper">
+      <div class="otherInfo">
+        <p v-if="CONFIG && CONFIG.showInfoList && CONFIG.showInfoList.length>0 && bookInfo">
+          <span class="work_bookdetail_02_bookInfo" v-for="(item, index) in CONFIG.showInfoList" :key="index">
+            <span> {{ item.title }} </span>
+            <span v-if="item && item.filter"> {{ bookInfo[item.key] | formatDateNEW}} </span>
+            <span v-else> {{ bookInfo[item.key] }} </span>
           </span>
         </p>
-
-        <!-- 优惠券 封装成组件形式 -->
-        <work_01_bookdetail_coupons :oneBookDetailInfo="bookInfo" namespace="bookdetail" style="margin-bottom:10px;"></work_01_bookdetail_coupons>
-        <!-- 优惠券 END -->
-
-        <p class="paperPrice">纸书定价：￥{{bookInfo.bookPrice | filterFun}}<span class="buyBook"><a :href="buyBookUrl">购买纸书</a></span></p>
-
-        <p class="otherOpertion">
-
-          <a target="_blank" class="probation" :class="{notProbation: !bookInfo.bookFreeDownLoadPath}" @click="probation(bookInfo.resourceId, 0, bookInfo.resourceName, bookInfo.bookFreeDownLoadPath)"><i class="opertionIcon read"></i><span>免费试读</span></a>
-
-          <a class="addCart" @click="cart(bookInfo.contentType)"><i class="opertionIcon cart"></i><span>加入购物车</span></a>
-        </p>
-      </dd>
-    </dl>
-  </div>
-  <!--图书其他内容-->
-  <div class="otherInfoWrapper">
-    <div class="otherInfo">
-      <p><span>出版时间：{{bookInfo.pubTime | formatDateNEW}}</span><span>ISBN：{{bookInfo.isbn}}</span><span>版次：{{bookInfo.bookVersion}}</span><span>页数：{{bookInfo.pageNums}}</span>
-      </p>
-      <p><span>字数：{{bookInfo.bookWords}}</span></p>
+      </div>
     </div>
-  </div>
-    <!--图书其他内容-->
   </div>
 </template>
 
@@ -98,9 +101,8 @@ export default {
   mounted () {
     this.pubId = URL.parse(window.location.href, true).query.pubId;
     this.CONFIG = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02
-    this.buyBookUrl = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02.buyBookUrl;
-    this.probationUrl = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02.probationUrl;
-
+    this.buyBookUrl = this.CONFIG.buyBookUrl;
+    this.probationUrl = this.CONFIG.probationUrl;
   },
   created: function () {
     this.getMemberInfo().then((member) => {
@@ -222,7 +224,7 @@ export default {
       if (!probationUrl) {  // 没有试读地址的情况
         return false;
       }
-      var url = this.CONFIG.READ_URL || CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType +'&bookName=' + bookName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+      var url = this.CONFIG.READ_URL || CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType + '&bookName=' + bookName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
       window.open(url);
     }
   },
@@ -231,6 +233,9 @@ export default {
       if (newValue !== oldValue) {
         this.recordTotalAmount = newValue + 1;
       }
+    },
+    bookInfo (newValue, oldValue) {
+      window.document.title = newValue.resourceName ? newValue.resourceName : "商品详情";
     }
   },
 }
@@ -461,7 +466,7 @@ function addCart (contentType, this_value, loginName) {
   margin-bottom: 20px;
 }
 
-.work_bookdetail_02 .otherInfoWrapper .otherInfo span {
-  padding-right: 70px;
+.work_bookdetail_02_bookInfo {
+  padding-right: 60px;
 }
 </style>

@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2018-02-05 14:11:10
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-16 17:07:45
+ * @Last Modified time: 2018-04-18 14:41:49
  */
 export default {
   name: "activityrace",
@@ -337,7 +337,18 @@ export default {
         eventName_listenSearch: 'eventName_search',
         isDevelopment: false,
         getAwardList: {/* 获取奖项列表配置 */
-          url: 'spc/prodb/searchNL.do'
+          url: 'spc/prodb/searchNL.do',
+          params: {
+            doclibCode: 'PORTAL_AWARD',
+            relations: 1,
+            cols: 'ACTIVITYID',
+            symbols: 2,
+            vals: '',
+            status: 0,
+            page: 1,
+            size: 99,
+            pageable: 1
+          }
         }
       }
 
