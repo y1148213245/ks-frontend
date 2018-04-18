@@ -175,7 +175,7 @@ export default {
             memberType += splitVal + option.getListParam_memberType;
             /* 加入搜索的值 */
             if (vkey != mustKey) {
-              vals += splitVal + (conditions && conditions[vkey] ? conditions[vkey] : getListParamOptions_fixed[vkey].getListParam_vals);
+              vals += splitVal + (conditions && conditions.hasOwnProperty(vkey) ? conditions[vkey] : getListParamOptions_fixed[vkey].getListParam_vals);
             }
           }
         }
@@ -229,17 +229,8 @@ export default {
     },
     loadAwardList () {
       let url = this.CONFIG.getAwardList.url;
-      let params = {
-        doclibCode: 'PORTAL_AWARD',
-        relations: 1,
-        cols: 'ACTIVITYID',
-        symbols: 2,
-        vals: this.activityDetailCache[this.keys.eventListienLoadDatas_activityId],
-        status: 0,
-        page: 1,
-        size: 99,
-        pageable: 1
-      }
+      let params = this.CONFIG.getAwardList.params;
+      params.vals = this.activityDetailCache[this.keys.eventListienLoadDatas_activityId],
       Get(CONFIG.BASE_URL + url, {
         params
       }).then((resp) => {
