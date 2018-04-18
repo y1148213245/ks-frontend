@@ -118,15 +118,22 @@ export default {
 
   created () {
     this.$bus.on('eventName_loadedDatas', this.getActivityDetail);
+    
   },
 
   mounted () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_acitivityrace_07;
     this.tabArr = this.CONFIG.tabArr;
+    var hash = window.location.hash;
+    if (hash) {
+      var tag = hash.substring(hash.indexOf("#") + 1, hash.length);
+      this.change(tag);
+    }
   },
 
   methods: {
     change (index) {
+      window.location.hash = '#' + index
       if (index == 4) {
         if (this.activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != '是') {
           this.$message(
