@@ -8,7 +8,7 @@
    </a>
    <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
    <span v-if="member.loginName" class="work_login_04-info">欢迎回来！</span>
-   <a class="work_login_04-exit" v-if="member.loginName" href="javascipt:void(0)" @click="exit">
+   <a class="work_login_04-exit" v-if="member.loginName" @click="exit">
      <slot name="exit">
        退出
      </slot>
@@ -72,7 +72,7 @@ export default {
           str += ')'
           eval(str)
         }
-      }else{
+      } else {
         _axios.defaults.headers.token = '';
         this.getMemberInfo();
         location.reload(true);

@@ -81,9 +81,9 @@ var actions = {
         /*账户信息加载完毕，执行回调*/
         param.loadedCallBack();
       } else {
-        alert("未登录");
+        console.log("未登录");
         let url = "./login.html"
-        window.location.href = url;
+        // window.location.href = url;
       }
     });
   },
