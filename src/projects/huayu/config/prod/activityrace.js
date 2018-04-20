@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2018-02-05 14:11:10
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-18 14:41:49
+ * @Last Modified time: 2018-04-19 15:30:50
  */
 export default {
   name: "activityrace",
@@ -66,7 +66,7 @@ export default {
       getPicUrl:  'dynamicFile/stream.do',
       params: {
         getListParam_pageNo: '1',
-        getListParam_pageSize: '10',
+        getListParam_pageSize: '99',
         getListParam_orderBy: 'SYS_DOCUMENTID DESC',
       },
       keys: {
@@ -92,7 +92,7 @@ export default {
           },
           fixedParams: {/* 查询参数 对象的key为参数名,value为值 */
             'page': '1',
-            'pageSize': '10',
+            'pageSize': '99',
             'orderBy': 'SYS_DOCUMENTID DESC',
           }
         }

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-05 13:56:44 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-17 14:41:33
+ * @Last Modified time: 2018-04-19 15:24:20
  */
 <!-- 活动评论组件 -->
 <template>
@@ -150,7 +150,7 @@ export default {
       if (this.member && !this.member.loginName) {  // 没有填写评论内容不得提交评论
         this.$message({
           type: "info",
-          message: '请登陆'
+          message: '请登录'
         });
         return false;
       }

@@ -5,7 +5,7 @@
     <input type="text" class="login_03_userinput" v-model="member.loginName" placeholder="请输入用户名"/>
     <input type="password" class="login_03_password" v-model="member.password" placeholder="请输入密码"/>
     <div class="login_03_box_01">
-      <input type="checkbox" value="" class="login_03_box_01_checkbox" />自动登录
+      <!-- <input type="checkbox" value="" class="login_03_box_01_checkbox" />自动登录 （暂未开发）-->
       <a href="./forgetPassword.html" class="login_03_box_01_forgetpassword">忘记密码</a>
     </div>
     <div class="login_03_box_02"><input type="button" id="login-form-submit" value="登录" class="login_03_box_02_button" @click="login"/></div>
