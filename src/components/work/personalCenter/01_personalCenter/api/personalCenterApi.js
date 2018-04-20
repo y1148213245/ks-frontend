@@ -1,6 +1,6 @@
 /*个人中心接口API*/
 import Vue from "vue";
-import axios from "axios";
+import { Get,Post } from '@common'
 // import {CONFIG.SITE_CONFIG} from 'projectConfig';
 /*jshint esversion: 6 */
 export default {
@@ -8,7 +8,7 @@ export default {
   queryUser(loginName) {
     var url =
       CONFIG.BASE_URL + "user/getMemberByName.do?loginName=" + (loginName || "");
-    return axios.get(url);
+    return Get(url);
   },
   /*查看积分*/
   queryPointRecord(params) {
@@ -20,7 +20,7 @@ export default {
       (params.pageIndex || 1) +
       "&pageSize=" +
       (params.pageSize || 8);
-    return axios.get(url);
+    return Get(url);
   },
   /*查询下载币*/
   queryVirtualMoney(params) {
@@ -34,7 +34,7 @@ export default {
       (params.pageSize || 8) +
       "&siteId=" +
       CONFIG.SITE_CONFIG.siteId;
-    return axios.get(url);
+    return Get(url);
   },
   /*修改邮箱*/
   updateEmail(params) {
@@ -44,7 +44,7 @@ export default {
       params.loginName +
       "&email=" +
       params.value;
-    return axios.get(url);
+    return Get(url);
   },
   /*修改密码*/
   updatePassWord(params) {
@@ -56,27 +56,27 @@ export default {
       params.oldPass +
       "&newPassword=" +
       params.checkPass;
-    return axios.post(url);
+    return Post(url);
   },
   /*查询收货地址*/
   queryAddress(params) {
     var url = CONFIG.BASE_URL + "user/addresses.do?loginName=" + params.loginName;
-    return axios.get(url);
+    return Get(url);
   },
   /*修改收货地址*/
   updateAddress(params) {
     var url = CONFIG.BASE_URL + "user/updateAddress.do?";
-    return axios.post(url, params);
+    return Post(url, params);
   },
   /*新增收货地址*/
   addAddress(params) {
     var url = CONFIG.BASE_URL + "user/addAddress.do?";
-    return axios.post(url, params);
+    return Post(url, params);
   },
   /*删除收货地址*/
   deleteAddress(params) {
     var url = CONFIG.BASE_URL + "user/deleteAddress.do?ids=" + params.ids;
-    return axios.post(url);
+    return Post(url);
   },
   /*设置默认地址*/
   defaultAddress(params) {
@@ -86,19 +86,19 @@ export default {
       params.id +
       "&loginName=" +
       params.loginName;
-    return axios.get(url);
+    return Get(url);
   },
   /*获取支付方式*/
   queryPaymentList() {
     var url = CONFIG.BASE_URL + "cart/getPayMethod.do";
-    return axios.get(url);
+    return Get(url);
   },
   /*下载币充值*/
   // RechargeVirtual(params) {
   // var url =CONFIG.BASE_URL+'rechargeVirtualCoin/rechargeByLoginName.do?loginName=' + params.loginName + '&coinValue=' + params.paynum * 100 + '&siteId=' + CONFIG.SITE_CONFIG.siteId;
   // var url = 'http://172.19.36.70/portal/api/epay/getVirtualCoinPayForm.do?price=1&loginName=1&payMethodId=1&siteId=1'
   // var url = CONFIG.BASE_URL+'epay/getVirtualCoinPayForm.do?price=1&loginName=1&payMethodId=1&siteId=1'
-  // return axios.get(url);
+  // return Get(url);
   // },
   /*获取订单列表*/
   queryOrderList(params) {
@@ -116,7 +116,7 @@ export default {
       params.payStatus +
       "&status=" +
       params.status;
-    return axios.get(url);
+    return Get(url);
   },
   /*时间筛选订单*/
   queryTimeList(params) {
@@ -131,23 +131,23 @@ export default {
       params.stime +
       "&eTime=" +
       params.etime;
-    return axios.get(url);
+    return Get(url);
   },
   /*取消订单*/
   cancelOrder(params) {
     var url = CONFIG.BASE_URL + "order/cancelParentOrder.do?orderId=" + params.id;
-    return axios.get(url);
+    return Get(url);
   },
   /*删除订单*/
   deleteOrder(params) {
     var url = CONFIG.BASE_URL + "order/deleteParentOrder.do?id=" + params.id;
-    return axios.get(url);
+    return Get(url);
   },
   /*获取订单详情*/
   queryOrderDetails(params) {
     var url =
       CONFIG.BASE_URL + "order/getProductListByOrderId.do?orderId=" + params.orderId;
-    return axios.get(url);
+    return Get(url);
   },
   /*获取书架列表*/
   querybookShelfInfo(params) {
@@ -163,7 +163,7 @@ export default {
       params.type +
       "&siteId=" +
       CONFIG.SITE_CONFIG.siteId;
-    return axios.get(url);
+    return Get(url);
   },
   /*获取收藏夹列表*/
   queryCollectionInfo(params) {
@@ -179,7 +179,7 @@ export default {
       CONFIG.SITE_CONFIG.siteId +
       "&contentType=" +
       (params.contentType || 94);
-    return axios.get(url);
+    return Get(url);
   },
   /*移除收藏夹*/
   deleteCollProduct(params) {
@@ -191,13 +191,13 @@ export default {
       params.loginName +
       "&siteId=" +
       CONFIG.SITE_CONFIG.siteId;
-    return axios.get(url);
+    return Get(url);
   },
   // 忘记密码---------------------------------------------------------------------------------------------------------------------------------------
   /*找回密码验证码*/
   findPassword(params) {
     var url = CONFIG.BASE_URL + "user/findPassword.do?email=" + params.email;
-    return axios.get(url);
+    return Get(url);
   },
   /*邮箱重置密码*/
   setPassword(params) {
@@ -207,7 +207,7 @@ export default {
       params.email +
       "&password=" +
       params.checkPass;
-    return axios.post(url);
+    return Post(url);
   },
   /*手机重置密码*/
   setPasswordByMobile(params) {
@@ -217,7 +217,7 @@ export default {
       params.mobileNum +
       "&password=" +
       params.checkPass;
-    return axios.post(url);
+    return Post(url);
   },
   // 注册账号---------------------------------------------------------------------------------------------------------------------------------------
   /*邮箱注册账号*/
@@ -230,7 +230,7 @@ export default {
       params.checkPass +
       "&email=" +
       params.email;
-    return axios.post(url);
+    return Post(url);
   },
   /*手机号注册账号*/
   registerBindMobileNum(params) {
@@ -242,12 +242,12 @@ export default {
       params.loginName +
       "&passWord=" +
       params.checkPass;
-    return axios.get(url);
+    return Get(url);
   },
   /*头像上传*/
   // uploadHeadPic(params){
   // 	var url ='http://172.19.36.70/portal/api/user/uploadHeadPic.do?loginName=' + params.loginName;
-  // 	return axios.post(url,config);
+  // 	return Post(url,config);
   // },
   /*验证注册信息是否存在*/
   checkUserInfo(params) {
@@ -257,7 +257,7 @@ export default {
       params.text +
       "&checkType=" +
       params.type;
-    return axios.get(url);
+    return Get(url);
   },
   /*获取评论列表*/
   getMyComment(params) {
@@ -267,7 +267,7 @@ export default {
       params.loginName +
       "&siteId=" +
       CONFIG.SITE_CONFIG.siteId;
-    return axios.get(url);
+    return Get(url);
   },
   /*积分兑换下载币*/
   exchangeVirtualCoin(params) {
@@ -277,14 +277,14 @@ export default {
       params.number +
       "&loginName=" +
       params.loginName;
-    return axios.get(url);
+    return Get(url);
   },
   /*申请退换货*/
   applyReturnGoods(params) {
     // var url = CONFIG.BASE_URL + "order/applyReturnGoods.do?";
     var url = "http://172.19.36.70/portal/api/order/applyReturnGoods.do?";
 
-    return axios.post(url, params);
+    return Post(url, params);
   },
   /*售后记录*/
   getReturnGoodsList(params) {
@@ -293,7 +293,7 @@ export default {
       "order/getReturnGoodsList.do?loginName=" +
       params.loginName +
       "&pageIndex=1&pageSize=15";
-    return axios.get(url);
+    return Get(url);
   },
   /*设置密保问题*/
   setPswQuestion(params) {
@@ -305,7 +305,7 @@ export default {
       params.pswId +
       "&answer=" +
       params.answer;
-    return axios.get(url);
+    return Get(url);
   },
   /*密保问题验证身份*/
   checkPswQuestion(params) {
@@ -317,7 +317,7 @@ export default {
       params.pswId +
       "&answer=" +
       params.answer;
-    return axios.get(url);
+    return Get(url);
   },
   /*通过身份验证修改密码*/
   modifyPassword(params) {
@@ -327,7 +327,7 @@ export default {
       params.loginName +
       "&newPassword=" +
       params.checkPass;
-    return axios.post(url);
+    return Post(url);
   },
   /*提交订单*/
   commitOrder(params, cb) {
@@ -346,7 +346,7 @@ export default {
   /*发送手机验证码*/
   sendToMobile(params) {
     var url = CONFIG.BASE_URL + "user/sendToMobile.do?mobileNum=" + params.mobileNum;
-    return axios.get(url);
+    return Get(url);
   },
   /*个人中心设置手机号*/
   bindMobile(params) {
@@ -356,7 +356,7 @@ export default {
       params.loginName +
       "&mobileNum=" +
       params.mobileNum;
-    return axios.get(url);
+    return Get(url);
   },
   /*个人中心更换手机号*/
   changeBindMobile(params) {
@@ -366,7 +366,7 @@ export default {
       params.loginName +
       "&mobileNum=" +
       params.mobileNum;
-    return axios.get(url);
+    return Get(url);
   },
   /*个人中心随手记列表*/
   searchNoteList(params) {
@@ -378,12 +378,12 @@ export default {
       params.page +
       "&size=" +
       params.size;
-    return axios.get(url);
+    return Get(url);
   },
   // 随手记上传
   saveNote(params) {
     var url = CONFIG.BASE_URL + "spc/prodb/saveItem.do";
-    return axios.post(url, params);
+    return Post(url, params);
   },
   // 随手记删除
   deleteNote(params) {
@@ -393,7 +393,7 @@ export default {
       params.DocIDs +
       "&loginName=" +
       params.loginName;
-    return axios.get(url);
+    return Get(url);
   },
   //随手记详情页
   fetchArticle(params) {
@@ -403,7 +403,7 @@ export default {
       params.DocIDs +
       "&loginName=" +
       params.loginName;
-    return axios.get(url);
+    return Get(url);
   },
   /**
    * 个人中心 根据用户名获取优惠券
@@ -415,7 +415,7 @@ export default {
       params.loginName +
       "&type=" +
       params.type;
-    axios.get(url).then(function(response) {
+    Get(url).then(function(response) {
       if (cb && cb instanceof Function) {
         cb({
           couponsList: response.data.result === "1" ? response.data.data : false
@@ -429,7 +429,7 @@ export default {
    */
   querySumCoupons(params, cb) {
     var url = CONFIG.BASE_URL + "user/getSumCounpons.do?loginName=" + params.loginName;
-    axios.get(url).then(function(response) {
+    Get(url).then(function(response) {
       if (cb && cb instanceof Function) {
         cb({
           sumCoupons: response.data.result === "1" ? response.data.data : false
@@ -488,12 +488,12 @@ export default {
       params.pageNo +
       "&pageSize=" +
       params.pageSize;
-    return axios.get(url);
+    return Get(url);
   },
   // 新增学生
   addActivityMember(params) {
     var url = CONFIG.BASE_URL + "user/addActivityMember.do";
-    return axios.post(url, params);
+    return Post(url, params);
   },
   // 删除学生
   deleteActivityMemberById(params) {
@@ -503,12 +503,12 @@ export default {
       params.memberId +
       "&teacherId=" +
       params.teacherId;
-    return axios.get(url);
+    return Get(url);
   },
   // 编辑学生
   modifyActivityMember(params) {
     var url = CONFIG.BASE_URL + "user/modifyActivityMember.do";
-    return axios.post(url, params);
+    return Post(url, params);
   },
   // 参与的活动
   myWorks(params) {
@@ -521,11 +521,11 @@ export default {
       (params.pageSize || "1") +
       "&page=" +
       (params.page || "99");
-    return axios.get(url);
+    return Get(url);
   },
    // 设置公开
   setHide(params) {
     var url = CONFIG.BASE_URL + "spc/prodb/saveItem.do";
-    return axios.post(url, params);
+    return Post(url, params);
   },
 };
