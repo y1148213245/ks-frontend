@@ -126,7 +126,7 @@ export default {
       let relations = '';
       let cols = '';
       let symbols = '';
-      let memberType = '';
+      let memberType = '4';
       let vals = '';
 
       let keyArr = [mustKey];/* 查询条件配置 key数组,通过其中配置的值来组装哪些字段的参数 */
@@ -172,7 +172,7 @@ export default {
             relations += splitVal + option.getListParam_relations;
             cols += splitVal + option.getListParam_cols;
             symbols += splitVal + option.getListParam_symbols;
-            memberType += splitVal + option.getListParam_memberType;
+            // memberType += splitVal + option.getListParam_memberType;
             /* 加入搜索的值 */
             if (vkey != mustKey) {
               vals += splitVal + (conditions && conditions.hasOwnProperty(vkey) ? conditions[vkey] : getListParamOptions_fixed[vkey].getListParam_vals);

@@ -10,7 +10,7 @@
             <div class="clearfix">
               <div class="ac_text"><span>活动时间：</span>
                 <time class="time">{{item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW] |
-                  formatDay}}至{{item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] | formatDay}}
+                  formatDateNEW}}至{{item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] | formatDateNEW}}
                 </time>
               </div>
               <el-button type="text" class="button" :class="{'activityIn': item[keys.activityStatus] == '进行中'}">{{item[keys.activityStatus]}}</el-button>
