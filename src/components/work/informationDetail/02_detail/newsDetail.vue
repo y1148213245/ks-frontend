@@ -215,7 +215,7 @@ export default {
     /* 获取附件下载链接 */
     getAttachUrl () {
       let recordID = this.keys.getAttachParam_recordID + '=' + this.attach[this.keys.fileRecordID];
-      let url = this.projectConfig.attachUrl + '?' + recordID;
+      let url = CONFIG.BASE_URL + this.projectConfig.attachUrl + '?' + recordID;
       this.attachUrl = url;
     }
   }

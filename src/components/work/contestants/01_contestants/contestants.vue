@@ -539,7 +539,7 @@ export default {
     },
     upLoadUrl () {
       // 上传地址
-      return "http://172.19.57.153/spc-portal-web/dynamicFile/upload.do?";
+      return  CONFIG.BASE_URL + this.CONFIG.upLoadUrl;
     },
     beforeFileUpload (file) {
       const isDOCX =
