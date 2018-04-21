@@ -479,11 +479,11 @@ export default {
   },
   // 参与的活动
   /*查询学生列表*/
-  getActivityMemberByTeacher(params) {
+  getActivityMemberByUser(params) {
     var url =
       CONFIG.BASE_URL +
-      "user/getActivityMemberByTeacher.do?teacherId=" +
-      params.teacherID +
+      "user/getActivityMemberByUser.do?userId=" +
+      params.userId +
       "&pageNo=" +
       params.pageNo +
       "&pageSize=" +
@@ -499,10 +499,10 @@ export default {
   deleteActivityMemberById(params) {
     var url =
       CONFIG.BASE_URL +
-      "user/deleteActivityMemberById.do?memberId=" +
-      params.memberId +
-      "&teacherId=" +
-      params.teacherId;
+      "user/deleteActivityMemberById.do?id=" +
+      params.id +
+      "&userId=" +
+      params.userId;
     return Get(url);
   },
   // 编辑学生

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-08 15:34:54 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-20 10:16:43
+ * @Last Modified time: 2018-04-20 14:33:51
  */
 /* 上传作品 */
 export default {
@@ -11,10 +11,10 @@ export default {
     contestants_01: {
       competitionList: {
         url:
-         "/user/getActivityMemberByTeacher.do?",
-        competitionedUrl:  'spc/prodb/activity/myWorks.do?loginName=william&pageSize=1&page=10&pageable=1',
+         "/user/getActivityMemberByUser.do",
+        competitionedUrl:  'spc/prodb/activity/myWorks.do',
         params: {
-          teacherId: "",
+          userId: "",
           pageNo: "1",
           pageSize: "8"
         }

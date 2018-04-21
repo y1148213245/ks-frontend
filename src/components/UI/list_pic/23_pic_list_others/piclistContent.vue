@@ -83,6 +83,7 @@ export default {
     },
     otherbook (author) { // 该作者其它图书 list.do接口
       let params = Object.assign({}, this.CONFIG.params);
+      params.searchText = author;
       let isHas = false;
       params.conditions.map((item) => {
         if (item.hasOwnProperty('BOOK_SYS_AUTHORS')) {

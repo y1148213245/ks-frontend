@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 10:48:04 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-04 15:38:04
+ * @Last Modified by: song
+ * @Last Modified time: 2018-04-20 17:58:31
  */
 
 
@@ -35,6 +35,7 @@ const prod = {
       keys: {
         title:'PORTAL_ACTIVITY_SYS_TOPIC',//标题字段
         content:'PORTAL_ACTIVITY_DESCRIPTION',//内容字段
+        startDate: "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",// 活动开始时间字段
         endDate:'PORTAL_ACTIVITY_END_TIMESTAMPNEW',//结束日期字段
         resourceId:'pub_resource_id',//资源id字段
         illustration:'pub_illustration',//轮播图字段

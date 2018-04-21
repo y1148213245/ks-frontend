@@ -239,7 +239,8 @@
               :show-file-list="false"
               :on-progress="avatarLoading"
               :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
+              :before-upload="beforeAvatarUpload"
+              :headers="uploadHeader">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
               <img v-else v-bind:src="account.avatar || '../../assets/img/timg.jpg'" alt="暂无头像"/>
             </el-upload>
@@ -546,7 +547,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-import { Get } from "@common";
+import { Get,Token } from "@common";
 import $ from "jquery";
 Vue.use(Vuex);
 Vue.prototype.$ajax = axios;
@@ -698,6 +699,9 @@ export default {
     };
     return {
       CONFIG:null,
+      uploadHeader:{
+        token:Token
+      },
       title: [
         "main",
         "pointRecords",
@@ -1581,6 +1585,7 @@ export default {
           message: "头像更改成功"
         });
       } else {
+        this.loading.close();
         this.$message({
           type: "info",
           message: "头像更改失败，请重试"

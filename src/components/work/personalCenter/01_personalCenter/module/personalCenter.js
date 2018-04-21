@@ -442,9 +442,9 @@ var actions = {
     });
   },
   /*查询学生列表*/
-  getActivityMemberByTeacher({ commit, getters }, params) {
-    params.teacherID = getters.getMember.id;
-    api.getActivityMemberByTeacher(params).then(function(response) {
+  getActivityMemberByUser({ commit, getters }, params) {
+    params.userId = getters.getMember.id;
+    api.getActivityMemberByUser(params).then(function(response) {
       let activityMemberList = response.data.data;
       commit("setActivityMemberList", activityMemberList);
     });

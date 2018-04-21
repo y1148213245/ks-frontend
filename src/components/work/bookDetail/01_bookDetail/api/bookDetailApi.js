@@ -11,17 +11,17 @@ export default {
    * @param cb
    */
   viewBookDetailInfo(params, cb) {
-    let loading = Vue.prototype.$loading({ fullscreen: true });
+    /* let loading = Vue.prototype.$loading({ fullscreen: true }); */
     var url = CONFIG.BASE_URL + "book/getBookDetail.do?pubId=" + params.pubId + '&loginName=' + params.loginName;
     axios.get(url).then(function (response) {
       if (response.data.result == "1" && cb && cb instanceof Function) {
         cb({
           bookDetailInfo: response.data.data,
         });
-        loading.close();
+        /* loading.close(); */
       }
     }).catch(function (error) {
-      loading.close();
+      /* loading.close(); */
     });
   },
 

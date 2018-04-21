@@ -22,8 +22,8 @@ const prod = {
   contestants: {
     contestants_01: {
       competitionList: {
-        url:  "/user/getActivityMemberByTeacher.do?",/* 获取参赛人 */
-        competitionedUrl:  'spc/prodb/activity/myWorks.do',/* 获取已参赛人url */
+        url: "/user/getActivityMemberByUser.do",/* 获取参赛人 */
+        competitionedUrl: 'spc/prodb/activity/myWorks.do',/* 获取已参赛人url */
         params: {
           teacherId: "",
           pageNo: "1",
@@ -32,8 +32,8 @@ const prod = {
       },
       //查询补充信息接口
       supplementaryInformation: {
-        url:  "/spc/prodb/detail.do?",
-        getSchoolUrl:  "spc/prodb/searchNL.do",
+        url: "/spc/prodb/detail.do?",
+        getSchoolUrl: "spc/prodb/searchNL.do",
         params: {
           getPlaceRequest_doclibCode: "PORTAL_ACTIVITY", //配库码
           getSchoolRequest_doclibCode: "PORTAL_SCHOOL", //配库码
@@ -65,7 +65,7 @@ const prod = {
       upLoadUrl: "/dynamicFile/upload.do?",
       // 汇总上传接口
       informationUploading: {
-        url:  "/spc/prodb/saveItem.do?",
+        url: "/spc/prodb/saveItem.do?",
         params: {
           doclibCode: "PORTAL_WORKS",
           metaMap: {
@@ -85,7 +85,15 @@ const prod = {
             TEXTCONTENT: "", //	正文内容
             ATTACHID: "", //文件附件ID
             COMMITUSER: "", //提交用户
-            WORKSTYPE: "" //作品类型
+            WORKSTYPE: "", //作品类型
+            CONCRETE_CLASS: '', //班级
+            SCHOOL_ADDRESS: '',//学校
+            MAILBOX: '',//邮箱
+            POSTCODE: '',//邮编
+            GUIDETEACHER_PHONENUMBER: '',//指导教师电话
+            ORGANIZE_TEACHER: '',//组织教师
+            ORGANIZETEACHER_PHONENUMBER: '',//组织教师电话
+            IS_HIDE: '' //是否是隐私
           },
           attachMap: [
             {

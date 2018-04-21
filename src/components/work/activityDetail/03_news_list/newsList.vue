@@ -106,7 +106,7 @@ export default {
     },
     /* 获取新闻图片 */
     getPicUrl (coverId) {
-      let url = this.CONFIG.getPicUrl;
+      let url = CONFIG.BASE_URL + this.CONFIG.getPicUrl;
       url += '?' + this.keys.getPicParam_coverId + '=' + coverId;
       return url;
     }

@@ -245,7 +245,7 @@ export default {
   methods: {
     loadedCallBack() {
       this.$store.dispatch("personalCenter/activityList", {});
-      this.getActivityMemberByTeacher();
+      this.getActivityMemberByUser();
     },
     //时间格式化
     dateFormat: function(row, column) {
@@ -304,12 +304,12 @@ export default {
       window.location.href = url;
     },
     // 获取报名人列表
-    getActivityMemberByTeacher() {
+    getActivityMemberByUser() {
       var params = {
         pageNo: 1,
         pageSize: 99
       };
-      this.$store.dispatch("personalCenter/getActivityMemberByTeacher", params);
+      this.$store.dispatch("personalCenter/getActivityMemberByUser", params);
     },
 
     // 增加参赛人信息
@@ -322,7 +322,7 @@ export default {
             id: 0,
             identifyId: this.addParticipantsForm.identity,
             mobileNum: this.addParticipantsForm.telNumber,
-            teacherId: this.account.id,
+            userId: this.account.id,
             userName: this.addParticipantsForm.name
           };
           api
@@ -337,14 +337,14 @@ export default {
               } else {
                 this.$message({
                   type: "success",
-                  message: "学生添加成功!"
+                  message: "参赛人添加成功!"
                 });
                 var params = {
                   pageNo: 1,
                   pageSize: 99
                 };
                 this.$store.dispatch(
-                  "personalCenter/getActivityMemberByTeacher",
+                  "personalCenter/getActivityMemberByUser",
                   params
                 );
               }
@@ -369,8 +369,8 @@ export default {
         type: "warning"
       }).then(function() {
         var param = {
-          memberId: id,
-          teacherId: _this.account.id
+          id: id,
+          userId: _this.account.id
         };
         api.deleteActivityMemberById(param).then(response => {
           console.log(response);
@@ -389,7 +389,7 @@ export default {
               pageSize: 99
             };
             _this.$store.dispatch(
-              "personalCenter/getActivityMemberByTeacher",
+              "personalCenter/getActivityMemberByUser",
               params
             );
           }
@@ -419,7 +419,7 @@ export default {
           id: this.studentId,
           identifyId: $("#ac_ID").val(),
           mobileNum: $("#ac_phone").val(),
-          teacherId: this.account.id,
+          userId: this.account.id,
           userName: $("#ac_name").val()
         };
 
@@ -440,7 +440,7 @@ export default {
               pageSize: 8
             };
             this.$store.dispatch(
-              "personalCenter/getActivityMemberByTeacher",
+              "personalCenter/getActivityMemberByUser",
               params
             );
           }

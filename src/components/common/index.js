@@ -23,16 +23,8 @@ var _axios = axios.create({
   timeout: 10000,
   withCredentials: true
 });
-_axios.defaults.headers.token = getToken();
 
-var Get = _axios.get;
-var Post = readProd || (process.env.NODE_ENV === 'production') ? _axios.post : _axios.get;
-var Delete = _axios.delete;
-
-
-export { Get, Post, Delete, DrawImage, ValidateRules, CreateCode, vv, CookieUtils, _axios };
-
-function getToken() {
+var Token = function getToken() {
   let session = sessionStorage;
   let local = localStorage;
 
@@ -46,8 +38,32 @@ function getToken() {
   return token;
 }
 
-window.addEventListener('storage', function (e) {
+_axios.defaults.headers.token = Token();
+
+var Get = _axios.get;
+var Post = readProd || (process.env.NODE_ENV === 'production') ? _axios.post : _axios.get;
+var Delete = _axios.delete;
+
+
+
+export { Get, Post, Delete, DrawImage, ValidateRules, CreateCode, vv, CookieUtils, _axios, Token };
+
+var Token = function getToken() {
+  let session = sessionStorage;
+  let local = localStorage;
+
+  let token = session.getItem('token');
+  if (!token) {
+    token = local.getItem('token');
+    if (!token) {
+      token = '';
+    }
+  }
+  return token;
+}
+
+/* window.addEventListener('storage', function (e) {
   if (e.key == 'token') {
     window.location.reload();
   }
-})
+}) */

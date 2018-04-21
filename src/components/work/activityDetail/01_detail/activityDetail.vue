@@ -8,8 +8,12 @@
     </div>
     <div class="work_activitydetail_01-text_content" v-text="detail && detail[keys.content] || ''"></div>
     <div class="work_activitydetail_01-upload_box">
-      <div v-if="isActive === true" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">上传作品</div>
-      <div v-if="isActive === false" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
+      <div v-if="activeStatus === 1" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">上传作品</div>
+      <div v-if="activeStatus === -1" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">未开始</div>
+      <div v-if="activeStatus === 0" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
+      <div v-if="activeStatus === 2" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">评奖中</div>
+      
+      
     </div>
 
     
@@ -33,7 +37,7 @@ export default {
       CONFIG: null,
       keys: null,
       detail: {},
-      isActive: null,
+      activeStatus: null,
     };
   },
 
@@ -64,7 +68,7 @@ export default {
         let queryParam_pubId = keys.requestUrlParam_pubId + '=' + query[keys.requestUrlParam_pubId];
         url += '?' + queryParam_pubId + '&loginName=' + (this.member.loginName || '');
       }
-      Get(CONFIG.BASE_URL+url).then((resp) => {
+      Get(CONFIG.BASE_URL + url).then((resp) => {
         let data = resp.data.data;
         this.detail = data;
         if (this.detail) {
@@ -72,10 +76,14 @@ export default {
 
           //判断活动过期
           let thisTimestamp = new Date().getTime();
-          if (thisTimestamp < data[this.keys.endDate] && thisTimestamp < data[this.keys.reviewDate]) {
-            this.isActive = true;
+          if (thisTimestamp < data[this.keys.endDate] && thisTimestamp < data[this.keys.reviewDate] && thisTimestamp > data[this.keys.startDate]) {
+            this.activeStatus = 1;
+          } else if (thisTimestamp > data[this.keys.reviewDate]) {
+            this.activeStatus = 2;
+          } else if (thisTimestamp < data[this.keys.startDate]) {
+            this.activeStatus = -1;
           } else {
-            this.isActive = false;
+            this.activeStatus = 0;
           }
         }
 

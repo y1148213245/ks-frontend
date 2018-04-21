@@ -41,7 +41,18 @@ const dev = {
         attachment: 'ATTACH_LIST', // 附件信息
         docId: 'SYS_DOCUMENTID', // 作品docId
         isCollect: 'isCollect',    // 作品是否收藏
-        isHide: 'IS_HIDE' // 是否允许显示正文 or 是否允许下载附件
+        isHide: 'IS_HIDE', // 是否允许显示正文 or 是否允许下载附件
+        activityName: "ACTIVITY_NAME", // 活动名称
+        createdTime: "SYS_CREATED", // 作品上传时间
+      },
+      getActivityInfo:{/* 活动详情配置 */
+        url:'spc/prodb/detail.do',
+        requestParams:{/* 请求参数配置 */
+          doclibCode:'PORTAL_ACTIVITY'
+        },
+        dataKeys:{/* 返回数据的字段名配置 */
+          voteSwitch:'PRAISE_SWITCH'
+        }
       }
     }
   }
@@ -76,7 +87,9 @@ const prod = {
         attachment: 'ATTACH_LIST', // 附件信息
         docId: 'SYS_DOCUMENTID', // 作品docId
         isCollect: 'isCollect',    // 作品是否收藏
-        isHide: 'IS_HIDE' // 是否允许显示正文 or 是否允许下载附件
+        isHide: 'IS_HIDE', // 是否允许显示正文 or 是否允许下载附件
+        activityName: "ACTIVITY_NAME", // 活动名称
+        createdTime: "SYS_CREATED", // 作品上传时间
       },
       getActivityInfo:{/* 活动详情配置 */
         url:'spc/prodb/detail.do',
@@ -84,7 +97,7 @@ const prod = {
           doclibCode:'PORTAL_ACTIVITY'
         },
         dataKeys:{/* 返回数据的字段名配置 */
-          voteSwitch:'PRAISE_SWITCH'
+          voteSwitch:'PRAISE_SWITCH',
         }
       }
     }

@@ -1,15 +1,17 @@
 /*
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-19 15:47:07
+ * @Last Modified by: song
+ * @Last Modified time: 2018-04-20 17:13:06
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
   <div class="work_bookdetail_03">
     <div class="topTitle">
       <div class="title" v-text="workInfo[keys.title] || '暂无'"></div>
+      <div class="work_bookdetail_03_activityname">{{workInfo[keys.activityName]}}</div>
       <div class="vote" v-show="activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]=='是'">
+      <time class="work_bookdetail_03_createdTime">{{workInfo[keys.createdTime] | formatTimeNEW}}</time>
         <!-- 投票组件 -->
         <work_common_03 namespace="common" v-on:vote="totalVoteNum" :docid="workInfo[keys.docId]"></work_common_03>
         <!-- END 投票组件 -->
@@ -99,7 +101,7 @@ export default {
     this.$bus.$on('commentNum', (data) => {
       this.commentNum = data;
     });
-    this.queryActivityInfo();
+    this.queryActivityInfo(); // 活动详情
   },
   mounted () {
     this.url = window.location.href + '&isMobile=true';  // 扫描二维码上移动端 去除收藏和评论功能 因为这些功能需要登录才能用
@@ -107,6 +109,7 @@ export default {
     this.resourceType = queryObj.resourceType;
     this.resourceId = queryObj.resourceId;
     this.isMobile = queryObj.isMobile ? true : false;  // 是否在移动端
+    this.queryWorkInfo(); // 作品详情
   },
 
   methods: {

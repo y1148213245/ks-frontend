@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming
  * @Date: 2018-02-05 14:11:10
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-19 15:30:50
+ * @Last Modified by: song
+ * @Last Modified time: 2018-04-20 17:58:29
  */
 export default {
   name: "activityrace",
@@ -21,6 +21,7 @@ export default {
       keys: {
         title: 'PORTAL_ACTIVITY_SYS_TOPIC',//标题
         content: 'PORTAL_ACTIVITY_DESCRIPTION',//内容
+        startDate: "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",// 活动开始时间字段
         endDate: 'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
         resourceId: 'pub_resource_id',
         illustration: 'pub_illustration',

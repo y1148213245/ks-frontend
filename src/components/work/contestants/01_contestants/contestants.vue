@@ -108,8 +108,8 @@
       <div slot="header" class="clearfix">
       <span class="ac_table_title ac_title_bottom">补充相关信息</span>
       </div>
-      <div style="display:inline-block;margin-left:30px;">
-        <span>地区：</span>
+      <div class="work_contestants_01-supplement is-required">
+        <label class="el-form-item__label">地区：</label>
         <el-select v-model="addressInformaitionValue" placeholder="请选择参赛地区" filterable  @change="updateSchool">
           <el-option
           v-for="item in addressInformaition"
@@ -119,8 +119,8 @@
           </el-option>
         </el-select>
       </div>
-      <div  style="display:inline-block;margin-left:30px;">
-      <span>组别：</span>
+      <div  class="work_contestants_01-supplement is-required">
+      <label class="el-form-item__label">组别：</label>
         <el-select v-model="classInformaitionValue" placeholder="请选择参赛组别" filterable  @change="updateSchool">
           <el-option
           v-for="item in classInformaition"
@@ -131,28 +131,135 @@
         </el-select>
       </div>
 
-      <div  style="display:inline-block;margin-left:30px;">
-      <span>学校：</span>
-      <el-select v-model="schoolInformaitionValue" placeholder="请选择学校"  filterable >
+      <div class="work_contestants_01-supplement is-required">
+      <label class="el-form-item__label">学校：</label>
+      <el-select v-model="schoolInformaitionValue" placeholder="请选择学校"  filterable>
          <el-option v-for="(item,index) in schoolArr" :label="item.label" :value="item.SYS_TOPIC" :key="index"></el-option>
+         <el-option label="其他" :value="-1"></el-option>
       </el-select>
       </div>
 
-
-       <div  style="display:inline-block;margin-left:30px;">
-      <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
-      <div class="ac_linetext" style="margin-top:10px;">
-        <div class="ac_input">
-        <el-form-item label="教师：" prop="teacher">
-        <el-input
-        placeholder="请填写指导教师"
-        v-model="addSupplementForm.teacher"
-        clearable>
-        </el-input>
-        </el-form-item>
-        </div>
+      <div class="work_contestants_01-supplement">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="班级：" prop="class">
+              <el-input placeholder="请填写班级" v-model="addSupplementForm.class" clearable class="work_contestants_01-supplement-class_input"></el-input>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
       </div>
-      </el-form>
+      
+      <div class="work_contestants_01-supplement isLongInput" v-show="isShowCustomeSchool">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="学校：" prop="customSchool">
+              <el-input placeholder="请填写学校" v-model="addSupplementForm.customSchool" clearable></el-input>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
+      </div>
+
+      <div class="work_contestants_01-supplement isLongInput">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="学校地址：" prop="schoolAddress">
+              <el-input placeholder="请填写学校地址" v-model="addSupplementForm.schoolAddress" clearable></el-input>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
+      </div>
+
+      <div class="work_contestants_01-supplement isLongInput">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="邮箱：" prop="email">
+              <el-input placeholder="请填写邮箱" v-model="addSupplementForm.email" clearable></el-input>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
+      </div>
+
+      <div class="work_contestants_01-supplement isLongInput">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="邮编：">
+              <el-input placeholder="请填写邮编" v-model="addSupplementForm.zipCode" clearable></el-input>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
+      </div>
+      
+      <div class="work_contestants_01-supplement isLongInput">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="指导教师：">
+              <el-input placeholder="请填写指导教师" v-model="addSupplementForm.teacher" clearable></el-input>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
+      </div>
+
+      <div class="work_contestants_01-supplement isLongInput">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="指导教师电话：">
+              <el-input placeholder="请填写指导教师电话" v-model="addSupplementForm.teacherPhone" clearable></el-input>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
+      </div>
+
+      <div class="work_contestants_01-supplement isLongInput">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="组织教师：">
+              <el-input placeholder="请填写组织教师" v-model="addSupplementForm.organizationTeacher" clearable></el-input>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
+      </div>  
+
+      <div class="work_contestants_01-supplement isLongInput">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="组织教师电话：">
+              <el-input placeholder="请填写组织教师电话" v-model="addSupplementForm.organizationTeacherPhone" clearable></el-input>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
+      </div>
+
+      <div class="work_contestants_01-supplement isLongInput">
+        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
+          <div class="ac_linetext">
+            <div class="ac_input">
+            <el-form-item label="设为隐私">
+              <el-radio-group v-model="addSupplementForm.isHide">
+                <el-radio label="是"></el-radio>
+                <el-radio label="否"></el-radio>
+              </el-radio-group>
+            </el-form-item>
+            </div>
+          </div>
+        </el-form>
       </div>
     </el-card>
     <el-button type="primary" class="ac_to_next" @click="submitAddSupplementForm('addSupplementForm')">下一步</el-button>
@@ -228,10 +335,17 @@ export default {
     namespace: String
   },
   data () {
+    var customSchoolValidate = (rule, value, callback) => {
+      if (this.schoolInformaitionValue === -1 && value == "") {
+        callback(new Error("请填写学校"));
+      } else {
+        callback();
+      }
+    }
     return {
       // loginName: null,
       docId: "",
-      teacherID: "",
+      userId: "",
       loginName: "",
       currentRow: "",
       attachID: "",
@@ -246,6 +360,7 @@ export default {
       classInformaition: null,
       classInformaitionValue: null,
       schoolInformaitionValue: null,
+      isShowCustomeSchool: false,
       customToolbar: [
         // 自定义编辑器工具栏
         ["bold", "italic", "underline"], // 字体样式：粗体、斜体、下划线
@@ -268,8 +383,21 @@ export default {
           { validator: ValidateRules.mobileCheck, trigger: "blur" }
         ],
         school: [{ required: true, message: "请输入学校", trigger: "blur" }],
+        customSchool: [
+          { required: true, message: "请输入学校", trigger: "blur" },
+          { validator: customSchoolValidate, trigger: "blur" }
+        ],
         teacher: [
           { required: true, message: "请输入指导教师", trigger: "blur" }
+        ],
+        class: [
+          { required: true, message: "请输入班级", trigger: "blur" }
+        ],
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" }
+        ],
+        schoolAddress: [
+          { required: true, message: "请输入学校地址", trigger: "blur" }
         ],
         title: [
           { required: true, message: "请输入参赛作品标题", trigger: "blur" }
@@ -290,7 +418,16 @@ export default {
       },
       addSupplementForm: {
         school: "",
-        teacher: ""
+        customSchool: "",
+        schoolAddress: '',
+        teacher: "",
+        teacherPhone: '',
+        class: '',
+        email: '',
+        zipCode: '',
+        organizationTeacher: '',
+        organizationTeacherPhone: '',
+        isHide: '否'
       },
       addressInformaitionValue: "",
       classInformaitionValue: "",
@@ -306,11 +443,12 @@ export default {
     };
   },
   created () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].contestants.contestants_01;
     var _this = this;
-    Get(CONFIG.BASE_URL+ "checkToken.do").then(function (rep) {
+    Get(CONFIG.BASE_URL + "checkToken.do").then(function (rep) {
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
-        _this.teacherID = datas.id;
+        _this.userId = datas.id;
         _this.loginName = datas.loginName;
         _this.queryParticipants();
       } else {
@@ -322,7 +460,6 @@ export default {
   },
 
   mounted () {
-    this.CONFIG = PROJECT_CONFIG[this.namespace].contestants.contestants_01;
     this.queryRelatedInformation();
   },
   components: {
@@ -331,9 +468,9 @@ export default {
   methods: {
     queryParticipants () {
       // 查询参赛人列表
-      Get(CONFIG.BASE_URL+this.CONFIG.competitionList.url, {
+      Get(CONFIG.BASE_URL + this.CONFIG.competitionList.url, {
         params: {
-          teacherId: this.teacherID,
+          userId: this.userId,
           pageNo: "1",
           pageSize: "99"
         }
@@ -341,7 +478,7 @@ export default {
         let participantsArr = [];
         let participantsedArr = [];
         let participantsList = rep.data.data;
-        Get(CONFIG.BASE_URL+this.CONFIG.competitionList.competitionedUrl, {
+        Get(CONFIG.BASE_URL + this.CONFIG.competitionList.competitionedUrl, {
           params: {
             loginName: this.loginName,
             pageSize: '1',
@@ -376,7 +513,6 @@ export default {
       });
     },
     setParticipantsListTableCellClassName (row, rowIndex) {
-      console.log(row);
       return 'work_contestants_01-cell--disable'
     },
     //查询学校
@@ -416,7 +552,7 @@ export default {
         symbols +
         "&" +
         vals;
-      Get(CONFIG.BASE_URL+url).then(resp => {
+      Get(CONFIG.BASE_URL + url).then(resp => {
         this.schoolInformaitionValue = ""; //清空学校
         this.schoolArr = resp.data.content;
         console.log(this.schoolArr);
@@ -431,7 +567,7 @@ export default {
         return null;
       };
       this.docId = getUrlStr("docId");
-      Get(CONFIG.BASE_URL+this.CONFIG.supplementaryInformation.url, {
+      Get(CONFIG.BASE_URL + this.CONFIG.supplementaryInformation.url, {
         params: {
           doclibCode: "PORTAL_ACTIVITY",
           docID: this.docId
@@ -471,13 +607,31 @@ export default {
       } else if (this.schoolInformaitionValue == "") {
         this.$message({
           type: "error",
+          message: "请选择选择学校"
+        });
+        return false;
+      } else if (this.schoolInformaitionValue === -1 && this.addSupplementForm.customSchool == '') {
+        this.$message({
+          type: "error",
           message: "请选择填写学校"
         });
         return false;
-      } else if (this.addSupplementForm.teacher == "") {
+      } else if (this.addSupplementForm.schoolAddress == "") {
         this.$message({
           type: "error",
-          message: "填写指导教师"
+          message: "请选择填写学校地址"
+        });
+        return false;
+      } else if (this.addSupplementForm.class == "") {
+        this.$message({
+          type: "error",
+          message: "请选择填写班级"
+        });
+        return false;
+      } else if (this.addSupplementForm.email == "") {
+        this.$message({
+          type: "error",
+          message: "请选择填写邮箱"
         });
         return false;
       } else {
@@ -494,7 +648,7 @@ export default {
             id: 0,
             identifyId: this.addParticipantsForm.identity,
             mobileNum: this.addParticipantsForm.telNumber,
-            teacherId: this.teacherID,
+            userId: this.userId,
             userName: this.addParticipantsForm.name
           };
           api
@@ -514,7 +668,7 @@ export default {
                 this.queryParticipants();
                 /*  Get(CONFIG.BASE_URL+this.CONFIG.competitionList.url, {
                    params: {
-                     teacherId: this.teacherID,
+                     userId: this.userId,
                      pageNo: "1",
                      pageSize: "99"
                    }
@@ -539,7 +693,7 @@ export default {
     },
     upLoadUrl () {
       // 上传地址
-      return  CONFIG.BASE_URL + this.CONFIG.upLoadUrl;
+      return CONFIG.BASE_URL + this.CONFIG.upLoadUrl;
     },
     beforeFileUpload (file) {
       const isDOCX =
@@ -610,8 +764,18 @@ export default {
             paramsObj.metaMap.POTHUNTER_IDNUMBER = this.currentRow.identifyId; //	参赛人身份证号
             paramsObj.metaMap.AREA = this.addressInformaitionValue; //	参赛地区
             paramsObj.metaMap.CLASS = this.classInformaitionValue; //	参赛组别
-            paramsObj.metaMap.SCHOOL = this.schoolInformaitionValue; //	参赛人学校
+            paramsObj.metaMap.SCHOOL = this.schoolInformaitionValue === -1 ? this.addSupplementForm.customSchool : this.schoolInformaitionValue; //	参赛人学校
+
             paramsObj.metaMap.GUIDE_TEACHER = this.addSupplementForm.teacher; //	参赛人指导教师
+            paramsObj.metaMap.CONCRETE_CLASS = this.addSupplementForm.class; //班级
+            paramsObj.metaMap.SCHOOL_ADDRESS = this.addSupplementForm.schoolAddress;//学校
+            paramsObj.metaMap.MAILBOX = this.addSupplementForm.email; //邮箱
+            paramsObj.metaMap.POSTCODE = this.addSupplementForm.zipCode;//邮编
+            paramsObj.metaMap.GUIDETEACHER_PHONENUMBER = this.addSupplementForm.teacherPhone;//指导教师电话
+            paramsObj.metaMap.ORGANIZE_TEACHER = this.addSupplementForm.organizationTeacher;//组织教师
+            paramsObj.metaMap.ORGANIZETEACHER_PHONENUMBER = this.addSupplementForm.organizationTeacherPhone;//组织教师电话
+            paramsObj.metaMap.IS_HIDE = this.addSupplementForm.isHide;//是否是隐私
+
             paramsObj.metaMap.SYS_TOPIC = this.addAnnexWorksForm.title; //	参赛作品标题
             paramsObj.metaMap.DESCRIPTION = this.addAnnexWorksForm.synopsis; //	参赛作品简介
             paramsObj.metaMap.TEXTCONTENT = this.addAnnexWorksForm.content; //	参赛作品正文
@@ -620,7 +784,7 @@ export default {
             paramsObj.attachMap[0].FILERECORDID = this.attachID.toString(); //文件附件ID
             paramsObj.metaMap.COMMITUSER = this.loginName; //	提交用户
             paramsObj.metaMap.WORKSTYPE = this.worktype; //	文件类型
-            Post(CONFIG.BASE_URL+this.CONFIG.informationUploading.url, paramsObj).then(rep => {
+            Post(CONFIG.BASE_URL + this.CONFIG.informationUploading.url, paramsObj).then(rep => {
               var datas = rep.data.result;
               console.log(rep.data.status);
               if (rep.data.status == "success") {
@@ -662,6 +826,15 @@ export default {
     },
     handleExceed (files, fileList) {
       this.$message.warning(`只能上传一个参赛作品附件`);
+    }
+  },
+  watch: {
+    schoolInformaitionValue (val, oldVal) {
+      if (val === -1) {
+        this.isShowCustomeSchool = true;
+      } else {
+        this.isShowCustomeSchool = false;
+      }
     }
   }
 };
@@ -723,7 +896,7 @@ export default {
   line-height: 40px;
 }
 .work_contestants_01_main .ac_input .el-input {
-  width: 217px;
+  /* width: 217px; */
   display: inline-block;
 }
 .work_contestants_01_main .ac_to_next {
@@ -743,5 +916,33 @@ export default {
 }
 .work_contestants_01_main .ac_last_text .where_to_go {
   margin-top: 30px;
+}
+.work_contestants_01-required_icon {
+  color: red;
+}
+.work_contestants_01-supplement {
+  display: inline-block;
+  margin-left: 30px;
+}
+.work_contestants_01-supplement .ac_linetext {
+  margin-top: 10px;
+}
+.work_contestants_01-supplement.is-required .el-form-item__label:before {
+  content: "*";
+  color: #f56c6c;
+  margin-right: 4px;
+}
+.work_contestants_01-supplement-class_input {
+  width: 200px;
+}
+.work_contestants_01-supplement.isLongInput .el-form-item__label {
+  /* text-align: left; */
+  width: 110px;
+}
+.work_contestants_01-supplement.isLongInput .ac_input {
+  width: 563px;
+}
+.work_contestants_01-supplement.isLongInput .ac_input .el-input {
+  width: 453px;
 }
 </style>
