@@ -404,11 +404,11 @@ export default {
         ],
         synopsis: [
           { required: true, message: "请输入参赛作品简介", trigger: "blur" }
-        ]
+        ],
         // files: [{ required: true, message: "请上传作品附件", trigger: "blur" }],
-        // content: [
-        //   { required: true, message: "请填写参赛作品", trigger: "blur" }
-        // ]
+        content: [
+          { required: true, message: "请填写参赛文章", trigger: "blur" }
+        ]
       },
       addParticipantsForm: {
         name: "",

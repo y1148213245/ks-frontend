@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
  * @Last Modified by: song
- * @Last Modified time: 2018-04-20 17:13:06
+ * @Last Modified time: 2018-04-21 14:59:39
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
@@ -10,8 +10,8 @@
     <div class="topTitle">
       <div class="title" v-text="workInfo[keys.title] || '暂无'"></div>
       <div class="work_bookdetail_03_activityname">{{workInfo[keys.activityName]}}</div>
-      <div class="vote" v-show="activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]=='是'">
       <time class="work_bookdetail_03_createdTime">{{workInfo[keys.createdTime] | formatTimeNEW}}</time>
+      <div class="vote" v-show="activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]=='是'">
         <!-- 投票组件 -->
         <work_common_03 namespace="common" v-on:vote="totalVoteNum" :docid="workInfo[keys.docId]"></work_common_03>
         <!-- END 投票组件 -->
