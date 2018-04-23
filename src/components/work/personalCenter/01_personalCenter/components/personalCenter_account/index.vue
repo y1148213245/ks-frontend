@@ -697,10 +697,11 @@ export default {
         callback();
       }
     };
+    let token = Token()
     return {
       CONFIG:null,
       uploadHeader:{
-        token:Token
+        token:token
       },
       title: [
         "main",

@@ -48,19 +48,6 @@ var Delete = _axios.delete;
 
 export { Get, Post, Delete, DrawImage, ValidateRules, CreateCode, vv, CookieUtils, _axios, Token };
 
-var Token = function getToken() {
-  let session = sessionStorage;
-  let local = localStorage;
-
-  let token = session.getItem('token');
-  if (!token) {
-    token = local.getItem('token');
-    if (!token) {
-      token = '';
-    }
-  }
-  return token;
-}
 
 /* window.addEventListener('storage', function (e) {
   if (e.key == 'token') {
