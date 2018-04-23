@@ -191,7 +191,7 @@
         <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
           <div class="ac_linetext">
             <div class="ac_input">
-            <el-form-item label="邮编：">
+            <el-form-item label="邮编：" prop="zipCode">
               <el-input placeholder="请填写邮编" v-model="addSupplementForm.zipCode" clearable></el-input>
             </el-form-item>
             </div>
@@ -215,7 +215,7 @@
         <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
           <div class="ac_linetext">
             <div class="ac_input">
-            <el-form-item label="指导教师电话：">
+            <el-form-item label="指导教师电话：" prop="teacherPhone">
               <el-input placeholder="请填写指导教师电话" v-model="addSupplementForm.teacherPhone" clearable></el-input>
             </el-form-item>
             </div>
@@ -239,7 +239,7 @@
         <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
           <div class="ac_linetext">
             <div class="ac_input">
-            <el-form-item label="组织教师电话：">
+            <el-form-item label="组织教师电话：" prop="organizationTeacherPhone">
               <el-input placeholder="请填写组织教师电话" v-model="addSupplementForm.organizationTeacherPhone" clearable></el-input>
             </el-form-item>
             </div>
@@ -342,6 +342,21 @@ export default {
         callback();
       }
     }
+    var mobileCheck = (rule, value, callback) => {
+      if (value != '' && !/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(value)) {
+        callback(new Error("请输入正确手机号"));
+      } else {
+        callback();
+      }
+    }
+    var zipCodeCheck = (rule, value, callback) => {
+      if (value != '' && !/^[1-9][0-9]{5}$/.test(value)) {
+        callback(new Error("请输入正确邮政编码"));
+      } else {
+        callback();
+      }
+    }
+
     return {
       // loginName: null,
       docId: "",
@@ -390,11 +405,21 @@ export default {
         teacher: [
           { required: true, message: "请输入指导教师", trigger: "blur" }
         ],
+        teacherPhone: [
+          { validator: mobileCheck, trigger: "blur" }
+        ],
+        organizationTeacherPhone: [
+          { validator: mobileCheck, trigger: "blur" }
+        ],
         class: [
           { required: true, message: "请输入班级", trigger: "blur" }
         ],
         email: [
-          { required: true, message: "请输入邮箱", trigger: "blur" }
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+          { validator: ValidateRules.validateEmail, trigger: "blur" }
+        ],
+        zipCode: [
+          { validator: zipCodeCheck, trigger: "blur" }
         ],
         schoolAddress: [
           { required: true, message: "请输入学校地址", trigger: "blur" }
@@ -628,13 +653,33 @@ export default {
           message: "请选择填写班级"
         });
         return false;
-      } else if (this.addSupplementForm.email == "") {
+      } else if (this.addSupplementForm.teacherPhone != "" && !/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(this.addSupplementForm.teacherPhone)) {
         this.$message({
           type: "error",
-          message: "请选择填写邮箱"
+          message: "请选择填写正确指导教师手机号"
         });
         return false;
-      } else {
+      } else if (this.addSupplementForm.organizationTeacherPhone != "" && !/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(this.addSupplementForm.organizationTeacherPhone)) {
+        this.$message({
+          type: "error",
+          message: "请选择填写正确组织教师手机号"
+        });
+        return false;
+      } else if (this.addSupplementForm.email == "" ||
+        (this.addSupplementForm.email != "" &&
+          this.addSupplementForm.email != this.addSupplementForm.email.match(/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/))) {
+        this.$message({
+          type: "error",
+          message: "请填写邮箱"
+        });
+        return false;
+      } else if (this.addSupplementForm.zipCode  != '' && !/^[1-9][0-9]{5}$/.test(this.addSupplementForm.zipCode)) {
+        this.$message({
+          type: "error",
+          message: "请填写正确邮编"
+        });
+        return false;
+      }else {
         this.active = 1;
       }
     },
