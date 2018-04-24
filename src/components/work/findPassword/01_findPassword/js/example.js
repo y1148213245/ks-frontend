@@ -4,7 +4,7 @@ const title = '密码找回组件';  // 组件title
 const description = `密码找回组件`;  // 组件描述信息
 const dev = {
   findPassword: {
-    work_findPassword_01: {
+    work_findpassword_01: {
       findPasswordUrl:  "user/findPassword.do?email=",
       setPasswordUrl:  "user/setPassword1.do?email=",
       href: "../pages/login.html"
@@ -13,7 +13,7 @@ const dev = {
 };
 const prod = {
   findPassword: {
-    work_findPassword_01: {
+    work_findpassword_01: {
       findPasswordUrl:  "user/findPassword.do?email=",
       setPasswordUrl:  "user/setPassword1.do?email=",
       href: "../pages/login.html"
