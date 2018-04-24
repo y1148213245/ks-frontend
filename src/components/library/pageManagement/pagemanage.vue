@@ -234,7 +234,7 @@
  <script>
 import ScanExamples from "@common/scans/ScanExamples";
 import VueExamples from "@common/scans/ScanVues";
-import ProdExamples from "@common/scans/ScanProds";
+/* import ProdExamples from "@common/scans/ScanProds"; */
 import { Get, Post, Delete } from "@common";
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
@@ -317,7 +317,7 @@ export default {
     this.examples = ScanExamples();
     this.unusedComponents = ScanExamples();
     this.VueExamples = VueExamples();
-    this.ProdExamples = ProdExamples();
+    /* this.ProdExamples = ProdExamples(); */
     this.clientHeight = document.documentElement.clientHeight - 80;
     try {
       if ($_$.SITE_NAME) { // 站点名字
@@ -363,7 +363,7 @@ export default {
                   navifation_01：{ ... }
                   }
               }
-        prod/xxx.js：项目实际跑的配置文件
+        prod/xxx.js：项目实际跑的配置文件【取消】
         js/example.js：样例配置文件
       */
       this.currentComponent = {};   // 当前选中的组件
@@ -372,6 +372,7 @@ export default {
       for (var i = 0, len = this.usedComTagArr.length; i < len; i++) {
         if (this.usedComTagArr[i].indexOf(this.examples[com].name) !== -1) {
           configCon = this.usedComTagArr[i].substring(this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace'))) + 1, this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace')) + 1));
+          break;
         }
       }
       if (this.examples[com].childComponents && this.examples[com].childComponents.length > 0) { // 有子组件的复合组件
@@ -397,16 +398,31 @@ export default {
 
       curConfig[itemConfig] = curConfig[itemConfig] ? curConfig[itemConfig] : {};
       if ($_$[configCon] && $_$[configCon][itemConfig] && $_$[configCon][itemConfig][subItemConfig]) {  // config/index.js $_$变量
+        console.log('config/index.js $_$变量');
         curConfig[itemConfig][subItemConfig] = $_$[configCon][itemConfig][subItemConfig];
-      } else if (this.ProdExamples[configCon] && this.ProdExamples[configCon][itemConfig] && this.ProdExamples[configCon][itemConfig][subItemConfig]) { // prod/xxx.js
+        console.log(curConfig);
+      } /* else if (this.ProdExamples[configCon] && this.ProdExamples[configCon][itemConfig] && this.ProdExamples[configCon][itemConfig][subItemConfig]) { // prod/xxx.js
         curConfig[itemConfig][subItemConfig] = this.ProdExamples[configCon][itemConfig][subItemConfig];
-      } else { // js/example.js
-        curConfig[itemConfig][subItemConfig] = this.examples[com].prod;
+      } */ else { // js/example.js
+        console.log('js/example.js');
+        curConfig[itemConfig][subItemConfig] = this.examples[com].prod[itemConfig][subItemConfig];
+        console.log(curConfig);
       }
 
       for (let key in this.examples[com].prod[itemConfig][subItemConfig]) {  // 遍历处理组件升级问题
         if (!curConfig[itemConfig][subItemConfig].hasOwnProperty(key)) {  // 组件升级新增属性
+          // console.log('组件升级新增属性');
           curConfig[itemConfig][subItemConfig][key] = this.examples[com].prod[itemConfig][subItemConfig][key];
+        } else { // 组件原有属性对象里新增属性
+          if (typeof (curConfig[itemConfig][subItemConfig][key]) === "object") {
+            // console.log('组件原有属性对象里新增属性');
+            for (let subKey in this.examples[com].prod[itemConfig][subItemConfig][key]) {
+              if (!curConfig[itemConfig][subItemConfig][key].hasOwnProperty(subKey)) {
+                curConfig[itemConfig][subItemConfig][key][subKey] = this.examples[com].prod[itemConfig][subItemConfig][key][subKey];
+              }
+            }
+          }
+
         }
       }
 

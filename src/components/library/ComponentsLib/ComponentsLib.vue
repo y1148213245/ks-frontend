@@ -32,14 +32,14 @@
 				<el-menu default-active="0" class="el-menu-vertical-demo">
 					<el-menu-item v-for="(com,vkey,index) in examples" :key="vkey" :index="String(index)" @click="toggleShowCom(com)">
 						<i class="el-icon-menu"></i>
-						<span slot="title" v-text="com.title + '（' + com.name + '）'"></span>
+						<span slot="title" v-text="index + 1  + ' ' + com.title + '（' + com.name + '）'"></span>
 					</el-menu-item>
 				</el-menu>
 			</el-col>
 
 			<el-col :span="17" class="comInfo">
 				<img :src="imgUrl" alt="暂无图片">
-				<div>组件标签名： <span><{{this.showComponents.name}}></{{this.showComponents.name}}></span></div>
+				<div v-if="this.showComponents && this.showComponents.name">组件标签名： <span><{{this.showComponents.name}}></{{this.showComponents.name}}></span></div>
 				<div>组件描述：{{this.showComponents && this.showComponents.description}}</div>
 				<div>dev 配置：</div>
 				<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.dev"></textarea>
@@ -205,6 +205,7 @@ export default {
   box-shadow: 0 0 10px 2px #ccc;
   padding-left: 50px;
   font-size: 20px;
+	box-sizing: border-box;
 }
 
 .common_components_lib .titleHead .searchContent {
@@ -265,6 +266,7 @@ export default {
 
 .comList .el-menu {
   border-right: none;
+	padding-bottom: 20px;
 }
 
 .common_components_lib .comInfo {
