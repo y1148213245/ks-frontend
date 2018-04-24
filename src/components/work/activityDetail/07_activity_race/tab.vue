@@ -110,7 +110,8 @@ export default {
       isShowJoin: true,
       productNav_hidden: true,
       activityDetail: {},
-      tabArr: []
+      tabArr: [],
+      hashCache: ''
     }
   },
 
@@ -124,11 +125,35 @@ export default {
   mounted () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_acitivityrace_07;
     this.tabArr = this.CONFIG.tabArr;
+    this.checkHash();
+
   },
 
   methods: {
+    checkHash () {
+      if (("onhashchange" in window) && ((typeof
+        document.documentMode === "undefined") || document.documentMode == 8)) { //
+        window.onhashchange = () => {
+          this.getHashToChangeTab()
+        }
+      } else { // 不支持则用定时器检测的办法 
+        setInterval(function () {
+          var hash = window.location.hash;
+          if (this.hashCache != hash) {
+            this.hashCache = hash
+            this.getHashToChangeTab();
+          }
+        }, 150);
+      }
+    },
+    getHashToChangeTab () {
+      var hash = window.location.hash;
+      if (hash) {
+        var tag = hash.substring(hash.indexOf("#") + 1, hash.length);
+        this.change(tag);
+      }
+    },
     change (index) {
-      window.location.hash = '#' + index
       if (index == 4) {
         if (this.activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != '是') {
           this.$message(
@@ -138,13 +163,13 @@ export default {
             }
           )
         } else {
+          window.location.hash = '#' + index
           this.currentShowIndex = index;
         }
       } else {
+        window.location.hash = '#' + index
         this.currentShowIndex = index;
       }
-
-
     },
     productNavChange (val) {
       if (val) {
@@ -157,11 +182,7 @@ export default {
     },
     getActivityDetail (detail) {
       this.activityDetail = detail;
-      var hash = window.location.hash;
-      if (hash) {
-        var tag = hash.substring(hash.indexOf("#") + 1, hash.length);
-        this.change(tag);
-      }
+      this.getHashToChangeTab();
     }
   }
 }

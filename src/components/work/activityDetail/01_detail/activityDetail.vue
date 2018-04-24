@@ -9,9 +9,8 @@
     <div class="work_activitydetail_01-text_content" v-text="detail && detail[keys.content] || ''"></div>
     <div class="work_activitydetail_01-upload_box">
       <div v-if="activeStatus === 1" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">上传作品</div>
-      <div v-if="activeStatus === -1" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">未开始</div>
+      
       <div v-if="activeStatus === 0" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
-      <div v-if="activeStatus === 2" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">评奖中</div>
       
       
     </div>
@@ -78,11 +77,13 @@ export default {
           let thisTimestamp = new Date().getTime();
           if (thisTimestamp < data[this.keys.endDate] && thisTimestamp < data[this.keys.reviewDate] && thisTimestamp > data[this.keys.startDate]) {
             this.activeStatus = 1;
-          } else if (thisTimestamp > data[this.keys.reviewDate]) {
-            this.activeStatus = 2;
-          } else if (thisTimestamp < data[this.keys.startDate]) {
-            this.activeStatus = -1;
-          } else {
+          } 
+          // else if (thisTimestamp > data[this.keys.reviewDate]) {
+          //   this.activeStatus = 2;
+          // } else if (thisTimestamp < data[this.keys.startDate]) {
+          //   this.activeStatus = -1;
+          // } 
+          else {
             this.activeStatus = 0;
           }
         }

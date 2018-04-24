@@ -199,7 +199,7 @@ export default {
         this.activityDetailCache = activityDetail; //缓存数据
         //判断活动过期
         let thisTimestamp = new Date().getTime();
-        if (thisTimestamp < this.activityDetailCache[this.keys.eventListienLoadDatas_endDate]) {
+        if (thisTimestamp < this.activityDetailCache[this.keys.eventListienLoadDatas_endDate] && thisTimestamp > this.activityDetailCache[this.keys.eventListienLoadDatas_startDate]) {
           this.activityIsActive = true;
         } else {
           this.activityIsActive = false;
@@ -272,7 +272,7 @@ export default {
     },
     colFormatTime (row, column, cellVal) {
       if (cellVal) {
-        return Moment(cellVal).format("YYYY-MM-DD hh:mm")
+        return Moment(cellVal).format("YYYY-MM-DD HH:mm")
       } else {
         return '暂无日期'
       }
@@ -281,7 +281,7 @@ export default {
   filters: {
     formatTime (str) {
       if (str) {
-        return Moment(str).format("YYYY-MM-DD hh:mm")
+        return Moment(str).format("YYYY-MM-DD HH:mm")
       } else {
         return '暂无日期'
       }

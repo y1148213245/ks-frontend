@@ -518,7 +518,7 @@ export default {
             let isParticipant = false;
             for (let j = 0, len = participantsedList.length; j < len; j++) {
               let participantsed = participantsedList[j];
-              if (participant.userName == participantsed.POTHUNTER_NAME) {
+              if (participant.identifyId == participantsed.POTHUNTER_IDNUMBER) {
                 isParticipant = false;
                 break;
               } else {

@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-02-06 10:34:24 
- * @Last Modified by: song
- * @Last Modified time: 2018-04-21 14:59:39
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-04-23 16:04:53
  */ 
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
@@ -11,7 +11,7 @@
       <div class="title" v-text="workInfo[keys.title] || '暂无'"></div>
       <div class="work_bookdetail_03_activityname">{{workInfo[keys.activityName]}}</div>
       <time class="work_bookdetail_03_createdTime">{{workInfo[keys.createdTime] | formatTimeNEW}}</time>
-      <div class="vote" v-show="activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]=='是'">
+      <div class="vote" v-show="activityIsActive && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]=='是'">
         <!-- 投票组件 -->
         <work_common_03 namespace="common" v-on:vote="totalVoteNum" :docid="workInfo[keys.docId]"></work_common_03>
         <!-- END 投票组件 -->
@@ -85,6 +85,7 @@ export default {
       resourceId: '',
       isMobile: false,  // 移动端状态 默认false
       activityDetail: '',
+      activityIsActive:false,
     };
   },
   components: {
@@ -157,6 +158,13 @@ export default {
       }
       Get(CONFIG.BASE_URL + config.url, { params }).then(resp => {
         this.activityDetail = resp.data;
+
+        let thisTimestamp = new Date().getTime();
+        if (thisTimestamp < this.activityDetail[this.CONFIG.getActivityInfo.dataKeys.endDate] && thisTimestamp > this.activityDetail[this.CONFIG.getActivityInfo.dataKeys.startDate]) {
+          this.activityIsActive = true;
+        } else {
+          this.activityIsActive = false;
+        }
       })
     },
     loadWork (fileRecordID) {  // 下载附件类型的作品

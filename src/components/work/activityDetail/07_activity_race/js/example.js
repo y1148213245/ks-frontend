@@ -286,6 +286,8 @@ const prod = {
           eventListienLoadDatas_activityId: 'pub_resource_id',
           eventListienLoadDatas_voteSwitch: 'PORTAL_ACTIVITY_PRAISE_SWITCH',
           eventListienLoadDatas_endDate: 'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
+          eventListienLoadDatas_reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',
+          eventListienLoadDatas_startDate:'PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW',
 
           eventListienSearchDatas: ['place', 'school', 'group', 'searchText'],//扩展查询参数
           getListParam_doclibCode: 'doclibCode',

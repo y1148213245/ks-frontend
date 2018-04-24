@@ -1,8 +1,8 @@
 /*
  * @Author: yan.chaoming
  * @Date: 2018-02-05 14:11:10
- * @Last Modified by: song
- * @Last Modified time: 2018-04-20 17:58:29
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-04-23 17:35:16
  */
 export default {
   name: "activityrace",
@@ -178,6 +178,13 @@ export default {
               getListParam_memberType: "4",
               getListParam_vals: "未审核",
             },
+            SYS_CURRENTSTATUS_1: {//例
+              getListParam_relations: "1",
+              getListParam_cols: "SYS_CURRENTSTATUS",
+              getListParam_symbols: "3",
+              getListParam_memberType: "4",
+              getListParam_vals: "未通过审核",
+            }
           },
           toProductDetailParam_resourceType: 'PORTAL_WORKS'
         },
@@ -197,6 +204,8 @@ export default {
           eventListienLoadDatas_voteSwitch: 'PORTAL_ACTIVITY_PRAISE_SWITCH',
           eventListienLoadDatas_endDate: 'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
           eventListienLoadDatas_voteDescription: "PORTAL_ACTIVITY_PRAISE_DESCRIPTION",
+          eventListienLoadDatas_reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',
+          eventListienLoadDatas_startDate:'PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW',
 
           eventListienSearchDatas: ['place', 'school', 'group', 'searchText'],//扩展查询参数
           getListParam_doclibCode: 'doclibCode',

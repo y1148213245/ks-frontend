@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-02-06 11:12:46 
- * @Last Modified by: song
- * @Last Modified time: 2018-04-20 17:11:57
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-04-23 16:01:58
  */
 export default {
   name: "productiondetail",
@@ -45,6 +45,8 @@ export default {
         },
         dataKeys:{/* 返回数据的字段名配置 */
           voteSwitch:'PRAISE_SWITCH',
+          endDate:'END_TIMESTAMPNEW',
+          startDate:'BEGIN_TIMESTAMPNEW'
         }
       }
     }

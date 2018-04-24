@@ -51,7 +51,9 @@ const dev = {
           doclibCode:'PORTAL_ACTIVITY'
         },
         dataKeys:{/* 返回数据的字段名配置 */
-          voteSwitch:'PRAISE_SWITCH'
+          voteSwitch:'PRAISE_SWITCH',
+          endDate:'END_TIMESTAMPNEW',
+          startDate:'BEGIN_TIMESTAMPNEW'
         }
       }
     }
@@ -98,6 +100,8 @@ const prod = {
         },
         dataKeys:{/* 返回数据的字段名配置 */
           voteSwitch:'PRAISE_SWITCH',
+          endDate:'END_TIMESTAMPNEW',
+          startDate:'BEGIN_TIMESTAMPNEW'
         }
       }
     }

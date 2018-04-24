@@ -4,7 +4,7 @@
     <el-row>
       <el-col :span="24" v-for="(item, index) in activityList" :key="index">
         <el-card :body-style="{ padding: '0px'}">
-          <a :href="goList(item.id)"><img :src="item[keys.small_pic]"  class="ac_image"></a>
+          <a class="ui_pic_list_22-img_box" :href="goList(item.id)"><img :src="item[keys.small_pic]"  class="ac_image"></a>
           <div style="padding: 14px;">
             <a class="ac_title" :href="goList(item[keys.id])">{{item[keys.name]}}</a>
           </div>
