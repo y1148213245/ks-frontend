@@ -84,6 +84,15 @@ export default {
     }
   },
   //   身份证校验
+  IDCheckSimple: (rule, value, callback) => {
+
+    if (!value || !/(^\d{15}$)|(^\d{17}([0-9]|X)$)/.test(value)) {
+      callback(new Error("身份证号格式错误"));
+    } else {
+      callback();
+    }
+
+  },
   IDCheck: (rule, value, callback) => {
     if (
       !value ||

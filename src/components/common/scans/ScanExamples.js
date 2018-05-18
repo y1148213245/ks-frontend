@@ -1,7 +1,8 @@
 /**
  * Created by codingnuts on 2018/1/4.
  */
-function ScanExamples (requireContext = require.context("../../../components", true, /\example.js/)) {
+//= require.context("../../../components", true, /\example.js/)
+function ScanExamples (requireContext ) {
 	var map = {};
 	requireContext.keys().map(requireContext).forEach(function (item) {
 		if (item.prod && item.dev && item.name) {
@@ -12,3 +13,4 @@ function ScanExamples (requireContext = require.context("../../../components", t
 }
 
 export default ScanExamples;
+

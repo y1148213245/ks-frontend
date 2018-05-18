@@ -2,8 +2,8 @@
  * Created by codingnuts on 2017/12/7.
  */
 import Vue from 'vue';
-
-function ScanVues (requireContext = require.context("../../../components", true, /\.vue$/)) {
+import SC from "@project/main/SelectedComponents.js"
+/*function ScanVues (requireContext = require.context("../../../components", true, /\.vue$/)) {
 	var map = {};
 	requireContext.keys().map(requireContext).forEach(function (item) {
 		if (item.default.name && item.default.reused) {
@@ -12,7 +12,7 @@ function ScanVues (requireContext = require.context("../../../components", true,
 		}
 	});
 	return map;
-}
+}*/
 
-export default ScanVues;
+export default SC;
 

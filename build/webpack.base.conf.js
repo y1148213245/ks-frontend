@@ -4,6 +4,7 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 var baseConfig = require('../src/config');
+utils.createVueComponentsMap();
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -23,9 +24,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    babel: "babel-polyfill",
     app: './src/projects/' + baseConfig.concurrentProject + "/main/index.js",
-    project: './src/projects/' + baseConfig.concurrentProject + "/main/project.js",
   },
   output: {
     path: config.build.assetsRoot,
@@ -33,6 +32,15 @@ module.exports = {
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
+  },
+  externals: {
+    // 不打包这些js
+    vue: 'Vue',
+    'element-ui': 'ELEMENT',
+    jquery: 'jQuery',
+    moment: 'moment',
+    showdown: 'showdown',
+    swiper: 'swiper'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -43,7 +51,8 @@ module.exports = {
       '@config': resolve("src/config"),
       '@work': resolve("src/components/work"),
       'projectConfig': "@common/config.js",//resolve('src/projects/' + baseConfig.concurrentProject + "/config/index.js"),
-      '@project': resolve('src/projects/' + baseConfig.concurrentProject)
+      '@project': resolve('src/projects/' + baseConfig.concurrentProject),
+      '@components': resolve("src/components")
     }
   },
   module: {
@@ -72,7 +81,7 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
+          limit: 1000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },

@@ -9,6 +9,10 @@ var glob = require('glob');
 var merge = require('webpack-merge')
 // 页面模板
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+const fs = require("fs");
+const wl = require(path.resolve(__dirname, '../src/projects/' , projectConfig.concurrentProject, "main/whitelist.js" ));
+
+
 
 exports.assetsPath = function (_path) {
 	const assetsSubDirectory = process.env.NODE_ENV === 'production'
@@ -136,18 +140,18 @@ exports.htmlPlugin = function () {
 			// 文件名称
 			filename: _path,
 			// 页面模板需要加对应的js脚本，如果不加这行则每个页面都会引入所有的js脚本
-			chunks: ["babel", 'manifest', 'vendor', "project", "app"],
+			chunks: ['manifest', 'vendor', "app"],
 			chunksSortMode: 'manual',
 			inject: true
 		};
 		if (process.env.NODE_ENV === 'production') {
 			conf = merge(conf, {
 				//先不做压缩，以便于今后外包出去
-				/*minify: {
+				minify: {
 					removeComments: true,
 					collapseWhitespace: true,
 					removeAttributeQuotes: true
-				},*/
+				},
 				chunksSortMode: 'manual'
 			})
 		}
@@ -169,3 +173,40 @@ exports.getDevData = function () {
 
 	return arr
 };
+
+
+exports.createVueComponentsMap = () => {
+
+	let componentPath = path.resolve(__dirname, '../src/components'),
+		components = [],
+		componentPathList = glob.sync(componentPath + '/*/*/*/*.vue'), // /ui/list_pic/01_c1/c1.vue
+		_paths, key, value;
+
+	componentPathList.map((item) => {
+		_paths = item.substring(componentPath.length).split(item.indexOf(path.sep) !== -1 ? path.sep : "/");
+		_paths = _paths.slice(1, _paths.length - 1);
+		_paths[_paths.length - 1] = _paths[_paths.length - 1].substring(0, _paths[_paths.length - 1].indexOf("_"));
+		key =_paths.join("_").toLowerCase();
+		value = ("@/" + path.relative(path.resolve(__dirname, '../src'), item)).split(path.sep).join("/");
+
+		if(!wl.whiteList.length || wl.whiteList.indexOf(key) != -1 || process.env.NODE_ENV !== 'production'){
+			components.push(`\tVue.component("${key}" , () => import("${value}"));\n`);
+		}
+	});
+
+	if(componentPathList.length) {
+		if(components.length){
+			fs.writeFileSync(path.resolve(__dirname, '../src/projects/' , projectConfig.concurrentProject , "main/SelectedComponents.js" ),
+				`
+import Vue from 'vue';
+
+function initVueComponents () {
+${components.join("")}
+}
+export default initVueComponents;
+`
+			)
+		}
+	}
+};
+

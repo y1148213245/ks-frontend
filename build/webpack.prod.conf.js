@@ -79,7 +79,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
     // split vendor js into its own file
-    new webpack.optimize.CommonsChunkPlugin({
+    /*new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks (module) {
         // any required modules inside node_modules are extracted to vendor
@@ -106,7 +106,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       async: 'vendor-async',
       children: true,
       minChunks: 3
-    }),
+    }),*/
 
     // copy custom static assets
     new CopyWebpackPlugin([

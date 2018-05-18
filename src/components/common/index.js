@@ -8,6 +8,8 @@ import vv from "./utils/vv";
 import DrawImage from "./utils/DrawImage";
 import CreateCode from "./utils/CreateCode";
 import CookieUtils from "./utils/CookieUtils";
+import {FIELD_ADAPTER} from "./utils/FieldAdapter";
+import toOtherPage from "./utils/ToOtherPage";
 
 try {
 	if (typeof $_$.IS_DISABLE != "undefined" && $_$.IS_DISABLE) { // 站点被禁用
@@ -44,9 +46,12 @@ var Get = _axios.get;
 var Post = readProd || (process.env.NODE_ENV === 'production') ? _axios.post : _axios.get;
 var Delete = _axios.delete;
 
+var getFieldAdapter =  (firstAdapter, secondAdapter) => {
+  /* console.log(Object.assign(FIELD_ADAPTER[firstAdapter].systemAdapter, FIELD_ADAPTER[firstAdapter][secondAdapter])); */
+  return Object.assign(FIELD_ADAPTER[firstAdapter].systemAdapter, FIELD_ADAPTER[firstAdapter][secondAdapter]);
+}
 
-
-export { Get, Post, Delete, DrawImage, ValidateRules, CreateCode, vv, CookieUtils, _axios, Token };
+export { Get, Post, Delete, DrawImage, ValidateRules, CreateCode, vv, CookieUtils, _axios, Token, toOtherPage, getFieldAdapter };
 
 
 /* window.addEventListener('storage', function (e) {
