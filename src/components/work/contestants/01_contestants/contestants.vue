@@ -41,6 +41,7 @@
 
       </div>
       <el-table
+        ref="singleTable"
         :data="participantsList"
         max-height="288"
         style="width: 700px"
@@ -622,6 +623,7 @@ export default {
           }
           _this.participantsedList = participantsedArr;
           _this.participantsList = participantsArr;
+          this.setCurrent(participantsArr[0])
         })
 
       });
@@ -706,6 +708,10 @@ export default {
         }
         )
       });
+    },
+    /* 设置默认参选人 */
+    setCurrent(row) {
+        this.$refs.singleTable.setCurrentRow(row);
     },
     handleCurrentChange (currentRow) {
       // console.log(currentRow);
