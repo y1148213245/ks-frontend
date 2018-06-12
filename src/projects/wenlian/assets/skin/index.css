@@ -1,0 +1,239 @@
+/********************** start 头部 ************************/
+
+
+/* 头部样式作为项目公共组件 放在skin/common.css */
+
+
+/********************** end 头部 ************************/
+
+
+/********************** start 精品图书组件 ************************/
+
+.ui_pic_list_24_excellent {
+  border-top-style: solid;
+  border-top-color: #da0b2d;
+}
+
+.ui_pic_list_24_excellent .ui_pic_list_24_excellent_name {
+  color: #7e7e7e;
+  font-size: 18px;
+  background: url(../img/bg_001.png) no-repeat;
+}
+
+.ui_pic_list_24_excellent .ui_pic_list_24_excellent_head .ui_pic_list_24_excellent_more {
+  font-size: 12px;
+}
+
+
+
+
+
+
+/* 精品图书上半部分 */
+
+.ui_pic_list_10_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.ui_pic_list_10_skin .refineDl {
+  background: url(../img/jpts_pic_003.png) no-repeat;
+}
+
+.ui_pic_list_10_skin .refineDl .refineDt {
+  background-color: white;
+  box-shadow: 0px 0px 15px #cecece;
+}
+
+.ui_pic_list_10_skin .refineDl .refineImg {
+  text-decoration: none;
+}
+
+.ui_pic_list_10_skin .refineDd .title a {
+  color: #353535;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ui_pic_list_10_skin .refineDd .refineAuthor {
+  font-size: 14px;
+}
+
+.ui_pic_list_10_skin .refineDd .zhaiyao {
+  color: #797979;
+}
+
+.ui_pic_list_10_skin .refineDd .probationLink {
+  background: url(../img/free_reader_001.jpg) no-repeat;
+}
+
+
+
+
+
+/* end 精品图书上半部分 */
+
+
+/* 精品图书下半部分 */
+
+.ui_list_pic_09_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.ui_list_pic_09_skin a {
+  text-decoration: none;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_ul {
+  list-style: none;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_li {
+  list-style: none;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_li .jieshao {
+  border-right-style: solid;
+  border-right-color: #f9e3e3;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_li .jieshao .title {
+  font-size: 14px;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_li .jieshao .title a {
+  color: #4a4a4a;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_li .jieshao .author {
+  font-size: 12px;
+  color: #aaaaaa;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_li .jieshao .xing i {
+  font-size: 14px;
+  margin-right: 4px;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_li .jieshao .reader {
+  background-color: #515151;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_li .jieshao .reader:hover {
+  background-color: #ca0000;
+}
+
+.ui_list_pic_09_skin .ui_list_pic_09_li .jieshao .reader a {
+  color: #fff;
+}
+
+
+
+
+
+/* end 精品图书下半部分 */
+
+
+/********************** end 精品图书组件 ************************/
+
+
+/********************** start 热销排行组件 ************************/
+
+.ui_list_pic_06_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+  margin-top: 0px!important;
+}
+
+.ui_list_pic_06_skin a {
+  text-decoration: none;
+  color: #535353;
+}
+
+.ui_list_pic_06_skin .titleHead {
+  color: #fff;
+  background: #c50000;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.ui_list_pic_06_skin .listWrapper {
+  border-style: solid;
+  border-color: #f8f8f8;
+  background: #fff;
+  height: 552px!important;
+}
+
+.ui_list_pic_06_skin .listCon {
+  border-bottom-style: solid;
+  border-bottom-color: #f8f8f8;
+}
+
+.ui_list_pic_06_skin .listCon .listDd {
+  color: #9f9f9f;
+}
+
+.ui_list_pic_06_skin .listCon .jiaobiao {
+  color: #fff;
+  background: #f9ab3c;
+}
+
+.ui_list_pic_06_skin .listCon .title {
+  font-size: 14px;
+  color: #535353;
+}
+
+.ui_list_pic_06_skin .listCon .hitcount {
+  color: #9f9f9f;
+}
+
+.ui_list_pic_06_skin .listCon .price {
+  color: #9f9f9f;
+}
+
+.ui_list_pic_06 .listCon .delete {
+  cursor: pointer;
+  background: url(../img/bg_008.png) no-repeat;
+}
+
+
+
+
+/********************** end 热销排行组件 ************************/
+
+
+/********************** start 热门书籍组件 ************************/
+
+
+
+/********************** end 热门书籍组件 ************************/
+
+
+/************start 头部轮播图**************/
+
+.ui_swiper_04_pic_nowords .swiper-container {
+  height: 200px;
+  width: 100%;
+}
+
+.ui_swiper_04_pic_nowords .swiper-wrapper {
+  height: 180px;
+}
+
+.ui_swiper_04_pic_nowords .testi-image {
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+/************end 头部轮播图**************/

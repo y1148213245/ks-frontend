@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>电子书城</title>
+  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
+  <link type="text/css" rel="stylesheet" href="../assets/skin/ebook.css">
+
+  <script type="text/javascript" src="../assets/js/jquery.js"></script>
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <script type="text/javascript" src="../assets/js/web.js"></script>
+  <script type="text/javascript" src="../assets/js/jquery_03.js"></script>
+  <script>
+    $(document).ready(function () {
+      $(".all_class").off("click");
+    });
+  </script>
+  <style>
+    .footerCom {
+      height: 117px;
+      text-align: center;
+      width: 100%;
+      background: #595959;
+      padding-top: 40px;
+      font-size: 14px;
+    }
+
+    .footerCom p {
+      line-height: 30px;
+      color: #d4d4d4;
+    }
+  </style>
+</head>
+<body>
+<div id="app" style="display: none">
+  <components_ebook_handleurl></components_ebook_handleurl>
+  <!--头-->
+  <components_common_header namespace="header"></components_common_header>
+  <!--头end-->
+  <div class="main">
+    <div class="main_left fl">
+      <div class="book_jdt fr">
+        <div class="id_flash">
+          <div class="top">
+            <!--start 轮播-->
+            <ui_pic_info_list_12 namespace="ebook"></ui_pic_info_list_12>
+            <!--end 轮播-->
+            <!--start 图书列表-->
+            <ui_star_pic_info_13 namespace="ebook"></ui_star_pic_info_13>
+            <!--end 图书列表-->
+          </div>
+        </div>
+      </div>
+      <!-----------------------热门书籍-------------------------------->
+      <div id="popular" class="hot_book cl">
+        <div class="popularCon">
+          <h3>
+            <span class="hot_book_name fl f18 color_7e7">热门书籍</span>
+            <span class="more fr pt20 f12">
+                <a href="../pages/bookList.html?colId=57" class="color_727">MORE+</a>
+              </span>
+          </h3>
+          <ui_list_pic_o7_popular_book namespace="common"></ui_list_pic_o7_popular_book>
+        </div>
+      </div>
+      <!-----------------------END 热门书籍-------------------------------->
+    </div>
+    <div class="fr">
+      <div class="sale_top">
+        <ui_list_pic_06_book_list namespace="ebook" modulename="hotsalebank"></ui_list_pic_06_book_list>
+        <!--编辑-->
+        <ui_list_pic_08_editor namespace="common" :show_more="false"></ui_list_pic_08_editor>
+        <!--END编辑-->
+      </div>
+    </div>
+  </div>
+  <div class="footerCom">
+    <p>地址：北京市朝阳区农展馆南里10号 邮编：100125</p>
+    <p>版权所有： 中国文联出版社</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>首页</title>
+  <!--<link type="text/css" rel="stylesheet" href="../assets/css/base.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="../assets/css/common.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="../assets/css/index.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="../assets/css/bookStyle.css">-->
+  <link type="text/css" rel="stylesheet" href="../assets/skin/index.css">
+  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
+
+  <script type="text/javascript" src="../assets/js/jquery.js"></script>
+  <script type="text/javascript" src="../assets/js/sl.js"></script>
+  <script type="text/javascript" src="../assets/js/web.js"></script>
+
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <style>
+    .main {
+      width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+    }
+
+    .main_left {
+      float:left
+    }
+
+    .footerCom {
+      height: 117px;
+      text-align: center;
+      width: 100%;
+      background: #595959;
+      padding-top: 40px;
+      font-size: 14px;
+    }
+
+    .footerCom p {
+      line-height: 30px;
+      color: #d4d4d4;
+    }
+
+    /* start 热门书籍 */
+    .hot_book_con {
+      border-top: 2px solid #da0b2d;
+      padding-left: 20px;
+      width: 940px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      clear: both;
+    }
+
+    .hot_book_con h3 {
+      font-weight: normal;
+      line-height: 25px;
+      height: 25px;
+    }
+
+    .hot_book_con .hot_book_name {
+      padding: 0px 0 0px 30px;
+      margin: 15px 0 20px 0;
+      background: url(../assets/img/bg_001.png) no-repeat -2px -132px;
+      color: #7e7e7e;
+      font-size: 18px;
+      float: left;
+    }
+
+    .hot_book_con .more {
+      font-size: 12px;
+      padding-top: 20px;
+      float: right;
+    }
+
+    .hot_book_con .more a {
+      color: #727272;
+      text-decoration: none;
+    }
+    /* end 热门书籍 */
+
+    .index_main_right {
+      float: right;
+    }
+
+    /* start 作者展示 */
+
+    .showAuthor {
+      border-top: 2px solid #da0b2d;
+      padding-left: 20px;
+      width: 1180px;
+      overflow: hidden;
+      margin-bottom: 48px;
+      clear: both;
+    }
+
+    .showAuthor h3 {
+      font-weight: normal;
+      line-height: 25px;
+      height: 25px;
+    }
+
+    .showAuthor .showAuthorName {
+      color: #7e7e7e;
+      font-size: 18px;
+      float: left;
+      padding: 0px 0 0px 30px;
+      margin: 15px 0 0px 0;
+      background: url(../assets/img/bg_001.png) no-repeat  -2px -156px;
+    }
+
+    .showAuthor .more {
+      padding-right: 30px;
+      font-size: 12px;
+      padding-top: 20px;
+      float: right;
+    }
+
+    .showAuthor .more a {
+      color: #727272;
+      text-decoration: none;
+    }
+
+    .showAuthorList {
+      background: #fff;
+      margin: 20px auto;
+      padding-left: 7px;
+      padding-top: 25px;
+      clear: both;
+    }
+    /* end 作者展示 */
+  </style>
+</head>
+
+<body id="home">
+<div id="app" style="display: none">
+  <!--id="wl"-->
+  <!--头-->
+  <components_common_header namespace="header"></components_common_header>
+  <!--头end-->
+
+  <ui_swiper_05_advert namespace="index"></ui_swiper_05_advert>
+
+  <!-- <div id="advert" class="gz_001">
+    <div class="advertCon">
+      <div name="data_column_block">
+        <a class="gz_001" style="display: block;">
+          <img>
+        </a>
+      </div>
+    </div>
+  </div> -->
+  <div class="main">
+    <ui_swiper_04_pic_nowords namespace="index"></ui_swiper_04_pic_nowords>
+    <!--<div id="carousel" class="jdt">-->
+    <!--<div data-v-0ca8a61f="" id="focus001" class="carouselCon focus1">-->
+    <!--<div data-v-0ca8a61f="" name="data_column_block">-->
+    <!--<ul data-v-0ca8a61f=""></ul>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="main_left">
+      <!-- 精品图书组件 -->
+      <!-- <wenlian_common_refined_book namespace="common"></wenlian_common_refined_book> -->
+      <ui_pic_list_24_excellent namespace="index"></ui_pic_list_24_excellent>
+      <!-- END 精品图书组件 -->
+
+      <!-----------------------热门书籍-------------------------------->
+      <div class="hot_book_con">
+        <div class="popularCon">
+          <h3>
+            <span class="hot_book_name">热门书籍</span>
+            <span class="more">
+                <a href="../pages/bookList.html?colId=57">MORE+</a>
+              </span>
+          </h3>
+          <ui_list_pic_o7_popular_book namespace="common"></ui_list_pic_o7_popular_book>
+        </div>
+      </div>
+      <!-----------------------END 热门书籍-------------------------------->
+    </div>
+    <div class="index_main_right">
+      <!--热销排行-->
+      <ui_list_pic_06_book_list namespace="common" number="4" modulename="hotsalebank"></ui_list_pic_06_book_list>
+      <!--END热销排行-->
+      <!--编辑-->
+      <ui_list_pic_08_editor namespace="common" :show_more="true"></ui_list_pic_08_editor>
+      <!--END编辑-->
+    </div>
+    <div class="showAuthor">
+      <div name="data_column_block">
+        <h3>
+          <span class="showAuthorName">作者展示</span>
+          <span class="more">
+              <a href="javascript:location.href=$_$.indexPage.authorMoreHref">MORE+</a>
+            </span>
+        </h3>
+
+        <div class="showAuthorList">
+          <!-----------------------作者展示-------------------------------->
+          <ui_list_pic_11 namespace="index"></ui_list_pic_11>
+          <!-----------------------END 作者展示-------------------------------->
+        </div>
+      </div>
+    </div>
+    </div>
+  <div class="footerCom">
+    <p>地址：北京市朝阳区农展馆南里10号 邮编：100125</p>
+    <p>版权所有： 中国文联出版社</p>
+  </div>
+  </div>
+
+<!--分享js,需放在最后面-->
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!--分享js,需放在最后面-
+<!--尾部-->
+</body>
+
+</html>

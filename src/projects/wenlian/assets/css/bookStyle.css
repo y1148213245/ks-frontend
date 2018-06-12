@@ -1,0 +1,148 @@
+@charset "utf-8";
+/*文字自动换行处理*/
+.book_list_text {
+  display: inline-block;
+  width: 80px;
+  overflow: hidden;
+  white-space: nowrap; /*规定段落中的文本不进行换行：*/
+  text-overflow: ellipsis; /*规定当文本溢出包含元素时发生的事情 ,显示省略符号来代表被修剪的文本。*/
+}
+
+.jianjie_list_text {
+  width: 455px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; /*规定当文本溢出包含元素时发生的事情 ,显示省略符号来代表被修剪的文本。*/
+}
+
+.hot_list_text {
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap; /*规定段落中的文本不进行换行：*/
+  text-overflow: ellipsis; /*规定当文本溢出包含元素时发生的事情 ,显示省略符号来代表被修剪的文本。*/
+}
+
+.hot_list_imgBox {
+  position: relative;
+  display: block !important;
+  width: 143px !important;
+  height: 193px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 193px !important;
+}
+
+.hot_list_img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-block;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translate(-50%, -50%);
+}
+
+.book_list_img {
+  position: absolute;
+  top: 60%;
+  left: 20%;
+  display: inline-block;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translate(-50%, -50%);
+}
+
+.book_index_imgBox {
+  position: relative;
+  display: block !important;
+  width: 95px !important;
+  height: 97px !important;
+  margin: 0 !important;
+  /*padding: 0!important;*/
+  line-height: 97px !important;
+  padding-top: 1px !important;
+}
+
+.book_index_img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-block;
+  margin-top: 10px !important;
+  padding: 0 !important;
+  transform: translate(-50%, -50%);
+}
+
+.zwPig {
+  text-align: center;
+}
+
+.zwPigList {
+  text-align: center;
+  line-height: 150px;
+}
+
+.starStyle i {
+  font-size: 12px;
+}
+
+.wl_starStyle i {
+  margin-right: 2px;
+  font-size: 4px;
+}
+
+.book_detail_title {
+  display: inline-block;
+  width: 460px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; /*规定当文本溢出包含元素时发生的事情 ,显示省略符号来代表被修剪的文本。*/
+}
+
+.zhaiyao_hot_text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  /*width: 300px;*/
+  height: 56px;
+  word-break: break-all;
+}
+
+.zhaiyao_jp_text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  height: 77px;
+  word-break: break-all;
+}
+
+.zhaiyao_list_text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  /*width: 300px;*/
+  height: 37px;
+  word-break: break-all;
+}
+
+.book_chuban_text {
+  width: 220px;
+  overflow: hidden;
+  white-space: nowrap; /*规定段落中的文本不进行换行：*/
+  text-overflow: ellipsis; /*规定当文本溢出包含元素时发生的事情 ,显示省略符号来代表被修剪的文本。*/
+}
+
+.all_class_detail {
+  padding-top: 18px;
+  background: #fff;
+  width: 222px;
+  position: absolute;
+  top: 41px;
+  left: 0;
+  box-shadow: 0 0 8px #e7e7e7;
+  display: block;
+  z-index: 9;
+}

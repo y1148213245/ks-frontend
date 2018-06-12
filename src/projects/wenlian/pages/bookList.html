@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图书列表</title>
+  <link type="text/css" rel="stylesheet" href="../assets/css/base.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/common.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/book.css">
+  <link type="text/css" rel="stylesheet" href="../assets/css/bookStyle.css">
+
+  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
+  <link type="text/css" rel="stylesheet" href="../assets/skin/booklist.css">
+
+  <script type="text/javascript" src="../assets/js/jquery.js"></script>
+  <script type="text/javascript" src="../assets/js/web.js"></script>
+
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".all_class").off("click");
+    });
+  </script>
+</head>
+<body id="home">
+<div id="app">
+  <!--头-->
+  <components_common_header namespace="header"></components_common_header>
+  <!--头end-->
+  <ui_list_pic_17_3_cols_with_sort namespace="booklist"></ui_list_pic_17_3_cols_with_sort>
+</div>
+</body>
+</html>

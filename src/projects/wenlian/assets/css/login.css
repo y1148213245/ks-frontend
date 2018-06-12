@@ -1,0 +1,105 @@
+@charset "utf-8";
+/* CSS Document */
+
+.main{}
+
+.wjmm_con .zhuangtai,.wjmm_con_1 i,.wjmm_con_1 input.ymh_05,.wjmm_con_2 i,.wjmm_con_3 i,.wjmm_con .wjmm_con4_wc,.zhuce_con_1 i,.zhuce_con_1 input.ymh_05,.bangding_con_1 i,.zhuce_cg_con_1 .zhuce_cg_con_wc,.bangding_con_1 .zhuce_cg_con_wc,.main_login_con input.login_k,.main_login_con input.password_k{background:url(../img/bg_10.png) no-repeat; display:inline-block;vertical-align:middle;text-indent:-9999px;}
+
+/*忘记密码第1步*/
+.wjmm,.zhuce,.bangding{ width:748px; margin:44px  auto 55px auto; background-color:#fff; overflow:hidden; border:1px solid #d9d9d9; padding-bottom:80px; overflow:hidden;}
+.wjmm .wjmm_name,.zhuce .zhuce_name{ margin:0 18px 0 18px; border-bottom:1px solid #bfbfbf; line-height:70px; height:70px;}
+.wjmm .wjmm_name span.mingcheng,.zhuce .zhuce_name span.mingcheng { border-bottom:5px solid #c50000; line-height:68px; height:68px; padding:0px 6px; display:inline-block;}
+.wjmm_con,.zhuce_con,.bangding_con,.zhuce_cg_con { width:480px; margin:0 auto;}
+.wjmm_con .zhuangtai {width:480px; height:95px; margin-top:60px;}
+.wjmm_con .zhuangtai_01{ background-position:-35px 0px; }
+.wjmm_con_1 i.yhm_01 { background-position:-5px -142px; height:18px; width:15px;}
+.wjmm_con_1 input.yhm_03 {width:232px; border:1px solid #e1e1e1; height:35px; padding-left:15px;}
+.wjmm_con_1 i.yhm_04{ background-position:-8px -207px;height:18px; width:17px;}
+.wjmm_con_1 input.ymh_05 { border:0px; width:12px; height:12px; position:absolute; bottom:11px; right:90px; background-position:-10px -240px; cursor:pointer;}
+.wjmm_con_1 i.yzm_01 {background-position:-7px -176px;height:18px; width:17px;}
+.wjmm_con_1 input.yzm_03 {width:100px; border:1px solid #e1e1e1; height:35px; padding-left:15px;}
+.wjmm_con_1 i.yzm_05{background-position:-5px -380px;height:15px; width:15px;}
+.wjmm_con_1 span.yzm_06{ display:inline-block; vertical-align: middle; margin:-2px 5px 0px 5px;}
+.wjmm_con_1 .yzm_cw{ padding-left:85px;}
+.wjmm_con_1 .wjmm_xyb,.wjmm_con_2 .wjmm_xyb,.wjmm_con_3 .wjmm_xyb,.zhuce_con_1 .zhuce_xyb,.bangding_con_1 .bangding_sj_xyb { border:0px; cursor:pointer; width:88px; height:30px; line-height:30px; background-color:#c50000; margin-left:85px; margin-top:20px; }
+
+/*忘记密码第2步---手机验证码*/
+.wjmm_con .zhuangtai_02{ background-position:-40px -95px;}
+.wjmm_con_2 i.bdsj_01 { background-position:-8px -264px; height:18px; width:15px;}
+.wjmm_con_2 input.bdsj_03 {width:100px; border:1px solid #e1e1e1; height:35px;  padding-left:15px;}
+.wjmm_con_2 i.dxyz_01 {background-position:-8px -294px;height:15px; width:17px;}
+.wjmm_con_2 input.dxyz_03 {width:100px; border:1px solid #e1e1e1; height:35px;  padding-left:15px;}
+.wjmm_con_2 a.dxyz_04 { background:#f2f1f1; border:1px solid #d8d8d8; padding:9px 15px; margin-left:28px;}
+.wjmm_con_2 .yzm_cw { padding-left:95px}
+
+/*忘记密码第3步---设置密码*/
+.wjmm_con .zhuangtai_03{ background-position:-40px -198px;}
+.wjmm_con_3 i.szxmm_01{ background-position:-8px -324px; height:16px; width:15px;}
+.wjmm_con_3 input.szxmm_03 {width:220px; border:1px solid #e1e1e1; height:35px;  padding-left:15px;}
+.wjmm_con_3 i.qrmm_01{background-position:-8px -354px;height:18px; width:17px; }
+.wjmm_con_3 input.qrmm_03{width:220px; border:1px solid #e1e1e1; height:35px;  padding-left:15px;}
+
+/*忘记密码第4步---完成*/
+.wjmm_con .zhuangtai_04{ background-position:-40px -300px;}
+.wjmm_con .wjmm_con4_wc { background-position:-545px 0px;  height:55px; width:55px; margin-left:210px;}
+.wjmm_con .wjmm_con4_ts { text-align:center;}
+
+/*注册*/
+.zhuce_con_1 i.yhm_01 { background-position:-5px -142px; height:18px; width:15px;}
+.zhuce_con_1 input.yhm_03 {width:220px; border:1px solid #e1e1e1; height:35px;  padding-left:15px;}
+.zhuce_con_1 i.yhm_04 { background-position:-8px -207px;height:18px; width:17px;}
+.zhuce_con_1 input.ymh_05 { border:0px; width:12px; height:12px; position:absolute; bottom:11px; right:90px; background-position:-10px -240px; cursor:pointer;}
+.zhuce_con_1 i.szxmm_01 { background-position:-8px -324px; height:16px; width:15px;}
+.zhuce_con_1 input.szxmm_03 {width:220px; border:1px solid #e1e1e1; height:35px; padding-left:15px;}
+.zhuce_con_1 i.qrmm_01{background-position:-8px -354px;height:18px; width:17px; }
+.zhuce_con_1 input.qrmm_03 {width:220px; border:1px solid #e1e1e1; height:35px;padding-left:15px;}
+.zhuce_con_1 i.yzm_01 {background-position:-7px -176px;height:18px; width:17px;}
+.zhuce_con_1 input.yzm_03 {width:100px; border:1px solid #e1e1e1; height:35px; padding-left:15px;}
+.zhuce_con_1 i.yzm_05{background-position:-5px -380px;height:15px; width:15px;}
+.zhuce_con_1 span.yzm_06{ display:inline-block; vertical-align: middle; margin:-2px 5px 0px 5px;}
+.zhuce_con_1 .yzm_cw{ padding-left:85px;}
+
+/*手机、邮箱绑定*/
+
+.bangding .bangding_name { margin:0 18px 0 18px; border-bottom:1px solid #bfbfbf; line-height:70px; height:70px;}
+.bangding .bangding_name  span { cursor:pointer;}
+.bangding .bangding_name span.mingcheng_on { border-bottom:5px solid #c50000; line-height:68px; height:67px;display:inline-block; color:#c50000;}
+.bangding_con_1 {padding:85px 0 0 60px;}
+.bangding_con_1 i.sj_01{background-position:-8px -264px; height:18px; width:15px;}
+.bangding_con_1 input.sj_03 {width:100px; border:1px solid #e1e1e1; height:35px; padding-left:15px;}
+.bangding_con_1 i.sj_04 { background-position:-8px -207px;height:18px; width:17px;}
+.bangding_con_1 i.yzm_01 {background-position: -7px -176px;height: 18px;width: 17px;}
+.bangding_con_1 input.yzm_03 {width:100px; border:1px solid #e1e1e1; height:35px;  padding-left:15px;}
+.bangding_con_1 a.yzm_04 { background:#f2f1f1; border:1px solid #d8d8d8; padding:9px 15px; margin-left:28px;}
+.bangding_con_1 .yzm_cw{ padding-left:85px;}
+.bangding_con_1 i.yx_01 {background-position:-8px -294px;height:15px; width:17px;}
+.bangding_con_1 input.yx_03 {width:230px; border:1px solid #e1e1e1; height:35px;  padding-left:15px;}
+.bangding_con_1 i.yx_04 { background-position:-8px -207px;height:18px; width:17px;}
+
+.bangding_con_1 i.yzm_05{background-position:-5px -380px;height:15px; width:15px;}
+.bangding_con_1 span.yzm_06{ display:inline-block; vertical-align: middle; margin:-2px 5px 0px 5px;}
+
+/*注册成功及邮箱激活*/
+.zhuce_cg { width:748px; margin:44px  auto 55px auto; background-color:#fff; overflow:hidden; border:1px solid #d9d9d9; padding:135px 0 135px 0; overflow:hidden;}
+.zhuce_cg_con_1 .zhuce_cg_con_wc,.bangding_con_1 .zhuce_cg_con_wc { background-position:-545px 0px;  height:55px; width:55px; margin-left:210px;}
+.zhuce_cg_con_1 .zhuce_cg_con_ts,.zhuce_cg_con_1 .zhuce_cg_con_dl,.bangding_con_1 .zhuce_cg_con_ts,.bangding_con_1 .zhuce_cg_con_dl { text-align:center;}
+.zhuce_cg_con_1 .zhuce_cg_con_dl a,.bangding_con_1 .zhuce_cg_con_dl a { background:#c50000; padding:8px 22px;}
+
+/*登录*/
+.main_login {   background-image: url("../img/login_bg.jpg");background-position: center top;background-repeat: no-repeat;height: 669px; margin-left: auto;margin-right: auto;visibility: visible;width: 100%;}
+.main_login_con {width:354px; height:358px;box-shadow:0 0 10px #e5e5e5; margin-top:105px; background:#fff; padding:15px 30px;}
+.main_login_con_title {border-bottom:1px solid #cccccc;}
+input.login_k,input.password_k {width:310px; height:40px; border:1px solid #e0e0e0;padding-left:40px;}
+input.login_zddl {vertical-align:middle;margin-bottom:2px}
+input:focus.login_k,input:focus.password_k{ outline-color:#bf3636; color:#bf3636; border:1px solid #bf3636;}
+.login_btn {border:0px; background:#c50000; border-radius:5px; line-height:42px; height:42px; color:#fff;width:350px; font-size:24px; font-weight:bold; cursor:pointer;}
+input:focus.login_btn{background:#c50000;}
+/*.main_login_con input.login_k {background: url(../img/bg_login_01.png)  no-repeat 3% center; }
+.main_login_con input.password_k {background: url(../img/bg_login_02.png)  no-repeat 3% center; }
+input:focus.login_k {background: url(../img/bg_login_03.png)  no-repeat 3% center; }
+input:focus.password_k {background: url(../img/bg_login_04.png)  no-repeat 3% center; }*/
+.main_login_con input.login_k { background-position:-574px -93px; text-indent:inherit;}
+input:focus.login_k { background-position:-574px -61px; }
+.main_login_con input.password_k { background-position: -574px -130px; text-indent:inherit;}
+input:focus.password_k {background-position:-574px -166px; }
+

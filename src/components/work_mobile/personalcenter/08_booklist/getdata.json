@@ -1,0 +1,33 @@
+{
+  "data": [
+    {
+    "bookname":"上下五千年",
+    "author":"张三",
+    "bookimgUrl":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528549855127&di=b4a83b6c1a8daad4d7d47a53116a6769&imgtype=0&src=http%3A%2F%2Fp1.img.cctvpic.com%2Fphotoworkspace%2Fcontentimg%2F2015%2F06%2F29%2F2015062919390694951.jpg",
+    "tryRead":0
+    },
+    {
+      "bookname":"上下五千年",
+      "author":"张三",
+      "bookimgUrl":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528549855127&di=b4a83b6c1a8daad4d7d47a53116a6769&imgtype=0&src=http%3A%2F%2Fp1.img.cctvpic.com%2Fphotoworkspace%2Fcontentimg%2F2015%2F06%2F29%2F2015062919390694951.jpg",
+      "tryRead":0
+    },
+    {
+      "bookname":"上下五千年",
+      "author":"张三",
+      "bookimgUrl":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528549855127&di=b4a83b6c1a8daad4d7d47a53116a6769&imgtype=0&src=http%3A%2F%2Fp1.img.cctvpic.com%2Fphotoworkspace%2Fcontentimg%2F2015%2F06%2F29%2F2015062919390694951.jpg",
+      "tryRead":0
+    },
+    {
+      "bookname":"上下五千年",
+      "author":"张三",
+      "bookimgUrl":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528549855127&di=b4a83b6c1a8daad4d7d47a53116a6769&imgtype=0&src=http%3A%2F%2Fp1.img.cctvpic.com%2Fphotoworkspace%2Fcontentimg%2F2015%2F06%2F29%2F2015062919390694951.jpg",
+      "tryRead":0
+    }
+  ],
+  "error": null,
+  "result": 1,
+  "token": "",
+  "totalCount": "0",
+  "totalPages": "0"
+}

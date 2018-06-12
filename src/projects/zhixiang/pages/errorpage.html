@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <![endif]-->
+
+  <title>页面回退有误</title>
+  <style>
+    .errorPageCon {
+      text-align: center;
+      padding: 50px;
+    }
+
+  </style>
+</head>
+
+<body class="stretched">
+  <div id="app" style="display: none">
+    <div class="errorPageCon">
+      <img src="../assets/img/errorpage.png" alt="">
+      <div>亲爱的用户，页面回退有误，请稍后尝试。</div>
+      <div>您可以去
+        <a href="./index.html">首页</a>
+        逛逛，3秒后系统将自动为您跳转......</div>
+    </div>
+  </div>
+  <script>
+      setTimeout(function() {
+        window.location.href = './index.html';
+      }, 3000);
+  </script>
+</body>
+
+</html>

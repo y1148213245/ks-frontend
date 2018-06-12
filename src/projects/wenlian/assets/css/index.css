@@ -1,0 +1,125 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*广告*/
+.gz_001 {
+  /*background-image: url("../img/gz_001.jpg");background-position: center top;background-repeat: no-repeat;*/
+  margin-left: auto;
+  margin-right: auto;
+ visibility: visible;
+    width: 100%;
+  text-align: center;
+  /*height:558px;*/
+}
+
+.main{ width:1200px; margin:0 auto; background-color:#fff;}
+
+
+/*焦点图*/
+.focus1 {width:1200px; height:192px; overflow:hidden; position:relative;}
+.focus1 ul {height:180px; position:absolute;}
+.focus1 ul li {float:left; width:1200px; height:192px; overflow:hidden; position:relative;}
+.focus1 ul li div {position:absolute; overflow:hidden;}
+.focus1 ul li img { width:282px; height:148px; border:1px solid #b5b5b5;}
+.focus1 .btnBg {position:absolute; width:340px; height:20px; left:0; bottom:0; background:#000; display:none;}
+.focus1 .btn {position:absolute; width:320px; height:23px; padding:0px 10px 0px 10px; right:46%; bottom:6px; text-align:right;}
+.focus1 .btn span {display:inline-block; _display:inline; _zoom:1; width:22px; height:22px; line-height:22px; text-align:center; _font-size:0; margin-left:5px; cursor:pointer; background:#c9c9c9; border-radius:50%;}
+.focus1 .btn span.on {background:#fdd000;}
+
+
+/*精品图书*/
+.index_jpts{ border-top:2px solid #da0b2d; padding-left:20px; width:940px; overflow:hidden; margin-bottom:48px; }
+.index_jpts  h3,.hot_book h3,.zzzs h3 { font-weight:normal;line-height:25px; height:25px; }
+.index_jpts  .more {cursor: hand}
+.index_jpts .index_jpts_name { padding:15px 0 0px 30px;background-position: -2px -92px; }
+.index_jpts .index_jpts_t {  padding-top:30px;}
+.index_jpts .index_jpts_t .pic { box-shadow: 0px 0px 15px #cecece;}
+.index_jpts .index_jpts_t  dl { background:url(../img/jpts_pic_003.png) no-repeat; height:215px; width:457px;position:relative;}
+.index_jpts .index_jpts_t  dl .pic { position:absolute; top:-10px; left:20px;}
+.index_jpts .index_jpts_t  dd p { width:260px;}
+.index_jpts .index_jpts_t  dd p.title{ font-size:16px;padding:30px 0 15px 0;cursor: pointer;}
+.index_jpts .index_jpts_t  dd p.title a {color:#353535; }
+.index_jpts .index_jpts_t  dd p.zhaiyao{  color:#797979; line-height:20px; }
+.index_jpts .index_jpts_t  dd p.shoucang{ color:#898989;background-position:-4px -178px;height:25px; line-height:25px; padding-left:20px; margin-top:20px;}
+.index_jpts .index_jpts_t  dd span.shoucang{ color:#898989;background-position:-4px -178px;height:25px; line-height:25px; padding-left:20px; margin-top:20px;display: inline-block;cursor:pointer;}
+.index_jpts .index_jpts_t  dd p.reader  a{ position:absolute; bottom:0px; right:0px; background:url(../img/free_reader_001.jpg) no-repeat; width:86px; height:32px; line-height:32px; text-indent:-9999px; text-align:center;}
+
+.index_jpts .index_jpts_list { padding-top:30px;}
+.index_jpts .index_jpts_list ul li { float:left;text-align:center; }
+.index_jpts .index_jpts_list ul li div.jieshao {border-right:1px solid #f9e3e3; width:106px; margin:0 auto; padding:0 24px 0 24px; }
+.index_jpts .index_jpts_list p.title { font-size:14px; padding-top:10px;}
+.index_jpts .index_jpts_list p.title a {color:#4a4a4a; }
+.index_jpts .index_jpts_list p.author { font-size:12px; color:#aaaaaa; line-height:25px; height:25px;}
+.index_jpts .index_jpts_list p.xing { padding:5px 0 10px 0px;}
+.index_jpts .index_jpts_list p.reader {line-height:35px; height:35px; width:72px;text-align:center; margin:0 auto; background-color:#515151;}
+.index_jpts .index_jpts_list p.reader:hover { background-color:#ca0000;}
+
+
+/*热门图书*/
+.hot_book{ border-top:2px solid #da0b2d; padding-left:20px; width:940px; overflow:hidden; margin-bottom:20px; }
+.hot_book .hot_book_name { padding:0px 0 0px 30px;background-position: -2px -132px; margin:15px 0 20px 0; }
+.hot_book .hot_book_list dl {width:458px; height:240px; background-color: #F3F3F3;}
+.hot_book .hot_book_list dl img {}
+.hot_book .hot_book_list dl dd { width:270px; float:left; padding-left:25px;}
+.hot_book .hot_book_list dl dd p.title { padding-top:20px;}
+.hot_book .hot_book_list dl dd p.title a{color:#494949;}
+.hot_book .hot_book_list dl dd p.xing { margin:2px 0 5px 0;}
+.hot_book .hot_book_list dl dd p.author { color:#727272; line-height:23px;}
+.hot_book .hot_book_list dl dd p.banquan,.hot_book .hot_book_list dl dd p.chuban { color:#8d8c8c;line-height:23px;}
+.hot_book .hot_book_list dl dd p.price{ color:#494949; margin:3px 0 15px;}
+.hot_book .hot_book_list dl dd p.price span { color:#9c9595;text-decoration:line-through;}
+.hot_book .hot_book_list dl dd p.other { line-height:28px; }
+.hot_book .hot_book_list dl dd p.other .shoucang,.hot_book .hot_book_list dl dd p.other .shoucang_cg,.hot_book .hot_book_list dl dd p.other .share {background-image: url(../img/bg_005.png);display: inline-block;height:28px;width: 38px;text-indent:-9999px}
+.hot_book .hot_book_list dl dd p.other .shoucang {border:1px solid #d2d2d2;background-position: -1px 3px;cursor:pointer;}
+.hot_book .hot_book_list dl dd p.other .shoucang_cg {border:1px solid #d2d2d2;background-position:-109px 3px;cursor:pointer;}
+.hot_book .hot_book_list dl dd p.other .share { border-top:1px solid #d2d2d2; border-bottom:1px solid #d2d2d2;background-position: 0 90px;}
+.hot_book .hot_book_list dl dd p.other .share:hover{background-position:-36px -20px;}
+.hot_book .hot_book_list dl dd p.other .goumai{background:#c50000;display: inline-block; width:52px; height:30px; text-align:center; line-height:30px;}
+.hot_book .hot_book_list dl dd p.other .chakan{background:#515151;display: inline-block;width:52px; height:30px; text-align:center; line-height:30px;}
+
+/*作者展示*/
+.zzzs { border-top:2px solid #da0b2d; padding-left:20px; width:1180px; overflow:hidden; margin-bottom:48px; }
+.zzzs .zzzs_name { padding:0px 0 0px 30px;background-position: -2px -156px;margin:15px 0 0px 0; }
+.zzzs .more { padding-right:30px;}
+.zzzs_list {background: #fff; margin: 20px auto; padding-left: 7px; padding-top: 25px; }
+.zzzs_list .zzzs_list_pic{float:left; width:172px; height:246px;}
+.zzzs_list ul li { width:172px; height:246px; float: left; margin-right: 20px; margin-bottom: 15px; position: relative; overflow: hidden; cursor: pointer; border:1px solid #a6a6a6; text-align:center; }
+.zzzs_list ul li img { padding:13px 0 0 0px;}
+.txt { float:left; width:172px; height:246px;position:absolute;background:#ca0000;color: #fff; }
+.txt h3 { font-size: 20px; font-weight: 100; height: 45px; text-align: center; line-height: 45px; padding-top:45px;}
+.txt h3 .author { border-bottom:1px solid #fff; padding:5px 10px; }
+.txt p.zhaiyao { font-size: 14px; text-align: center; padding-bottom:5px; }
+.txt p.shu{width:20px; margin:6px auto 12px auto; font-size:24px; font-weight:300;}
+.txt p.detail{width:80px; margin:0 auto; line-height:24px;background:#fff;}
+.txt .ck_more {color:red; }
+
+
+/*热销排行*/
+.sale_top .sale_top_title,.bianji .bianji_title{height:29px; line-height:29px; width:222px; background:#c50000; text-align:center; color:#fff; font-weight:normal;}
+.sale_top_list { border:2px solid #f8f8f8; border-top:none; width:218px; height:552px;}
+.sale_top .sale_top_con { padding:23px 10px 30px 15px; border-bottom:2px solid #f8f8f8; margin:0 7px 0px 10px;overflow:hidden;position:relative;}
+.sale_top .sale_top_con dd.jiaobiao { position:absolute; top:15px; left:8px; width:20px; height:20px; text-align:center; line-height:20px; border-radius:50%; color:#fff; background:#f9ab3c;}
+.sale_top .sale_top_con dd p.title {color:#535353; height:30px; line-height:30px;}
+.sale_top .sale_top_con dd p.title a {color:#535353;}
+.sale_top .sale_top_con dd p.hitcount,.sale_top_con dd p.price {color:#9f9f9f;}
+.sale_top .sale_top_con dd p span { color:#ff5842;}
+
+/*编辑*/
+.bianji .bianji_list { text-align:center;border:2px solid #f8f8f8; border-top:none; width:218px;}
+.bianji .bianji_list .bianji_con {border-bottom:1px dotted #33373e; padding:20px; overflow:hidden;}
+.bianji .bianji_list .bianji_con dt { padding:0 0 15px 0px;}
+.bianji .bianji_list .bianji_con dt  img { border-radius:50%; width:98px; height:98px;}
+.bianji .bianji_list .bianji_con dd.author { color:#2c3138; padding-bottom:10px;background:url(../img/bg_002.png) repeat-x center 40%;}
+.bianji .bianji_list .bianji_con dd.author a{ color:#2c3138; padding:0 7px; background:#fff;}
+.bianji .bianji_list .bianji_con dd.zhaiyao {color:#7a7a7a; line-height:21px;text-align:left;}
+.bianji .bianji_list .bianji_con dd.mail { color:#2c3138;text-align:left; padding-top:10px;}
+
+.jingpin_header_imgBox { position: relative; display: block !important; width: 135px !important; height: 204px !important; margin: 0 !important; padding: 0 !important; line-height: 204px !important;}
+.jingpin_img { position: absolute; top: 50%; left: 50%; display: inline-block; margin: 0 !important; padding: 0 !important; transform: translate(-50%, -50%);}
+.jingpin_list_imgBox { position: relative; display: block !important; width: 155px !important; height: 142px !important; margin: 0 !important; padding: 0 !important; line-height: 142px !important;}
+.jingpin_text { display: inline-block; width: 106px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+.jingpin_title { display: inline-block; width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+.highQualityCon .bookDetail { width: 280px;}
+.float_left { float: left;}
+.jp_zz { display: inline-block; max-width: 250px; line-height: 12px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-bottom: 6px;}
+

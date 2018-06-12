@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+  <!-- Stylesheets
+        ============================================= -->
+  <link rel="shortcut icon" href="../assets/img/favicon-32.ico"/>
+  <link rel="bookmark" href="../assets/img/favicon-32.ico"/>
+  <link rel="stylesheet" href="../assets/css/font-icons.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/skin/bookcatalog.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/css/font-icons.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/css/bootstrap.css" type="text/css"/>
+  <link rel="stylesheet" href="../assets/css/style.css" type="text/css"/>
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- Document Title
+    ============================================= -->
+  <title>课件</title>
+  <style>
+    #title-nav {
+      height: 160px;
+      background: #E6E6E6;
+    }
+
+    .col_full {
+      clear: both;
+      float: none;
+      margin-right: 0;
+      margin-bottom: 12px;
+    }
+
+    #title-nav h1 {
+      font-weight: normal;
+      margin-top: 60px;
+      padding-right: 16px;
+      border-right: 1px solid #979797;
+      margin-right: 16px;
+      display: inline-block;
+      line-height: 1em;
+    }
+
+    #title-nav span, .news-detail span {
+      color: #7F7F7F;
+    }
+
+    .ad-box img {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .side-catergory, .books-catergory, .ad-box {
+      margin-top: 24px;
+    }
+  </style>
+
+</head>
+<body class="stretched">
+<div id="app" style="display: none">
+  <!-- The Main Wrapper
+        ============================================= -->
+  <div id="wrapper" class="clearfix">
+
+    <!-- Header
+        ============================================= -->
+    <!------------------------头部导航组件-------------------------------------->
+    <header_component></header_component>
+    <!------------------------END 头部导航组件-------------------------------------->
+    <!-- Info-book
+        ============================================= -->
+    <section id="title-nav" class="col_full">
+      <div class="container clearfix"><h1>课件</h1><span>海量学习资源</span></div>
+    </section>
+    <!-- Site Content
+        ============================================= -->
+    <section id="content">
+
+      <div class="content-wrap">
+
+        <div class="container clearfix">
+          <!--  书目下载组件 -->
+          <ui_list_pic_02 namespace="courseware"></ui_list_pic_02>
+          <!--  END 书目下载组件 -->
+          <!-- side边栏
+         ============================================= -->
+
+          <div class="col-md-4 norightpadding">
+            <div class="ad-box">
+              <a href="#"><img src="../assets/img/ad1.jpeg"></a>
+              <a href="#"><img src="../assets/img/ad2.jpeg"></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!---------------------------------页脚导航组件--------------------------->
+    <footer_component></footer_component>
+    <!---------------------------------页脚导航组件--------------------------->
+  </div>
+  <!--置顶关注组件-->
+  <ui_go_top></ui_go_top>
+  <!--END置顶关注组件-->
+</div>
+</body>
+</html>

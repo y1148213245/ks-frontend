@@ -1,0 +1,103 @@
+@charset "UTF-8";
+.ebookClass {
+  padding-left: 326px;
+  margin-top: -40px;
+}
+.shiduClass{
+  padding-left: 515px;
+  margin-top: -40px;
+}
+.ebookCart{
+  padding-left: 342px;
+  margin-top: -40px;
+}
+.bookCart{
+  padding-left: 486px;
+  margin-top: -40px;
+}
+.activity{
+  float: right;
+  margin-right: 250px;
+  margin-top: 10px;
+}
+.colleact1{
+  margin-top: 5px;
+}
+.like1{
+  padding-left: 85px;
+  margin-top: -22px;
+}
+.share1{
+  margin-left: 160px;
+  margin-top: -23px;
+}
+.share2{
+  margin-left:160px;
+  margin-top:-23px;
+}
+
+.colleact1 .scStyle{
+  width: 20px;
+  background:url(../img/shouc.png) -1px -2px no-repeat;
+  padding:0 0 0 20px;
+  font-family:Arial;
+  margin:0 -4px 0 0;
+  height: 17px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.colleact1 .scStyle.cure{
+  width: 20px;
+  background:url(../img/shouc.png) 0 -26px no-repeat;
+  color:#df5813;
+  display: inline-block;
+  height: 17px
+}
+
+#info-book a {
+  cursor: pointer;
+}
+
+.likeStyle{
+  width: 20px;
+  background:url(../img/zan.png) -1px -2px no-repeat;
+  padding:0 0 0 20px;
+  font-family:Arial;
+  margin:0 -4px 0 0;
+  height: 17px;
+  display: inline-block;
+  cursor: pointer;
+}
+.likeStyle.cure{
+  width: 20px;
+  background:url(../img/zan.png) 0 -26px no-repeat;
+  color:#df5813;
+  display: inline-block;
+  height: 17px
+}
+.shareRight{
+  margin-right: 6px;
+}
+.buttonGray {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  white-space: nowrap;
+  padding: 0 22px;
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #808080;
+  color: #FFF;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.imgCss{
+  margin: auto !important
+}

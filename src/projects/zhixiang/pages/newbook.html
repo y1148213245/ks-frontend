@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+	<!-- Stylesheets
+		============================================= -->
+	<link rel="shortcut icon" href="../assets/img/favicon-32.ico"/>
+	<link rel="bookmark" href="../assets/img/favicon-32.ico"/>
+	<link rel="stylesheet" href="../assets/css/bootstrap.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/font-icons.css" type="text/css"/>
+	<link rel="stylesheet" href="../assets/css/style.css" type="text/css"/>
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<![endif]-->
+
+	<script type="text/javascript" src="../assets/js/web.js"></script>
+	<!-- Document Title
+	============================================= -->
+	<title>新书</title>
+
+</head>
+<body class="stretched hotbook">
+<div id="app" style="display: none">
+	<!---------------------------------页头导航组件--------------------------->
+	<header_component></header_component>
+	<!---header------------------------------页头导航组件--------------------------->
+	<!-- The Main Wrapper
+		============================================= -->
+	<div id="wrapper" class="clearfix">
+
+		<!-- Header
+		============================================= -->
+		<!-- Info-book
+		============================================= -->
+		<!-- Info-book
+		============================================= -->
+		<section id="title-nav" class="col_full">
+			<div class="container clearfix"><h1>新 书</h1><span>新书速递、油墨扑鼻</span></div>
+		</section>
+		<!-- Site Content
+		============================================= -->
+		<section id="content">
+			<div class="content-wrap">
+				<div class="container clearfix">
+					<!-- 新书列表 -->
+					<components_bestsale_categorylist namespace="newbook">
+						<template slot-scope="props">
+							<div class="category-new clearfix">
+								<ui_list_pic_03 :catalog_info="props.item"  namespace="newbook"></ui_list_pic_03>
+							</div>
+						</template>
+					</components_bestsale_categorylist>
+					<!-- END 新书列表 -->
+				</div>
+			</div>
+		</section>
+		<!---------------------------------页脚导航组件--------------------------->
+		<footer_component></footer_component>
+		<!---------------------------------页脚导航组件--------------------------->
+	</div>
+	<!--置顶关注组件-->
+	<ui_go_top></ui_go_top>
+	<!--END置顶关注组件-->
+</div>
+<!-- External JavaScripts
+============================================= -->
+<script type="text/javascript" src="../assets/js/jquery.js"></script>
+<!-- Footer Scripts
+============================================= -->
+<script type="text/javascript" src="../assets/config/index.js"></script>
+</div>
+</body>
+</html>

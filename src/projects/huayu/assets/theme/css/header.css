@@ -1,0 +1,73 @@
+.work_search_06 {
+	position: relative;
+	width: 600px;
+    left: 50%;
+    transform: translateX(-75%);
+	margin-top: 38px;
+    display: inline-block;
+}
+
+.ui_navigation_02 {
+    float: right;
+    margin-top: 20px;
+    margin: 45px 10px 0;
+}
+
+.ui_navigation_03_ul li {
+	display: inline-block;
+    width: 155px;
+    text-align: center;
+}
+
+.work_login_04 {
+	height: 31px;
+    line-height: 31px;
+    border-bottom-width: 1px;
+    font-size: 12px;
+    background-color: #ececec;
+    border-bottom-style: solid;
+    border-bottom-color: #d8d8d8;
+}
+
+.work_login_04 a {
+	float: right;
+	margin-right: 100px;
+    vertical-align: top;
+}
+
+.ui_navigation_03 {
+	text-align: center;
+    height: 48px;
+    line-height: 48px;
+    clear: both;
+
+}
+
+.work_search_06_advsearch {
+    width: 30px;
+    text-align: center;
+    height: 44px;
+    box-sizing: content-box;
+}
+
+.ui_navigation_03_ul span {
+	color: #fff;
+}
+
+.middleCon {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.ui_list_pic_28 {
+    height: 250px;
+}
+
+.global-footer {
+    clear: both;
+}
+
+
+
+
+

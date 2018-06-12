@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>加入购物车提示</title>
+  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
+  <script type="text/javascript" src="../assets/js/jquery.js"></script>
+  <script type="text/javascript" src="../assets/js/web.js"></script>
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <style>
+    .footerCom {
+      height: 117px;
+      text-align: center;
+      width: 100%;
+      background: #595959;
+      padding-top: 40px;
+      font-size: 14px;
+    }
+
+    .footerCom p {
+      line-height: 30px;
+      color: #d4d4d4;
+    }
+
+    .addTipsWrapper {
+      width: 1200px;
+      margin: 0 auto 40px auto;
+      background: #fff;
+      min-height: 600px;
+    }
+
+    .addTipsWrapper .addTipsCon {
+      padding: 55px 55px 35px 55px;
+    }
+  </style>
+</head>
+
+<body id="home">
+<div id="app" style="display: none;">
+  <!--头-->
+  <components_common_header namespace="header"></components_common_header>
+  <!--头end-->
+
+  <div class="addTipsWrapper">
+    <div class="addTipsCon">
+
+      <!-- 加入购物车组件 -->
+      <work_shoppingcart_02_add namespace="addcart"></work_shoppingcart_02_add>
+      <!-- end 加入购物车组件 -->
+
+      <!-- 购买该书的用户还买组件 -->
+      <ui_list_pic_23 namespace="addcart" modulename="userbook"></ui_list_pic_23>
+      <!-- end 购买该书的用户还买组件 -->
+
+      <!-- 该作者其他图书 -->
+      <ui_list_pic_23 namespace="addcart" modulename="otherbook"></ui_list_pic_23>
+      <!-- end 该作者其他图书 -->
+    </div>
+  </div>
+
+  <div class="footerCom">
+    <p>地址：北京市朝阳区农展馆南里10号 邮编：100125</p>
+    <p>版权所有： 中国文联出版社</p>
+  </div>
+</div>
+
+</body>
+
+</html>

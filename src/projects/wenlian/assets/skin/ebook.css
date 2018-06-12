@@ -1,0 +1,376 @@
+.header .header_top3{
+  height: 41px;
+  line-height: 41px;
+  background-color: #515151;
+}
+.header_top3 .threewrap{
+  position: relative;
+}
+.threewrap{
+  width: 1200px;
+  margin: 0 auto;
+}
+.header .header_top3 .all_class{
+  width: 222px;
+  border-right: 1px solid #908f8f;
+  position: relative;
+  cursor: pointer;
+}
+.header .header_top3 .all_class_bg{
+  background-position: -2px -85px;
+  height: 25px;
+  /*background: url(../img/bg_001.png) no-repeat;*/
+}
+/**start 左侧图书分类**/
+.components_header_skin .header_top3 .open:after{
+  background: none;
+}
+/**end 左侧图书分类**/
+.all_class_detail dl{
+  padding: 5.88px 17px;
+}
+.all_class_detail dl:nth-child(even){
+  background: #f5f5f5;
+  padding: 5.5px 17px;
+}
+.nav{
+  width: 855px;
+  margin: 0 auto;
+}
+.nav a{
+  width: 155px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  display: inline-block;
+}
+/********************** start 头部 ************************/
+.cartIcon{
+  position: relative;
+  cursor: pointer;
+}
+.cartIcon span{
+  display: block;
+  position: absolute;
+  top: -7px;
+  left: auto;
+  right: -16px;
+  font-size: 10px;
+  color: #FFF;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  width: 18px;
+  height: 18px;
+  line-height: 16px;
+  text-align: center;
+  background-color: #AE0F29;
+  border-radius: 50%;
+}
+/********************** end 头部 ************************/
+/********************* start 左侧导航 *******************/
+.all_class_detail{
+  display: block;
+  width: 222px;
+  position: absolute;
+  top: 41px;
+  left: 0px;
+  padding-top: 18px;
+  background: #fff;
+  box-shadow: 0 0 8px #e7e7e7;
+  z-index: 9;
+}
+.header .two_title span:last-child{
+  visibility: hidden;
+}
+/********************* end 左侧导航 *******************/
+/*********************star 推荐************************/
+.main{
+  overflow: hidden;
+}
+.main{
+  width: 1200px;
+  min-height: 600px;
+  margin: 0 auto;
+}
+/*********************end 推荐*********************/
+
+/***和首页一样的组件样式****/
+.hot_book .hot_book_list dl dd p.author{
+  color: #727272;
+  line-height: 23px;
+}
+.hot_book .hot_book_list dl dd p.price span{
+  color: #9c9595;
+  text-decoration: line-through;
+}
+.hot_book .hot_book_list dl dd p.banquan, .hot_book .hot_book_list dl dd p.chuban{
+  color: #8d8c8c;
+  line-height: 23px;
+}
+.hot_book .hot_book_list dl dd p.other .share{
+  border-top: 1px solid #d2d2d2;
+  border-bottom: 1px solid #d2d2d2;
+  background-position: 0 90px;
+}
+.hot_book .hot_book_list dl dd p.other .shoucang, .hot_book .hot_book_list dl dd p.other .shoucang_cg, .hot_book .hot_book_list dl dd p.other .share{
+  background-image: url(../img/bg_005.png);
+  display: inline-block;
+  height: 28px;
+  width: 38px;
+  text-indent: -9999px;
+}
+.hot_book .hot_book_list dl dd p.other .goumai{
+  background: #c50000;
+  display: inline-block;
+  width: 52px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+}
+.hot_book .hot_book_list dl dd p.other .chakan{
+  background: #515151;
+  display: inline-block;
+  width: 52px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+}
+.hot_book .hot_book_list dl dd p.price{
+  color: #494949;
+  margin: 3px 0 15px;
+}
+.hot_book .hot_book_list dl dd p.other{
+  line-height: 28px;
+}
+.hot_book{
+  border-top: 2px solid #da0b2d;
+  padding-left: 20px;
+  width: 940px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.hot_book .hot_book_list dl{
+  background-color: #F3F3F3;
+  width: 458px;
+  height: 240px;
+}
+
+.hot_book .hot_book_list dl dd{
+  width: 270px;
+  float: left;
+  padding-left: 25px;
+}
+.hot_book .hot_book_list dl dd p.title{
+  padding-top: 20px;
+}
+
+.hot_book .hot_book_list dl dd p.title a{
+  color: #494949;
+}
+
+.hot_book .hot_book_list dl dd p.xing{
+  margin: 2px 0 5px 0;
+}
+.hot_book .hot_book_list dl{
+  background-color: #F3F3F3;
+  width: 458px;
+  height: 240px;
+}
+
+.sale_top, .bianji, .xgzx{
+  /* background: #fff; */
+}
+
+.sale_top .sale_top_title, .bianji .bianji_title{
+  height: 29px;
+  line-height: 29px;
+  width: 222px;
+  background: #c50000;
+  text-align: center;
+  color: #fff;
+  font-weight: normal;
+}
+.sale_top_list{
+  border: 2px solid #f8f8f8;
+  border-top: none;
+  width: 218px;
+  height: 427px;
+}
+.sale_top .sale_top_con{
+  padding: 23px 10px 30px 15px;
+  border-bottom: 2px solid #f8f8f8;
+  margin: 0 7px 0px 10px;
+  overflow: hidden;
+  position: relative;
+}
+.sale_top .sale_top_con dd.jiaobiao{
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  background: #f9ab3c;
+}
+
+.sale_top .sale_top_con dd p.title{
+  color: #535353;
+  height: 30px;
+  line-height: 30px;
+}
+.sale_top .sale_top_con dd p.title a{
+  color: #535353;
+}
+.sale_top .sale_top_con dd p.hitcount, .sale_top_con dd p.price{
+  color: #9f9f9f;
+}
+
+.sale_top .sale_top_con{
+  padding: 23px 10px 30px 15px;
+  border-bottom: 2px solid #f8f8f8;
+  margin: 0 7px 0px 10px;
+  overflow: hidden;
+  position: relative;
+}
+.sale_top .sale_top_con dd.jiaobiao{
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  background: #f9ab3c;
+}
+.sale_top .sale_top_con dd p.title{
+  color: #535353;
+  height: 30px;
+  line-height: 30px;
+}
+.sale_top .sale_top_con dd p.title a{
+  color: #535353;
+}
+.hot_sell_text{
+  display: inline-block;
+  width: 80px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.sale_top .sale_top_con{
+  padding: 23px 10px 30px 15px;
+  border-bottom: 2px solid #f8f8f8;
+  margin: 0 7px 0px 10px;
+  overflow: hidden;
+  position: relative;
+}
+.sale_top .sale_top_con dd.jiaobiao{
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  background: #f9ab3c;
+}
+
+.bianji .bianji_list{
+  text-align: center;
+  border: 2px solid #f8f8f8;
+  border-top: none;
+  width: 218px;
+}
+.bianji .bianji_list .bianji_con{
+   border-bottom: 1px dotted #33373e;
+  padding: 20px;
+  overflow: hidden;
+}
+.bianji .bianji_list .bianji_con dt{
+  padding: 0 0 15px 0px;
+}
+.bianji .bianji_list .bianji_con dt img{
+  border-radius: 50%;
+  width: 98px;
+  height: 98px;
+}
+.bianji .bianji_list .bianji_con dd.author{
+  color: #2c3138;
+  padding-bottom: 10px;
+  background: url(../img/bg_003.png) repeat-x center 30%;
+}
+.bianji .bianji_list .bianji_con dd.author a{
+  color: #2c3138;
+  padding: 0 7px;
+  background: #fff;
+}
+.bianji .bianji_list .bianji_con dd.zhaiyao{
+  color: #7a7a7a;
+  line-height: 21px;
+  text-align: left;
+}
+.bianji .bianji_list .bianji_con dd.mail{
+  color: #2c3138;
+  text-align: left;
+  padding-top: 10px;
+}
+.header .header_top1 .login_img, .header .header_top1 .download_app, .header .header_top3 .all_class_bg, .search .myshop, .search .ssbj, .index_jpts .index_jpts_name, .index_jpts .index_jpts_t dd p.shoucang, .hot_book .hot_book_name, .zzzs .zzzs_name{
+  background: url(../img/bg_001.png) no-repeat;
+}
+.hot_book .hot_book_name{
+  padding: 0px 0 0px 30px;
+  background-position: -2px -132px;
+  margin: 15px 0 20px 0;
+}
+
+.ui_list_pic_06_skin .titleHead{
+  height: 29px;
+  line-height: 29px;
+  width: 222px;
+  text-align: center;
+}
+.ui_list_pic_06_skin .titleHead{
+  color: #fff;
+  background: #c50000;
+  font-weight: normal;
+  font-size: 16px;
+}
+.ui_list_pic_06_skin .listWrapper{
+  border-style: solid;
+  border-color: #f8f8f8;
+  background: #fff;
+}
+.ui_list_pic_06_skin .listCon{
+  border-bottom-style: solid;
+  border-bottom-color: #f8f8f8;
+}
+.ui_list_pic_06 .listCon .listDt{
+  float: left;
+}
+.ui_list_pic_06_skin a{
+  text-decoration: none;
+  color: #535353;
+}
+.ui_list_pic_06_skin .listCon .jiaobiao{
+  color: #fff;
+  background: #f9ab3c;
+}
+.ui_list_pic_06_skin .listCon .listDd{
+  color: #9f9f9f;
+}
+.ui_list_pic_06_skin .listCon .title{
+  font-size: 14px;
+  color: #535353;
+}
+.ui_list_pic_06_skin .listCon .hitcount{
+  color: #9f9f9f;
+}
+.ui_list_pic_06_skin .listCon .price{
+
+}

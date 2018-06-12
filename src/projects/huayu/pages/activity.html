@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>/*@cc_on window.location.href="http://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); @*/</script>
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<![endif]-->
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+ 
+	<!-- Document Title
+		============================================= -->
+	<title>活动竞赛</title>
+<link href="../core/css/project.css" rel="stylesheet"><link href="../core/css/app.css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="../assets/theme/css/header.css">
+<link type="text/css" href="../assets/theme/css/custom.css" rel="stylesheet">
+</head>
+  <body class="stretched" id="home">
+<div id="app">
+
+<!--#include virtual="header.html" -->
+
+	<div class="container el-row">
+        <!-- 轮播图组件 -->
+        <ui_swiper_07 namespace="activity"></ui_swiper_07>
+        <!-- END轮播图组件 -->
+		<!-- 活动列表组件 -->
+      <div class="activity-list el-col el-col-16">
+		<ui_list_pic_22 namespace="activity"></ui_list_pic_22>
+      </div>
+		<!--END 活动列表组件 -->
+      <div class="el-col el-col-8">
+        <div class="news-side whitebox-shadow">
+			<div class="more-right">
+      			<div class="activitytitle">活动资讯</div>
+				<a class="more" href="../pages/newslist.html?colId=274">更多>></a>
+			</div>
+		<!-- 活动资讯组件 -->
+		<ui_list_word_01 namespace="list" :control-pagination="false" :control-time="false" :max-num="8"></ui_list_word_01>
+		</div>
+        <!-- END 活动资讯组件 -->
+      </div>
+  
+	</div>
+	<!--#include virtual="footer.html" -->
+</div>
+<script type="text/javascript" src="../core/js/manifest.js"></script><script type="text/javascript" src="../core/js/vendor.js"></script><script type="text/javascript" src="../core/js/project.js"></script><script type="text/javascript" src="../core/js/app.js"></script></body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
+    <link type="text/css" rel="stylesheet" href="../assets/skin/authordetail.css">
+    <script type="text/javascript" src="../assets/config/index.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.js"></script>
+    <script type="text/javascript" src="../assets/js/web.js"></script>
+    <script>
+      $(document).ready(function () {
+        $(".all_class").off("click");
+      });
+    </script>
+</head>
+<body>
+  <div id="app" style="display: none">
+    <components_authordetail_handleurl></components_authordetail_handleurl>
+    <!--头-->
+    <components_common_header namespace="header"></components_common_header>
+    <!--头end-->
+    <div class="main_zzxq">
+      <div name="data_info_detail">
+        <work_crumbs_01 namespace="authordetail"></work_crumbs_01>
+        <components_authordetail_authordetail namespace="authordetail"></components_authordetail_authordetail>
+      </div>
+    </div>
+    <div class="footerCom">
+      <p>地址：北京市朝阳区农展馆南里10号 邮编：100125</p>
+      <p>版权所有： 中国文联出版社</p>
+    </div>
+  </div>
+</body>
+</html>

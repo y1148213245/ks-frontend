@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>检索</title>
+  <link type="text/css" rel="stylesheet" href="../assets/skin/common.css">
+  <script type="text/javascript" src="../assets/js/web.js"></script>
+
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <script type="text/javascript">
+  </script>
+  <style>
+    .main {
+      width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .daohang {
+      margin-top: 25px;
+      height: 35px;
+      line-height: 35px;
+      font-size: 14px;
+    }
+    .daohang a{
+      text-decoration-line: none;
+    }
+    .position-title-color {
+      color: #9b9b9b;
+    }
+
+    .position-title-color--current {
+      color: rgb(98, 98, 98);
+    }
+
+    .footerCom {
+      height: 117px;
+      text-align: center;
+      width: 100%;
+      background: #595959;
+      padding-top: 40px;
+      font-size: 14px;
+    }
+
+    .footerCom p {
+      line-height: 30px;
+      color: #d4d4d4;
+    }
+    .search-box {
+      border-top: 2px solid #da0b2d;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body id="home">
+
+
+  <div id="app" style="display:none;">
+    <!--id="wl"-->
+    <!--头-->
+    <components_common_header namespace="header"></components_common_header>
+    <!--头end-->
+    <div class="main">
+      <div class="daohang">
+        <span class="position-title-color">您的位置:</span>
+        <a href="./index.html" class="position-title-color">首页</a>>>
+        <span class="position-title-color--current">搜索结果</span>
+      </div>
+      <!-- 搜索结果-->
+      <div class="search-box">
+        <!-- 排序组件-->
+        <work_rankcard_01 namespace="search" style="margin-top: 20px"></work_rankcard_01>
+        <!-- END 排序组件-->
+        <!-- 结果组件-->
+        <work_search_04 namespace="search"></work_search_04>
+        <!-- END 结果组件-->
+      </div>
+      <!-- END 搜索结果-->
+    </div>
+  </div>
+    <div class="footerCom">
+      <p>地址：北京市朝阳区农展馆南里10号 邮编：100125</p>
+      <p>版权所有： 中国文联出版社</p>
+    </div>
+  </div>
+</body>
+
+</html>

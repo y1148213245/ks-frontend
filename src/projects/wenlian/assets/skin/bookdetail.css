@@ -1,0 +1,305 @@
+/*
+ * 图书详情皮肤样式
+ * Created by song 2018/1/10
+ */
+
+body {
+  background: url(../img/bg_1.png) repeat;
+}
+
+
+/********************** start 图书详情组件 ************************/
+
+.work_bookdetail_02_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.work_bookdetail_02_skin a {
+  text-decoration: none;
+  outline: none;
+  color: #888888;
+}
+
+.work_bookdetail_02_skin .navigation {
+  border-bottom-style: solid;
+  border-bottom-color: #c50000;
+}
+
+.work_bookdetail_02_skin .navigation .curPositionFixed {
+  color: #9b9b9b;
+}
+
+.work_bookdetail_02_skin .navigation .curPositionUnfixed {
+  color: #626262;
+}
+
+.work_bookdetail_02_skin .navigation .indexPage {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.work_bookdetail_02_skin .navigation .ebookPage {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailInfo .bookDetailImg {
+  border-style: solid;
+  border-color: #888888;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .titleCon {
+  font-size: 20px;
+  color: #424242;
+  border-bottom-style: dashed;
+  border-bottom-color: #e5e5e5;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .titleCon .collectOperation {
+  background-image: url(../img/bg_005.png);
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .titleCon .likeOperation {
+  background-image: url(../img/bg_10.png);
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .price {
+  background: #f7f7f7;
+  font-size: 14px;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .price .newPrice {
+  font-size: 30px;
+  color: #ca0000;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .price .oldPrice {
+  text-decoration: line-through;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .promotion .fullcut {
+  background: #fdd000;
+  color: #fff;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .promotion .fullcutInfo {
+  color: #7d7d7d;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .paperPrice {
+  color: #7e7e7e;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .buyBook {
+  background: #fdd000;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .buyBook a {
+  color: #fff;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .otherOpertion {
+  font-size: 14px;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .probation {
+  color: #fff;
+  background: #c50000;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .notProbation {
+  background: #444;
+  cursor: not-allowed;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .opertionIcon {
+  background-image: url(../img/bg_10.png);
+  cursor: pointer;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .promotion .cx_01_on {
+  border-style: solid;
+  border-color: red;
+}
+
+.work_bookdetail_02_skin .bookDetailWrapper .bookDetailDd .addCart {
+  border-style: solid;
+  border-color: #e13652;
+  color: #c50000;
+  cursor: pointer;
+}
+
+.work_bookdetail_02 .otherInfoWrapper .otherInfo {
+  border-style: dashed;
+  border-color: #c0c0c0;
+  color: #626262;
+  font-size: 16px;
+}
+
+
+
+
+/********************** end 图书详情组件 ************************/
+
+
+/********************** start 图书简介组件 ************************/
+
+.work_bookdetail_02_related_skin {
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.work_bookdetail_02_related_skin .relatedHead {
+  border-bottom-style: solid;
+  border-bottom-color: #c50000;
+  color: #7e7e7e;
+  font-size: 14px;
+}
+
+.work_bookdetail_02_related_skin .relatedHead span {
+  cursor: pointer;
+}
+
+.work_bookdetail_02_related_skin .relatedHead .active {
+  background: url(../img/bg_008.png) no-repeat;
+  color: #c50000;
+  font-style: normal;
+}
+
+.work_bookdetail_02_related_skin .briefIntro {
+  color: #7e7e7e;
+}
+
+.work_bookdetail_02_related_skin .briefIntro .showAllIntro {
+  color: #727272;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.work_bookdetail_02_related_skin .btnDown {
+  background: url(../img/bg_008.png) no-repeat;
+  font-style: normal;
+}
+
+
+
+
+
+
+
+
+/********************** end 图书简介组件 ************************/
+
+
+/********************** start 评论组件 ************************/
+
+
+
+
+/********************** end 评论组件 ************************/
+
+
+/********************** start 浏览历史组件 ************************/
+.ui_list_pic_06_skin {
+  font-family: 'Microsoft Yahei','微软雅黑','\5FAE\8F6F\96C5\9ED1','宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.ui_list_pic_06_skin a {
+  text-decoration: none;
+  color: #535353;
+}
+
+.ui_list_pic_06_skin .titleHead {
+  color: #fff;
+  background: #c50000;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.ui_list_pic_06_skin .listWrapper {
+  border-style: solid;
+  border-color: #f8f8f8;
+  background: #fff;
+}
+
+.ui_list_pic_06_skin .listCon {
+  border-bottom-style: solid;
+  border-bottom-color: #f8f8f8;
+}
+
+/* .ui_list_pic_06_skin .listCon .jiaobiao {
+  color: #fff;
+  background: #f9ab3c;
+} */
+
+.ui_list_pic_06_skin .listCon .title {
+  font-size: 14px;
+  color: #535353;
+}
+
+.ui_list_pic_06_skin .listCon .hitcount {
+  color: #9f9f9f;
+}
+
+.ui_list_pic_06_skin .listCon .price {
+  color: #ff5842;
+}
+
+.ui_list_pic_06 .listCon .delete {
+  cursor: pointer;
+  background: url(../img/bg_008.png) no-repeat;
+}
+
+
+/********************** end 浏览历史组件 ************************/
+
+
+/********************** start 相关图书组件 ************************/
+
+.ui_list_pic_16_skin {
+  background: #fff;
+  font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
+  font-size: 12px;
+  color: #888888;
+}
+
+.ui_list_pic_16_skin .title {
+  background: #c50000;
+  color: #fff;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.ui_list_pic_16_skin .listWrapper {
+  border-style: solid;
+  border-color: #f8f8f8;
+}
+
+.ui_list_pic_16_skin .listCon {
+  border-bottom-style: dotted;
+  border-bottom-color: #33373e;
+}
+
+.ui_list_pic_16_skin .listCon .listDd {
+  color: #7a7a7a;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/********************** end 相关图书组件 ************************/

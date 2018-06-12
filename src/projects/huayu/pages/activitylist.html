@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="renderer" content="webkit">
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+	<title>华育活动列表</title>
+<link href="../core/css/project.css" rel="stylesheet"><link href="../core/css/app.css" rel="stylesheet"></head>
+<link type="text/css" rel="stylesheet" href="../assets/theme/css/header.css">
+  <link type="text/css" href="../assets/theme/css/custom.css" rel="stylesheet">
+  <body class="stretched page-activitylist" id="home">
+<div id="app">
+
+<!--#include virtual="header.html" -->
+
+  <work_common_06 namespace="activitylist" modulename="name"></work_common_06>
+  <div class="el-row container clearfix">
+  <div class="activity-list el-col el-col-16">
+	<ui_list_pic_21 namespace="activitylist"></ui_list_pic_21>
+  </div>
+  <div class="el-col el-col-8">
+           <div class="news-side whitebox-shadow">
+			<div class="more-right">
+      			<div class="activitytitle">活动资讯</div>
+				<a class="more" href="../pages/newslist.html?colId=274">更多>></a>
+			</div>
+		<!-- 活动资讯组件 -->
+		  <ui_list_word_01 namespace="activitylist" :control-pagination="false" :control-time="false" :max-num="8"></ui_list_word_01>
+		  </div>
+     <ui_advert_01 namespace="activitylist" modulename="activitylist"></ui_advert_01>
+  </div>
+   
+  </div>
+  
+	<!--#include virtual="footer.html" -->
+</div>
+<script type="text/javascript" src="../core/js/manifest.js"></script><script type="text/javascript" src="../core/js/vendor.js"></script><script type="text/javascript" src="../core/js/project.js"></script><script type="text/javascript" src="../core/js/app.js"></script></body>
+</html>

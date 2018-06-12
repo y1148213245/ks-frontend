@@ -1,0 +1,66 @@
+.main_zzfw{
+  width: 1200px;
+  min-height: 600px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.main_zzfw .daohang{
+  height: 52px;
+  line-height: 52px;
+  border-bottom: 2px solid #c50000;
+  padding-left: 15px;
+}
+a{
+  text-decoration: none;
+  outline: none;
+  color: #888888;
+  text-decoration: none;
+}
+.scoped_line{
+  display: inline-block;
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.scoped_tg_back{
+  float: right;
+  padding: 10px;
+  color: red;
+  font-size: 14px;
+  cursor: pointer;
+}
+zzfw_container_left{
+  margin:36px 0 0 50px;
+}
+
+.zzfw_container{
+  margin: 36px 0px 0px 50px;
+}
+.goContribute{
+  overflow: hidden;
+  margin-top: -30px;
+}
+.tgfs_con{
+  border-bottom: 1px solid #e5e5e5;
+}
+.tgfs_con p a.qtg{
+  background: #ca0000;
+}
+.bm_name_jj{
+  position: absolute;
+  left: 145px;
+  top: 10px;
+  border: 1px solid red;
+  padding: 10px 5px;
+  z-index: 10;
+  width: 210px;
+  background-color: #fff;
+  text-align: left;
+  display: none;
+}
+.bm_name a:hover{
+  color: #ca0000;
+  font-weight: bold;
+}
