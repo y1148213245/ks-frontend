@@ -38,7 +38,7 @@ const dev = {
 						readType:0,
 						bookName:'',
 						userName:'',
-						siteType:CONFIG.READ_CONFIG.siteType
+						siteType: ''
 					}
 				},
 				toDetailUrl: '../pages/bookdetail.html',
@@ -122,7 +122,7 @@ const prod = {
 						readType:0,
 						bookName:'',
 						userName:'',
-						siteType:CONFIG.READ_CONFIG.siteType
+						siteType: ''
 					}
 				},
 				toDetailUrl: '../pages/bookdetail.html',

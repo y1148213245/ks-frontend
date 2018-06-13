@@ -114,7 +114,7 @@
 
       //删除我的书架(我的收藏)的具体的书
       deleteBookList(loginName,index,pubId){
-				console.log(this)
+				// console.log(this)
 				let obj = this;
 				let deleteIndex = index;
 				let delParams = Object.assign({}, obj.DELETECONFIG.params);
@@ -149,13 +149,13 @@
       },
       //试读
 			toProbation (item,modulename) { // 执行自定义事件
-        debugger;
+        // debugger;
 	        if (!item.bookFreeDownLoadPath) {  // 没有试读地址的情况
 		        return false;
 	        }else{
 		        if(modulename =="bookmyshelf"){
 		        	let params = this.PROBATION.params;
-			        var url = this.PROBATION.url || CONFIG.READ_URL + '?bookId=' + item.resourceId + '&readType=' + params.readType + '&bookName=' + item.resourceName + '&userName=&siteType=' + params.siteType;
+			        var url = this.PROBATION.url || CONFIG.READ_URL + '?bookId=' + item.resourceId + '&readType=' + params.readType + '&bookName=' + item.resourceName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
 		        }else{
 			        var url = this.CONFIG.toDetailUrl +'?pubId=' +item.pubId;
 		        }
