@@ -95,7 +95,7 @@
 
 				//根据传的是我的书架还是收藏来拼接URL,因为参数不同
         //TODO 暂时参数type是写死为'2',productType为空
-        let BASE_URL = CONFIG.BASE_URL + this.BOOKCONFIG.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&siteId=' + params.siteId ;
+        let BASE_URL = CONFIG.BASE_URL + this.BOOKCONFIG.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&siteId=' + CONFIG.SITE_CONFIG.siteId ;
 				if(obj.modulename == "bookmyshelf"){
 					BASE_URL += '&type=' + params.type + '&productType=' + params.productType +'&status=' +params.status ;
         }else{
@@ -121,7 +121,7 @@
 	      //根据传的是我的书架还是收藏来拼接URL,因为参数不同
 
 	      //TODO DELETE请求方式中的pubId/pubIds目前是写死的
-	      let BASE_URL = CONFIG.BASE_URL + obj.DELETECONFIG.url + '?loginName=' + (loginName ? loginName : obj.member.loginName) + '&siteId=' + delParams.siteId;
+	      let BASE_URL = CONFIG.BASE_URL + obj.DELETECONFIG.url + '?loginName=' + (loginName ? loginName : obj.member.loginName) + '&siteId=' + CONFIG.SITE_CONFIG.siteId;
 	      if(obj.modulename =="bookmyshelf"){
 		      BASE_URL += '&pubId=' + pubId;
 

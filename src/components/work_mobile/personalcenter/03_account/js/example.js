@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-06 16:16:12 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-11 10:00:42
+ * @Last Modified time: 2018-06-13 16:28:04
  * 个人资料
  */
 /*    */
@@ -30,7 +30,7 @@ const dev = {
         hasLink: false,
       }, {
         title: "昵称",
-        tag: "nickname",
+        tag: "nickName",
         hasLink: true,
       }, {
         title: "签名",
@@ -54,6 +54,12 @@ const dev = {
         params: {
           loginName: ''
         }
+      },
+      getMemberInfo: {
+        url: "user/getMemberByName.do", // 根据用户名获取用户信息
+        params: {
+          loginName: ""
+        }
       }
     },
   }
@@ -75,7 +81,7 @@ const prod = {
         hasLink: false,
       }, {
         title: "昵称",
-        tag: "nickname",
+        tag: "nickName",
         hasLink: true,
       }, {
         title: "签名",
@@ -98,6 +104,12 @@ const prod = {
         url: "user/editMemberByName.do",
         params: {
           loginName: ''
+        }
+      },
+      getMemberInfo: {
+        url: "user/getMemberByName.do", // 根据用户名获取用户信息
+        params: {
+          loginName: ""
         }
       }
     },

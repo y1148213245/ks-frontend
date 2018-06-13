@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-06 13:31:34 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-06 15:53:22
+ * @Last Modified time: 2018-06-13 15:44:43
  */
 
 import component from "../headNavigation.vue";
@@ -22,16 +22,15 @@ const dev = {
           icon: "van-icon van-icon-arrow-left",
           url: "",
           tag: 'back', // tag 是拼样式名区分样式
-        }/* , {
-          title: "",
-          icon: "",
-          url: ""
-        } */, {
+        }, {
           title: "",
           icon: "van-icon van-icon-home",
           url: "../pages/index.html",
           tag: 'index'
-        }]
+        }],
+        onEvent: { // 接收的事件名称
+          contextEventName: 'showContext'
+        },
       }
     }
   }
@@ -45,15 +44,14 @@ const prod = {
           title: "",
           icon: "van-icon van-icon-arrow",
           url: ""
-        }/* , {
-          title: "",
-          icon: "",
-          url: ""
-        } */, {
+        }, {
           title: "",
           icon: "van-icon van-icon-home",
           url: "../pages/index.html"
-        }]
+        }],
+        onEvent: { // 接收的事件名称
+          contextEventName: 'showContext'
+        },
       }
     }
   }

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-07 14:19:07 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-07 18:25:56
+ * @Last Modified time: 2018-06-13 16:27:14
  */
 
 import component from "../recharge.vue";
@@ -27,7 +27,7 @@ const dev = {
       emitEvent: { // 发广播事件名称
         contextEventName: 'showContext'
       },
-    },
+    }
   }
 }
 
@@ -45,7 +45,7 @@ const prod = {
       emitEvent: { // 发广播事件名称
         contextEventName: 'showContext'
       },
-    },
+    }
   }
 }
 

@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-05 17:38:28 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-11 09:57:22
+ * @Last Modified time: 2018-06-13 16:13:51
  * 个人资料
  */  
  <template>
@@ -84,12 +84,13 @@ export default {
       member: interfaces.GET_MEMBER
     }),
   },
-  created () { },
-
-  mounted () {
+  created () { 
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_03;
     this.display = this.CONFIG.display;
     this.showLists = this.CONFIG.showLists;
+  },
+
+  mounted () {
     this.$bus.$emit(this.CONFIG.emitEvent.contextEventName, this.CONFIG.display.navTitle);
     var _this = this;
     $(document).ready(function () {

@@ -22,7 +22,14 @@ const dev = {
       },
       historyrecord: {
         title: '浏览历史',
-        href: "./bookdetail.html?pubId="
+        href: "./bookdetail.html?pubId=",
+        getBookDetail: {
+          url: 'book/getBookDetail.do',
+          params: {
+            pubId: "",
+            loginName: ""
+          }
+        }
       }
     }
   }
@@ -33,7 +40,7 @@ const prod = {
     picListBook: {
       hotsalebank: {
         title: '热销排行',
-        url:  "spc/cms/publish/list.do",
+        url: "spc/cms/publish/list.do",
         params: {
           conditions: "[{pub_col_id:'131'},{pub_status:'1'}]",
           groupBy: "pub_resource_id",
@@ -46,13 +53,20 @@ const prod = {
       },
       historyrecord: {
         title: '浏览历史',
-        url:  "browserHistory/getHistoryList.do",
+        url: "browserHistory/getHistoryList.do",
         params: {
           num: 3,
           username: "",
           // siteId: CONFIG.SITE_CONFIG.siteId
         },
-        href: "./bookdetail.html?pubId="
+        href: "./bookdetail.html?pubId=",
+        getBookDetail: {
+          url: 'book/getBookDetail.do',
+          params: {
+            pubId: "",
+            loginName: ""
+          }
+        }
       }
     }
   }

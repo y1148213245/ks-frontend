@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-07 15:24:58 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-08 16:29:54
+ * @Last Modified time: 2018-06-13 16:26:19
  * 个人中心消费记录 即我的订单
  * TODO: 下拉的时候没有loading提示；下拉到了最底部没有提示“没有数据了”
  */
@@ -95,7 +95,7 @@ export default {
     },
     queryMyOrder (loginName) {
       let params = Object.assign({}, this.ORDERCONFIG.params);
-      Get(CONFIG.BASE_URL + this.ORDERCONFIG.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&siteId=' + params.siteId + '&payStatus=' + params.payStatus + '&status=' + params.status).then((resp) => {
+      Get(CONFIG.BASE_URL + this.ORDERCONFIG.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&payStatus=' + params.payStatus + '&status=' + params.status).then((resp) => {
         let res = resp.data;
         if (res.result == '1' && res.data.length > 0) {
           this.consumeLists = this.consumeLists.concat(res.data);

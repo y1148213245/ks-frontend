@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-07 15:26:18 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-08 16:19:01
+ * @Last Modified time: 2018-06-13 16:26:10
  * 个人中心消费记录
  */
 
@@ -36,7 +36,7 @@ const dev = {
         params: {
           pageIndex: '1', // 页码
           pageSize: '15', // 每页的数量
-          siteId: CONFIG.SITE_CONFIG.siteId, // 站点id
+          siteId: '', // 站点id
           payStatus: "", // 支付状态 1：已支付  0：待支付
           status: "", // 订单状态
         }
@@ -64,7 +64,7 @@ const prod = {
         params: {
           pageIndex: '1', // 页码
           pageSize: '15', // 每页的数量
-          siteId: CONFIG.SITE_CONFIG.siteId, // 站点id
+          siteId: '', // 站点id
           payStatus: "", // 支付状态 1：已支付  0：待支付
           status: "", // 订单状态
         }

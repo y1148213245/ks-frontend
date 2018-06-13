@@ -3,6 +3,7 @@
   <div class="work_bookreview_01 work_bookreview_01_skin">
     <div class="title">
       <span>精彩评论</span>
+      <span v-if="this.CONFIG.toAddReview.toAddReviewShow" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{this.CONFIG.toAddReview.toAddReviewName}}</span>
     </div>
     <div class="reviewCon">
       <div class="review">
@@ -108,8 +109,18 @@ export default {
     ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
-    toReviewInfo (reviewId) { // 去评论详情页
-      window.open( this.operList.review.toReviewInfoUrl + "?reviewId=" + reviewId+ "&&pubId=" + this.pubId+ "&&loginName=" + this.loginName);
+    /* 去评论详情页*/
+    toReviewInfo (reviewId) {
+      if(typeof(this.operList.review.toReviewInfoUrl)!='undefined'){
+        window.open( this.operList.review.toReviewInfoUrl + "?reviewId=" + reviewId+ "&&pubId=" + this.pubId+ "&&loginName=" + this.loginName);
+      }
+    },
+    /* 去评论页面评论*/
+    toAddReview(){
+      if(typeof(this.CONFIG.toAddReview)!='undefined'){
+        window.open( this.CONFIG.toAddReview.toAddReviewUrl + "?pubId=" + this.pubId+ "&&loginName=" + this.loginName);
+    }
+
     },
     /* 评论*/
     bookReview () {
@@ -187,7 +198,7 @@ export default {
         console.log(rep);
         let datas = rep.data;
         if (datas && datas.data && datas.result==1) {
-          this.commentList = datas.data.msg;
+          // this.commentList = datas.data.msg;
           this.$message({
             message: datas.data.msg,
             type: 'success'

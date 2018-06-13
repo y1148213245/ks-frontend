@@ -53,6 +53,11 @@ const dev = {
         },
       },
       orReGetMenberName:true, //单独成列表页的话就配置成true 如果在详情页用的话就false 或者不写
+      toAddReview:{// 单独添加评论按钮是否展示
+        toAddReviewShow:true,
+        toAddReviewName:"评论",
+        toAddReviewUrl:'./pages/reviewPublish.html'
+      },
     }
   }
 };
@@ -98,6 +103,11 @@ var prod = {
         },
       },
       orReGetMenberName:true, //单独成列表页的话就配置成true 如果在详情页用的话就false 或者不写
+      toAddReview:{// 单独添加评论按钮是否展示
+        toAddReviewShow:true,
+        toAddReviewName:"评论",
+        toAddReviewUrl:'./pages/reviewPublish.html'
+      },
     }
   }
 }

@@ -58,7 +58,8 @@ const dev = {
           navTitle: "个人中心",
           logOut: "退出登录",
           recharge: "充值"
-        }
+        },
+        toSubPCUrl: "../pages/subpersonalcenter.html", // 个人中心二级页面
       }
     },
   }

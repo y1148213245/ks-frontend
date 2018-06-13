@@ -41,7 +41,7 @@ const prod = {
       emitEvent: { // 发广播事件名称
         contextEventName: 'showContext'
       },
-    }
+    },
   }
 }
 
