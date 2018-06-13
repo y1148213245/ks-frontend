@@ -162,9 +162,9 @@
           </el-table-column>
         </el-table>
       </div>
-
+      <!-- 评审按钮 -->
       <div id="radioCom" class="workbench-review_box" v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4">
-
+        <!-- v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4" -->
       </div>
 
       <div class="workbench-pre_next">
@@ -378,19 +378,20 @@ export default {
         vmodel: {}
       };
       let html = ''
-      this.award
 
       for (let index = 0; index < awardList.length; index++) {
         const item = awardList[index];
 
         data.vmodel['data' + item.id] = {}
         data.vmodel['data' + item.id].type = item.type;
-        data.vmodel['data' + item.id].val = this.config.reviewPrize.defaultPrize;
+        data.vmodel['data' + item.id].val = '';
 
 
         item.topics.map(entry => {
           if (entry.topic == this.config.reviewPrize.defaultPrize) {
-            _this.radioChlick(item.type + ':' + this.config.reviewPrize.defaultPrize)
+            let award = item.type + ':' + _this.config.reviewPrize.defaultPrize;
+            data.vmodel['data' + item.id].val = award;
+            _this.radioChlick(award);
           }
         })
         _this.award.map(entry => {

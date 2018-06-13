@@ -73,8 +73,6 @@ const platform = 'PC';
 const pageType = [];
 const resourceType = [];
 
-const childComponents = [];
-
 export {
   name,
   title,
@@ -83,6 +81,5 @@ export {
   description,
   platform,
   pageType,
-  resourceType,
-  childComponents
+  resourceType
 };
