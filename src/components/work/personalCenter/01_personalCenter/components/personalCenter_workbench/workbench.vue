@@ -1,246 +1,182 @@
 <!-- 个人中心我的工作台组件 -->
 <template>
- <section class="workbench">
-   
-   <!-- 活动列表 -->
-   <template v-if="currentShow == 'activityList'">
-      <el-table
-      :data="distributeList"
-      border
-      style="width: 100%">
-      <el-table-column
-        label="活动名">
-        <template slot-scope="scope">
-          <span class="workbench-name" v-text="scope.row[config.keys_activity.name]" @click="toTaskList(scope.row)"></span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :prop="config.keys_activity.taskNum"
-        label="任务数"
-        width="100">
-      </el-table-column>
-      <el-table-column
-        :prop="config.keys_activity.productNum"
-        label="分配作品数"
-        width="100">
-      </el-table-column>
-    </el-table>
-  </template>
-  <!-- 任务列表 -->
-  <template v-if="currentShow == 'task'">
+  <section class="workbench">
+    <!-- 活动列表 -->
+    <template v-if="currentShow == 'activityList'">
+      <el-table :data="distributeList" border style="width: 100%">
+        <el-table-column label="活动名">
+          <template slot-scope="scope">
+            <span class="workbench-name" v-text="scope.row[config.keys_activity.name]" @click="toTaskList(scope.row)"></span>
+          </template>
+        </el-table-column>
+        <el-table-column :prop="config.keys_activity.taskNum" label="任务数" width="100">
+        </el-table-column>
+        <el-table-column :prop="config.keys_activity.productNum" label="分配作品数" width="100">
+        </el-table-column>
+      </el-table>
+    </template>
+    <!-- 任务列表 -->
+    <template v-if="currentShow == 'task'">
       <el-tabs v-model="taskStatus" @tab-click="taskListClick">
         <el-tab-pane label="未审核" name="1_SPC_2_SPC_4"></el-tab-pane>
         <el-tab-pane label="审核通过" name="3"></el-tab-pane>
       </el-tabs>
-      <el-table
-      :data="taskList"
-      border
-      style="width: 100%">
-      <el-table-column
-        label="任务名">
-        <template slot-scope="scope">
-          <span class="workbench-name" v-text="scope.row[config.keys_task.name]" @click="toProductList(scope.row)"></span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :prop="config.keys_task.createdTime"
-        label="任务时间"
-        :formatter="formateDate"
-        width="150">
-      </el-table-column>
-      <el-table-column
-        :prop="config.keys_task.selectNum"
-        label="分配作品数"
-        width="100">
-      </el-table-column>
-      <el-table-column
-        :prop="config.keys_task.statusText"
-        label="任务状态"
-        width="100">
-      </el-table-column>
-      <el-table-column
-        label="比例"
-        width="100">
-        <template slot-scope="scope">
-          <el-button @click="toPie(scope.row)" type="text" size="small">查看比例</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="评奖"
-        width="100">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            @click="toProductList(scope.row)">查看任务</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <ui_pagination :pageMessage="{totalCount: this.taskTotalCount - 0 || 0}" :excuteFunction="taskPaging" ref="taskPaging"></ui_pagination>
-    <div class="workbench-back_activitylist-button_box">
-      <el-button type="button" class="el-button--primary" @click="toActivityList(null)">返回</el-button>
-    </div>
-  </template>
-  <!-- 作品列表 -->
-  <el-col :span="24" class="workbench-productList" v-if="currentShow == 'productList'">
-    <!--保存状态切换-->
-     <el-tabs v-model="tabState" @tab-click="tabClick">
-      <el-tab-pane label="未处理" name="unsave"></el-tab-pane>
-      <el-tab-pane label="已处理" name="save"></el-tab-pane>
-    </el-tabs>
-    <!-- 作品筛选 -->
-    <div class="workbench-productList-place">
-    <label class="workbench-search_label">地区:</label> 
-    <el-select v-model="workSearch.areaList" multiple placeholder="请选择地区">
-      <el-option
-        v-for="item in areaListOptions"
-        :key="item"
-        :label="item"
-        :value="item">
-      </el-option>
-    </el-select>
-    </div>
-    
-    <div class="workbench-productList-group">
-    <label class="workbench-search_label">组别:</label> 
-    <el-select v-model="workSearch.group" placeholder="请选择组别">
-      <el-option label="全部" :value="0"></el-option>
-      <el-option v-for="(item,index) in classlimtOptions" :label="item.label" :value="item.value" :key="index"></el-option>
-    </el-select>
-    </div>
-
-    <div class="workbench-productList-school">
-    <label class="workbench-search_label">学校:</label> 
-    <el-select v-model="workSearch.school" placeholder="请选择学校">
-      <el-option label="全部" :value="0"></el-option>
-      <el-option v-for="(item,index) in schoolOptions" :label="item.label" :value="item.value" :key="index"></el-option>
-    </el-select>
-    </div>
-
-    <div class="workbench-productList-prize">
-    <label class="workbench-search_label">奖项:</label> 
-    
-    <el-select v-model="workSearch.awardList" multiple placeholder="请选择奖项">
-      <el-option
-        v-for="item in awardListOptions"
-        :key="item"
-        :label="item"
-        :value="item">
-      </el-option>
-    </el-select>
-    </div>
-
-    <div class="workbench-productList-name">
-    <label class="workbench-search_label">作品名称:</label> 
-    <el-input v-model="workSearch.workName" placeholder="请输入作品名"></el-input>
-    <el-button icon="el-icon-search" circle @click="formFilter">搜索</el-button>
-    </div>
-
-    
-
-    <el-table
-      :data="distributeWorkList"
-      border
-      style="width: 100%">
-      <el-table-column
-        :prop="config.keys_product.name"
-        label="作文标题">
-      </el-table-column>
-      <el-table-column
-        :prop="config.keys_product.commitStatus"
-        label="获奖状态"
-        width="100">
-      </el-table-column>
-      <el-table-column
-        label="操作"
-        width="100">
-        <template slot-scope="scope">
-          <el-button v-if="scope.row[config.keys_product.taskStatus] == 1 || scope.row[config.keys_product.taskStatus] == 4" @click="toReview(scope.row)" type="text" size="small">评审</el-button>
-          <el-button v-else @click="toReview(scope.row)" type="text" size="small">查看评审</el-button>
-        </template>
-      </el-table-column>
-
-
-    </el-table>
-    <ui_pagination :pageMessage="{totalCount: this.workTotalCount - 0 || 0}" :excuteFunction="workPaging" ref="workPaging"></ui_pagination>
-    <el-button v-if="taskDetail[config.keys_task.status] == 1 || taskDetail[config.keys_task.status] == 4"  class="workbench-commit_review" type="primary" @click="commitAward()">提交评审</el-button>
-    <div class="workbench-back_activitylist-button_box">
-      <el-button type="button" class="el-button--primary" @click="toTaskList(null)">返回</el-button>
-    </div>
-
-  </el-col>
-  <!-- 查看比例 -->
-  <el-col v-if="currentShow == 'pie'" :span="24" class="workbench-pie">
-    <el-col :span="24" class="workbench-pie-condition">
-      <el-col :span="8">
-        <el-select v-model="select_place" placeholder="选择地区" style="width:90%;" @change="pieSelectChange()">
-          <el-option label="全部" :value="''"></el-option>
-          <el-option v-for="(area,index) in areaListOptions" :label="area" :value="area" :key="index"></el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="8">
-        <el-select v-model="select_school" placeholder="选择学校" style="width:90%;" @change="pieSelectChange()">
-          <el-option label="全部" :value="''"></el-option>
-          <el-option v-for="(school,index) in schoolOptions" :label="school.value" :value="school.value" :key="index" ></el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="8">
-        <el-select v-model="select_award" placeholder="选择奖项" style="width:90%;" @change="pieSelectChange()">
-          <el-option v-for="(award,index) in awardListOptions" :label="award" :value="award" :key="index"></el-option>
-        </el-select>
-      </el-col>
-    </el-col>
-    <el-col :span="24">
-      <div class="workbench-pie-content" id="pie"></div>
-    </el-col>
-    <div class="workbench-back_activitylist-button_box">
-      <el-button type="button" class="el-button--primary" @click="toTaskList(null)">返回</el-button>
-    </div>
-  </el-col>
-
-   <!-- 评审 -->
-   <el-col v-if="currentShow == 'review'" :span="24" class="workbench-review">
-     <div class="workbench-review-product_title" v-text="productDetail[config.keys_productDetail.title]"></div>
-     <div class="workbench-review-product_abstract" v-html="productDetail[config.keys_productDetail.abstract]"></div>
-     <div class="workbench-review-product_content" v-html="productDetail[config.keys_productDetail.content]"></div>
-     <!-- <div class="workbench-review-product_fujian">
-        文件下载：<a href="#" v-text="productDetail[config.keys_productDetail.fujian]"></a>
-     </div> -->
-     <div class="workbench-review-history" v-if="productRecord[config.keys_product.taskStatus] == 2 || productRecord[config.keys_product.taskStatus] == 3">
-       <el-table
-        :data="historyReviewList"
-        stripe
-        border
-        style="margin:0 auto;width:600px;">
-      
-        <el-table-column
-            :prop="config.keys_historyReview.commitTime"
-            label="提交时间"
-            :formatter="formateDate"
-            width="300">
+      <el-table :data="taskList" border style="width: 100%">
+        <el-table-column label="任务名">
+          <template slot-scope="scope">
+            <span class="workbench-name" v-text="scope.row[config.keys_task.name]" @click="toProductList(scope.row)"></span>
+          </template>
         </el-table-column>
-        <el-table-column
-          :prop="config.keys_historyReview.award"
-          label="历史评审结果"
-          width="300">
+        <el-table-column :prop="config.keys_task.createdTime" label="任务时间" :formatter="formateDate" width="150">
+        </el-table-column>
+        <el-table-column :prop="config.keys_task.selectNum" label="分配作品数" width="100">
+        </el-table-column>
+        <el-table-column :prop="config.keys_task.statusText" label="任务状态" width="100">
+        </el-table-column>
+        <el-table-column label="比例" width="100">
+          <template slot-scope="scope">
+            <el-button @click="toPie(scope.row)" type="text" size="small">查看比例</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="评奖" width="100">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" @click="toProductList(scope.row)">查看任务</el-button>
+          </template>
         </el-table-column>
       </el-table>
-     </div>
-     
-     <div id="radioCom" class="workbench-review_box" v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4">
-       
-     </div>
+      <ui_pagination :pageMessage="{totalCount: this.taskTotalCount - 0 || 0}" :excuteFunction="taskPaging" ref="taskPaging"></ui_pagination>
+      <div class="workbench-back_activitylist-button_box">
+        <el-button type="button" class="el-button--primary" @click="toActivityList(null)">返回</el-button>
+      </div>
+    </template>
+    <!-- 作品列表 -->
+    <el-col :span="24" class="workbench-productList" v-if="currentShow == 'productList'">
+      <!--保存状态切换-->
+      <el-tabs v-model="tabState" @tab-click="tabClick">
+        <el-tab-pane label="未处理" name="unsave"></el-tab-pane>
+        <el-tab-pane label="已处理" name="save"></el-tab-pane>
+      </el-tabs>
+      <!-- 作品筛选 -->
+      <div class="workbench-productList-place">
+        <label class="workbench-search_label">地区:</label>
+        <el-select v-model="workSearch.areaList" multiple placeholder="请选择地区">
+          <el-option v-for="item in areaListOptions" :key="item" :label="item" :value="item">
+          </el-option>
+        </el-select>
+      </div>
 
-     <div class="workbench-pre_next">
-       <el-button type="button" class="el-button--primary workbench-pre" @click="toPre()">上一篇</el-button>
-       <el-button v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4" type="button" class="el-button--primary workbench-next" @click="saveAndtoNext()">保存,下一篇</el-button>
-       <el-button v-else type="button" class="el-button--primary workbench-next" @click="toNext()">下一篇</el-button>
-     </div>
-     <div class="workbench-back_review-button_box">
-      <el-button type="button" class="el-button--primary" @click="toProductList('')">返回</el-button>
-     </div>
-   </el-col>
- </section>
+      <div class="workbench-productList-group">
+        <label class="workbench-search_label">组别:</label>
+        <el-select v-model="workSearch.group" placeholder="请选择组别">
+          <el-option label="全部" :value="0"></el-option>
+          <el-option v-for="(item,index) in classlimtOptions" :label="item.label" :value="item.value" :key="index"></el-option>
+        </el-select>
+      </div>
+
+      <div class="workbench-productList-school">
+        <label class="workbench-search_label">学校:</label>
+        <el-select v-model="workSearch.school" placeholder="请选择学校">
+          <el-option label="全部" :value="0"></el-option>
+          <el-option v-for="(item,index) in schoolOptions" :label="item.label" :value="item.value" :key="index"></el-option>
+        </el-select>
+      </div>
+
+      <div class="workbench-productList-prize">
+        <label class="workbench-search_label">奖项:</label>
+
+        <el-select v-model="workSearch.awardList" multiple placeholder="请选择奖项">
+          <el-option v-for="item in awardListOptions" :key="item" :label="item" :value="item">
+          </el-option>
+        </el-select>
+      </div>
+
+      <div class="workbench-productList-name">
+        <label class="workbench-search_label">作品名称:</label>
+        <el-input v-model="workSearch.workName" placeholder="请输入作品名"></el-input>
+        <el-button icon="el-icon-search" circle @click="formFilter">搜索</el-button>
+      </div>
+
+      <el-table :data="distributeWorkList" border style="width: 100%">
+        <el-table-column :prop="config.keys_product.name" label="作文标题">
+        </el-table-column>
+        <el-table-column :prop="config.keys_product.commitStatus" label="获奖状态" width="100">
+        </el-table-column>
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button v-if="scope.row[config.keys_product.taskStatus] == 1 || scope.row[config.keys_product.taskStatus] == 4" @click="toReview(scope.row)" type="text" size="small">评审</el-button>
+            <el-button v-else @click="toReview(scope.row)" type="text" size="small">查看评审</el-button>
+          </template>
+        </el-table-column>
+
+      </el-table>
+      <ui_pagination :pageMessage="{totalCount: this.workTotalCount - 0 || 0}" :excuteFunction="workPaging" ref="workPaging"></ui_pagination>
+      <el-button v-if="taskDetail[config.keys_task.status] == 1 || taskDetail[config.keys_task.status] == 4" class="workbench-commit_review" type="primary" @click="commitAward()">提交评审</el-button>
+      <div class="workbench-back_activitylist-button_box">
+        <el-button type="button" class="el-button--primary" @click="toTaskList(null)">返回</el-button>
+      </div>
+
+    </el-col>
+    <!-- 查看比例 -->
+    <el-col v-if="currentShow == 'pie'" :span="24" class="workbench-pie">
+      <el-col :span="24" class="workbench-pie-condition">
+        <el-col :span="8">
+          <el-select v-model="select_place" placeholder="选择地区" style="width:90%;" @change="pieSelectChange()">
+            <el-option label="全部" :value="''"></el-option>
+            <el-option v-for="(area,index) in areaListOptions" :label="area" :value="area" :key="index"></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="8">
+          <el-select v-model="select_school" placeholder="选择学校" style="width:90%;" @change="pieSelectChange()">
+            <el-option label="全部" :value="''"></el-option>
+            <el-option v-for="(school,index) in schoolOptions" :label="school.value" :value="school.value" :key="index"></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="8">
+          <el-select v-model="select_award" placeholder="选择奖项" style="width:90%;" @change="pieSelectChange()">
+            <el-option v-for="(award,index) in awardListOptions" :label="award" :value="award" :key="index"></el-option>
+          </el-select>
+        </el-col>
+      </el-col>
+      <el-col :span="24">
+        <div class="workbench-pie-content" id="pie"></div>
+      </el-col>
+      <div class="workbench-back_activitylist-button_box">
+        <el-button type="button" class="el-button--primary" @click="toTaskList(null)">返回</el-button>
+      </div>
+    </el-col>
+
+    <!-- 评审 -->
+    <el-col v-if="currentShow == 'review'" :span="24" class="workbench-review">
+      <div class="workbench-review-product_title" v-text="productDetail[config.keys_productDetail.title]"></div>
+      <div class="workbench-review-product_abstract" v-html="productDetail[config.keys_productDetail.abstract]"></div>
+      <div class="workbench-review-product_content" v-html="productDetail[config.keys_productDetail.content]"></div>
+      <!-- <div class="workbench-review-product_fujian">
+        文件下载：<a href="#" v-text="productDetail[config.keys_productDetail.fujian]"></a>
+     </div> -->
+      <div class="workbench-review-history" v-if="productRecord[config.keys_product.taskStatus] == 2 || productRecord[config.keys_product.taskStatus] == 3">
+        <el-table :data="historyReviewList" stripe border style="margin:0 auto;width:600px;">
+
+          <el-table-column :prop="config.keys_historyReview.commitTime" label="提交时间" :formatter="formateDate" width="300">
+          </el-table-column>
+          <el-table-column :prop="config.keys_historyReview.award" label="历史评审结果" width="300">
+          </el-table-column>
+        </el-table>
+      </div>
+
+      <div id="radioCom" class="workbench-review_box" v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4">
+
+      </div>
+
+      <div class="workbench-pre_next">
+        <el-button type="button" class="el-button--primary workbench-pre" @click="toPre()">上一篇</el-button>
+        <el-button v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4" type="button" class="el-button--primary workbench-next" @click="saveAndtoNext()">保存,下一篇</el-button>
+        <el-button v-else type="button" class="el-button--primary workbench-next" @click="toNext()">下一篇</el-button>
+      </div>
+      <div class="workbench-back_review-button_box">
+        <el-button type="button" class="el-button--primary" @click="toProductList('')">返回</el-button>
+      </div>
+    </el-col>
+  </section>
 </template>
 
 <script>
@@ -260,8 +196,8 @@ export default {
       type: Object,
       default () {
         return {
-          reviewPrize:{
-            defaultPrize:'未得奖'
+          reviewPrize: {
+            defaultPrize: '未得奖'
           },
           keys_teacher: {
             name: 'SYS_TOPIC',
@@ -273,7 +209,7 @@ export default {
             begin: "ACTIVITY_BEGIN_TIMESTAMPNEW",
             end: 'ACTIVITY_END_TIMESTAMPNEW',
             productNum: "WORK_COUNT",
-            taskNum:"TASK_COUNT",
+            taskNum: "TASK_COUNT",
             reviewStatus: "ACTIVITY_COMMIT_STATUS",
             verifyStatus: "ACTIVITY_VERIFY_STATUS",
             class: "CLASSLIMT",
@@ -423,7 +359,7 @@ export default {
     require("echarts/lib/component/legendScroll");
     require("echarts/theme/shine")
     require("echarts/theme/macarons")
-    
+
   },
 
   mounted () {
@@ -443,27 +379,27 @@ export default {
       };
       let html = ''
       this.award
-      
+
       for (let index = 0; index < awardList.length; index++) {
         const item = awardList[index];
-       
+
         data.vmodel['data' + item.id] = {}
         data.vmodel['data' + item.id].type = item.type;
         data.vmodel['data' + item.id].val = this.config.reviewPrize.defaultPrize;
 
-      
-        item.topics.map(entry=>{
-          if(entry.topic == this.config.reviewPrize.defaultPrize){
-            _this.radioChlick(item.type+':'+this.config.reviewPrize.defaultPrize)  
+
+        item.topics.map(entry => {
+          if (entry.topic == this.config.reviewPrize.defaultPrize) {
+            _this.radioChlick(item.type + ':' + this.config.reviewPrize.defaultPrize)
           }
         })
         _this.award.map(entry => {
           if (entry.indexOf(item.type + ':') > -1) {
             data.vmodel['data' + item.id].val = entry
             _this.radioChlick(entry)
-          } 
+          }
         })
-        
+
         html += `
           <div class="workbench-review_box-simple_prize">
           <label>{{awardList[${index}].type}}:</label>
@@ -961,10 +897,10 @@ export default {
               awards.push(item);
             }
           }
-          awardTypeArr.push(element[_this.config.keys_award.type] + ':' +  element[_this.config.keys_award.topic]);
+          awardTypeArr.push(element[_this.config.keys_award.type] + ':' + element[_this.config.keys_award.topic]);
         }
         this.awardList = awards;
-        
+
         this.awardListOptions = awardTypeArr
         this.select_award = this.awardListOptions[0].split(':')[0]
         // this.$nextTick(() => {
@@ -1152,11 +1088,11 @@ export default {
           const element = data[key];
           let colorRGB = randomRgbColor()
           legendData.push(key);
-          seriesData.push({ value: element, name: key})
+          seriesData.push({ value: element, name: key })
           // color.push(colorRGB)
         }
       }
-      
+
       let option = {
         // title: {
         //   text: '某站点用户访问来源',
@@ -1193,7 +1129,7 @@ export default {
 
 
       };
-      let echarts = this.echarts.init(document.getElementById("pie"),'macarons');
+      let echarts = this.echarts.init(document.getElementById("pie"), 'macarons');
 
       echarts.setOption(option);
       function randomRgbColor () { //随机生成RGB颜色
@@ -1219,7 +1155,7 @@ export default {
 .workbench .el-table__body-wrapper {
   overflow: hidden;
 }
-.workbench .el-table{
+.workbench .el-table {
   margin-top: 10px;
 }
 
@@ -1282,7 +1218,7 @@ export default {
   float: right;
 }
 
-.workbench .el-select{
+.workbench .el-select {
   width: 80%;
 }
 .workbench-productList-place,
@@ -1293,9 +1229,9 @@ export default {
   width: 33%;
   margin: 7px 0;
 }
-.workbench-productList-name{
+.workbench-productList-name {
   width: 65.5%;
-   display: inline-block;
+  display: inline-block;
 }
 .workbench-productList-place,
 .workbench-productList-school,
