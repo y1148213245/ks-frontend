@@ -651,7 +651,7 @@ export default {
         cols: "TASKID",
         symbols: "2",
         vals: this.taskId,
-        page: this.seacrhWorkConditions[this.workSearch.awardStatus].page - 1,
+        page: this.seacrhWorkConditions[this.workSearch.awardStatus].page - 1 + '',
         size: this.seacrhWorkConditions[this.workSearch.awardStatus].size
       };
 
