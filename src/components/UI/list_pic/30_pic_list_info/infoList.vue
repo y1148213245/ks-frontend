@@ -131,8 +131,8 @@ export default {
             rep.data.result.length > 0
           ) {
             this.infoList = rep.data.result;
-            this.pageMessage.totalCount = rep.data.totalCount;
           }
+	        this.pageMessage.totalCount = rep.data.totalCount;
         }
       );
     },
@@ -154,6 +154,7 @@ export default {
     },
     paging ({ pageNo, pageSize }) {
       //当前页码或者每页显示数量发生改变
+      debugger;
       var pagingParams = {
         pageNo: pageNo,
         pageSize: pageSize

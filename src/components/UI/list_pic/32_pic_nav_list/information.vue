@@ -139,6 +139,7 @@ export default {
     getResourceLists (pagingParams) { // 获取资源列表
       let paramsObj = Object.assign({}, this.resourceListsConfig.params);
       // paramsObj = JSON.stringify(paramsObj.conditions);
+      paramsObj.colId = this.colId ? this.colId : paramsObj.colId;
       this.requestParams = paramsObj;
       Post(CONFIG.BASE_URL + this.resourceListsConfig.url + '?colId=' + paramsObj.colId).then((rep) => {
         let datas = rep.data;

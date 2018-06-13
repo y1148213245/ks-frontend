@@ -27,17 +27,17 @@
 
     <div class="work_activitydetail_04-topic" v-if="showItem('topic')">
       <label class="work_activitydetail_04-label">标题搜索：</label>
-      <el-input v-model="formData.searchText" placeholder="标题"></el-input>
+      <el-input v-model="formData.searchText" placeholder="标题" @keyup.enter.native="onSubmit"></el-input>
     </div>
 
     <div class="work_activitydetail_04-author" v-if="showItem('author')">
       <label class="work_activitydetail_04-label">参赛人：</label>
-      <el-input v-model="formData.author" placeholder="参赛人"></el-input>
+      <el-input v-model="formData.author" placeholder="参赛人" @keyup.enter.native="onSubmit"></el-input>
     </div>
 
     <div class="work_activitydetail_04-id" v-if="showItem('idCard')">
       <label class="work_activitydetail_04-label">身份证：</label>
-      <el-input v-model="formData.idCard" placeholder="身份证"></el-input>
+      <el-input v-model="formData.idCard" placeholder="身份证" @keyup.enter.native="onSubmit"></el-input>
     </div>
 
     <div class="work_activitydetail_04-button_box">

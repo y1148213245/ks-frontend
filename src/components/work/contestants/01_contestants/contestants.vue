@@ -761,13 +761,13 @@ export default {
           message: "请选择填写班级"
         });
         return false;
-      } else if (this.addSupplementForm.teacherPhone != "" && !/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(this.addSupplementForm.teacherPhone)) {
+      } else if (this.addSupplementForm.teacherPhone != "" && !/\b\d{7,12}\b/.test(this.addSupplementForm.teacherPhone)) {
         this.$message({
           type: "error",
           message: "请选择填写正确指导教师手机号"
         });
         return false;
-      } else if (this.addSupplementForm.organizationTeacherPhone != "" && !/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(this.addSupplementForm.organizationTeacherPhone)) {
+      } else if (this.addSupplementForm.organizationTeacherPhone != "" && !/\b\d{7,12}\b/.test(this.addSupplementForm.organizationTeacherPhone)) {
         this.$message({
           type: "error",
           message: "请选择填写正确组织教师手机号"

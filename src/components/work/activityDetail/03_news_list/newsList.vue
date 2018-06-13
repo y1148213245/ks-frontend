@@ -4,7 +4,7 @@
    <template v-for="(item,index) in  list">
     <div class="work_activitydetail_03-item" :key="index">
       <div class="work_activitydetail_03-item-img_box">
-        <img class="work_activitydetail_03-item-img" :src="getPicUrl(item[keys.picId])" alt="暂无图片">
+        <img class="work_activitydetail_03-item-img" :src="getPicUrl(item[keys.picId])" alt="暂无图片" @click="toDetail(item)">
       </div>
       <div class="work_activitydetail_03-item-content">
         <h2 class="work_activitydetail_03-item-title"><a href="javascript:void(0)" v-text="item[keys.title]" @click="toDetail(item)"></a></h2>
@@ -84,7 +84,8 @@ export default {
           [keys.getListParam_orderBy]: this.CONFIG.params.getListParam_orderBy
         }
         this.$bus.emit(this.CONFIG.toDetailMode.event.name, item, listConfig)
-      } else if (this.CONFIG.toDetailMode.type == 'href') {
+      } else  {
+      	// if (this.CONFIG.toDetailMode.type == 'href')
         let hrefMode = this.CONFIG.toDetailMode.href;
         let params = hrefMode.params;
         let url = hrefMode.url + '?';

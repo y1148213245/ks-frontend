@@ -1,7 +1,7 @@
 import component from '../swiper_simple.vue'
 const name = component.name;  // 组件标签名
 const title = '轮播图组件';  // 组件title
-const description = `轮播图组件,01，修改为 资讯只要设置了sourceUrl 就是外链2 那么就可以跳转了`;  // 组件描述信息
+const description = `轮播图组件,01，修改为 资讯数据里只要写入了sourceUrl 就是外链2 那么就可以跳转了`;  // 组件描述信息
 const dev = {
   swiper: {
     ui_mobile_swiper_01: {
@@ -28,7 +28,9 @@ const dev = {
           keys: {
             id: 'id',
             pic: 'pub_picBig',/* 封面字段 */
-            poster: 'pub_POSTER'/* 海报字段 */
+            poster: 'pub_POSTER',/* 海报字段 */
+            sourceUrl: 'information_a_sourceUrl'/* 第二外链 */
+
           }
         },
       }
@@ -73,7 +75,8 @@ const prod = {
           keys: {
             id: 'id',
             pic: 'pub_picBig',/* 封面字段 */
-            poster: 'pub_POSTER'/* 海报字段 */
+            poster: 'pub_POSTER',/* 海报字段 */
+            sourceUrl: 'information_a_sourceUrl'/* 第二外链 */
           }
         },
       }

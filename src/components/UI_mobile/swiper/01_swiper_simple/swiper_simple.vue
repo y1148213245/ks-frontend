@@ -83,7 +83,7 @@ export default {
             url += key + '=' + element + '&';
         }
         url = url.substring(0,url.length-1)
-        window.location.href = url ? item.sourceUrl : url;
+        window.location.href = item.sourceUrl ? item.sourceUrl : url;
 
       }
     }

@@ -9,10 +9,10 @@ import component from "../booklist.vue";
 
 const name = component.name; // 组件标签名
 
-/*const title = "我的书架"; // 组件title
+const title = "图书列表"; // 组件title
 
 
-const description = `我的书架或者收藏组件`; // 组件描述信息*/
+const description = `嵌套在我的书架和我的收藏的组件`; // 组件描述信息
 
 
 const dev = {
@@ -31,6 +31,18 @@ const dev = {
 				emitEvent: { // 发广播事件名称
 					contextEventName: 'showContext'
 				},
+				probation:{
+					url:CONFIG.READ_URL,
+					params:{
+						bookId:'',
+						readType:0,
+						bookName:'',
+						userName:'',
+						siteType:CONFIG.READ_CONFIG.siteType
+					}
+				},
+				toDetailUrl: '../pages/bookdetail.html',
+				toBookLibraryUrl: '../pages/bookdetail.html', //TODO 暂时不知道书城地址,写了个详情的地址
 				getlist: {
 					url: "/user/getBookShelfList.do",
 					params: {
@@ -61,6 +73,8 @@ const dev = {
 					delete:'删除',
 					readTrying:'试读'
 				},
+				toDetailUrl: '../pages/bookdetail.html',
+				toBookLibraryUrl: '../pages/bookdetail.html', //TODO 暂时不知道书城地址,写了个详情的地址
 				emitEvent: { // 发广播事件名称
 					contextEventName: 'showContext'
 				},
@@ -101,6 +115,18 @@ const prod = {
 					delete:'删除',
 					readTrying:'试读'
 				},
+				probation:{
+					url:CONFIG.READ_URL,
+					params:{
+						bookId:'',
+						readType:0,
+						bookName:'',
+						userName:'',
+						siteType:CONFIG.READ_CONFIG.siteType
+					}
+				},
+				toDetailUrl: '../pages/bookdetail.html',
+				toBookLibraryUrl: '../pages/bookdetail.html', //TODO 暂时不知道书城地址,写了个详情的地址
 				emitEvent: { // 发广播事件名称
 					contextEventName: 'showContext'
 				},
@@ -134,6 +160,8 @@ const prod = {
 					delete:'删除',
 					readTrying:'试读'
 				},
+				toDetailUrl: '../pages/bookdetail.html',
+				toBookLibraryUrl: '../pages/bookdetail.html', //TODO 暂时不知道书城地址,写了个详情的地址
 				emitEvent: { // 发广播事件名称
 					contextEventName: 'showContext'
 				},

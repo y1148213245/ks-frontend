@@ -101,6 +101,7 @@
 				temp: {}, //订单里的id
 				tempList: {}, //订单单元
 				orderSuccessUrl: '', //
+        noLoginUrl:'../pages/login.html', //没有登陆就跳转到登录页
 			};
 		},
 
@@ -111,6 +112,9 @@
 			this.orderSuccessUrl = this.CONFIG.orderSuccessUrl;
 			this.payType = this.CONFIG.payType;
 			this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.resourceDetailConfig.sysAdapter, this.resourceDetailConfig.typeAdapter)));
+      if(typeof(this.CONFIG.noLoginUrl)!='undefined'){
+        this.noLoginUrl = this.CONFIG.noLoginUrl;
+      }
 
 		},
 
@@ -155,6 +159,8 @@
 			getMenberDetail() {
 				this.loginName = this.member.loginName;
 				if(!this.loginName) { // 未登录
+          // 未登录就要跳转到登录页面哦
+          location.href = this.noLoginUrl;
 					return false;
 				}
 				Get(CONFIG.BASE_URL + 'user/getMemberByName.do', {

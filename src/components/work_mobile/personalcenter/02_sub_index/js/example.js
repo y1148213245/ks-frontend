@@ -31,7 +31,7 @@ const platform = 'mobile';
 const pageType = ['others'];
 const resourceType = ['others'];
 
-const childComponents = ['work_mobile_personalcenter_02', 'work_mobile_personalcenter_03', 'work_mobile_personalcenter_04', 'work_mobile_personalcenter_05', 'work_mobile_personalcenter_06','work_mobile_personalcenter_09','work_mobile_personalcenter_10'];
+const childComponents = ['work_mobile_personalcenter_02', 'work_mobile_personalcenter_03', 'work_mobile_personalcenter_04', 'work_mobile_personalcenter_05', 'work_mobile_personalcenter_06','work_mobile_personalcenter_08','work_mobile_personalcenter_09','work_mobile_personalcenter_10'];
 
 export {
   name,

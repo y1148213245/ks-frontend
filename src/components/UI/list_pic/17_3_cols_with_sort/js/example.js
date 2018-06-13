@@ -33,7 +33,8 @@ const prod = {
         searchText: '',
         groupBy: 'pub_resource_id'
       }
-    }
+    },
+    showPrice: true,
   }
 };
 

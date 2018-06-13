@@ -7,12 +7,13 @@
       <div class="work_mobile_personalcenter_08_bookslist">
         <ul class="work_mobile_personalcenter_08_bookslist_ul">
           <li class="work_mobile_personalcenter_08_bookslist_li" v-for="(item,index) in booklist" >
-            <img :src="item.midPic?item.midPic:''" alt="" class="work_mobile_personalcenter_08_bookslist_img">
+            <img :src="item.midPic?item.midPic:''" alt="" class="work_mobile_personalcenter_08_bookslist_img" @click="toProbation(item,modulename)">
             <a href="#" v-show="isshowDlete" class="work_mobile_personalcenter_08_bookslist_delete_a" @click="deleteBookList(loginName,index,item.pubId)">
               <van-icon name="delete" />
             </a>
-            <span class="work_mobile_personalcenter_08_bookslist_bookname">{{item.productName ? item.productName :'暂无书名' }}</span>
-            <span class="work_mobile_personalcenter_08_bookslist_author">{{item.author?item.author :'暂无书名'}}</span>
+            <span class="work_mobile_personalcenter_08_bookslist_readtrying" v-if="item.bookFreeDownLoadPath !=''">{{display.readTrying}}</span>
+            <span class="work_mobile_personalcenter_08_bookslist_bookname" @click="toProbation(item,modulename)">{{item.productName ? item.productName :'暂无书名' }}</span>
+            <span class="work_mobile_personalcenter_08_bookslist_author">{{item.author?item.author :'暂无作者'}}</span>
           </li>
         </ul>
       </div>
@@ -22,7 +23,7 @@
         <span class="work_mobile_personalcenter_08_books_nonexist_message_content">{{display.empty}}</span>
       </div>
       <div class="work_mobile_personalcenter_08_books_nonexist_tobookcity">
-        <button class="work_mobile_personalcenter_08_books_nonexist_tobookcity_btn">{{display.btnname}}</button>
+        <button class="work_mobile_personalcenter_08_books_nonexist_tobookcity_btn" @click="toBookLibrary">{{display.btnname}}</button>
       </div>
     </div>
   </div>
@@ -30,7 +31,7 @@
 </template>
 
 <script>
-	import { Get,Delete, mobileLoading } from "@common";
+	import { Get,Delete, mobileLoading,getFieldAdapter, toOtherPage } from "@common";
 	import { mapGetters } from 'vuex';
 	import * as interfaces from "@work/login/common/interfaces.js";
 	import PROJECT_CONFIG from 'projectConfig';
@@ -64,6 +65,7 @@
 			this.BOOKCONFIG = this.CONFIG.getlist;
 			this.DELETECONFIG = this.CONFIG.delete;
 			this.display = this.CONFIG.display;
+			this.PROBATION = this.CONFIG.probation;
 		},
 
 		mounted () {
@@ -95,7 +97,7 @@
         //TODO 暂时参数type是写死为'2',productType为空
         let BASE_URL = CONFIG.BASE_URL + this.BOOKCONFIG.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&siteId=' + params.siteId ;
 				if(obj.modulename == "bookmyshelf"){
-					BASE_URL += '&type=' + params.type + '&productType=' + params.productType;
+					BASE_URL += '&type=' + params.type + '&productType=' + params.productType +'&status=' +params.status ;
         }else{
 					BASE_URL += '&contentType=' + params.contentType ;
         }
@@ -137,14 +139,34 @@
       },
       afterDeleteHandle(obj,resp,index){
 	      let res = resp.data;
-
 	      if(res.result =="0"){
 		      Toast.fail(res.error.errorMsg)
 	      }else{
 		      Toast.success(res.data.msg);
-		      //删除booklist中的这个索引的元素
-		      obj.booklist.splice(index,1);
+		      this.booklist =[];
+          obj.initData(obj.loginName);
 	      }
+      },
+      //试读
+			toProbation (item,modulename) { // 执行自定义事件
+        debugger;
+	        if (!item.bookFreeDownLoadPath) {  // 没有试读地址的情况
+		        return false;
+	        }else{
+		        if(modulename =="bookmyshelf"){
+		        	let params = this.PROBATION.params;
+			        var url = this.PROBATION.url || CONFIG.READ_URL + '?bookId=' + item.resourceId + '&readType=' + params.readType + '&bookName=' + item.resourceName + '&userName=&siteType=' + params.siteType;
+		        }else{
+			        var url = this.CONFIG.toDetailUrl +'?pubId=' +item.pubId;
+		        }
+          }
+				window.open(url);
+			},
+      //去书城
+      toBookLibrary(){
+	      //TODO 暂时不知道书城地址,写了个详情的地址
+          var url = this.CONFIG.toBookLibraryUrl;
+          window.open(url);
       }
 		},
 

@@ -5,7 +5,7 @@ const name = component.name; // 组件标签名
 
 const title = "资讯组件"; // 组件title
 
-const description = `资讯组件`; // 组件描述信息
+const description = `资讯组件,如果isMobileLoading 设置为true那就有下拉增量刷新功能，如果没写或者设置为false那就没有。`; // 组件描述信息
 
 const dev = {
   list_pic: {
@@ -51,7 +51,7 @@ const dev = {
           maxNum: 1, // 取到第几条
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "newsAdapter", // 类型字段
-          // showItem: ['img', 'button'], // 控制显示项 ！！！只需要控制复杂项的显示 
+          // showItem: ['img', 'button'], // 控制显示项 ！！！只需要控制复杂项的显示
           complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
             name: 'img', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
             field: 'picBig', // 取什么字段
@@ -86,7 +86,8 @@ const dev = {
         pagination: { // 分页信息
           showPagination: true, // 是否显示分页
           pagesize: [15, 30, 50, 100], // 如何分页
-        }
+        },
+        isMobileLoading:false,
       }
     }
   }
@@ -136,7 +137,7 @@ const prod = {
           maxNum: 1, // 取到第几条
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "newsAdapter", // 类型字段
-          showItem: ['img', 'button'], // 控制显示项 ！！！只需要控制复杂项的显示 
+          showItem: ['img', 'button'], // 控制显示项 ！！！只需要控制复杂项的显示
           complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
             name: 'img', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
             field: 'picBig', // 取什么字段
@@ -171,7 +172,8 @@ const prod = {
         pagination: { // 分页信息
           showPagination: true, // 是否显示分页
           pagesize: [15, 30, 50, 100], // 如何分页
-        }
+        },
+        isMobileLoading:false,
       }
     }
   }
@@ -181,7 +183,7 @@ const platform = 'PC';
 const pageType = [];
 const resourceType = [];
 
-const childComponents = ["ui_list_pic_29", "ui_pagination"]; 
+const childComponents = ["ui_list_pic_29", "ui_pagination"];
 
 export {
   name,

@@ -96,7 +96,7 @@ const dev = {
         },
         orderButton:"提交订单",
         orderSuccessUrl: '../pages/orderSuccess.html', // 方法名 要在下面配置
-
+        noLoginUrl:"../pages/login.html", //没登陆的话跳转到哪
       },
     }
   }
@@ -191,6 +191,7 @@ const prod = {
         },
         orderButton:"提交订单",
         orderSuccessUrl: '../pages/orderSuccess.html', // 方法名 要在下面配置
+        noLoginUrl:"../pages/login.html", //没登陆的话跳转到哪
       },
     }
   }

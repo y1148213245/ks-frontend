@@ -61,10 +61,11 @@
 
 <script>
 import Vue from 'vue';
-import { Get, Post, DrawImage, getFieldAdapter, toOtherPage } from "@common";
+import { Get, Post, DrawImage, getFieldAdapter, toOtherPage , mobileLoading} from "@common";
 import URL from 'url';
 import PROJECT_CONFIG from "projectConfig";
 import ui_pagination from "../../pagination/pagination/pagination";
+import { Icon,Toast } from 'vant';
 
 export default {
   name: 'ui_list_pic_29',
@@ -80,6 +81,9 @@ export default {
       totalCount: 0,
       columnDetailInfo: "", // 栏目详细信息
       requestParams: "", // 去详情页需要传查询list.do的所有参数
+      isMobileLoading:false, //默认不是下拉增量加载
+      pageIndex: "1",  // 页码 从 1 开始
+      pageSize: "15",  // 每页显示个数
     };
   },
 
@@ -90,6 +94,12 @@ export default {
     this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter)));
     if (this.CONFIG.getSubTitle && this.CONFIG.getSubTitle.sysAdapter && this.CONFIG.getSubTitle.typeAdapter) { // 兼容没有配栏目字段适配器的组件
       this.columnKeys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getSubTitle.sysAdapter, this.CONFIG.getSubTitle.typeAdapter)));
+    }
+    //增量加载
+    if(typeof(this.CONFIG.isMobileLoading)!='undefined'){
+      if(this.CONFIG.isMobileLoading){
+        this.isMobileLoading = this.CONFIG.isMobileLoading;
+      }
     }
 
     if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) { // 通过接收广播获取栏目id
@@ -110,7 +120,18 @@ export default {
   },
 
   mounted () {
-
+    let _this = this;
+    /*检测滚动条*/
+    $(window).scroll(() => {
+      /**
+       * function 下拉底部加载
+       * params1: vue对象
+       * params2: 回调方法
+       */
+      if(_this.isMobileLoading){
+        mobileLoading(_this, 'getResourceLists');
+      }
+    });
   },
 
   methods: {
@@ -154,8 +175,16 @@ export default {
       Post(CONFIG.BASE_URL + this.resourceListsConfig.url, paramsObj).then((rep) => {
         let datas = rep.data;
         if (datas.success && datas.result && datas.result.length > 0) {
-          this.resourceLists = datas.result;
           this.totalCount = datas.totalCount;
+          if(this.isMobileLoading) {
+            if (datas.success && datas.result.length > 0) {
+              this.resourceLists = this.resourceLists.concat(datas.result);
+            } else if (datas.success) {
+              Toast.fail(datas.description);
+            }
+          }else{
+            this.resourceLists = datas.result;
+          }
         }
       });
     },
