@@ -96,7 +96,7 @@ var prod = {
       operList:{       //如果有的话就展示
         review:{
           reviewShow:true,
-          toReviewInfoUrl:"../pages/reviewInfo.html",
+          toReviewInfoUrl:"../pages/reviewDetail.html",
         },
         like:{
           likeShow:true,
@@ -106,7 +106,7 @@ var prod = {
       toAddReview:{// 单独添加评论按钮是否展示
         toAddReviewShow:true,
         toAddReviewName:"评论",
-        toAddReviewUrl:'./pages/reviewPublish.html'
+        toAddReviewUrl:'../pages/reviewPublish.html'
       },
     }
   }

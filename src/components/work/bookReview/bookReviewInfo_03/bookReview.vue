@@ -54,7 +54,7 @@
           <div class="work_bookreview_03_skin_bookReviewWrapper_reviewLists_reviewContent" v-text="queryComment.content"></div>
         </div>
       </div>
-      <div class="noReview" v-if="commentList.length === 0">{{CONFIG.queryComments.noHint}}</div>
+      <div class="noReview" v-if="commentList.length === 0">{{noHint}}</div>
       <!-- 评论内容 -->
       <input type="hidden" id="work_bookreview_03_pagination" v-model="totalCount">
       <ui_pagination class="work_bookreview_03_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination"  :pageMessage="{totalCount: totalCount - 0}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
@@ -95,6 +95,8 @@
         replyNum:0,
         likeNum:0,
         starNum:1,
+        noHint:false,
+
       }
     },
     mounted () {
@@ -104,7 +106,12 @@
       this.starNum = Number(arrPar.starNum);
       this.reviewId = arrPar.reviewId;
       this.loginName = arrPar.loginName;
-      this.picture = arrPar.picture;
+      if(arrPar.picture=='null'){
+        this.picture = '';
+      }else{
+        this.picture = arrPar.picture;
+      }
+
       this.createTime = arrPar.createTime;
       this.content = arrPar.content;
       this.replyNum = arrPar.replyNum;
@@ -113,7 +120,7 @@
       this.CONFIG = PROJECT_CONFIG[this.namespace].bookreview.bookreview_03[this.modulename];
       this.operList = this.CONFIG.operList;
       this.orReGetMenberName = this.CONFIG.orReGetMenberName;
-
+      this.noHint = this.CONFIG.queryComments.noHint;
       // this.getReviewInfo();   //获取回复详情
       this.queryComment();   //获取回复列表
     },
@@ -142,7 +149,10 @@
           });
           return false;
         }
-        var bookDetail = this.bookInfo;
+        this.bookInfo().then((bookInfo) => {
+          var bookDetail = bookInfo;
+          // var bookDetail = this.bookDetail;
+        });
         var content = this.$refs.commentContent.value;
         // content = encodeURIComponent(content);
         let queryConfig = this.CONFIG.addComment;

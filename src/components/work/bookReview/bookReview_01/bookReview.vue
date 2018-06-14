@@ -110,7 +110,7 @@ export default {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
     /* 去评论详情页*/
-    toReviewInfo () {
+    toReviewInfo (toReviewInfo) {
       if(typeof(this.operList.review.toReviewInfoUrl)!='undefined'){
         window.open( this.operList.review.toReviewInfoUrl
           + "?reviewId=" + toReviewInfo.commentId
