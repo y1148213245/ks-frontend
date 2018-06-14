@@ -52,17 +52,17 @@ const prod = {
             title: '分享到新浪微博',
             class: 'bds_tsina',
             cmd: 'tsina',
-          },,
+          },
           {
             title: '分享到腾讯微博',
             class: 'bds_tqq',
             cmd: 'tqq',
-          },,
+          },
           {
             title: '分享到人人网',
             class: 'bds_renren',
             cmd: 'renren',
-          },
+          }
         ]
       }
     }
