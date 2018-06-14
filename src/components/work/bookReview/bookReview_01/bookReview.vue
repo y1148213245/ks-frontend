@@ -34,7 +34,7 @@
 
         <!--点赞-->
         <div class="reviewLists_oper" v-if="operList">
-          <span class="reviewLists_oper_review" :class="{ItemLikeActive_on:commentListLike[index],ItemLikeActive_off:!commentListLike[index],}" v-if="operList && operList.review && operList.review.reviewShow" @click="toReviewInfo(queryComment.commentId)">
+          <span class="reviewLists_oper_review" :class="{ItemLikeActive_on:commentListLike[index],ItemLikeActive_off:!commentListLike[index],}" v-if="operList && operList.review && operList.review.reviewShow" @click="toReviewInfo(queryComment)">
             <i class="fa fa-review"></i>
             <span class="reviewLists_oper_review_num">{{queryComment.replyNum}}</span>
           </span>
@@ -110,9 +110,19 @@ export default {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
     /* 去评论详情页*/
-    toReviewInfo (reviewId) {
+    toReviewInfo () {
       if(typeof(this.operList.review.toReviewInfoUrl)!='undefined'){
-        window.open( this.operList.review.toReviewInfoUrl + "?reviewId=" + reviewId+ "&&pubId=" + this.pubId+ "&&loginName=" + this.loginName);
+        window.open( this.operList.review.toReviewInfoUrl
+          + "?reviewId=" + toReviewInfo.commentId
+          + "&&pubId=" + this.pubId
+          + "&&loginName=" + this.loginName
+          + "&&picture=" + toReviewInfo.picture
+          + "&&createTime=" + toReviewInfo.createTime
+          + "&&replyNum=" + toReviewInfo.replyNum
+          + "&&likeNum=" + toReviewInfo.likeNum
+          + "&&starNum=" + toReviewInfo.starNum
+          + "&&content=" + toReviewInfo.content
+        );
       }
     },
     /* 去评论页面评论*/

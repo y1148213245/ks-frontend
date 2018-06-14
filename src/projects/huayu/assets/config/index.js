@@ -1,7 +1,7 @@
 var CONFIG = {
 	// "BASE_URL": "http://www.liaoningxinhuajiaoyu.com/portal/api/",
-	// "BASE_URL":"http://172.19.92.76:8080/portal/api/",
-	"BASE_URL":"http://172.19.57.67:8080/portal/api/",/* 新服务器 */
+	"BASE_URL":"http://172.19.92.76:8080/portal/api/",
+	// "BASE_URL":"http://172.19.57.67:8080/portal/api/",/* 新服务器 */
 	// "BASE_URL":"http://172.19.92.94:8080/portal/api/",
 	// "BASE_URL":"http://172.19.36.97:9092/spc-portal-web/",
 	"READ_URL": "http://172.19.57.153/portal/reader/yuezhi/read.jsp?",
@@ -2320,6 +2320,34 @@ var $_$ = {
 				"showItem": [],
 				"event": {
 					"detailReady": "listenInfoDetail"
+				}
+			}
+		},
+		share: {
+			ui_share_01: {
+				'work_informationdetail_01_share': {
+					shareLists: [// 分享配置
+						{
+							title: '分享到QQ空间', //
+							class: 'bds_qzone', //
+							cmd: 'qzone', //
+						},
+						{
+							title: '分享到新浪微博',
+							class: 'bds_tsina',
+							cmd: 'tsina',
+						},
+						{
+							title: '分享到腾讯微博',
+							class: 'bds_tqq',
+							cmd: 'tqq',
+						},
+						{
+							title: '分享到人人网',
+							class: 'bds_renren',
+							cmd: 'renren',
+						},
+					]
 				}
 			}
 		},

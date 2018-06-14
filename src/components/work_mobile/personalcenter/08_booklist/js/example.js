@@ -181,10 +181,10 @@ const resourceType = ['others'];
 
 export {
   name,
-  // title,
+  title,
   dev,
   prod,
-  // description,
+  description,
   platform,
   pageType,
   resourceType
