@@ -8,7 +8,10 @@ const name = component.name;  // 组件标签名
 
 const title = "资讯详情组件";  // 组件title
 
-const description = `资讯详情`;  // 组件描述信息
+const description = `资讯详情
+分享子组件:ui_share_01
+    modulename:work_informationdetail_01_share
+`;  // 组件描述信息
 
 const dev = {
 	informationDetail: {
@@ -55,6 +58,6 @@ const prod = {
 const platform = 'huayu';
 const pageType = ['channel'];
 const resourceType = ['information'];
-
-export {name, title, dev, prod, description, platform, pageType, resourceType};
+const childComponents = ["work_informationdetail_01", "ui_share_01"];
+export {name, title, dev, prod, description, platform, pageType, resourceType,childComponents};
 
