@@ -111,8 +111,8 @@
         <span class="ac_table_title ac_title_bottom">相关信息</span>
       </div>
       <div class="work_contestants_01-people_box">
-        <label>参赛人:</label><span class="work_contestants_01-people_name">{{currentRow.userName}}</span>
-        <label>手机号:</label><span class="work_contestants_01-people_phone">{{currentRow.mobileNum}}</span>
+        <label>参赛人:</label><span class="work_contestants_01-people_name">{{currentRow && currentRow.userName}}</span>
+        <label>手机号:</label><span class="work_contestants_01-people_phone">{{currentRow && currentRow.mobileNum}}</span>
       </div>
       <div class="work_contestants_01-supplement is-required">
         <label class="el-form-item__label">地区：</label>
@@ -623,7 +623,9 @@ export default {
           }
           _this.participantsedList = participantsedArr;
           _this.participantsList = participantsArr;
-          this.setCurrent(participantsArr[0])
+          if (participantsArr[0]) {
+            this.setCurrent(participantsArr[0])
+          }
         })
 
       });
