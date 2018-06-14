@@ -21,6 +21,7 @@
         <el-tab-pane label="未审核" name="1_SPC_2_SPC_4"></el-tab-pane>
         <el-tab-pane label="审核通过" name="3"></el-tab-pane>
       </el-tabs>
+      <el-button class="workbench-back_button" size="mini" type="primary" @click="toActivityList(null)" >返回</el-button>
       <el-table :data="taskList" border style="width: 100%">
         <el-table-column label="任务名">
           <template slot-scope="scope">
@@ -45,9 +46,6 @@
         </el-table-column>
       </el-table>
       <ui_pagination :pageMessage="{totalCount: this.taskTotalCount - 0 || 0}" :excuteFunction="taskPaging" ref="taskPaging"></ui_pagination>
-      <div class="workbench-back_activitylist-button_box">
-        <el-button type="button" class="el-button--primary" @click="toActivityList(null)">返回</el-button>
-      </div>
     </template>
     <!-- 作品列表 -->
     <el-col :span="24" class="workbench-productList" v-if="currentShow == 'productList'">
@@ -56,6 +54,7 @@
         <el-tab-pane label="未处理" name="unsave"></el-tab-pane>
         <el-tab-pane label="已处理" name="save"></el-tab-pane>
       </el-tabs>
+      <el-button class="workbench-back_button" size="mini" type="primary" @click="toTaskList(null)" >返回</el-button>
       <!-- 作品筛选 -->
       <div class="workbench-productList-place">
         <label class="workbench-search_label">地区:</label>
@@ -111,9 +110,6 @@
       </el-table>
       <ui_pagination :pageMessage="{totalCount: this.workTotalCount - 0 || 0}" :excuteFunction="workPaging" ref="workPaging"></ui_pagination>
       <el-button v-if="taskDetail[config.keys_task.status] == 1 || taskDetail[config.keys_task.status] == 4" class="workbench-commit_review" type="primary" @click="commitAward()">提交评审</el-button>
-      <div class="workbench-back_activitylist-button_box">
-        <el-button type="button" class="el-button--primary" @click="toTaskList(null)">返回</el-button>
-      </div>
 
     </el-col>
     <!-- 查看比例 -->
@@ -540,8 +536,9 @@ export default {
         cols: "TASK_TEACHERID,ACTIVITYID,STATUS",
         symbols: "2,2,2",
         vals: this.teacherId + "," + this.activityId + "," + this.taskStatus,
-        page: this.seacrhTaskConditions[this.taskStatus].page,
-        size: this.seacrhTaskConditions[this.taskStatus].size
+        page: this.seacrhTaskConditions[this.taskStatus].page - 1 + '',
+        size: this.seacrhTaskConditions[this.taskStatus].size,
+        orderCondition: " BY_SPC_SYS_DOCUMENTID_SPC_DESC"
       };
       let _this = this;
       Post(CONFIG.BASE_URL + "spc/prodb/searchNLP.do", params).then(resp => {
@@ -850,7 +847,7 @@ export default {
         cols: "ACTIVITYID",
         symbols: 2,
         vals: this.activityId,
-        page: 1,
+        page: 0,
         size: 99
       };
       Post(CONFIG.BASE_URL + "spc/prodb/searchNLP.do", params).then(resp => {
@@ -1153,13 +1150,20 @@ export default {
 };
 </script>
 <style>
+.workbench{
+  position: relative;
+}
 .workbench .el-table__body-wrapper {
   overflow: hidden;
 }
 .workbench .el-table {
   margin-top: 10px;
 }
-
+.workbench-back_button {
+  position: absolute;
+  top: 25px;
+  right: 22px;
+}
 .workbench-name {
   cursor: pointer;
 }
