@@ -14,8 +14,6 @@
       <div v-if="activeStatus === 0" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
   
     </div>
-
-    
   </div>
 </template>
 
