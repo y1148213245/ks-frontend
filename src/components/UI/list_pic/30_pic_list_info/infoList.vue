@@ -109,6 +109,7 @@ export default {
     },
     getList (colId, pagingParams) {
       this.infoList = [];
+      this.pageMessage.totalCount = 0
       // 查询数据
       let paramsObj = Object.assign({}, this.resourceListsConfig.params);
       let queryChildId = this.childId && this.childId.length > 0 ? this.childId.join(" ") : this.colId;

@@ -1,7 +1,7 @@
 <!-- 随机广告图 -->
 <template>
  <div class="ui_advert_01">
-   <a :href="advert[keys.sourceLink] && advert[keys.sourceLink] || '#'"><img :src="advert[keys.pic] && advert[keys.pic]" alt="暂无图片"></a>
+   <a :href="advert[keys.sourceLink] && advert[keys.sourceLink] || '#'"><img :src="advert[keys.pic] && advert[keys.pic]"></a>
  </div>
 </template>
 

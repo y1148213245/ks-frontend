@@ -375,6 +375,7 @@
             </div>
           </div>
           </el-tab-pane>
+          <!-- 手机号验证 -->
           <el-tab-pane label="手机号验证" name="second" v-if="account.mobileno !=''">
             <div class="main_right fl">
             <div class="wzdh_yzsjh f14 color_6f6">
@@ -396,7 +397,7 @@
             </div>
           </div>
           </el-tab-pane>
-
+            <!-- 密保问题验证 -->
           <el-tab-pane label="密保问题验证" name="third" v-if="account.questions !=''">
             <div class="main_right fl">
               <div class="wzdh_bmwtyz f14 color_6f6">

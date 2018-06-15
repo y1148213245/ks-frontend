@@ -2,7 +2,7 @@
 <template>
   <!--新闻中心-->
   <div class="work_informationdetail_01">
-    <h3 style="text-align: center;" v-if="keys.information_SYS_TOPIC" v-text="newsDetailInfo[keys.information_SYS_TOPIC]"></h3>
+    <h3 style="text-align: center;" v-if="keys.information_SYS_TOPIC" v-html="newsDetailInfo[keys.information_SYS_TOPIC]"></h3>
     <!--<h1>{{newsDetailInfo.resourceName}}</h1>-->
     <!--<span>{{newsDetailInfo.information_a_pubTime | formatDate}}</span>-->
     <div style="text-align: center;">
@@ -19,7 +19,7 @@
     </div>
     <div class="abstract" v-if="keys.information_a_abstract">
       <span>摘要：</span>
-      <span :title="newsDetailInfo[keys.information_a_abstract]" v-text="newsDetailInfo[keys.information_a_abstract] || '暂无摘要'"></span>
+      <span :title="newsDetailInfo[keys.information_a_abstract]" v-html="newsDetailInfo[keys.information_a_abstract] || '暂无摘要'"></span>
     </div>
     <br/>
     <!-- <img style="max-width: 100%;" :src="newsDetailInfo.pub_picBig"> -->
