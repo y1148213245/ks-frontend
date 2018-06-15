@@ -21,7 +21,7 @@
         <el-tab-pane label="未审核" name="1_SPC_2_SPC_4"></el-tab-pane>
         <el-tab-pane label="审核通过" name="3"></el-tab-pane>
       </el-tabs>
-      <el-button class="workbench-back_button" size="mini" type="primary" @click="toActivityList(null)" >返回</el-button>
+      <el-button class="workbench-back_button" size="mini" type="primary" @click="toActivityList(null)">返回</el-button>
       <el-table :data="taskList" border style="width: 100%">
         <el-table-column label="任务名">
           <template slot-scope="scope">
@@ -54,11 +54,11 @@
         <el-tab-pane label="未处理" name="unsave"></el-tab-pane>
         <el-tab-pane label="已处理" name="save"></el-tab-pane>
       </el-tabs>
-      <el-button class="workbench-back_button" size="mini" type="primary" @click="toTaskList(null)" >返回</el-button>
+      <el-button class="workbench-back_button" size="mini" type="primary" @click="toTaskList(null)">返回</el-button>
       <!-- 作品筛选 -->
       <div class="workbench-productList-place">
         <label class="workbench-search_label">地区:</label>
-        <el-select v-model="workSearch.areaList" multiple placeholder="请选择地区">
+        <el-select v-model="workSearch.areaList" multiple collapse-tags placeholder="请选择地区">
           <el-option v-for="item in areaListOptions" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
@@ -83,7 +83,7 @@
       <div class="workbench-productList-prize">
         <label class="workbench-search_label">奖项:</label>
 
-        <el-select v-model="workSearch.awardList" multiple placeholder="请选择奖项">
+        <el-select v-model="workSearch.awardList" multiple collapse-tags placeholder="请选择奖项">
           <el-option v-for="item in awardListOptions" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
@@ -91,7 +91,7 @@
 
       <div class="workbench-productList-name">
         <label class="workbench-search_label">作品名称:</label>
-        <el-input v-model="workSearch.workName" placeholder="请输入作品名"></el-input>
+        <el-input v-model="workSearch.workName" @keyup.enter.native="formFilter" placeholder="请输入作品名"></el-input>
         <el-button icon="el-icon-search" circle @click="formFilter">搜索</el-button>
       </div>
 
@@ -129,7 +129,7 @@
         </el-col>
         <el-col :span="8">
           <el-select v-model="select_award" placeholder="选择奖项" style="width:90%;" @change="pieSelectChange()">
-            <el-option v-for="(award,index) in awardListOptions" :label="award" :value="award" :key="index"></el-option>
+            <el-option v-for="(award,index) in awardTypeArr" :label="award" :value="award" :key="index"></el-option>
           </el-select>
         </el-col>
       </el-col>
@@ -240,7 +240,8 @@ export default {
             abstract: "SYS_ABSTRACT",
             content: "TEXTCONTENT",
             fujian: "fujian",
-            status: 'SYS_CURRENTSTATUS'
+            status: 'SYS_CURRENTSTATUS',
+            award: 'AWARD'
           },
           keys_historyReview: {
             no: "no",
@@ -332,6 +333,7 @@ export default {
       schoolOptions: [],//筛选学校列表
       classlimtOptions: [],//筛选组别列表
       areaListOptions: [],//筛选地区列表
+      awardTypeArr: [],/* 筛选奖项类型列表 */
       awardListOptions: [],//筛选奖项列表
       tabState: 'unsave',//已保存/未保存切换  默认未保存
       historyReviewList: [],/* 历史评审结果 */
@@ -472,7 +474,7 @@ export default {
 
       this.getProductDetail(param);
       this.getDistributeWorkPrevNext();
-      this.getSaveAward();
+      
 
     },
     toPie (row) {
@@ -727,7 +729,7 @@ export default {
               break;
             }
             default: {
-              console.log('该属性没有对应筛选项');
+              // console.log('该属性没有对应筛选项');
               break;
             }
           }
@@ -779,7 +781,9 @@ export default {
         this.productDocId = this.productDetail[
           this.config.keys_productDetail.id
         ];
+        this.getSaveAward();
         this.getHistoryAward(this.productDocId);
+        
       });
     },
     /* 获取已保存的奖项 */
@@ -800,20 +804,20 @@ export default {
           let award = null;
           if (distributeWorkList.length > 0) {
             let awardsArr = []
-            if (distributeWorkList[0][this.config.keys_product.award]) {
+            if (this.productDetail.hasOwnProperty(this.config.keys_productDetail.award) && this.productDetail[this.config.keys_productDetail.award]) {
+              awardsArr = this.productDetail[this.config.keys_productDetail.award].split(',');
+            } else if (distributeWorkList[0][this.config.keys_product.award]) {
               awardsArr = distributeWorkList[0][this.config.keys_product.award].split(',')
             }
 
             this.award = awardsArr;
-            this.productRecord = distributeWorkList[0]
+            this.productRecord = distributeWorkList[0];
             this.$nextTick(() => {
               this.addRadioComponent();
             })
-
-
           }
-
         }
+
       });
     },
     /* 根据WORKSID和'已提交'状态获取历史奖项 */
@@ -838,6 +842,7 @@ export default {
     getAwardList () {
       this.awardList = [];/* 奖项对象数组 */
       this.awardListOptions = [];/* 奖项字符串数组 */
+      this.awardTypeArr = [];/* 奖项类型数组 */
       this.select_award = "";/* 饼图选中奖项类型 */
 
       let _this = this;
@@ -854,6 +859,7 @@ export default {
         let arr = resp.data.content;
         let awards = [];
         let awardTypeArr = [];
+        let awardListOptions = [];
         /* 遍历返回数据, */
         for (let index = 0; index < arr.length; index++) {
           const element = arr[index];
@@ -895,11 +901,12 @@ export default {
               awards.push(item);
             }
           }
-          awardTypeArr.push(element[_this.config.keys_award.type] + ':' + element[_this.config.keys_award.topic]);
+          awardListOptions.push(element[_this.config.keys_award.type] + ':' + element[_this.config.keys_award.topic]);
+          awardTypeArr.push(element[_this.config.keys_award.type])
         }
         this.awardList = awards;
-
-        this.awardListOptions = awardTypeArr
+        this.awardTypeArr = awardTypeArr.duplicateRemoval()
+        this.awardListOptions = awardListOptions
         this.select_award = this.awardListOptions[0].split(':')[0]
         // this.$nextTick(() => {
         //   $(".none_radio").prop("checked", 'checked');
@@ -1150,7 +1157,7 @@ export default {
 };
 </script>
 <style>
-.workbench{
+.workbench {
   position: relative;
 }
 .workbench .el-table__body-wrapper {
