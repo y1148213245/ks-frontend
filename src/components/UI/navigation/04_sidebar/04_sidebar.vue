@@ -7,7 +7,7 @@
        <span v-text="CONFIG.display.qq"></span>
      </li>
      <li v-if="CONFIG.showItem.indexOf('toTop') != -1" class="ui_navigation_04-to_top" @click="toTop">
-       <span class="ui_navigation_04-to_top_icon"></span>
+       <span class="ui_navigation_04-to_top_icon"><i class="fa fa-angle-up"></i></span>
        <span  v-text="CONFIG.display.toTop"></span>
      </li>
    </ul>

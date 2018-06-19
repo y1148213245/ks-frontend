@@ -33,6 +33,7 @@ const dev = {
 
           }
         },
+        maxNum: 10,
       }
     }
   }
@@ -79,6 +80,7 @@ const prod = {
             sourceUrl: 'information_a_sourceUrl'/* 第二外链 */
           }
         },
+        maxNum: 10,
       }
     }
   }

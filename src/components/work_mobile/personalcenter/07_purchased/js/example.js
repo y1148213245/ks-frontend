@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-06-07 15:26:18
  * @Last Modified by: song
- * @Last Modified time: 2018-06-13 16:32:57
+ * @Last Modified time: 2018-06-15 16:37:56
  * 个人中心消费记录
  */
 
@@ -27,6 +27,7 @@ const dev = {
         startRead: '开始阅读',
         addBookshelf: '加入书架',
         noPicture: '暂无图片',
+        noData: '您还没有购买图书',
         tabsList: [{
             title: '全部',
             type: '2', //已购买
@@ -90,6 +91,7 @@ const prod = {
         startRead: '开始阅读',
         addBookshelf: '加入书架',
         noPicture: '暂无图片',
+        noData: '您还没有购买图书',
         tabsList: [{
             title: '全部',
             type: '2', //已购买

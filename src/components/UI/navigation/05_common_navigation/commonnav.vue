@@ -7,8 +7,8 @@
             {{item1.name}}
               <ul class="ui_navigation_05_ul_child1" v-if="item1.childNav.length>0" v-for="(item2,index2) in item1.childNav"     :key="index2">
                 <li class="ui_navigation_05_ul_child1_li"
-                  :class="{'ui_navigation_05_item--active':currentActive == item2.id}"  
-                  v-show="item1.showChild" 
+                  :class="{'ui_navigation_05_item--active':currentActive == item2.id}"
+                  v-show="item1.showChild"
                   @click.self="navClick(item2)">
                     {{item2.name}}
                   <ul class="ui_navigation_05_ul_child2" v-if="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
@@ -46,6 +46,8 @@ export default {
       PROJECT_CONFIG[this.namespace].navigation.navigation_05[this.modulename];
     this.keys = this.CONFIG.getNavLists.keys;
     this.getNavList();
+
+
   },
   mounted () { },
   methods: {
@@ -160,4 +162,3 @@ export default {
   color: red;
 }
 </style>
- 

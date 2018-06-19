@@ -78,6 +78,11 @@ export default {
       operList:{},//两个按钮配置项
       orReGetMenberName:false,
       loginName:'',
+      colId:'',
+      resourceId:'',
+      resourceName:'',
+      resourseType:'',
+      resourceDetail:{},
     }
   },
   mounted () {
@@ -92,6 +97,10 @@ export default {
     }
 
     this.queryComment();
+
+    if(this.orReGetMenberName){
+      this.getResourceDetail();
+    }
   },
   created: function () {
 
@@ -109,6 +118,22 @@ export default {
     ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION
     }),
+    //获取图书详情
+    getResourceDetail () {
+
+      this.getMemberInfo().then((member) => {
+        this.loginName = member.loginName;
+      });
+
+      Get(CONFIG.BASE_URL + 'book/getBookDetail.do?pubId=' + this.pubId + '&loginName=' + this.loginName).then((rep) => {
+        let datas = rep.data;
+        if (rep.status == 200 && datas.data) {
+          this.resourceDetail = datas.data;
+        }
+      });
+
+      this.queryComment();   //获取回复列表
+    },
     /* 去评论详情页*/
     toReviewInfo (toReviewInfo) {
       if(typeof(this.operList.review.toReviewInfoUrl)!='undefined'){
@@ -144,6 +169,13 @@ export default {
       }
       var bookDetail = this.bookInfo;
       var content = this.$refs.commentContent.value;
+      if(content==''){
+        this.$message({
+          message: '评论内容不能为空',
+          type: 'error'
+        })
+        return false;
+      }
       // content = encodeURIComponent(content);
       var starNum = this.starValue;
       if (starNum == 0) {
@@ -160,6 +192,13 @@ export default {
       paramsObj.content = content;
       paramsObj.starNum = starNum;
       paramsObj.colId = bookDetail.colId;
+
+      if(this.orReGetMenberName && this.resourceDetail) {
+        paramsObj.colId = this.resourceDetail.colId;
+        paramsObj.resourceId = this.resourceDetail.resourceId;
+        paramsObj.resourceName = this.resourceDetail.resourceName;
+        paramsObj.resourceType = this.resourceDetail.resourceType;
+      }
       Post(CONFIG.BASE_URL + queryConfig.url, paramsObj).then((rep) => {
         var result = rep.data.result;
         if (result === "1") {
@@ -172,7 +211,7 @@ export default {
           this.starValue = 0;
           var param = {
             pubId: this.pubId,
-            pageIndex: '1',
+            pageNo: '1',
             pageSize: '15'
           }
           this.queryComment(param);
@@ -213,16 +252,17 @@ export default {
             message: datas.data.msg,
             type: 'success'
           })
+          var param = {
+            pubId: this.pubId,
+            pageNo: '1',
+            pageSize: '15'
+          }
+          this.queryComment(param);
           return false;
         }
       })
     },
     queryComment (pagingParams) {
-      if(this.orReGetMenberName){
-        this.getMemberInfo().then((member) => {
-          this.loginName = member.loginName;
-        });
-      }
       let queryConfig = this.CONFIG.queryComments;
       let paramsObj = Object.assign({}, queryConfig.params);
       paramsObj.pubId = this.pubId;

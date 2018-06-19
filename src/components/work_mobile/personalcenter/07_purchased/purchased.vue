@@ -2,14 +2,14 @@
     <div class="work_mobile_personalcenter_07">
       <div class="work_mobile_personalcenter_07_tabs">
         <ul class="work_mobile_personalcenter_07_tabs_ul">
-        <li class="work_mobile_personalcenter_07_tabs_li" v-for="(tab,index) in tabsList" :class="[index == currentIndex ? 'isActive' : '']" @click="changeTab(tab,index);">
+        <li class="work_mobile_personalcenter_07_tabs_li" v-for="(tab,index) in tabsList" :class="[index == currentIndex ? 'isActive' : '']" @click="changeTab(tab,index)" :key="index">
             {{tab.title}}
           </li>
         </ul>
       </div>
       <div class="work_mobile_personalcenter_07_book-list">
         <ul class="work_mobile_personalcenter_07_book-list_ul">
-          <li class="work_mobile_personalcenter_07_book-list_li" v-for="book in boughtBooksList">
+          <li class="work_mobile_personalcenter_07_book-list_li" v-for="(book, index) in boughtBooksList" :key="index" v-if="boughtBooksList && boughtBooksList.length > 0">
             <div class="work_mobile_personalcenter_07_book-list_li_img-box">
             <img class="work_mobile_personalcenter_07_book-list_li_img-box_img" :src="book.midPic" :alt="display.noPicture || '暂无图片'" />
             </div>
@@ -26,6 +26,7 @@
               </div>
             </div>
           </li>
+          <li v-if="boughtBooksList && boughtBooksList.length == 0" v-text="display.noData">{</li>
         </ul>
       </div>
     </div>

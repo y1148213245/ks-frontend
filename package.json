@@ -15,7 +15,7 @@
     "mockjs": "^1.0.1-beta3",
     "qrcode": "^1.0.0",
     "qrcode.vue": "^1.5.2",
-    "vant": "^0.12.14",
+    "vant": "^1.1.5",
     "vue": "^2.5.2",
     "vue-codemirror": "^4.0.3",
     "vue-simplemde": "^0.4.6",

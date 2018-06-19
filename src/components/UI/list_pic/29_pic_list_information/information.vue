@@ -78,7 +78,6 @@ export default {
       keys: {}, // 接口字段容器
       columnKeys: {}, // 栏目字段适配容器
       colId: "",
-      totalCount: 0,
       columnDetailInfo: "", // 栏目详细信息
       requestParams: "", // 去详情页需要传查询list.do的所有参数
       isMobileLoading:false, //默认不是下拉增量加载
@@ -87,6 +86,8 @@ export default {
       totalPages: '0', // 订单总页数
       pageNo:"1",
       pageNoz:"1",
+      pageIndexz:"1",
+      totalCount: 0,
     };
   },
 
@@ -123,7 +124,7 @@ export default {
   },
 
   mounted () {
-    //let _this = this;
+    let _this = this;
     /*检测滚动条*/
     $(window).scroll(() => {
       /**
@@ -131,9 +132,10 @@ export default {
        * params1: vue对象
        * params2: 回调方法
        */
-      if(this.isMobileLoading){
-        mobileLoading(this, 'getResourceLists');
-        this.pageNoz = this.pageNo;
+      if(_this.isMobileLoading){
+        mobileLoading(_this, 'getResourceLists');
+        this.pageNoz = _this.pageNo;
+        this.pageIndexz = _this.pageIndex;
       }
     });
   },
@@ -170,9 +172,16 @@ export default {
         paramsObj.pageNo = pagingParams.pageNo;
         paramsObj.pageSize = pagingParams.pageSize;
       }else{
-        if(typeof(this.pageN)=="number"){
-          paramsObj.pageNo = "'"+this.pageNoz+"'";
-        }
+
+        paramsObj.pageNo = this.pageIndex;
+
+        // if(typeof(this.pageIndex)=="number"){
+        //   paramsObj.pageNo = "'"+this.pageIndexz+"'";
+        //   paramsObj.pageIndex = "'"+this.pageIndexz+"'";
+        // }else{
+        //   paramsObj.pageNo = this.pageNoz;
+        //   paramsObj.pageIndex = this.pageIndexz;
+        // }
          paramsObj.pageSize = this.pageSize;
       }
 

@@ -1,11 +1,13 @@
 <!-- 简单轮播图 -->
 <template>
- <div class="ui_mobile_swiper_01">
+  <div class="ui_mobile_swiper_01">
     <van-swipe class="ui_mobile_swiper_01-slides" :autoplay="3000">
-      <van-swipe-item v-if="list.length>0 && index<3" v-for="(item,index) in list" :key="index">
+      <van-swipe-item v-if="list.length>0 && index < (CONFIG.maxNum ? CONFIG.maxNum : 3)" v-for="(item,index) in list" :key="index">
         <a class="ui_mobile_swiper_01-slides-a" @click="toDetail(item)">
-          <img class="ui_mobile_swiper_01-slides-img" v-if="item[listKeys.poster] && item[listKeys.poster].length > 0" :src="item[listKeys.poster][0]"> <!--海报图-->
-          <img class="ui_mobile_swiper_01-slides-img" v-else :src="item[listKeys.pic]" />   <!--封面图-->
+          <img class="ui_mobile_swiper_01-slides-img" v-if="item[listKeys.poster] && item[listKeys.poster].length > 0" :src="item[listKeys.poster][0]">
+          <!--海报图-->
+          <img class="ui_mobile_swiper_01-slides-img" v-else :src="item[listKeys.pic]" />
+          <!--封面图-->
         </a>
       </van-swipe-item>
     </van-swipe>
@@ -50,7 +52,6 @@ export default {
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].swiper.ui_mobile_swiper_01[this.module];
       this.listKeys = this.CONFIG.getList.keys;
-
     },
     loadList () {
       let getListConfig = this.CONFIG.getList;
@@ -58,7 +59,7 @@ export default {
       let params = null;
       !this.CONFIG.isDevelopment ? (getListConfig.params.conditions = JSON.stringify(getListConfig.params.conditions)) : '';
       !this.CONFIG.isDevelopment ? (params = getListConfig.params) : '';
-      Post(CONFIG.BASE_URL+url, params).then((resp) => {
+      Post(CONFIG.BASE_URL + url, params).then((resp) => {
         this.list = resp.data.result;
       })
     },
@@ -73,16 +74,16 @@ export default {
         params = params.substring(0, params.length - 1)
         eval(toDetailType.phone.functionName + '(' + params + ')')
       } else if (toDetailType.type == 'href') {
-        let url  = toDetailType.href.url+'?';
+        let url = toDetailType.href.url + '?';
         for (const key in toDetailType.href.keys) {
-            const element = toDetailType.href.keys[key];
-            url += key + '=' + item[element] + '&';
+          const element = toDetailType.href.keys[key];
+          url += key + '=' + item[element] + '&';
         }
         for (const key in toDetailType.href.fixedKeys) {
-            const element = toDetailType.href.fixedKeys[key];
-            url += key + '=' + element + '&';
+          const element = toDetailType.href.fixedKeys[key];
+          url += key + '=' + element + '&';
         }
-        url = url.substring(0,url.length-1)
+        url = url.substring(0, url.length - 1)
         window.location.href = item.sourceUrl ? item.sourceUrl : url;
 
       }

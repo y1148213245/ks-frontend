@@ -1,7 +1,7 @@
 <!-- 图书详情组件 NEW Created by song 2018/5/18. -->
 <template>
   <div class="work_bookdetail_04">
-    <div class="work_bookdetail_04_main"  v-if="resourceDetail">
+    <div class="work_bookdetail_04_main" v-if="resourceDetail">
       <!--内容区域-->
       <section v-for="(outerConfig, key, config_i) in resourceDetailConfig.complicatedItem" v-if="resourceDetail" v-bind="{class: 'work_bookdetail_04_item_' + key}" :key="config_i">
         <template v-for="(config, innerConfig_i) in outerConfig">
@@ -9,7 +9,7 @@
           <!-- img 图片 -->
           <div v-if="config.name == 'img'" class="work_bookdetail_04_imgcontainter" @click="toCustomFun(config)">
             <label class="work_bookdetail_04_img_label">{{config.display}}</label>
-            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src=" resourceDetail[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)"/>
+            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src=" resourceDetail[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)" />
           </div>
 
           <!-- 自定义事件按钮 包括（title 标题） -->
@@ -22,7 +22,7 @@
           <!-- price 价格 -->
           <div v-else-if="config.name == 'price'" class="work_bookdetail_04_pricecontainter">
             <label class="work_bookdetail_04_price_label">{{config.display}}</label>
-            <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]  | formatPriceNew }}</span>
+            <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
           </div>
 
           <!-- time 时间 -->
@@ -34,22 +34,26 @@
           <!-- 纸质书/电子书加入购物车 、收藏、点赞、分享  资讯收藏、点赞、分享-->
           <div v-else-if="config.name == 'addcart' || config.name == 'addebcart' || config.name == 'share' || config.name == 'like' || config.name == 'collect'" class="work_bookdetail_04_opcontainter">
 
-            <div class="work_bookdetail_04_quantity_con" v-if="config.name == 'addcart'"> <!-- 电子书不能调整数量 -->
+            <div class="work_bookdetail_04_quantity_con" v-if="config.name == 'addcart'">
+              <!-- 电子书不能调整数量 -->
               <el-button class="work_bookdetail_04_quantity_reduce" @click="changeQuantity(-1)">-</el-button>
               <el-input class="work_bookdetail_04_quantity_amount" v-model="quantity" type="number" @change="changeQuantity()"></el-input>
               <el-button class="work_bookdetail_04_quantity_reduce" @click="changeQuantity(+1)">+</el-button>
             </div>
 
             <div v-bind="{class: 'work_bookdetail_04_' + config.name}" @click="transFunction(config)">
-              <label class="work_bookdetail_04_collect_label" v-if="config.name == 'collect'" :class="{work_bookdetail_04_collect_active: resourceDetail[keys.isCollect] == '1'}"><i v-bind="{class: config.className}"></i>{{config.display}}</label>
-              <label class="work_bookdetail_04_like_label" v-else-if="config.name == 'like'" :class="{work_bookdetail_04_like_active: resourceDetail[keys.isLike] == '1'}"><i v-bind="{class: config.className}"></i>{{config.display}}</label>
+              <label class="work_bookdetail_04_collect_label" v-if="config.name == 'collect'" :class="{work_bookdetail_04_collect_active: resourceDetail[keys.isCollect] == '1'}">
+                <i v-bind="{class: config.className}"></i>{{config.display}}</label>
+              <label class="work_bookdetail_04_like_label" v-else-if="config.name == 'like'" :class="{work_bookdetail_04_like_active: resourceDetail[keys.isLike] == '1'}">
+                <i v-bind="{class: config.className}"></i>{{config.display}}</label>
               <div class="bdsharebuttonbox" data-tag="share_1" v-else-if="config.name == 'share'">
                 <!--<a href="#" class="work_bookdetail_04_share_more" data-cmd="more" v-bind="{class: config.className}">-->
-                  <!--<span class="work_bookdetail_04_share_label">{{config.display}}</span>-->
+                <!--<span class="work_bookdetail_04_share_label">{{config.display}}</span>-->
                 <!--</a>-->
-                <ui_share_01  :namespace="namespace" :modulename="modulename_share"></ui_share_01>
+                <ui_share_01 :namespace="namespace" :modulename="modulename_share"></ui_share_01>
               </div>
-              <label class="work_bookdetail_04_op_label" v-else><i v-bind="{class: config.className}"></i>{{config.display}}</label>
+              <label class="work_bookdetail_04_op_label" v-else>
+                <i v-bind="{class: config.className}"></i>{{config.display}}</label>
               <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
             </div>
 
@@ -72,20 +76,20 @@
           </div>
 
           <!-- 其他不需要特殊处理的简单项 -->
-          <div v-else  class="work_bookdetail_04_other">
+          <div v-else class="work_bookdetail_04_other">
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_label">{{config.display}}</label>
             <span v-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] || '暂无'"></span>
           </div>
         </template>
-        </section>
+      </section>
     </div>
 
     <!-- 有声书音频附件 -->
     <div class="work_bookdetail_04_audio_container" v-if="audioAttachmentConfig && audioAttachmentConfig.isShowAudio">
       <h4 class="work_bookdetail_04_audio_title" v-text="currentAudio && currentAudio.attachName"></h4>
-			<br>
-			  <audio :src="currentAudio && currentAudio.url || ''" controls controlslist="nodownload"></audio>
+      <br>
+      <audio :src="currentAudio && currentAudio.url || ''" controls controlslist="nodownload"></audio>
       <br/>
       <ul class="work_bookdetail_04_audio_list" v-if="audioAttachment && audioAttachment.audio">
         <li v-for="(item, index) in (audioAttachment.audio || [])" :key="index" @click="palyAudio(item, audioAttachment.pub_audio, index)">
@@ -99,11 +103,11 @@
     <div class="work_bookdetail_04_tabBody">
       <!-- TAB切换 信息 -->
       <div class="work_bookdetail_04_tab" v-if="tabConfigList && tabConfigList.tabShow">
-          <ul class="work_bookdetail_04_tab_div_ul"  v-if="tabConfigList.tabList.length>0">
-            <div v-for="(item, index) in tabConfigList.tabList">
-              <li class="work_bookdetail_04_tab_div_ul_li" :class="{work_bookdetail_04_tab_div_ul_active:tabActiveIndex==index}"  @click="selectTabItem(index)" >{{item}}</li>
-            </div>
-          </ul>
+        <ul class="work_bookdetail_04_tab_div_ul" v-if="tabConfigList.tabList.length>0">
+          <div v-for="(item, index) in tabConfigList.tabList">
+            <li class="work_bookdetail_04_tab_div_ul_li" :class="{work_bookdetail_04_tab_div_ul_active:tabActiveIndex==index}" @click="selectTabItem(index)">{{item}}</li>
+          </div>
+        </ul>
       </div>
       <!-- END TAB切换 信息 -->
 
@@ -115,7 +119,7 @@
 
             <div class="work_bookdetail_04_publicize_topic_con_content">
               <template v-for="(item1, index1) in publicizeInfo" v-if="item == item1.topic">
-                <p :key="index1" class="work_bookdetail_04_publicize_topic_con_content_con"  v-html="item1.content"></p>
+                <p :key="index1" class="work_bookdetail_04_publicize_topic_con_content_con" v-html="item1.content"></p>
               </template>
             </div>
 
@@ -128,7 +132,7 @@
       <div class="work_bookdetail_04_review" v-if="tabConfigList && tabConfigList.reviewShow && tabActiveIndex == 1">
         <work_bookreview_01 :namespace="namespace" v-show="tabConfigList.reviewShow"></work_bookreview_01>
         <div class="work_bookdetail_04_review_button">
-          <span class="work_bookdetail_04_review_button_span"  @click="toCustomFun(tabConfigList.toAllReviewMethod)" v-text="tabConfigList.toAllReviewName"></span>
+          <span class="work_bookdetail_04_review_button_span" @click="toCustomFun(tabConfigList.toAllReviewMethod)" v-text="tabConfigList.toAllReviewName"></span>
         </div>
       </div>
       <!-- END 评论信息 -->
@@ -168,18 +172,18 @@ export default {
       audioAttachment: null, // 音频附件
       audioAttachmentConfig: {}, // 音频附件配置
       tabConfigList: {}, // tab配置
-      tabActiveIndex:0,//tab默认点击第一个
-      modulename_share:0,//tab默认点击第一个
+      tabActiveIndex: 0,//tab默认点击第一个
+      modulename_share: 0,//tab默认点击第一个
     };
   },
 
   mounted () {
     this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_bookdetail.work_bookdetail_04[this.modulename];
-    this.modulename_share = this.modulename+'share';
+    this.modulename_share = this.modulename + 'share';
     this.resourceDetailConfig = this.CONFIG.getResourceDetail;
     this.publicizeInfoConfig = this.CONFIG.getPublicizeInfo;
-    if(typeof(this.CONFIG.tabConfigList)!="undefined"){
+    if (typeof (this.CONFIG.tabConfigList) != "undefined") {
       this.tabConfigList = this.CONFIG.tabConfigList;  //tab配置
       this.tabActiveIndex = this.CONFIG.tabConfigList.tabActiveIndex;  //tab配置
     }
@@ -188,7 +192,7 @@ export default {
     this.audioAttachmentConfig = this.CONFIG.getAudioAttachment;
     this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.resourceDetailConfig.sysAdapter, this.resourceDetailConfig.typeAdapter)));
     this.showPublicizeTopic = this.publicizeInfoConfig.showPublicize.length ? this.publicizeInfoConfig.showPublicize[0] : 0;
-    this.getResourceDetail();  //获取图书详情信息
+    // this.getResourceDetail();  //获取图书详情信息
     if (this.audioAttachmentConfig && this.audioAttachmentConfig.isShowAudio) { // 获取音频列表
       this.getAudioDetail();
     }
@@ -224,7 +228,7 @@ export default {
     selectPublicize (item) { // 切换相关信息显示tab
       this.showPublicizeTopic = item;
     },
-    selectTabItem(index){    // 切换相关信息显示tab  zong
+    selectTabItem (index) {    // 切换相关信息显示tab  zong
       this.tabActiveIndex = index;
     },
     getResourceDetail () {
@@ -355,6 +359,14 @@ export default {
       });
     }
 
+  },
+  watch: {
+    member: function (newValue, oldValue) {
+      if (newValue.loginName && newValue.loginName != oldValue.loginName) {
+        this.loginName = newValue.loginName;
+        this.getResourceDetail();
+      }
+    }
   }
 }
 
@@ -365,7 +377,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 

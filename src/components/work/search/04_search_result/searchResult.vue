@@ -2,7 +2,7 @@
 <template>
  <div class="search_04">
     <div v-if="CONFIG.isShowTotalCountTag" class="search_04-search_totalcount">共<span class="search_04-search_totalcount-num" v-text="totalCount"></span>件商品</div>
-    
+
     <div class="search_04-content">
       <div class="search_04-content-list">
         <transition-group name="fade">

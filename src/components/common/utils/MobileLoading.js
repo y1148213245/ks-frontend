@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-06-08 13:46:56 
+ * @Author: song
+ * @Date: 2018-06-08 13:46:56
  * @Last Modified by: song
  * @Last Modified time: 2018-06-08 16:29:48
  * 移动端下拉加载
@@ -14,6 +14,8 @@ var mobileLoading = function (_this, method) {
   if (clientHeight + scrollHeight === allHeight) {
     if (vthis.pageIndex < vthis.totalPages) { // 当前页小于翻页最大值
       vthis.pageIndex = parseInt(vthis.pageIndex) + 1 + '';
+      console.log(parseInt(vthis.pageIndex));
+      console.log(vthis.pageIndex);
       vthis[method]();
     }
   }

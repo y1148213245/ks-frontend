@@ -2,10 +2,16 @@
 // 封装资讯详情组件为公共组件
 <template>
   <div class="ui_information_01">
-    <div class="ui_information_01-nav">
-      您的位置:
-      <a href="../pages/index.html" class="ui_information_01-nav_home">首页</a>>>
-      <a class="ui_information_01-nav_home_content">资讯内容</a>
+    <div aria-label="Breadcrumb" role="navigation" class="el-breadcrumb">
+      <span class="el-breadcrumb__item">您的位置：</span>
+      <span class="el-breadcrumb__item">
+        <span role="link" class="el-breadcrumb__inner is-link">首页</span>
+        <i class="el-breadcrumb__separator el-icon-arrow-right"></i>
+      </span>
+      <span class="el-breadcrumb__item" aria-current="page">
+        <span role="link" class="el-breadcrumb__inner">资讯内容</span>
+        <i class="el-breadcrumb__separator el-icon-arrow-right"></i>
+      </span>
     </div>
     <div class="ui_information_01-news">
       <div class="ui_information_01-news_con">
@@ -15,30 +21,35 @@
           <span class="ui_information_01-news_pubTime">{{information[keys.pubTime] | formatTime('YMD')}}</span>
 
           <span class="ui_information_01-news_share" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('share') !== -1 ? true : false">
-						<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis ui_information_01-news_share_a" target="_blank">
+            <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis ui_information_01-news_share_a" target="_blank">
               <i class="ui_information_01-news_other_03"></i>
               <span v-if="CONFIG && displayItem" v-text="CONFIG.displayItem"></span>
             </a>
-					</span>
+          </span>
 
           <span class="ui_information_01-news_sc" @click="collectOrLike('0',information.pub_content_type,information.id)" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('collect') !== -1 ? true : false">
-            <i class="ui_information_01-news_other_02_cg" v-if="information.isCollect == '1'"></i> <!-- 收藏成功 -->
-            <i class="ui_information_01-news_other_02" v-else></i>  <!-- 未收藏 -->
+            <i class="ui_information_01-news_other_02_cg fa fa-heart" v-if="information.isCollect == '1'"></i>
+            <!-- 收藏成功 -->
+            <i class="ui_information_01-news_other_02 fa fa-heart" v-else></i>
+            <!-- 未收藏 -->
             <span v-if="CONFIG && displayItem" v-text="displayItem.collect"></span>
-					</span>
+          </span>
 
           <span class="ui_information_01-news_dz" @click="collectOrLike('1',information.pub_content_type,information.id)" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('like') !== -1 ? true : false">
-            <i class="ui_information_01-news_other_01" v-if="information.isLike == '1'"></i> <!-- 点赞成功 -->
-            <i class="ui_information_01-news_other_01_cg" v-else></i>  <!-- 未点赞 -->
+            <i class="ui_information_01-news_other_01 fa fa-thumbs-up" v-if="information.isLike == '1'"></i>
+            <!-- 点赞成功 -->
+            <i class="ui_information_01-news_other_01_cg fa fa-thumbs-up" v-else></i>
+            <!-- 未点赞 -->
             <span v-if="CONFIG && displayItem" v-text="displayItem.like"></span>
-					</span>
+          </span>
 
           <template>
             <div class="bdsharebuttonbox shareHide" v-if="CONFIG && shareLists">
-              <span>分享到：</span>
-                <span v-for="(item, index) in shareLists"  :key="index">
-                  <a href="#" v-bind:class="item.class" :data-cmd="item.cmd" :title="item.title" ></a>
-                </span>
+              <span>
+                <i class="fa fa-share-alt" aria-hidden="true"></i> 分享到：</span>
+              <span v-for="(item, index) in shareLists" :key="index">
+                <a href="#" v-bind:class="item.class" :data-cmd="item.cmd" :title="item.title"></a>
+              </span>
             </div>
           </template>
 
@@ -74,7 +85,7 @@ export default {
       commentList: [], // 评论列表
       keys: {},  // 字段兼容
       displayItem: {},
-      shareLists:[] //新分享
+      shareLists: [] //新分享
     }
   },
   computed: {
@@ -88,9 +99,9 @@ export default {
     this.displayItem = this.CONFIG.queryDetail.display;
     this.pubId = URL.parse(document.URL, true).query.pubId;
     this.queryInformation();
-    if(this.CONFIG.shareLists){
+    if (this.CONFIG.shareLists) {
       this.shareLists = this.CONFIG.shareLists;
-    }else{
+    } else {
       this.shareLists = [
         {
           title: 'QQ空间',
@@ -122,7 +133,7 @@ export default {
       paramsObj.loginName = this.member.loginName;
       paramsObj.pubId = this.pubId; */
 
-      Get(CONFIG.BASE_URL+this.CONFIG.queryDetail.url + '?loginName=' + this.member.loginName + '&pubId=' + this.pubId).then(rep => {
+      Get(CONFIG.BASE_URL + this.CONFIG.queryDetail.url + '?loginName=' + this.member.loginName + '&pubId=' + this.pubId).then(rep => {
         if (rep.data && rep.data.success) {
           this.information = rep.data.data;
         }
@@ -142,7 +153,7 @@ export default {
       paramsObj.pubId = this.pubId;
       paramsObj.loginName = operateType;  // 操作类型  点赞：1   收藏：0 */
 
-      Post(CONFIG.BASE_URL+this.CONFIG.collectOrLike.url + '?loginName=' + this.member.loginName + '&pubId=' + this.pubId + '&operateType=' + operateType + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
+      Post(CONFIG.BASE_URL + this.CONFIG.collectOrLike.url + '?loginName=' + this.member.loginName + '&pubId=' + this.pubId + '&operateType=' + operateType + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
         if (rep.data && rep.data.result == '1') {  // 操作成功
           this.queryInformation();
           this.$message({
@@ -160,7 +171,7 @@ export default {
 
 
     shareScript () {
-      window.onload=function (){
+      window.onload = function () {
         document.getElementsByClassName("bdsharebuttonbox")[0].appendChild(document.createElement('script')).src =
           'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
       }
@@ -169,9 +180,9 @@ export default {
 }
 </script>
 <style>
-  .shareHide{
-    display: none;
-  }
+.shareHide {
+  display: none;
+}
 .ui_information_01 {
   width: 1200px;
   margin: 0 auto 48px auto;

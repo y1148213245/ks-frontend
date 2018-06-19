@@ -32,9 +32,17 @@ const prod = {
         showItem: [
           {
             title: 'QQ',/* 鼠标悬浮提示 */
-            type: 'QQ',/* 参数 */
-            tag:'QQ',/* 样式名后缀 */
-          }],
+            type: 'QQ',/* 参数 */  
+            tag:'qq',/* 样式名后缀 */
+          }/*, {
+            "title": "微信",
+            "type": "WeiXin",
+            "tag": "wenxin"
+          }, {
+            "title": "微博",
+            "type": "WeiBo",
+            "tag": "weibo"
+          }*/],
         customShowItem: [
           // {
           //   title: '登陆',/* 鼠标悬浮提示 */

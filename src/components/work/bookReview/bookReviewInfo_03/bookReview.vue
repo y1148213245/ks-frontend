@@ -96,6 +96,13 @@
         likeNum:0,
         starNum:1,
         noHint:false,
+        colId:0,
+        resourceId:'',
+        resourceName:'',
+        resourseType:'',
+        resourceDetail:{},
+        totalPages: '0', // 订单总页数
+        pageNo:"1",
 
       }
     },
@@ -111,18 +118,24 @@
       }else{
         this.picture = arrPar.picture;
       }
-
-      this.createTime = arrPar.createTime;
-      this.content = arrPar.content;
-      this.replyNum = arrPar.replyNum;
-      this.likeNum = arrPar.likeNum;
-
       this.CONFIG = PROJECT_CONFIG[this.namespace].bookreview.bookreview_03[this.modulename];
       this.operList = this.CONFIG.operList;
       this.orReGetMenberName = this.CONFIG.orReGetMenberName;
       this.noHint = this.CONFIG.queryComments.noHint;
       // this.getReviewInfo();   //获取回复详情
-      this.queryComment();   //获取回复列表
+
+      this.getResourceDetail();
+
+      this.createTime = arrPar.createTime;
+      this.content = arrPar.content;
+      this.replyNum = arrPar.replyNum;
+      this.likeNum = arrPar.likeNum;
+      this.colId = this.resourceDetail.colId;
+      this.resourceId = this.resourceDetail.resourceId;
+      this.resourceName = this.resourceDetail.resourceName;
+      this.resourseType = this.resourceDetail.resourseType;
+
+
     },
     created: function () {
 
@@ -131,15 +144,23 @@
       ...mapGetters("login", {
         member: interfaces.GET_MEMBER   // 用户信息
       }),
-      ...mapGetters({
-        bookInfo: 'bookDetail/bookDetailInfo',   // 图书详情信息
-      }),
     },
 
     methods: {
       ...mapActions("login", {
         getMemberInfo: interfaces.ACTION_KEEP_SESSION
       }),
+      //获取图书详情
+      getResourceDetail () {
+        Get(CONFIG.BASE_URL + 'book/getBookDetail.do?pubId=' + this.pubId + '&loginName=' + this.loginName).then((rep) => {
+          let datas = rep.data;
+          if (rep.status == 200 && datas.data) {
+            this.resourceDetail = datas.data;
+          }
+        });
+
+        this.queryComment();   //获取回复列表
+      },
       /* 评论回复*/
       bookReview () {
         if (!this.loginName) {  // 未登录
@@ -149,10 +170,6 @@
           });
           return false;
         }
-        this.bookInfo().then((bookInfo) => {
-          var bookDetail = bookInfo;
-          // var bookDetail = this.bookDetail;
-        });
         var content = this.$refs.commentContent.value;
         // content = encodeURIComponent(content);
         let queryConfig = this.CONFIG.addComment;
@@ -161,10 +178,10 @@
         paramsObj.pubId = this.pubId;
         paramsObj.loginName = this.loginName;
         paramsObj.content = content;
-        paramsObj.colId = bookDetail.colId;
-        paramsObj.resourceId = bookDetail.resourceId;
-        paramsObj.resourceName = bookDetail.resourceName;
-        paramsObj.resourceType = bookDetail.resourceType;
+        paramsObj.colId = this.resourceDetail.colId;
+        paramsObj.resourceId = this.resourceDetail.resourceId;
+        paramsObj.resourceName = this.resourceDetail.resourceName;
+        paramsObj.resourceType = this.resourceDetail.resourceType;
 
         Post(CONFIG.BASE_URL + queryConfig.url, paramsObj).then((rep) => {
           var result = rep.data.result;
@@ -247,9 +264,10 @@
         // }
         let queryConfig = this.CONFIG.queryComments;
         let paramsObj = Object.assign({}, queryConfig.params);
+        paramsObj.pubId = this.pubId;
         paramsObj.parentId = this.reviewId;
         if (pagingParams) {
-          paramsObj.pageIndex = pagingParams.pageNo;
+          paramsObj.pageIndex = pagingParams.pageIndex;
           paramsObj.pageSize = pagingParams.pageSize;
         }
         Get(CONFIG.BASE_URL + queryConfig.url, { params: paramsObj }).then((rep) => {
@@ -263,6 +281,7 @@
       paging: function ({ pageNo, pageSize }) { // 翻页
         var pagingParams = {
           pageNo: pageNo,
+          pageIndex: pageNo,
           pageSize: pageSize,
         };
         this.queryComment(pagingParams);

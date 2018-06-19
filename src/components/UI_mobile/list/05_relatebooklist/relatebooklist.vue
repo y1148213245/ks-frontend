@@ -5,12 +5,10 @@
     </div>
     <div class="ui_mobile_list_05_content">
       <ul class="ui_mobile_list_05_relatebook_list" v-if="getRelateBookList && getRelateBookList.length>0">
-        <li class="ui_mobile_list_05_relatebook" v-for="(item, index) in getRelateBookList" v-if="index<7" :key="index"
-        >
+        <li class="ui_mobile_list_05_relatebook" v-for="(item, index) in getRelateBookList" v-if="index<7" :key="index">
           <a class="ui_mobile_list_05_a">
             <img class="ui_mobile_list_05_img" :src="item[keys.pic]" @click="toDetail(item)">
-            <div class="ui_mobile_list_05_bookname" v-text="item && item[keys.Bookname]"
-                 @click="appbook(item[keys.BookId])"></div>
+            <div class="ui_mobile_list_05_bookname" v-text="item && item[keys.Bookname]" @click="toDetail(item)"></div>
             <div class="ui_mobile_list_05_sysAuthor" v-if="item && bookAuthors && bookAuthors.Authorsfield && item[bookAuthors.Authorsfield]">{{bookAuthors.display}}{{item[bookAuthors.Authorsfield]}}</div>
           </a>
         </li>
@@ -34,13 +32,13 @@ export default {
       getRelateBookList: [],//热门推荐列表
       pubId: "",
       keys: {},
-      bookAuthors:{},   //作者 新增
+      bookAuthors: {},   //作者 新增
     };
   },
   mounted () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].relatebooklist.relatebooklist_01;
     this.keys = this.CONFIG.keys;
-    if(typeof(this.keys.BookAuthors)!='undefined'){
+    if (typeof (this.keys.BookAuthors) != 'undefined') {
       this.bookAuthors = this.keys.BookAuthors;
     }
     this.pubId = URL.parse(window.location.href, true).query.pubId; // pubId
@@ -75,7 +73,7 @@ export default {
     queryRelatedList () {
       var peramsObj = Object.assign({}, this.CONFIG.params);
       peramsObj.pubId = this.pubId;
- 
+
       Get(CONFIG.BASE_URL + this.CONFIG.url, { params: peramsObj }).then(rep => {
         var datas = rep.data.data.bookcat;
         if (datas && datas instanceof Array && datas.length > 0) {

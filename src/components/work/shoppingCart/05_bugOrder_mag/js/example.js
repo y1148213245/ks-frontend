@@ -11,6 +11,54 @@ const dev = {
   shoppingCart: {
     shoppingCart_05: {
       'modulename': {
+        changeBuy:[
+          {
+            name:"实体版订阅",
+            toUrl:"../pages/buyMag.html",   //留空代表不跳转
+          },
+          {
+            name:"电子版版订阅",
+            toUrl:"../pages/buyMagEle.html",   //留空代表不跳转
+          }
+        ],   //切换购买方式区域
+        aboutMsg:"aboutMsgaboutMsgaboutMsgaboutMsgaboutMsgaboutMsgaboutMsg", //介绍信息
+        magType:{  // 期刊类型配置
+          titleName:"选择期刊种类",
+          buttonName:"选择",
+          checkMagTypeName:"", //默认类型，谨慎配置
+          selectButtonName:"确定",   //期刊列表页按钮名称
+        },
+        delivery:{  //配送方式配置
+          deliveryShow:true,
+          titleName:"配送方式"
+        },
+        buyNumDiv:{ //订购数量配置
+          buyNumDivShow:true,
+          titleName:"订购数量",
+          unit:"套",
+          priceTitle:"价格",
+        },
+        otherDiv:{ //其他信息配置
+          otherDivShow:true,
+          titleName:"填加信息",
+        },
+        billInfo:{  //发票配置
+          billInfoShow:true,
+          titleName:"是否需要发票",
+        },
+        descDiv:{  //备注配置
+          descDivShow:true,
+          titleName:"备注",
+        },
+        takeType:{  //订阅方式配置
+          descDivShow:true,
+          titleName:"订阅方式",
+          checkMagTypeName:"",
+          buttonName:"选择订阅方式",
+          selectButtonName:"确定",
+        },
+
+
         getResourceDetail: { // 获取某一栏目下的数据列表
           url: "book/getBookDetail.do",
           params: {
@@ -106,6 +154,52 @@ const prod = {
   shoppingCart: {
     shoppingCart_05: {
       'modulename': {
+        changeBuy:[
+          {
+            name:"实体版订阅",
+            toUrl:"../pages/buyMag.html",   //留空代表不跳转
+          },
+          {
+            name:"电子版版订阅",
+            toUrl:"../pages/buyMagEle.html",   //留空代表不跳转
+          }
+        ],   //切换购买方式区域
+        aboutMsg:"aboutMsgaboutMsgaboutMsgaboutMsgaboutMsgaboutMsgaboutMsg", //介绍信息
+        magType:{  // 期刊类型配置
+          titleName:"选择期刊种类",
+          buttonName:"选择",
+          checkMagTypeName:"", //默认类型，谨慎配置
+          selectButtonName:"确定",   //期刊列表页按钮名称
+        },
+        delivery:{  //配送方式配置
+          deliveryShow:true,
+          titleName:"配送方式"
+        },
+        buyNumDiv:{ //订购数量配置
+          buyNumDivShow:true,
+          titleName:"订购数量",
+          unit:"套",
+          priceTitle:"价格",
+        },
+        otherDiv:{ //其他信息配置
+          otherDivShow:true,
+          titleName:"填加信息",
+        },
+        billInfo:{  //发票配置
+          billInfoShow:true,
+          titleName:"是否需要发票",
+        },
+        descDiv:{  //备注配置
+          descDivShow:true,
+          titleName:"备注",
+        },
+        takeType:{  //订阅方式配置
+          descDivShow:true,
+          titleName:"订阅方式",
+          checkMagTypeName:"",
+        },
+
+
         getResourceDetail: { // 获取某一栏目下的数据列表
           url: "book/getBookDetail.do",
           params: {
