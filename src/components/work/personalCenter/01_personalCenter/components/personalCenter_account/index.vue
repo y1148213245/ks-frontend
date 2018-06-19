@@ -9,13 +9,13 @@
             <span>{{account && account.loginName}}</span>
             <div class="wzdh_all" style="float:right">
               <div class="wdzh_zhuangtai_tx">
-                <img v-bind:src="account.avatar || '../../assets/img/timg.jpg'"  alt="暂无头像" />
+                <img v-bind:src="account.avatar || '../../assets/img/timg.jpg'" alt="暂无头像" />
               </div>
             </div>
           </li>
           <li>
             <span class="center_te">账户等级</span>:
-            <span>{{account && account.userRank  || "LV1"}}</span>
+            <span>{{account && account.userRank || "LV1"}}</span>
           </li>
           <li>
             <span class="center_te">当前积分</span>:
@@ -40,45 +40,56 @@
         <div class="wzdh_all">
           <div class="wdzh_zhuangtai">
             <div class="fl wdzh_zhuangtai_tx">
-              <img v-bind:src="account.avatar || '../../assets/img/timg.jpg'"  alt="暂无头像"/>
-              <p class="wdzh_zhuangtai_tx_zhmc pt10 pb15 fs12">账户名称：<span>{{account && account.loginName}}</span></p>
+              <img v-bind:src="account.avatar || '../../assets/img/timg.jpg'" alt="暂无头像" />
+              <p class="wdzh_zhuangtai_tx_zhmc pt10 pb15 fs12">账户名称：
+                <span>{{account && account.loginName}}</span>
+              </p>
               <el-button type="primary" @click="showCurrent(4)">修改信息</el-button>
             </div>
             <div class="fr wdzh_zhuangtai_sj">
-              <div class="wdzh_zhuangtai_sj_two"   v-if="account.userRank=='LV2'"></div>
+              <div class="wdzh_zhuangtai_sj_two" v-if="account.userRank=='LV2'"></div>
               <div class="wdzh_zhuangtai_sj_three" v-else-if="account.userRank=='LV3'"></div>
-              <div class="wdzh_zhuangtai_sj_four"  v-else-if="account.userRank=='LV4'"></div>
-              <div class="wdzh_zhuangtai_sj_five"  v-else-if="account.userRank=='LV5'"></div>
-              <div class="wdzh_zhuangtai_sj_one"   v-else></div>
+              <div class="wdzh_zhuangtai_sj_four" v-else-if="account.userRank=='LV4'"></div>
+              <div class="wdzh_zhuangtai_sj_five" v-else-if="account.userRank=='LV5'"></div>
+              <div class="wdzh_zhuangtai_sj_one" v-else></div>
               <div class="wdzh_zhuangtai_sj_ddsm f14 pt28">
-                <span class="wdzh_zhuangtai_sj_ddsm_01 mr30">账户等级：<i><span>{{ account && account.userRank || "LV1"}}</span></i></span>
-                <span class="wdzh_zhuangtai_sj_ddsm_02 mr30">账户积分：<span>{{account && account.payPoints|| "0"}}</span></span>
-                <span class="wdzh_zhuangtai_sj_ddsm_03" v-if="siteId == 2">优惠券：<span>{{account && account.couponNum || "0"}}</span>张</span>
+                <span class="wdzh_zhuangtai_sj_ddsm_01 mr30">账户等级：
+                  <i>
+                    <span>{{ account && account.userRank || "LV1"}}</span>
+                  </i>
+                </span>
+                <span class="wdzh_zhuangtai_sj_ddsm_02 mr30">账户积分：
+                  <span>{{account && account.payPoints|| "0"}}</span>
+                </span>
+                <span class="wdzh_zhuangtai_sj_ddsm_03" v-if="siteId == 2">优惠券：
+                  <span>{{account && account.couponNum || "0"}}</span>张</span>
               </div>
             </div>
           </div>
         </div>
         <!--书籍评论列表 wenlian-->
         <div class="wdzh_dongtai_hyzy fl commentListsWrapper mgt20">
-          <div class="wdzh_dongtai_name f16 color_fff pl15 el-button--primary"><span class="pl25">动态</span></div>
+          <div class="wdzh_dongtai_name f16 color_fff pl15 el-button--primary">
+            <span class="pl25">动态</span>
+          </div>
           <div class="wdzh_dongtai_all_hyzy commentListsWrapper">
             <!--分享图书-->
             <div class="wdzh_dongtai_fxts cl">
-              <div class="wdzh_dongtai_fxts_name line-h25"><span class="el-button--text f16">评论图书列表</span></div>
+              <div class="wdzh_dongtai_fxts_name line-h25">
+                <span class="el-button--text f16">评论图书列表</span>
+              </div>
               <ul class="wdzh_dongtai_fxts_list pt20">
                 <li v-for="list in myComment">
-                  <div><a href="javascript:void(0)" class="scoped_imgBox" @click="toBookDetail(list.pubId)"><img
-                    class="scoped_img p_img"
-                    v-bind:src="list.bigPic" onload="DrawImage(this,106,142)" alt="暂无图片"/></a></div>
+                  <div>
+                    <a href="javascript:void(0)" class="scoped_imgBox" @click="toBookDetail(list.pubId)"><img class="scoped_img p_img" v-bind:src="list.bigPic" onload="DrawImage(this,106,142)" alt="暂无图片" /></a>
+                  </div>
                   <div class="jieshao">
                     <p class="title">
-                      <a class="scoped_text" href="javascript:void(0)" @click="toBookDetail(list.pubId)"
-                         v-text="list.resourceName" :title="list.resourceName"></a>
+                      <a class="scoped_text" href="javascript:void(0)" @click="toBookDetail(list.pubId)" v-text="list.resourceName" :title="list.resourceName"></a>
                     </p>
                     <p class="author authorL scoped_text" v-text="list.author" :title="list.author"></p>
                     <p class="commentScore">
-                      <el-rate v-if="show_star" :value="list.starNum | toNum" :max="5" disabled
-                               text-color="#c50000"></el-rate>
+                      <el-rate v-if="show_star" :value="list.starNum | toNum" :max="5" disabled text-color="#c50000"></el-rate>
                       <span class="color_515">{{list.commentNums}}条评论</span>
                     </p>
                   </div>
@@ -90,7 +101,6 @@
         </div>
       </div>
     </div>
-
 
     <!--查看积分-->
     <div v-show="currentShow=='pointRecords'">
@@ -105,7 +115,6 @@
         </el-table-column>
       </el-table>
       <ui_pagination :pageMessage="{totalCount: this.pointRecords.data && this.pointRecords.totalCount - 0 || 0}" :excuteFunction="pointRecordPaging" :page-sizes="[8,16,32,64]" style="margin-top: 40px;"></ui_pagination>
-
 
       <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
     </div>
@@ -159,11 +168,9 @@
           <template slot-scope="scope">
             <el-button @click="editClick(scope.$index, scope.row)" type="success" size="small">编辑</el-button>
             <el-button type="danger" :disabled="true" size="small" v-show="scope.row.isDefault === '1'">删除</el-button>
-            <el-button @click="deleteAddress(scope.row.id)" type="danger" size="small"
-                       v-show="scope.row.isDefault === '0'">删除
+            <el-button @click="deleteAddress(scope.row.id)" type="danger" size="small" v-show="scope.row.isDefault === '0'">删除
             </el-button>
-            <el-button @click="setDefaultAddress(scope.row.id)" v-show="scope.row.isDefault === '0'" type="error"
-                       size="small">设为默认
+            <el-button @click="setDefaultAddress(scope.row.id)" v-show="scope.row.isDefault === '0'" type="error" size="small">设为默认
             </el-button>
             <el-button v-show="scope.row.isDefault === '1'" type="info" size="small">默认地址</el-button>
           </template>
@@ -192,13 +199,7 @@
                   <span id="t_city">{{form.city | myAddressCity}}</span>
                   <span id="t_erae">{{form.erae | myAddressErae}}</span>
                   <span id="t_minerae">{{form.minerae | myAddressMinerae}}</span>
-                  <el-cascader
-                    :options="CityInfo"
-                    v-model="form.selectedOptions"
-                    :change-on-select="true"
-                    :clearable="true"
-                    :filterable="true"
-                    @change="handleChange">
+                  <el-cascader :options="CityInfo" v-model="form.selectedOptions" :change-on-select="true" :clearable="true" :filterable="true" @change="handleChange">
                   </el-cascader>
                 </div>
               </el-form-item>
@@ -212,8 +213,7 @@
           </div>
           <div class="newWrapper">
             <div>联系电话：</div>
-            <input id="t_phone" type="number" v-model="address.phone" @blur="checkPhone()"
-                   @keypress="checkNumberType($event)" maxlength="11">
+            <input id="t_phone" type="number" v-model="address.phone" @blur="checkPhone()" @keypress="checkNumberType($event)" maxlength="11">
             <span class="warningInfo" v-if="emptyPhone">请填写联系电话</span>
           </div>
         </div>
@@ -232,17 +232,9 @@
         <div class="wzdh_xgxx f14 color_6f6" style="padding:20px 120px 100px 220px">
           <div class="wzdh_xgxx_tx" v-if="siteId === 2 || siteId === 4 || siteId ===8">
             <!--头像上传-->
-            <el-upload
-              class="avatar-uploader"
-              :action="uploadUrl()"
-              name="headPicUrl"
-              :show-file-list="false"
-              :on-progress="avatarLoading"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-              :headers="uploadHeader">
+            <el-upload class="avatar-uploader" :action="uploadUrl()" name="headPicUrl" :show-file-list="false" :on-progress="avatarLoading" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :headers="uploadHeader">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <img v-else v-bind:src="account.avatar || '../../assets/img/timg.jpg'" alt="暂无头像"/>
+              <img v-else v-bind:src="account.avatar || '../../assets/img/timg.jpg'" alt="暂无头像" />
             </el-upload>
           </div>
           <div class="mt15">
@@ -252,29 +244,28 @@
           </div>
           <div class="mt30 mb30">
             <div v-if="account && account.email">
-            <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
-            <span v-text="account && account.email"></span>
-            <el-button type="primary" @click="changeEmail" class="butt">修改邮箱</el-button>
-          </div>
-          <div v-if="account.email ==''">
-            <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
-            <span>暂未绑定</span>
-            <el-button type="primary" @click="changeEmail" class="butt" >绑定邮箱</el-button>
-          </div>
+              <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
+              <span v-text="account && account.email"></span>
+              <el-button type="primary" @click="changeEmail" class="butt">修改邮箱</el-button>
+            </div>
+            <div v-if="account.email ==''">
+              <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
+              <span>暂未绑定</span>
+              <el-button type="primary" @click="changeEmail" class="butt">绑定邮箱</el-button>
+            </div>
           </div>
 
           <div class="mt30 mb30">
-          <!-- <div v-if="account && account.mobileno">
-            <i class="wzdh_xgxx_bdhm mr08"></i>手机号码:
-            <span v-text="account && account.mobileno"></span>
-            <el-button type="primary" class="butt" @click="modifyMobile">修改手机号</el-button>
-          </div>
+            <div v-if="account && account.mobileno">
+              <i class="wzdh_xgxx_bdhm mr08"></i>手机号码:
+              <span v-text="account && account.mobileno"></span>
+              <el-button type="primary" class="butt" @click="modifyMobile">修改手机号</el-button>
+            </div>
 
-          <div v-if="account.mobileno ==''">
-            <el-button type="primary" @click="setMobileDialog = true" class="butt">设置手机号</el-button>
-          </div> -->
+            <div v-if="account.mobileno ==''">
+              <el-button type="primary" @click="setMobileDialog = true" class="butt">绑定手机号</el-button>
+            </div>
           </div>
-
 
           <div class="wzdh_xgxx_tj">
             <el-button type="primary" @click="modifyPass" class="f14">修改密码</el-button>
@@ -282,43 +273,47 @@
 
         </div>
         <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
-          <!-- 设置密保问题弹窗 -->
-          <el-dialog title="设置密保问题" :visible.sync="cryptoguar">
-            <el-form ref="cryptoguarForm" :model="cryptoguarForm" :rules="cryptoguarRules" style="margin-top: 15px;">
-              <el-form-item prop="answer">
-                <el-input placeholder="请输入所选密保问题答案" v-model="cryptoguarForm.answer">
-                  <el-select v-model="cryptoguarForm.questionId" slot="prepend" placeholder="请选择密保问题" style="width: 160px;">
-                    <el-option label="您出生地是哪个城市？" value="1"></el-option>
-                    <el-option label="您父亲的名字是？" value="2"></el-option>
-                    <el-option label="您母亲的名字是？" value="3"></el-option>
-                  </el-select>
-                </el-input>
-              </el-form-item>
-            </el-form>
+        <!-- 设置密保问题弹窗 -->
+        <el-dialog title="设置密保问题" :visible.sync="cryptoguar">
+          <el-form ref="cryptoguarForm" :model="cryptoguarForm" :rules="cryptoguarRules" style="margin-top: 15px;">
+            <el-form-item prop="answer">
+              <el-input placeholder="请输入所选密保问题答案" v-model="cryptoguarForm.answer">
+                <el-select v-model="cryptoguarForm.questionId" slot="prepend" placeholder="请选择密保问题" style="width: 160px;">
+                  <el-option label="您出生地是哪个城市？" value="1"></el-option>
+                  <el-option label="您父亲的名字是？" value="2"></el-option>
+                  <el-option label="您母亲的名字是？" value="3"></el-option>
+                </el-select>
+              </el-input>
+            </el-form-item>
+          </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="cryptoguar = false">取 消</el-button>
             <el-button type="primary" @click="submitCryptoguarForm('cryptoguarForm')">确 定</el-button>
-         </div>
+          </div>
         </el-dialog>
         <!-- 设置手机号弹窗-->
         <el-dialog title="绑定手机号" :visible.sync="setMobileDialog">
-          <div style="margin:20px 0 0 200px">
+          <div style="margin:20px 170px 0 200px">
             <el-form ref="setMobileDialogForm" :model="setMobileDialogForm" :rules="setMobileDialogRules" style="margin-top: 15px;">
               <el-form-item prop="number">
-                <div class="bangding_con_1_sj mt30"><i class="sj_01 mr05"></i><span class="sj_02 f14 color_727 mr15">手机号:</span>
-                <el-input type="text" v-model="setMobileDialogForm.number" placeholder="请输入手机号"  style="width:200px;height:35px;"></el-input>
+                <div class="bangding_con_1_sj mt30">
+                  <i class="sj_01 mr05"></i>
+                  <span class="sj_02 f14 color_727 mr15">手机号:</span>
+                  <el-input type="text" v-model="setMobileDialogForm.number" placeholder="请输入手机号" style="width:200px;height:35px;"></el-input>
                   <el-button @click="getCode(setMobileDialogForm.number)" class="yzm_04 color_7e7">发送验证码</el-button>
                 </div>
               </el-form-item>
-                <el-form-item prop="sendNum"><i class="yzm_01 mr05"></i><span class="yzm_02 f14 color_727 mr15">验证码:</span>
-                  <el-input type="text" v-model="setMobileDialogForm.sendNum" placeholder="请输入手机验证码"  style="width:200px;height:35px;"></el-input>
-          </el-form-item>
+              <el-form-item prop="sendNum">
+                <i class="yzm_01 mr05"></i>
+                <span class="yzm_02 f14 color_727 mr15">验证码:</span>
+                <el-input type="text" v-model="setMobileDialogForm.sendNum" placeholder="请输入手机验证码" style="width:200px;height:35px;"></el-input>
+              </el-form-item>
             </el-form>
           </div>
           <div slot="footer" class="dialog-footer">
             <el-button @click="setMobileDialog = false">取 消</el-button>
             <el-button type="primary" @click="submitSetMobileWindowForm('setMobileDialogForm')">确 定</el-button>
-         </div>
+          </div>
         </el-dialog>
 
         <!-- 修改密码弹窗 -->
@@ -331,8 +326,7 @@
               <el-input type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="请选择新密码"></el-input>
             </el-form-item>
             <el-form-item label="重复新密码" prop="checkPass" :label-width="formLabelWidth">
-              <el-input type="password" v-model="ruleForm.checkPass" auto-complete="off"
-                        placeholder="请再次选择新密码"></el-input>
+              <el-input type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请再次选择新密码"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -346,129 +340,133 @@
 
     <!--验证身份-->
     <div v-show="currentShow=='Verification'" style="width:900px;">
-        <el-tabs v-model="activeName"  >
-          <el-tab-pane label="邮箱验证" name="first">
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="邮箱验证" name="first">
           <div class="main_right fl">
-            <div class="wzdh_xgyx f14 color_6f6" >
-              <div class="wzdh_xgyx_ico"></div>
-              <div style="margin:20px 0 0 70px;">
+            <div class="wzdh_xgyx f14 color_6f6">
+              <div class="wzdh_xgyx_ico account_modify-icon"></div>
+              <div class="account_modify-form">
                 <div v-if="account.email ==''">
-                <span style="display:inline-block;margin:20px;" >请先绑定邮箱</span>
-                <el-button type="primary" @click="changeEmail">绑定邮箱</el-button>
+                  <span style="display:inline-block;margin:20px;">请先绑定邮箱</span>
+                  <el-button type="primary" @click="changeEmail">绑定邮箱</el-button>
                 </div>
                 <el-form :model="emailValidateNum" :rules="emailValidateNumRules" ref="emailValidateNum" v-if="account.email !=''">
                   <el-form-item label="绑定邮箱:" prop="email">
-                  <span>{{account && account.email}}</span>
-                  <el-button type="primary" @click="submitEmailValidateForm"  size="small" v-show="vcodeButt">发送验证码</el-button>
-                </el-form-item>
-                    <el-form-item label="邮箱验证码:" prop="emailnum"  v-if="butt">
-                      <el-input type="text" v-model="emailValidateNum.emailnum" auto-complete="off"
-                                placeholder="请输入邮箱验证码" style="display:inline-block;width:220px;"></el-input>
-                      <span style="margin-left:10px;color:red">{{time}}</span>
-                    </el-form-item>
-                    <div  style="margin-left:100px;">
-                        <el-button type="primary"  @click="submitEmailValidateNum('emailValidateNum')" v-if="butt">下一步</el-button>
-                        <el-button  type="text" :disabled="true" class="button" v-show="!butt">验证码已失效，请重新验证</el-button>
-                    </div>
-                </el-form>
-                </div>
-            </div>
-          </div>
-          </el-tab-pane>
-          <!-- 手机号验证 -->
-          <el-tab-pane label="手机号验证" name="second" v-if="account.mobileno !=''">
-            <div class="main_right fl">
-            <div class="wzdh_yzsjh f14 color_6f6">
-              <div class="wzdh_yzsjh_ico"></div>
-              <div style="margin:20px 0 0 70px;">
-                <el-form :model="oldMobileValidateForm" :rules="oldMobileValidateFormRules" ref="oldMobileValidateForm">
-                  <el-form-item label="绑定手机号:">
-                    <span>{{account && account.mobileno}}</span>
-                    <el-button type="primary" size="small" @click="getOldCode(account.mobileno)">发送验证码</el-button>
-                    </el-form-item>
-                    <el-form-item label="手机验证码:" prop="oldSendNum">
-                    <el-input type="text" v-model="oldMobileValidateForm.oldSendNum" auto-complete="off" placeholder="请输入手机验证码" style="display:inline-block;width:220px;"></el-input>
+                    <span>{{account && account.email}}</span>
+                    <el-button type="primary" @click="submitEmailValidateForm" size="small" v-show="vcodeButt">发送验证码</el-button>
                   </el-form-item>
-                  <div style="margin-left:100px;">
-                        <el-button type="primary"    @click="submitMobileValidateNum('oldMobileValidateForm')">下一步</el-button>
+                  <el-form-item label="邮箱验证码:" prop="emailnum" v-if="butt">
+                    <el-input type="text" v-model="emailValidateNum.emailnum" auto-complete="off" placeholder="请输入邮箱验证码" style="display:inline-block;width:220px;"></el-input>
+                    <span style="margin-left:10px;color:red">{{time}}</span>
+                  </el-form-item>
+                  <div>
+                    <el-button type="primary" @click="submitEmailValidateNum('emailValidateNum')" v-if="butt">下一步</el-button>
+                    <el-button type="text" :disabled="true" class="button" v-show="!butt">验证码已失效，请重新验证</el-button>
                   </div>
                 </el-form>
               </div>
             </div>
           </div>
-          </el-tab-pane>
-            <!-- 密保问题验证 -->
-          <el-tab-pane label="密保问题验证" name="third" v-if="account.questions !=''">
-            <div class="main_right fl">
-              <div class="wzdh_bmwtyz f14 color_6f6">
-                <div class="wzdh_bmwtyz_ico"></div>
-                <div style="margin:20px 0 0 70px;">
+        </el-tab-pane>
+        <!-- 手机号验证 -->
+        <el-tab-pane label="手机号验证" name="second" v-if="account.mobileno !=''">
+          <div class="main_right fl">
+            <div class="wzdh_yzsjh f14 color_6f6">
+              <div class="wzdh_yzsjh_ico account_modify-icon"></div>
+              <div class="account_modify-form">
+                <el-form :model="oldMobileValidateForm" :rules="oldMobileValidateFormRules" ref="oldMobileValidateForm">
+                  <el-form-item label="绑定手机号:">
+                    <span>{{account && account.mobileno}}</span>
+                    <el-button type="primary" size="small" @click="getOldCode(account.mobileno)">发送验证码</el-button>
+                  </el-form-item>
+                  <el-form-item label="手机验证码:" prop="oldSendNum">
+                    <el-input type="text" v-model="oldMobileValidateForm.oldSendNum" auto-complete="off" placeholder="请输入手机验证码" style="display:inline-block;width:220px;"></el-input>
+                  </el-form-item>
+                  <div>
+                    <el-button type="primary" @click="submitMobileValidateNum('oldMobileValidateForm')">下一步</el-button>
+                  </div>
+                </el-form>
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
+        <!-- 密保问题验证 -->
+        <el-tab-pane label="密保问题验证" name="third" v-if="account.questions !=''">
+          <div class="main_right fl">
+            <div class="wzdh_bmwtyz f14 color_6f6">
+              <div class="wzdh_bmwtyz_ico account_modify-icon"></div>
+              <div class="account_modify-form">
                 <el-form :model="questionsValidateForm" :rules="questionsValidateRules" ref="questionsValidateForm">
                   <el-form-item label="密保问题:">
                     <div v-if="account.questions==1">您出生地是哪个城市？</div>
                     <div v-if="account.questions==2">您父亲的名字是？</div>
                     <div v-if="account.questions==3">您母亲的名字是？</div>
-                    </el-form-item>
-                    <el-form-item label="密保答案:" prop="answer">
+                  </el-form-item>
+                  <el-form-item label="密保答案:" prop="answer">
                     <el-input type="text" v-model="questionsValidateForm.answer" auto-complete="off" placeholder="请输入密保问题答案" style="display:inline-block;width:200px;"></el-input>
                   </el-form-item>
-                  <div style="margin-left:100px;" >
-                    <el-button type="primary"  @click="submitQuestionsValidateNum('questionsValidateForm')">下一步</el-button>
+                  <div>
+                    <el-button type="primary" @click="submitQuestionsValidateNum('questionsValidateForm')">下一步</el-button>
                   </div>
                 </el-form>
-                </div>
               </div>
             </div>
-          </el-tab-pane>
+          </div>
+        </el-tab-pane>
 
-          </el-tabs>
+      </el-tabs>
       <el-button type="primary" @click="back" class="butt_back">返回</el-button>
     </div>
     <!-- 通过验证身份修改密码 -->
     <div v-show="currentShow=='modifyPassword'">
       <div class="main_right fl">
-			<div class="wzdh_xgmm f14 color_6f6">
-				<div class="wzdh_xgmm_ico"></div>
-        <div style="margin:30px 0 0 30px;">
-            <el-form :model="modifyPassword" :rules="modifyPasswordrules" ref="modifyPassword" >
-                <el-form-item label="请设置新密码:" prop="pass">
-                    <el-input type="password" v-model="modifyPassword.pass" auto-complete="off" placeholder="请设置新密码" style="display:inline-block;width:200px;"></el-input>
-                </el-form-item>
-                <el-form-item label="请确认新密码:" prop="checkPass">
-                    <el-input type="password" v-model="modifyPassword.checkPass" auto-complete="off" placeholder="请确认新密码" style="display:inline-block;width:200px;"></el-input>
-                </el-form-item>
-                <div style="margin-left:140px;">
-                    <el-button type="primary" @click="submitModifyPassword('modifyPassword')">提交</el-button>
-                </div>
+        <div class="wzdh_xgmm f14 color_6f6">
+          <div class="wzdh_xgmm_ico account_modify-icon"></div>
+          <div class="account_modify-form ">
+            <el-form :model="modifyPassword" :rules="modifyPasswordrules" ref="modifyPassword">
+              <el-form-item label="请设置新密码:" prop="pass">
+                <el-input type="password" v-model="modifyPassword.pass" auto-complete="off" placeholder="请设置新密码" style="display:inline-block;width:200px;"></el-input>
+              </el-form-item>
+              <el-form-item label="请确认新密码:" prop="checkPass">
+                <el-input type="password" v-model="modifyPassword.checkPass" auto-complete="off" placeholder="请确认新密码" style="display:inline-block;width:200px;"></el-input>
+              </el-form-item>
+              <div>
+                <el-button type="primary" @click="submitModifyPassword('modifyPassword')">提交</el-button>
+              </div>
             </el-form>
           </div>
+        </div>
       </div>
-		</div>
       <el-button type="primary" @click="back" class="butt_back">返回</el-button>
     </div>
     <!-- 通过验证身份修改手机号 -->
     <div v-show="currentShow=='modifyMobile'">
-          <div class="main_right fl">
-            <div class="wzdh_yzsjh f14 color_6f6">
-              <div class="wzdh_yzsjh_ico"></div>
-              <div style="margin:20px 0 0 50px;">
+      <div class="main_right fl">
+        <div class="wzdh_yzsjh f14 color_6f6">
+          <div class="wzdh_yzsjh_ico account_modify-icon"></div>
+          <div class="account_modify-form" style="width:505px;">
 
             <el-form ref="setMobileDialogForm" :model="setMobileDialogForm" :rules="setMobileDialogRules" style="margin-top: 15px;">
               <el-form-item prop="number">
-                <div class="bangding_con_1_sj mt30"><i class="sj_01 mr05"></i><span class="sj_02 f14 color_727 mr15">新手机号:</span>
-                <el-input type="text" v-model="setMobileDialogForm.number" placeholder="请输入手机号"  style="width:200px;height:35px;"></el-input>
+                <div class="bangding_con_1_sj mt30">
+                  <i class="sj_01 mr05"></i>
+                  <span class="sj_02 f14 color_727 mr15">新手机号:</span>
+                  <el-input type="text" v-model="setMobileDialogForm.number" placeholder="请输入手机号" style="width:200px;height:35px;"></el-input>
                   <el-button @click="getCode(setMobileDialogForm.number)" class="yzm_04 color_7e7">发送验证码</el-button>
                 </div>
               </el-form-item>
-                <el-form-item prop="sendNum"><i class="yzm_01 mr05"></i><span class="yzm_02 f14 color_727 mr15" style="margin-right:30px;">验证码:</span>
-                  <el-input type="text" v-model="setMobileDialogForm.sendNum" placeholder="请输入手机验证码"  style="width:200px;height:35px;"></el-input>
-          </el-form-item>
+              <el-form-item prop="sendNum" style="text-align:left;">
+                <i class="yzm_01 mr05"></i>
+                <span class="yzm_02 f14 color_727 mr15" style="margin-right:15px;">验证码:</span>
+                <el-input type="text" v-model="setMobileDialogForm.sendNum" placeholder="请输入手机验证码" style="width:200px;height:35px;"></el-input>
+              </el-form-item>
+              <el-button type="primary" @click="submitChangeMobile('setMobileDialogForm')" >绑 定</el-button>
             </el-form>
-            <el-button type="primary" @click="submitChangeMobile('setMobileDialogForm')" style="margin-left:130px;">绑 定</el-button>
+            
 
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
       <el-button type="primary" @click="back" class="butt_back">返回</el-button>
     </div>
     <!--查看下载币-->
@@ -530,9 +528,9 @@
           </el-col>
         </el-row>
         <el-radio-group v-model="payWay" size="small" fill="#f6163c">
-					<span v-for="(pay, index) in paymentList" @click="selectPayWay(pay, pay.id)">
-						<el-radio :label="index">{{pay.payName}}</el-radio>
-					</span>
+          <span v-for="(pay, index) in paymentList" @click="selectPayWay(pay, pay.id)">
+            <el-radio :label="index">{{pay.payName}}</el-radio>
+          </span>
         </el-radio-group>
         <div class="paybutt">
           <p>应付金额：{{this.value}}.00元</p>
@@ -1421,11 +1419,11 @@ export default {
           message: "请输入手机号"
         });
       } else if (number != number.match(/^[1][3,4,5,6,7,8,9][0-9]{9}$/)) {
-      } else {
         this.$message({
-          type: "success",
-          message: "手机验证码已发送，请注意查收"
+          type: "error",
+          message: "请正确手机号"
         });
+      } else {
         var params = {
           url: this.CONFIG.getMobileCode.url,
           mobileNum: number,
@@ -1444,13 +1442,13 @@ export default {
       } else {
         this.$message({
           type: "info",
-          message: rep.data.error.errorMsg
+          message: "网络超时"
         });
       }
     },
     // 旧手机获取验证码
     getOldCode (number) {
-     
+
       var params = {
         url: this.CONFIG.getMobileCode.url,
         mobileNum: number,
@@ -1774,6 +1772,13 @@ export default {
 };
 </script>
 <style>
+.account_modify-form  {
+  margin: 20px auto;
+  width: 500px;
+}
+.account_modify-icon{
+  margin: 20px auto;
+}
 .wdzh_hy .wdzh_yqhy i,
 .wdzh_hy .wdzh_hy_tx,
 .wzdh_xgxx i,
@@ -2388,16 +2393,14 @@ input.bdhm {
 .main_right .wzdh_bmwtyz,
 .main_right .wzdh_yzsjh,
 .main_right .wzdh_xgmm {
-  padding: 20px 120px 100px 240px;
-  border: 1px solid #d9d9d9;
-  /* width: 518px; */
+  text-align:center;
+  border: 1px solid #d9d9d9; 
 }
 
 .wzdh_xgyx .wzdh_xgyx_ico {
   background-position: -94px -405px;
   width: 74px;
   height: 74px;
-  margin: 50px 0 0px 170px;
 }
 .wzdh_xgyx .wzdh_xgyx_bdyx i.xgyx_01 {
   background-position: -8px -294px;
@@ -2449,7 +2452,6 @@ input.bdhm {
   background-position: -185px -415px;
   width: 62px;
   height: 85px;
-  margin: 50px 0 0px 170px;
 }
 .wzdh_yzsjh .wzdh_yzsjh_jsj i.yzsjh_jsj_01 {
   background-position: -8px -264px;
@@ -2537,7 +2539,6 @@ input.bdhm {
   background-position: -184px -504px;
   width: 66px;
   height: 78px;
-  margin: 50px 0 0px 170px;
 }
 .wzdh_xgmm .wzdh_xgmm_xmm i.xgmm_xmm_01 {
   background-position: -8px -324px;

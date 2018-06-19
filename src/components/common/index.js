@@ -23,7 +23,7 @@ try {
 	console.log(error);
 }
 var _axios = axios.create({
-  timeout: 20000,
+  timeout: 40000,
   withCredentials: true
 });
 

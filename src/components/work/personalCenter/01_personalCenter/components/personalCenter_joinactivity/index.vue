@@ -1,82 +1,42 @@
 <template>
-<section class="personalcenter_join_activity">
-  <div v-show="!enrolman">
-    <el-dropdown @command="handleCommand" style="float:right;margin-right:30px;">
-    <span class="el-dropdown-link">
-    审核状态筛选<i class="el-icon-arrow-down el-icon--right"></i>
-    </span>
-    <el-dropdown-menu slot="dropdown">
+  <section class="personalcenter_join_activity">
+    <div v-show="!enrolman">
+      <el-dropdown @command="handleCommand" style="float:right;margin-right:30px;">
+        <span class="el-dropdown-link">
+          审核状态筛选
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
 
-    <el-dropdown-item command="未审核">未审核</el-dropdown-item>
-    <el-dropdown-item command="未通过审核">未通过审核</el-dropdown-item>
-    <el-dropdown-item command="已审核">已审核</el-dropdown-item>
-    <el-dropdown-item command="评奖中">评奖中</el-dropdown-item>
-    <el-dropdown-item command="已评奖">已评奖</el-dropdown-item>
-    <el-dropdown-item command="" divided>全部</el-dropdown-item>
-    </el-dropdown-menu>
-    </el-dropdown>
+          <el-dropdown-item command="未审核">未审核</el-dropdown-item>
+          <el-dropdown-item command="未通过审核">未通过审核</el-dropdown-item>
+          <el-dropdown-item command="已审核">已审核</el-dropdown-item>
+          <el-dropdown-item command="评奖中">评奖中</el-dropdown-item>
+          <el-dropdown-item command="已评奖">已评奖</el-dropdown-item>
+          <el-dropdown-item command="" divided>全部</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
 
-    <el-button type="primary" style="margin:0px 0 20px 0;" @click="enrolman = true">管理报名人</el-button>
-        <el-table
-        :data="activityList"
-        style="width: 100%"
-        >
-        <el-table-column
-          align="center"
-          prop="ACTIVITY_DETAIL.SYS_TOPIC"
-          label="参加活动"
-          width="180">
+      <el-button type="primary" style="margin:0px 0 20px 0;" @click="enrolman = true">管理报名人</el-button>
+      <el-table :data="activityList" style="width: 100%">
+        <el-table-column align="center" prop="ACTIVITY_DETAIL.SYS_TOPIC" label="参加活动" width="180">
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="ACTIVITY_DETAIL.END_TIMESTAMPNEW"
-          label="活动状态"
-          :formatter="activityState"
-          width="100">
+        <el-table-column align="center" prop="ACTIVITY_DETAIL.END_TIMESTAMPNEW" label="活动状态" :formatter="activityState" width="100">
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="SYS_CURRENTSTATUS"
-          label="审核状态"
-          width="100">
+        <el-table-column align="center" prop="SYS_CURRENTSTATUS" label="审核状态" :formatter="formateReviewStatus" width="100">
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="SYS_TOPIC"
-          label="作品标题"
-          width="180">
+        <el-table-column align="center" prop="SYS_TOPIC" label="作品标题" width="180">
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="POTHUNTER_NAME"
-          label="参赛人"
-          width="150">
+        <el-table-column align="center" prop="POTHUNTER_NAME" label="参赛人" width="150">
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="SYS_CREATED"
-          label="参赛时间"
-          :formatter="dateFormat"  
-          sortable
-          width="180">
+        <el-table-column align="center" prop="SYS_CREATED" label="参赛时间" :formatter="dateFormat" sortable width="180">
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="POTHUNTER_IDNUMBER"
-          label="参赛人身份证号"
-          width="180"
-          >
+        <el-table-column align="center" prop="POTHUNTER_IDNUMBER" label="参赛人身份证号" width="180">
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="AWARD"
-          label="获奖情况"
-          width="100"
-          :formatter="worksScore"  
-          >
+        <el-table-column align="center" prop="AWARD" label="获奖情况" width="100" :formatter="worksScore">
         </el-table-column>
-        <el-table-column label="操作"  align="center" width="190" fixed="right">
-            <template slot-scope="scope">
+        <el-table-column label="操作" align="center" width="190" fixed="right">
+          <template slot-scope="scope">
             <el-button @click="handleEdit(scope.$index, scope.row)" :disabled="scope.row.SYS_CURRENTSTATUS=='未审核'||scope.row.SYS_CURRENTSTATUS=='未通过审核'" size="small">查看作品</el-button>
             <!-- <el-switch
               v-model="isHide"
@@ -85,57 +45,57 @@
             </el-switch> -->
             <el-button @click="setIsHide(scope.row.SYS_DOCUMENTID,scope.row.IS_HIDE)" v-show="scope.row.IS_HIDE != '是'" type="error" size="small">隐藏作品</el-button>
             <el-button @click="setIsHide(scope.row.SYS_DOCUMENTID,scope.row.IS_HIDE)" v-show="scope.row.IS_HIDE == '是'" type="error" size="small">公开作品</el-button>
-            </template>     
+          </template>
         </el-table-column>
       </el-table>
-  </div>
+    </div>
 
-      <!-- 管理报名人 -->
+    <!-- 管理报名人 -->
     <div v-show="enrolman">
       <el-button type="primary" @click="additions=true">新增人员</el-button>
       <el-dialog title="新增参赛人信息" :visible.sync="additions">
-       <div>
+        <div>
           <el-form :model="addParticipantsForm" :rules="rules" ref="addParticipantsForm" label-width="100px" class="demo-ruleForm">
 
-          <el-form-item label="姓名：" prop="name">
-          <el-input v-model="addParticipantsForm.name"></el-input>
-          </el-form-item>
+            <el-form-item label="姓名：" prop="name">
+              <el-input v-model="addParticipantsForm.name"></el-input>
+            </el-form-item>
 
-          <el-form-item label="性别：" prop="sex">
-          <el-radio-group v-model="addParticipantsForm.sex">
-          <el-radio label="1">男</el-radio>
-          <el-radio label="0">女</el-radio>
-          </el-radio-group>
-          </el-form-item>
-          
-          <el-form-item label="身份证：" prop="identity">
-          <el-input v-model="addParticipantsForm.identity"></el-input>
-          </el-form-item>
+            <el-form-item label="性别：" prop="sex">
+              <el-radio-group v-model="addParticipantsForm.sex">
+                <el-radio label="1">男</el-radio>
+                <el-radio label="0">女</el-radio>
+              </el-radio-group>
+            </el-form-item>
 
-          <el-form-item label="电话：" prop="telNumber">
-          <el-input v-model="addParticipantsForm.telNumber"></el-input>
-          </el-form-item>
+            <el-form-item label="身份证：" prop="identity">
+              <el-input v-model="addParticipantsForm.identity"></el-input>
+            </el-form-item>
+
+            <el-form-item label="电话：" prop="telNumber">
+              <el-input v-model="addParticipantsForm.telNumber"></el-input>
+            </el-form-item>
           </el-form>
         </div>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="additions = false">取 消</el-button>
-            <el-button type="primary" @click="submitAddParticipantsForm('addParticipantsForm')">确 定</el-button>
-          </span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="additions = false">取 消</el-button>
+          <el-button type="primary" @click="submitAddParticipantsForm('addParticipantsForm')">确 定</el-button>
+        </span>
       </el-dialog>
 
-       <el-table border :data="activityMemberList" style="width: 100%" max-height="500">
+      <el-table border :data="activityMemberList" style="width: 100%" max-height="500">
         <el-table-column prop="userName" label="姓名">
         </el-table-column>
-        <el-table-column prop="gender" label="性别" :formatter="sexFormat" >
+        <el-table-column prop="gender" label="性别" :formatter="sexFormat">
         </el-table-column>
-        <el-table-column prop="mobileNum" label="联系方式" >
+        <el-table-column prop="mobileNum" label="联系方式">
         </el-table-column>
-        <el-table-column prop="identifyId" label="身份证号码" >
+        <el-table-column prop="identifyId" label="身份证号码">
         </el-table-column>
         <el-table-column label="操作" prop="action" width="200px">
           <template slot-scope="scope">
             <el-button @click="editClick(scope.$index, scope.row,scope.row.id)" type="success" size="small">编辑</el-button>
-            <el-button @click="deleteContestant(scope.row.id)" type="danger" size="small" >删除
+            <el-button @click="deleteContestant(scope.row.id)" type="danger" size="small">删除
             </el-button>
           </template>
         </el-table-column>
@@ -145,17 +105,17 @@
       </div>
       <el-dialog title="编辑参赛人信息" :visible.sync="editorsDialog">
         <div class="addressContent">
-           <div class="newWrapper">
+          <div class="newWrapper">
             <div>姓名：</div>
             <input id="ac_name" type="text" maxlength="40" v-model="identityInformation.userName" @blur="checkName()">
             <span class="warningInfo" v-if="emptyName">请填写收货人</span>
           </div>
-           <div class="newWrapper">
+          <div class="newWrapper">
             <div>性别：</div>
-              <el-radio-group v-model="identityInformation.gender">
-                <el-radio :label="1">男</el-radio>
-                <el-radio :label="0">女</el-radio>
-              </el-radio-group>
+            <el-radio-group v-model="identityInformation.gender">
+              <el-radio :label="1">男</el-radio>
+              <el-radio :label="0">女</el-radio>
+            </el-radio-group>
           </div>
           <div class="newWrapper">
             <div>身份证号：</div>
@@ -164,7 +124,7 @@
           </div>
           <div class="newWrapper">
             <div>联系电话：</div>
-            <input id="ac_phone" type="number" v-model="identityInformation.mobileNum" @blur="checkPhone()"  maxlength="11">
+            <input id="ac_phone" type="number" v-model="identityInformation.mobileNum" @blur="checkPhone()" maxlength="11">
             <span class="warningInfo" v-if="emptyPhone">请填写联系电话</span>
           </div>
         </div>
@@ -172,13 +132,12 @@
         <div slot="footer" class="dialog-footer">
           <el-button @click="editorsDialog=false">取 消</el-button>
           <el-button type="primary" @click="submitEditorsContestant">确 定</el-button>
-        </div> 
+        </div>
       </el-dialog>
-    </div> 
+    </div>
     <!-- 管理报名人end -->
 
-
-</section>
+  </section>
 </template>
 
 <script>
@@ -194,7 +153,7 @@ export default {
   name: "joinactivity",
   reused: true,
   props: ["namespace"],
-  mounted() {
+  mounted () {
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
     });
@@ -206,7 +165,7 @@ export default {
       activityList: "personalCenter/getActivityList"
     })
   },
-  data() {
+  data () {
     /* 简单电话校验 */
     var mobileCheck = (rule, value, callback) => {
       if (value != '' && !/^[\d()\-\s]*$/.test(value)) {
@@ -249,12 +208,22 @@ export default {
   },
   filters: {},
   methods: {
-    loadedCallBack() {
+    loadedCallBack () {
       this.$store.dispatch("personalCenter/activityList", {});
       this.getActivityMemberByUser();
     },
+    /* 评审状态过滤处理 */
+    formateReviewStatus (row, column) {
+      debugger
+
+      let status = row[column.property];
+      let isEndActivity = row['ACTIVITY_DETAIL']['IS_ENDACTIVITY']/* 是:已发布评奖结果 */
+
+      status == '已评奖' && isEndActivity == '是' ? status = '已评奖' : '评奖中';
+      return status
+    },
     //时间格式化
-    dateFormat: function(row, column) {
+    dateFormat: function (row, column) {
       var date = row[column.property];
       if (date == undefined) {
         return "";
@@ -262,7 +231,7 @@ export default {
       return moment(date).format("YYYY-MM-DD HH:mm:ss");
     },
     // 设置是否公开
-    setIsHide(id, state) {
+    setIsHide (id, state) {
       var setState;
       if (state != "是") {
         this.setState = "是";
@@ -292,7 +261,7 @@ export default {
       });
     },
     // 状态筛选
-    handleCommand(command) {
+    handleCommand (command) {
       var params = {
         status: command,
         pageSize: 1,
@@ -300,19 +269,19 @@ export default {
       };
       this.$store.dispatch("personalCenter/activityList", params);
     },
-    handleEdit(index, row) {
+    handleEdit (index, row) {
       console.log(index, row);
       let url =
         "./productiondetail.html?resourceType=PORTAL_WORKS&resourceId=" +
         row.SYS_DOCUMENTID +
         "&colId=&resourceName=" +
         row.SYS_TOPIC +
-        "&activityId=" + 
+        "&activityId=" +
         row.ACTIVITYID;
       window.location.href = url;
     },
     // 获取报名人列表
-    getActivityMemberByUser() {
+    getActivityMemberByUser () {
       var params = {
         pageNo: 1,
         pageSize: 99
@@ -321,7 +290,7 @@ export default {
     },
 
     // 增加参赛人信息
-    submitAddParticipantsForm(addParticipantsForm) {
+    submitAddParticipantsForm (addParticipantsForm) {
       this.$refs[addParticipantsForm].validate(valid => {
         if (valid) {
           var param = {
@@ -369,13 +338,13 @@ export default {
       });
     },
     /*删除参赛人信息*/
-    deleteContestant: function(id) {
+    deleteContestant: function (id) {
       var _this = this;
       this.$confirm("您确定要删除该参赛人信息吗?", "系统提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function() {
+      }).then(function () {
         var param = {
           id: id,
           userId: _this.account.id
@@ -406,7 +375,7 @@ export default {
     },
     /*删除参赛人信息完毕*/
     /*编辑参赛人信息*/
-    submitEditorsContestant: function() {
+    submitEditorsContestant: function () {
       if ($("#ac_name").val() === "") {
         // 姓名为空
         this.emptyName = true;
@@ -456,17 +425,17 @@ export default {
         });
       }
     },
-    checkName: function() {
+    checkName: function () {
       this.emptyName = $("#ac_name").val() === "" ? true : false;
     },
-    checkID: function() {
+    checkID: function () {
       this.emptyID = $("#ac_ID").val() === "" || !/(^\d{15}$)|(^\d{17}([0-9]|X)$)/.test($("#ac_ID").val()) ? true : false;
     },
-    checkPhone: function() {
+    checkPhone: function () {
       this.emptyPhone = $("#ac_phone").val() === "" ? true : false;
     },
     /*编辑参赛人信息完毕*/
-    sexFormat: function(row, column) {
+    sexFormat: function (row, column) {
       var date = row[column.property];
       if (date == 1) {
         return "男";
@@ -474,7 +443,7 @@ export default {
         return "女";
       }
     },
-    editClick(index, row, studentId) {
+    editClick (index, row, studentId) {
       this.editorsDialog = true;
       console.log(studentId);
       this.studentId = studentId;
@@ -482,7 +451,7 @@ export default {
         JSON.stringify(this.activityMemberList[index])
       );
     },
-    activityState(row, column) {
+    activityState (row, column) {
       var date = row[column.property];
       let currentTime = new Date().getTime();
       if (date - currentTime <= 0) {
@@ -491,7 +460,7 @@ export default {
         return "进行中";
       }
     },
-    worksScore(row, column) {
+    worksScore (row, column) {
       var date = row[column.property];
       if (date == null) {
         return "评分中";
@@ -533,7 +502,7 @@ export default {
   color: red !important;
   text-align: left !important;
 }
-.join-back_main{
+.join-back_main {
   padding: 5px;
   text-align: right;
 }

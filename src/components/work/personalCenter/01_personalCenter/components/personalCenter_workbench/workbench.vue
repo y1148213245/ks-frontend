@@ -433,8 +433,9 @@ export default {
     /* 去任务列表 */
     toTaskList (row) {
       this.currentShow = "task";
-      let param = row ? row[this.config.keys_activity.id] : this.activityId;
-      this.activityId = param;
+      this.activityId = row ? row[this.config.keys_activity.id] : this.activityId;
+
+      this.resetWorkSearchConditions();
 
       this.getTaskList();
       this.getAwardList();
@@ -474,7 +475,7 @@ export default {
 
       this.getProductDetail(param);
       this.getDistributeWorkPrevNext();
-      
+
 
     },
     toPie (row) {
@@ -485,7 +486,35 @@ export default {
 
     },
     toActivityList () {
+
+      this.taskStatus = '1_SPC_2_SPC_4';
       this.currentShow = "activityList";
+    },
+    resetWorkSearchConditions () {
+      
+      this.tabState = 'unsave';
+
+      this.workSearch.areaList = [];
+      this.workSearch.school = "";
+      this.workSearch.group = "";
+      this.workSearch.workName = "";
+      this.workSearch.awardList = [];
+      this.workSearch.awardStatus = "unsave";
+
+      let conditions = JSON.parse(JSON.stringify(this.workSearch));
+
+      this.seacrhWorkConditions['save'].areaList = conditions.areaList;
+      this.seacrhWorkConditions['save'].school = conditions.school;
+      this.seacrhWorkConditions['save'].group = conditions.group;
+      this.seacrhWorkConditions['save'].workName = conditions.workName;
+      this.seacrhWorkConditions['save'].awardList = conditions.awardList;
+
+      this.seacrhWorkConditions['unsave'].areaList = conditions.areaList;
+      this.seacrhWorkConditions['unsave'].school = conditions.school;
+      this.seacrhWorkConditions['unsave'].group = conditions.group;
+      this.seacrhWorkConditions['unsave'].workName = conditions.workName;
+      this.seacrhWorkConditions['unsave'].awardList = conditions.awardList;
+
     },
     /* 通过教师获取教师参与的活动 */
     getDistributeList () {
@@ -783,7 +812,7 @@ export default {
         ];
         this.getSaveAward();
         this.getHistoryAward(this.productDocId);
-        
+
       });
     },
     /* 获取已保存的奖项 */
@@ -1128,11 +1157,7 @@ export default {
               }
             }
           }
-        ],
-        // color:color
-
-
-
+        ]
       };
       let echarts = this.echarts.init(document.getElementById("pie"), 'macarons');
 
