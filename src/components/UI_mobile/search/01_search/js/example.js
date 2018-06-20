@@ -154,7 +154,7 @@ const prod = {
 const platform = 'mobile';
 const pageType = ['index'];
 const resourceType = ['others'];
-
+const childComponents = ['ui_mobile_search_01','ui_mobile_list_04']
 export {
   name,
   title,
@@ -163,5 +163,6 @@ export {
   description,
   platform,
   pageType,
-  resourceType
+  resourceType,
+  childComponents
 };

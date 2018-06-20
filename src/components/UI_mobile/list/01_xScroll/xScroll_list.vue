@@ -69,9 +69,20 @@ export default {
 
     },
     loadList () {
-      let getListConfig = this.CONFIG.getList;
+      let getListConfig = JSON.parse(JSON.stringify(this.CONFIG.getList));
       let url = getListConfig.url;
-      getListConfig.params.conditions = JSON.stringify(getListConfig.params.conditions);
+      let paramsObj = getListConfig.params
+      
+      let isHas_pub_site_id = false;
+      paramsObj.conditions.map((item) => {
+        if (CONFIG.SITE_CONFIG.siteId && item.hasOwnProperty('pub_site_id')) {
+          item.pub_site_id = CONFIG.SITE_CONFIG.siteId
+          isHas_pub_site_id = true;
+        }
+      }) 
+      if (!isHas_pub_site_id && CONFIG.SITE_CONFIG.siteId) paramsObj.conditions.push({pub_site_id:CONFIG.SITE_CONFIG.siteId})
+
+      getListConfig.params.conditions = JSON.stringify(paramsObj.conditions);
       Post(CONFIG.BASE_URL+url, getListConfig.params).then((resp) => {
         this.list = resp.data.result;
       })

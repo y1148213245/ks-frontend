@@ -138,19 +138,28 @@ export default {
       if (this.searchText) {
         paramsObj.searchText = this.searchText;
       }
-      if (this.colId) {
-        paramsObj.conditions.push({ pub_col_id: this.colId });
-      }
-      if (cascadId) {
-        let isHas = false;
-        paramsObj.conditions.map((item) => {
-          if (item.hasOwnProperty('BOOK_BOOK_CASCADID')) {
-            item.BOOK_BOOK_CASCADID = cascadId.replace('~', '_')
-            isHas = true;
-          }
-        })
-        if (!isHas) paramsObj.conditions.push({ BOOK_BOOK_CASCADID: cascadId.replace('~', '_'), op: "lk" });
-      }
+
+      let isHas_BOOK_BOOK_CASCADID = false;
+      let isHas_pub_site_id = false;
+      let isHas_pub_col_id = false;
+      paramsObj.conditions.map((item) => {
+        if (cascadId && item.hasOwnProperty('BOOK_BOOK_CASCADID')) {
+          item.BOOK_BOOK_CASCADID = cascadId.replace('~', '_');
+          isHas_BOOK_BOOK_CASCADID = true
+        }
+        if (CONFIG.SITE_CONFIG.siteId && item.hasOwnProperty('pub_site_id')) {
+          item.pub_site_id = CONFIG.SITE_CONFIG.siteId
+          isHas_pub_site_id = true;
+        }
+        if (this.colId && item.hasOwnProperty('pub_col_id')) {
+          item.pub_col_id = this.colId;
+          isHas_pub_col_id = true;
+        }
+      }) 
+      if (!isHas_BOOK_BOOK_CASCADID && cascadId) paramsObj.conditions.push({ BOOK_BOOK_CASCADID: cascadId.replace('~', '_'), op: "lk" });
+      if (!isHas_pub_site_id && CONFIG.SITE_CONFIG.siteId) paramsObj.conditions.push({pub_site_id:CONFIG.SITE_CONFIG.siteId}) 
+      if (!isHas_pub_col_id && this.colId) paramsObj.conditions.push({pub_col_id:this.colId}) 
+      
       if (this.orderParam) {
         paramsObj.orderBy = this.orderParam;
       } else {
