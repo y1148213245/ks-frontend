@@ -19,7 +19,9 @@
               <span class="price">{{entry.BOOK_EB_PRICE?Number(entry.BOOK_EB_PRICE).toFixed(2):'0.00'}}</span>
             </p>
             <p class="delete" v-if="modulename === 'historyrecord'">
-              <a href="javascript:void(0)" @click="deleteOneHistory(entry.id)"></a>
+              <a href="javascript:void(0)" @click="deleteOneHistory(entry.id)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </a>
             </p>
           </dd>
         </dl>

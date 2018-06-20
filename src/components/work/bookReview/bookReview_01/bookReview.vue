@@ -3,7 +3,7 @@
   <div class="work_bookreview_01 work_bookreview_01_skin">
     <div class="title">
       <span>精彩评论</span>
-      <span v-if="this.CONFIG.toAddReview.toAddReviewShow" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{this.CONFIG.toAddReview.toAddReviewName}}</span>
+      <span v-if="this.CONFIG && this.CONFIG.toAddReview && this.CONFIG.toAddReview.toAddReviewShow" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{this.CONFIG.toAddReview.toAddReviewName}}</span>
     </div>
     <div class="reviewCon">
       <div class="review">

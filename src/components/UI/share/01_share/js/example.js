@@ -5,13 +5,55 @@ const name = component.name; // 组件标签名
 
 const title = "分享组件"; // 组件title
 
-const description = "分享组件 \n复制网址  Copy\t 拷贝\nQQ空间  \nqzone\t http://sns.qzone.qq.com\n新浪微博\ntsina\t http://t.sina.com.cn\n百度搜藏\nbaidu\t http://cang.baidu.com\n人人网\nrenren\t http://share.renren.com\n腾讯微博\ntqq\thttp://t.qq.com\n开心网\nkaixin001\thttp://www.kaixin001.com\n腾讯朋友\ntqf\thttp://www.pengyou.com\n百度空间\nhi\thttp://apps.hi.baidu.com\n豆瓣网\ndouban\thttp://www.douban.com\n搜狐微博\ntsohu\thttp://t.sohu.com\nMSN\nmsn\thttp://profile.live.com/badge\nQQ收藏\nqq\thttp://shuqian.qq.com\n和讯微博\nthx\thttp://t.hexun.com\n淘宝\ntaobao\thttp://jianghu.taobao.com\n百度贴吧\ntieba\thttp://tieba.baidu.com\n谷歌Buzz\nbuzz\thttp://www.google.com/buzz\n搜狐白社会\nsohu\thttp://bai.sohu.com\n网易微博\nt163\thttp://t.163.com/"; // 组件描述信息
+const description = `配置分享平台的关键参数是cmd的值，不同的cmd值对应不同的平台：
+   名称	ID
+印象笔记 evernotecn
+网易热 h163
+一键分享 mshare
+QQ空间 qzone
+新浪微博 tsina
+人人网 renren
+腾讯微博 tqq
+百度相册 bdxc
+开心网 kaixin001
+腾讯朋友 tqf
+百度贴吧 tieba
+豆瓣网 douban
+百度新首页 bdhome
+QQ好友 sqq
+和讯微博 thx
+百度云收藏 bdysc
+美丽说 meilishuo
+蘑菇街 mogujie
+点点网 diandian
+花瓣 huaban
+堆糖 duitang
+和讯 hx
+飞信 fx
+有道云笔记 youdao
+麦库记事 sdo
+轻笔记 qingbiji
+人民微博 people
+新华微博 xinhua
+邮件分享 mail
+我的搜狐 isohu
+摇篮空间 yaolan
+若邻网 wealink
+天涯社区 ty
+Facebook fbook
+Twitter twi
+linkedin linkedin
+复制网址 copy
+打印 print
+百度中心 ibaidu
+微信 weixin
+股吧 iguba `; // 组件描述信息
 
 const dev = {
   share: {
     ui_share_01: {
       'modulename': {
-        shareLists: [// 分享配置
+        shareLists: [ // 分享配置
           {
             title: '分享到QQ空间', //
             class: 'bds_qzone', //
@@ -42,7 +84,7 @@ const prod = {
   share: {
     ui_share_01: {
       'modulename': {
-        shareLists: [// 分享配置
+        shareLists: [ // 分享配置
           {
             title: '分享到QQ空间', //
             class: 'bds_qzone', //
