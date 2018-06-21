@@ -7,7 +7,7 @@ var CONFIG = {
 	READ_URL: 'http://test.founder.com.cn/ynxh/portal/reader/yuezhi/read.jsp',  // 阅读地址
 	PAGE_MANAGEMENT_URL: "http://172.19.92.76:8085/spc/api/",  // 页面管理系统地址
 	SITE_CONFIG: {
-		siteId: 5,
+		siteId: 41,
 		chId: 0
 	},
 	APP: 1
