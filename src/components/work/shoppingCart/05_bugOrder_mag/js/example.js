@@ -197,6 +197,8 @@ const prod = {
           descDivShow:true,
           titleName:"订阅方式",
           checkMagTypeName:"",
+          buttonName:"选择订阅方式",
+          selectButtonName:"确定",
         },
 
 

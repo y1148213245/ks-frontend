@@ -20,7 +20,7 @@
             </p>
             <p class="delete" v-if="modulename === 'historyrecord'">
               <a href="javascript:void(0)" @click="deleteOneHistory(entry.id)">
-              <i class="fa fa-trash-o" aria-hidden="true"></i>
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
               </a>
             </p>
           </dd>
@@ -81,14 +81,7 @@ export default {
         this.list = rep.data.result;
       });
     },
-    /* historyrecord () {
-        let param = Object.assign({}, this.CONFIG.params);
-        debugger
-        param.username = this.member.loginName;
-        this.gethistorylist(param);
-    }, */
     addgethistorylist: function (loginName) {
-      // let pubId = URL.parse(document.URL, true).query.pubId;
       Get(CONFIG.BASE_URL + '/browserHistory/addBrowserHistory.do?pubId=' + this.pubId + '&loginName=' + loginName).then((repsonse) => {
         if (repsonse.data.result === '1') {
           this.gethistorylist(loginName);
@@ -141,6 +134,11 @@ export default {
         for (var i = 0, len = tempList.length; i < len; i++) {
           if (tempList[i].pubId == pubId) {
             tempList.splice(i, 1);  // Array.splice(index, length, [item]) 用于替换、删除、添加  会改变原始数组
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+            break;
           }
         }
         window.localStorage.setItem('newHistoryLog', JSON.stringify(tempList));
@@ -163,32 +161,32 @@ export default {
     },
     dealHistory (item) {
       var queryStorage = JSON.parse(window.localStorage.getItem('newHistoryLog')) ? JSON.parse(window.localStorage.getItem('newHistoryLog')) : [];
-      var flag = true; // 控制是否添加该条数据进入浏览历史记录 去重操作
       for (let i in queryStorage) {
-        if (this.pubId == queryStorage[i].id) {
-          flag = false;
+        if (this.pubId == queryStorage[i].id) { // 浏览历史里面已经有了
+          queryStorage.splice(i, 1); // 先删除
+          break;
         }
       }
-      if (flag) {
-        queryStorage.unshift(item);  // 返回长度
-        queryStorage.splice(this.number - 1, queryStorage.length - this.number)
-      }
+      queryStorage.unshift(item);  // 返回长度
+      queryStorage.splice(this.number - 1, queryStorage.length - this.number)
       window.localStorage.setItem('newHistoryLog', JSON.stringify(queryStorage)); //存
       this.list = JSON.parse(window.localStorage.getItem('newHistoryLog'));
     }
   },
   watch: {
     member: function (newValue, oldValue) {
-      if (newValue.loginName && newValue.loginName !== oldValue.loginName && this.modulename === 'historyrecord') { // 已经登录时 历史浏览记录从后台请求
-        this.addgethistorylist(newValue.loginName);   // 添加历史记录
-      } else {
-        if (this.resourceDetailConfig) { // 后期加的获取图书详情的配置
-          this.unLogHistory();
+      if (this.modulename === 'historyrecord') {
+        if (newValue.loginName && newValue.loginName !== oldValue.loginName) { // 已经登录时 历史浏览记录从后台请求
+          this.addgethistorylist(newValue.loginName);   // 添加历史记录
+        } else if (!newValue.loginName) {
+          if (this.resourceDetailConfig) { // 后期加的获取图书详情的配置
+            this.unLogHistory();
+          }
         }
       }
     },
     bookInfo: function (newv, oldv) {
-      if (this.modulename === 'historyrecord') {
+      if (newv.pubId !== oldv.pubId && this.modulename === 'historyrecord') {
         var loginName = this.member.loginName;
         if (!loginName) {    //未登录时 历史浏览记录存 cookie
           this.dealHistory(newv);

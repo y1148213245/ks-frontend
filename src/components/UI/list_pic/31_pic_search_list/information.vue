@@ -2,6 +2,11 @@
 <template>
   <div class="ui_list_pic_31">
 
+    <div class="ui_list_pic_31_dataType" v-if="CONFIG && dataType">
+        <ul class="ui_list_pic_31_dataType_ul" >
+          <li class="ui_list_pic_31_dataType_ul_li" v-for="(item1,index1) in dataType" :class="{ui_list_pic_31_dataType_ul_li_active:catagory == item1.resource_type}" @click="changeDataType(item1.resource_type)">{{item1.name}}</li>
+        </ul>
+    </div>
     <div class="ui_list_pic_31_resourcelists">
       <ul class="ui_list_pic_31_resourcelists_ul" v-if="resourceLists && resourceLists.length > 0">
         <li class="ui_list_pic_31_resourcelists_li" v-for="(item, index) in resourceLists" :key="index" v-if="index >= resourceListsConfig.startNum">
@@ -66,17 +71,24 @@ export default {
       keys: {}, // 接口字段容器
       catagory:'information',
       totalCount: 0,
+      dataType:[], //资源筛选的配置
+      defaultDataType:"searchAll", //默认配置
     };
   },
 
   created () {
     this.urlArr = URL.parse(document.URL, true).query;// 从地址栏接收
-    if(this.urlArr.catagory){
-      this.catagory = this.urlArr.catagory
-    }
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_31[this.modulename];
+    if(typeof(this.CONFIG.dataType)!='undefined'){
+      this.dataType = this.CONFIG.dataType;
+      this.defaultDataType = this.CONFIG.defaultDataType;
+      this.catagory = this.CONFIG.defaultDataType;
+    }
+    //地址栏优先
+    if(this.urlArr.catagory){
+      this.catagory = this.urlArr.catagory;
+    }
     this.resourceListsConfig = this.CONFIG.getResourceLists;
-    this.keys = getFieldAdapter(this.CONFIG.conditionsArr[this.catagory].sysAdapter, this.CONFIG.conditionsArr[this.catagory].typeAdapter);
     this.getResourceLists();
   },
 
@@ -85,6 +97,11 @@ export default {
   },
 
   methods: {
+    //修改数据类型
+    changeDataType(item){
+      this.catagory = item;
+      this.getResourceLists();
+    },
     toCustomFun (item, config) { // 执行自定义事件
       let detailParams = "";
       if (config.method == 'toDetail') { // 去详情页需要增加list.do请求的所有参数
@@ -103,6 +120,13 @@ export default {
         paramsObj.pageSize = pagingParams.pageSize;
       }
       paramsObj.conditions = this.CONFIG.conditionsArr[this.catagory].conditions;
+      this.keys = getFieldAdapter(this.CONFIG.conditionsArr[this.catagory].sysAdapter, this.CONFIG.conditionsArr[this.catagory].typeAdapter);
+
+      // paramsObj.conditions.map((item) => {
+      //   if (item.hasOwnProperty('pub_resource_type')) {
+      //     item.pub_resource_type = this.pub_resource_type;
+      //   }
+      // })
       if(this.urlArr.searchText){
         paramsObj.searchText = this.urlArr.searchText
       }
@@ -159,4 +183,7 @@ export default {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+  .ui_list_pic_31_dataType_ul_li_active{
+    border: #00c000 2px solid;
+  }
 </style>

@@ -13,7 +13,34 @@ const dev = {
       'modulename': {
         display: { // vue template 固定显示内容
         },
+        dataType:[
+          {
+            resource_type:'searchAll',
+            name:'全部'
+          },
+          {
+            resource_type:'information',
+            name:'资讯'
+          },
+          {
+            resource_type:'AUDIO-MEDIA',
+            name:'音讯'
+          },
+        ],
+        defaultDataType:'searchAll',
         conditionsArr: {
+          'searchAll': {
+            conditions:"[{pub_status:'1'},{siteId:'44'}]"
+            ,sysAdapter:"sykAdapter"
+            ,typeAdapter:"audioAdapter",
+            toDetail: {   // 去资讯详情页面
+              url: "../pages/informationdetail.html",
+              dataKeys: {
+                pubId: "id", // id是从适配器里对应的
+              },
+              fixedKeys: {}
+            }
+          },
           'information': {
             conditions:"[{pub_col_id:'250'},{pub_status:'1'},{pub_resource_type:'information'}]"
             ,sysAdapter:"sykAdapter"
@@ -84,7 +111,34 @@ const prod = {
       'modulename': {
         display: { // vue template 固定显示内容
         },
+        dataType:[
+          {
+            resource_type:'searchAll',
+            name:'全部'
+          },
+          {
+            resource_type:'information',
+            name:'资讯'
+          },
+          {
+            resource_type:'AUDIO-MEDIA',
+            name:'音讯'
+          },
+        ],
+        defaultDataType:'searchAll',
         conditionsArr: {
+          'searchAll': {
+            conditions:"[{pub_status:'1'},{siteId:'44'}]"
+            ,sysAdapter:"sykAdapter"
+            ,typeAdapter:"audioAdapter",
+            toDetail: {   // 去资讯详情页面
+              url: "../pages/informationdetail.html",
+              dataKeys: {
+                pubId: "id", // id是从适配器里对应的
+              },
+              fixedKeys: {}
+            }
+          },
           'information': {
             conditions:"[{pub_col_id:'250'},{pub_status:'1'},{pub_resource_type:'information'}]"
             ,sysAdapter:"sykAdapter"

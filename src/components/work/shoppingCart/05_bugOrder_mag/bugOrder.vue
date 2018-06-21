@@ -134,7 +134,7 @@
       </div>
       <!--提交按钮-->
       <div class="submitFrom">
-        <el-button class="submitFrom_Button" @click="goSubmit()">订 阅</el-button>
+        <el-button class="submitFrom_Button" @click="cutPage('idPayPageOrder')">订 阅</el-button>
       </div>
     </div>
 
@@ -221,11 +221,11 @@
 
     <!--订阅方式 -->
     <div class="idTakeDiv" v-show="showPageName=='idTakeDiv'">
-      <span class="idTakeDivNextYear" :class="{idTakeDiv_span_active:TakeNameChange=='明年全年订阅'}" >明年全年订阅</span>
-      <span class="idTakeDivNext_qi" :class="{idTakeDiv_span_active:TakeNameChange=='按期订阅'}" >
+      <span class="idTakeDivNextYear" :class="{idTakeDiv_span_active:TakeNameChange=='明年全年订阅'}" @click="clickFunTakeNameChange('明年全年订阅')" >明年全年订阅</span>
+      <span class="idTakeDivNext_qi" :class="{idTakeDiv_span_active:TakeNameChange=='按期订阅'}"  @click="clickFunTakeNameChange('按期订阅')" >
         <span class="idTakeDivNext_qi_Title">按期订阅</span>
         <!--<span>{{TakeNameChangeListNowChange}}</span>-->
-        <span class="idTakeDivNext_qi_class">
+        <span v-show="TakeNameChange=='按期订阅'" class="idTakeDivNext_qi_class">
           <!--<el-select class="idTakeDivNext_qi_class_select_end" @change="selectVal_end()" v-model="TakeNameEndValue" placeholder="订阅结束期数" :disabled="TakeNameChange=='按期订阅'" filterable>-->
              <!--<el-option class="idTakeDivNext_qi_class_select_end_option"-->
                         <!--v-for="(item1,index1) in TakeNameEndList"-->
@@ -305,7 +305,14 @@
           <span v-text="payType.Balance.balanceHint"></span>
         </div>
       </div>
+
+      <!--提交按钮-->
+      <div class="submitFrom">
+        <el-button class="submitFrom_Button" @click="goSubmit()">订 阅</el-button>
+      </div>
     </div>
+
+
     <!--END 支付方式 信息-->
 
 
@@ -349,6 +356,7 @@
         TakeNameOpenList:[],   //开始的下拉列表
         TakeNameEndList:[],     //结束的下拉列表
         TakeNameChangeList:"", //现在订阅的类型
+        nextYearTakeNameChangeList:"", //明年的
         takeType:{},
         buyNumDiv:{}, //订购数量配置
         otherDiv:{}, // 其他信息配置
@@ -424,10 +432,10 @@
     },
 
     created: function() {
-      // this.getMemberInfo().then((member) => {
-      //   this.loginName = member.loginName;
-      //   this.getMenberDetail(); //获取用户信息
-      // });
+      this.getMemberInfo().then((member) => {
+        this.loginName = member.loginName;
+        this.getMenberDetail(); //获取用户信息
+      });
     },
 
     computed: {
@@ -448,14 +456,17 @@
       cutPage(idPage){   //切换指定的div页面
         this.showPageName = idPage;
       },
-
+      clickFunTakeNameChange(item){
+        this.TakeNameChange = item;
+      },
       getIdMagTypeList () { // 获取刊种列表
         Get(CONFIG.BASE_URL + 'spc/prodb/getMagList.do').then((rep) => {
           let datas = rep.data;
           if (datas.result && datas.data && datas.data.length > 0) {
             if(datas.result==1){
               this.idMagTypeList = datas.data;
-              this.getIdMagDo(datas.data[0].magName)
+              this.checkMagTypeName = datas.data[0].magName;
+              this.getIdMagDo(this.checkMagTypeName)
             }
           }
         });
@@ -469,7 +480,7 @@
       submitTakeFrom(){   //选择订阅方式 时间 提交表单
         this.cutPage('buyMain');
       },
-      getIdMagDo(checkMagTypeName){  //选择期刊类型 提交表单
+      getIdMagDo(checkMagTypeName){  //选择期刊类型 获取期刊详细信息
 
         Get(CONFIG.BASE_URL + '/spc/prodb/getMag.do?magName=' + checkMagTypeName).then(rep => {
           if (rep.data && rep.data.result) {
@@ -496,9 +507,10 @@
                 this.TakeNameChangeList = this.TakeNameChangeList+','+i;
               }
             }
-            console.log(this.TakeNameOpenList);
-            console.log(this.TakeNameEndList);
-            console.log(this.TakeNameChangeList);
+            this.nextYearTakeNameChangeList = this.TakeNameChangeList;
+            // console.log(this.TakeNameOpenList);
+            // console.log(this.TakeNameEndList);
+            // console.log(this.TakeNameChangeList);
             // TakeNameOpenValue:0,
             //   TakeNameEndValue:0,
             //   TakeNameOpenList:[],   //开始的下拉列表
@@ -748,6 +760,9 @@
   }
   .idTakeDivNext_qi_class_select_end{
     float: left;
+  }
+  .idTakeDiv_span_active{
+    border: #1ac03b 2px solid;
   }
 
 </style>

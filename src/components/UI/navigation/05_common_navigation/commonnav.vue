@@ -1,24 +1,21 @@
 <!-- 栏目树组件 -->
 <template>
-    <nav class="ui_navigation_05" v-if="CONFIG && tree && tree.length>0">
-        <h3 class="ui_navigation_05_title" v-if="CONFIG.comTitle.isShow">{{CONFIG.comTitle.name}}</h3>
-        <ul class="ui_navigation_05_ul" v-for="(item1,index1) in tree" :key="index1">
-          <li class="ui_navigation_05_ul_li" :class="{'ui_navigation_05_item--active':currentActive == item1.id}" @click.self="navClick(item1)" v-if="CONFIG && (typeof(CONFIG.showColumnArray) == 'undefined' || (typeof(CONFIG.showColumnArray) != 'undefined' && CONFIG.showColumnArray && (CONFIG.showColumnArray).indexOf(item1.id) !== -1))">
-            {{item1.name}}
-              <ul class="ui_navigation_05_ul_child1" v-if="item1.childNav.length>0" v-for="(item2,index2) in item1.childNav"     :key="index2">
-                <li class="ui_navigation_05_ul_child1_li"
-                  :class="{'ui_navigation_05_item--active':currentActive == item2.id}"
-                  v-show="item1.showChild"
-                  @click.self="navClick(item2)">
-                    {{item2.name}}
-                  <ul class="ui_navigation_05_ul_child2" v-if="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
-                      <li class="ui_navigation_05_ul_child2_li" :class="{'ui_navigation_05_item--active':currentActive == item3.id}" v-show="item2.showChild" @click.self="changeContent(item3.id)">{{item3.name}}</li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
+  <nav class="ui_navigation_05" v-if="CONFIG && tree && tree.length>0">
+    <h3 class="ui_navigation_05_title" v-if="CONFIG.comTitle.isShow">{{CONFIG.comTitle.name}}</h3>
+    <ul class="ui_navigation_05_ul" v-for="(item1,index1) in tree" :key="index1">
+      <li class="ui_navigation_05_ul_li" :class="{'ui_navigation_05_item--active':currentActive == item1.id}" @click.self="navClick(item1)" v-if="CONFIG && (typeof(CONFIG.showColumnArray) == 'undefined' || (typeof(CONFIG.showColumnArray) != 'undefined' && CONFIG.showColumnArray && (CONFIG.showColumnArray).indexOf(item1.id) !== -1))">
+        {{item1.name}}
+        <ul class="ui_navigation_05_ul_child1" v-if="item1.childNav.length>0" v-for="(item2,index2) in item1.childNav" :key="index2">
+          <li class="ui_navigation_05_ul_child1_li" :class="{'ui_navigation_05_item--active':currentActive == item2.id}" v-show="item1.showChild" @click.self="navClick(item2)">
+            {{item2.name}}
+            <ul class="ui_navigation_05_ul_child2" v-if="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
+              <li class="ui_navigation_05_ul_child2_li" :class="{'ui_navigation_05_item--active':currentActive == item3.id}" v-show="item2.showChild" @click.self="changeContent(item3.id)">{{item3.name}}</li>
+            </ul>
+          </li>
         </ul>
-    </nav>
+      </li>
+    </ul>
+  </nav>
 </template>
 <script>
 import PROJECT_CONFIG from "projectConfig";
@@ -108,7 +105,11 @@ export default {
       }
     },
     navClick (item) {
-
+      this.tree.forEach((item, index) => {
+        if (item.childNav.length > 0) { // 手风琴效果
+          item.showChild = false;
+        }
+      })
       if (item.createChild == false) {
         //判断点击的菜单是否已经点击创建过子导航，如果没有则创建子导航
         this.createTree(item.id, item.childNav, this.navData);

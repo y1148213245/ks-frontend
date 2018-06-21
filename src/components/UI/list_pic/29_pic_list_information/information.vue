@@ -11,7 +11,12 @@
     <!-- 更多按钮 -->
     <div class="ui_list_pic_29_tomore_con" v-if="CONFIG && CONFIG.toMoreBtn && CONFIG.toMoreBtn.isShow && columnDetailInfo" @click="toCustomFun(columnDetailInfo, CONFIG.toMoreBtn, columnKeys)">
       <span class="ui_list_pic_29_tomore_name"> {{CONFIG.toMoreBtn.name}}</span>
-        <i class="ui_list_pic_29_tomore_icon" v-bind="{class: CONFIG.toMoreBtn.iconClass}"></i>
+      <i class="ui_list_pic_29_tomore_icon" v-bind="{class: CONFIG.toMoreBtn.iconClass}"></i>
+    </div>
+    <!-- 排序 最新 热门 -->
+    <div class="ui_list_pic_29_orderby_con" v-if="CONFIG && CONFIG.toOrderByBtn && toOrderByBtn.isShow && toOrderByBtn">
+      <span class="ui_list_pic_29_orderby_name"> {{CONFIG.toOrderByBtn.name}}</span>
+      <span class="ui_list_pic_29_orderby_span" v-for="(item, index) in toOrderByBtn.itemList" :key="index"  @click="toSetOrder(item)" :class="{toOrderByBtn_Active: item.itemField==activeSetOrder}">{{item.name}}</span>
     </div>
 
     <div class="ui_list_pic_29_resourcelists">
@@ -88,6 +93,8 @@ export default {
       pageNoz:"1",
       pageIndexz:"1",
       totalCount: 0,
+      toOrderByBtn:{}, // 排序配置
+      activeSetOrder:"pub_a_order asc pub_lastmodified desc id asc",
     };
   },
 
@@ -105,6 +112,8 @@ export default {
         this.isMobileLoading = this.CONFIG.isMobileLoading;
       }
     }
+    this.toOrderByBtn = this.CONFIG.toOrderByBtn;
+    // this.activeSetOrder = "";
 
     if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) { // 通过接收广播获取栏目id
       this.$bus.$on(this.CONFIG.onEvent.eventName, (data) => {
@@ -141,6 +150,10 @@ export default {
   },
 
   methods: {
+    toSetOrder(item){   //修改默认排序
+      this.activeSetOrder = item.itemField;
+      this.getResourceLists();
+    },
     changeColId (item) { // 在广播事件外修改colId
         this.colId = item;
     },
@@ -184,6 +197,8 @@ export default {
         // }
          paramsObj.pageSize = this.pageSize;
       }
+      paramsObj.orderBy = this.activeSetOrder;
+      // this.activeSetOrder = paramsObj.orderBy;
 
       paramsObj.conditions.map((item) => {
         if (item.hasOwnProperty(this.keys.colId)) {
@@ -227,8 +242,8 @@ export default {
 
 </script>
 <style>
-.ui_list_pic_29_resourcelists_li_resnamecontainter {
-  cursor: pointer;
+.toOrderByBtn_Active {
+  border: #00ff00 2px solid;
 }
 
 .ui_list_pic_29_tomore_con {
