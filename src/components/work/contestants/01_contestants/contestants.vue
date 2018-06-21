@@ -45,7 +45,6 @@
         :data="participantsList"
         max-height="288"
         style="width: 700px"
-        highlight-current-row
         @current-change="handleCurrentChange">
       <el-table-column
         align="center"
