@@ -4,8 +4,7 @@
     <div class="work_activitydetail_04-place" v-if="showItem('place')">
       <label class="work_activitydetail_04-label">地区：</label>
       <!-- 级联组件 -->
-      <work_common_05 :namespace="namespace" modulename="contestants_area" :currentarea.sync="formData.place"
-         :areastr="placeArr" ref="cascader" :config="CONFIG.cascaderConfig"></work_common_05>
+      <work_common_05 :namespace="namespace" modulename="contestants_area" :currentarea.sync="formData.place" :areastr="placeArr" ref="cascader" :config="CONFIG.cascaderConfig"></work_common_05>
       <!-- END 级联组件 -->
     </div>
 
@@ -13,7 +12,7 @@
       <label class="work_activitydetail_04-label">组别：</label>
       <el-select v-model="formData.group" filterable placeholder="组别" @change="updateSchool">
         <el-option label="全部" value=""></el-option>
-         <el-option v-for="(option,index) in groupArr" :label="option" :value="option" :key="index"></el-option>
+        <el-option v-for="(option,index) in groupArr" :label="option" :value="option" :key="index"></el-option>
       </el-select>
     </div>
 
@@ -21,7 +20,7 @@
       <label class="work_activitydetail_04-label">学校：</label>
       <el-select v-model="formData.school" filterable placeholder="学校">
         <el-option label="全部" value=""></el-option>
-         <el-option v-for="(option,index) in schoolArr" :label="option[keys.school_name]" :value="option[keys.school_name]" :key="index"></el-option>
+        <el-option v-for="(option,index) in schoolArr" :label="option[keys.school_name]" :value="option[keys.school_name]" :key="index"></el-option>
       </el-select>
     </div>
 
@@ -43,8 +42,8 @@
     <div class="work_activitydetail_04-button_box">
       <el-button type="primary" @click="onSubmit">搜索</el-button>
     </div>
-    
-</div>
+
+  </div>
 </template>
 <script>
 import URL from "url";
@@ -117,18 +116,21 @@ export default {
       }
     },
     updateSchool () {
+      this.schoolArr = []
+      if (this.formData.place) {
+        let doclibCode = this.keys.getSchoolRequest_doclibCode + '=' + this.CONFIG.params.getSchoolRequest_doclibCode;//配库码
+        let relations = this.keys.getSchoolRequest_relations + '=' + this.CONFIG.params.getSchoolRequest_relations;//并且，或者
+        let cols = this.keys.getSchoolRequest_cols + '=' + this.CONFIG.params.getSchoolRequest_cols;//字段名
+        let symbols = this.keys.getSchoolRequest_symbols + '=' + this.CONFIG.params.getSchoolRequest_symbols;//匹配模式，包含，等于，不等于
+        let vals = this.keys.getSchoolRequest_vals + '=' + this.formData.place + ',' + this.formData.group;//值
 
-      let doclibCode = this.keys.getSchoolRequest_doclibCode + '=' + this.CONFIG.params.getSchoolRequest_doclibCode;//配库码
-      let relations = this.keys.getSchoolRequest_relations + '=' + this.CONFIG.params.getSchoolRequest_relations;//并且，或者
-      let cols = this.keys.getSchoolRequest_cols + '=' + this.CONFIG.params.getSchoolRequest_cols;//字段名
-      let symbols = this.keys.getSchoolRequest_symbols + '=' + this.CONFIG.params.getSchoolRequest_symbols;//匹配模式，包含，等于，不等于
-      let vals = this.keys.getSchoolRequest_vals + '=' + this.formData.place + ',' + this.formData.group;//值
+        let url = this.CONFIG.getSchoolUrl + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + vals + '&page=0&size=999';
+        Get(CONFIG.BASE_URL + url).then((resp) => {
+          this.formData.school = '';//清空学校
+          this.schoolArr = resp.data.content;
+        })
+      }
 
-      let url = this.CONFIG.getSchoolUrl + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + vals;
-      Get(CONFIG.BASE_URL + url).then((resp) => {
-        this.formData.school = '';//清空学校
-        this.schoolArr = resp.data.content;
-      })
     },
     onSubmit () {
       let formData = this.formData;
@@ -141,8 +143,13 @@ export default {
         [this.keys.output_author]: formData.author,
         [this.keys.output_idCard]: formData.idCard
       }
-      
+
       this.$bus.emit(this.CONFIG.eventName_search, param);
+    }
+  },
+  watch: {
+    'formData.place' (nv, ov) {
+      this.updateSchool();
     }
   }
 }
