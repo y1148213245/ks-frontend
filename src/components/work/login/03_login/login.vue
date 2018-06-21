@@ -56,6 +56,7 @@ export default {
       member: {
         loginName: '',
         password: '',
+        flag:'pc'
       }
     };
   },
