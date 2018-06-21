@@ -1,384 +1,386 @@
 <!-- 参赛组件 -->
 <template>
-<div class="work_contestants_01 work_contestants_01_main">
-  <el-steps :active="active" simple>
-    <el-step title="参赛人信息" icon="el-icon-edit"></el-step>
-    <el-step title="上传作品" icon="el-icon-upload"></el-step>
-    <el-step title="完成" icon="el-icon-check"></el-step>
-  </el-steps>
+  <div class="work_contestants_01 work_contestants_01_main">
+    <el-steps :active="active" simple>
+      <el-step title="参赛人信息" icon="el-icon-edit"></el-step>
+      <el-step title="上传作品" icon="el-icon-upload"></el-step>
+      <el-step title="完成" icon="el-icon-check"></el-step>
+    </el-steps>
 
     <div v-show="active == 0">
       <el-card class="box-card" :body-style="{ padding: '0 0 0 10px' }">
-      <div slot="header" class="clearfix">
-      <span class="ac_table_title ac_title_bottom">选择参赛人员</span>
-      <el-button style="float: right;" type="primary" round icon="el-icon-plus" size="medium"  @click="additions = true">新增参赛人员</el-button>
- 
-      <el-dialog title="添加参赛人信息" :visible.sync="additions">
-        <div>
-          <el-form :model="addParticipantsForm" :rules="rules" ref="addParticipantsForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="姓名：" prop="name">
-          <el-input v-model="addParticipantsForm.name"></el-input>
-          </el-form-item>
-          <el-form-item label="性别：" prop="sex">
-          <el-radio-group v-model="addParticipantsForm.sex">
-          <el-radio label="1">男</el-radio>
-          <el-radio label="0">女</el-radio>
-          </el-radio-group>
-          </el-form-item>
-          <el-form-item label="身份证：" prop="identity">
-          <el-input v-model="addParticipantsForm.identity"></el-input>
-          </el-form-item>
-          <el-form-item label="电话：" prop="telNumber">
-          <el-input v-model="addParticipantsForm.telNumber"></el-input>
-          </el-form-item>
+        <div slot="header" class="clearfix">
+          <span class="ac_table_title ac_title_bottom">选择参赛人员</span>
+          <el-button style="float: right;" type="primary" round icon="el-icon-plus" size="medium" @click="additions = true">新增参赛人员</el-button>
+
+          <el-dialog title="添加参赛人信息" :visible.sync="additions">
+            <div>
+              <el-form :model="addParticipantsForm" :rules="rules" ref="addParticipantsForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="姓名：" prop="name">
+                  <el-input v-model="addParticipantsForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="性别：" prop="sex">
+                  <el-radio-group v-model="addParticipantsForm.sex">
+                    <el-radio label="1">男</el-radio>
+                    <el-radio label="0">女</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item label="身份证：" prop="identity">
+                  <el-input v-model="addParticipantsForm.identity"></el-input>
+                </el-form-item>
+                <el-form-item label="电话：" prop="telNumber">
+                  <el-input v-model="addParticipantsForm.telNumber"></el-input>
+                </el-form-item>
+              </el-form>
+            </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="additions = false">取 消</el-button>
+              <el-button :disabled="isAddingPeople" type="primary" @click="submitAddParticipantsForm('addParticipantsForm')">确 定</el-button>
+            </span>
+          </el-dialog>
+
+        </div>
+        <el-table ref="singleTable" :data="participantsList" max-height="288" style="width: 700px" @current-change="handleCurrentChange">
+          <el-table-column align="center" prop="userName" label="姓名" width="120">
+          </el-table-column>
+          <el-table-column align="center" prop="gender" label="性别" width="120" :formatter="sexFormat">
+          </el-table-column>
+          <el-table-column align="center" prop="mobileNum" label="手机号" width="180">
+          </el-table-column>
+          <el-table-column align="center" prop="identifyId" label="身份证号" show-overflow-tooltip>
+          </el-table-column>
+        </el-table>
+
+        <!--已参赛表格 -->
+        <el-table :data="participantsedList" max-height="288" style="width: 700px" :row-class-name="setParticipantsListTableCellClassName">
+          <el-table-column align="center" prop="userName" label="已参赛" width="120">
+          </el-table-column>
+          <el-table-column align="center" prop="gender" width="120" :formatter="sexFormat">
+          </el-table-column>
+          <el-table-column align="center" prop="mobileNum" width="180">
+          </el-table-column>
+          <el-table-column align="center" prop="identifyId" show-overflow-tooltip>
+          </el-table-column>
+        </el-table>
+      </el-card>
+
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span class="ac_table_title ac_title_bottom">相关信息</span>
+        </div>
+        <div class="work_contestants_01-people_box">
+          <label>参赛人:</label>
+          <span class="work_contestants_01-people_name">{{currentRow && currentRow.userName}}</span>
+          <label>手机号:</label>
+          <span class="work_contestants_01-people_phone">{{currentRow && currentRow.mobileNum}}</span>
+        </div>
+        <div class="work_contestants_01-supplement is-required">
+          <label class="el-form-item__label">地区：</label>
+          <work_common_05 :namespace="namespace" modulename="contestants_area" :currentarea.sync="addressInformaitionValue" :areastr="addressInformaition" ref="cascader" :config="CONFIG.cascaderConfig"></work_common_05>
+        </div>
+        <div class="work_contestants_01-supplement is-required">
+          <label class="el-form-item__label">组别：</label>
+          <el-select v-model="classInformaitionValue" placeholder="请选择参赛组别" filterable @change="updateSchool">
+            <el-option v-for="item in classInformaition" :key="item" :label="item.label" :value="item">
+            </el-option>
+          </el-select>
+        </div>
+
+        <div class="work_contestants_01-supplement is-required">
+          <label class="el-form-item__label">学校：</label>
+          <el-select v-model="schoolInformaitionValue" placeholder="请选择学校" :disabled="!isSelectSchool" filterable>
+            <el-option v-for="(item,index) in schoolArr" :label="item.label" :value="item.SYS_TOPIC" :key="index"></el-option>
+            <el-option label="其他" value="其他"></el-option>
+          </el-select>
+        </div>
+
+        <div class="work_contestants_01-supplement">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="年级班级：" prop="class">
+                  <el-input placeholder="请填写年级班级" v-model="addSupplementForm.class" clearable class="work_contestants_01-supplement-class_input"></el-input>
+                </el-form-item>
+              </div>
+            </div>
           </el-form>
         </div>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="additions = false">取 消</el-button>
-            <el-button :disabled="isAddingPeople" type="primary" @click="submitAddParticipantsForm('addParticipantsForm')">确 定</el-button>
-          </span>
-      </el-dialog>
 
-      </div>
-      <el-table
-        ref="singleTable"
-        :data="participantsList"
-        max-height="288"
-        style="width: 700px"
-        @current-change="handleCurrentChange">
-      <el-table-column
-        align="center"
-        prop="userName"
-        label="姓名"
-        width="120">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="gender"
-        label="性别"
-        width="120"
-        :formatter="sexFormat">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="mobileNum"
-        label="手机号"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="identifyId"
-        label="身份证号"
-        show-overflow-tooltip>
-      </el-table-column>
-    </el-table>
-
-    <!--已参赛表格 -->
-    <el-table
-        :data="participantsedList"
-        max-height="288"
-        style="width: 700px"
-        :row-class-name="setParticipantsListTableCellClassName">
-      <el-table-column
-        align="center"
-        prop="userName"
-        label="已参赛"
-        
-        width="120">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="gender"
-        width="120"
-        :formatter="sexFormat">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="mobileNum"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="identifyId"
-        show-overflow-tooltip>
-      </el-table-column>
-    </el-table>
-    </el-card>
-
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span class="ac_table_title ac_title_bottom">相关信息</span>
-      </div>
-      <div class="work_contestants_01-people_box">
-        <label>参赛人:</label><span class="work_contestants_01-people_name">{{currentRow && currentRow.userName}}</span>
-        <label>手机号:</label><span class="work_contestants_01-people_phone">{{currentRow && currentRow.mobileNum}}</span>
-      </div>
-      <div class="work_contestants_01-supplement is-required">
-        <label class="el-form-item__label">地区：</label>
-         <work_common_05 :namespace="namespace" modulename="contestants_area" :currentarea.sync="addressInformaitionValue"
-         :areastr="addressInformaition" ref="cascader" :config="CONFIG.cascaderConfig"></work_common_05>
-      </div>
-      <div  class="work_contestants_01-supplement is-required">
-      <label class="el-form-item__label">组别：</label>
-        <el-select v-model="classInformaitionValue" placeholder="请选择参赛组别" filterable  @change="updateSchool">
-          <el-option
-          v-for="item in classInformaition"
-          :key="item"
-          :label="item.label"
-          :value="item">
-          </el-option>
-        </el-select>
-      </div>
-
-      <div class="work_contestants_01-supplement is-required">
-      <label class="el-form-item__label">学校：</label>
-      <el-select v-model="schoolInformaitionValue" placeholder="请选择学校" :disabled="!isSelectSchool" filterable>
-         <el-option v-for="(item,index) in schoolArr" :label="item.label" :value="item.SYS_TOPIC" :key="index"></el-option>
-         <el-option label="其他" value="其他"></el-option>
-      </el-select>
-      </div>
-
-      <div class="work_contestants_01-supplement">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="年级班级：" prop="class">
-              <el-input placeholder="请填写年级班级" v-model="addSupplementForm.class" clearable class="work_contestants_01-supplement-class_input"></el-input>
-            </el-form-item>
+        <div class="work_contestants_01-supplement isLongInput" v-show="isShowCustomeSchool">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="学校：" prop="customSchool">
+                  <el-input placeholder="请填写学校" v-model="addSupplementForm.customSchool" clearable></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-        </el-form>
-      </div>
-      
-      <div class="work_contestants_01-supplement isLongInput" v-show="isShowCustomeSchool">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="学校：" prop="customSchool">
-              <el-input placeholder="请填写学校" v-model="addSupplementForm.customSchool" clearable></el-input>
-            </el-form-item>
-            </div>
-          </div>
-        </el-form>
-      </div>
+          </el-form>
+        </div>
 
-      <div class="work_contestants_01-supplement isLongInput">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="学校地址：" prop="schoolAddress">
-              <el-input placeholder="请填写学校地址" v-model="addSupplementForm.schoolAddress" clearable></el-input>
-            </el-form-item>
+        <div class="work_contestants_01-supplement isLongInput">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="学校地址：" prop="schoolAddress">
+                  <el-input placeholder="请填写学校地址" v-model="addSupplementForm.schoolAddress" clearable></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-        </el-form>
-      </div>
+          </el-form>
+        </div>
 
-      <div class="work_contestants_01-supplement isLongInput">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="邮箱：" prop="email">
-              <el-input placeholder="请填写邮箱" v-model="addSupplementForm.email" clearable></el-input>
-            </el-form-item>
+        <div class="work_contestants_01-supplement isLongInput">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="邮箱：" prop="email">
+                  <el-input placeholder="请填写邮箱" v-model="addSupplementForm.email" clearable></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-        </el-form>
-      </div>
+          </el-form>
+        </div>
 
-      <div class="work_contestants_01-supplement isLongInput">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="邮编：" prop="zipCode">
-              <el-input placeholder="请填写邮编" v-model="addSupplementForm.zipCode" clearable></el-input>
-            </el-form-item>
+        <div class="work_contestants_01-supplement isLongInput">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="邮编：" prop="zipCode">
+                  <el-input placeholder="请填写邮编" v-model="addSupplementForm.zipCode" clearable></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-        </el-form>
-      </div>
-      
-      <div class="work_contestants_01-supplement isLongInput">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="指导教师：">
-              <el-input placeholder="请填写指导教师" v-model="addSupplementForm.teacher" clearable></el-input>
-            </el-form-item>
-            </div>
-          </div>
-        </el-form>
-      </div>
+          </el-form>
+        </div>
 
-      <div class="work_contestants_01-supplement isLongInput">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="指导教师电话：" prop="teacherPhone">
-              <el-input placeholder="请填写指导教师电话" v-model="addSupplementForm.teacherPhone" clearable></el-input>
-            </el-form-item>
+        <div class="work_contestants_01-supplement isLongInput">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="指导教师：">
+                  <el-input placeholder="请填写指导教师" v-model="addSupplementForm.teacher" clearable></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-        </el-form>
-      </div>
+          </el-form>
+        </div>
 
-      <div class="work_contestants_01-supplement isLongInput">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="组织教师：">
-              <el-input placeholder="请填写组织教师" v-model="addSupplementForm.organizationTeacher" clearable></el-input>
-            </el-form-item>
+        <div class="work_contestants_01-supplement isLongInput">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="指导教师电话：" prop="teacherPhone">
+                  <el-input placeholder="请填写指导教师电话" v-model="addSupplementForm.teacherPhone" clearable></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-        </el-form>
-      </div>  
+          </el-form>
+        </div>
 
-      <div class="work_contestants_01-supplement isLongInput">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="组织教师电话：" prop="organizationTeacherPhone">
-              <el-input placeholder="请填写组织教师电话" v-model="addSupplementForm.organizationTeacherPhone" clearable></el-input>
-            </el-form-item>
+        <div class="work_contestants_01-supplement isLongInput">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="组织教师：">
+                  <el-input placeholder="请填写组织教师" v-model="addSupplementForm.organizationTeacher" clearable></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-        </el-form>
-      </div>
+          </el-form>
+        </div>
 
-      <div class="work_contestants_01-supplement isLongInput">
-        <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block" >
-          <div class="ac_linetext">
-            <div class="ac_input">
-            <el-form-item label="设为隐私">
-              <el-radio-group v-model="addSupplementForm.isHide">
-                <el-radio label="是"></el-radio>
-                <el-radio label="否"></el-radio>
-              </el-radio-group>
-              <el-tooltip class="work_contestants_01-illustrate" effect="dark" placement="top">
-                <p class="work_contestants_01-illustrate_info" slot="content">隐私功能用于设置是否公开参赛作品，如选择“否”，默认为您自愿公开展示参赛作品。</p>
-                <i class="el-icon-question"></i>
-              </el-tooltip>
-            </el-form-item>
-            
+        <div class="work_contestants_01-supplement isLongInput">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="组织教师电话：" prop="organizationTeacherPhone">
+                  <el-input placeholder="请填写组织教师电话" v-model="addSupplementForm.organizationTeacherPhone" clearable></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-        </el-form>
-      </div>
-    </el-card>
-    <el-button type="primary" class="ac_to_next" @click="submitAddSupplementForm('addSupplementForm')">下一步</el-button>
-  </div>
-  <!-- 上传作品 active == 1-->
-  <div v-show="active == 1">
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span class="ac_table_title ac_title_bottom">填写作品信息</span>
-      </div>
+          </el-form>
+        </div>
+
+        <div class="work_contestants_01-supplement isLongInput">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+            <div class="ac_linetext">
+              <div class="ac_input">
+                <el-form-item label="设为隐私">
+                  <el-radio-group v-model="addSupplementForm.isHide">
+                    <el-radio label="是"></el-radio>
+                    <el-radio label="否"></el-radio>
+                  </el-radio-group>
+                  <el-tooltip class="work_contestants_01-illustrate" effect="dark" placement="top">
+                    <p class="work_contestants_01-illustrate_info" slot="content">隐私功能用于设置是否公开参赛作品，如选择“否”，默认为您自愿公开展示参赛作品。</p>
+                    <i class="el-icon-question"></i>
+                  </el-tooltip>
+                </el-form-item>
+
+              </div>
+            </div>
+          </el-form>
+        </div>
+      </el-card>
+      <el-button type="primary" class="ac_to_next" @click="submitAddSupplementForm('addSupplementForm')">下一步</el-button>
+    </div>
+    <!-- 上传作品 active == 1-->
+    <div v-show="active == 1">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span class="ac_table_title ac_title_bottom">填写作品信息</span>
+        </div>
         <el-form :model="addAnnexWorksForm" :rules="rules" ref="addAnnexWorksForm" label-width="100px" class="demo-ruleForm">
 
-        <el-form-item label="标题：" prop="title">
-          <el-input v-model="addAnnexWorksForm.title"></el-input>
-        </el-form-item>
+          <el-form-item label="标题：" prop="title">
+            <el-input v-model="addAnnexWorksForm.title"></el-input>
+          </el-form-item>
 
-        <el-form-item label="简介：" prop="synopsis" v-if="worktype_isAttachment">
-          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 14 }" v-model="addAnnexWorksForm.synopsis"></el-input>
-          <span class="work_contestants_01-abstract-length">{{addAnnexWorksForm.synopsis.length}}/500</span>
-        </el-form-item>
+          <el-form-item label="简介：" prop="synopsis" v-if="worktype_isAttachment">
+            <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 14 }" v-model="addAnnexWorksForm.synopsis"></el-input>
+            <span class="work_contestants_01-abstract-length">{{addAnnexWorksForm.synopsis.length}}/500</span>
+          </el-form-item>
 
-        <el-form-item label="文件：" prop="files" v-if="worktype_isAttachment">
-          <el-checkbox-group v-model="addAnnexWorksForm.files"></el-checkbox-group>
-          <el-upload
-            class="upload-demo"
-            :action="upLoadUrl()"
-            name="file"
-            :before-upload="beforeFileUpload"
-            :on-preview="handlePreview"
-            :on-success="upLoadingSuccess"
-            multiple
-            :limit="1"
-            :on-exceed="handleExceed"
-            :file-list="addAnnexWorksForm.files"
-            >
-            <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="正文：" prop="content" v-if="!worktype_isAttachment">
-          <el-input
-            type="textarea"
-            :rows="15"
-            placeholder="请输入正文"
-            v-model="addAnnexWorksForm.content">
-          </el-input>
-          <span class="ac_table-content_text_length" v-text="addAnnexWorksForm.content.length"></span>
-        </el-form-item>
-        <el-form-item>
-          <div class="ac_button">
-            <el-button type="primary" @click="previouStep">上一步</el-button>
-            <el-button type="primary" @click="priview">提交</el-button>
-          </div>
-        </el-form-item>
+          <el-form-item label="文件：" prop="files" v-if="worktype_isAttachment">
+            <el-checkbox-group v-model="addAnnexWorksForm.files"></el-checkbox-group>
+            <el-upload class="upload-demo" :action="upLoadUrl()" name="file" :before-upload="beforeFileUpload" :on-preview="handlePreview" :on-success="upLoadingSuccess" multiple :limit="1" :on-exceed="handleExceed" :file-list="addAnnexWorksForm.files">
+              <el-button size="small" type="primary">点击上传</el-button>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="正文：" prop="content" v-if="!worktype_isAttachment">
+            <el-input type="textarea" :rows="15" placeholder="请输入正文" v-model="addAnnexWorksForm.content">
+            </el-input>
+            <span class="ac_table-content_text_length" v-text="addAnnexWorksForm.content.length"></span>
+          </el-form-item>
+          <el-form-item>
+            <div class="ac_button">
+              <el-button type="primary" @click="previouStep">上一步</el-button>
+              <el-button type="primary" @click="priview">提交</el-button>
+            </div>
+          </el-form-item>
         </el-form>
 
-        <el-dialog
-          title="预览"
-          :visible.sync="dialogVisible"
-          width="50%">
-          
-            <section class="work_contestants_01-section1_preview">
-              <h3>基本信息：</h3> 
-              <ul>
-              <li><label>姓名:</label><span v-text="currentRow.userName"></span></li>
-              <li><label>性别:</label><span>{{currentRow.gender | sexFormat}}</span></li>
-              <li><label>手机号:</label><span v-text="currentRow.mobileNum"></span></li>
-              <li><label>身份证:</label><span v-text="currentRow.identifyId"></span></li>
-              </ul>
-            </section>
-            <section class="work_contestants_01-section2_preview">
-              <h3>补充信息：</h3>
-              <ul>
-              <li><label>地区:</label><span v-text="addressInformaitionValue"></span></li>
-              <li><label>组别:</label><span v-text="classInformaitionValue"></span></li>
-              <li><label>年级班级:</label><span v-text="addSupplementForm.class"></span></li>
-              <li><label>学校:</label><span v-text="schoolInformaitionValue"></span></li>
-              <li><label>其他学校:</label><span v-text="addSupplementForm.customSchool"></span></li>
-              <li><label>学校地址:</label><span v-text="addSupplementForm.schoolAddress"></span></li>
-              <li><label>邮箱:</label><span v-text="addSupplementForm.email"></span></li>
-              <li><label>邮编:</label><span v-text="addSupplementForm.zipCode"></span></li>
-              <li><label>指导教师:</label><span v-text="addSupplementForm.teacher"></span></li>
-              <li><label>指导教师电话:</label><span v-text="addSupplementForm.teacherPhone"></span></li>
-              <li><label>组织教师:</label><span v-text="addSupplementForm.organizationTeacher"></span></li>
-              <li><label>组织教师电话:</label><span v-text="addSupplementForm.organizationTeacherPhone"></span></li>
-              <li><label>是否隐私:</label><span v-text="addSupplementForm.isHide"></span></li>
-              </ul>
-            </section>
-            <section class="work_contestants_01-section3_preview">
-              <h3>作品信息：</h3>
-              <ul>
-              <li><label>标题:</label><span v-text="addAnnexWorksForm.title"></span></li>
-              <li v-if="worktype_isAttachment"><label>简介:</label><p v-text="addAnnexWorksForm.synopsis"></p></li>
-              <li v-if="!worktype_isAttachment"><label>正文:</label><p class="preview_content" v-html="addAnnexWorksForm.contentHtml"></p></li>
-              <li v-if="worktype_isAttachment"><label>文件:</label><p v-text="fileName"></p></li>
-              </ul>
-             </section>
-          
+        <el-dialog title="预览" :visible.sync="dialogVisible" width="50%">
+
+          <section class="work_contestants_01-section1_preview">
+            <h3>基本信息：</h3>
+            <ul>
+              <li>
+                <label>姓名:</label>
+                <span v-text="currentRow.userName"></span>
+              </li>
+              <li>
+                <label>性别:</label>
+                <span>{{currentRow.gender | sexFormat}}</span>
+              </li>
+              <li>
+                <label>手机号:</label>
+                <span v-text="currentRow.mobileNum"></span>
+              </li>
+              <li>
+                <label>身份证:</label>
+                <span v-text="currentRow.identifyId"></span>
+              </li>
+            </ul>
+          </section>
+          <section class="work_contestants_01-section2_preview">
+            <h3>补充信息：</h3>
+            <ul>
+              <li>
+                <label>地区:</label>
+                <span v-text="addressInformaitionValue"></span>
+              </li>
+              <li>
+                <label>组别:</label>
+                <span v-text="classInformaitionValue"></span>
+              </li>
+              <li>
+                <label>年级班级:</label>
+                <span v-text="addSupplementForm.class"></span>
+              </li>
+              <li>
+                <label>学校:</label>
+                <span v-text="schoolInformaitionValue"></span>
+              </li>
+              <li>
+                <label>其他学校:</label>
+                <span v-text="addSupplementForm.customSchool"></span>
+              </li>
+              <li>
+                <label>学校地址:</label>
+                <span v-text="addSupplementForm.schoolAddress"></span>
+              </li>
+              <li>
+                <label>邮箱:</label>
+                <span v-text="addSupplementForm.email"></span>
+              </li>
+              <li>
+                <label>邮编:</label>
+                <span v-text="addSupplementForm.zipCode"></span>
+              </li>
+              <li>
+                <label>指导教师:</label>
+                <span v-text="addSupplementForm.teacher"></span>
+              </li>
+              <li>
+                <label>指导教师电话:</label>
+                <span v-text="addSupplementForm.teacherPhone"></span>
+              </li>
+              <li>
+                <label>组织教师:</label>
+                <span v-text="addSupplementForm.organizationTeacher"></span>
+              </li>
+              <li>
+                <label>组织教师电话:</label>
+                <span v-text="addSupplementForm.organizationTeacherPhone"></span>
+              </li>
+              <li>
+                <label>是否隐私:</label>
+                <span v-text="addSupplementForm.isHide"></span>
+              </li>
+            </ul>
+          </section>
+          <section class="work_contestants_01-section3_preview">
+            <h3>作品信息：</h3>
+            <ul>
+              <li>
+                <label>标题:</label>
+                <span v-text="addAnnexWorksForm.title"></span>
+              </li>
+              <li v-if="worktype_isAttachment">
+                <label>简介:</label>
+                <p v-text="addAnnexWorksForm.synopsis"></p>
+              </li>
+              <li v-if="!worktype_isAttachment">
+                <label>正文:</label>
+                <p class="preview_content" v-html="addAnnexWorksForm.contentHtml"></p>
+              </li>
+              <li v-if="worktype_isAttachment">
+                <label>文件:</label>
+                <p v-text="fileName"></p>
+              </li>
+            </ul>
+          </section>
+
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" :disabled="isLimitSendText" @click="dialogClose">确 定</el-button>
           </span>
         </el-dialog>
-    </el-card>
-  </div>
-  <div class="ac_last_text" v-show="active == 2">
-     <span><i class="el-icon-success"></i>您的作品已提交成功</span>
-     <div class="where_to_go">
-     <el-button type="primary" round @click="toIndex">前往首页</el-button>
-     <el-button type="primary" round @click="toPersonal">前往参与的活动</el-button>
-     </div>
+      </el-card>
+    </div>
+    <div class="ac_last_text" v-show="active == 2">
+      <span>
+        <i class="el-icon-success"></i>您的作品已提交成功</span>
+      <div class="where_to_go">
+        <el-button type="primary" round @click="toIndex">前往首页</el-button>
+        <el-button type="primary" round @click="toPersonal">前往参与的活动</el-button>
+        <el-button type="primary" round @click="reload">继续投稿</el-button>
+      </div>
+
+    </div>
 
   </div>
-
-
-</div>
 </template>
 
 <script>
@@ -570,6 +572,9 @@ export default {
       })
 
     },
+    reload () {
+      window.location.reload(true)
+    },
     priview () {
       if (this.addAnnexWorksForm.content) {
         /* 处理多行文本格式 */
@@ -703,7 +708,7 @@ export default {
         this.addressInformaition = rep.data.AREALIMT_BIG || rep.data.AREALIMT;/* 优先取多地区字段 */
         this.classInformaition = rep.data.CLASSLIMT.split(/;/);
 
-        console.log(this.addressInformaition);
+        // console.log(this.addressInformaition);
         this.$nextTick(() => {
           this.$refs['cascader'].loadData();
         }
@@ -711,8 +716,8 @@ export default {
       });
     },
     /* 设置默认参选人 */
-    setCurrent(row) {
-        this.$refs.singleTable.setCurrentRow(row);
+    setCurrent (row) {
+      this.$refs.singleTable.setCurrentRow(row);
     },
     handleCurrentChange (currentRow) {
       // console.log(currentRow);
@@ -950,7 +955,7 @@ export default {
             paramsObj.metaMap.COMMITUSER = this.loginName; //	提交用户
             paramsObj.metaMap.WORKSTYPE = this.worktype; //	文件类型
 
-            if ( this.isLimitSendText == false) {
+            if (this.isLimitSendText == false) {
               this.isLimitSendText = true;
               Post(CONFIG.BASE_URL + this.CONFIG.informationUploading.url, paramsObj).then(rep => {
                 var datas = rep.data.result;
@@ -1097,7 +1102,7 @@ export default {
   color: #5e8242;
   font-size: 24px;
   margin: 0 auto;
-  width: 300px;
+  /* width: 300px; */
   height: 40px;
   margin-top: 100px;
   text-align: center;
