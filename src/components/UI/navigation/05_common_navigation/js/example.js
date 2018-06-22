@@ -35,6 +35,12 @@ const dev = {
             name: "name"
           }
         },
+        broadcastEventName: { // 与面包屑导航通讯
+          transCol: "listenInfoDetail",
+          keys: {
+            colId: 'pub_col_id'
+          }
+        }
         // showColumnArray: [], // 过滤显示的栏目 （并不是所有的栏目都应该显示）
       }
     }
@@ -66,6 +72,12 @@ const prod = {
             name: "name"
           }
         },
+        broadcastEventName: { // 与面包屑导航通讯
+          transCol: "listenInfoDetail",
+          keys: {
+            colId: 'pub_col_id'
+          }
+        }
         // showColumnArray: [], // 过滤显示的栏目 （并不是所有的栏目都应该显示）
       }
     }

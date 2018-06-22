@@ -8,13 +8,13 @@
         <ul class="work_mobile_personalcenter_08_bookslist_ul">
           <li class="work_mobile_personalcenter_08_bookslist_li" v-for="(item,index) in booklist" :key="index">
             <div class="work_mobile_personalcenter_08_bookslist_imgcon">
-              <img :src="item.midPic?item.midPic:''" alt="" class="work_mobile_personalcenter_08_bookslist_img" @click="toProbation(item,modulename)">
+              <img :src="item.midPic?item.midPic:''" alt="" class="work_mobile_personalcenter_08_bookslist_img" @click="toBookDetail(item)">
             </div>
             <a href="#" v-show="isshowDlete" class="work_mobile_personalcenter_08_bookslist_delete_a" @click="deleteBookList(loginName,index,item.pubId)">
               <van-icon name="delete" />
             </a>
-            <span class="work_mobile_personalcenter_08_bookslist_readtrying" v-if="item.bookFreeDownLoadPath !=''">{{display.readTrying}}</span>
-            <span class="work_mobile_personalcenter_08_bookslist_bookname" @click="toProbation(item,modulename)">{{item.productName ? item.productName :'暂无书名' }}</span>
+            <span class="work_mobile_personalcenter_08_bookslist_readtrying" v-if="item.bookFreeDownLoadPath !=''" @click="toProbation(item,modulename)">{{display.readTrying}}</span>
+            <span class="work_mobile_personalcenter_08_bookslist_bookname" @click="toBookDetail(item)">{{item.productName ? item.productName :'暂无书名' }}</span>
             <span class="work_mobile_personalcenter_08_bookslist_author">{{item.author?item.author :'暂无作者'}}</span>
           </li>
         </ul>
@@ -151,7 +151,7 @@ export default {
     },
     //试读
     toProbation (item, modulename) { // 执行自定义事件
-      // debugger;
+      console.log(item);
       if (!item.bookFreeDownLoadPath) {  // 没有试读地址的情况
         return false;
       } else {
@@ -168,6 +168,11 @@ export default {
     toBookLibrary () {
       //TODO 暂时不知道书城地址,写了个详情的地址
       var url = this.CONFIG.toBookLibraryUrl;
+      window.open(url);
+    },
+    //图书详情
+    toBookDetail(item){
+      let url = this.CONFIG.toDetailUrl + '?pubId=' + item.pubId;
       window.open(url);
     }
   },

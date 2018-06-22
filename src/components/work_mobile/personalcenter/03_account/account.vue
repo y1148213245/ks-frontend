@@ -1,10 +1,10 @@
 /*
- * @Author: song 
- * @Date: 2018-06-05 17:38:28 
+ * @Author: song
+ * @Date: 2018-06-05 17:38:28
  * @Last Modified by: song
  * @Last Modified time: 2018-06-13 16:13:51
  * 个人资料
- */  
+ */
  <template>
   <div class="work_mobile_personalcenter_03">
 
@@ -44,8 +44,10 @@
     <div class="work_mobile_personalcenter_03_editintro" v-if="showItem == 'introduction'">
       <div class="work_mobile_personalcenter_03_editintro_intro">{{display.introduction || '签名'}}</div>
       <div class="work_mobile_personalcenter_03_editintro_con">
-        <textarea class="work_mobile_personalcenter_03_editintro_textarea" v-model="getMember.introduction"></textarea>
+        <textarea class="work_mobile_personalcenter_03_editintro_textarea" :maxlength="display.maxNum" @input="descInput" v-model="getMember.introduction"></textarea>
+        <span class="work_mobile_personalcenter_03_editintro_textarea_count">{{remainNum}}/{{display.maxNum}}</span>
       </div>
+      <div v-if="noIntroduction" class="work_mobile_personalcenter_03_nointro">{{CONFIG.display.noIntroduction}}</div>
       <div class="work_mobile_personalcenter_03_saveintro">
         <van-button size="normal" @click="editUserInfo('introduction')">{{display.save || '保存'}}</van-button>
       </div>
@@ -54,7 +56,7 @@
 
   </div>
 </template>
- 
+
  <script>
 import Vue from "vue";
 import { Get, Post } from "@common";
@@ -77,6 +79,8 @@ export default {
       showItem: "default",
       getMember: {}, // 个人信息
       noNickname: false, // 昵称为空
+      noIntroduction: false, //签名为空
+      remainNum: ''  //剩余的可输入字数
     };
   },
   computed: {
@@ -84,7 +88,7 @@ export default {
       member: interfaces.GET_MEMBER
     }),
   },
-  created () { 
+  created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_03;
     this.display = this.CONFIG.display;
     this.showLists = this.CONFIG.showLists;
@@ -119,11 +123,15 @@ export default {
   },
 
   methods: {
+    descInput(){
+        this.remainNum = this.display.maxNum - this.getMember.introduction.length;
+    },
     getMemberInfo (loginName) {
       Get(CONFIG.BASE_URL + this.CONFIG.getMemberInfo.url + '?loginName=' + loginName).then((resp) => {
         let res = resp.data;
         if (res.result == '1' && res.data) {
           this.getMember = res.data;
+          this.descInput();
         }
       })
     },
@@ -135,20 +143,26 @@ export default {
       this.showItem = item.tag;
     },
     removeName () {
-      this.nickName = '';
+      this.getMember.nickName = '';
     },
     editUserInfo (item) {  // 保存昵称和个性签名的修改
       // TODO: 后端修改Post请求的接参数方式后优化合并以下代码
       if (item == 'introduction') { // 更改个性签名
-        Post(CONFIG.BASE_URL + this.CONFIG.editPersonalInfo.url + '?loginName=' + this.getMember.loginName + '&introduction=' + this.getMember.introduction).then((resp) => {
-          let res = resp.data;
-          if (res.result == '1') {
-            let msg = res.data.msg;
-            Toast.success(msg);
-          } else {
-            Toast.fail(this.display.failedOp);
-          }
-        })
+        if (this.getMember.introduction == '') { // 昵称为空时不能保存
+          this.noIntroduction = true;
+          return false;
+        } else {
+          this.noIntroduction = false;
+          Post(CONFIG.BASE_URL + this.CONFIG.editPersonalInfo.url + '?loginName=' + this.getMember.loginName + '&introduction=' + this.getMember.introduction).then((resp) => {
+            let res = resp.data;
+            if (res.result == '1') {
+              let msg = res.data.msg;
+              Toast.success(msg);
+            } else {
+              Toast.fail(this.display.failedOp);
+            }
+          })
+        }
       }
       else if (item == 'nickName') { // 更改昵称
         if (this.getMember.nickName == '') { // 昵称为空时不能保存
@@ -158,6 +172,7 @@ export default {
           /*let paramsObj = Object.assign({}, this.CONFIG.editPersonalInfo.params);
            paramsObj.loginName = this.member.loginName;
           paramsObj[item] = item == 'nickName' ? this.nickName : this.introduction; */
+          this.noNickname = false;
           Post(CONFIG.BASE_URL + this.CONFIG.editPersonalInfo.url + '?loginName=' + this.getMember.loginName + '&userNick=' + this.getMember.nickName).then((resp) => {
             let res = resp.data;
             if (res.result == '1') {
@@ -175,7 +190,9 @@ export default {
     member: function (newValue, oldValue) {
       if (newValue.loginName && newValue.loginName !== oldValue.loginName) {
         this.noNickname = newValue.nickName ? false : true; // 是否有昵称
+        this.noIntroduction = newValue.introduction ? false : true; // 是否有签名
         this.getMemberInfo(newValue.loginName); // 根据用户名获取用户信息
+        this.getMember.nickName = this.getMember.nickName ? this.getMember.nickName : newValue.loginName;  //首次修改昵称，输入框内显示用户名
       }
     }
   }
@@ -241,6 +258,10 @@ export default {
 }
 
 .work_mobile_personalcenter_03_nonn {
+  height: 0.8rem;
+  color: red;
+}
+.work_mobile_personalcenter_03_nointro {
   height: 0.8rem;
   color: red;
 }

@@ -3,12 +3,14 @@
   <nav class="ui_navigation_05" v-if="CONFIG && tree && tree.length>0">
     <h3 class="ui_navigation_05_title" v-if="CONFIG.comTitle.isShow">{{CONFIG.comTitle.name}}</h3>
     <ul class="ui_navigation_05_ul" v-for="(item1,index1) in tree" :key="index1">
-      <li class="ui_navigation_05_ul_li" :class="{'ui_navigation_05_item--active':currentActive == item1.id}" @click.self="navClick(item1)" v-if="CONFIG && (typeof(CONFIG.showColumnArray) == 'undefined' || (typeof(CONFIG.showColumnArray) != 'undefined' && CONFIG.showColumnArray && (CONFIG.showColumnArray).indexOf(item1.id) !== -1))">
-        {{item1.name}}
-        <ul class="ui_navigation_05_ul_child1" v-if="item1.childNav.length>0" v-for="(item2,index2) in item1.childNav" :key="index2">
-          <li class="ui_navigation_05_ul_child1_li" :class="{'ui_navigation_05_item--active':currentActive == item2.id}" v-show="item1.showChild" @click.self="navClick(item2)">
+      <li class="ui_navigation_05_ul_li" v-show="CONFIG && (typeof(CONFIG.showColumnArray) == 'undefined' || (typeof(CONFIG.showColumnArray) != 'undefined' && CONFIG.showColumnArray && (CONFIG.showColumnArray).indexOf(item1.id) !== -1))">
+        <span :class="{'ui_navigation_05_item--active':currentActive == item1.id}" class="ui_navigation_05_first" @click.self="navClick(item1,tree)">{{item1.name}}</span>
+
+        <ul class="ui_navigation_05_ul_child1" v-show="item1.childNav.length>0" v-for="(item2,index2) in item1.childNav" :key="index2">
+
+          <li class="ui_navigation_05_ul_child1_li" :class="{'ui_navigation_05_item--active':currentActive == item2.id}" v-show="item1.showChild || currentActive == item2.id" @click.self="navClick(item2,item1.childNav)">
             {{item2.name}}
-            <ul class="ui_navigation_05_ul_child2" v-if="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
+            <ul class="ui_navigation_05_ul_child2" v-show="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
               <li class="ui_navigation_05_ul_child2_li" :class="{'ui_navigation_05_item--active':currentActive == item3.id}" v-show="item2.showChild" @click.self="changeContent(item3.id)">{{item3.name}}</li>
             </ul>
           </li>
@@ -46,8 +48,15 @@ export default {
 
 
   },
-  mounted () { },
+  mounted () {
+  },
   methods: {
+    navInteract (colId) {
+      if (this.CONFIG && this.CONFIG.broadcastEventName) { // 有配置需要和面包屑导航通讯
+        let event = this.CONFIG.broadcastEventName;
+        this.$bus.$emit(event.transCol, { [event.keys.colId]: colId });
+      }
+    },
     getNavList () {
       var paramsObj = Object.assign({}, this.CONFIG.getNavLists.params);
       Get(CONFIG.BASE_URL + this.CONFIG.getNavLists.url, {
@@ -60,7 +69,7 @@ export default {
       });
     },
     createTree (colId, tree, navData) {
-      // console.log(colId);
+      this.navInteract(colId);
       //参数说明：(colId：当前栏目的colId，tree:生成的子结构存放数组，navData：接口返回的data结构)
       navData.forEach((val, ind) => {
         if (val[this.keys.parentId] == colId) {
@@ -78,6 +87,7 @@ export default {
       //发送默认bus
       if (this.defaultBus) {
         this.currentActive = this.colId ? this.colId : this.tree[0].id;
+        this.navInteract(this.currentActive);
         let curIndex = 0;
         // console.log(this.currentActive);
         this.tree.map((item, index) => {
@@ -104,10 +114,12 @@ export default {
         this.defaultBus = false;
       }
     },
-    navClick (item) {
-      this.tree.forEach((item, index) => {
-        if (item.childNav.length > 0) { // 手风琴效果
-          item.showChild = false;
+    navClick (item, items) {
+      this.navInteract(item.id);
+      this.currentActive = item.id;
+      items.map(entry => {  // 手风琴效果
+        if (entry.id != item.id) { // 隐藏同级子栏目
+          entry.showChild = false;
         }
       })
       if (item.createChild == false) {

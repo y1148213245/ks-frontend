@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-06-06 16:16:12 
+ * @Author: song
+ * @Date: 2018-06-06 16:16:12
  * @Last Modified by: song
  * @Last Modified time: 2018-06-13 16:28:04
  * 个人资料
@@ -42,12 +42,14 @@ const dev = {
         navnickName: '修改昵称',
         navintroduction: '修改签名',
         noNickname: '昵称不能为空',
+        noIntroduction: '签名不能为空',
         nickName: '昵称',
         introduction: '签名',
         save: '保存',
         noData: '暂无数据',
         noPic: '暂无头像',
-        failedOp: '操作失败'
+        failedOp: '操作失败',
+        maxNum: 30
       },
       editPersonalInfo: { // 编辑个人信息：昵称 签名
         url: "user/editMemberByName.do",
@@ -56,7 +58,7 @@ const dev = {
         }
       },
       getMemberInfo: {
-        url: "user/getMemberByName.do", // 根据用户名获取用户信息
+        url: "user/getMemberByName.do",  // 根据用户名获取用户信息
         params: {
           loginName: ""
         }
@@ -93,12 +95,14 @@ const prod = {
         navnickName: '修改昵称',
         navintroduction: '修改签名',
         noNickname: '昵称不能为空',
+        noIntroduction: '签名不能为空',
         nickName: '昵称',
         introduction: '签名',
         save: '保存',
         noData: '暂无数据',
         noPic: '暂无头像',
-        failedOp: '操作失败'
+        failedOp: '操作失败',
+        maxNum: 30
       },
       editPersonalInfo: { // 编辑个人信息：昵称 签名
         url: "user/editMemberByName.do",
@@ -107,7 +111,7 @@ const prod = {
         }
       },
       getMemberInfo: {
-        url: "user/getMemberByName.do", // 根据用户名获取用户信息
+        url: "user/getMemberByName.do",  // 根据用户名获取用户信息
         params: {
           loginName: ""
         }

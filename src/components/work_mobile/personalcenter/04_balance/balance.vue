@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-06-07 10:27:26 
+ * @Author: song
+ * @Date: 2018-06-07 10:27:26
  * @Last Modified by: song
  * @Last Modified time: 2018-06-07 16:58:39
  * 余额充值
@@ -24,7 +24,7 @@
     </div>
     <div class="work_mobile_personalcenter_04_rechargeLists">
       <ul class="work_mobile_personalcenter_04_rechargeLists_ul">
-        <li class="work_mobile_personalcenter_04_rechargeLists_li" v-for="(item, index) in testList" :key="index" @click="goToWXPay(item)">
+        <li class="work_mobile_personalcenter_04_rechargeLists_li" :class="{active:currentIndex == index}" v-for="(item, index) in testList" :key="index" @click="goToWXPay(item,index)">
           <span> {{(item.price ? Number(item.price).toFixed(2) : '0.00') + display.money}}</span>
           <span> {{display.add + (item.add ? Number(item.add).toFixed(2) : '0.00') + display.money}} </span>
         </li>
@@ -34,7 +34,7 @@
 </template>
 
 
- 
+
  <script>
 import { mapGetters } from 'vuex';
 import * as interfaces from "@work/login/common/interfaces.js";
@@ -64,7 +64,8 @@ export default {
         "price": "50",
         "add": "10"
       }
-      ]
+      ],
+      currentIndex: -1
     };
   },
   computed: {
@@ -83,8 +84,9 @@ export default {
   },
 
   methods: {
-    goToWXPay(item) {
+    goToWXPay(item,index) {
       console.log(item);
+      this.currentIndex = index;
     }
   }
 
@@ -93,6 +95,9 @@ export default {
 
 
  <style>
+   .active {
+     border: 1px solid #F00;
+   }
 .work_mobile_personalcenter_04 {
   font-size: 0.35rem;
 }

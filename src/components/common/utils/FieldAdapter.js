@@ -362,6 +362,9 @@ var FIELD_ADAPTER = {
             resourceId: "MATERIAL-PIC_RESOURCEID",
             authors: "MATERIAL-PIC_SYS_AUTHORS",
             sysTopic: "MATERIAL-PIC_SYS_TOPIC",
+            keyWords: "MATERIAL-PIC_KEYWORDS",
+            remark: "MATERIAL-PIC_REMARK",
+            picCat: "MATERIAL-PIC_PIC_CAT",
             pubTime: "pub_created"
         }
     }

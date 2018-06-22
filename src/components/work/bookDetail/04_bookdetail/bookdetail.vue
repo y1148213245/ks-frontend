@@ -362,10 +362,8 @@ export default {
   },
   watch: {
     member: function (newValue, oldValue) {
-      if (newValue.loginName && newValue.loginName != oldValue.loginName) {
-        this.loginName = newValue.loginName;
-        this.getResourceDetail();
-      }
+      this.loginName = newValue.loginName;
+      this.getResourceDetail();
     }
   }
 }
