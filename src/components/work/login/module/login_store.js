@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2017-12-26 09:23:33
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-05-29 15:25:27
+ * @Last Modified time: 2018-06-22 15:00:51
  */
 
 import * as interfaces from "../common/interfaces.js";
@@ -52,8 +52,19 @@ let actions = {
 	
 	[interfaces.ACTION_KEEP_SESSION]: ({commit}) => {
 		if(!timer)
-			timer = window.setInterval(keepSession(commit), 600000);
-		return keepSession(commit);
+			timer = window.setInterval(keepSession, 600000);
+		return keepSession();
+
+		function keepSession() {
+			let stamp = new Date().getTime();
+			return Get(CONFIG.BASE_URL+ 'checkToken.do?stamp='+stamp)
+				.then(function (rep) {
+					let datas = rep.data;
+					let _member = datas.data || {};
+					commit("updateMember", _member);
+					return _member
+				});
+		};
 	},
 	[interfaces.ACTION_LOGOUT]: function () {
 		window.localStorage.removeItem('token');
@@ -65,18 +76,7 @@ let actions = {
 	}
 	
 };
-
-var keepSession = function (commit) {
-	let stamp = new Date().getTime();
-	return Get(CONFIG.BASE_URL+ 'checkToken.do?stamp='+stamp)
-		.then(function (rep) {
-			let datas = rep.data;
-			let _member = datas.data || {};
-			commit("updateMember", _member);
-			return _member
-		});
-};
-
+ 
 export default {
 	namespaced: true,
 	name: "login",
