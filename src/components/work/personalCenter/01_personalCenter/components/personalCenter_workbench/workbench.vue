@@ -164,9 +164,11 @@
       </div>
 
       <div class="workbench-pre_next">
-        <el-button type="button" class="el-button--primary workbench-pre" @click="toPre()">上一篇</el-button>
-        <el-button v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4" type="button" class="el-button--primary workbench-next" @click="saveAndtoNext()">保存,下一篇</el-button>
-        <el-button v-else type="button" class="el-button--primary workbench-next" @click="toNext()">下一篇</el-button>
+        <el-button v-if="!(preRecordId == null || preRecordId == recordId)" type="button" class="el-button--primary workbench-pre" @click="toPre()">上一篇</el-button>
+        <template v-if="!(nextRecordId == null || nextRecordId == recordId)">
+          <el-button v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4" type="button" class="el-button--primary workbench-next" @click="saveAndtoNext()">保存,下一篇</el-button>
+          <el-button v-else type="button" class="el-button--primary workbench-next" @click="toNext()">下一篇</el-button>
+        </template>
       </div>
       <div class="workbench-back_review-button_box">
         <el-button type="button" class="el-button--primary" @click="toProductList('')">返回</el-button>
@@ -329,7 +331,8 @@ export default {
       recordId: "" /* 作品列表中取到的数据, 用于评奖 */,
       productDocId: "" /* 当前作品id */,
       preNext: "" /* 上一页下一页数据 */,
-
+      preRecordId: null,/* 上一篇recordId */
+      nextRecordId: null,
       schoolOptions: [],//筛选学校列表
       classlimtOptions: [],//筛选组别列表
       areaListOptions: [],//筛选地区列表
@@ -491,7 +494,7 @@ export default {
       this.currentShow = "activityList";
     },
     resetWorkSearchConditions () {
-      
+
       this.tabState = 'unsave';
 
       this.workSearch.areaList = [];
@@ -983,27 +986,36 @@ export default {
     },
     /* 传teacherId提交评奖 */
     commitAward () {
-      let params = {
-        taskId: this.taskId
-      };
-      Get(CONFIG.BASE_URL + "spc/prodb/activity/commitTaskAward.do", {
-        params
-      }).then(resp => {
-        let result = resp.data.result;
-        if (result == 1) {
-          this.$message({
-            type: "success",
-            message: "提交成功"
-          });
-        } else {
-          this.$message({
-            type: "error",
-            message: "还有作品未评奖"
-          });
-        }
-        /* 刷新作品列表 */
-        this.toProductList();
+      this.$confirm('是否提交评审?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let params = {
+          taskId: this.taskId
+        };
+        Get(CONFIG.BASE_URL + "spc/prodb/activity/commitTaskAward.do", {
+          params
+        }).then(resp => {
+          let result = resp.data.result;
+          if (result == 1) {
+            this.$message({
+              type: "success",
+              message: "提交成功"
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "还有作品未评奖"
+            });
+          }
+          /* 刷新作品列表 */
+          this.toProductList();
+        });
+      }).catch(() => {
       });
+
+
     },
     /* 获取上一篇下一篇 */
     getDistributeWorkPrevNext () {
@@ -1024,21 +1036,21 @@ export default {
         params
       ).then(resp => {
         this.preNext = resp.data;
+        this.preRecordId = this.preNext[this.config.keys_preNext.preDocId];
+        this.nextRecordId = this.preNext[this.config.keys_preNext.nextDocId];
       });
     },
     /* 上一篇 */
     toPre () {
 
-
-      let recordId = this.preNext[this.config.keys_preNext.preDocId];
-      if (recordId == null || recordId == this.recordId) {
+      if (this.preRecordId == null || this.preRecordId == this.recordId) {
         this.$message({
           type: "warning",
           message: "已是第一篇"
         });
       } else {
         this.selectAwards = []
-        this.recordId = recordId;
+        this.recordId = this.preRecordId;
         this.getProductDetailByRecordId();
       }
     },
@@ -1058,9 +1070,7 @@ export default {
     },
     toNext () {
 
-      let recordId = this.preNext[this.config.keys_preNext.nextDocId];
-
-      if (recordId == null || recordId == this.recordId) {
+      if (this.nextRecordId == null || this.nextRecordId == this.recordId) {
         this.$message({
           duration: 0,
           showClose: true,
@@ -1069,7 +1079,7 @@ export default {
         });
       } else {
         this.selectAwards = []
-        this.recordId = recordId;
+        this.recordId = this.nextRecordId;
         this.getProductDetailByRecordId();
       }
     },
@@ -1250,6 +1260,9 @@ export default {
 }
 .workbench-commit_review {
   margin-top: 10px;
+}
+.workbench-pre_next {
+  overflow: hidden;
 }
 .workbench-next {
   float: right;
