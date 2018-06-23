@@ -42,11 +42,11 @@
     <div class="work_shoppingcartsuccess_04_moneymain" v-if="moneyList">
       <div class="work_shoppingcartsuccess_04_moneymain_one" v-if="moneyList && moneyList.money_one">
         <span>{{moneyList.money_one.name}}</span>
-        <span>{{bookMoney}}{{moneyList.money_one.unit}}</span>
+        <span>{{bookMoney | formatPriceNew }}{{moneyList.money_one.unit}}</span>
       </div>
       <div class="work_shoppingcartsuccess_04_moneymain_one" v-if="moneyList && moneyList.money_two">
         <span>{{moneyList.money_two.name}}</span>
-        <span>{{menberMoney}}{{moneyList.money_two.unit}}</span>
+        <span>{{menberMoney | formatPriceNew }}{{moneyList.money_two.unit}}</span>
       </div>
     </div>
     <div class="work_shoppingcartsuccess_04_button" v-if="buttonList">
@@ -64,7 +64,7 @@
   import { mapGetters, mapActions, mapState } from 'vuex';
   import * as interfaces from "@work/login/common/interfaces.js";
   import Vue from 'vue';
-  import { Get, Post, DrawImage, getFieldAdapter, toOtherPage } from "@common";
+  import { Get, Post, DrawImage, getFieldAdapter, toOtherPage, mobileLoading } from "@common";
   import URL from 'url';
   import PROJECT_CONFIG from "projectConfig";
 

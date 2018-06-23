@@ -12,6 +12,10 @@ var CONFIG = {
 	}
 }
 var $_$ = {
+  bookContentType: { // 书的类型  纸书：91 电子书 94
+    bookType: '91',
+    ebookType: '94',
+  },
 	"SITE_NAME": "site-102",
 	"IS_DISABLE": false,
 	"findPassword": {

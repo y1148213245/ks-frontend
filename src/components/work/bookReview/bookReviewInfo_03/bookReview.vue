@@ -164,13 +164,21 @@
       /* 评论回复*/
       bookReview () {
         if (!this.loginName) {  // 未登录
+          // this.$message({
+          //   message: "请登录",
+          //   type: 'error'
+          // });
+          window.open( '../pages/login.html');
+          return false;
+        }
+        var content = this.$refs.commentContent.value;
+        if(content==''){
           this.$message({
-            message: "请登录",
+            message: "评论内容不能为空",
             type: 'error'
           });
           return false;
         }
-        var content = this.$refs.commentContent.value;
         // content = encodeURIComponent(content);
         let queryConfig = this.CONFIG.addComment;
         let paramsObj = Object.assign({}, queryConfig.params);
@@ -262,6 +270,7 @@
         //     this.loginName = member.loginName;
         //   });
         // }
+
         let queryConfig = this.CONFIG.queryComments;
         let paramsObj = Object.assign({}, queryConfig.params);
         paramsObj.pubId = this.pubId;

@@ -45,7 +45,7 @@
 				<span class="work_shoppingcart_03_pay_Balance_radio" :class="{work_shoppingcart_03_pay_avtive:defaultPay=='Balance'}" @click="changeDefaultPay('Balance')"></span>
 				<span class="work_shoppingcart_03_pay_icon work_shoppingcart_03_pay_Balance_icon" v-bind="{class: payType.Balance.iconClass}"></span>
 				<span class="work_shoppingcart_03_pay_name work_shoppingcart_03_pay_Balance_name" v-text="payType.Balance.name"></span>
-				<span v-if="payType.Balance.moneyShow" class="work_shoppingcart_03_pay_Balance_money">{{menberMoney}} {{payType.Balance.moneyUnit}}</span>
+				<span v-if="payType.Balance.moneyShow" class="work_shoppingcart_03_pay_Balance_money">{{menberMoney | formatPriceNew }} {{payType.Balance.moneyUnit}}</span>
 				<span v-if="payType.Balance.goRechargeShow" class="work_shoppingcart_03_pay_Balance_button">
           <a :href="payType.Balance.goRechargeUrl" v-text="payType.Balance.goRechargeButton">充值</a>
         </span>
@@ -72,7 +72,7 @@
 	import { mapGetters, mapActions, mapState } from 'vuex';
 	import * as interfaces from "@work/login/common/interfaces.js";
 	import Vue from 'vue';
-	import { Get, Post, DrawImage, getFieldAdapter, toOtherPage } from "@common";
+	import { Get, Post, DrawImage, getFieldAdapter, toOtherPage, mobileLoading} from "@common";
 	import URL from 'url';
 	import PROJECT_CONFIG from "projectConfig";
 

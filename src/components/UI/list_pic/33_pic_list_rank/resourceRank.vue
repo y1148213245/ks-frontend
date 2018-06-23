@@ -10,7 +10,7 @@
     <!-- 更多按钮 -->
     <div class="ui_list_pic_33_tomore_con" v-if="CONFIG && CONFIG.toMoreBtn && CONFIG.toMoreBtn.isShow && columnDetailInfo" @click="toCustomFun(columnDetailInfo, CONFIG.toMoreBtn)">
       <span class="ui_list_pic_33_tomore_name"> {{CONFIG.toMoreBtn.name}}</span>
-        <i class="ui_list_pic_33_tomore_icon" v-bind="{class: CONFIG.toMoreBtn.iconClass}"></i>
+      <i class="ui_list_pic_33_tomore_icon" v-bind="{class: CONFIG.toMoreBtn.iconClass}"></i>
     </div>
 
     <div class="ui_list_pic_33_resourcelists">
@@ -22,7 +22,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_33_resourcelists_li_imgcontainter" @click="toCustomFun(item, config)">
               <label class="ui_list_pic_33_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)"/>
+              <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)" />
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
@@ -34,7 +34,7 @@
             <!-- price 价格 -->
             <span :key="config_i" v-else-if="config.name == 'price'" class="ui_list_pic_33_resourcelists_li_pricecontainter">
               <label class="ui_list_pic_33_resourcelists_price_label">{{config.display}}</label>
-              <span v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}">{{ item[keys[config.field]]  | formatPriceNew }}</span>
+              <span v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}">{{ item[keys[config.field]] | formatPriceNew }}</span>
             </span>
 
             <!-- time 时间 -->
@@ -44,7 +44,7 @@
             </span>
 
             <!-- 其他不需要特殊处理的简单项 -->
-            <span :key="config_i" v-else  class="ui_list_pic_33_resourcelists_other">
+            <span :key="config_i" v-else class="ui_list_pic_33_resourcelists_other">
               <label class="ui_list_pic_33_resourcelists_li_label">{{config.display}}</label>
               <span v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}">{{ item[keys[config.field]] }}</span>
             </span>
@@ -56,7 +56,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_33_resourcelists_li_imgcontainter" @click="toCustomFun(item, config)">
               <label class="ui_list_pic_33_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)"/>
+              <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)" />
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
@@ -68,7 +68,7 @@
             <!-- price 价格 -->
             <span :key="config_i" v-else-if="config.name == 'price'" class="ui_list_pic_33_resourcelists_li_pricecontainter">
               <label class="ui_list_pic_33_resourcelists_price_label">{{config.display}}</label>
-              <span v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}">{{ item[keys[config.field]]  | formatPriceNew }}</span>
+              <span v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}">{{ item[keys[config.field]] | formatPriceNew }}</span>
             </span>
 
             <!-- time 时间 -->
@@ -78,14 +78,12 @@
             </span>
 
             <!-- 其他不需要特殊处理的简单项 -->
-            <span :key="config_i" v-else  class="ui_list_pic_33_resourcelists_other">
+            <span :key="config_i" v-else class="ui_list_pic_33_resourcelists_other">
               <label class="ui_list_pic_33_resourcelists_li_label">{{config.display}}</label>
               <span v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}">{{ item[keys[config.field]] }}</span>
             </span>
-            
-            
 
-          </template> 
+          </template>
         </li>
       </ul>
 
@@ -120,9 +118,8 @@ export default {
     this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter)));
     this.columnKeys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getSubTitle.sysAdapter, this.CONFIG.getSubTitle.typeAdapter)));
     this.hoverIndex = this.resourceListsConfig.hasHoverEvent ? this.hoverIndex : ''; // 只有当配置了有鼠标移入事件才触发
-
-    this.getResourceLists();  // 获取资源列表
-    this.getColumnSubTitle(); // 获取栏目副标题
+    this.getColumnSubTitle() // 获取栏目副标题
+    // this.getResourceLists();  // 获取资源列表
   },
 
   methods: {
@@ -138,6 +135,7 @@ export default {
         if (datas.success && datas.data) {
           this.columnDetailInfo = datas.data;
         }
+        this.getResourceLists();
       });
     },
     getResourceLists () { // 获取资源列表
@@ -176,8 +174,15 @@ export default {
   height: 180px;
 }
 
-.ui_list_pic_33_resourcelists_ul .ui_list_pic_33_resourcelists_li:nth-child(1) .ui_list_pic_33_resourcelists_li_rank, .ui_list_pic_33_resourcelists_ul .ui_list_pic_33_resourcelists_li:nth-child(2) .ui_list_pic_33_resourcelists_li_rank,.ui_list_pic_33_resourcelists_ul .ui_list_pic_33_resourcelists_li:nth-child(3) .ui_list_pic_33_resourcelists_li_rank {
+.ui_list_pic_33_resourcelists_ul
+  .ui_list_pic_33_resourcelists_li:nth-child(1)
+  .ui_list_pic_33_resourcelists_li_rank,
+.ui_list_pic_33_resourcelists_ul
+  .ui_list_pic_33_resourcelists_li:nth-child(2)
+  .ui_list_pic_33_resourcelists_li_rank,
+.ui_list_pic_33_resourcelists_ul
+  .ui_list_pic_33_resourcelists_li:nth-child(3)
+  .ui_list_pic_33_resourcelists_li_rank {
   color: red;
 }
-
 </style>

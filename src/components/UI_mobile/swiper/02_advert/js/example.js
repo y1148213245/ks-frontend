@@ -32,6 +32,7 @@ const prod = {
       },
       keys:{ //接口字段兼容
         pic: "pub_picBig",
+        poster:"pub_POSTER"
       },
       maxNum: 1, // 取多少个数据
       toDetailType: {

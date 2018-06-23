@@ -21,7 +21,7 @@
             <!-- 自定义事件按钮 包括（title 标题） -->
             <span :key="config_i" v-else-if="config.name == 'button'" v-bind="{class: 'ui_list_pic_31_resourcelists_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(item, config)">
               <label class="ui_list_pic_31_resourcelists_btnlabel">{{config.display}}</label>
-              <span v-bind="{class: 'ui_list_pic_31_resourcelists__btncontainer_' + config.field}" v-if="keys[config.field]">{{ item[keys[config.field]] }}</span>
+              <span v-bind="{class: 'ui_list_pic_31_resourcelists__btncontainer_' + config.field}" v-if="keys[config.field]" v-html="item[keys[config.field]]"></span>
             </span>
 
             <!-- price 价格 -->

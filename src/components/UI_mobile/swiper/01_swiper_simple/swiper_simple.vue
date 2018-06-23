@@ -1,4 +1,4 @@
-<!-- 简单轮播图 -->
+<!-- 简单轮播图    zongsir-->
 <template>
   <div class="ui_mobile_swiper_01">
     <van-swipe class="ui_mobile_swiper_01-slides" :autoplay="3000">
@@ -64,6 +64,7 @@ export default {
       })
     },
     toDetail (item) {
+
       let toDetailType = this.CONFIG.toDetailType;
       if (toDetailType.type == 'phone') {
         let params = '';
@@ -84,7 +85,7 @@ export default {
           url += key + '=' + element + '&';
         }
         url = url.substring(0, url.length - 1)
-        window.location.href = item.sourceUrl ? item.sourceUrl : url;
+        window.location.href = item.information_a_sourceUrl ? item.information_a_sourceUrl : url;
 
       }
     }

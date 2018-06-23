@@ -29,13 +29,13 @@ const dev = {
           readTrying:'试读'
         },
         probation:{
-          url:CONFIG.READ_URL,
+          url:'',
           params:{
             bookId:'',
             readType:0,
             bookName:'',
             userName:'',
-            siteType:'1'
+            siteType:''
           }
         },
         toDetailUrl: '../pages/bookdetail.html',
@@ -50,7 +50,7 @@ const dev = {
             pageIndex:'1', //页码
             pageSize:'15', //每页显示的页数
             type:'2',    //类型2：购买
-            siteId:'1', // 站点id
+            siteId:'', // 站点id
             productType:'', //商品类型电子期刊:periodical
             status:'1'  // 状态1:加入书架0：未加入书架
           }
@@ -60,7 +60,7 @@ const dev = {
           params: {
             loginName:'',  //用户名
             pubId:'1',     //图书发布ID
-            siteId:'1', // 站点id
+            siteId:'', // 站点id
           }
         }
       },
@@ -85,7 +85,7 @@ const dev = {
             loginName:'',   //用户名
             pageIndex:'1',   //页码
             pageSize:'15',   //每页个数
-            siteId:'1',   //站点Id
+            siteId:'',   //站点Id
             contentType:'',  //内容类型91纸质书 94电子书 PORTAL_WORKS:作品
           }
         },
@@ -94,7 +94,7 @@ const dev = {
           params: {
             pubIds:'12,13,14',      //收藏商品的pubIDs，以逗号隔开12,13,14
             loginName:'',   //用户名
-            siteId:'1',   //站点Id
+            siteId:'',   //站点Id
           }
         }
       },
@@ -117,13 +117,13 @@ const prod = {
           readTrying:'试读'
         },
         probation:{
-          url:CONFIG.READ_URL,
+          url:'',
           params:{
             bookId:'',
             readType:0,
             bookName:'',
             userName:'',
-            siteType:'1'
+            siteType:''
           }
         },
         toDetailUrl: '../pages/bookdetail.html',
@@ -138,7 +138,7 @@ const prod = {
             pageIndex:'1', //页码
             pageSize:'15', //每页显示的页数
             type:'2',    //类型2：购买
-            siteId:'1', // 站点id
+            siteId:'', // 站点id
             productType:'', //商品类型电子期刊:periodical
             status:'1'  // 状态1:加入书架0：未加入书架
           }
@@ -148,7 +148,7 @@ const prod = {
           params: {
             loginName:'',  //用户名
             pubId:'1',     //图书发布ID
-            siteId:'1', // 站点id
+            siteId:'', // 站点id
           }
         }
       },
@@ -173,7 +173,7 @@ const prod = {
             loginName:'',   //用户名
             pageIndex:'1',   //页码
             pageSize:'15',   //每页个数
-            siteId:'1',   //站点Id
+            siteId:'',   //站点Id
             contentType:'',  //内容类型91纸质书 94电子书 PORTAL_WORKS:作品
           }
         },
@@ -182,7 +182,7 @@ const prod = {
           params: {
             pubIds:'12,13,14',      //收藏商品的pubIDs，以逗号隔开12,13,14
             loginName:'',   //用户名
-            siteId:'1',   //站点Id
+            siteId:'',   //站点Id
           }
         }
       },

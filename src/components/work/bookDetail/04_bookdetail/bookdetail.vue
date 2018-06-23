@@ -291,10 +291,12 @@ export default {
     },
     addCart (config) { // 加入购物车
       if (!this.loginName) {  // 未登录
-        this.$message({
-          message: "请登录",
-          type: 'error'
-        });
+        // this.$message({
+        //   message: "请登录",
+        //   type: 'error'
+        // });
+
+        window.open( '../pages/login.html');
         return false
       }
       this.pubId = this.resourceDetail[this.keys.id];
@@ -334,15 +336,22 @@ export default {
             message: msg,
             type: 'success'
           });
+        } else {
+          let errormsg = datas.error &&  datas.error.msg ? datas.data.error.msg : datas.data.msg;
+          this.$message({
+            message: errormsg,
+            type: 'error'
+          });
         }
       });
     },
     collectOrLike (config) { // 点赞 或者 收藏
       if (!this.loginName) {  // 未登录
-        this.$message({
-          message: "请登录",
-          type: 'error'
-        });
+        // this.$message({
+        //   message: "请登录",
+        //   type: 'error'
+        // });
+        window.open( '../pages/login.html');
         return false
       }
       let paramsObj = Object.assign({}, this.collectOrLikeConfig.params);

@@ -3,7 +3,8 @@
  */
 
 var CONFIG = {
-	BASE_URL: "http://test.founder.com.cn/ynxh/spc-portal-app/",
+	// BASE_URL: "http://test.founder.com.cn/ynxh/spc-portal-app/",
+	BASE_URL:"http://172.19.92.94:8080/portal/mobile-api/",
 	READ_URL: 'http://test.founder.com.cn/ynxh/portal/reader/yuezhi/read.jsp',  // 阅读地址
 	PAGE_MANAGEMENT_URL: "http://172.19.92.76:8085/spc/api/",  // 页面管理系统地址
 	SITE_CONFIG: {
@@ -1011,7 +1012,7 @@ var $_$ = {
 			ui_mobile_swiper_02: {
 				url:  "spc/cms/publish/list.do",
 				params: {
-					conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"},{pub_col_id:133}]', //广告栏目id为133
+					conditions: '[{pub_resource_type:"BOOK"},{pub_status:"1"},{pub_site_id:"' + CONFIG.SITE_CONFIG.siteId + '"},{pub_col_id:936}]', //广告栏目id为133
 					groupBy: "pub_resource_id",
 					orderBy: "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 					pageNo: "1",

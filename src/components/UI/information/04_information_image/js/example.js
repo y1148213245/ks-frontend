@@ -9,7 +9,7 @@ const description = `图片详情组件`; // 组件描述信息
 
 const dev = {
     information: {
-        information_image_04: {
+        ui_information_image_04: {
             'modulename': {
                 getResourceDetail: {
                     url: "../data/04_detail.json",
@@ -27,7 +27,7 @@ const dev = {
                         display: '', // 固定显示内容是什么
                         method: '', // 方法名 要在下面配置
                         className: "",
-                        default_url: "../imgs/default.png"
+                        default_url: "../assets/theme/img/default.png"
                     }, {
                         name: 'button',
                         field: 'resName',
@@ -97,7 +97,7 @@ const dev = {
 
 const prod = {
     information: {
-        information_image_04: {
+        ui_information_image_04: {
             'modulename': {
                 getResourceDetail: {
                     url: "resource/detail.do",
@@ -115,7 +115,7 @@ const prod = {
                         display: '', // 固定显示内容是什么
                         method: '', // 方法名 要在下面配置
                         className: "",
-                        default_url: "../imgs/default.png"
+                        default_url: "../assets/theme/img/default.png"
                     }, {
                         name: 'button',
                         field: 'resName',

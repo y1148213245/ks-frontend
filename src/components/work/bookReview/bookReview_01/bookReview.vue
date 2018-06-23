@@ -152,6 +152,10 @@ export default {
     },
     /* 去评论页面评论*/
     toAddReview(){
+      if (this.loginName == undefined || this.loginName == '') {
+        window.open( '../pages/login.html');
+        return false;
+      }
       if(typeof(this.CONFIG.toAddReview)!='undefined'){
         window.open( this.CONFIG.toAddReview.toAddReviewUrl + "?pubId=" + this.pubId+ "&&loginName=" + this.loginName);
     }
@@ -161,10 +165,11 @@ export default {
     bookReview () {
       var loginName = this.member.loginName;
       if (loginName == undefined || loginName == '') {
-        this.$message({
-          message: '请登录',
-          type: 'error'
-        })
+        // this.$message({
+        //   message: '请登录',
+        //   type: 'error'
+        // })
+        window.open( '../pages/login.html');
         return false;
       }
       var bookDetail = this.bookInfo;
