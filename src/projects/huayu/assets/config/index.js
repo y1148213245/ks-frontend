@@ -1,6 +1,6 @@
 var CONFIG = {
-	// "BASE_URL": "http://www.liaoningxinhuajiaoyu.com/portal/api/",
-	"BASE_URL":"http://172.19.92.76:8080/portal/api/",
+	"BASE_URL": "http://www.liaoningxinhuajiaoyu.com/portal/api/",
+	// "BASE_URL":"http://172.19.92.76:8080/portal/api/",
 	// "BASE_URL":"http://172.19.57.67:8080/portal/api/",/* 新服务器 */
 	// "BASE_URL":"http://172.19.92.94:8080/portal/api/",
 	// "BASE_URL":"http://172.19.36.97:9092/spc-portal-web/",

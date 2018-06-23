@@ -165,10 +165,8 @@
 
       <div class="workbench-pre_next">
         <el-button v-if="!(preRecordId == null || preRecordId == recordId)" type="button" class="el-button--primary workbench-pre" @click="toPre()">上一篇</el-button>
-        <template v-if="!(nextRecordId == null || nextRecordId == recordId)">
-          <el-button v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4" type="button" class="el-button--primary workbench-next" @click="saveAndtoNext()">保存,下一篇</el-button>
-          <el-button v-else type="button" class="el-button--primary workbench-next" @click="toNext()">下一篇</el-button>
-        </template>
+        <el-button v-if="productRecord[config.keys_product.taskStatus] == 1 || productRecord[config.keys_product.taskStatus] == 4" type="button" class="el-button--primary workbench-next" @click="saveAndtoNext()">保存,下一篇</el-button>
+        <el-button v-else type="button" class="el-button--primary workbench-next" @click="toNext()">下一篇</el-button>
       </div>
       <div class="workbench-back_review-button_box">
         <el-button type="button" class="el-button--primary" @click="toProductList('')">返回</el-button>
@@ -395,6 +393,7 @@ export default {
             _this.radioChlick(award);
           }
         })
+
         _this.award.map(entry => {
           if (entry.indexOf(item.type + ':') > -1) {
             data.vmodel['data' + item.id].val = entry
@@ -836,10 +835,10 @@ export default {
           let award = null;
           if (distributeWorkList.length > 0) {
             let awardsArr = []
-            if (this.productDetail.hasOwnProperty(this.config.keys_productDetail.award) && this.productDetail[this.config.keys_productDetail.award]) {
-              awardsArr = this.productDetail[this.config.keys_productDetail.award].split(',');
-            } else if (distributeWorkList[0][this.config.keys_product.award]) {
+            if (distributeWorkList[0][this.config.keys_product.award]) {
               awardsArr = distributeWorkList[0][this.config.keys_product.award].split(',')
+            } else if (this.productDetail.hasOwnProperty(this.config.keys_productDetail.award) && this.productDetail[this.config.keys_productDetail.award]) {
+              awardsArr = this.productDetail[this.config.keys_productDetail.award].split(',');
             }
 
             this.award = awardsArr;
