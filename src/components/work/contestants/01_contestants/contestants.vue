@@ -639,6 +639,7 @@ export default {
     },
     //查询学校
     updateSchool () {
+      this.schoolInformaitionValue = ""; //清空学校
       if (this.addressInformaitionValue == '' && this.classInformaitionValue == '') {
         this.isSelectSchool = false;
       } else {
@@ -681,7 +682,6 @@ export default {
         "&" +
         vals + "&page=0&size=999";
       Get(CONFIG.BASE_URL + url).then(resp => {
-        this.schoolInformaitionValue = ""; //清空学校
         this.schoolArr = resp.data.content;
         // console.log(this.schoolArr);
       });
@@ -795,6 +795,7 @@ export default {
         return false;
       } else {
         this.active = 1;
+        return true;
       }
     },
     // 增加参赛人信息
@@ -894,6 +895,9 @@ export default {
     },
     // 添加附件类参赛作品
     submitAddAnnexWorksForm (addAnnexWorksForm) {
+      if (this.submitAddSupplementForm('addSupplementForm') == false) {
+        return false
+      }
       this.$refs[addAnnexWorksForm].validate(valid => {
         let contentLength = this.getContentString(this.addAnnexWorksForm.content).length;
         if (valid) {

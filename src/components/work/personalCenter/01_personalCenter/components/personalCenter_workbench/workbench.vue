@@ -149,12 +149,23 @@
       <!-- <div class="workbench-review-product_fujian">
         文件下载：<a href="#" v-text="productDetail[config.keys_productDetail.fujian]"></a>
      </div> -->
+      <!-- 历史评审结果 -->
       <div class="workbench-review-history" v-if="productRecord[config.keys_product.taskStatus] == 2 || productRecord[config.keys_product.taskStatus] == 3">
         <el-table :data="historyReviewList" stripe border style="margin:0 auto;width:600px;">
 
           <el-table-column :prop="config.keys_historyReview.commitTime" label="提交时间" :formatter="formateDate" width="300">
           </el-table-column>
           <el-table-column :prop="config.keys_historyReview.award" label="历史评审结果" width="300">
+          </el-table-column>
+        </el-table>
+      </div>
+      <!-- 当前待审核奖项 -->
+      <div class="workbench-review-history" v-if="productRecord[config.keys_product.taskStatus] == 2">
+        <el-table :data="crruentReview" stripe border style="margin:0 auto;width:600px;">
+
+          <el-table-column :prop="config.keys_product.commitTime" label="提交时间" :formatter="formateDate" width="300">
+          </el-table-column>
+          <el-table-column :prop="config.keys_product.award" label="待审核奖项" width="300">
           </el-table-column>
         </el-table>
       </div>
@@ -232,6 +243,7 @@ export default {
             workId: "WORKSID",
             commitStatus: "COMMIT_STATUS",
             taskStatus: "TASK_STATUS",
+             commitTime: "COMMIT_TIME"
 
           },
           keys_productDetail: {
@@ -338,6 +350,7 @@ export default {
       awardListOptions: [],//筛选奖项列表
       tabState: 'unsave',//已保存/未保存切换  默认未保存
       historyReviewList: [],/* 历史评审结果 */
+      crruentReview:[],/* 当前待评审作品 */
       currentShow: "activityList",
       select_place: "",
       select_school: "",
@@ -469,13 +482,11 @@ export default {
     /* 去评奖 */
     toReview (row) {
       this.currentShow = "review";
-      let param = row ? row[this.config.keys_product.workId] : this.productDocId;
-      this.productDocId = param;
-      this.recordId = row
-        ? row[this.config.keys_product.docId]
-        : this.recordId;
+      this.productDocId = row ? row[this.config.keys_product.workId] : this.productDocId;
+      this.recordId = row ? row[this.config.keys_product.docId] : this.recordId;
+      this.crruentReview = row ? [row] : this.crruentReview;
 
-      this.getProductDetail(param);
+      this.getProductDetail(this.productDocId);
       this.getDistributeWorkPrevNext();
 
 
@@ -813,7 +824,7 @@ export default {
           this.config.keys_productDetail.id
         ];
         this.getSaveAward();
-        this.getHistoryAward(this.productDocId);
+        this.getHistoryAward(docId);
 
       });
     },
@@ -852,14 +863,14 @@ export default {
       });
     },
     /* 根据WORKSID和'已提交'状态获取历史奖项 */
-    getHistoryAward (id) {
+    getHistoryAward (docId) {
       let _this = this;
       let params = {
         doclibCode: "PORTAL_AWARDRECORD",
         relations: "1,1",
         cols: "WORKSID,TASK_STATUS",
         symbols: "2,2",
-        vals: id + ",3",
+        vals: docId + ",3",
         page: '0',
         size: '99'
       };
@@ -1095,6 +1106,7 @@ export default {
 
       Post(CONFIG.BASE_URL + "spc/prodb/searchNLP.do", params).then(resp => {
         if (resp.data.content.length > 0) {
+          this.crruentReview = resp.data.content;
           this.productDocId = resp.data.content[0][this.config.keys_product.workId];
           this.toReview();
         }
