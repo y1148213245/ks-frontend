@@ -1,6 +1,6 @@
 var CONFIG = {
-	"BASE_URL": "http://www.liaoningxinhuajiaoyu.com/portal/api/",
-	// "BASE_URL":"http://172.19.92.76:8080/portal/api/",
+	// "BASE_URL": "http://www.liaoningxinhuajiaoyu.com/portal/api/",
+	"BASE_URL":"http://172.19.92.76:8080/portal/api/",
 	// "BASE_URL":"http://172.19.57.67:8080/portal/api/",/* 新服务器 */
 	// "BASE_URL":"http://172.19.92.94:8080/portal/api/",
 	// "BASE_URL":"http://172.19.36.97:9092/spc-portal-web/",
@@ -18,6 +18,25 @@ var $_$ = {
   },
 	"SITE_NAME": "site-102",
 	"IS_DISABLE": false,
+	"activityvote":{
+		"work_activitydetail_01": {
+			"url": "spc/cms/publish/detail.do",
+			"keys": {
+				"title": "PORTAL_ACTIVITY_SYS_TOPIC",
+				"content": "PORTAL_ACTIVITY_DESCRIPTION",
+				"startDate": "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
+				"endDate": "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
+				"resourceId": "pub_resource_id",
+				"illustration": "pub_illustration",
+				"reviewDate": "PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW",
+				"requestUrlParam_pubId": "pubId",
+				"toUploadPageUrlParam_docId": "docId",
+				"illustrationLinks": "PORTAL_ACTIVITY_ACTIVITY_LINKS"
+			},
+			"eventName_loadedDatas": "eventName_loadedDatas",
+			"toUploadPagUrl": ""
+		}
+	},
 	"findPassword": {
 		"findPassword": {
 			"work_findPassword_01": {

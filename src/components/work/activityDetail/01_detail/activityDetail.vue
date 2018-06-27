@@ -4,15 +4,16 @@
     <p class="work_activitydetail_01-title" v-text="detail && detail[keys.title] || ''"></p>
     <div class="work_activitydetail_01-swiper">
       <!-- 轮播图组件 -->
-      <ui_swiper_06 :pics="illustrations"></ui_swiper_06><!-- END 轮播图组件 -->
+      <ui_swiper_06 :pics="illustrations"></ui_swiper_06>
+      <!-- END 轮播图组件 -->
     </div>
     <!-- <div class="work_activitydetail_01-text_content" v-text="detail && detail[keys.content] || ''"></div> -->
-    <div class="work_activitydetail_01-upload_box">
+    <div class="work_activitydetail_01-upload_box" v-if="getIsShow('upload')">
       <div v-if="activeStatus === 1" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">上传作品</div>
       <div v-if="activeStatus === -1" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">未开始</div>
       <div v-if="activeStatus === 2" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">截止投稿</div>
       <div v-if="activeStatus === 0" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">已结束</div>
-  
+
     </div>
   </div>
 </template>
@@ -57,6 +58,18 @@ export default {
       this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_01;
       this.keys = this.CONFIG.keys;
 
+    },
+    getIsShow (item) {
+      if (this.CONFIG.hasOwnProperty('showItem')) {
+        let showItem = this.CONFIG.showItem;
+        if (showItem.indexOf(item) > -1) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
     },
     loadDatas () {
       let keys = this.keys;

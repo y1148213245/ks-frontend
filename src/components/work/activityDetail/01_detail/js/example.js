@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-02-07 10:48:04 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-05-03 15:17:26
+ * @Last Modified time: 2018-06-26 16:12:20
  */
 
 
@@ -10,7 +10,11 @@ import component from '../activityDetail.vue'
 const name = component.name;  // 组件标签名
 const title = '活动详情组件';  // 组件title
 const description = `
-  获取到数据后会触发eventName_loadedDatas事件，第一个参数为获取的数据`;  // 组件描述信息
+  1.获取到数据后会触发eventName_loadedDatas事件，第一个参数为获取的数据
+  2.新增showItem配置,类型为字符串数组,包括"upload(上传按钮)"
+
+  `;  // 组件描述信息
+
 const dev = {
   activityDetail: {
     work_activitydetail_01: {
@@ -47,7 +51,7 @@ const prod = {
       },
       eventName_loadedDatas: 'eventName_loadedDatas',//详情数据加载后触发的事件
       toUploadPagUrl:'./uploadproduction.html',//上传页链接
-      
+      // showItem:['upload']
     }
   }
 };
