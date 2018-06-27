@@ -53,6 +53,7 @@ const dev = {
             name: 'probation',
             field: '',
             display: '免费试读',
+            display1: '全文阅读',
             method: 'toProbation', // 方法名 要在下面配置
             className: "fas fa-book",
           }, {
@@ -112,6 +113,13 @@ const dev = {
           },
           fixedKeys: {}
         },
+        toBuy: { // 去购买
+          url: "../pages/bookBuy.html",
+          dataKeys: {
+            pubId: "id", // id是从适配器里对应的
+          },
+          fixedKeys: {}
+        },
         infoImgWidth: 320, // 资讯图片的宽 要和图片外层容器  宽一样
         infoImgHeight: 220, // 资讯图片的高 要和图片外层容器  高一样
         tabConfigList:{           //tab切换配置
@@ -169,6 +177,14 @@ const dev = {
             colId: "id", // colId是从适配器里对应的
           },
           fixedKeys: {}
+        },
+        bugButton:{
+          display:"立即购买",
+          method: "toBuy",
+          display1:"加入书架",
+          method1: "toBuy",
+          display2:"开始阅读",
+          method2: "toProbation",
         }
       },
     }
@@ -221,6 +237,7 @@ const prod = {
             name: 'probation',
             field: '',
             display: '免费试读',
+            display1: '全文阅读',
             method: 'toProbation', // 方法名 要在下面配置
             className: "fas fa-book",
           }, {
@@ -268,6 +285,13 @@ const prod = {
         },
         toDetail: { // 去资讯详情页面
           url: "../pages/informationdetail.html",
+          dataKeys: {
+            pubId: "id", // id是从适配器里对应的
+          },
+          fixedKeys: {}
+        },
+        toBuy: { // 去购买
+          url: "../pages/bookBuy.html",
           dataKeys: {
             pubId: "id", // id是从适配器里对应的
           },
@@ -337,6 +361,14 @@ const prod = {
             colId: "id", // colId是从适配器里对应的
           },
           fixedKeys: {}
+        },
+        bugButton:{
+          display:"立即购买",
+          method: "toBuy",
+          display1:"加入书架",
+          method1: "toBuy",
+          display2:"开始阅读",
+          method2: "toProbation",
         }
       },
     }

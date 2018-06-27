@@ -94,7 +94,7 @@
         content:"",
         replyNum:0,
         likeNum:0,
-        starNum:1,
+        starNum:5,
         noHint:false,
         colId:0,
         resourceId:'',
@@ -163,7 +163,7 @@
       },
       /* 评论回复*/
       bookReview () {
-        if (!this.loginName) {  // 未登录
+        if (this.loginName == undefined || this.loginName == '') {  // 未登录
           // this.$message({
           //   message: "请登录",
           //   type: 'error'
@@ -226,6 +226,7 @@
               message: '请登录',
               type: 'error'
             })
+            window.open( '../pages/login.html');
             return false;
           }
         }else{

@@ -2,20 +2,58 @@
  * @Author: song 
  * @Date: 2018-06-14 10:43:10 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-19 13:43:27
+ * @Last Modified time: 2018-06-25 18:09:25
  */
 
 import component from "../findpassword.vue";
 
 const name = component.name; // 组件标签名
 
-const title = "手机号找回密码组件"; // 组件title
+const title = "找回密码组件"; // 组件title
 
-const description = `手机号找回密码组件`; // 组件描述信息
+const description = `找回密码组件：手机号找回密码；邮箱找回密码。findPasswordWay属性值控制：Email / Phone
+邮箱找回密码需要两个接口： 
+  sendCheckNumber: { // 发送验证码 邮箱找回密码
+    url: 'user/findPassword.do',
+    params: {
+      email: ''
+    }
+  },
+  setPassword: { // 重置密码 邮箱重置密码
+    url: 'user/setPassword1.do',
+    params: {
+      email: '',
+      passWord: '',
+      code: ''
+    }
+  }
+手机号找回密码需要三个接口：
+checkPhoneNumeber: { // 验证用户信息 查寻手机号是否已经注册过 [手机号找回密码]
+    url: 'user/checkExistMember.do',
+    params: {
+      checkText: '', // 验证文本
+    }
+  },
+  sendCheckNumber: {
+    url: 'user/sendMessageYanBian.do',
+    params: {
+      mobileNum: ''
+    }
+  },
+  setPassword: {
+    url: 'user/findPasswordByMobile.do',
+    params: {
+      mobileNum: '',
+      passWord: '',
+      code: ''
+    }
+  }
+`; // 组件描述信息
 
 const dev = {
   ui_work_findpassword: {
     ui_work_findpassword_01: {
+      findPasswordWay: 'Email',
       emitEvent: { // 发广播事件名称
         contextEventName: 'showContext'
       },
@@ -65,6 +103,7 @@ const dev = {
 const prod = {
   ui_work_findpassword: {
     ui_work_findpassword_01: {
+      findPasswordWay: 'Email',
       emitEvent: { // 发广播事件名称
         contextEventName: 'showContext'
       },

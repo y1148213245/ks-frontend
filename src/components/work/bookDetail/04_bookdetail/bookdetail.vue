@@ -9,7 +9,7 @@
           <!-- img 图片 -->
           <div v-if="config.name == 'img'" class="work_bookdetail_04_imgcontainter" @click="toCustomFun(config)">
             <label class="work_bookdetail_04_img_label">{{config.display}}</label>
-            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src=" resourceDetail[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)" />
+            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src=" resourceDetail[keys[config.field]] || './assets/img/defaultCover.png'" alt="暂无图片" @load="dealResourceImg($event)" />
           </div>
 
           <!-- 自定义事件按钮 包括（title 标题） -->
@@ -61,9 +61,17 @@
 
           <!-- probation 试读 -->
           <div v-else-if="config.name == 'probation'" class="work_bookdetail_04_probationcontainter" :class="{work_bookdetail_04_noProbation: !resourceDetail[keys.bookFreeDownLoadPath]}" @click="toCustomFun(config)">
-            <i v-bind="{class: config.className}"></i>
-            <label class="work_bookdetail_04_probation_label">{{config.display}}</label>
-            <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
+
+            <div  class="work_bookdetail_04_probationcontainter_shidu" v-if="isBuy==0">
+              <i v-bind="{class: config.className}"></i>
+              <label class="work_bookdetail_04_probation_label">{{config.display}}</label>
+              <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
+            </div>
+            <div  class="work_bookdetail_04_probationcontainter_add" v-if="isBuy==1">
+              <i v-bind="{class: config.className}"></i>
+              <label class="work_bookdetail_04_probation_label">{{config.display1}}</label>
+              <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
+            </div>
           </div>
 
           <!-- 促销活动 -->
@@ -137,6 +145,18 @@
       </div>
       <!-- END 评论信息 -->
     </div>
+    <!--购买按钮 当然可以不用-->
+    <div class="work_bookdetail_04_bugButton" v-if="CONFIG && bugButton">
+      <div class="work_bookdetail_04_bugButton_div_buy" v-if="isBuy==0" @click="toCustomFunMethod(bugButton.method)">
+        <label class="work_bookdetail_04_btnlabel">{{bugButton.display}}</label>
+      </div>
+      <div class="work_bookdetail_04_bugButton_div_shelf" v-if="isBuy==1 && isAddShelf==0" @click="toCustomFunMethod(bugButton.method1)">
+        <label class="work_bookdetail_04_btnlabel">{{bugButton.display1}}</label>
+      </div>
+      <div class="work_bookdetail_04_bugButton_div_read" v-if="isBuy==1 && isAddShelf==1" @click="toCustomFunMethod(bugButton.method2)">
+        <label class="work_bookdetail_04_btnlabel">{{bugButton.display2}}</label>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -174,6 +194,9 @@ export default {
       tabConfigList: {}, // tab配置
       tabActiveIndex: 0,//tab默认点击第一个
       modulename_share: 0,//tab默认点击第一个
+      isAddShelf:0, //默认没有加入书架
+      isBuy:0, //默认没有购买
+      bugButton:{},
     };
   },
 
@@ -187,6 +210,10 @@ export default {
       this.tabConfigList = this.CONFIG.tabConfigList;  //tab配置
       this.tabActiveIndex = this.CONFIG.tabConfigList.tabActiveIndex;  //tab配置
     }
+    if (typeof (this.CONFIG.bugButton) != "undefined") {
+      this.bugButton = this.CONFIG.bugButton;  //购买按钮配置
+    }
+
     this.addCartConfig = this.CONFIG.addCart;
     this.collectOrLikeConfig = this.CONFIG.collectOrLike;
     this.audioAttachmentConfig = this.CONFIG.getAudioAttachment;
@@ -224,6 +251,14 @@ export default {
         }
       }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
+    },
+    toCustomFunMethod (method) { // 执行自定义事件
+      if (method == 'toProbation') { // 执行免费试读操作
+        if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 没有试读地址
+          return false
+        }
+      }
+      window.open(toOtherPage(this.resourceDetail, this.CONFIG[method], this.keys));
     },
     selectPublicize (item) { // 切换相关信息显示tab
       this.showPublicizeTopic = item;
@@ -290,7 +325,7 @@ export default {
       }
     },
     addCart (config) { // 加入购物车
-      if (!this.loginName) {  // 未登录
+      if (this.loginName == undefined || this.loginName == '') {  // 未登录
         // this.$message({
         //   message: "请登录",
         //   type: 'error'
@@ -346,7 +381,7 @@ export default {
       });
     },
     collectOrLike (config) { // 点赞 或者 收藏
-      if (!this.loginName) {  // 未登录
+      if (this.loginName == undefined || this.loginName == '') {  // 未登录
         // this.$message({
         //   message: "请登录",
         //   type: 'error'

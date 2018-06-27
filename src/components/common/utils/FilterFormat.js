@@ -104,13 +104,17 @@ Vue.filter('formatColumnName', (value) => {
 // 处理文件(图片,视频,音频)大小
 Vue.filter('formatFileSize', (value) => {
     value = Number(value);
+    let m = 1024 * 1024;
+    let k = 1024;
     if (!isNaN(value)) {
-        if (value >= 1024) {
-            return (value / 1024).toFixed(2) + 'M';
+        if (value >= m) {
+            return (value / m).toFixed(2) + 'M';
+        } else if (value >= k && value < m) {
+            return (value / k).toFixed(2) + 'k';
         } else {
-            return value + 'k';
+            return value + "b";
         }
     } else {
-        return 0 + 'k';
+        return 0 + 'b';
     }
 });

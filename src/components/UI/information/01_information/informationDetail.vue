@@ -18,7 +18,7 @@
         <div class="ui_information_01-news_tit" v-html="information[keys.title]"></div>
         <div class="ui_information_01-news_other">
           <span class="ui_information_01-news_author" v-if="CONFIG && CONFIG.displayItem">{{information[keys.author] || displayItem.noAuthor}}</span>
-          <span class="ui_information_01-news_pubTime">{{information[keys.pubTime] | formatTime('YMD')}}</span>
+          <span class="ui_information_01-news_pubTime">{{information[keys.pubTime] | formatDateHH}}</span>
 
           <span class="ui_information_01-news_share" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('share') !== -1 ? true : false">
             <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis ui_information_01-news_share_a" target="_blank">

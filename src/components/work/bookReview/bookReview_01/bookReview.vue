@@ -3,9 +3,9 @@
   <div class="work_bookreview_01 work_bookreview_01_skin">
     <div class="title">
       <span>精彩评论</span>
-      <span v-if="this.CONFIG && this.CONFIG.toAddReview && this.CONFIG.toAddReview.toAddReviewShow" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{this.CONFIG.toAddReview.toAddReviewName}}</span>
+      <span v-if="this.CONFIG && this.CONFIG.toAddReview && this.CONFIG.toAddReview.toAddReviewShow && this.isDiscuss==0" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{this.CONFIG.toAddReview.toAddReviewName}}</span>
     </div>
-    <div class="reviewCon">
+    <div class="reviewCon" v-if="this.isDiscuss==0">
       <div class="review">
         <span class="reviewSpan">评论</span>
         <p class="star">
@@ -69,7 +69,7 @@ export default {
   data () {
     return {
       pubId: '',
-      starValue: 0, // 评分默认分数
+      starValue: 5, // 评分默认分数
       CONFIG: null,
       commentList: [], // 评论列表
       commentListLike:{},
@@ -83,6 +83,7 @@ export default {
       resourceName:'',
       resourseType:'',
       resourceDetail:{},
+      isDiscuss:0,  //是否能评论 0可以 1不行
     }
   },
   mounted () {
@@ -129,6 +130,7 @@ export default {
         let datas = rep.data;
         if (rep.status == 200 && datas.data) {
           this.resourceDetail = datas.data;
+          this.isDiscuss = this.resourceDetail.isDiscuss;
         }
       });
 
@@ -136,6 +138,10 @@ export default {
     },
     /* 去评论详情页*/
     toReviewInfo (toReviewInfo) {
+      if (this.loginName == undefined || this.loginName == '') {
+        window.open( '../pages/login.html');
+        return false;
+      }
       if(typeof(this.operList.review.toReviewInfoUrl)!='undefined'){
         window.open( this.operList.review.toReviewInfoUrl
           + "?reviewId=" + toReviewInfo.commentId
@@ -213,7 +219,7 @@ export default {
             type: 'success'
           });
           this.$refs.commentContent.value = ''; //评论完置空评分和内容
-          this.starValue = 0;
+          this.starValue = 5;
           var param = {
             pubId: this.pubId,
             pageNo: '1',
@@ -237,10 +243,11 @@ export default {
         if(this.loginName){
           paramsObj.loginName = this.loginName;
         }else{
-          this.$message({
-            message: '请登录',
-            type: 'error'
-          })
+          // this.$message({
+          //   message: '请登录',
+          //   type: 'error'
+          // })
+          window.open( '../pages/login.html');
           return false;
         }
       }else{

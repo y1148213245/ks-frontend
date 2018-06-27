@@ -52,9 +52,12 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import { mobileLoading } from "@common";
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 import { Post } from "@common";
+import { Icon,Toast } from 'vant';
 
 export default {
   name: 'work_search_04',
@@ -72,8 +75,12 @@ export default {
       pageSizes: null,    /* 分页数组 */
       currentPage: 1,   /* 分页组件当前页 */
       totalCount: 0,    /* 总数 */
-      list: null,
+      list: [],
       locationQuery: null, /* 地址栏查询参数 */
+      isMobileLoading:false, //默认不是下拉增量加载
+      totalPages: 0, // 订单总页数
+      pageIndex:"1",
+      noMore:false,
     };
   },
 
@@ -89,12 +96,43 @@ export default {
     if (this.isAutomaticLoad) {
       this.getSearchResult({});
     }
+    /*检测滚动条*/
+    $(window).scroll(() => {
+      /**
+       * function 下拉底部加载
+       * params1: vue对象
+       * params2: 回调方法
+       */
+      if(this.isMobileLoading){
+
+        let clientHeight = $(window).height();   // 屏幕可视高度
+        let scrollHeight = $(window).scrollTop();     // 滚动条滚动高度
+        let allHeight = $(document).height();         // 总高度
+        if (clientHeight + scrollHeight === allHeight) {
+          if (this.pageIndex < this.totalPages) {   // 当前页小于翻页最大值
+            this.noMore = false;
+            this.pageIndex = parseInt(this.pageIndex) + 1 + '';
+            var pageNo = this.pageIndex;
+            this.getSearchResult({ pageNo });
+          }
+        }
+        if (this.pageNo == this.totalPages) {
+          this.noMore = true;
+        }
+      }
+    });
   },
 
   methods: {
     initConfig () {
       let CONFIG = PROJECT_CONFIG[this.namespace].search.search_result_04;
       this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
+      //增量加载
+      if(typeof(this.CONFIG.isMobileLoading)!='undefined'){
+        if(this.CONFIG.isMobileLoading){
+          this.isMobileLoading = this.CONFIG.isMobileLoading;
+        }
+      }
 
     },
     initDate () {
@@ -117,10 +155,22 @@ export default {
 
       Post(CONFIG.BASE_URL+config.url, param).then((req) => {
         let data = req.data.result;
-        this.totalCount = req.data.totalCount;
-        if (data && data instanceof Array && data.length >= 0) {
-          this.list = data;
-        }
+        // if (data && data instanceof Array && data.length >= 0) {
+          if(this.isMobileLoading) {
+            if (data && data instanceof Array && data.length >= 0) {
+              this.list = this.list.concat(data);
+              this.pageNo = req.data.pageNo;
+              this.totalCount = req.data.totalCount;
+              this.totalPages = req.data.totalPages;
+            } else if (datas.success) {
+              Toast.fail(datas.description);
+            }
+          }else{
+            if (data && data instanceof Array && data.length >= 0) {
+              this.list = data;
+            }
+          }
+        // }
       })
     },
     toDetail (pubId) {

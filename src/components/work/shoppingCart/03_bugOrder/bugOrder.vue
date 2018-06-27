@@ -158,7 +158,7 @@
 			},
 			getMenberDetail() {
 				this.loginName = this.member.loginName;
-				if(!this.loginName) { // 未登录
+				if(this.loginName == undefined || this.loginName == '') { // 未登录
           // 未登录就要跳转到登录页面哦
           location.href = this.noLoginUrl;
 					return false;
@@ -181,7 +181,7 @@
 				this.defaultPay = Pay;
 			},
 			commitOrder() {
-				if(!this.loginName) { // 未登录
+				if(this.loginName == undefined || this.loginName == '') { // 未登录
 					return false;
 				}
 				//console.log(Number(this.menberMoney) + '____');
@@ -240,7 +240,7 @@
 					rankDiscountRatio: "", //这是优惠的汇率
 					resourceId: this.resourceDetail.pub_resource_id,
 					resourceName: this.resourceDetail.pub_resource_name,
-					resourceType: "",
+          			resourceType: this.resourceDetail.prod_resource_type,
 					periodicalType: "", //传值空
 					periodicalYear: "", //传值空
 					periodicalMonth: "", //传值空

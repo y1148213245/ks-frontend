@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-07 14:20:40 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-07 18:37:13
+ * @Last Modified time: 2018-06-26 17:58:50
  * 个人中心充值记录
  */
  <template>
@@ -37,6 +37,7 @@
  
  <script>
 import { mapGetters } from 'vuex';
+import { Get } from "@common";
 import * as interfaces from "@work/login/common/interfaces.js";
 import PROJECT_CONFIG from 'projectConfig';
 
@@ -47,22 +48,11 @@ export default {
   data () {
     return {
       CONFIG: null,
-      recordLists: [{
-        price: '6',
-        money: '6',
-        date: '1528353486937',
-        way: '微信支付',
-      }, {
-        price: '16',
-        money: '16',
-        date: '1528353486940',
-        way: '微信支付',
-      }, {
-        price: '80',
-        money: '80',
-        date: '1528353486137',
-        way: '微信支付',
-      },]
+      recordLists: [],
+      totalCount: '0', // 订单总个数
+      totalPages: '0', // 订单总页数
+      pageIndex: "1",  // 页码 从 1 开始
+      pageSize: "15",  // 每页显示个数
     };
   },
 
@@ -74,14 +64,49 @@ export default {
 
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_05;
+    this.RECHARGECONFIG = this.CONFIG.getRechargeLog; // 获取充值记录
     this.display = this.CONFIG.display;
+    // this.initData('songmin');
   },
 
   mounted () {
     this.$bus.$emit(this.CONFIG.emitEvent.contextEventName, this.display.navTitle);
+    /*检测滚动条*/
+    $(window).scroll(() => {
+      /**
+       * function 下拉底部加载
+       * params1: vue对象
+       * params2: 回调方法
+       */
+      mobileLoading(this, 'queryRechargeLog');
+    });
   },
 
-  methods: {}
+  methods: {
+    initData (loginName) { // 初始化数据
+      this.pageSize = this.RECHARGECONFIG.params.pageSize;
+      this.pageIndex = this.RECHARGECONFIG.params.pageIndex;
+      this.queryRechargeLog(loginName); // 获取我的充值记录
+    },
+    queryRechargeLog (loginName) {
+      let params = Object.assign({}, this.RECHARGECONFIG.params);
+      Get(CONFIG.BASE_URL + this.RECHARGECONFIG.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize).then((resp) => {
+        let res = resp.data;
+        if (res.result == '1' && res.data.length > 0) {
+          this.recordLists = this.recordLists.concat(res.data);
+          this.totalCount = res.totalCount;
+          this.totalPages = res.totalPages;
+        }
+      })
+    }
+  },
+  watch: {
+    member: function (newValue, oldValue) {
+      if (newValue.loginName && newValue.loginName != oldValue.loginName) {
+        this.initData(newValue.loginName); // 初始化数据之后再执行查询订单的方法
+      }
+    }
+  }
 
 }
 </script>

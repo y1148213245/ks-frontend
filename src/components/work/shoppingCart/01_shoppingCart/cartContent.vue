@@ -514,6 +514,7 @@
           bankAccount: ""         // 开户账号
         },
         downloadCoin: "", // 下载币
+        balancePay: false, // 下载币全额支付
       };
     },
     computed: {
@@ -1446,7 +1447,7 @@
             orderCode: "",
             payAmount: this.allEbook === true && this.needInvoice === "0" ? this.orderDetail.totalMoney + this.orderDetail.saveAmount : this.orderDetail.totalMoney + this.orderDetail.saveAmount + this.selectedDelivery.deliveryPrice, // 应付金额 = 商品总价 + 运费
             payCode: "",
-            payMethod: this.payMethod, // 支付方式： Weixin 微信支付 Alipay 支付宝支付 // edit by mmc 2018/3/29
+            payMethod: this.balancePay ? 'Balance' : this.payMethod, // 支付方式： Weixin 微信支付 Alipay 支付宝支付 Balance 下载币支付 // edit by mmc 2018/3/29
             payRemark: this.payremark, // 订单备注
             payStatus: "",
             payTime: null,
@@ -1579,8 +1580,10 @@
               if (_this.allEbook && _this.needInvoice === "0") {
                 // 全是电子书并且不需要发票
                 payAmount = _this.orderDetail.bookTotalMoney + _this.orderDetail.ebookTotalMoney - _this.orderDetail.bookSaveMoney - _this.orderDetail.ebookSaveMoney;
+                _this.balancePay = false;
               }
               if (this.rmbCoin < 0){
+                _this.balancePay = false;
                 _this.$alert("下载币优惠数额不能小于0噢~", "系统提示", {
                   confirmButtonText: "确定"
                 });
@@ -1588,6 +1591,7 @@
                 _this.downloadCoin = 0;
               }
               if (this.rmbCoin.toFixed(2) > payAmount) {
+                _this.balancePay = true;
                 _this.$alert("下载币优惠数额不得大于实付金额噢~", "系统提示", {
                   confirmButtonText: "确定"
                 });

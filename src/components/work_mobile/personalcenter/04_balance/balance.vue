@@ -2,8 +2,9 @@
  * @Author: song
  * @Date: 2018-06-07 10:27:26
  * @Last Modified by: song
- * @Last Modified time: 2018-06-07 16:58:39
+ * @Last Modified time: 2018-06-26 18:22:05
  * 余额充值
+ * TODO: 公众号商户授权之后还需要联调支付接口 支付成功与失败的回调 提示信息
  */
  <template>
   <div class="work_mobile_personalcenter_04" v-if="display">
@@ -24,7 +25,7 @@
     </div>
     <div class="work_mobile_personalcenter_04_rechargeLists">
       <ul class="work_mobile_personalcenter_04_rechargeLists_ul">
-        <li class="work_mobile_personalcenter_04_rechargeLists_li" :class="{active:currentIndex == index}" v-for="(item, index) in testList" :key="index" @click="goToWXPay(item,index)">
+        <li class="work_mobile_personalcenter_04_rechargeLists_li" :class="{active:currentIndex == index}" v-for="(item, index) in chargeLists" :key="index" @click="goToWXPay(item,index)">
           <span> {{(item.price ? Number(item.price).toFixed(2) : '0.00') + display.money}}</span>
           <span> {{display.add + (item.add ? Number(item.add).toFixed(2) : '0.00') + display.money}} </span>
         </li>
@@ -37,6 +38,8 @@
 
  <script>
 import { mapGetters } from 'vuex';
+import { Get, Post } from "@common";
+import { Toast } from "vant";
 import * as interfaces from "@work/login/common/interfaces.js";
 import PROJECT_CONFIG from 'projectConfig';
 
@@ -48,23 +51,7 @@ export default {
     return {
       CONFIG: null,
       display: "", //组件静态文本
-      testList: [{
-        "price": "6", // 充多少
-        "add": "0" // 赠多少
-      },
-      {
-        "price": "12",
-        "add": "1"
-      },
-      {
-        "price": "30",
-        "add": "5"
-      },
-      {
-        "price": "50",
-        "add": "10"
-      }
-      ],
+      chargeLists: [],
       currentIndex: -1
     };
   },
@@ -77,6 +64,7 @@ export default {
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_04;
     this.display = this.CONFIG.display;
+    this.getChargeLists(); // 获取充值规则列表
   },
 
   mounted () {
@@ -84,9 +72,58 @@ export default {
   },
 
   methods: {
-    goToWXPay(item,index) {
-      console.log(item);
+    getChargeLists () { // 获取充值规则列表
+      Get(CONFIG.BASE_URL + this.CONFIG.getChargeLists.url).then((resp) => {
+        let datas = resp.data;
+        if (datas.result == '1') { // 获取成功
+          this.chargeLists = datas.data ? JSON.parse(datas.data) : [];
+        }
+      })
+    },
+    goToWXPay (item, index) { // 去微信支付
+      if (!this.member.loginName) { // 未登录情况下不得支付
+        Toast.fail(this.display.login);// 请您先登录
+        // this.$message(this.display.login);
+        return false
+      }
       this.currentIndex = index;
+      let rechargeConfig = this.CONFIG.goToCharge;
+      let paramsObj = Object.assign({}, rechargeConfig.params);
+      paramsObj.price = item.price;
+      Get(CONFIG.BASE_URL + rechargeConfig.url, { 'params': paramsObj }).then((resp) => {
+        let datas = resp.data;
+        if (datas.result == '1') { // 请求成功
+          if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+              document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
+            } else if (document.attachEvent) {
+              document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady);
+              document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady);
+            }
+          } else {
+            this.onBridgeReady(datas.data ? JSON.parse(datas.data) : []);
+          }
+        }
+      })
+    },
+    onBridgeReady (data) {
+      // 在微信浏览器里面打开H5网页中执行JS调起支付  WeixinJSBridge内置对象在其他浏览器中无效 【授权】
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          "appId": data.appId,     //公众号名称，由商户传入     
+          "timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数     
+          "nonceStr": data.nonceStr, //随机串     
+          "package": data.package,
+          "signType": data.signType,         //微信签名方式：     
+          "paySign": data.paySign //微信签名 
+        },
+        function (res) {
+          console.log(res)
+          if (res.err_msg == "get_brand_wcpay_request:ok") {
+
+          }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+        }
+      );
     }
   }
 
@@ -95,9 +132,9 @@ export default {
 
 
  <style>
-   .active {
-     border: 1px solid #F00;
-   }
+.active {
+  border: 1px solid #f00;
+}
 .work_mobile_personalcenter_04 {
   font-size: 0.35rem;
 }

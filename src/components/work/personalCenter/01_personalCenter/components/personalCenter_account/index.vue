@@ -9,7 +9,7 @@
             <span>{{account && account.loginName}}</span>
             <div class="wzdh_all" style="float:right">
               <div class="wdzh_zhuangtai_tx">
-                <img v-bind:src="account.avatar || '../../assets/img/timg.jpg'" alt="暂无头像" />
+                <img v-bind:src="account.avatar || defaultPic" alt="暂无头像" />
               </div>
             </div>
           </li>
@@ -40,7 +40,7 @@
         <div class="wzdh_all">
           <div class="wdzh_zhuangtai">
             <div class="fl wdzh_zhuangtai_tx">
-              <img v-bind:src="account.avatar || '../../assets/img/timg.jpg'" alt="暂无头像" />
+              <img v-bind:src="account.avatar || defaultPic" alt="暂无头像" />
               <p class="wdzh_zhuangtai_tx_zhmc pt10 pb15 fs12">账户名称：
                 <span>{{account && account.loginName}}</span>
               </p>
@@ -234,7 +234,7 @@
             <!--头像上传-->
             <el-upload class="avatar-uploader" :action="uploadUrl()" name="headPicUrl" :show-file-list="false" :on-progress="avatarLoading" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :headers="uploadHeader">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <img v-else v-bind:src="account.avatar || '../../assets/img/timg.jpg'" alt="暂无头像" />
+              <img v-else v-bind:src="account.avatar || defaultPic" alt="暂无头像" />
             </el-upload>
           </div>
           <div class="mt15">
@@ -700,6 +700,7 @@ export default {
     let token = Token()
     return {
       CONFIG: null,
+      defaultPic: '',
       uploadHeader: {
         token: token
       },
@@ -850,6 +851,7 @@ export default {
     };
   },
   created () {
+    this.defaultPic = require('../../assets/img/timg.jpg'); // webpack静态资源打包问题
     this.CONFIG = this.parentConfig.account;
   },
   mounted () {

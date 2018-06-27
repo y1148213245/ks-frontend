@@ -1,11 +1,13 @@
 /*
- * @Author: yan.chaoming 
- * @Date: 2018-01-04 16:44:27 
+ * @Author: yan.chaoming
+ * @Date: 2018-01-04 16:44:27
  * @Last Modified by: song
  * @Last Modified time: 2018-03-12 14:18:06
+ * @Last Modified by: zong mobileLoading
+ * @Last Modified time: 2018-06-24
  * 搜索结果列表
  */
- 
+
 import component from "../searchResult.vue";
 
 
@@ -13,7 +15,7 @@ const name = component.name;  // 组件标签名
 
 const title = "搜索结果列表组件";  // 组件title
 
-const description = `搜索结果列表`;  // 组件描述信息
+const description = `搜索结果列表 isMobileLoading 是否下拉加载默认不需要`;  // 组件描述信息
 
 const dev = {
   search: {
@@ -37,6 +39,7 @@ const prod = {
       pageSizes:[10, 20, 50, 100],
       eventName_loadDate:'loadSearchResult',
       detailHref:'./bookdetail.html?pubId=',
+      isMobileLoading:false,
     }
   }
 };

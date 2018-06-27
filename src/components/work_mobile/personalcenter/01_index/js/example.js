@@ -39,6 +39,10 @@ const dev = {
           title: "收藏",
           tag: "collection",
           hasLink: true
+        },{
+	        title: "我的收藏",
+	        tag: "mycollection",
+	        hasLink: true
         }],
         toExit: { /* 退出配置 */
           type: 'href',
@@ -97,6 +101,10 @@ const prod = {
           title: "收藏",
           tag: "collection",
           hasLink: true
+        },{
+	        title: "我的收藏",
+	        tag: "mycollection",
+	        hasLink: true
         }],
         toExit: { /* 退出配置 */
           type: 'href',

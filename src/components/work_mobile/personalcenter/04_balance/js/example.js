@@ -17,11 +17,25 @@ const dev = {
         chooseAmount: '请选择充值金额',
         payWeixin: '微信支付',
         money: '元',
-        add: '赠'
+        add: '赠',
+        login: '请您先登录'
       },
       emitEvent: { // 发广播事件名称
         contextEventName: 'showContext'
       },
+      getChargeLists: { // 获取充值列表
+        url: 'recharge/getRechargeRule.do',
+      },
+      goToCharge: { // 去微信充值
+        url: 'recharge/rechargeVirtualCoin.do',
+        params: {
+          payType: 'Weixin', // 支付类型:支付宝Alipay 微信：Weixin
+          price: '', //  充值金额
+          loginName: 'cmm123',
+          siteId: '66',
+          flag: 'wxShop', //标识flag=wxShop微信商城
+        }
+      }
     },
   }
 }
@@ -36,11 +50,25 @@ const prod = {
         chooseAmount: '请选择充值金额',
         payWeixin: '微信支付',
         money: '元',
-        add: '赠'
+        add: '赠',
+        login: '请您先登录'
       },
       emitEvent: { // 发广播事件名称
         contextEventName: 'showContext'
       },
+      getChargeLists: { // 获取充值列表
+        url: 'recharge/getRechargeRule.do',
+      },
+      goToCharge: { // 去微信充值
+        url: 'recharge/rechargeVirtualCoin.do',
+        params: {
+          payType: 'Weixin', // 支付类型:支付宝Alipay 微信：Weixin
+          price: '', //  充值金额
+          loginName: 'cmm123',
+          siteId: '66',
+          flag: 'wxShop', //标识flag=wxShop微信商城
+        }
+      }
     },
   }
 }

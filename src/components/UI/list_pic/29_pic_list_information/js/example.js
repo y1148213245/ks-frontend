@@ -13,6 +13,7 @@ const dev = {
       'modulename': {
         comTitle: {
           isShow: true,
+          isShowImg:false,
           name: "资讯"
         },
         toMoreBtn: {
@@ -91,6 +92,7 @@ const dev = {
         toOrderByBtn:{
           name:'排序：',
           isShow:false,
+          itemFieldDefult:'pub_a_order asc pub_lastmodified desc id asc',
           itemList:[
             {
               name:"默认",
@@ -115,6 +117,7 @@ const prod = {
       'modulename': {
         comTitle: {
           isShow: true,
+          isShowImg:false,
           name: "资讯"
         },
         toMoreBtn: {
@@ -190,6 +193,23 @@ const prod = {
           pagesize: [15, 30, 50, 100], // 如何分页
         },
         isMobileLoading:false,
+        toOrderByBtn:{
+          name:'排序：',
+          isShow:false,
+          itemFieldDefult:'pub_a_order asc pub_lastmodified desc id asc',
+          itemList:[
+            {
+              name:"默认",
+              itemField:"pub_a_order asc pub_lastmodified desc id asc",
+            },{
+              name:"最新",
+              itemField:"pub_created asc id asc",
+            },{
+              name:"热门",
+              itemField:"pub_read_num asc id asc",
+            },
+          ]
+        },
       }
     }
   }

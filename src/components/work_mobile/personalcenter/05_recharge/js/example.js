@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-07 14:19:07 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-13 16:27:14
+ * @Last Modified time: 2018-06-26 17:59:11
  */
 
 import component from "../recharge.vue";
@@ -24,6 +24,14 @@ const dev = {
         moneyIcon: '￥',
         empty: '暂无充值记录'
       },
+      getRechargeLog: { // 获取充值记录
+        url: 'user/getRechargeInfo.do',
+        params: {
+          loginName: '',
+          pageIndex: '1',
+          pageSize: '15'
+        }
+      },
       emitEvent: { // 发广播事件名称
         contextEventName: 'showContext'
       },
@@ -41,6 +49,14 @@ const prod = {
         money: '元',
         moneyIcon: '￥',
         empty: '暂无充值记录'
+      },
+      getRechargeLog: { // 获取充值记录
+        url: 'user/getRechargeInfo.do',
+        params: {
+          loginName: '',
+          pageIndex: '1',
+          pageSize: '15'
+        }
       },
       emitEvent: { // 发广播事件名称
         contextEventName: 'showContext'

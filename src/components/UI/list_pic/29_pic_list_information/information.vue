@@ -5,6 +5,9 @@
     <!-- 组件的标题、副标题、去更多传colId 都得从栏目详情的接口里面取值 -->
     <!-- 组件标题 取配置的name 或者 父栏目名称 -->
     <div class="ui_list_pic_29_comtitle_con" v-if="CONFIG && CONFIG.comTitle && CONFIG.comTitle.isShow && columnDetailInfo && columnKeys">
+      <div :key="config_i" v-if="typeof(CONFIG.comTitle.isShowImg!='undefined') && CONFIG.comTitle.isShowImg" class="ui_list_pic_29_comtitle_imgdiv">
+        <img class="ui_list_pic_29_comtitle_imgdiv_img" :src=" columnDetailInfo[columnKeys.bigPic]" alt="暂无图片" />
+      </div>
       <h4 class="ui_list_pic_29_comtitle"> {{CONFIG.comTitle.name ? CONFIG.comTitle.name : columnDetailInfo[columnKeys.name]}} </h4>
       <span class="ui_list_pic_29_comtitle_columnDetailInfo">{{columnDetailInfo[columnKeys.code]}}</span>
     </div>
@@ -27,7 +30,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_29_resourcelists_li_imgcontainter" @click="toCustomFun(item, config, keys)">
               <label class="ui_list_pic_29_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_list_pic_29_resourcelists_li_img" v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}" :src=" item[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)"/>
+              <img class="ui_list_pic_29_resourcelists_li_img" v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}" :src=" item[keys[config.field]] || '../assets/img/defaultCover.png'" alt="暂无图片" @load="dealResourceImg($event)"/>
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
@@ -112,8 +115,13 @@ export default {
         this.isMobileLoading = this.CONFIG.isMobileLoading;
       }
     }
-    this.toOrderByBtn = this.CONFIG.toOrderByBtn;
-    // this.activeSetOrder = "";
+    if(typeof(this.CONFIG.toOrderByBtn)!='undefined'){
+      if(this.CONFIG.toOrderByBtn){
+        this.toOrderByBtn = this.CONFIG.toOrderByBtn;
+        this.activeSetOrder = this.toOrderByBtn.itemFieldDefult;
+      }
+    }
+    //  = "";
 
     if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) { // 通过接收广播获取栏目id
       this.$bus.$on(this.CONFIG.onEvent.eventName, (data) => {
@@ -197,7 +205,12 @@ export default {
         // }
          paramsObj.pageSize = this.pageSize;
       }
-      paramsObj.orderBy = this.activeSetOrder;
+
+      if(typeof(this.CONFIG.toOrderByBtn)!='undefined'){
+        if(this.CONFIG.toOrderByBtn){
+          paramsObj.orderBy = this.activeSetOrder;
+        }
+      }
       // this.activeSetOrder = paramsObj.orderBy;
 
       paramsObj.conditions.map((item) => {

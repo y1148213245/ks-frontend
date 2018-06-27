@@ -600,7 +600,7 @@
       },
       getMenberDetail() {
         this.loginName = this.member.loginName;
-        if(!this.loginName) { // 未登录
+        if(this.loginName == undefined || this.loginName == '') { // 未登录
           // 未登录就要跳转到登录页面哦
           location.href = this.noLoginUrl;
           return false;
@@ -623,7 +623,7 @@
         this.defaultPay = Pay;
       },
       commitOrder() {
-        if(!this.loginName) { // 未登录
+        if(this.loginName == undefined || this.loginName == '') { // 未登录
           return false;
         }
         //console.log(Number(this.menberMoney) + '____');

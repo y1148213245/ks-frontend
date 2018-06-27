@@ -14,8 +14,6 @@ var mobileLoading = function (_this, method) {
   if (clientHeight + scrollHeight === allHeight) {
     if (vthis.pageIndex < vthis.totalPages) { // 当前页小于翻页最大值
       vthis.pageIndex = parseInt(vthis.pageIndex) + 1 + '';
-      console.log(parseInt(vthis.pageIndex));
-      console.log(vthis.pageIndex);
       vthis[method]();
     }
   }

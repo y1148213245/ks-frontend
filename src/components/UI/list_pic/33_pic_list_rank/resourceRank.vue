@@ -8,7 +8,7 @@
       <span class="ui_list_pic_33_comtitle_columnDetailInfo">{{columnDetailInfo[columnKeys.code]}}</span>
     </div>
     <!-- 更多按钮 -->
-    <div class="ui_list_pic_33_tomore_con" v-if="CONFIG && CONFIG.toMoreBtn && CONFIG.toMoreBtn.isShow && columnDetailInfo" @click="toCustomFun(columnDetailInfo, CONFIG.toMoreBtn)">
+    <div class="ui_list_pic_33_tomore_con" v-if="CONFIG && CONFIG.toMoreBtn && CONFIG.toMoreBtn.isShow && columnDetailInfo" @click="toCustomFun(columnDetailInfo, CONFIG.toMoreBtn, columnKeys)">
       <span class="ui_list_pic_33_tomore_name"> {{CONFIG.toMoreBtn.name}}</span>
       <i class="ui_list_pic_33_tomore_icon" v-bind="{class: CONFIG.toMoreBtn.iconClass}"></i>
     </div>
@@ -20,13 +20,13 @@
           <template v-for="(config, config_i) in resourceListsConfig.complicatedItem" v-if="config.hoverEvent == 'false' && hoverIndex !== index">
             <!-- 需要特殊处理的复杂项 -->
             <!-- img 图片 -->
-            <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_33_resourcelists_li_imgcontainter" @click="toCustomFun(item, config)">
+            <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_33_resourcelists_li_imgcontainter" @click="toCustomFun(item, config, keys)">
               <label class="ui_list_pic_33_resourcelists_img_label">{{config.display}}</label>
               <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)" />
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
-            <span :key="config_i" v-else-if="config.name == 'button'" v-bind="{class: 'ui_list_pic_33_resourcelists_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(item, config)">
+            <span :key="config_i" v-else-if="config.name == 'button'" v-bind="{class: 'ui_list_pic_33_resourcelists_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(item, config, keys)">
               <label class="ui_list_pic_33_resourcelists_btnlabel">{{config.display}}</label>
               <span v-bind="{class: 'ui_list_pic_33_resourcelists__btncontainer_' + config.field}" v-if="keys[config.field]">{{ item[keys[config.field]] }}</span>
             </span>
@@ -54,13 +54,13 @@
           <template v-for="(config, config_i) in resourceListsConfig.complicatedItem" v-if="config.hoverEvent == 'true' && hoverIndex === index">
             <!-- 需要特殊处理的复杂项 -->
             <!-- img 图片 -->
-            <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_33_resourcelists_li_imgcontainter" @click="toCustomFun(item, config)">
+            <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_33_resourcelists_li_imgcontainter" @click="toCustomFun(item, config, keys)">
               <label class="ui_list_pic_33_resourcelists_img_label">{{config.display}}</label>
               <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)" />
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
-            <span :key="config_i" v-else-if="config.name == 'button'" v-bind="{class: 'ui_list_pic_33_resourcelists_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(item, config)">
+            <span :key="config_i" v-else-if="config.name == 'button'" v-bind="{class: 'ui_list_pic_33_resourcelists_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(item, config, keys)">
               <label class="ui_list_pic_33_resourcelists_btnlabel">{{config.display}}</label>
               <span v-bind="{class: 'ui_list_pic_33_resourcelists__btncontainer_' + config.field}" v-if="keys[config.field]">{{ item[keys[config.field]] }}</span>
             </span>
@@ -112,7 +112,7 @@ export default {
     };
   },
 
-  mounted () {
+  created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_33[this.modulename];
     this.resourceListsConfig = this.CONFIG.getResourceLists;
     this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter)));
@@ -123,8 +123,8 @@ export default {
   },
 
   methods: {
-    toCustomFun (item, config) { // 执行自定义事件
-      window.open(toOtherPage(this, item, this.CONFIG[config.method]));
+    toCustomFun (item, config, keys) { // 执行自定义事件
+      window.open(toOtherPage(item, this.CONFIG[config.method], keys));
     },
     toggleDisplay (item, index) {  //鼠标移入效果 只有当配置了有鼠标移入事件才触发
       this.hoverIndex = this.resourceListsConfig.hasHoverEvent ? index : '';

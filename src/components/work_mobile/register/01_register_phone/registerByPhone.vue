@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-06-14 10:50:00 
+ * @Author: song
+ * @Date: 2018-06-14 10:50:00
  * @Last Modified by: song
  * @Last Modified time: 2018-06-15 15:58:35
  * 手机号注册
@@ -10,22 +10,24 @@
 
     <!-- 密码找回界面 -->
     <div class="ui_work_register_01_first" v-if="showItem == 'default'">
-      <van-cell-group class="ui_work_register_01_group">
-        <van-field class="ui_work_register_01_phone" v-model="phoneNumber" :placeholder="display.phoneNumber" icon="clear" @click-icon="phoneNumber = ''" @blur="formatPhoneNumber(false)" type="tel" maxlength="11" />
-        <van-field class="ui_work_register_01_check" v-model="checkNumber" :placeholder="display.checkNumber" center>
-          <van-button class="ui_work_register_01_sendcheck" slot="button" size="small" type="primary" v-if="!isCountDown" @click="sendCheckNumber()">
-            <!-- 未进入倒计时状态 -->
-            <span v-if="time" class="ui_work_register_01_sendcheck_sendcheck">{{display.sendCheckNumber}}</span>
-            <span v-if="!time" class="ui_work_register_01_sendcheck_resendcheck">{{display.resendCheckNumber}}</span>
-          </van-button>
-          <van-button class="ui_work_register_01_resendcheck" slot="button" size="small" type="primary" v-if="isCountDown">
-            <!-- 进入倒计时状态 -->
-            <span class="ui_work_register_01_resendcheck_resendcheck">{{display.resendCheckNumber}}</span>
-            <span v-if="time" class="ui_work_register_01_resendcheck_time">{{'(' + time + 's)'}}</span>
-          </van-button>
-        </van-field>
+      <div class="ui_work_register_01_first_div">
 
-      </van-cell-group>
+        <van-cell-group class="ui_work_register_01_group">
+          <van-field class="ui_work_register_01_phone" v-model="phoneNumber" :placeholder="display.phoneNumber" icon="clear" @click-icon="phoneNumber = ''" @blur="formatPhoneNumber(false)" type="tel" maxlength="11" />
+          <van-field class="ui_work_register_01_check" v-model="checkNumber" :placeholder="display.checkNumber" center></van-field>
+        </van-cell-group>
+        <van-button class="ui_work_register_01_sendcheck" slot="button" size="small" type="primary" v-if="!isCountDown" @click="sendCheckNumber()">
+          <!-- 未进入倒计时状态 -->
+          <span v-if="time" class="ui_work_register_01_sendcheck_sendcheck">{{display.sendCheckNumber}}</span>
+          <span v-if="!time" class="ui_work_register_01_sendcheck_resendcheck">{{display.resendCheckNumber}}</span>
+        </van-button>
+        <van-button class="ui_work_register_01_resendcheck" slot="button" size="small" type="primary" v-if="isCountDown">
+          <!-- 进入倒计时状态 -->
+          <span class="ui_work_register_01_resendcheck_resendcheck">{{display.resendCheckNumber}}</span>
+          <span v-if="time" class="ui_work_register_01_resendcheck_time">{{'(' + time + 's)'}}</span>
+        </van-button>
+
+      </div>
       <div class="ui_work_register_01_errormsg" v-text="errormsg" v-show="isWrongPhone || isWrongOthers"></div>
       <div class="ui_work_register_01_nextstep">
         <van-button size="large" type="danger" v-text="display.nextStep" @click="nextStep()"></van-button>
@@ -42,7 +44,7 @@
     </div>
   </div>
 </template>
- 
+
  <script>
 import Vue from "vue";
 import { Field, Button, Cell, CellGroup, Toast } from 'vant';

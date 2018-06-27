@@ -141,7 +141,7 @@
       },
       getMenberDetail(){
         this.loginName = this.member.loginName;
-        if (!this.loginName) {  // 未登录
+        if (this.loginName == undefined || this.loginName == '') {  // 未登录
           return false;
         }
         Get(CONFIG.BASE_URL + 'user/getMemberByName.do', {
