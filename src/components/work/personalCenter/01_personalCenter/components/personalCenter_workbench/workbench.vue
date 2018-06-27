@@ -66,8 +66,7 @@
 
       <div class="workbench-productList-group">
         <label class="workbench-search_label">组别:</label>
-        <el-select v-model="workSearch.group" placeholder="请选择组别">
-          <el-option label="全部" :value="0"></el-option>
+        <el-select v-model="workSearch.group" multiple collapse-tags placeholder="请选择组别">
           <el-option v-for="(item,index) in classlimtOptions" :label="item.label" :value="item.value" :key="index"></el-option>
         </el-select>
       </div>
@@ -299,7 +298,7 @@ export default {
           awardStatus: "save",
           workName: "",
           school: "",
-          group: "",
+          group: [],
           awardList: [],
           areaList: [],
 
@@ -310,7 +309,7 @@ export default {
           awardStatus: "unsave",
           workName: "",
           school: "",
-          group: "",
+          group: [],
           awardList: [],
           areaList: [],
 
@@ -321,7 +320,7 @@ export default {
       workSearch: {/* 作品条件绑定dom */
         areaList: [],
         school: "",
-        group: "",
+        group: [],
         workName: "",
         awardList: [],
         awardStatus: "unsave"
@@ -509,7 +508,7 @@ export default {
 
       this.workSearch.areaList = [];
       this.workSearch.school = "";
-      this.workSearch.group = "";
+      this.workSearch.group = [];
       this.workSearch.workName = "";
       this.workSearch.awardList = [];
       this.workSearch.awardStatus = "unsave";
@@ -741,8 +740,12 @@ export default {
               break;
             }
             case 'group': {
-              if (element) {
-                addParams(1, 'CLASS', 2, element)
+              if (element.length > 0) {
+                let vals = "";
+                element.map(item => {
+                  vals += '_SPC_' + item
+                })
+                addParams(3, 'CLASS', 1, vals.substring(5, vals.length))
               }
               break;
             }
