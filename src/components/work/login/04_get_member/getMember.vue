@@ -1,18 +1,25 @@
 <!-- 获取登陆信息 -->
 <template>
  <div class="work_login_04">
-   <a v-if="!member.loginName" :href="CONFIG.toLoginHref" class="work_login_04-login">
+   <!-- 登录前 -->
+   <template v-if="!member.loginName">
+   <a :href="CONFIG.toLoginHref" class="work_login_04-login">
      <slot>
        [登录]
      </slot>
    </a>
-   <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
-   <span v-if="member.loginName" class="work_login_04-info">欢迎回来！</span>
-   <a class="work_login_04-exit" v-if="member.loginName" @click="exit">
+   <span v-if="getIsShow('register')"><a :href="CONFIG.toRegisterHref">注 册</a></span>
+  </template> 
+  <!-- 登陆后 -->
+  <template v-if="member.loginName">
+   <a :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
+   <span class="work_login_04-info">欢迎回来！</span>
+   <a class="work_login_04-exit" @click="exit">
      <slot name="exit">
        退出
      </slot>
    </a>
+   </template>
  </div>
 </template>
 
@@ -54,6 +61,18 @@ export default {
     }),
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_04
+    },
+    getIsShow(item){
+      if (this.CONFIG.hasOwnProperty('showItem')) {
+        let arr = this.CONFIG.showItem;
+        if(arr.indexOf(item)>-1){
+          return true
+        }else{
+          return false
+        }
+      }else{
+        return false
+      }
     },
     exit () {
       localStorage.setItem('token', '');
