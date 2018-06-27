@@ -90,7 +90,7 @@
           <label class="el-form-item__label">学校：</label>
           <el-select v-model="schoolInformaitionValue" placeholder="请选择学校" :disabled="!isSelectSchool" filterable>
             <el-option v-for="(item,index) in schoolArr" :label="item.label" :value="item.SYS_TOPIC" :key="index"></el-option>
-            <el-option label="其他" value="其他"></el-option>
+            <!-- <el-option label="其他" value="其他"></el-option> -->
           </el-select>
         </div>
 
