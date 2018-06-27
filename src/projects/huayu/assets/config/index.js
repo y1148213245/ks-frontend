@@ -1123,7 +1123,9 @@ var $_$ = {
 						"funcName": "",
 						"params": []
 					}
-				}
+				},
+				toRegisterHref:'./register.html',
+				showItem:['register']
 			}
 		},
 		"search": {

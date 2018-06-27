@@ -40,7 +40,7 @@
           </el-dialog>
 
         </div>
-        <el-table ref="singleTable" :data="participantsList" max-height="288" style="width: 700px" @current-change="handleCurrentChange">
+        <el-table ref="singleTable" :data="participantsList" max-height="288" style="width: 700px" @current-change="handleCurrentChange" highlight-current-row>
           <el-table-column align="center" prop="userName" label="姓名" width="120">
           </el-table-column>
           <el-table-column align="center" prop="gender" label="性别" width="120" :formatter="sexFormat">

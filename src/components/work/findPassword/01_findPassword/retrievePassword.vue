@@ -1,56 +1,92 @@
 <template>
-  <div class="retrievePasswordBox">
-    <div class="cent">
-      <el-steps :space="120" :active="active" finish-status="success" align-center>
-        <el-step title="输入邮箱"></el-step>
-        <el-step title="填写邮箱验证码"></el-step>
-        <el-step title="更改密码"></el-step>
-        <el-step title="找回完成"></el-step>
-      </el-steps>
-      <div style="margin-top: 20px; height: 200px;" v-if="show">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
-          <el-form-item label="邮 箱" prop="email">
-            <el-input id="retrieve_02-input-email" type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱" style="display:inline-block;width:300px;"></el-input>
-          </el-form-item>
-          <el-form-item label="验证码" prop="captcha">
-            <div class="captcha">
-              <el-input id="retrieve_02-input-validate" type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码" style="width:150px;" @keyup.enter.native="submitForm('ruleForm')"></el-input>
-              <input id="retrieve_02-input-code" type="button" class="createcode" />
-              <el-button id="retrieve_02-input-update" type="text" @click="createCode">看不清楚</el-button>
-            </div>
-          </el-form-item>
-          <div class="col_full nobottommargin btnbox" >
-            <el-button id="retrieve_02-input-next" type="primary" @click="submitForm('ruleForm')" class="button nomargin">下一步</el-button>
-          </div>
-        </el-form>
-      </div>
-      <div style="margin-top: 20px; height: 200px;" v-if="show1">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
-          <el-form-item label="邮箱验证码" prop="emailnum"  v-if="butt">
-            <el-input id="retrieve_02-input-email_validate" type="text" v-model="ruleForm.emailnum" auto-complete="off" placeholder="请输入邮箱验证码" style="display:inline-block;width:300px;"></el-input>
-          </el-form-item>
+	<div class="retrievePasswordBox">
+		<div class="cent">
+			<!-- 导航tab -->
+			<el-tabs v-model="activeTab" @tab-click="changeTab">
+				<!-- 邮箱找回密码 -->
+				<el-tab-pane label="通过邮箱找回" name="email">
+					<el-steps :space="120" :active="active" finish-status="success" align-center>
+						<el-step title="输入邮箱"></el-step>
+						<el-step title="填写邮箱验证码"></el-step>
+						<el-step title="更改密码"></el-step>
+						<el-step title="找回完成"></el-step>
+					</el-steps>
+					<!-- 发送邮箱验证码 -->
+					<div style="margin-top: 20px; height: 200px;" v-if="showStep == 'sendEmeil'">
+						<el-form :model="ruleForm" :rules="rules" ref="sendEmeil">
+							<el-form-item label="邮 箱" prop="email">
+								<el-input id="retrieve_02-input-email" type="text" v-model="ruleForm.email" auto-complete="off" placeholder="请输入邮箱" style="display:inline-block;width:300px;"></el-input>
+							</el-form-item>
+							<el-form-item label="验证码" prop="captcha">
+								<div class="captcha">
+									<el-input id="retrieve_02-input-validate" type="text" v-model="ruleForm.captcha" auto-complete="off" placeholder="请确输入验证码" style="width:150px;" @keyup.enter.native="submitForm('sendEmeil')"></el-input>
+									<input id="retrieve_02-input-code" type="button" class="createcode" />
+									<el-button id="retrieve_02-input-update" type="text" @click="createCode">看不清楚</el-button>
+								</div>
+							</el-form-item>
+							<div class="col_full nobottommargin btnbox">
+								<el-button type="primary" @click="submitForm('sendEmeil')" class="button nomargin">下一步</el-button>
+							</div>
+						</el-form>
+					</div>
+					<!-- 验证邮箱验证码 -->
+					<div style="margin-top: 20px; height: 200px;" v-if="showStep == 'validEmail'">
+						<el-form :model="ruleForm" :rules="rules" ref="validEmail">
+							<el-form-item label="邮箱验证码" prop="emailnum" v-if="butt">
+								<el-input id="retrieve_02-input-email_validate" type="text" v-model="ruleForm.emailnum" auto-complete="off" placeholder="请输入邮箱验证码" style="display:inline-block;width:300px;"></el-input>
+							</el-form-item>
 
-          <div class="col_full nobottommargin btnbox">
-            <el-button id="retrieve_02-input-submit" type="primary" @click="submitForm1('ruleForm')" class="button nomargin" v-if="butt">提交（{{time}}）</el-button>
-            <el-button id="retrieve_02-input-reset"  type="text" :disabled="true" class="button nomargin" v-show="!butt">验证码已失效，请重新验证</el-button>
-          </div>
-        </el-form>
-      </div>
-      <div style="margin-top: 20px; height: 200px;" v-if="show2">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
-          <el-form-item label="请输入新密码" prop="pass">
-            <el-input id="retrieve_02-input-password" type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="请输入新密码"></el-input>
-          </el-form-item>
-          <el-form-item label="请确认新密码" prop="checkPass">
-            <el-input id="retrieve_02-input-password_2" type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请确认新密码" @keyup.enter.native="submitForm2('ruleForm')"></el-input>
-          </el-form-item>
-          <div class="col_full nobottommargin btnbox">
-            <el-button id="retrieve_02-input-password_submit" type="primary" @click="submitForm2('ruleForm')" class="button nomargin">提交</el-button>
-          </div>
-        </el-form>
-      </div>
-    </div>
-  </div>
+							<div class="col_full nobottommargin btnbox">
+								<el-button id="retrieve_02-input-submit" type="primary" @click="submitForm('validEmail')" class="button nomargin" v-if="butt">提交（{{time}}）</el-button>
+								<el-button id="retrieve_02-input-reset" type="text" :disabled="true" class="button nomargin" v-show="!butt">验证码已失效，请重新验证</el-button>
+							</div>
+						</el-form>
+					</div>
+				</el-tab-pane>
+
+				<!-- 手机找回密码 -->
+				<el-tab-pane label="通过手机找回" name="mobile">
+					<el-steps :space="120" :active="mobileStepsActive" finish-status="success" align-center>
+						<el-step title="手机验证"></el-step>
+						<el-step title="更改密码"></el-step>
+						<el-step title="找回完成"></el-step>
+					</el-steps>
+					<!-- 发送验证码验证手机 -->
+					<div style="margin-top: 20px; height: 200px;">
+						<el-form :model="ruleForm" :rules="rules" ref="validMobile">
+							<el-form-item label="手 机" prop="mobile">
+								<el-input id="retrieve_02-input-email" type="text" v-model="ruleForm.mobile" auto-complete="off" placeholder="请输入手机号" style="display:inline-block;width:220px;"></el-input>
+								<el-button type="primary" size="medium" @click="submitForm('validMobile')" class="button nomargin">发送验证码</el-button>
+							</el-form-item>
+							<el-form-item label="验证码" prop="mobilecCaptcha">
+								<div class="captcha">
+									<el-input id="retrieve_02-input-validate" type="text" v-model="ruleForm.mobilecCaptcha" auto-complete="off" placeholder="请确输入验证码" style="width:150px;" @keyup.enter.native="submitForm('validMobile')"></el-input>
+								</div>
+							</el-form-item>
+							<div class="col_full nobottommargin btnbox">
+								<el-button type="primary" @click="submitForm('sendEmeil')" class="button nomargin">下一步</el-button>
+							</div>
+						</el-form>
+					</div>
+				</el-tab-pane>
+			</el-tabs>
+
+			<!-- 修改密码 -->
+			<div style="margin-top: 20px; height: 200px;" v-if="showStep == 'changePassword'">
+				<el-form :model="ruleForm" :rules="rules" ref="changePassword">
+					<el-form-item label="请输入新密码" prop="pass">
+						<el-input id="retrieve_02-input-password" type="password" v-model="ruleForm.pass" auto-complete="off" placeholder="请输入新密码"></el-input>
+					</el-form-item>
+					<el-form-item label="请确认新密码" prop="checkPass">
+						<el-input id="retrieve_02-input-password_2" type="password" v-model="ruleForm.checkPass" auto-complete="off" placeholder="请确认新密码" @keyup.enter.native="submitForm('changePassword')"></el-input>
+					</el-form-item>
+					<div class="col_full nobottommargin btnbox">
+						<el-button type="primary" @click="submitForm('changePassword')" class="button nomargin">提交</el-button>
+					</div>
+				</el-form>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -155,12 +191,12 @@ export default {
 		};
 		return {
 			PROJECT: null,
+			activeTab: 'email',
 			time: 120,
 			list: [{}],
 			active: 0,
-			show: true,
-			show1: false,
-			show2: false,
+			mobileStepsActive: 0,
+			showStep: 'sendEmeil',/*显示页面: sendEmeil发送邮箱验证码,validEmail验证邮箱验证码,changePassword修改密码 */
 			butt: true,
 			code: "",
 			ruleForm: {
@@ -168,51 +204,118 @@ export default {
 				captcha: "",
 				emailnum: "",
 				pass: "",
-				checkPass: ""
+				checkPass: "",
+				mobile: '',
+				mobilecCaptcha: ''
 			},
-			//				ruleForm1: {
-			//					emailnum: ""
-			//				},
-			//				ruleForm2: {
-			//					pass: "",
-			//					checkPass: ""
-			//				},
 			rules: {
 				email: [{ validator: validateEmail, trigger: "blur" }],
 				pass: [{ validator: validatePass, trigger: "blur" }],
 				checkPass: [{ validator: validateCheckPass, trigger: "blur" }],
 				captcha: [{ validator: validateCaptcha, trigger: "blur" }],
-				emailnum: [{ validator: validateEmailnum, trigger: "blur" }]
+				emailnum: [{ validator: validateEmailnum, trigger: "blur" }],
+				mobile: [{ validator: ValidateRules.mobileCheck, trigger: "blur" }]
 			}
 		};
 	},
 	methods: {
+		changeTab () {
+
+		},
+		/* 提交 */
 		submitForm (ruleForm) {
-			this.$refs.ruleForm.validate(valid => {
-				if (valid) {
-					var params = {
-						email: this.ruleForm.email,
-						cb: this.findPasswordCallb
-					};
-					let loading = Vue.prototype.$loading({ text: "正在加载中..." });
-					Get(CONFIG.BASE_URL + this.PROJECT.findPasswordUrl + params.email).then(function (response) {
-						let findStatus = response.data.result;
-						let findNum = response.data.data;
-						params.cb(findStatus, findNum, response);
-						loading.close();
-					})
-					console.log("submit!");
-				} else {
-					console.log("error submit!!");
-					return false;
+			this.$refs[ruleForm].validate(valid => {
+				switch (ruleForm) {
+					case 'sendEmeil': {
+						if (valid) {
+							var params = {
+								email: this.ruleForm.email,
+								cb: this.findPasswordCallb
+							};
+							let loading = Vue.prototype.$loading({ text: "正在加载中..." });
+							Get(CONFIG.BASE_URL + this.PROJECT.findPasswordUrl + params.email).then(function (response) {
+								let findStatus = response.data.result;
+								let findNum = response.data.data;
+								params.cb(findStatus, findNum, response);
+								loading.close();
+							})
+							console.log("submit!");
+						} else {
+							console.log("error submit!!");
+							return false;
+						}
+						break;
+					}
+					case 'validEmail': {
+						if (valid) {
+							console.log("submit!");
+							this.showStep = 'changePassword'
+							this.active = 2;
+							this.$message({
+								type: "success",
+								message: "验证码输入正确，请重新设置密码"
+							});
+						} else {
+							this.$message({
+								type: "error",
+								message: "验证码输入错误，请重试"
+							});
+							console.log("error submit!!");
+							return false;
+						}
+						break;
+					}
+					case 'changePassword': {
+						if (valid) {
+							var params = {
+								email: this.ruleForm.email,
+								checkPass: this.ruleForm.checkPass,
+								cb: this.setPasswordCallb
+							};
+							Post(CONFIG.BASE_URL + this.PROJECT.setPasswordUrl + params.email + '&password=' + params.checkPass).then(function (response) {
+								let setStatus = response.data.result;
+								params.cb(setStatus);
+							});
+							this.active = 3;
+						} else {
+							console.log("error submit!!");
+							return false;
+						}
+					}
+					case 'validMobile': {
+						if (valid) {
+							this.checkMobile().then(resp=>{
+								console.log(resp.data);
+							})
+						}
+						
+						break;
+					}
+
+					default:
+						break;
 				}
 			});
+		},
+		/* 验证手机号 */
+		checkMobile () {
+			let url;
+			if (this.PROJECT.hasOwnProperty('checkMobileUrl')) {
+				url = this.PROJECT.checkMobileUrl;
+			} else {
+				url = 'user/checkExistMember.do'
+			}
+
+			let params = {
+				checkText: this.ruleForm.mobile
+			}
+			return Get(CONFIG.BASE_URL + url, { params })
+
 		},
 		findPasswordCallb (findStatus, findNum, rep) {
 			this.findNum = findNum;
 			if (findStatus == 1) {
-				this.show = false;
-				this.show1 = true;
+				this.showStep = 'validEmail'
 				this.active = 1;
 				this.$message({
 					type: "success",
@@ -225,46 +328,6 @@ export default {
 					message: rep.data.error.errorMsg
 				});
 			}
-		},
-		submitForm1 (ruleForm) {
-			this.$refs.ruleForm.validate(valid => {
-				if (valid) {
-					console.log("submit!");
-					this.show1 = false;
-					this.show2 = true;
-					this.active = 2;
-					this.$message({
-						type: "success",
-						message: "验证码输入正确，请重新设置密码"
-					});
-				} else {
-					this.$message({
-						type: "error",
-						message: "验证码输入错误，请重试"
-					});
-					console.log("error submit!!");
-					return false;
-				}
-			});
-		},
-		submitForm2 (ruleForm) {
-			this.$refs.ruleForm.validate(valid => {
-				if (valid) {
-					var params = {
-						email: this.ruleForm.email,
-						checkPass: this.ruleForm.checkPass,
-						cb: this.setPasswordCallb
-					};
-					Post(CONFIG.BASE_URL + this.PROJECT.setPasswordUrl + params.email + '&password=' + params.checkPass).then(function (response) {
-						let setStatus = response.data.result;
-						params.cb(setStatus);
-					});
-					this.active = 3;
-				} else {
-					console.log("error submit!!");
-					return false;
-				}
-			});
 		},
 		setPasswordCallb (setStatus) {
 			if (setStatus == 1) {

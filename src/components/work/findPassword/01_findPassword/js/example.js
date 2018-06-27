@@ -16,7 +16,8 @@ const prod = {
     work_findpassword_01: {
       findPasswordUrl:  "user/findPassword.do?email=",
       setPasswordUrl:  "user/setPassword1.do?email=",
-      href: "../pages/login.html"
+      href: "../pages/login.html",
+      checkMobileUrl:'user/checkExistMember.do'/* 验证手机号是否已注册url */
     },
   }
 };

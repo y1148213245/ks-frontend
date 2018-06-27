@@ -73,7 +73,7 @@ const prod = {
       informationUploading: {
         url: "/spc/prodb/saveItem.do?",
         params: {
-          doclibCode: "PORTAL_WORKS",
+          doclibCode: "PORTAL_WORKS",//库码
           metaMap: {
             // ACTIVITYLIBID:"PORTAL_ACTIVITY",
             ACTIVITYID: "",

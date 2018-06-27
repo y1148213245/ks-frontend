@@ -12,7 +12,7 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_08: {
-      url: BASE_URL + 'spc/cms/publish/list.do',
+      url: 'spc/cms/publish/list.do',
       keys: {},
       eventName_loadDate: 'loadSearchResult',
     }
