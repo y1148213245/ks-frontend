@@ -5,7 +5,7 @@
     <h3 v-if="CONFIG && CONFIG.formTitle.isShow" v-html="CONFIG.formTitle.name"></h3>
     <div class="ui_form_01_upload">
       <el-form ref="form" :model="form" :label-width="CONFIG.labelWidth" :rules="rules" >
-          <el-form-item v-for="(item, i) in CONFIG.formItem" :key="i" v-bind="{class: 'ui_form_01_form_item_' + item.type+'_'+i}" :label="item.label" :prop="item.model">
+          <el-form-item v-for="(item, i) in CONFIG.formItem" :key="i" v-bind:class="'ui_form_01_form_item_'+ item.type+'_'+ i" :label="item.label" :prop="item.model">
             <!-- 图片 -->
             <el-upload 
             v-if="item.type === 'fileimg'"
@@ -15,7 +15,9 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
             v-model="form[item.model]">
-              <img :src="imageUrl.url || require('@static/img/people.jpg')"/>
+              <div class="ui_form_01_display_img">
+                <img :src="imageUrl.url || require('@static/img/people.jpg')"/>
+              </div>
               <el-button v-if="item.btnName">{{item.btnName}}</el-button>
             </el-upload>
 
@@ -69,7 +71,7 @@
 <script>
 import Vue from "vue";
 import PROJECT_CONFIG from "projectConfig";
-import { Post, ValidateRules,getFieldAdapter } from "@common";
+import { Post, ValidateRules, getFieldAdapter } from "@common";
 
 export default {
   name: "ui_form_01",
@@ -78,72 +80,65 @@ export default {
     namespace: String
   },
   data() {
-    var checkImage = (rule, value, callback)=>{
-      if(!value){
-        return callback(new Error('请上传图片'));
-      }
-    };
     return {
       CONFIG: null,
-      imageUrl: {  // 图片信息
+      imageUrl: {
+        // 图片信息
         url: "",
-        fileRecordID: ''
+        fileRecordID: ""
       },
       uploadUrl: "",
-      keys:{}, // 接口字段容器
+      keys: {}, // 接口字段容器
       form: {
-        sex: 0,
+        sex: "",
         radio1: 0,
         radio2: 0,
-        radio3: 0, 
-        date1: '' //
-      },  // 表单绑定对象
+        radio3: 0,
+        date1: "" //
+      }, // 表单绑定对象
       rules: {
-          coverId:[
-            { validator: this.checkImage, trigger: 'change' },
-          ],
-          sysTopic: [
-            { required: true, message: '请输入姓名', trigger: 'blur' },
-            { validator: ValidateRules.nameCheck, trigger: 'blur' }
-          ],
-          sex: [
-            { required: true, message: '请选择性别', trigger: 'change' }
-          ],
-          cardId: [
-            { required: true, message: '请输入身份证号', trigger: 'blur' },
-            {validator: ValidateRules.IDCheckSimple, trigger: 'blur' }
-          ],
-          phone: [
-            { required: true, message: '请输入手机号', trigger: 'blur' },
-            {validator: ValidateRules.mobileCheck, trigger: 'blur' }
-          ],
-          email: [
-            { required: true, message: '请输入邮箱', trigger: 'blur' },
-            {validator: ValidateRules.validateEmail, trigger: 'blur' }
-          ]
-        }
+        sysTopic: [
+          { required: true, message: "请输入姓名", trigger: "blur" },
+          { validator: ValidateRules.nameCheck, trigger: "blur" }
+        ],
+        sex: [{ required: true, message: "请选择性别", trigger: "change" }],
+        cardId: [
+          { required: true, message: "请输入身份证号", trigger: "blur" },
+          { validator: ValidateRules.IDCheckSimple, trigger: "blur" }
+        ],
+        phone: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          { validator: ValidateRules.mobileCheck, trigger: "blur" }
+        ],
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+          { validator: ValidateRules.validateEmail, trigger: "blur" }
+        ]
+      }
     };
   },
   computed: {},
   created() {
     this.CONFIG = PROJECT_CONFIG[this.namespace].form.ui_form_01;
     this.uploadUrl = CONFIG.BASE_URL + this.CONFIG.upload.url;
-    this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter)));
+    this.keys = JSON.parse(
+      JSON.stringify(
+        getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter)
+      )
+    );
     // 初始化绑定对象
-    this.CONFIG.formItem.forEach((val,i)=>{
-      if(val.model){
-        if(val.type === "checkbox"){
+    this.CONFIG.formItem.forEach((val, i) => {
+      if (val.model) {
+        if (val.type === "checkbox") {
           this.form[val.model] = [];
-        }
-        else if(val.type === "radio" && val.radio.length > 0){
+        } else if (val.type === "radio" && val.radio.length > 0) {
           this.form[val.model] = val.radio[0].value;
-        }
-        else{
+        } else {
           this.form[val.model] = "";
         }
       }
     });
-    console.log(this.form);
+    //console.log(this.form);
   },
   mounted() {
     //console.log("mounted");
@@ -151,19 +146,33 @@ export default {
   methods: {
     submitForm() {
       this.$refs.form.validate(valid => {
-        // 验证通过valid=true
-        if(valid){
+        if (this.imageUrl.fileRecordID && valid) {
           let paramsObj = Object.assign({}, this.CONFIG.submit.params);
-          for(let key in this.form){
-            if(this.keys[key]){
+          for (let key in this.form) {
+            if (this.keys[key]) {
               paramsObj.metaMap[this.keys[key]] = this.form[key];
             }
           }
-          console.log(11,paramsObj);
-          paramsObj.metaMap["COVERID"] = this.imageUrl.fileRecordID;
-          paramsObj.metaMap["RESOURCEID"] = this.imageUrl.fileRecordID;
-          Post(CONFIG.BASE_URL + this.CONFIG.submit.url,paramsObj).then((res)=>{
-            console.log(res);
+          //console.log(11, paramsObj);
+          paramsObj.metaMap["COVERID"] = this.imageUrl.fileRecordID + "";
+          paramsObj.metaMap["RESOURCEID"] = this.imageUrl.fileRecordID + "";
+          Post(CONFIG.BASE_URL + this.CONFIG.submit.url, paramsObj).then(
+            res => {
+              let datas = res.data;
+              if (datas.status == "success" && datas.data) {
+                window.open(this.CONFIG.toUrl);
+              }else{
+                this.$message({
+                  type: "warning",
+                  message: "提交失败"
+                });
+              }
+            }
+          );
+        } else {
+          this.$message({
+            type: "error",
+            message: "请上传图片"
           });
         }
       });
@@ -171,7 +180,7 @@ export default {
     handleAvatarSuccess(res, file) {
       this.imageUrl.url =
         CONFIG.BASE_URL + "dynamicFile/stream.do?recordID=" + res.ID;
-        this.imageUrl.fileRecordID = res.ID;
+      this.imageUrl.fileRecordID = res.ID;
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg" || "image/png" || "image/jpg";

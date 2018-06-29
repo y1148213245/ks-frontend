@@ -3,13 +3,13 @@
 <template>
   <div class="ui_information_01">
     <div aria-label="Breadcrumb" role="navigation" class="el-breadcrumb">
-      <span class="el-breadcrumb__item">您的位置：</span>
+      <span class="el-breadcrumb__item">{{CONFIG && CONFIG.staticText && CONFIG.staticText.yourPosition ? CONFIG.staticText.yourPosition : '您的位置：'}}</span>
       <span class="el-breadcrumb__item">
-        <span role="link" class="el-breadcrumb__inner is-link">首页</span>
+        <span role="link" class="el-breadcrumb__inner is-link">{{CONFIG && CONFIG.staticText && CONFIG.staticText.homePage ? CONFIG.staticText.homePage : '首页'}}</span>
         <i class="el-breadcrumb__separator el-icon-arrow-right"></i>
       </span>
       <span class="el-breadcrumb__item" aria-current="page">
-        <span role="link" class="el-breadcrumb__inner">资讯内容</span>
+        <span role="link" class="el-breadcrumb__inner">{{CONFIG && CONFIG.staticText && CONFIG.staticText.infoContent ? CONFIG.staticText.infoContent : '资讯内容'}}</span>
         <i class="el-breadcrumb__separator el-icon-arrow-right"></i>
       </span>
     </div>
@@ -46,7 +46,7 @@
           <template>
             <div class="bdsharebuttonbox shareHide" v-if="CONFIG && shareLists">
               <span>
-                <i class="fa fa-share-alt" aria-hidden="true"></i> 分享到：</span>
+                <i class="fa fa-share-alt" aria-hidden="true"></i>{{CONFIG && CONFIG.staticText && CONFIG.staticText.shareTo ? CONFIG.staticText.shareTo : ' 分享到：'}}</span>
               <span v-for="(item, index) in shareLists" :key="index">
                 <a href="#" v-bind:class="item.class" :data-cmd="item.cmd" :title="item.title"></a>
               </span>

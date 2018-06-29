@@ -182,8 +182,8 @@ const prod = {
 }
 
 const platform = 'PC';
-const pageType = [];
-const resourceType = [];
+const pageType = ["detail"];
+const resourceType = ["others"];
 
 const childComponents = [];
 

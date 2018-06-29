@@ -13,26 +13,27 @@
         </template>
       </div>
 
+      <!--//介绍信息区域-->
+      <div class="aboutMsg" v-if="CONFIG && CONFIG.aboutMsg">
+        <span class="aboutMsg_span" v-html="CONFIG.aboutMsg"></span>
+      </div>
+
       <div class="work_shoppingcart_bodyDiv">
-        <!--//介绍信息区域-->
-        <div class="work_shoppingcart_bodyDiv_box aboutMsg" v-if="CONFIG && CONFIG.aboutMsg">
-          <span class="aboutMsg_span" v-html="CONFIG.aboutMsg"></span>
-        </div>
         <!--期刊种类区域-->
         <div class="work_shoppingcart_bodyDiv_box magType" v-if="CONFIG && magType">
-          <div class="magType_title">
-            <span class="magType_title_span" v-if="magType.titleName" v-text="magType.titleName"></span>
+          <div class="box_title">
+            <span class="box_title_span" v-if="magType.titleName" v-text="magType.titleName"></span>
           </div>
-          <span class="magType_title_span_text" v-if="checkMagTypeName">{{checkMagTypeName}}</span>
-          <span class="magType_title_span_btn" v-text="magType.buttonName" @click="cutPage('idMagType')"></span>
+          <span class="box_title_span_text" v-if="checkMagTypeName">{{checkMagTypeName}}</span>
+          <span class="box_title_span_btn" v-text="magType.buttonName" @click="cutPage('idMagType')"></span>
         </div>
         <!--订阅方式渔区-->
         <div class="work_shoppingcart_bodyDiv_box takeType" v-if="CONFIG && takeType">
-          <div class="takeType_title">
-            <span class="takeType_title_span" v-if="takeType.titleName" v-text="takeType.titleName"></span>
+          <div class="box_title">
+            <span class="box_title_span" v-if="takeType.titleName" v-text="takeType.titleName"></span>
           </div>
-          <span class="magType_title_span_text" v-if="TakeNameChange">{{TakeNameChange}}</span>
-          <span class="magType_title_span_btn" v-text="takeType.buttonName" @click="cutPage('idTakeDiv')"></span>
+          <span class="box_title_span_text" v-if="TakeNameChange">{{TakeNameChange}}</span>
+          <span class="box_title_span_btn" v-text="takeType.buttonName" @click="cutPage('idTakeDiv')"></span>
         </div>
         <!--配送方式-->
         <!--<div class="delivery" v-if="CONFIG && delivery && delivery.deliveryShow">-->
@@ -108,8 +109,8 @@
         <!--</div>-->
         <!--发票信息-->
         <div class="work_shoppingcart_bodyDiv_box billInfo" v-if="CONFIG && billInfo && billInfo.billInfoShow">
-          <div class="billInfo_title">
-            <span class="billInfo_title_span" v-if="billInfo.titleName" v-text="billInfo.titleName"></span>
+          <div class="box_title">
+            <span class="box_title_span" v-if="billInfo.titleName" v-text="billInfo.titleName"></span>
           </div>
           <div class="billInfo_main">
             <div class="billInfo_no">
@@ -125,6 +126,15 @@
             </div>
           </div>
         </div>
+
+        <!--  姓名区域 -->
+        <div class="work_shoppingcart_bodyDiv_box username" v-if="CONFIG">
+          <div class="box_title">
+            <span class="box_title_span">姓名</span>
+          </div>
+          <span class="box_title_span_text" v-if="TakeNameChange">{{loginName}}</span>
+        </div>
+
       </div>
 
       <!--备注-->
@@ -135,6 +145,14 @@
         <div class="descDiv_text">
           <textarea class="descDiv_text_" name="descDiv" cols="30" rows="10" maxlength="200" v-model="descInfo"></textarea>
         </div>
+      </div>
+
+      <!--  价格区域 -->
+      <div class="allPrice_div" v-if="CONFIG">
+        <div class="allPrice_div_title">
+          <span class="allPrice_div_span">价格</span>
+        </div>
+        <span class="allPrice_div_span_text">{{bookMoney}}</span>
       </div>
       <!--提交按钮-->
       <div class="submitFrom">
@@ -249,14 +267,13 @@
                <!--{{item}}-->
              <!--</option>-->
           <!--</el-select>-->
-
   <select class="idTakeDivNext_qi_class_select_open" v-model="TakeNameOpenValue"  @change="selectVal_open()" placeholder="订阅开始期数" >
     <option class="idTakeDivNext_qi_class_select_open_option"
             v-for="(item,index) in TakeNameOpenList"
             :value="item" >
                {{item}}</option>
   </select>
-          <span>--</span>
+          <span>-</span>
 
   <select class="idTakeDivNext_qi_class_select_end" v-model="TakeNameEndValue"   @change="selectVal_end()" placeholder="订阅结束期数" >
     <option class="idTakeDivNext_qi_class_select_end_option"
@@ -341,7 +358,7 @@
         resourceDetail: {}, // 详情信息
         resourceDetailConfig: {}, // 详情信息配置
         keys: {}, // 详情接口字段容器
-        loginName: "z111111", //ada123
+        loginName: "", //ada123
         showPageName:"buyMain", // 当前展示的页面名称
         changeBuy:[], // 两个按钮
         checkMagTypeName:'',  //已选择的期刊类型
@@ -470,6 +487,9 @@
         //console.log(this.pricedan);
         //console.log(this.TakeNameChangeListLength);
       },
+      getAllprice(){
+        this.bookMoney = (this.pricedan)*(this.TakeNameChangeListLength);
+      },
       clickFunTakeNameChange(item){
         this.TakeNameChange = item;
         if(item=='明年全年订阅'){
@@ -478,6 +498,7 @@
         }else{
           this.TakeNameChangeyear = (new Date().getFullYear());
         }
+        this.getAllprice();
       },
       getIdMagTypeList () { // 获取刊种列表
         Get(CONFIG.BASE_URL + 'spc/prodb/getMagList.do').then((rep) => {
@@ -553,6 +574,7 @@
             this.TakeNameChangeListLength_newYear = this.checkMagTypeNameInfo.totalNum;
             this.pricedan = this.checkMagTypeNameInfo.price;
             this.clickFunTakeNameChange("明年全年订阅");
+            this.getAllprice();
           }
         });
 
@@ -574,7 +596,7 @@
         {
           this.TakeNameEndList.push(i);
         }
-
+        this.getAllprice();
         //console.log(this.TakeNameChangeList);
       },
       selectVal_end(){
@@ -590,7 +612,7 @@
           }
           this.TakeNameChangeListLength++;
         }
-
+        this.getAllprice();
       },
       selectMagTypeTime(item){  //临时选择选择期刊类型
         this.idMagTypeCheckTime = item.magName;
@@ -640,7 +662,7 @@
         });
       },
       getMenberDetail() {
-        this.member.loginName = 'z111111';
+        // this.member.loginName = 'z111111';
         this.loginName = this.member.loginName;
         if(this.loginName == undefined || this.loginName == '') { // 未登录
           // 未登录就要跳转到登录页面哦

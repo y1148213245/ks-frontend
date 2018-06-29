@@ -26,6 +26,7 @@ const dev = {
             labelWidth: "120px",
             sysAdapter: "sykAdapter",
             typeAdapter: "talentAdapter",
+            toUrl: "../pages/index.html",
             formItem: [{
                 type: "fileimg",
                 label: "照片：",
@@ -47,10 +48,10 @@ const dev = {
                 label: "性别：",
                 radio: [{
                     label: "男",
-                    value: 0
+                    value: "男"
                 }, {
                     label: "女",
-                    value: 1
+                    value: "女"
                 }],
                 model: "sex",
                 field: "sex"
@@ -271,6 +272,7 @@ const prod = {
             labelWidth: "120px",
             sysAdapter: "sykAdapter",
             typeAdapter: "talentAdapter",
+            toUrl: "../pages/index.html",
             formItem: [{
                 type: "fileimg",
                 label: "照片：",
@@ -292,10 +294,10 @@ const prod = {
                 label: "性别：",
                 radio: [{
                     label: "男",
-                    value: 0
+                    value: "男"
                 }, {
                     label: "女",
-                    value: 1
+                    value: "女"
                 }],
                 model: "sex",
                 field: "sex"
@@ -497,7 +499,7 @@ const prod = {
 };
 
 const platform = 'PC';
-const pageType = ['form'];
+const pageType = ['others'];
 const resourceType = ['others'];
 
 export { name, title, dev, prod, description, platform, pageType, resourceType };

@@ -1,11 +1,10 @@
 <!--文联收藏夹-->
 <template>
   <section class="personalcenter_collWrapper">
-    <div v-if="siteId==1">
-        <el-radio-group v-model="radio"  @change="bookList">
-      <el-radio-button label="94">电子书</el-radio-button>
-      <el-radio-button label="91">纸质书</el-radio-button>
-    </el-radio-group>
+    <div class="personalcenter_collWrapper_tab" v-if="CONFIG && CONFIG.tabListShow.length > 0">
+      <el-radio-group v-model="radio" @change="bookList">
+        <el-radio-button :label="item.type" v-for="(item, index) in CONFIG.tabListShow" :key="index">{{item.title}}</el-radio-button>
+      </el-radio-group>
     </div>
 
     <div class="myColList" v-if="collectionInfo.data && collectionInfo.data.length > 0">
@@ -18,13 +17,14 @@
         <li v-for="item in collectionInfo.data" class="bookColl collContent">
           <div style="width:180px;height: 240px; text-align: center;">
             <div class="picBox">
-              <div
-                style="width: 180px; height: 180px; vertical-align: middle; display: table-cell; position: relative;">
-                <img v-bind:src="item.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,150,150)"/>
+              <div style="width: 180px; height: 180px; vertical-align: middle; display: table-cell; position: relative;">
+                <img v-bind:src="item.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,150,150)" />
               </div>
               <div class="namePrice">
                 <div v-text="item.productName" :title="item.productName"></div>
-                <div>价格：<span>{{item.productPrice | formatPriceNew}}</span></div>
+                <div>价格：
+                  <span>{{item.productPrice | formatPriceNew}}</span>
+                </div>
               </div>
               <div class="readBox">
                 <a target="_blank" v-bind:href="'../pages/bookdetail.html?pubId=' + item.pubId">购买</a>
@@ -55,20 +55,21 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "collecting",
   reused: true,
-  props: ["namespace"],
-  mounted: function() {
+  props: ["namespace", 'parentConfig'],
+  mounted: function () {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
     });
   },
-  data() {
+  data () {
     return {
       siteId: "",
       modalStatus: false,
       selectedAll: false,
       autofocus: true,
-      radio: '94',
+      radio: null,
+      CONFIG: null, // 当前组件配置
     };
   },
   computed: {
@@ -76,47 +77,51 @@ export default {
       collectionInfo: "getCollectionInfo"
     })
   },
+  created () {
+    this.CONFIG = this.parentConfig.collection;
+    this.radio = this.CONFIG && this.CONFIG.tabListShow.length > 0 ? this.CONFIG.tabListShow[0].type : 94
+  },
   methods: {
-    loadedCallBack() {
+    loadedCallBack () {
       var params = {
         param: {
           pageIndex: 1,
           pageSize: 8,
-          contentType: 94
+          contentType: this.CONFIG && this.CONFIG.tabListShow.length > 0 ? this.CONFIG.tabListShow[0].type : 94,
         },
-        myCallBack: function() {}
+        myCallBack: function () { }
       };
       this.$store.dispatch("personalCenter/queryCollectionInfo", params);
     },
-    pagingF: function({ pageNo, pageSize }) {
+    pagingF: function ({ pageNo, pageSize }) {
       var params = {
         param: {
           pageIndex: pageNo,
           pageSize: pageSize
         },
-        myCallBack: function() {}
+        myCallBack: function () { }
       };
       this.$store.dispatch("personalCenter/queryCollectionInfo", params);
     },
-    bookList(val){
-       var params = {
+    bookList (val) {
+      var params = {
         param: {
           pageIndex: 1,
           pageSize: 8,
           contentType: val
         },
-        myCallBack: function() {}
+        myCallBack: function () { }
       };
       this.$store.dispatch("personalCenter/queryCollectionInfo", params);
     },
-    deleteCollProduct: function(item) {
+    deleteCollProduct: function (item) {
       // 删除收藏商品
       var _this = this;
       this.$confirm("您确定要将商品移除收藏夹吗?", "系统提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function() {
+      }).then(function () {
         var params = {
           id: item.pubId,
           cb: _this.deleteCollProductcb
@@ -124,7 +129,7 @@ export default {
         _this.$store.dispatch("personalCenter/deleteCollProduct", params);
       });
     },
-    deleteCollProductcb: function(delCollStatus) {
+    deleteCollProductcb: function (delCollStatus) {
       var _this = this;
       if (delCollStatus == 1) {
         this.$message({
@@ -133,7 +138,7 @@ export default {
         });
         var params = {
           param: {},
-          myCallBack: function() {
+          myCallBack: function () {
             _this.isSelectAll();
           }
         };
@@ -146,10 +151,10 @@ export default {
         });
       }
     },
-    selectCollProduct: function(item) {
+    selectCollProduct: function (item) {
       this.isSelectAll();
     },
-    deleteLots: function() {
+    deleteLots: function () {
       var tempList = this.collectionInfo.data;
       var len = tempList.length;
       var pubidList = [];
@@ -170,7 +175,7 @@ export default {
       };
       this.deleteCollProduct(pubIds);
     },
-    selectAll: function() {
+    selectAll: function () {
       var tempList = this.collectionInfo.data;
       var len = tempList.length;
       for (var j = 0; j < len; j++) {
@@ -181,7 +186,7 @@ export default {
         }
       }
     },
-    isSelectAll: function() {
+    isSelectAll: function () {
       var status = true;
       var data = this.collectionInfo.data;
       for (var j = 0; j < data.length; j++) {

@@ -15,13 +15,15 @@
     </div>
 
     <div class="ui_mobile_list_02_sortCon" v-if="listType == 'cascadId'"> <!-- 按分类查图书列表 -->
+
       <div class="ui_mobile_list_02_sort" id="screenBox" v-if="classifyBook && classifyBook.length > 0">
-        <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyBook" :key="index" v-text="item.text" @click="loadBookList(item.cascadeId, true)"></span>
+        <span class="ui_mobile_list_02_sort_allBotton" v-if="isShowAllBotton" :class="{ui_mobile_list_02_sortitem_active:checkCascadeId==cascadId}" @click="loadBookList(cascadId, true)">全部</span>
+        <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyBook" :key="index" v-text="item.text" :class="{ui_mobile_list_02_sortitem_active:checkCascadeId==item.cascadeId}" @click="loadBookList(item.cascadeId, true)"></span>
       </div>
       <div class="ui_mobile_list_02_sort" id="screenBox" v-else>
         <span class="ui_mobile_list_02_nosub">暂无二级分类</span>
       </div>
-      <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyBook && classifyBook.length > 4">更多</a>
+      <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyBook && classifyBook.length > exMoreNum">更多</a>
     </div>
 
     <div class="ui_mobile_list_02_booklist">
@@ -45,6 +47,7 @@
             </p> -->
             <p class="ui_mobile_list_02_abstract" v-if="CONFIG.showItem.indexOf('abstract') !== -1 ? true : false">{{ebook[keys.abstract]}}</p>
             <p class="ui_mobile_list_02_price" v-if="CONFIG.showItem.indexOf('price') !==-1 ? true : false">{{ebook[keys.price] | formatPriceNew}}</p>
+            <p class="ui_mobile_list_02_ebPrice" v-if="CONFIG.showItem.indexOf('ebPrice') !==-1 ? true : false">{{ebook[keys.ebPrice] | formatPriceNew}}</p>
           </dd>
         </dl>
       </div>
@@ -87,6 +90,9 @@ export default {
       pageSize: "10",
       classifyBook: null,  // 分类
       searchText: '',  // 搜索内容
+      checkCascadeId:0,// 是否展示全部按钮
+      isShowAllBotton:false,// 是否展示全部按钮
+      exMoreNum:4, // 超过多少就展示更多按钮
     };
   },
   created () {
@@ -104,6 +110,15 @@ export default {
     // this.orderParam = query.cascadId ? "BOOK_PUBDATE desc" : "pub_read_num desc";
     this.orderParam = query.orderBy ? query.orderBy : this.orderParam;
     this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01[this.module];
+    //20180629 增加配置项 zong
+    if(typeof(this.CONFIG.exMoreNum)!='undefined'){
+      this.exMoreNum = this.CONFIG.exMoreNum;
+    }
+    if(typeof(this.CONFIG.isShowAllBotton)!='undefined'){
+      this.isShowAllBotton = this.CONFIG.isShowAllBotton;
+    }
+    this.checkCascadeId = this.cascadId;
+
     this.keys = this.CONFIG.keys;
     this.listType = this.CONFIG.listType;
     this.classifyArr = this.CONFIG.classifyArr;
@@ -134,6 +149,7 @@ export default {
 
   methods: {
     loadBookList (cascadId, isNOConcat) { // 获取图书列表数据 isNOConcat: 是否需要拼接数据
+      this.checkCascadeId = cascadId;
       let paramsObj = Object.assign({}, this.CONFIG.params);
       if (this.searchText) {
         paramsObj.searchText = this.searchText;
@@ -155,11 +171,11 @@ export default {
           item.pub_col_id = this.colId;
           isHas_pub_col_id = true;
         }
-      }) 
+      })
       if (!isHas_BOOK_BOOK_CASCADID && cascadId) paramsObj.conditions.push({ BOOK_BOOK_CASCADID: cascadId.replace('~', '_'), op: "lk" });
-      if (!isHas_pub_site_id && CONFIG.SITE_CONFIG.siteId) paramsObj.conditions.push({pub_site_id:CONFIG.SITE_CONFIG.siteId}) 
-      if (!isHas_pub_col_id && this.colId) paramsObj.conditions.push({pub_col_id:this.colId}) 
-      
+      if (!isHas_pub_site_id && CONFIG.SITE_CONFIG.siteId) paramsObj.conditions.push({pub_site_id:CONFIG.SITE_CONFIG.siteId})
+      if (!isHas_pub_col_id && this.colId) paramsObj.conditions.push({pub_col_id:this.colId})
+
       if (this.orderParam) {
         paramsObj.orderBy = this.orderParam;
       } else {
@@ -246,9 +262,13 @@ export default {
     showMore () { // 查看更多 按分类查时的功能
       if ($('#moreBtn').html() == "收起") {
         $("#screenBox").css("height", "");
+        $("#moreBtn").removeClass("classToClose");
+        $("#moreBtn").addClass("classToMore");
         $('#moreBtn').html("更多");
       } else {
         $("#screenBox").css("height", "auto");
+        $("#moreBtn").removeClass("classToMore");
+        $("#moreBtn").addClass("classToClose");
         $('#moreBtn').html("收起");
       }
     },

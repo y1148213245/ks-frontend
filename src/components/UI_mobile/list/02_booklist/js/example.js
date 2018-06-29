@@ -80,6 +80,8 @@ const prod = {
             }
           }
         },
+        exMoreNum:4, //超过多少个就展示
+        isShowAllBotton:true,
       }
     }
   }

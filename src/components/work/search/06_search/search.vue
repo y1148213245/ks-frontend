@@ -10,11 +10,11 @@
       </el-dropdown-menu>
     </el-dropdown>
     <div class="work_search_06_searchcon">
-      <input class="work_search_06_searchbtn" type="button" value="搜索" name="search" @click="goToSearchResult()">
+      <input class="work_search_06_searchbtn" type="button" :value="CONFIG && CONFIG.staticText && CONFIG.staticText.search ? CONFIG.staticText.search : '搜索'" name="search" @click="goToSearchResult()">
       <i class="work_search_06_searchicon el-icon-search"></i>
-      <input class="work_search_06_searchtext" type="text" id="searchText" value="" placeholder="输入关键字" v-model="searchText" @keyup.13="goToSearchResult($event)">
+      <input class="work_search_06_searchtext" type="text" id="searchText" value="" :placeholder="CONFIG && CONFIG.staticText && CONFIG.staticText.inputKeyWord ? CONFIG.staticText.inputKeyWord : '输入关键字'" v-model="searchText" @keyup.13="goToSearchResult($event)">
     </div>
-    <div class="work_search_06_advsearch" @click="goToAdvSearch()">高级检索</div>
+    <div class="work_search_06_advsearch" @click="goToAdvSearch()">{{CONFIG && CONFIG.staticText && CONFIG.staticText.advancedSearch ? CONFIG.staticText.advancedSearch : '高级检索'}}</div>
   </div>
 </template>
 

@@ -3,7 +3,7 @@
     <dl class="listDl" v-for="(entry,index) in popularBookList" :class="{floatLeft:index%2==0}" v-if="index<number" :key="index">
       <dt class="listDt">
         <a @click="toBookDetail(entry.pubId)" class="imgBox">
-          <img class="popular_list_img" :src="entry.bookUrl"  onload="DrawImage(this,144,194)"   alt="暂无封面"/>
+          <img class="popular_list_img" :src="entry.bookUrl"  onload="DrawImage(this,144,194)"   :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noCover ? CONFIG.staticText.noCover : '暂无封面'"/>
         </a>
       </dt>
       <dd class="listDd">
@@ -14,17 +14,17 @@
           <el-rate v-model="entry.starNum" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
         </p>
         <p class="author">
-          <span class="authorText">作者：</span>
+          <span class="authorText">{{CONFIG && CONFIG.staticText && CONFIG.staticText.author ? CONFIG.staticText.author : '作者：'}}</span>
           <span class="authorText" v-text="entry.bookAuthor" :title="entry.bookAuthor"></span>
         </p>
-        <p class="banquan"><span class="authorText">出版社：</span><span v-text="entry.BOOK_PRESS_NAME" :title="entry.BOOK_PRESS_NAME" class="authorText"></span></p>
-        <p class="banquan"><span class="authorText">出版时间：</span><span v-if="entry.BOOK_PUBDATE?entry.BOOK_PUBDATE:0" :title="entry.BOOK_PUBDATE" class="authorText">{{entry.BOOK_PUBDATE}}</span>
+        <p class="banquan"><span class="authorText">{{CONFIG && CONFIG.staticText && CONFIG.staticText.press ? CONFIG.staticText.press : '出版社：'}}</span><span v-text="entry.BOOK_PRESS_NAME" :title="entry.BOOK_PRESS_NAME" class="authorText"></span></p>
+        <p class="banquan"><span class="authorText">{{CONFIG && CONFIG.staticText && CONFIG.staticText.pubTime ? CONFIG.staticText.pubTime : ' 出版时间：'}}</span><span v-if="entry.BOOK_PUBDATE?entry.BOOK_PUBDATE:0" :title="entry.BOOK_PUBDATE" class="authorText">{{entry.BOOK_PUBDATE}}</span>
         </p>
-        <p class="price">￥<i>{{entry.bookProdPrice?Number(entry.bookProdPrice).toFixed(2):'0.00'}}</i> <span>￥{{entry.bookPrice?Number(entry.bookPrice).toFixed(2):'0.00'}}</span></p>
+        <p class="price">{{CONFIG && CONFIG.staticText && CONFIG.staticText.yuan ? CONFIG.staticText.yuan : '￥'}}<i>{{entry.bookProdPrice?Number(entry.bookProdPrice).toFixed(2):'0.00'}}</i> <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.yuan ? CONFIG.staticText.yuan : '￥'}}{{entry.bookPrice?Number(entry.bookPrice).toFixed(2):'0.00'}}</span></p>
         <p class="other">
-          <a href="http://www.jiathis.com/share" class="share" target="_blank">分享</a>
-          <a href="javascript:void(0)" @click="toBookDetail(entry.pubId)" class="goumai f12  color_fff">购买</a>
-          <a href="javascript:void(0)" @click="toBookDetail(entry.pubId)" class="chakan f12 color_fff">查看</a>
+          <a href="http://www.jiathis.com/share" class="share" target="_blank">{{CONFIG && CONFIG.staticText && CONFIG.staticText.share ? CONFIG.staticText.share : '分享'}}</a>
+          <a href="javascript:void(0)" @click="toBookDetail(entry.pubId)" class="goumai f12  color_fff">{{CONFIG && CONFIG.staticText && CONFIG.staticText.buy ? CONFIG.staticText.buy : '购买'}}</a>
+          <a href="javascript:void(0)" @click="toBookDetail(entry.pubId)" class="chakan f12 color_fff">{{CONFIG && CONFIG.staticText && CONFIG.staticText.see ? CONFIG.staticText.see : '查看'}}</a>
         </p>
       </dd>
     </dl>
@@ -63,17 +63,17 @@ export default {
         if (datas) {
           for (let i = 0; i < datas.length; i++) {
             let entry = {
-              bookName: datas[i].pub_resource_name || '暂无书名',
+              bookName: datas[i].pub_resource_name || CONFIG && CONFIG.staticText && CONFIG.staticText.noBookName ? CONFIG.staticText.noBookName : '暂无书名',
               starNum: datas[i].pub_star_num,
               bookProdPrice: datas[i].prod_member_price || 0,
               bookPrice: datas[i].BOOK_EB_PRICE || 0,
-              bookAuthor: datas[i].BOOK_SYS_AUTHORS || '暂无作者',
+              bookAuthor: datas[i].BOOK_SYS_AUTHORS || CONFIG && CONFIG.staticText && CONFIG.staticText.noAuthor ? CONFIG.staticText.noAuthor : '暂无作者',
               pubId: datas[i].id || 0,
               contentType: datas[i].pub_content_type || 0,
               pub_col_id: datas[i].pub_col_id || 51,
               bookUrl: datas[i].pub_picBig || "aaa.jpg",
               BOOK_PRESS_NAME: datas[i].BOOK_PRESS_NAME,
-              BOOK_PUBDATE: datas[i].BOOK_PUBDATE ? this.formatDate(datas[i].BOOK_PUBDATE, "yyyy-MM-dd") : "暂无日期"
+              BOOK_PUBDATE: datas[i].BOOK_PUBDATE ? this.formatDate(datas[i].BOOK_PUBDATE, "yyyy-MM-dd") : CONFIG && CONFIG.staticText && CONFIG.staticText.noDate ? CONFIG.staticText.noDate : "暂无日期"
             }
             loadingDatas.push(entry);
           }

@@ -5,22 +5,22 @@
       <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in activityList" :key="index">
         <div class="ui_pic_list_21-card_content"  @click="toDetail(item[keys.id])" >
             <div class="ui_pic_list_21-img_box">
-              <img :src="item[keys.pub_picMiddle]" class="image" alt="暂无图片" :href="goDetail(item[keys.id])"> 
+              <img :src="item[keys.pub_picMiddle]" class="image" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" :href="goDetail(item[keys.id])">
             </div>
             <div class="ui_pic_list_21-title_box" >
               <a class="ac_title" :href="goDetail(item[keys.id])">{{item[keys.PORTAL_ACTIVITY_SYS_TOPIC] }}</a>
               <div class="clearfix">
                 <div class="ac_text">
-                  <span>活动时间：</span>
+                  <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.activityTime ? CONFIG.staticText.activityTime : '活动时间：'}}</span>
                   <time class="time">{{item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW] |
-                    formatDateNEW}}至{{item[keys.reviewDate] | formatDateNEW}}
+                    formatDateNEW}}{{CONFIG && CONFIG.staticText && CONFIG.staticText.to ? CONFIG.staticText.to : '至'}}{{item[keys.reviewDate] | formatDateNEW}}
                   </time>
                 </div>
-                
+
                 <template v-for="(status,i) in activityStatus">
                   <el-button v-if="item.activityStatus == status.title" type="text" class="button" :key="i" :class="{[status.class]: item.activityStatus == status.title}">{{item.activityStatus}}</el-button>
                 </template>
-                
+
               </div>
             </div>
         </div>
@@ -51,10 +51,10 @@ export default {
       keys: null,
       colDetail: '',
       activityStatus: [
-        { title: '未开始', class: 'activity_notstart' },
-        { title: '进行中', class: 'activity_active' },
-        { title: '评奖中', class: 'activity_review' },
-        { title: '已结束', class: 'activity_end' }
+        { title: CONFIG && CONFIG.staticText && CONFIG.staticText.notBegin ? CONFIG.staticText.notBegin : '未开始', class: 'activity_notstart' },
+        { title: CONFIG && CONFIG.staticText && CONFIG.staticText.inProgress ? CONFIG.staticText.inProgress :'进行中', class: 'activity_active' },
+        { title: CONFIG && CONFIG.staticText && CONFIG.staticText.appraisalBonus ? CONFIG.staticText.appraisalBonus :'评奖中', class: 'activity_review' },
+        { title: CONFIG && CONFIG.staticText && CONFIG.staticText.haveFinished ? CONFIG.staticText.haveFinished :'已结束', class: 'activity_end' }
       ]
 
     };
@@ -99,16 +99,16 @@ export default {
         if (data && data instanceof Array && data.length > 0) {
           data.forEach(function (item) {
             if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime < item[keys.reviewDate] && currentTime > item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
-              item.activityStatus = '进行中';
+              item.activityStatus = CONFIG && CONFIG.staticText && CONFIG.staticText.inProgress ? CONFIG.staticText.inProgress :'进行中';
             }
             else if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime > item[keys.reviewDate]) {
-              item.activityStatus = '评奖中';
+              item.activityStatus = CONFIG && CONFIG.staticText && CONFIG.staticText.appraisalBonus ? CONFIG.staticText.appraisalBonus :'评奖中';
             }
             else if (currentTime < item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
-              item.activityStatus = '未开始';
+              item.activityStatus = CONFIG && CONFIG.staticText && CONFIG.staticText.notBegin ? CONFIG.staticText.notBegin : '未开始';
             }
             else {
-              item.activityStatus = '已结束';
+              item.activityStatus = CONFIG && CONFIG.staticText && CONFIG.staticText.haveFinished ? CONFIG.staticText.haveFinished :'已结束';
             }
           })
           this.activityList = data;

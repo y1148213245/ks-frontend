@@ -16,7 +16,10 @@ const dev = {
   list_pic: {
     star_pic_info_13: {
       url: '/data/ui_list_pic_13.json',
-      picLinkUrl: ''
+      picLinkUrl: '',
+      staticText: {
+        noImg: "暂无图片"
+      }
     }
   }
 }
@@ -31,6 +34,9 @@ const prod = {
         orderBy: "pub_read_num desc",
         pageNo: "1",
         pageSize: "4"
+      },
+      staticText: {
+        noImg: "暂无图片"
       }
     }
   }

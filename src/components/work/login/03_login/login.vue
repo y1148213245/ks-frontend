@@ -79,6 +79,7 @@ export default {
       this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_03;
     },
     login: function () {
+      this.loginValid(); // 先校验是否为空
       this.action_login({ member: this.member }).then((rep) => {
         if (rep.data.result && rep.data.result == '1') {
           if (rep.data.data.checkStatus == 0 || rep.data.data.checkStatus == "0") {
@@ -111,8 +112,6 @@ export default {
             type: "error",
             message: rep.data.error && rep.data.error.errorMsg ? rep.data.error.errorMsg : '登录失败'
           });
-        } else {
-          this.loginValid();
         }
       });
     },

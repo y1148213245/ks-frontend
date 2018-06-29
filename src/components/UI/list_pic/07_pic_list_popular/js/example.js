@@ -18,7 +18,20 @@ const dev = {
     popularBook: {
       url: "/data/ui_list_pic_07.json",
       number: 15,
-      href: "./bookdetail.html?pubId="
+      href: "./bookdetail.html?pubId=",
+      staticText: {
+        author: "作者：",
+        press: " 出版社：",
+        pubTime: " 出版时间：",
+        share: "分享",
+        buy: "购买",
+        see: "查看",
+        yuan: "￥",
+        noCover: "暂无封面",
+        noBookName: "暂无书名",
+        noAuthor: "暂无作者",
+        noDate: "暂无日期"
+}
     }
   }
 }
@@ -27,6 +40,19 @@ const prod = {
   list_pic: {
     popularBook: {
       url:  "spc/cms/publish/list.do",
+      staticText: {
+        author: "作者：",
+        press: " 出版社：",
+        pubTime: " 出版时间：",
+        share: "分享",
+        buy: "购买",
+        see: "查看",
+        yuan: "￥",
+        noCover: "暂无封面",
+        noBookName: "暂无书名",
+        noAuthor: "暂无作者",
+        noDate: "暂无日期"
+      },
       param: {
         conditions: "[{pub_col_id:'57'},{pub_status:'1'}]",
         groupBy: "pub_resource_id",

@@ -148,6 +148,9 @@ const prod = {
               },
               {
                 pub_status: '1'
+              },
+              {
+                pub_parent_id: '0'
               }
             ],
             groupBy: "pub_resource_id",

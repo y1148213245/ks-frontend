@@ -9,7 +9,7 @@
           <!-- img 图片 -->
           <div v-if="config.name == 'img'" class="work_bookdetail_04_imgcontainter" @click="toCustomFun(config)">
             <label class="work_bookdetail_04_img_label">{{config.display}}</label>
-            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src="resourceDetail[keys[config.field]] || require('@static/img/defaultCover.png')" alt="暂无图片" @load="dealResourceImg($event)" />
+            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src="resourceDetail[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" @load="dealResourceImg($event)" />
           </div>
 
           <!-- 自定义事件按钮 包括（title 标题） -->
@@ -19,7 +19,8 @@
             <span v-bind="{class: 'work_bookdetail_04__btncontainer_' + config.field}" v-if="keys[config.field]">{{ resourceDetail[keys[config.field]] }}</span>
           </div>
 
-          <!-- price 价格 -->
+          <!-- price 价格 *** 特别注意： 价格要区分电子书和纸质书价格 *** -->
+          
           <div v-else-if="config.name == 'price'" class="work_bookdetail_04_pricecontainter">
             <label class="work_bookdetail_04_price_label">{{config.display}}</label>
             <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
@@ -87,7 +88,7 @@
           <div v-else class="work_bookdetail_04_other">
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_label">{{config.display}}</label>
-            <span v-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] || '暂无'"></span>
+            <span v-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] || CONFIG && CONFIG.staticText && CONFIG.staticText.noResource ? CONFIG.staticText.noResource : '暂无'"></span>
           </div>
         </template>
       </section>
@@ -337,8 +338,8 @@ export default {
         ++this.quantity;
         if (this.quantity > 200) { // 防止加过200
           this.quantity = 200;
-          this.$alert("商品数量不能大于200", "系统提示", {
-            confirmButtonText: "确定"
+          this.$alert(CONFIG && CONFIG.staticText && CONFIG.staticText.quantityOfGoodsMustNotExceedTwoHundred ? CONFIG.staticText.quantityOfGoodsMustNotExceedTwoHundred : "商品数量不能大于200", CONFIG && CONFIG.staticText && CONFIG.staticText.systemPrompt ? CONFIG.staticText.systemPrompt : "系统提示", {
+            confirmButtonText: CONFIG && CONFIG.staticText && CONFIG.staticText.OK ? CONFIG.staticText.OK : "确定"
           });
         }
       } else if (op < 0) {
@@ -366,7 +367,7 @@ export default {
             this.pubId = relativeEBook[this.keys.id];
           } else { // 没有对于纸质书
             this.$message({
-              message: "该书没有对应纸质书，无法加入购物车",
+              message: CONFIG && CONFIG.staticText && CONFIG.staticText.noPaperBookInfo ? CONFIG.staticText.noPaperBookInfo : "该书没有对应纸质书，无法加入购物车",
               type: 'error'
             });
             return false
@@ -379,7 +380,7 @@ export default {
             this.pubId = relativeBook[this.keys.id];
           } else { // 没有对于纸质书
             this.$message({
-              message: "该书没有对应电子书，无法加入购物车",
+              message: CONFIG && CONFIG.staticText && CONFIG.staticText.noEBookInfo ? CONFIG.staticText.noEBookInfo : "该书没有对应电子书，无法加入购物车",
               type: 'error'
             });
             return false

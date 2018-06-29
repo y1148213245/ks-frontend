@@ -29,7 +29,12 @@ const dev = {
       }, {
         name: "视频",
         tag: "VIDEO-MEDIA"
-      }]
+      }],
+      staticText: {
+        search: "搜索",
+        inputKeyWord: "输入关键字",
+        advancedSearch: "高级搜索"
+      }
     }
   }
 }
@@ -51,7 +56,12 @@ const prod = {
       }, {
         name: "视频",
         tag: "VIDEO-MEDIA"
-      }]
+      }],
+      staticText: {
+        search: "搜索",
+        inputKeyWord: "输入关键字",
+        advancedSearch: "高级检索"
+      }
     }
   }
 };

@@ -30,6 +30,13 @@ const dev = {
             loginName: ""
           }
         }
+      },
+      staticText: {
+        hits: "点击量：",
+        price: "价格：￥",
+        noCover: "暂无封面",
+        deleteSuccess: "删除成功！",
+        deleteFailed: "删除失败！"
       }
     }
   }
@@ -67,7 +74,13 @@ const prod = {
             loginName: ""
           }
         }
+      },
+      staticText: {
+        hits: "点击量：",
+        price: "价格：￥",
+        noCover: "暂无封面"
       }
+
     }
   }
 

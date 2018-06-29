@@ -97,10 +97,11 @@ export default {
       this.orReGetMenberName = this.CONFIG.orReGetMenberName;
     }
 
-    this.queryComment();
 
     if(this.orReGetMenberName){
       this.getResourceDetail();
+    }else{
+      this.queryComment();
     }
   },
   created: function () {
@@ -124,17 +125,18 @@ export default {
 
       this.getMemberInfo().then((member) => {
         this.loginName = member.loginName;
+        Get(CONFIG.BASE_URL + 'book/getBookDetail.do?pubId=' + this.pubId + '&loginName=' + this.loginName).then((rep) => {
+          let datas = rep.data;
+          if (rep.status == 200 && datas.data) {
+            this.resourceDetail = datas.data;
+            this.isDiscuss = this.resourceDetail.isDiscuss;
+            this.queryComment();   //获取回复列表
+          }
+        });
       });
 
-      Get(CONFIG.BASE_URL + 'book/getBookDetail.do?pubId=' + this.pubId + '&loginName=' + this.loginName).then((rep) => {
-        let datas = rep.data;
-        if (rep.status == 200 && datas.data) {
-          this.resourceDetail = datas.data;
-          this.isDiscuss = this.resourceDetail.isDiscuss;
-        }
-      });
 
-      this.queryComment();   //获取回复列表
+
     },
     /* 去评论详情页*/
     toReviewInfo (toReviewInfo) {
@@ -275,6 +277,7 @@ export default {
       })
     },
     queryComment (pagingParams) {
+      this.loginName = this.member.loginName;
       let queryConfig = this.CONFIG.queryComments;
       let paramsObj = Object.assign({}, queryConfig.params);
       paramsObj.pubId = this.pubId;

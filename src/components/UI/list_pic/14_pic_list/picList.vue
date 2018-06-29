@@ -5,7 +5,7 @@
       <div class="list_pic_14-entry" v-for="entry in list" :key="entry.id">
         <p class="list_pic_14-entry-img_box">
           <a href="javascript:void(0)" @click="toDetail(entry.id)" class="list_pic_14-entry-img_box-a">
-            <img :src="entry.pub_picBig" class="list_pic_14-entry-img_box-img" alt="暂无封面" onload="DrawImage(this,147,222)">
+            <img :src="entry.pub_picBig" class="list_pic_14-entry-img_box-img" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noCover ? CONFIG.staticText.noCover : '暂无封面'" onload="DrawImage(this,147,222)">
           </a>
         </p>
         <p class="list_pic_14-entry-img_box-topic">

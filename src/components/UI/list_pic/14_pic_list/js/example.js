@@ -1,6 +1,6 @@
 /*
- * @Author: yan.chaoming 
- * @Date: 2018-01-08 16:21:31 
+ * @Author: yan.chaoming
+ * @Date: 2018-01-08 16:21:31
  * @Last Modified by: song
  * @Last Modified time: 2018-03-12 14:17:51
  * 作者列表
@@ -21,6 +21,9 @@ const dev = {
       url: '/data/ui_list_pic_11.json',
       toDetailHref: '',
       pageSizes: [10, 20, 50, 100],
+      staticText: {
+        noCover: "暂无封面"
+      }
     }
   }
 }
@@ -39,6 +42,9 @@ const prod = {
       },
       toDetailHref: '',
       pageSizes: [10, 20, 50, 100],
+      staticText: {
+        noCover: "暂无封面"
+      }
     }
   }
 }

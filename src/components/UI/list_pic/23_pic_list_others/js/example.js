@@ -25,6 +25,15 @@ const dev = {
         url: '../data/ui_piclist_19_otherbook.json',
         detailHref: "../pages/bookdetail.html?pubId=", // 去详情页
         maxNum: 4, // 控制显示多少个
+      },
+      staticText: {
+        author: "作者:",
+        comments: "条评论",
+        noData: "暂无数据",
+        noImg: "暂无图片",
+        noIntroduction: "暂无简介",
+        noBookName: "暂无书名",
+        noAuthor: "暂无作者"
       }
     }
   }
@@ -59,6 +68,15 @@ const prod = {
         },
         detailHref: "../pages/bookdetail.html?pubId=",
         maxNum: 4, // 控制显示多少个
+      },
+      staticText: {
+        author: "作者:",
+        comments: "条评论",
+        noData: "暂无数据",
+        noImg: "暂无图片",
+        noIntroduction: "暂无简介",
+        noBookName: "暂无书名",
+        noAuthor: "暂无作者"
       }
     }
   }

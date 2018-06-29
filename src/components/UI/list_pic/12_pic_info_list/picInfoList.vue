@@ -5,7 +5,7 @@
         <dl class="l_big fl">
           <dt class="fl">
             <a class="swiper-a" target="_blank" href="javascript:void(0)" @click="toBookDetail(bookDetailInfo.pubId)">
-              <img class="swiper-img" onload="DrawImage(this,186,248)" alt="暂无图片" :src="bookDetailInfo && bookDetailInfo.bigPic">
+              <img class="swiper-img" onload="DrawImage(this,186,248)" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" :src="bookDetailInfo && bookDetailInfo.bigPic">
             </a>
           </dt>
           <dd class="fl pl20">
@@ -13,22 +13,21 @@
             <p class="xing starStyle">
               <el-rate v-model="bookDetailInfo.starNum - 0" :show-text="false" :max="5" disabled
                        disabled-void-color="#c1c1c0" v-if="bookDetailInfo && bookDetailInfo.pub_star_num != 0"></el-rate>
-
             </p>
-            <p class="author f14 book_chuban_text">作者：<span v-text="bookDetailInfo && bookDetailInfo.author"></span></p>
-            <p class="banquan book_chuban_text"> 出版社：{{bookDetailInfo && bookDetailInfo.BOOK_PRESS_NAME | notAvailableNew}}</p>
-            <p class="chuban"> 出版时间：{{bookDetailInfo && bookDetailInfo.pubTime | formatDateNEW}}</p>
+            <p class="author f14 book_chuban_text">{{CONFIG && CONFIG.staticText && CONFIG.staticText.author ? CONFIG.staticText.author : '作者：'}}<span v-text="bookDetailInfo && bookDetailInfo.author"></span></p>
+            <p class="banquan book_chuban_text">{{CONFIG && CONFIG.staticText && CONFIG.staticText.press ? CONFIG.staticText.press : ' 出版社：'}}{{bookDetailInfo && bookDetailInfo.BOOK_PRESS_NAME | notAvailableNew}}</p>
+            <p class="chuban">{{CONFIG && CONFIG.staticText && CONFIG.staticText.pubTime ? CONFIG.staticText.pubTime : ' 出版时间：'}}{{bookDetailInfo && bookDetailInfo.pubTime | formatDateNEW}}</p>
             <p class="price f16">{{bookDetailInfo && bookDetailInfo.memberPrice | formatPriceNew}}<span>{{bookDetailInfo && bookDetailInfo.ebPrice | formatPriceNew}}</span>
             </p>
             <p class="reader">
-              <a target="_blank" href="javascript:void(0)" @click="shidu(bookDetailInfo && bookDetailInfo.resourceId,0,bookDetailInfo && bookDetailInfo.resourceName)">免费试读</a>
+              <a target="_blank" href="javascript:void(0)" @click="shidu(bookDetailInfo && bookDetailInfo.resourceId,0,bookDetailInfo && bookDetailInfo.resourceName)">{{CONFIG && CONFIG.staticText && CONFIG.staticText.freeReading ? CONFIG.staticText.freeReading : '免费试读'}}</a>
             </p>
           </dd>
         </dl>
         <div>
         <div class="jianjie" v-html="jianjie(bookIntroductions[ind])"></div>
         </div>
-        <a href="javascript:;" @click="viewAll()" class="more">查看全部></a>
+        <a href="javascript:;" @click="viewAll()" class="more">{{CONFIG && CONFIG.staticText && CONFIG.staticText.seeAll ? CONFIG.staticText.seeAll : '查看全部>'}}</a>
       </div>
     </div>
   </div>

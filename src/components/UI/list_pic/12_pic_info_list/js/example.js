@@ -16,7 +16,15 @@ const dev = {
   list_pic: {
     pic_info_list_12: {
       url: '/data/ui_list_pic_12.json',
-      picLinkUrl: ''
+      picLinkUrl: '',
+      staticText: {
+        author: "作者：",
+        press: " 出版社：",
+        pubTime: " 出版时间：",
+        freeReading: "免费试读",
+        seeAll: "查看全部>",
+        noImg: "暂无图片"
+      }
     }
   }
 }
@@ -37,6 +45,14 @@ const prod = {
         docID: ""
       },
       moreUrl: "../pages/bookList.html?colId=264", // 查看更多
+      staticText: {
+        author: "作者：",
+        press: " 出版社：",
+        pubTime: " 出版时间：",
+        freeReading: "免费试读",
+        seeAll: "查看全部>",
+        noImg: "暂无图片"
+      }
     }
   }
 }

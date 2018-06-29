@@ -3,20 +3,20 @@
   <div class="work_shoppingcart_02 work_shoppingcart_02_skin">
     <div class="tips">
       <i class="tipsItag"></i>
-      <span>商品已成功加入购物车！</span>
+      <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.addCartSuccess ? CONFIG.staticText.addCartSuccess : '商品已成功加入购物车！'}}</span>
     </div>
     <div class="bookInfoWrapper">
       <dl class="bookInfoDl">
         <dt class="bookInfoDt">
-          <img :src="bookInfo.bigPic" alt="暂无图片" onload="DrawImage(this,150,150)">
+          <img :src="bookInfo.bigPic" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" onload="DrawImage(this,150,150)">
         </dt>
         <dd class="bookInfoDd">
           <p class="toDetail" v-on:click="toDetail(bookInfo.pubId)" v-text="bookInfo.productName"></p>
-          <p class="author">作者: {{bookInfo.author}}</p>
-          <p class="ebook" v-if="CONFIG && CONFIG.ebookType && bookInfo.contentType === CONFIG.ebookType">数字商品</p>
+          <p class="author">{{CONFIG && CONFIG.staticText && CONFIG.staticText.author ? CONFIG.staticText.author : '作者:'}}{{bookInfo.author}}</p>
+          <p class="ebook" v-if="CONFIG && CONFIG.ebookType && bookInfo.contentType === CONFIG.ebookType">{{CONFIG && CONFIG.staticText && CONFIG.staticText.eProduct ? CONFIG.staticText.eProduct : '数字商品'}}</p>
           <p class="redirect">
-            <a href="../pages/index.html" class="toIndex">返回商城</a>
-            <a href="../pages/shoppingcart.html" class="toCart">去购物车结算</a>
+            <a href="../pages/index.html" class="toIndex">{{CONFIG && CONFIG.staticText && CONFIG.staticText.backShopping ? CONFIG.staticText.backShopping : '返回商城'}}</a>
+            <a href="../pages/shoppingcart.html" class="toCart">{{CONFIG && CONFIG.staticText && CONFIG.staticText.settleAccountInShoppingCart ? CONFIG.staticText.settleAccountInShoppingCart : '去购物车结算'}}</a>
           </p>
         </dd>
       </dl>

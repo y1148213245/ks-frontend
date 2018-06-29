@@ -5,18 +5,14 @@
    <template v-if="!member.loginName">
    <a :href="CONFIG.toLoginHref" class="work_login_04-login">
      <slot>
-       [登录]
+       {{CONFIG && CONFIG.staticText && CONFIG.staticText.loginSys ? CONFIG.staticText : '[登录]'}}
      </slot>
    </a>
-   <span v-if="getIsShow('register')"><a :href="CONFIG.toRegisterHref">注 册</a></span>
-  </template> 
-  <!-- 登陆后 -->
-  <template v-if="member.loginName">
-   <a :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
-   <span class="work_login_04-info">欢迎回来！</span>
-   <a class="work_login_04-exit" @click="exit">
+   <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
+   <span v-if="member.loginName" class="work_login_04-info">{{CONFIG && CONFIG.staticText && CONFIG.staticText.welcomeBack ? CONFIG.staticText.welcomeBack : '欢迎回来！' }}</span>
+   <a class="work_login_04-exit" v-if="member.loginName" @click="exit">
      <slot name="exit">
-       退出
+       {{CONFIG && CONFIG.staticText && CONFIG.staticText.exitSys ? CONFIG.staticText.exitSys : '退出'}}
      </slot>
    </a>
    </template>

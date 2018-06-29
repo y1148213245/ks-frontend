@@ -65,7 +65,13 @@ const dev = {
           class: 'bds_more',
           cmd: 'more',
         }
-      ]
+      ],
+      staticText: {
+        yourPosition: "您的位置：",
+        homePage: "首页",
+        infoContent: "资讯内容",
+        shareTo: "分享到："
+      }
 
     }
   }
@@ -125,7 +131,13 @@ const prod = {  // 详情组件内含评论组件 评论组件作为子组件 �
         class: 'bds_more',
         cmd: 'more',
       }
-    ]
+    ],
+      staticText: {
+        yourPosition: "您的位置：",
+        homePage: "首页",
+        infoContent: "资讯内容",
+        shareTo: "分享到："
+      }
     }
   }
 

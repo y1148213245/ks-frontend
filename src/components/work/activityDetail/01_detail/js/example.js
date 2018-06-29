@@ -1,6 +1,6 @@
 /*
- * @Author: yan.chaoming 
- * @Date: 2018-02-07 10:48:04 
+ * @Author: yan.chaoming
+ * @Date: 2018-02-07 10:48:04
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-06-26 16:12:20
  */
@@ -28,6 +28,12 @@ const dev = {
         reviewDate:'reviewDate',//评奖时间,
         illustrationLinks:'links'
       },
+      staticText: {
+        uploadWork: "上传作品",
+        notBegin: "未开始",
+        contributeClosed: "截止投稿",
+        haveEnded: "已结束"
+      },
       eventName_loadedDatas:'eventName_loadedDatas',//详情数据加载后触发的事件
       toUploadPagUrl:'',//上传页链接
     }
@@ -52,7 +58,13 @@ const prod = {
       eventName_loadedDatas: 'eventName_loadedDatas',//详情数据加载后触发的事件
       toUploadPagUrl:'./uploadproduction.html',//上传页链接
       // showItem:['upload']
+      staticText: {
+        uploadWork: "上传作品",
+        notBegin: "未开始",
+        contributeClosed: "截止投稿",
+        haveEnded: "已结束"
     }
+  }
   }
 };
 const platform = 'PC';

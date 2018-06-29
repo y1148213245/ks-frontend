@@ -1,6 +1,6 @@
 /*
- * @Author: yan.chaoming 
- * @Date: 2018-01-08 16:21:31 
+ * @Author: yan.chaoming
+ * @Date: 2018-01-08 16:21:31
  * @Last Modified by: song
  * @Last Modified time: 2018-03-12 14:17:52
  * 编辑列表
@@ -20,6 +20,12 @@ const dev = {
       url: '/data/ui_list_pic_11.json',
       detailHref: '',
       contributeBaseUrl: '',
+      staticText: {
+        contributeWork: "去投稿",
+        noEmail: "暂无邮箱",
+        noImg: "暂无图片"
+
+      }
     }
   }
 }
@@ -37,6 +43,12 @@ const prod = {
         searchText: ''
       },
       contributeBaseUrl: '',
+      staticText: {
+        contributeWork: "去投稿",
+        noEmail: "暂无邮箱",
+        noImg: "暂无图片"
+
+      }
     }
   }
 }

@@ -18,7 +18,8 @@ const dev = {
       params: {
         browserId: '', // 浏览器指纹
         docID: '',
-      }
+      },
+
     }
   },
   activityDetail: {
@@ -117,7 +118,13 @@ const dev = {
         {
           tag:'activityTeather',
           title:'名师指导'
-        }]
+        }],
+      staticText: {
+        announcement: "公告",
+        displayExcellentWorks: "优秀作品展示",
+        yes: "是",
+        pleaseWaitForTheReview: "请等待评审"
+      }
     }
 
   },
@@ -135,6 +142,11 @@ const prod = {
       params: {
         browserId: '', // 浏览器指纹
         docID: '',
+      },
+      staticText: {
+        announcement: "公告",
+        displayExcellentWorks: "优秀作品展示",
+
       }
     }
   },
@@ -515,7 +527,13 @@ const prod = {
         {
           tag:'activityTeather',
           title:'名师指导'
-        }]
+        }],
+      staticText: {
+        announcement: "公告",
+        displayExcellentWorks: "优秀作品展示",
+        yes: "是",
+        pleaseWaitForTheReview: "请等待评审"
+      }
     }
 
   },

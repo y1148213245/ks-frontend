@@ -98,11 +98,19 @@ export default {
       totalCount: 0,
       toOrderByBtn:{}, // 排序配置
       activeSetOrder:"pub_a_order asc pub_lastmodified desc id asc",
+      pubId:'',   //
     };
   },
 
   created () {
-    this.colId = URL.parse(document.URL, true).query.colId; // 从地址栏接收栏目id
+    var uriQuery = URL.parse(document.URL, true).query;
+    // this.colId = uriQuery.colId; // 从地址栏接收栏目id
+    if(typeof(uriQuery.colId)!="undefined"){
+      this.colId = uriQuery.colId;
+    }
+    if(typeof(uriQuery.pubId)!="undefined"){
+      this.pubId = uriQuery.pubId;
+    }
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_29[this.modulename];
     this.resourceListsConfig = this.CONFIG.getResourceLists;
     this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter)));
@@ -216,6 +224,10 @@ export default {
       paramsObj.conditions.map((item) => {
         if (item.hasOwnProperty(this.keys.colId)) {
           item[this.keys.colId] = this.colId ? this.colId : item[this.keys.colId];
+        }
+
+        if (item.hasOwnProperty('pub_parent_id')) {
+          item.pub_parent_id = this.pubId ? this.pubId : item.pub_parent_id;
         }
       })
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);

@@ -6,7 +6,7 @@
         <dl class="listCon" v-for="(entry, index) in list" v-if="index<(number || 4)" :key="index">
           <dt class="listDt">
             <a :href="(CONFIG && CONFIG.href)+entry.id">
-              <img :src="entry && entry.pub_picBig" onload="DrawImage(this,70,84)" alt="暂无封面" />
+              <img :src="entry && entry.pub_picBig" onload="DrawImage(this,70,84)" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noCover ? CONFIG.staticText.noCover : '暂无封面'" />
             </a>
           </dt>
           <dd class="jiaobiao" v-text="index+1" v-if="modulename === 'hotsalebank'"></dd>
@@ -14,8 +14,8 @@
             <p class="title">
               <a :href="(CONFIG && CONFIG.href)+entry.id" class="hot_sell_text" v-text="entry.pub_resource_name" :title="entry.pub_resource_name"></a>
             </p>
-            <p class="hitcount" v-if="modulename === 'hotsalebank'">点击量：{{entry.pub_read_num || 0}}</p>
-            <p :class="{lineHeight: modulename === 'historyrecord'}">价格：￥
+            <p class="hitcount" v-if="modulename === 'hotsalebank'">{{CONFIG && CONFIG.staticText && CONFIG.staticText.hits ? CONFIG.staticText.hits : '点击量：'}}{{entry.pub_read_num || 0}}</p>
+            <p :class="{lineHeight: modulename === 'historyrecord'}">{{CONFIG && CONFIG.staticText && CONFIG.staticText.price ? CONFIG.staticText.price : '价格：￥'}}
               <span class="price">{{entry.BOOK_EB_PRICE?Number(entry.BOOK_EB_PRICE).toFixed(2):'0.00'}}</span>
             </p>
             <p class="delete" v-if="modulename === 'historyrecord'">
@@ -119,13 +119,13 @@ export default {
           if (rep.data.result === "1") {
             this.$message({
               type: "success",
-              message: "删除成功!"
+              message: CONFIG && CONFIG.staticText && CONFIG.staticText.deleteSuccess ? CONFIG.staticText.deleteSuccess : "删除成功!"
             });
             this.gethistorylist(this.member.loginName);
           } else {
             this.$message({
               type: "error",
-              message: "删除失败!"
+              message: CONFIG && CONFIG.staticText && CONFIG.staticText.deleteFailed ? CONFIG.staticText.deleteFailed : "删除失败!"
             });
           }
         })
@@ -136,7 +136,7 @@ export default {
             tempList.splice(i, 1);  // Array.splice(index, length, [item]) 用于替换、删除、添加  会改变原始数组
             this.$message({
               type: "success",
-              message: "删除成功!"
+              message: CONFIG && CONFIG.staticText && CONFIG.staticText.deleteSuccess ? CONFIG.staticText.deleteSuccess : "删除成功!"
             });
             break;
           }

@@ -16,6 +16,11 @@ const dev = {
           funcName:'',
           params:[],
         }
+      },
+      staticText: {
+        loginSys: "[登录]",
+        welcomeBack: "欢迎回来！",
+        exitSys: "退出"
       }
     }
   }
@@ -35,6 +40,11 @@ const prod = {
         }
       },
       // showItem:['register']
+      },
+      staticText: {
+        loginSys: "[登录]",
+        welcomeBack: "欢迎回来！",
+        exit: "退出"
     }
   }
 };

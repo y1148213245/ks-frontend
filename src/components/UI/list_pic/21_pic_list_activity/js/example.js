@@ -13,7 +13,17 @@ const description = `活动列表`; // 组件描述信息
 
 const dev = {
   list_pic: {
-    ui_list_pic_21: {}
+    ui_list_pic_21: {
+      staticText: {
+        activityTime: "活动时间：",
+        to: "至",
+        noImg: "暂无图片",
+        notBegin: "未开始",
+        inProgress: "进行中",
+        appraisalBonus: "评奖中",
+        haveFinished: "已结束"
+      }
+    }
   }
 };
 
@@ -27,6 +37,15 @@ const prod = {
         pageNo: "1",
         pageSize: "8",
         searchText: null
+      },
+      staticText: {
+        activityTime: "活动时间：",
+        to: "至",
+        noImg: "暂无图片",
+        notBegin: "未开始",
+        inProgress: "进行中",
+        appraisalBonus: "评奖中",
+        haveFinished: "已结束"
       },
       detailHref: "./activityrace.html",
       keys: {
@@ -48,7 +67,7 @@ const prod = {
           colId:'colId'
         }
       }
-      
+
     }
   }
 };

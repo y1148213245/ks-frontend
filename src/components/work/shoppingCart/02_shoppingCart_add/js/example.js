@@ -17,7 +17,15 @@ const dev = {
       url: '/data/shoppingCart_02_add.json',
       bookType: '91', // 纸质书
       ebookType: '94', // 电子书
-      toDetailUrl: '../pages/bookdetail.html'
+      toDetailUrl: '../pages/bookdetail.html',
+      staticText: {
+        addCartSuccess: "商品已成功加入购物车！",
+        author: "作者:",
+        eProduct: "数字商品",
+        backShopping: "返回商城",
+        settleAccountInShoppingCart: "去购物车结算",
+        noImg: "暂无图片"
+      }
     }
   }
 };
@@ -33,7 +41,15 @@ const prod = {
       },
       bookType: '91', // 纸质书
       ebookType: '94', // 电子书
-      toDetailUrl: '../pages/bookdetail.html'
+      toDetailUrl: '../pages/bookdetail.html',
+      staticText: {
+        addCartSuccess: "商品已成功加入购物车！",
+        author: "作者:",
+        eProduct: "数字商品",
+        backShopping: "返回商城",
+        settleAccountInShoppingCart: "去购物车结算",
+        noImg: "暂无图片"
+      }
     }
   }
 };

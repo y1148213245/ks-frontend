@@ -3,12 +3,12 @@
   <div class="work_activityrace_tab">
     <nav class="work_activityrace_tab-nav">
       <template v-for="(item,index) in tabArr">
-        <div :key="index" class="work_activityrace_tab-item" :class="{'work_activityrace_tab-title--active':currentShow.tag == item.tag,'work_activityrace_tab-product_nav-item--hidden':activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != '是' && currentShow.tag == 'activityProductWinning' }" @click="change(item)"><span>{{item.title}}</span></div>
+        <div :key="index" class="work_activityrace_tab-item" :class="{'work_activityrace_tab-title--active':currentShow.tag == item.tag,'work_activityrace_tab-product_nav-item--hidden':activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != CONFIG && CONFIG.staticText && CONFIG.staticText.yes ? CONFIG.staticText.yes : '是' && currentShow.tag == 'activityProductWinning' }" @click="change(item)"><span>{{item.title}}</span></div>
       </template>
     </nav>
     <div class="work_activityrace_tab-content">
       <!-- 奖项说明 -->
-      <div class="work_activityrace_tab-content-instructions" v-show="currentShow.tag == 'activityInstructions'"> 
+      <div class="work_activityrace_tab-content-instructions" v-show="currentShow.tag == 'activityInstructions'">
           <p class="work_activityrace_tab-content-instructions_p" v-html="activityDetail.PORTAL_ACTIVITY_DESCRIPTION"></p>
       </div>
 
@@ -22,14 +22,14 @@
         <div class="components_acitivityrace-right">
           <div class="components_acitivityrace-notice">
               <div class="components_acitivityrace-notice-title_box">
-                  <span>公告</span>
+                  <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.announcement ? CONFIG.staticText.announcement : '公告'}}</span>
                 </div>
                 <!-- 公告 -->
               <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
           </div>
           <div class="components_acitivityrace-good_products">
             <div class="components_acitivityrace-good_products-title_box">
-                <span>优秀作品展示</span>
+                <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.displayExcellentWorks ? CONFIG.staticText.displayExcellentWorks : '优秀作品展示'}}</span>
             </div>
                 <!-- 优秀参赛作品列表 -->
             <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
@@ -47,21 +47,21 @@
           <el-col :span="4">
             <div class="components_acitivityrace-notice">
               <div class="components_acitivityrace-notice-title_box">
-                <span>公告</span>
+                <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.announcement ? CONFIG.staticText.announcement : '公告'}}</span>
               </div>
               <!-- 公告 -->
               <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
             </div>
             <div class="components_acitivityrace-good_products">
               <div class="components_acitivityrace-good_products-title_box">
-                <span>优秀作品展示</span>
+                <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.displayExcellentWorks ? CONFIG.staticText.displayExcellentWorks : '优秀作品展示'}}</span>
               </div>
               <!-- 优秀参赛作品列表 -->
               <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
             </div>
           </el-col>
       </div>
-      
+
       <!-- 获奖作品 -->
       <work_activitydetail_05 v-show="currentShow.tag == 'activityProductWinning'"  :namespace="namespace" module="classification" viewType="classification"></work_activitydetail_05>
 
@@ -74,14 +74,14 @@
         <el-col :span="4">
           <div class="components_acitivityrace-notice">
             <div class="components_acitivityrace-notice-title_box">
-              <span>公告</span>
+              <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.announcement ? CONFIG.staticText.announcement : '公告'}}</span>
             </div>
             <!-- 公告 -->
             <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
           </div>
           <div class="components_acitivityrace-good_products">
             <div class="components_acitivityrace-good_products-title_box">
-              <span>优秀作品展示</span>
+              <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.displayExcellentWorks ? CONFIG.staticText.displayExcellentWorks : '优秀作品展示'}}</span>
             </div>
             <!-- 优秀参赛作品列表 -->
             <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
@@ -89,7 +89,7 @@
         </el-col>
       </div>
     </div>
-    <el-row v-show="activityDetail.PORTAL_ACTIVITY_IS_COMMENT=='是'">
+    <el-row v-show="activityDetail.PORTAL_ACTIVITY_IS_COMMENT== CONFIG && CONFIG.staticText && CONFIG.staticText.yes ? CONFIG.staticText.yes : '是'">
       <el-col :span="24">
         <!-- 活动评论组件 区别于作品评论 -->
         <work_bookreview_02 :namespace="namespace" :is-show-diff=false></work_bookreview_02>
@@ -130,7 +130,7 @@ export default {
   },
 
   mounted () {
-    
+
   },
 
   methods: {
@@ -154,7 +154,7 @@ export default {
         window.onhashchange = () => {
           this.getHashToChangeTab()
         }
-      } else { // 不支持则用定时器检测的办法 
+      } else { // 不支持则用定时器检测的办法
         let _this = this;
         setInterval(function () {
           var hash = window.location.hash;
@@ -181,7 +181,7 @@ export default {
           this.$message(
             {
               type: 'info',
-              message: '请等待评审'
+              message: CONFIG && CONFIG.staticText && CONFIG.staticText.pleaseWaitForTheReview ? CONFIG.staticText.pleaseWaitForTheReview : '请等待评审'
             }
           )
         } else {
