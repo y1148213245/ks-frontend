@@ -15,8 +15,8 @@ const dev = {
                     url: "../data/ui_video_03_data.json",
                     params: {
                         pubId: "",
-                        loginName: "emmmm",
-                        siteId: "8",
+                        loginName: "",
+                        siteId: "",
                         attachTypes: "video"
                     },
                     sysAdapter: "sykAdapter", // 系统字段
@@ -55,8 +55,8 @@ const prod = {
                     url: "resource/detail.do",
                     params: {
                         pubId: "",
-                        loginName: "emmmm",
-                        siteId: "8",
+                        loginName: "",
+                        siteId: "",
                         attachTypes: "video"
                     },
                     sysAdapter: "sykAdapter", // 系统字段

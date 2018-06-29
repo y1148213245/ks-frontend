@@ -1,6 +1,6 @@
 <template>
 	<div class="ui_swiper_01_pic">
-		
+
 		<el-carousel :interval="CONFIG.interval" arrow="always" :height="CONFIG.height">
 			<template v-for="(item, index) in picList">
         <div @click="backgroundImgEve(item)" :key="index">
@@ -10,7 +10,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_swiper_01_resourcelists_li_imgcontainter" @click="toCustomFun(item, config)">
               <label class="ui_swiper_01_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_swiper_01_resourcelists_li_img" v-bind="{class: 'ui_swiper_01_resourcelists_' + config.field}" :src=" item[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)"/>
+              <img class="ui_swiper_01_resourcelists_li_img" v-bind="{class: 'ui_swiper_01_resourcelists_' + config.field}" :src=" item[keys[config.field]] " :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" @load="dealResourceImg($event)"/>
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
@@ -40,12 +40,12 @@
           </template>
 				</el-carousel-item>
         </div>
-				
+
 			</template>
-			
+
 		</el-carousel>
 
-		
+
 
 	</div>
 </template>

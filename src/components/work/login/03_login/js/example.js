@@ -14,7 +14,16 @@ const dev = {
   name: 'login',
   login: {
     work_login_03: {
-      loginUrl: "login.do"
+      loginUrl: "login.do",
+      staticText: {
+        loginSys: "登录",
+        inputUserName: "请输入用户名",
+        inputPwd: "请输入密码",
+        forgetPwd: "忘记密码",
+        noAccount: "还没有账号？",
+        signUpNow: "立即注册"
+      }
+
     }
   }
 };
@@ -32,7 +41,7 @@ const prod = {
         showItem: [
           {
             title: 'QQ',/* 鼠标悬浮提示 */
-            type: 'QQ',/* 参数 */  
+            type: 'QQ',/* 参数 */
             tag:'qq',/* 样式名后缀 */
           }/*, {
             "title": "微信",
@@ -51,8 +60,15 @@ const prod = {
           //   tag:'jj'
           // }
         ]
+      },
+      staticText: {
+        loginSys: "登录",
+        inputUserName: "请输入用户名",
+        inputPwd: "请输入密码",
+        forgetPwd: "忘记密码",
+        noAccount: "还没有账号？",
+        signUpNow: "立即注册"
       }
-
     }
   }
 };

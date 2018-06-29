@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-07 17:34:57 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-07 18:24:53
+ * @Last Modified time: 2018-06-28 13:42:39
  * 个人中心二级页面
  */
 
@@ -31,7 +31,7 @@ const platform = 'mobile';
 const pageType = ['others'];
 const resourceType = ['others'];
 
-const childComponents = ['work_mobile_personalcenter_02', 'work_mobile_personalcenter_03', 'work_mobile_personalcenter_04', 'work_mobile_personalcenter_05', 'work_mobile_personalcenter_06','work_mobile_personalcenter_08','work_mobile_personalcenter_09','work_mobile_personalcenter_10','work_mobile_personalcenter_14'];
+const childComponents = ['work_mobile_personalcenter_02', 'work_mobile_personalcenter_03', 'work_mobile_personalcenter_04', 'work_mobile_personalcenter_05', 'work_mobile_personalcenter_06', 'work_mobile_personalcenter_07', 'work_mobile_personalcenter_08', 'work_mobile_personalcenter_09', 'work_mobile_personalcenter_10', 'work_mobile_personalcenter_14'];
 
 export {
   name,

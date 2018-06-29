@@ -9,7 +9,7 @@
           <!-- img 图片 -->
           <div v-if="config.name == 'img'" class="work_bookdetail_04_imgcontainter" @click="toCustomFun(config)">
             <label class="work_bookdetail_04_img_label">{{config.display}}</label>
-            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src=" resourceDetail[keys[config.field]] || './assets/img/defaultCover.png'" alt="暂无图片" @load="dealResourceImg($event)" />
+            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src="resourceDetail[keys[config.field]] || require('@static/img/defaultCover.png')" alt="暂无图片" @load="dealResourceImg($event)" />
           </div>
 
           <!-- 自定义事件按钮 包括（title 标题） -->
@@ -195,7 +195,11 @@ export default {
       tabActiveIndex: 0,//tab默认点击第一个
       modulename_share: 0,//tab默认点击第一个
       isAddShelf:0, //默认没有加入书架
-      isBuy:0, //默认没有购买
+      isBuy:0, //默认没有购买  0代表是否的意思  1代表是的意思
+      isCart:0, //默认没有
+      isDiscuss:0, //默认没有
+      isDownload:0, //默认没有
+      isEb:0, //默认没有
       bugButton:{},
     };
   },
@@ -246,8 +250,21 @@ export default {
     },
     toCustomFun (config) { // 执行自定义事件
       if (config.method == 'toProbation') { // 执行免费试读操作
+        //加入书架
+        Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=1' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
+          var datas = rep.data;
+          if (datas.result == "1") {
+            let msg = datas.data.msg;
+            this.$message({
+              message: msg,
+              type: 'success'
+            });
+            this.getResourceDetail();  //获取图书详情信息
+          }
+        });
+
         if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 没有试读地址
-          return false
+          return false;
         }
       }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
@@ -255,7 +272,7 @@ export default {
     toCustomFunMethod (method) { // 执行自定义事件
       if (method == 'toProbation') { // 执行免费试读操作
         if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 没有试读地址
-          return false
+          return false;
         }
       }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[method], this.keys));
@@ -274,6 +291,13 @@ export default {
         if (rep.status == 200 && datas.data) {
           this.resourceDetail = datas.data;
           this.resId = this.resourceDetail[this.keys.resId];
+          this.isBuy = this.resourceDetail.isBuy;
+          this.isAddShelf = this.resourceDetail.isAddShelf;
+          this.isDiscuss = this.resourceDetail.isDiscuss;
+          this.isCart = this.resourceDetail.isCart;
+          this.isDownload = this.resourceDetail.isDownload;
+          this.isEb = this.resourceDetail.isEb;
+
           if (this.publicizeInfoConfig && this.publicizeInfoConfig.isShowPublicize) {
             this.getPublicizeInfo(); // 获取图书相关信息
           }

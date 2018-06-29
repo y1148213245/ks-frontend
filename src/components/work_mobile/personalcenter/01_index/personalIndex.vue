@@ -1,22 +1,23 @@
 <!-- 个人中心首页组件 Created by song on 2018/6/5 -->
 <template>
-  <div class="work_mobile_personalcenter_01">
+  <div class="work_mobile_personalcenter_01" v-loading="loading">
 
     <van-cell-group class="work_mobile_personalcenter_01_cellgroup">
       <van-cell class="work_mobile_personalcenter_01_cell" v-for="(nav, index) in showLists" :key="index" :title="nav.title" :is-link="nav.hasLink" :url="CONFIG.toSubPCUrl + '#' + nav.tag">
 
         <!-- 我的资料 -->
-        <div v-if="member && nav.tag == 'account'" class="work_mobile_personalcenter_01_account">
+        <div v-if="getMember && nav.tag == 'account'" class="work_mobile_personalcenter_01_account">
           <div class="work_mobile_personalcenter_01_account_img">
-            <img :src="member.picture || '../assets/img/people.jpg'" alt="暂无头像">
+            <img v-if="JSON.stringify(getMember) != '{}' && getMember.picture" :src="getMember.picture" :alt="display.noPic || '暂无头像'" />
+            <img v-if="JSON.stringify(getMember) != '{}' && !getMember.picture" :src="require('@static/img/people.jpg')" :alt="display.noPic || '暂无头像'" />
           </div>
-          <span class="work_mobile_personalcenter_01_account_name">{{member.loginName}}</span>
+          <span class="work_mobile_personalcenter_01_account_name">{{getMember.loginName}}</span>
         </div>
         <!-- END 我的资料 -->
 
         <!-- 余额 -->
-        <div v-else-if="member && nav.tag == 'balance'" class="work_mobile_personalcenter_01_balancecon">
-          <span class="work_mobile_personalcenter_01_balance" v-text="member.virtualCoin ? Number(member.virtualCoin).toFixed(2) : '0.00'"></span>
+        <div v-else-if="getMember && nav.tag == 'balance'" class="work_mobile_personalcenter_01_balancecon">
+          <span class="work_mobile_personalcenter_01_balance" v-text="getMember.virtualCoin ? Number(getMember.virtualCoin).toFixed(2) : '0.00'"></span>
           <van-button size="small"> {{display.recharge}} </van-button>
         </div>
         <!-- END 余额 -->
@@ -34,6 +35,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { Get } from "@common";
 import * as interfaces from "@work/login/common/interfaces.js";
 import Vue from "vue";
 import { Cell, CellGroup, Icon, Button } from 'vant';
@@ -49,6 +51,8 @@ export default {
       CONFIG: null,
       showLists: [],
       display: {}, // 静态显示文本
+      getMember: {}, // 用户信息
+      loading: true,
     };
   },
   computed: {
@@ -70,6 +74,15 @@ export default {
     ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION,
     }),
+    getMemberInfomation (loginName) { // 获取用户信息
+      Get(CONFIG.BASE_URL + this.CONFIG.getMemberInfo.url + '?loginName=' + loginName).then((resp) => {
+        let res = resp.data;
+        if (res.result == '1' && res.data) {
+          this.getMember = res.data;
+        }
+        this.loading = false;
+      })
+    },
     loginOut () { // 退出登录
       localStorage.setItem('token', '');
       let toExit = this.CONFIG.toExit
@@ -91,6 +104,13 @@ export default {
         _axios.defaults.headers.token = '';
         this.getMemberInfo();
         location.reload(true);
+      }
+    }
+  },
+  watch: {
+    member: function (newValue, oldValue) {
+      if (newValue.loginName && newValue.loginName !== oldValue.loginName) {
+        this.getMemberInfomation(newValue.loginName); // 根据用户名获取用户信息
       }
     }
   }

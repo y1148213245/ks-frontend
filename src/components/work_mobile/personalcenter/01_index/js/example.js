@@ -61,9 +61,16 @@ const dev = {
         display: { // 组件显示的静态文本
           navTitle: "个人中心",
           logOut: "退出登录",
-          recharge: "充值"
+          recharge: "充值",
+          noPic: "暂无头像"
         },
         toSubPCUrl: "../pages/subpersonalcenter.html", // 个人中心二级页面
+        getMemberInfo: {
+          url: "user/getMemberByName.do", // 根据用户名获取用户信息
+          params: {
+            loginName: ""
+          }
+        }
       }
     },
   }
@@ -123,9 +130,16 @@ const prod = {
         display: { // 组件显示的静态文本
           navTitle: "个人中心",
           logOut: "退出登录",
-          recharge: "充值"
+          recharge: "充值",
+          noPic: "暂无头像"
         },
         toSubPCUrl: "../pages/subpersonalcenter.html", // 个人中心二级页面
+        getMemberInfo: {
+          url: "user/getMemberByName.do", // 根据用户名获取用户信息
+          params: {
+            loginName: ""
+          }
+        }
       }
     },
   }

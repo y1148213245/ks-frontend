@@ -106,6 +106,10 @@ const dev = {
             },
           ]
         },
+      },
+      staticText: {
+        noImg: "暂无图片",
+        noData: "暂无数据"
       }
     }
   }
@@ -210,6 +214,10 @@ const prod = {
             },
           ]
         },
+      },
+      staticText: {
+        noImg: "暂无图片",
+        noData: "暂无数据"
       }
     }
   }

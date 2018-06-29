@@ -1,25 +1,25 @@
 <!--  -->
 <template>
   <div class="login_03_content">
-    <div class="login_03_titlebox">登录</div>
+    <div class="login_03_titlebox">{{CONFIG && CONFIG.staticText && CONFIG.staticText.loginSys ? CONFIG.staticText.loginSys : '登录'}}</div>
     <div class="el-input el-input--prefix">
-      <input type="text" class="login_03_userinput" v-model="member.loginName" placeholder="请输入用户名" @keyup.enter="login"/>
+      <input type="text" class="login_03_userinput" v-model="member.loginName" :placeholder="CONFIG && CONFIG.staticText && CONFIG.staticText.inputUserName ? CONFIG.staticText.inputUserName : '请输入用户名'" @keyup.enter="login"/>
       <span class="el-input__prefix"><i class="fa fa-user" aria-hidden="true"></i></span>
 	  </div>
     <div class="el-input el-input--prefix">
-      <input type="password" class="login_03_password" v-model="member.password" placeholder="请输入密码" @keyup.enter="login"/>
+      <input type="password" class="login_03_password" v-model="member.password" :placeholder="CONFIG && CONFIG.staticText && CONFIG.staticText.inputPwd ? CONFIG.staticText.inputPwd : '请输入密码'" @keyup.enter="login"/>
       <span class="el-input__prefix"><i class="fa fa-lock" aria-hidden="true"></i></span>
     </div>
     <div class="login_03_box_01">
       <!-- <input type="checkbox" value="" class="login_03_box_01_checkbox" />自动登录 （暂未开发）-->
-      <a href="./forgetPassword.html" class="login_03_box_01_forgetpassword">忘记密码</a>
+      <a href="./forgetPassword.html" class="login_03_box_01_forgetpassword">{{CONFIG && CONFIG.staticText && CONFIG.staticText.forgetPwd ? CONFIG.staticText.forgetPwd : '忘记密码'}}</a>
     </div>
     <div class="login_03_box_02"><input type="button" id="login-form-submit" value="登录" class="login_03_box_02_button" @click="login"/></div>
-    <div class="login_03_box_03">还没有账号？
-      <a href="./register.html" class="login_03_box_03_register">立即注册</a>
+    <div class="login_03_box_03">{{CONFIG && CONFIG.staticText && CONFIG.staticText.noAccount ? CONFIG.staticText.noAccount : '还没有账号？'}}
+      <a href="./register.html" class="login_03_box_03_register">{{CONFIG && CONFIG.staticText && CONFIG.staticText.signUpNow ? CONFIG.staticText.signUpNow : '立即注册'}}</a>
     </div>
-    
-    
+
+
     <div class="login_03_content-more_sign" v-if="CONFIG.thirdParty && CONFIG.thirdParty.showItem">
       <h6 v-text="CONFIG.thirdParty.topic"></h6>
       <ul>
@@ -67,7 +67,7 @@ export default {
     this.initConfig();
   },
 
-  mounted () { 
+  mounted () {
      this.saveReffer();
   },
 

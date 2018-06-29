@@ -15,7 +15,7 @@ const dev = {
           url: "../data/ui_video_02_data.json",
           params: {
             pubId: "",
-            loginName: "emmmm",
+            loginName: "",
             siteId: "8",
             attachTypes: "audio"
           },
@@ -55,7 +55,7 @@ const prod = {
           url: "resource/detail.do\"",
           params: {
             pubId: "",
-            loginName: "emmmm",
+            loginName: "",
             siteId: "8",
             attachTypes: "audio"
           },

@@ -2,11 +2,11 @@
  * @Author: song
  * @Date: 2018-06-05 17:38:28
  * @Last Modified by: song
- * @Last Modified time: 2018-06-13 16:13:51
+ * @Last Modified time: 2018-06-28 15:08:11
  * 个人资料
  */
  <template>
-  <div class="work_mobile_personalcenter_03">
+  <div class="work_mobile_personalcenter_03" v-loading="loading">
 
     <!-- 个人资料 -->
     <div class="work_mobile_personalcenter_03_info" v-if="showItem == 'default'">
@@ -14,7 +14,8 @@
         <van-cell class="work_mobile_personalcenter_03_cell" :class="'work_mobile_personalcenter_03_' + nav.tag" v-for="(nav, index) in showLists" :key="index" :title="nav.title" :is-link="nav.hasLink" @click="enterEditModule(nav)">
           <!-- 头像在微信端不可更改，未设置头像用户显示默认头像，用第三方账号登录直接显示第三方账号头像 -->
           <div class="work_mobile_personalcenter_03_picturecon" v-if="nav.tag == 'picture'">
-            <img :src="getMember[nav.tag] || '../assets/img/people.jpg'" :alt="display.noPic || '暂无头像'" />
+            <img v-if="JSON.stringify(getMember) != '{}' && getMember[nav.tag]" :src="getMember[nav.tag]" :alt="display.noPic || '暂无头像'" />
+            <img v-if="JSON.stringify(getMember) != '{}' && !getMember[nav.tag]" :src="require('@static/img/people.jpg')" :alt="display.noPic || '暂无头像'" />
           </div>
           <div class="work_mobile_personalcenter_03_other" v-else>
             <span> {{getMember[nav.tag] || display.noData || '暂无数据'}} </span>
@@ -44,8 +45,8 @@
     <div class="work_mobile_personalcenter_03_editintro" v-if="showItem == 'introduction'">
       <div class="work_mobile_personalcenter_03_editintro_intro">{{display.introduction || '签名'}}</div>
       <div class="work_mobile_personalcenter_03_editintro_con">
-        <textarea class="work_mobile_personalcenter_03_editintro_textarea" :maxlength="display.maxNum" @input="descInput" v-model="getMember.introduction"></textarea>
-        <span class="work_mobile_personalcenter_03_editintro_textarea_count">{{remainNum}}/{{display.maxNum}}</span>
+        <textarea class="work_mobile_personalcenter_03_editintro_textarea" :maxlength="display.maxNum" v-model="getMember.introduction"></textarea>
+        <span class="work_mobile_personalcenter_03_editintro_textarea_count">{{getMember.introduction.length}}/{{display.maxNum}}</span>
       </div>
       <div v-if="noIntroduction" class="work_mobile_personalcenter_03_nointro">{{CONFIG.display.noIntroduction}}</div>
       <div class="work_mobile_personalcenter_03_saveintro">
@@ -80,7 +81,8 @@ export default {
       getMember: {}, // 个人信息
       noNickname: false, // 昵称为空
       noIntroduction: false, //签名为空
-      remainNum: ''  //剩余的可输入字数
+      // remainNum: '',  //剩余的可输入字数
+      loading: true,
     };
   },
   computed: {
@@ -123,16 +125,17 @@ export default {
   },
 
   methods: {
-    descInput(){
+    /* descInput(){
         this.remainNum = this.display.maxNum - this.getMember.introduction.length;
-    },
+    }, */
     getMemberInfo (loginName) {
       Get(CONFIG.BASE_URL + this.CONFIG.getMemberInfo.url + '?loginName=' + loginName).then((resp) => {
         let res = resp.data;
         if (res.result == '1' && res.data) {
           this.getMember = res.data;
-          this.descInput();
+          // this.descInput();
         }
+        this.loading = false;
       })
     },
     enterEditModule (item) {

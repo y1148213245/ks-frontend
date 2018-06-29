@@ -19,7 +19,7 @@ const dev = {
 			interval: 5000,
 			sysAdapter: "sykAdapter", // 系统字段
       typeAdapter: "newsAdapter", // 类型字段
-      // showItem: ['button'], // 控制显示项 ！！！只需要控制复杂项的显示 
+      // showItem: ['button'], // 控制显示项 ！！！只需要控制复杂项的显示
       complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
         name: 'button', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
         field: 'resName', // 取什么字段
@@ -32,6 +32,9 @@ const dev = {
           pubId: "id", // id是从适配器里对应的
         },
         fixedKeys: {}
+      },
+      staticText: {
+        noImg: "暂无图片"
       }
 		}
 	}
@@ -52,7 +55,7 @@ const prod = {
 			},
 			sysAdapter: "sykAdapter", // 系统字段
       typeAdapter: "newsAdapter", // 类型字段
-      showItem: ['button'], // 控制显示项 ！！！只需要控制复杂项的显示 
+      showItem: ['button'], // 控制显示项 ！！！只需要控制复杂项的显示
       complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
         name: 'button', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
         field: 'resName', // 取什么字段
@@ -65,6 +68,9 @@ const prod = {
           pubId: "id", // id是从适配器里对应的
         },
         fixedKeys: {}
+      },
+      staticText: {
+        noImg: "暂无图片"
       }
 		}
 	}

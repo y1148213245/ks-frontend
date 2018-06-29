@@ -26,7 +26,8 @@ const dev = {
           empty: '您的书架是空的哦',
           btnname:"去书城逛逛",
           delete:'删除',
-          readTrying:'试读'
+          readTrying: '试读',
+          noProbation: '暂无试读文件'
         },
         probation:{
           url:'',
@@ -39,7 +40,7 @@ const dev = {
           }
         },
         toDetailUrl: '../pages/bookdetail.html',
-        toBookLibraryUrl: '../pages/bookdetail.html', //TODO 暂时不知道书城地址,写了个详情的地址
+        toBookLibraryUrl: '../pages/index.html', //TODO 暂时不知道书城地址,写了个详情的地址
         emitEvent: { // 发广播事件名称
           contextEventName: 'showContext'
         },
@@ -72,10 +73,11 @@ const dev = {
           empty: '您的收藏夹是空的哦',
           btnname:"去书城逛逛",
           delete:'删除',
-          readTrying:'试读'
+          readTrying: '试读',
+          noProbation: '暂无试读文件'
         },
         toDetailUrl: '../pages/bookdetail.html',
-        toBookLibraryUrl: '../pages/bookdetail.html', //TODO 暂时不知道书城地址,写了个详情的地址
+        toBookLibraryUrl: '../pages/index.html', //TODO 暂时不知道书城地址,写了个详情的地址
         emitEvent: { // 发广播事件名称
           contextEventName: 'showContext'
         },

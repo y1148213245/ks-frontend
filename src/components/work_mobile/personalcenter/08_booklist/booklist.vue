@@ -8,13 +8,14 @@
         <ul class="work_mobile_personalcenter_08_bookslist_ul">
           <li class="work_mobile_personalcenter_08_bookslist_li" v-for="(item,index) in booklist" :key="index">
             <div class="work_mobile_personalcenter_08_bookslist_imgcon">
-              <img :src="item.midPic?item.midPic:''" alt="" class="work_mobile_personalcenter_08_bookslist_img" @click="toBookDetail(item)">
+              <img :src="item.midPic?item.midPic:''" alt="" class="work_mobile_personalcenter_08_bookslist_img" @click="toProbation(item,modulename)">
             </div>
-            <a href="#" v-show="isshowDlete" class="work_mobile_personalcenter_08_bookslist_delete_a" @click="deleteBookList(loginName,index,item.pubId)">
+            <a v-show="isshowDlete" class="work_mobile_personalcenter_08_bookslist_delete_a" @click="deleteBookList(loginName,index,item.pubId)">
               <van-icon name="delete" />
             </a>
-            <span class="work_mobile_personalcenter_08_bookslist_readtrying" v-if="item.bookFreeDownLoadPath !=''" @click="toProbation(item,modulename)">{{display.readTrying}}</span>
-            <span class="work_mobile_personalcenter_08_bookslist_bookname" @click="toBookDetail(item)">{{item.productName ? item.productName :'暂无书名' }}</span>
+            <!-- 登录用户免费试读后自动加入书架，书架中显示“试读”标签，购买后变为全文阅读 书架接口type字段： 1 试读 2 购买 -->
+            <span class="work_mobile_personalcenter_08_bookslist_readtrying" v-if="item.type == '1'">{{display.readTrying}}</span>
+            <span class="work_mobile_personalcenter_08_bookslist_bookname" @click="toProbation(item,modulename)">{{item.productName ? item.productName :'暂无书名' }}</span>
             <span class="work_mobile_personalcenter_08_bookslist_author">{{item.author?item.author :'暂无作者'}}</span>
           </li>
         </ul>
@@ -149,31 +150,28 @@ export default {
         obj.initData(obj.loginName);
       }
     },
-    //试读
+    /**
+     * 收藏夹点击封面和书名是进详情页
+     * 书架点击封面和书名是进试读页面
+     **/
     toProbation (item, modulename) { // 执行自定义事件
-      console.log(item);
-      if (!item.bookFreeDownLoadPath) {  // 没有试读地址的情况
-        return false;
-      } else {
-        if (modulename == "bookmyshelf") {
-          let params = this.PROBATION.params;
-          var url = this.PROBATION.url || CONFIG.READ_URL + '?bookId=' + item.resourceId + '&readType=' + params.readType + '&bookName=' + item.resourceName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
-        } else {
-          var url = this.CONFIG.toDetailUrl + '?pubId=' + item.pubId;
+      if (modulename == "bookmyshelf") { // 我的书架 -> 试读
+        if (!item.bookFreeDownLoadPath) {  // 没有试读地址的情况
+          Toast.fail(this.display.noProbation); // 提示暂无试读文件
+          return false;
         }
+        let params = this.PROBATION.params;
+        var url = this.PROBATION.url || CONFIG.READ_URL + '?bookId=' + item.resourceId + '&readType=' + params.readType + '&bookName=' + item.resourceName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+      } else { // 收藏夹 -> 详情页
+        var url = this.CONFIG.toDetailUrl + '?pubId=' + item.pubId;
       }
-      window.open(url);
+      window.open(url, '_self');
     },
     //去书城
     toBookLibrary () {
       //TODO 暂时不知道书城地址,写了个详情的地址
       var url = this.CONFIG.toBookLibraryUrl;
-      window.open(url);
-    },
-    //图书详情
-    toBookDetail(item){
-      let url = this.CONFIG.toDetailUrl + '?pubId=' + item.pubId;
-      window.open(url);
+      window.open(url, '_self');
     }
   },
 

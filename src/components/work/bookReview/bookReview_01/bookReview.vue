@@ -278,6 +278,10 @@ export default {
       let queryConfig = this.CONFIG.queryComments;
       let paramsObj = Object.assign({}, queryConfig.params);
       paramsObj.pubId = this.pubId;
+
+      if(typeof(paramsObj.loginName)!=='undefined'){
+        paramsObj.loginName = this.loginName;
+      }
       if (pagingParams) {
         paramsObj.pageIndex = pagingParams.pageNo;
         paramsObj.pageSize = pagingParams.pageSize;

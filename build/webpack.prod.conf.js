@@ -117,7 +117,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       {
         from: path.resolve(__dirname, '../static/img'), // 公共图片/图标文件
-        to: "assets/img",
+        to: "core/img",
         ignore: ['.*']
       },
       {

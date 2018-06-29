@@ -12,117 +12,121 @@
           </div>
         </template>
       </div>
-      <!--//介绍信息区域-->
-      <div class="aboutMsg" v-if="CONFIG && CONFIG.aboutMsg">
-        <span class="aboutMsg_span" v-html="CONFIG.aboutMsg"></span>
-      </div>
-      <!--期刊种类区域-->
-      <div class="magType" v-if="CONFIG && magType">
-        <div class="magType_title">
-          <span class="magType_title_span" v-if="magType.titleName" v-text="magType.titleName"></span>
-        </div>
-        <span v-if="checkMagTypeName">{{checkMagTypeName}}</span>
-        <span v-text="magType.buttonName" @click="cutPage('idMagType')"></span>
-      </div>
-      <!--订阅方式渔区-->
-      <div class="takeType" v-if="CONFIG && takeType">
-        <div class="takeType_title">
-          <span class="takeType_title_span" v-if="takeType.titleName" v-text="takeType.titleName"></span>
-        </div>
-        <span v-if="TakeNameChange">{{TakeNameChange}}</span>
-        <span v-text="takeType.buttonName" @click="cutPage('idTakeDiv')"></span>
-      </div>
-      <!--配送方式-->
-      <!--<div class="delivery" v-if="CONFIG && delivery && delivery.deliveryShow">-->
-      <!--<div class="delivery_title">-->
-      <!--<span class="delivery_title_span" v-if="delivery.titleName" v-text="delivery.titleName"></span>-->
-      <!--</div>-->
-      <!--<ul class="work_shoppingcart_05_delivery_ul" v-if="deliveryList && deliveryList.length > 0">-->
-      <!--<li class="work_shoppingcart_05_delivery_ul_li" v-for="(item, index) in deliveryList" :key="index">-->
-      <!--&lt;!&ndash; 选择框 &ndash;&gt;-->
-      <!--<span class="work_shoppingcart_05_delivery_ul_li_imgcontainter"-->
-      <!--:class="{work_shoppingcart_05_delivery_ul_li_imgcontainter_active:deliveryCheck==item.methods}"-->
-      <!--@click="selectdelivery(item)"></span>-->
-      <!--<span v-text="item.methods"></span>-->
-      <!--</li>-->
-      <!--</ul>-->
-      <!--</div>-->
-      <!--订购数量-->
-      <!--<div class="buyNumDiv" v-if="CONFIG && buyNum && buyNumDiv.buyNumDivShow">-->
-      <!--<div class="buyNumDiv_title">-->
-      <!--<span class="buyNumDiv_title_span" v-if="buyNumDiv.titleName" v-text="buyNumDiv.titleName"></span>-->
-      <!--</div>-->
-      <!--<div class="buyNumDiv_number">-->
-      <!--<input class="buyNumDiv_number_input" type="number" v-model="buyNum">-->
-      <!--<span class="buyNumDiv_number_span" v-text="buyNumDiv.unit"></span>-->
-      <!--</div>-->
-      <!--<div class="buyNumDiv_price">-->
-      <!--<span class="buyNumDiv_price_title" v-text="buyNumDiv.priceTitle"></span>-->
-      <!--<span class="buyNumDiv_price_price">{{allprice}}</span>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--其他表单信息-->
-      <!--<div class="otherDiv" v-if="CONFIG && otherDiv && otherDiv.otherDivShow">-->
-      <!--<div class="otherDiv_title">-->
-      <!--<span class="otherDiv_title_span" v-if="otherDiv.titleName" v-text="otherDiv.titleName"></span>-->
-      <!--</div>-->
-      <!--<div class="otherDiv_form">-->
-      <!--<div class="otherDiv_form_item">-->
-      <!--<span class="otherDiv_form_item_span">订阅人</span>-->
-      <!--<span class="otherDiv_form_item_span">-->
-      <!--<input type="text" maxlength="50" v-model="otherFrom.otherMan">-->
-      <!--</span>-->
-      <!--</div>-->
-      <!--<div class="otherDiv_form_item">-->
-      <!--<span class="otherDiv_form_item_span">单位全称</span>-->
-      <!--<span class="otherDiv_form_item_span">-->
-      <!--<input type="text" maxlength="50" v-model="otherFrom.otherCompany">-->
-      <!--</span>-->
-      <!--</div>-->
-      <!--<div class="otherDiv_form_item">-->
-      <!--<span class="otherDiv_form_item_span">邮寄地址</span>-->
-      <!--<span class="otherDiv_form_item_span">-->
-      <!--<input type="text" maxlength="50" v-model="otherFrom.otherSite">-->
-      <!--</span>-->
-      <!--</div>-->
-      <!--<div class="otherDiv_form_item">-->
-      <!--<span class="otherDiv_form_item_span">邮编</span>-->
-      <!--<span class="otherDiv_form_item_span">-->
-      <!--<input type="text" maxlength="50" v-model="otherFrom.otherPost">-->
-      <!--</span>-->
-      <!--</div>-->
-      <!--<div class="otherDiv_form_item">-->
-      <!--<span class="otherDiv_form_item_span">联系电话</span>-->
-      <!--<span class="otherDiv_form_item_span">-->
-      <!--<input type="text" maxlength="50" v-model="otherFrom.otherPhone">-->
-      <!--</span>-->
-      <!--</div>-->
-      <!--</div>-->
 
-      <!--</div>-->
-      <!--付款方式-->
-      <!--<div class="payType">-->
-
-      <!--</div>-->
-      <!--发票信息-->
-      <div class="billInfo" v-if="CONFIG && billInfo && billInfo.billInfoShow">
-        <div class="billInfo_title">
-          <span class="billInfo_title_span" v-if="billInfo.titleName" v-text="billInfo.titleName"></span>
+      <div class="work_shoppingcart_bodyDiv">
+        <!--//介绍信息区域-->
+        <div class="work_shoppingcart_bodyDiv_box aboutMsg" v-if="CONFIG && CONFIG.aboutMsg">
+          <span class="aboutMsg_span" v-html="CONFIG.aboutMsg"></span>
         </div>
-        <div class="billInfo_main">
-          <div class="billInfo_no">
-            <span class="billInfo_checkBut" :class="{billInfo_checkBut_active:isReceipt==0}" @click="isGetBill(0)"></span>
-            <span class="billInfo_tip">否</span>
+        <!--期刊种类区域-->
+        <div class="work_shoppingcart_bodyDiv_box magType" v-if="CONFIG && magType">
+          <div class="magType_title">
+            <span class="magType_title_span" v-if="magType.titleName" v-text="magType.titleName"></span>
           </div>
-          <div class="billInfo_yes">
-            <span class="billInfo_checkBut" :class="{billInfo_checkBut_active:isReceipt==1}" @click="isGetBill(1)"></span>
-            <span class="billInfo_tip">是</span>
-            <span class="billInfo_name">{{billInfo_name}}</span>
-            <span class="billInfo_name_content">{{billInfo_name_content}}</span>
-            <span class="billInfo_name_content_button" @click="cutPage('idBillInfo')">修改</span>
+          <span class="magType_title_span_text" v-if="checkMagTypeName">{{checkMagTypeName}}</span>
+          <span class="magType_title_span_btn" v-text="magType.buttonName" @click="cutPage('idMagType')"></span>
+        </div>
+        <!--订阅方式渔区-->
+        <div class="work_shoppingcart_bodyDiv_box takeType" v-if="CONFIG && takeType">
+          <div class="takeType_title">
+            <span class="takeType_title_span" v-if="takeType.titleName" v-text="takeType.titleName"></span>
+          </div>
+          <span class="magType_title_span_text" v-if="TakeNameChange">{{TakeNameChange}}</span>
+          <span class="magType_title_span_btn" v-text="takeType.buttonName" @click="cutPage('idTakeDiv')"></span>
+        </div>
+        <!--配送方式-->
+        <!--<div class="delivery" v-if="CONFIG && delivery && delivery.deliveryShow">-->
+        <!--<div class="delivery_title">-->
+        <!--<span class="delivery_title_span" v-if="delivery.titleName" v-text="delivery.titleName"></span>-->
+        <!--</div>-->
+        <!--<ul class="work_shoppingcart_05_delivery_ul" v-if="deliveryList && deliveryList.length > 0">-->
+        <!--<li class="work_shoppingcart_05_delivery_ul_li" v-for="(item, index) in deliveryList" :key="index">-->
+        <!--&lt;!&ndash; 选择框 &ndash;&gt;-->
+        <!--<span class="work_shoppingcart_05_delivery_ul_li_imgcontainter"-->
+        <!--:class="{work_shoppingcart_05_delivery_ul_li_imgcontainter_active:deliveryCheck==item.methods}"-->
+        <!--@click="selectdelivery(item)"></span>-->
+        <!--<span v-text="item.methods"></span>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--订购数量-->
+        <!--<div class="buyNumDiv" v-if="CONFIG && buyNum && buyNumDiv.buyNumDivShow">-->
+        <!--<div class="buyNumDiv_title">-->
+        <!--<span class="buyNumDiv_title_span" v-if="buyNumDiv.titleName" v-text="buyNumDiv.titleName"></span>-->
+        <!--</div>-->
+        <!--<div class="buyNumDiv_number">-->
+        <!--<input class="buyNumDiv_number_input" type="number" v-model="buyNum">-->
+        <!--<span class="buyNumDiv_number_span" v-text="buyNumDiv.unit"></span>-->
+        <!--</div>-->
+        <!--<div class="buyNumDiv_price">-->
+        <!--<span class="buyNumDiv_price_title" v-text="buyNumDiv.priceTitle"></span>-->
+        <!--<span class="buyNumDiv_price_price">{{allprice}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--其他表单信息-->
+        <!--<div class="otherDiv" v-if="CONFIG && otherDiv && otherDiv.otherDivShow">-->
+        <!--<div class="otherDiv_title">-->
+        <!--<span class="otherDiv_title_span" v-if="otherDiv.titleName" v-text="otherDiv.titleName"></span>-->
+        <!--</div>-->
+        <!--<div class="otherDiv_form">-->
+        <!--<div class="otherDiv_form_item">-->
+        <!--<span class="otherDiv_form_item_span">订阅人</span>-->
+        <!--<span class="otherDiv_form_item_span">-->
+        <!--<input type="text" maxlength="50" v-model="otherFrom.otherMan">-->
+        <!--</span>-->
+        <!--</div>-->
+        <!--<div class="otherDiv_form_item">-->
+        <!--<span class="otherDiv_form_item_span">单位全称</span>-->
+        <!--<span class="otherDiv_form_item_span">-->
+        <!--<input type="text" maxlength="50" v-model="otherFrom.otherCompany">-->
+        <!--</span>-->
+        <!--</div>-->
+        <!--<div class="otherDiv_form_item">-->
+        <!--<span class="otherDiv_form_item_span">邮寄地址</span>-->
+        <!--<span class="otherDiv_form_item_span">-->
+        <!--<input type="text" maxlength="50" v-model="otherFrom.otherSite">-->
+        <!--</span>-->
+        <!--</div>-->
+        <!--<div class="otherDiv_form_item">-->
+        <!--<span class="otherDiv_form_item_span">邮编</span>-->
+        <!--<span class="otherDiv_form_item_span">-->
+        <!--<input type="text" maxlength="50" v-model="otherFrom.otherPost">-->
+        <!--</span>-->
+        <!--</div>-->
+        <!--<div class="otherDiv_form_item">-->
+        <!--<span class="otherDiv_form_item_span">联系电话</span>-->
+        <!--<span class="otherDiv_form_item_span">-->
+        <!--<input type="text" maxlength="50" v-model="otherFrom.otherPhone">-->
+        <!--</span>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--</div>-->
+        <!--付款方式-->
+        <!--<div class="payType">-->
+
+        <!--</div>-->
+        <!--发票信息-->
+        <div class="work_shoppingcart_bodyDiv_box billInfo" v-if="CONFIG && billInfo && billInfo.billInfoShow">
+          <div class="billInfo_title">
+            <span class="billInfo_title_span" v-if="billInfo.titleName" v-text="billInfo.titleName"></span>
+          </div>
+          <div class="billInfo_main">
+            <div class="billInfo_no">
+              <span class="billInfo_checkBut" :class="{billInfo_checkBut_active:isReceipt==0}" @click="isGetBill(0)"></span>
+              <span class="billInfo_tip">否</span>
+            </div>
+            <div class="billInfo_yes">
+              <span class="billInfo_checkBut" :class="{billInfo_checkBut_active:isReceipt==1}" @click="isGetBill(1)"></span>
+              <span class="billInfo_tip">是</span>
+              <span class="billInfo_name">{{billInfo_name}}</span>
+              <span class="billInfo_name_content">{{billInfo_name_content}}</span>
+              <span class="billInfo_name_content_button" @click="cutPage('idBillInfo')">修改</span>
+            </div>
           </div>
         </div>
       </div>
+
       <!--备注-->
       <div class="descDiv" v-if="CONFIG && descDiv && descDiv.descDivShow">
         <div class="descDiv_title">
@@ -221,8 +225,8 @@
 
     <!--订阅方式 -->
     <div class="idTakeDiv" v-show="showPageName=='idTakeDiv'">
-      <span class="idTakeDivNextYear" :class="{idTakeDiv_span_active:TakeNameChange=='明年全年订阅'}" @click="clickFunTakeNameChange('明年全年订阅')" >明年全年订阅</span>
-      <span class="idTakeDivNext_qi" :class="{idTakeDiv_span_active:TakeNameChange=='按期订阅'}"  @click="clickFunTakeNameChange('按期订阅')" >
+      <span class="idTakeDiv_span" :class="{idTakeDiv_span_active:TakeNameChange=='明年全年订阅'}" @click="clickFunTakeNameChange('明年全年订阅')" >明年全年订阅</span>
+      <span class="idTakeDiv_span" :class="{idTakeDiv_span_active:TakeNameChange=='按期订阅'}"  @click="clickFunTakeNameChange('按期订阅')" >
         <span class="idTakeDivNext_qi_Title">按期订阅</span>
         <!--<span>{{TakeNameChangeListNowChange}}</span>-->
         <span v-show="TakeNameChange=='按期订阅'" class="idTakeDivNext_qi_class">
@@ -246,18 +250,18 @@
              <!--</option>-->
           <!--</el-select>-->
 
-  <select class="idTakeDivNext_qi_class_select_open" v-model="TakeNameOpenValue"  @change="selectVal_open()" size="1" multiple="multiple" placeholder="订阅开始期数" >
+  <select class="idTakeDivNext_qi_class_select_open" v-model="TakeNameOpenValue"  @change="selectVal_open()" placeholder="订阅开始期数" >
     <option class="idTakeDivNext_qi_class_select_open_option"
             v-for="(item,index) in TakeNameOpenList"
-            :value="item">
+            :value="item" >
                {{item}}</option>
   </select>
           <span>--</span>
 
-  <select class="idTakeDivNext_qi_class_select_end" v-model="TakeNameEndValue"   @change="selectVal_end()" size="1" multiple="multiple"placeholder="订阅结束期数" >
+  <select class="idTakeDivNext_qi_class_select_end" v-model="TakeNameEndValue"   @change="selectVal_end()" placeholder="订阅结束期数" >
     <option class="idTakeDivNext_qi_class_select_end_option"
             v-for="(item1,index1) in TakeNameEndList"
-            :value="item1">
+            :value="item1" >
                {{item1}}</option>
   </select>
         </span>
@@ -337,7 +341,7 @@
         resourceDetail: {}, // 详情信息
         resourceDetailConfig: {}, // 详情信息配置
         keys: {}, // 详情接口字段容器
-        loginName: "", //ada123
+        loginName: "z111111", //ada123
         showPageName:"buyMain", // 当前展示的页面名称
         changeBuy:[], // 两个按钮
         checkMagTypeName:'',  //已选择的期刊类型
@@ -351,12 +355,17 @@
         magPrice:0, // 杂志单价
         buyNum:1, // 订购数量
         TakeNameChange:"明年全年订阅", //现在订阅的类型  按期订阅  明年全年订阅
-        TakeNameOpenValue:'',
-        TakeNameEndValue:'',
+        TakeNameOpenValue:'1',
+        TakeNameEndValue:'1',
         TakeNameOpenList:[],   //开始的下拉列表
         TakeNameEndList:[],     //结束的下拉列表
         TakeNameChangeList:"", //现在订阅的类型
-        nextYearTakeNameChangeList:"", //明年的
+        nextYearTakeNameChangeList:"", //今年剩下的
+        nextYearTakeNameChangeList_next:"", //明年共
+        TakeNameChangeyear:'',  //订阅年份
+        TakeNameChangeListLength:0,//选择的一共多少期
+        TakeNameChangeListLength_newYear:1,//一年一共多少期
+        pricedan:0,
         takeType:{},
         buyNumDiv:{}, //订购数量配置
         otherDiv:{}, // 其他信息配置
@@ -402,7 +411,7 @@
 
     mounted() {
       this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收id
-      this.pubId = 1120;
+      this.pubId = 0;
       this.CONFIG = PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_05[this.modulename];
       this.changeBuy = this.CONFIG.changeBuy;
       this.checkMagTypeName = this.changeBuy.checkMagTypeName;
@@ -455,9 +464,20 @@
       },
       cutPage(idPage){   //切换指定的div页面
         this.showPageName = idPage;
+        //算出总价
+        this.bookMoney = (this.pricedan)*(this.TakeNameChangeListLength);
+        //console.log(this.bookMoney);
+        //console.log(this.pricedan);
+        //console.log(this.TakeNameChangeListLength);
       },
       clickFunTakeNameChange(item){
         this.TakeNameChange = item;
+        if(item=='明年全年订阅'){
+          this.TakeNameChangeList = this.nextYearTakeNameChangeList_next;
+          this.TakeNameChangeyear = (new Date().getFullYear())+1;
+        }else{
+          this.TakeNameChangeyear = (new Date().getFullYear());
+        }
       },
       getIdMagTypeList () { // 获取刊种列表
         Get(CONFIG.BASE_URL + 'spc/prodb/getMagList.do').then((rep) => {
@@ -482,7 +502,9 @@
       },
       getIdMagDo(checkMagTypeName){  //选择期刊类型 获取期刊详细信息
 
-        Get(CONFIG.BASE_URL + '/spc/prodb/getMag.do?magName=' + checkMagTypeName).then(rep => {
+          //
+        // 'http://172.19.36.97:9092/spc-portal-web/'
+        Get(CONFIG.BASE_URL + 'spc/prodb/getMag.do?magName=' + checkMagTypeName).then(rep => {
           if (rep.data && rep.data.result) {
             this.checkMagTypeNameInfo = rep.data.data;
             // "noPublishNum":3,
@@ -497,6 +519,8 @@
             this.TakeNameChangeList = '';
             this.TakeNameOpenList = [];
             this.TakeNameEndList = [];
+
+            this.TakeNameChangeListLength = 0;
             for (var i=Number(this.checkMagTypeNameInfo.noPublishNum);i<=Number(this.checkMagTypeNameInfo.totalNum);i++)
             {
               this.TakeNameOpenList.push(i);
@@ -506,48 +530,65 @@
               }else{
                 this.TakeNameChangeList = this.TakeNameChangeList+','+i;
               }
+              //过去今年的长度
+              this.TakeNameChangeListLength++;
             }
             this.nextYearTakeNameChangeList = this.TakeNameChangeList;
-            // console.log(this.TakeNameOpenList);
-            // console.log(this.TakeNameEndList);
-            // console.log(this.TakeNameChangeList);
-            // TakeNameOpenValue:0,
-            //   TakeNameEndValue:0,
-            //   TakeNameOpenList:[],   //开始的下拉列表
-            //   TakeNameEndList:[],     //结束的下拉列表
-            //   TakeNameChangeList:"", //现在订阅的类型
+
+
+//明年全年订阅
+            for (var i=Number(1);i<=Number(this.checkMagTypeNameInfo.totalNum);i++)
+            {
+              if(this.nextYearTakeNameChangeList_next==''){
+                this.nextYearTakeNameChangeList_next = i;
+              }else{
+                this.nextYearTakeNameChangeList_next = this.nextYearTakeNameChangeList_next+','+i;
+              }
+            }
+            this.TakeNameChangeyear = new Date().getFullYear();
+            this.TakeNameChangeList = this.nextYearTakeNameChangeList_next;
+            this.TakeNameChangeListLength = this.checkMagTypeNameInfo.totalNum;
+            this.TakeNameOpenValue = this.checkMagTypeNameInfo.noPublishNum;
+            this.TakeNameEndValue = this.checkMagTypeNameInfo.totalNum;
+            this.TakeNameChangeListLength_newYear = this.checkMagTypeNameInfo.totalNum;
+            this.pricedan = this.checkMagTypeNameInfo.price;
+            this.clickFunTakeNameChange("明年全年订阅");
           }
         });
 
       },
       selectVal_open(){
-
+        this.TakeNameChangeList = '';
+        this.TakeNameChangeListLength = 0;
         for (var i=Number(this.TakeNameOpenValue);i<=Number(this.TakeNameEndValue);i++)
         {
-          this.TakeNameChangeList = '';
           if(this.TakeNameChangeList==''){
             this.TakeNameChangeList = i;
           }else{
             this.TakeNameChangeList = this.TakeNameChangeList+','+i;
           }
+          this.TakeNameChangeListLength++;
         }
-        this.TakeNameEndList = [];
+        this.TakeNameEndList = []
         for (var i=Number(this.TakeNameOpenValue);i<=Number(this.checkMagTypeNameInfo.totalNum);i++)
         {
           this.TakeNameEndList.push(i);
         }
 
+        //console.log(this.TakeNameChangeList);
       },
       selectVal_end(){
 
+        this.TakeNameChangeList = '';
+        this.TakeNameChangeListLength = 0;
         for (var i=Number(this.TakeNameOpenValue);i<=Number(this.TakeNameEndValue);i++)
         {
-          this.TakeNameChangeList = '';
           if(this.TakeNameChangeList==''){
             this.TakeNameChangeList = i;
           }else{
             this.TakeNameChangeList = this.TakeNameChangeList+','+i;
           }
+          this.TakeNameChangeListLength++;
         }
 
       },
@@ -592,13 +633,14 @@
           let datas = rep.data;
           if(rep.status == 200 && datas.data) {
             this.resourceDetail = datas.data;
-            console.log(this.resourceDetail);
+            //console.log(this.resourceDetail);
             this.resId = this.resourceDetail[this.keys.resId];
             this.bookMoney = Number(this.resourceDetail[this.keys.memberPrice]);
           }
         });
       },
       getMenberDetail() {
+        this.member.loginName = 'z111111';
         this.loginName = this.member.loginName;
         if(this.loginName == undefined || this.loginName == '') { // 未登录
           // 未登录就要跳转到登录页面哦
@@ -606,17 +648,17 @@
           return false;
         }
         Get(CONFIG.BASE_URL + 'user/getMemberByName.do', {
-          // Get("http://172.19.36.97:9092/spc-portal-web/user/getMemberByName.do", {
+        //   Get("http://172.19.36.97:9092/spc-portal-web/user/getMemberByName.do", {
           params: {
             loginName: this.loginName
           }
         }).then(resp => {
           if(resp.data) {
-            // console.log(resp.data);
+            // //console.log(resp.data);
             this.menberData = resp.data.data;
             this.menberMoney = resp.data.data.virtualCoin;
           }
-          // console.log(resp.data)
+          // //console.log(resp.data)
         })
       },
       changeDefaultPay(Pay) { //修改支付方式
@@ -626,15 +668,15 @@
         if(this.loginName == undefined || this.loginName == '') { // 未登录
           return false;
         }
-        //console.log(Number(this.menberMoney) + '____');
-        //console.log(Number(this.bookMoney) + '====');
-        if(Number(this.bookMoney) > Number(this.menberMoney)) {
-          this.balanceHintShow = true;
-          return false;
-        }
-        if(this.balanceHintShow) {
-          return false;
-        }
+        ////console.log(Number(this.menberMoney) + '____');
+        ////console.log(Number(this.bookMoney) + '====');
+        // if(Number(this.bookMoney) > Number(this.menberMoney)) {
+        //   this.balanceHintShow = true;
+        //   return false;
+        // }
+        // if(this.balanceHintShow) {
+        //   return false;
+        // }
         //判断支付方式 生成不同的参数
         //如果是余额支付那么判断余额够不够
         this.setOrderParams();
@@ -643,7 +685,10 @@
         });
         // http://172.19.36.97:9092/spc-portal-web/order/submitSplitOrder.do
         var _this = this;
-        Post(CONFIG.BASE_URL + 'order/submitSplitOrder.do', this.Orderparams).then(function(response) {
+        // order/submitSplitOrder.do
+        // 'http://172.19.36.97:9092/spc-portal-web/'
+        // CONFIG.BASE_URL
+        Post( CONFIG.BASE_URL + 'order/submitPeriodicalOrder.do', this.Orderparams).then(function(response) {
           // Post("http://172.19.36.97:9092/spc-portal-web/order/submitSplitOrder.do", this.Orderparams).then(function (response) {
           if(response.status == 200 && response.data) {
             let datas = response.data;
@@ -651,7 +696,7 @@
               alert("购买完成！")
               location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
             } else {
-              console.log(datas.data.errMsg);
+              //console.log(datas.data.errMsg);
             }
           }
           loading.close();
@@ -670,12 +715,12 @@
           companyPhone: "", // 公司联系方式
           bankName: "", // 开户银行
           bankAccount: "" // 开户账号
-        };;
+        };
         this.tempList = {
           id: "", //不用填
           productId: this.resourceDetail.productId, //
-          combinationId: "94", //产品类型id  电子书 94
-          nums: 1,
+          // combinationId: "94", //产品类型id  电子书 94
+          nums: 1,    //
           totalPrice: this.bookMoney,
           pubId: this.pubId,
           couponsId: "", //优惠卷id 现在为0
@@ -683,18 +728,18 @@
           resourceId: this.resourceDetail.pub_resource_id,
           resourceName: this.resourceDetail.pub_resource_name,
           resourceType: "",
-          periodicalType: "", //传值空
-          periodicalYear: "", //传值空
-          periodicalMonth: "", //传值空
+          periodicalType: "0", //传值空   一毛一样的
+          periodicalYear: this.TakeNameChangeyear,   //哪年的
+          periodicalMonth: this.TakeNameChangeList, //传值空
           combinationId: "0",
         };
         this.temp = {
           activityId: 0, //活动id  填0
-          productType: "94", //产品类型id  电子书 94
-          periodicalType: "",
-          periodicalName: "",
-          periodicalYear: "",
-          periodicalMonth: "",
+          productType: "", //产品类型id  电子书 94
+          periodicalType: "0",  //电子期刊是0
+          periodicalName: this.checkMagTypeName,  //期刊名称
+          periodicalYear: this.TakeNameChangeyear,   //哪年的
+          periodicalMonth: this.TakeNameChangeList,  //6，7，8，9
           discountPrice: 0,
           id: '',
           code: "",
@@ -703,8 +748,9 @@
         };
         this.Orderparams = {
           oremark: "wxShop",
+          orderType: "periodical",   //期刊是这个 其他的都是book
           orderCode: "", //不用写
-          balanceAmount: this.bookMoney, // 如果是余额支付，那就写支付金额 不是就写0
+          balanceAmount: 0, // 如果是余额支付，那就写支付金额 不是就写0
           createTime: null, //不用写
           deliveryAddress: '', // 收货人整个地址 北京市海淀区 拼起来的地址
           deliveryContact: '', // 联系方式
@@ -713,18 +759,18 @@
           deliveryRemark: "", // 运费备注
           deliveryType: '', // 运输方式  汉字 顺丰
           discountAmount: '', //  商品各种活动优惠 不包含免运费的活动
-          id: 0, //不用写
+          id: null, //不用写
           isReceipt: "0", //要不要发票， 0不需要 1要
           loginName: this.loginName,
           payAmount: this.bookMoney, // 应付金额 = 商品总价 + 运费
           payCode: "", //不用写
-          payMethod: this.defaultPay, // 支付方式： Weixin 微信支付 Alipay 支付宝支付  Balance 余额支付
+          payMethod: 'Weixin', // 支付方式： Weixin 微信支付 Alipay 支付宝支付  Balance 余额支付
           payRemark: '', // 订单备注
           payStatus: "", //空
           payTime: null,
           payType: 1, // 0线下支付  1在线支付
           payUser: "", //不用写
-          realAmount: 0, // 实付金额 = 应付金额-运费-余额支付
+          realAmount: this.bookMoney, // 实付金额 = 应付金额-运费-余额支付
           receiptId: this.curSelectedInvoice.receiptId,
           receiptType: this.curSelectedInvoice.receiptType, //如果要发票的话  1 个人 2 单位
           receiptTitle: this.curSelectedInvoice.receiptType == 1 ? "个人" : this.curSelectedInvoice.receiptTitle,

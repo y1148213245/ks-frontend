@@ -15,8 +15,8 @@ const dev = {
                     url: "../data/04_detail.json",
                     params: {
                         pubId: "",
-                        loginName: "emmmm",
-                        siteId: "17",
+                        loginName: "",
+                        siteId: "",
                         attachTypes: "MATERIAL-PIC"
                     },
                     sysAdapter: "sykAdapter", // 系统字段
@@ -26,8 +26,7 @@ const dev = {
                         field: 'picBig', // 取什么字段
                         display: '', // 固定显示内容是什么
                         method: '', // 方法名 要在下面配置
-                        className: "",
-                        default_url: "../assets/theme/img/default.png"
+                        className: ""
                     }, {
                         name: 'button',
                         field: 'resName',
@@ -103,8 +102,8 @@ const prod = {
                     url: "resource/detail.do",
                     params: {
                         pubId: "",
-                        loginName: "emmmm",
-                        siteId: "17",
+                        loginName: "",
+                        siteId: "",
                         attachTypes: "MATERIAL-PIC"
                     },
                     sysAdapter: "sykAdapter", // 系统字段
@@ -114,8 +113,7 @@ const prod = {
                         field: 'picBig', // 取什么字段
                         display: '', // 固定显示内容是什么
                         method: '', // 方法名 要在下面配置
-                        className: "",
-                        default_url: "../assets/theme/img/default.png"
+                        className: ""
                     }, {
                         name: 'button',
                         field: 'resName',

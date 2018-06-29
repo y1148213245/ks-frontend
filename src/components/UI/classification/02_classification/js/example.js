@@ -14,7 +14,12 @@ const description = `分类导航`; // 组件描述信息
 const dev = {
   classification: {
     classification_02: {
-      url: '../data/ui_classification_02_data.json'
+      url: '../data/ui_classification_02_data.json',
+      staticText: {
+        allClassifications: "全部分类",
+        showAll: "显示全部",
+        closeAll: "收起全部"
+      }
     }
   }
 };
@@ -27,7 +32,12 @@ const prod = {
         code: "BOOK",
         layer: 2
       },
-      bookListUrl: '../pages/bookList.html'
+      bookListUrl: '../pages/bookList.html',
+      staticText: {
+        allClassifications: "全部分类",
+        showAll: "显示全部",
+        closeAll: "收起全部"
+      }
     }
   }
 };

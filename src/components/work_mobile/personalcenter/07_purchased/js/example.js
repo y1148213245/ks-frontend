@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-06-07 15:26:18
  * @Last Modified by: song
- * @Last Modified time: 2018-06-15 16:37:56
+ * @Last Modified time: 2018-06-27 17:35:18
  * 个人中心消费记录
  */
 
@@ -28,11 +28,13 @@ const dev = {
         startRead: '开始阅读',
         addBookshelf: '加入书架',
         noPicture: '暂无图片',
+        addSuccess: '成功加入书架',
+        addFailed: '加入书架失败',
         tabsList: [{
-          title: '全部',
-          type: '2', //已购买
-          status: '3' //全部
-        },
+            title: '全部',
+            type: '2', //已购买
+            status: '3' //全部
+          },
           {
             title: '已加入书架',
             type: '2',
@@ -77,6 +79,9 @@ const dev = {
           type: '2' //1试读 2购买
         }
       },
+      toBookDetail: {
+        url: '../pages/bookdetail.html'
+      }
     },
   }
 }
@@ -92,11 +97,13 @@ const prod = {
         startRead: '开始阅读',
         addBookshelf: '加入书架',
         noPicture: '暂无图片',
+        addSuccess: '成功加入书架',
+        addFailed: '加入书架失败',
         tabsList: [{
-          title: '全部',
-          type: '2', //已购买
-          status: '3' //全部
-        },
+            title: '全部',
+            type: '2', //已购买
+            status: '3' //全部
+          },
           {
             title: '已加入书架',
             type: '2',
@@ -141,6 +148,9 @@ const prod = {
           type: '2' //1试读 2购买
         }
       },
+      toBookDetail: {
+        url: '../pages/bookdetail.html'
+      }
     },
   }
 }

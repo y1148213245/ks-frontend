@@ -12,7 +12,7 @@
       <!-- img 图片 -->
       <div :key="config_i" v-if="config.name == 'img'" class="ui_video_03_imgcontainter">
         <label class="ui_video_03_img_label">{{config.display}}</label>
-        <img class="ui_video_03_img" v-bind="{class: 'ui_video_03_' + config.field}" :src=" resourceDetail[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)"/>
+        <img class="ui_video_03_img" v-bind="{class: 'ui_video_03_' + config.field}" :src=" resourceDetail[keys[config.field]] || require('@static/img/defaultCover.png')" alt="暂无图片" @load="dealResourceImg($event)"/>
       </div>
 
       <!-- 自定义事件按钮 包括（title 标题） -->
@@ -89,7 +89,7 @@
         let paramsObj = Object.assign({}, this.resourceDetailConfig.params);
         paramsObj.pubId = this.pubId;
         // CONFIG.BASE_URL + 在本地测试时删掉CONFIG.BASE_URL
-        Get(CONFIG.BASE_URL + this.resourceDetailConfig.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName + '&siteId=' + paramsObj.siteId + '&attachTypes=' + paramsObj.attachTypes).then((rep) => {
+        Get(CONFIG.BASE_URL + this.resourceDetailConfig.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&attachTypes=' + paramsObj.attachTypes).then((rep) => {
           let datas = rep.data;
           if (rep.status == 200 && datas.data) {
             this.resourceDetail = datas.data;

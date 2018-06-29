@@ -45,6 +45,7 @@ module.exports = {
       'projectConfig': "@common/config.js",//resolve('src/projects/' + baseConfig.concurrentProject + "/config/index.js"),
       '@project': resolve('src/projects/' + baseConfig.concurrentProject),
       '@components': resolve("src/components"),
+      '@static': resolve("static"),
     }
   },
   module: {

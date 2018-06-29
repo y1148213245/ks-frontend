@@ -119,6 +119,10 @@ const dev = {
         },
         infoImgWidth: 120, // 资讯图片的宽 要和图片外层容器 .ui_list_pic_31_resourcelists_li_imgcontainter 宽一样
         infoImgHeight: 140, // 资讯图片的高 要和图片外层容器 .ui_list_pic_31_resourcelists_li_imgcontainter 高一样
+      },
+      staticText: {
+        noData: "暂无数据",
+        noImg: "暂无图片"
       }
     }
   }
@@ -233,6 +237,10 @@ const prod = {
         },
         infoImgWidth: 120, // 资讯图片的宽 要和图片外层容器 .ui_list_pic_31_resourcelists_li_imgcontainter 宽一样
         infoImgHeight: 140, // 资讯图片的高 要和图片外层容器 .ui_list_pic_31_resourcelists_li_imgcontainter 高一样
+      },
+      staticText: {
+        noData: "暂无数据",
+        noImg: "暂无图片"
       }
     }
   }

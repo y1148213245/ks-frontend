@@ -10,23 +10,17 @@
         <label class="ui_information_image_04_img_label">{{config.display}}</label>
         <img class="ui_information_image_04_img" 
         v-bind="{class: 'ui_information_image_04_' + config.field}" 
-        :src=" resourceDetail[keys[config.field]] " 
+        :src=" resourceDetail[keys[config.field]] || require('@static/img/defaultCover.png')" 
         alt="暂无图片" 
         @load="dealResourceImg($event)"
         v-if="resourceDetail[keys[config.field]]" />
-        
-        <img class="ui_information_image_04_img ui_information_image_04_default"
-        :src="config.default_url" 
-        alt="暂无图片" 
-        @load="dealResourceImg($event)"
-        v-else />
       </div>
 
       <!-- 自定义事件按钮 包括（title 标题） -->
       <div :key="config_i" v-else-if="config.name == 'button'" v-bind="{class: 'ui_information_image_04_btncontainer_' + config.field + '_' + config_i}">
         <i v-bind="{class: config.className}"></i>
         <label class="ui_information_image_04_btnlabel">{{config.display}}</label>
-        <span v-bind="{class: 'ui_information_image_04__btncontainer_' + config.field}" v-if="keys[config.field]">{{ resourceDetail[keys[config.field]] }}</span>
+        <span v-bind="{class: 'ui_information_image_04__btncontainer_' + config.field}" v-if="keys[config.field]">{{ resourceDetail[keys[config.field]] || '暂无'}}</span>
       </div>
 
       <!-- time 时间 -->
@@ -123,7 +117,7 @@ export default {
           "&loginName=" +
           this.loginName +
           "&siteId=" +
-          paramsObj.siteId +
+          CONFIG.SITE_CONFIG.siteId +
           "&attachTypes=" +
           paramsObj.attachTypes
       ).then(rep => {
