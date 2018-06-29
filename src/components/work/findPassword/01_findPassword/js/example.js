@@ -8,6 +8,9 @@ const dev = {
       findPasswordUrl:  "user/findPassword.do?email=",
       setPasswordUrl:  "user/setPassword1.do?email=",
       href: "../pages/login.html",
+      checkMobileUrl:'user/checkExistMember.do',/* 验证手机号是否已注册url */
+      sendMobileUrl:'user/sendMobileMessage.do',
+      setPasswordByMobileUrl:'user/findPasswordByMobile.do',/* 通过手机号设置密码 */
       staticText: {
         inputEmail:"输入邮箱",
         inputEmailVerifiCode:"填写邮箱验证码",
@@ -48,6 +51,8 @@ const prod = {
       setPasswordUrl:  "user/setPassword1.do?email=",
       href: "../pages/login.html",
       checkMobileUrl:'user/checkExistMember.do',/* 验证手机号是否已注册url */
+      sendMobileUrl:'user/sendMobileMessage.do',
+      setPasswordByMobileUrl:'user/findPasswordByMobile.do',/* 通过手机号设置密码 */
       staticText: {
         inputEmail:"输入邮箱",
         inputEmailVerifiCode:"填写邮箱验证码",

@@ -52,11 +52,15 @@
 						<el-step title="找回完成"></el-step>
 					</el-steps>
 					<!-- 发送验证码验证手机 -->
-					<div style="margin-top: 20px; height: 200px;">
+					<div style="margin-top: 20px; height: 200px;" v-if="mobileShowStep == 'validMobile'">
 						<el-form :model="ruleForm" :rules="rules" ref="validMobile">
 							<el-form-item label="手 机" prop="mobile">
-								<el-input id="retrieve_02-input-email" type="text" v-model="ruleForm.mobile" auto-complete="off" placeholder="请输入手机号" style="display:inline-block;width:220px;"></el-input>
-								<el-button type="primary" size="medium" @click="submitForm('validMobile')" class="button nomargin">发送验证码</el-button>
+								<el-input id="retrieve_02-input-email" type="text" v-model="ruleForm.mobile" auto-complete="off" placeholder="请输入手机号" style="display:inline-block;width:200px;"></el-input>
+								<el-button type="primary" size="medium" @click="submitForm('validMobile')" class="button nomargin" :loading="mobileButtonIsLoading" :disabled="!!sendMobileInterval">
+									<template v-if="!sendMobileInterval">发送验证码</template>
+									<template v-if="sendMobileInterval">&nbsp;&nbsp;{{sendMobileInterval}}s&nbsp;&nbsp;</template>
+								</el-button>
+
 							</el-form-item>
 							<el-form-item label="验证码" prop="mobilecCaptcha">
 								<div class="captcha">
@@ -64,7 +68,7 @@
 								</div>
 							</el-form-item>
 							<div class="col_full nobottommargin btnbox">
-								<el-button type="primary" @click="submitForm('validMobile')" class="button nomargin">下一步</el-button>
+								<el-button type="primary" @click="checkMobileCode" class="button nomargin">下一步</el-button>
 							</div>
 						</el-form>
 					</div>
@@ -72,7 +76,7 @@
 			</el-tabs>
 
 			<!-- 修改密码 -->
-			<div style="margin-top: 20px; height: 200px;" v-if="showStep == 'changePassword'">
+			<div style="margin-top: 20px; height: 200px;" v-if="(activeTab == 'email' && showStep == 'changePassword') || (activeTab == 'mobile'  &&  mobileShowStep == 'changePassword')">
 				<el-form :model="ruleForm" :rules="rules" ref="changePassword">
 					<el-form-item v-bind:label="getStaticText('pleaseInputNewPwd') ? getStaticText('pleaseInputNewPwd') : '请输入新密码'" prop="pass">
 						<el-input id="retrieve_02-input-password" type="password" v-model="ruleForm.pass" auto-complete="off" :placeholder="getStaticText('pleaseInputNewPwd') ? getStaticText('pleaseInputNewPwd') : '请输入新密码'"></el-input>
@@ -115,14 +119,14 @@ export default {
 
 		var validateEmail = (rule, value, callback) => {
 			if (value === "") {
-				callback(new Error(getStaticText('pleaseInputEmail') ? getStaticText('pleaseInputEmail') : '请输入邮箱'));
+				callback(new Error(this.getStaticText('pleaseInputEmail') ? this.getStaticText('pleaseInputEmail') : '请输入邮箱'));
 			} else if (
 				value !=
 				value.match(
 					/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
 				)
 			) {
-				callback(new Error(getStaticText('mailboxFormatIsIncorrect') ? getStaticText('mailboxFormatIsIncorrect') : '邮箱格式不正确'));
+				callback(new Error(this.getStaticText('mailboxFormatIsIncorrect') ? this.getStaticText('mailboxFormatIsIncorrect') : '邮箱格式不正确'));
 			} else {
 				callback();
 			}
@@ -130,11 +134,11 @@ export default {
 		var validateEmailnum = (rule, value, callback) => {
 			let inputCode = value.toUpperCase();
 			if (value === "") {
-				callback(new Error(getStaticText('pleaseInputEmailVerifiCode') ? getStaticText('pleaseInputEmailVerifiCode') : '请输入邮箱验证码'));
+				callback(new Error(this.getStaticText('pleaseInputEmailVerifiCode') ? this.getStaticText('pleaseInputEmailVerifiCode') : '请输入邮箱验证码'));
 			} else if (inputCode != this.findNum) {
 				this.$message({
 					type: "warning",
-					message: getStaticText('verifiCodeError') ? getStaticText('verifiCodeError') : '验证码输入错误！'
+					message: this.getStaticText('verifiCodeError') ? this.getStaticText('verifiCodeError') : '验证码输入错误！'
 				});
 			} else {
 				callback();
@@ -149,16 +153,16 @@ export default {
 			for (i = 0; i < value.length; i++) {
 				char = value.charAt(i);			}
 			if (badword.indexOf(char) >= 0) {
-				callback(new Error(getStaticText('formatError') ? getStaticText('formatError') : "格式错误，密码仅支持汉字、字母、数字、\"-\"、\"_\"的组合"));
+				callback(new Error(this.getStaticText('formatError') ? this.getStaticText('formatError') : "格式错误，密码仅支持汉字、字母、数字、\"-\"、\"_\"的组合"));
 			} else if (value === "") {
-				callback(new Error(getStaticText('pleaseInputPwd') ? getStaticText('pleaseInputPwd') : "请输入密码"));
+				callback(new Error(this.getStaticText('pleaseInputPwd') ? this.getStaticText('pleaseInputPwd') : "请输入密码"));
 			} else if (value.length <= 5) {
-				callback(new Error(getStaticText('passwordAtLeastSixDigits') ? getStaticText('passwordAtLeastSixDigits') : "密码至少为6位数"));
+				callback(new Error(this.getStaticText('passwordAtLeastSixDigits') ? this.getStaticText('passwordAtLeastSixDigits') : "密码至少为6位数"));
 			} else if (value.length >= 17) {
-				callback(new Error(getStaticText('passwordCanBeUpToSixTeenDigits') ? getStaticText('passwordCanBeUpToSixTeenDigits') : "密码最多为16位数"));
+				callback(new Error(this.getStaticText('passwordCanBeUpToSixTeenDigits') ? this.getStaticText('passwordCanBeUpToSixTeenDigits') : "密码最多为16位数"));
 			} else {
 				if (obj.ruleForm.checkPass !== "") {
-					obj.$refs.ruleForm.validateField("checkPass");
+					obj.$refs['changePassword'].validateField("checkPass");
 				}
 				callback();
 			}
@@ -166,9 +170,9 @@ export default {
 		var validateCheckPass = (rule, value, callback) => {
 			var obj = this;
 			if (value === "") {
-				callback(new Error(getStaticText('pleaseInputPwdAgain') ? getStaticText('pleaseInputPwdAgain') : "请再次输入密码"));
+				callback(new Error(this.getStaticText('pleaseInputPwdAgain') ? this.getStaticText('pleaseInputPwdAgain') : "请再次输入密码"));
 			} else if (value !== obj.ruleForm.pass) {
-				callback(new Error(getStaticText('twoPwdsDoNotMatch') ? getStaticText('twoPwdsDoNotMatch') : "两次输入密码不一致!"));
+				callback(new Error(this.getStaticText('twoPwdsDoNotMatch') ? this.getStaticText('twoPwdsDoNotMatch') : "两次输入密码不一致!"));
 			} else {
 				callback();
 			}
@@ -177,11 +181,11 @@ export default {
 			let inputCode = value.toUpperCase();
 			let orignalCode = this.$el.querySelector(".createcode").value;
 			if (value === "") {
-				callback(new Error(getStaticText('pleaseInputVeirifiCode') ? getStaticText('pleaseInputVeirifiCode') : "请输入验证码"));
+				callback(new Error(this.getStaticText('pleaseInputVeirifiCode') ? this.getStaticText('pleaseInputVeirifiCode') : "请输入验证码"));
 			} else if (inputCode != orignalCode && !(isTest && inputCode == 1)) {
 				this.$message({
 					type: "warning",
-					message: getStaticText('verifiCodeError') ? getStaticText('verifiCodeError') : "验证码输入错误！"
+					message: this.getStaticText('verifiCodeError') ? this.getStaticText('verifiCodeError') : "验证码输入错误！"
 				});
 				this.createCode();
 				return false;
@@ -196,9 +200,14 @@ export default {
 			list: [{}],
 			active: 0,
 			mobileStepsActive: 0,
-			showStep: 'sendEmeil',/*显示页面: sendEmeil发送邮箱验证码,validEmail验证邮箱验证码,changePassword修改密码 */
+			showStep: 'sendEmeil',/*显示页面: sendEmeil发送邮箱验证码,validEmail验证邮箱验证码,changePassword修改
+			密码 */
+			mobileShowStep: 'validMobile',
 			butt: true,
 			code: "",
+			mobileCode: null,/* 手机验证码 */
+			mobileButtonIsLoading: false,/* 手机验证码是否发送中 */
+			sendMobileInterval: 0,/* 发送手机验证码倒计时 */
 			ruleForm: {
 				email: "",
 				captcha: "",
@@ -206,7 +215,7 @@ export default {
 				pass: "",
 				checkPass: "",
 				mobile: '',
-				mobilecCaptcha: ''
+				mobilecCaptcha: ''/* 输入的手机验证码 */
 			},
 			rules: {
 				email: [{ validator: validateEmail, trigger: "blur" }],
@@ -256,6 +265,8 @@ export default {
 					case 'validEmail': {
 						if (valid) {
 							console.log("submit!");
+							this.ruleForm.pass = '';
+							this.ruleForm.checkPass = '';
 							this.showStep = 'changePassword'
 							this.active = 2;
 							this.$message({
@@ -274,25 +285,75 @@ export default {
 					}
 					case 'changePassword': {
 						if (valid) {
-							var params = {
-								email: this.ruleForm.email,
-								checkPass: this.ruleForm.checkPass,
-								cb: this.setPasswordCallb
-							};
-							Post(CONFIG.BASE_URL + this.CONFIG.setPasswordUrl + params.email + '&password=' + params.checkPass).then(function (response) {
-								let setStatus = response.data.result;
-								params.cb(setStatus);
-							});
-							this.active = 3;
+							if (this.activeTab == 'email') {
+								var params = {
+									email: this.ruleForm.email,
+									checkPass: this.ruleForm.checkPass,
+									cb: this.setPasswordCallb
+								};
+								Post(CONFIG.BASE_URL + this.CONFIG.setPasswordUrl + params.email + '&password=' + params.checkPass).then(function (response) {
+									let setStatus = response.data.result;
+									params.cb(setStatus);
+								});
+								this.active = 3;
+							} else if (this.activeTab == 'mobile') {
+								let url;
+								if (this.CONFIG.hasOwnProperty('setPasswordByMobileUrl')) {
+									url = this.CONFIG.setPasswordByMobileUrl;
+								} else {
+									url = 'user/findPasswordByMobile.do';
+								}
+								var params = {
+									mobileNum: this.ruleForm.mobile,
+									passWord: this.ruleForm.checkPass,
+									code: this.ruleForm.mobilecCaptcha
+								}
+								Get(CONFIG.BASE_URL + url, { params }).then(response => {
+									let setStatus = response.data.result;
+									this.setPasswordCallb(setStatus);
+								});
+							}
+
 						} else {
 							console.log("error submit!!");
 							return false;
 						}
+						break;
 					}
 					case 'validMobile': {
 						if (valid) {
 							this.checkMobile().then(resp => {
 								console.log(resp.data);
+								if (resp.data.result == 1) {
+									this.mobileButtonIsLoading = true;
+									this.sendMobile().then(resp => {
+										if (resp.data.result == 1) {
+											this.$message({
+												type: 'success',
+												message: '发送成功'
+											})
+											this.mobileCode = resp.data.data;
+											let _this = this;
+											_this.sendMobileInterval = 5
+											let timer = setInterval(() => {
+												if (_this.sendMobileInterval - 1 >= 0) {
+													_this.sendMobileInterval--;
+												} else {
+													clearInterval(timer)
+												}
+											}, 1000)
+
+										} else {
+											this.$message.error('网络超时')
+										}
+										this.mobileButtonIsLoading = false
+									}).catch(error => {
+										this.$message.error('网络超时')
+										this.mobileButtonIsLoading = false
+									})
+								} else {
+									this.$message.error(resp.data.error.errorMsg)
+								}
 							})
 						}
 
@@ -307,17 +368,35 @@ export default {
 		/* 验证手机号 */
 		checkMobile () {
 			let url;
-			if (this.CONFIG.hasOwnProperty('checkMobileUrl')) {
-				url = this.CONFIG.checkMobileUrl;
-			} else {
-				url = 'user/checkExistMember.do'
-			}
+			this.CONFIG.hasOwnProperty('checkMobileUrl') ? url = this.CONFIG.checkMobileUrl : url = 'user/checkExistMember.do'
 
 			let params = {
 				checkText: this.ruleForm.mobile
 			}
 			return Get(CONFIG.BASE_URL + url, { params })
 
+		},
+		/* 发送验证码 */
+		sendMobile () {
+			let url;
+			this.CONFIG.hasOwnProperty('sendMobileUrl') ? url = this.CONFIG.sendMobileUrl : url = 'user/sendMobileMessage.do'
+
+			let params = {
+				mobileNum: this.ruleForm.mobile
+			}
+			return Get(CONFIG.BASE_URL + url, { params })
+		},
+		/* 验证手机验证码 */
+		checkMobileCode () {
+			if (this.ruleForm.mobilecCaptcha == this.mobileCode) {
+				this.mobileStepsActive = 1;
+				this.ruleForm.pass = '';
+				this.ruleForm.checkPass = '';
+				this.mobileShowStep = 'changePassword';
+
+			} else {
+				this.$message.error('验证码输入错误');
+			}
 		},
 		findPasswordCallb (findStatus, findNum, rep) {
 			this.findNum = findNum;
@@ -338,10 +417,15 @@ export default {
 		},
 		setPasswordCallb (setStatus) {
 			if (setStatus == 1) {
-				this.active = 4;
+				if (this.activeTab == 'email') {
+					this.active = 4;
+				} else if (this.activeTab == 'mobile') {
+					this.mobileStepsActive = 3;
+				}
 				this.open();
 			} else {
 				console.log("error submit!!");
+				this.$message.error('重置失败')
 				return false;
 			}
 		},
@@ -386,7 +470,9 @@ export default {
   height: 600px;
   position: relative;
 }
-
+.retrievePasswordBox .el-tabs__header {
+  margin: 15px 0 35px 0;
+}
 .retrievePasswordBox .cent {
   width: 480px;
   position: absolute;
