@@ -7,6 +7,20 @@ const dev = {
     work_informationdetail_02: {
       getDetailUrl:  '/spc/prodb/detail.do?doclibCode=PORTAL_ACTIVITY&docID=601948',
       show: ['time', 'collect', 'share', 'abstract', 'download'],
+      staticText: {
+        createDate: "创建日期：",
+        collect: "收藏",
+        haveCollected: "已收藏",
+        shareTo: "分享",
+        abstract: "摘要：",
+        attachmentDownload: "附件下载：",
+        backToList: "返回列表",
+        previousChap: "<<上一篇",
+        nextChap: "下一篇>>",
+        pleaseLoginFirst: "请您先登录",
+        loginTimeOut :"登录超时，请您登陆",
+        serverMaintenance: "服务器维护中"
+      }
     }
   }
 };
@@ -33,7 +47,7 @@ const prod = {
         attachTypeCode:'attachTypeCode',/* 附件类型字段名 */
         isCollect:'isCollect',/* 是否被收藏字段名 */
         abstract:'ABSTRACT',/* 摘要 */
-        
+
         eventListenData_preNextConfig_activityId: 'activityID',/* 事件或href传入的上一篇下一篇查询参数 活动id字段名 */
         eventListenData_preNextConfig_pageNo: 'page',
         eventListenData_preNextConfig_pageSize: 'pageSize',
@@ -73,6 +87,20 @@ const prod = {
         }
       },
       eventName_back: 'eventName_backNewsList',
+      staticText: {
+        createDate: "创建日期：",
+        collect: "收藏",
+        haveCollected: "已收藏",
+        shareTo: "分享",
+        abstract: "摘要：",
+        attachmentDownload: "附件下载：",
+        backToList: "返回列表",
+        previousChap: "<<上一篇",
+        nextChap: "下一篇>>",
+        pleaseLoginFirst: "请您先登录",
+		    loginTimeOut :"登录超时，请您登陆",
+        serverMaintenance: "服务器维护中"
+}
     }
   }
 };

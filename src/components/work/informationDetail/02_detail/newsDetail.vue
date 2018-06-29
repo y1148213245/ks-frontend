@@ -6,25 +6,25 @@
         v-text="detail[keys.topic]"></h3>
     <div style="text-align: center;">
       <!-- <span v-if="keys.author"><span v-if="keys.show_key">作者：</span>{{detail[keys.author]}}</span> -->
-      <span style="margin-left: 16px;" v-if="isShow('time')"><span>创建日期：</span>{{detail[keys.time] | formatTime}}</span>
+      <span style="margin-left: 16px;" v-if="isShow('time')"><span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.createDate ? CONFIG.staticText.createDate : '创建日期：'}}</span>{{detail[keys.time] | formatTime}}</span>
       <!-- <span style="margin-left: 16px;" v-if="keys.source">来源：{{detail[keys.source]}}</span> -->
-      <a style="margin-left: 16px;" v-if="isShow('collect')" href="javascript:;" @click="addCollect()">{{detail[keys.isCollect] == 1 ?'已收藏':'收藏'}}</a>
+      <a style="margin-left: 16px;" v-if="isShow('collect')" href="javascript:;" @click="addCollect()">{{detail[keys.isCollect] == 1 ? CONFIG && CONFIG.staticText && CONFIG.staticText.haveCollected ? CONFIG.staticText.haveCollected : '已收藏': CONFIG && CONFIG.staticText && CONFIG.staticText.collect ? CONFIG.collect.haveCollected : '收藏'}}</a>
       <a href="http://www.jiathis.com/share" style="margin-left: 16px;" v-if="isShow('share')"
-         class="search_04-content-list-entry_box-others-share" target="_blank">分享</a>
+         class="search_04-content-list-entry_box-others-share" target="_blank">{{CONFIG && CONFIG.staticText && CONFIG.staticText.shareTo ? CONFIG.staticText.shareTo : '分享'}}</a>
     </div>
     <div class="abstract" v-if="isShow('abstract')">
-      <span>摘要：</span>
+      <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.abstract ? CONFIG.staticText.abstract : '摘要：'}}</span>
       <span v-html="detail[keys.abstract] || ''"></span>
     </div>
     <br/>
     <p class="html-feild" v-html="detail[keys.content]" v-if="keys.content"></p>
     <div class="download" v-if="isShow('download') && attach && attach['attachName']">
-      <span>附件下载：<a :href="attachUrl">{{attach['attachName']}}</a></span>
+      <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.attachmentDownload ? CONFIG.staticText.attachmentDownload : '附件下载：'}}<a :href="attachUrl">{{attach['attachName']}}</a></span>
     </div>
     <div class="work_informationdetail_02-nav">
-      <a class="work_informationdetail_02-nav-pre" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_preId]}" @click="toPre">&lt;&lt;上一篇</a>
-      <a href="javascript:;" @click="returnList()">返回列表</a>
-      <a class="work_informationdetail_02-nav-next" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_nextId]}" @click="toNext">下一篇&gt;&gt;</a>
+      <a class="work_informationdetail_02-nav-pre" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_preId]}" @click="toPre">{{CONFIG && CONFIG.staticText && CONFIG.staticText.previousChap ? CONFIG.staticText.previousChap : '&lt;&lt;上一篇'}}</a>
+      <a href="javascript:;" @click="returnList()">{{CONFIG && CONFIG.staticText && CONFIG.staticText.backToList ? CONFIG.staticText.backToList : '返回列表'}}</a>
+      <a class="work_informationdetail_02-nav-next" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_nextId]}" @click="toNext">{{CONFIG && CONFIG.staticText && CONFIG.staticText.nextChap ? CONFIG.staticText.nextChap : '下一篇&gt;&gt;'}}</a>
     </div>
   </div>
 </template>
@@ -137,7 +137,7 @@ export default {
       if (!this.member.loginName) { // 未登录时
         this.$message({
           type: "info",
-          message: "请您先登录"
+          message: CONFIG && CONFIG.staticText && CONFIG.staticText.pleaseLoginFirst ? CONFIG.staticText.pleaseLoginFirst : "请您先登录"
         });
         return false;
       }
@@ -157,12 +157,12 @@ export default {
         } else if (rep.error.errorCode == '403') {
           this.$message({
             type: "info",
-            message: "登录超时,请您登陆"
+            message: CONFIG && CONFIG.staticText && CONFIG.staticText.loginTimeOut ? CONFIG.staticText.loginTimeOut : "登录超时,请您登陆"
           });
         } else {
           this.$message({
             type: "error",
-            message: "服务器维护中"
+            message: CONFIG && CONFIG.staticText && CONFIG.staticText.serverMaintenance ? CONFIG.staticText.serverMaintenance : "服务器维护中"
           });
         }
       });

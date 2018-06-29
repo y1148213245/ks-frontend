@@ -379,7 +379,11 @@ const prod = {
           method1: "toBuy",
           display2:"开始阅读",
           method2: "toProbation",
-        }
+        },
+        bookContentType: { // 书的类型  纸书：91 电子书 94
+          bookType: '91',
+          ebookType: '94',
+        },
       },
       staticText: {
         noImg: "暂无图片",

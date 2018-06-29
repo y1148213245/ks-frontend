@@ -20,7 +20,7 @@
           </div>
 
           <!-- price 价格 *** 特别注意： 价格要区分电子书和纸质书价格 *** -->
-          
+
           <div v-else-if="config.name == 'price'" class="work_bookdetail_04_pricecontainter">
             <label class="work_bookdetail_04_price_label">{{config.display}}</label>
             <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
@@ -202,6 +202,10 @@ export default {
       isDownload:0, //默认没有
       isEb:0, //默认没有
       bugButton:{},
+      bookContentType: { // 书的类型  纸书：91 电子书 94
+        bookType: '91',
+        ebookType: '94',
+      },
     };
   },
 
@@ -217,6 +221,9 @@ export default {
     }
     if (typeof (this.CONFIG.bugButton) != "undefined") {
       this.bugButton = this.CONFIG.bugButton;  //购买按钮配置
+    }
+    if (typeof (this.CONFIG.bookContentType) != "undefined") {
+      this.bookContentType = this.CONFIG.bookContentType;  //书的类型  纸书：91 电子书 94
     }
 
     this.addCartConfig = this.CONFIG.addCart;
@@ -361,7 +368,7 @@ export default {
       }
       this.pubId = this.resourceDetail[this.keys.id];
       if (config.name == 'addcart') { // 执行纸质书加入购物车操作
-        if (this.resourceDetail[this.keys.contentType] == this.contentType.ebookType) { // 判断这本书是不是电子书
+        if (this.resourceDetail[this.keys.contentType] == this.bookContentType.ebookType) { // 判断这本书是不是电子书
           let relativeEBook = this.resourceDetail.relBook;
           if (relativeEBook) { // 这本书有对应纸质书
             this.pubId = relativeEBook[this.keys.id];
@@ -374,7 +381,7 @@ export default {
           }
         }
       } else if (config.name == 'addebcart') { // 执行电子书加入购物车操作
-        if (this.resourceDetail[this.keys.contentType] == this.contentType.bookType) { // 判断这本书是不是纸质书
+        if (this.resourceDetail[this.keys.contentType] == this.bookContentType.bookType) { // 判断这本书是不是纸质书
           let relativeBook = this.resourceDetail.relBook;
           if (relativeBook) { // 这本书有对应纸质书
             this.pubId = relativeBook[this.keys.id];
