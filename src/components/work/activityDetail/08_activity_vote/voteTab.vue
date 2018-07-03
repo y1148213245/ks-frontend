@@ -4,24 +4,28 @@
     <!-- 活动导航 -->
     <nav class="work_activitydetail_08-nav">
       <template v-for="(item,index) in tabArr">
-        <div :key="index" class="work_activitydetail_08-nav_item" :class="{'work_activitydetail_08-title--active':currentShow.tag == item.tag}" @click="tabChange(item)">
+        <div :key="index" class="work_activitydetail_08-nav_item" :class="{'work_activitydetail_08-title--active':currentTab.tag == item.tag}" @click="tabChange(item)">
           <span>{{item.title}}</span>
         </div>
       </template>
     </nav>
     <div class="work_activitydetail_08-content">
+
       <!-- 奖项说明 -->
-      <template v-show="currentShow.tag == 'activityInstructions'">
-        <p class="work_activitydetail_08-content-instructions" v-html="activityDetail.PORTAL_ACTIVITY_DESCRIPTION"></p>
-      </template>
+      <p v-show="currentTab.tag == 'activityInstructions'" class="work_activitydetail_08-content-instructions" v-html="activityDetail[detailKeys.description]"></p>
+      <!-- 活动方案 -->
+      <div v-show="currentTab.tag == 'activityPlan'">活动方案</div>
 
       <!-- 投票大赛新闻 -->
-      <template v-show="currentShow.tag == 'activityNews'">
-        <work_activitydetail_03></work_activitydetail_03>
-      </template>
-      <!-- 参选人列表 -->
 
+      <!-- <work_activitydetail_03 v-show="currentTab.tag == 'activityNews'"></work_activitydetail_03> -->
+
+      <!-- 参选人列表 -->
+      <div v-show="currentTab.tag == 'activityCandidate'">参选人列表</div>
+      <work_activitydetail_09 :namespace="namespace" :modulename="CONFIG.activityCandidate.modulename"></work_activitydetail_09>
       <!-- 获奖人列表 -->
+      <div v-show="currentTab.tag == 'activityPrizewinner'">获奖人列表</div>
+
     </div>
 
   </section>
@@ -30,7 +34,7 @@
 <script>
 import URL from 'url'
 import PROJECT_CONFIG from 'projectConfig'
-import { Post } from '@common'
+import { Post, getFieldAdapter } from '@common'
 export default {
   name: 'work_activitydetail_08',
   reused: true,
@@ -50,6 +54,7 @@ export default {
 
   created () {
     this.initConfig();
+    this.$bus.$on(this.CONFIG.activityDetail.event.listenName, this.activityDetailLoaded)
   },
 
   mounted () { },
@@ -59,9 +64,17 @@ export default {
       this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_08;
       this.tabArr = this.CONFIG.tabArr;
       this.currentTab = this.tabArr[0];
+      this.detailKeys = getFieldAdapter(
+        this.CONFIG.activityDetail.sysAdapter,
+        this.CONFIG.activityDetail.typeAdapter
+      );
     },
     tabChange (item) {
       this.currentTab = item;
+    },
+    activityDetailLoaded (detail) {
+      
+      this.activityDetail = detail;
     }
   }
 }

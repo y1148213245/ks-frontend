@@ -1,6 +1,6 @@
 var CONFIG = {
 	// "BASE_URL": "http://www.liaoningxinhuajiaoyu.com/portal/api/",
-	"BASE_URL":"http://172.19.92.76:8080/portal/api/",
+	"BASE_URL": "http://172.19.92.76:8080/portal/api/",
 	// "BASE_URL":"http://172.19.57.67:8080/portal/api/",/* 新服务器 */
 	// "BASE_URL":"http://172.19.92.94:8080/portal/api/",
 	// "BASE_URL":"http://172.19.36.97:9092/spc-portal-web/",
@@ -12,31 +12,132 @@ var CONFIG = {
 	}
 }
 var $_$ = {
-  bookContentType: { // 书的类型  纸书：91 电子书 94
-    bookType: '91',
-    ebookType: '94',
-  },
+	bookContentType: { // 书的类型  纸书：91 电子书 94
+		bookType: '91',
+		ebookType: '94',
+	},
 	"SITE_NAME": "site-102",
 	"IS_DISABLE": false,
-	"activityvote":{
-		"work_activitydetail_01": {
-			"url": "spc/cms/publish/detail.do",
-			"keys": {
-				"title": "PORTAL_ACTIVITY_SYS_TOPIC",
-				"content": "PORTAL_ACTIVITY_DESCRIPTION",
-				"startDate": "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
-				"endDate": "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
-				"resourceId": "pub_resource_id",
-				"illustration": "pub_illustration",
-				"reviewDate": "PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW",
-				"requestUrlParam_pubId": "pubId",
-				"toUploadPageUrlParam_docId": "docId",
-				"illustrationLinks": "PORTAL_ACTIVITY_ACTIVITY_LINKS"
+	/* 投票活动页配置 */
+	"activityvote": {
+		activityDetail: {
+			"work_activitydetail_01": {
+				"url": "spc/cms/publish/detail.do",
+				"keys": {
+					"title": "PORTAL_VOTEACTIVITY_SYS_TOPIC",
+					"content": "PORTAL_VOTEACTIVITY_DESCRIPTION",
+					"startDate": "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
+					"endDate": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
+					"resourceId": "pub_resource_id",
+					"illustration": "pub_illustration",
+					"reviewDate": "PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW",
+					"requestUrlParam_pubId": "pubId",
+					"toUploadPageUrlParam_docId": "docId",
+					"illustrationLinks": "PORTAL_ACTIVITY_ACTIVITY_LINKS"
+				},
+				"eventName_loadedDatas": "eventName_loadedDatas",
+				"toUploadPagUrl": "",
+				showItem:[]
 			},
-			"eventName_loadedDatas": "eventName_loadedDatas",
-			"toUploadPagUrl": ""
+			work_activitydetail_08: {
+				activityCandidate:{
+					modulename:'activityCandidate'
+				},
+				activityDetail:{/* 活动详情配置 */
+					event:{
+						listenName:'eventName_loadedDatas',
+					},
+					sysAdapter:'sykAdapter',
+					typeAdapter:'activityVoteAdapter',
+				},
+				tabArr: [
+					{
+						tag:'activityInstructions',
+						title:'活动说明'
+					},
+					{
+						tag:'activityPlan',
+						title:'活动方案'
+					},
+					{
+						tag:'activityNews',
+						title:'活动新闻'
+					},
+					{
+						tag:'activityCandidate',
+						title:'参选人'
+					},
+					{
+						tag:'activityPrizewinner',
+						title:'获奖人展示'
+					}],
+			},
+			work_activitydetail_09: {
+				"activityCandidate": {
+					getCandidateList:{
+						url:'spc/prodb/searchNLP.do',
+						params:{
+							doclibCode:'PORTAL_VOTE'
+						},
+						sysAdapter:'zykAdapter',
+						typeAdapter:'candidateAdapter',
+					},
+					activityDetail:{/* 活动详情配置 */
+						event:{
+							listenName:'eventName_loadedDatas',
+						},
+						sysAdapter:'sykAdapter',
+						typeAdapter:'activityVoteAdapter',
+					}
+				}
+	
+			},
+			work_activitydetail_03: {
+				url:  'spc/prodb/activity/activityNews.do',
+				getPicUrl: 'dynamicFile/stream.do',
+				params:{
+					getListParam_pageNo:'1',
+					getListParam_pageSize:'10',
+					getListParam_orderBy:'SYS_DOCUMENTID DESC',
+				},
+				keys: {
+					title: "SYS_TOPIC",
+					picId: "COVERID",
+					date: "SYS_CREATED",
+					abstract: "ABSTRACT",
+					eventListenData_activityId:'pub_resource_id',/* 加载数据所需要的要取事件传过来的数据 的字段名*/
+					getPicParam_coverId:'recordID',/* 图片查询参数 活动id */
+					getListParam_activityID:'activityID',/* 列表查询参数 活动id */
+					getListParam_pageNo:'page',/* 列表查询参数 页码 */
+					getListParam_pageSize:'pageSize',/* 列表查询参数 页容 */
+					getListParam_orderBy:'orderBy',/* 列表查询参数 排序 */
+				},
+				toDetailMode:{/* 去详情页模式 ，选其一：'event'抛出事件传入参数,一个参数为当前新闻数据,第二个参数为列表查询参数对象(详情上一篇下一篇会用到)，'href' href转跳 */
+	
+					type:'href',
+					event:{
+						name:'eventName_toNewsDetail',/* 事件名 */
+					},
+					href:{
+						url:'./newsdetail.html',/* 转跳url */
+						params:{/* 查询参数 对象的key为参数名,value为从组件新闻数据中获取的字段名 */
+							'docID':'SYS_DOCUMENTID'
+						},
+						activityParams:{/* 查询参数 对象的key为参数名,value为从组件活动数据中获取的字段名 */
+							'activityID':'activityId'
+						},
+						fixedParams:{/* 查询参数 对象的key为参数名,value为值 */
+							'page':'1',
+							'pageSize':'10',
+							'orderBy':'SYS_DOCUMENTID DESC',
+						}
+					}
+				},
+				eventName_listen:''/* 监听事件名,事件获取参数后加载数据 */
+			}
 		}
 	},
+	/* END 投票活动页配置 */
 	"findPassword": {
 		"findPassword": {
 			"work_findPassword_01": {
@@ -1124,8 +1225,8 @@ var $_$ = {
 						"params": []
 					}
 				},
-				toRegisterHref:'./register.html',
-				showItem:['register']
+				toRegisterHref: './register.html',
+				showItem: ['register']
 			}
 		},
 		"search": {
@@ -1230,7 +1331,7 @@ var $_$ = {
 					"title": "我的帐号",
 					"icon": "el-icon-edit",
 					"tag": "account"
-				},{
+				}, {
 					"title": "我的工作台",
 					"icon": "el-icon-edit",
 					"tag": "workbench"
@@ -1271,11 +1372,11 @@ var $_$ = {
 					"tag": "workbench"
 				}],
 				"subConfig": {
-					'account':{
-            getMobileCode:{
-              url:'user/sendMobileMessage.do' /* /user/sendToMobile.do 文联用  user/sendMobileMessage.do 华育用 */
-            }
-          }
+					'account': {
+						getMobileCode: {
+							url: 'user/sendMobileMessage.do' /* /user/sendToMobile.do 文联用  user/sendMobileMessage.do 华育用 */
+						}
+					}
 				}
 			}
 		}
@@ -1612,7 +1713,7 @@ var $_$ = {
 							"colId": "colId"
 						},
 						"fixedKeys": {},
-						isGetSubCol:true
+						isGetSubCol: true
 					}
 				},
 				"csdt": {

@@ -108,13 +108,14 @@ export default {
         if (str_activityLink) {
           arr_activityLinks = str_activityLink.split(/[\n,]/g);
         }
-
-        for (let i = 0, len = arr_illustrations.length; i < len; i++) {
-          let href = '';
-          if (arr_activityLinks && arr_activityLinks instanceof Array && arr_activityLinks[i]) {
-            href = arr_activityLinks[i]
+        if (arr_illustrations) {
+          for (let i = 0, len = arr_illustrations.length; i < len; i++) {
+            let href = '';
+            if (arr_activityLinks && arr_activityLinks instanceof Array && arr_activityLinks[i]) {
+              href = arr_activityLinks[i]
+            }
+            pics.push({ url: arr_illustrations[i], href: href })
           }
-          pics.push({ url: arr_illustrations[i], href: href })
         }
         // debugger
         this.illustrations = pics;

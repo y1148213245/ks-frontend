@@ -12,9 +12,37 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_08: {
-      url: 'spc/cms/publish/list.do',
-      keys: {},
-      eventName_loadDate: 'loadSearchResult',
+      activityCandidate:{
+        modulename:'activityCandidate'
+      },
+      tabArr: [
+        {
+          tag:'activityInstructions',
+          title:'活动说明'
+        },
+        {
+          tag:'activityPlan',
+          title:'活动方案'
+        },
+        {
+          tag:'activityNews',
+          title:'活动新闻'
+        },
+        {
+          tag:'activityCandidate',
+          title:'参训人'
+        },
+        {
+          tag:'activityPrizewinner',
+          title:'获奖人展示'
+        }],
+      activityDetail:{/* 活动详情配置 */
+        event:{
+          listenName:'eventName_loadedDatas',
+        },
+        sysAdapter:'sykAdapter',
+        typeAdapter:'activityVoteAdapter',
+      }
     }
   }
 };

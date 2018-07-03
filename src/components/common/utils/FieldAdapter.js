@@ -78,6 +78,14 @@ var FIELD_ADAPTER = {
             printcompany: "printcompany", //
             cmsMagOrderMap: "cmsMagOrderMap", //
             PUBLISH_YEAR: 'PUBLISH_YEAR', //年份
+        },
+        candidateAdapter: {/* 活动的参赛人 */
+            activityId:'ACTIVITYID',/* 活动id */
+            awardName:'AWARD_NAME',/* 奖项名字 */
+            awardType:'AWARD_TYPE',/* 奖项类型 */
+            description:'DESCRIPTION',/* 描述 */
+            pic:'HEAD_PICTURE',/* 头像 */
+            voteNum:'VOTE_NUMBERNEW',/* 投票数量 */
         }
     },
     sykAdapter: { // 索引库字段
@@ -223,6 +231,10 @@ var FIELD_ADAPTER = {
             arealimtCascadId: "PORTAL_ACTIVITY_AREALIMT_CASCADID",
             classLimtid: "PORTAL_ACTIVITY_CLASSLIMTID",
             classLimtCascadId: "PORTAL_ACTIVITY_CLASSLIMT_CASCADID"
+        },
+        activityVoteAdapter: {/* 投票活动 */
+            sysTopic: 'PORTAL_VOTEACTIVITY_SYS_TOPIC',
+            description: 'PORTAL_VOTEACTIVITY_DESCRIPTION'
         },
         videoAdapter: { // 视频
             sysTopic: "VIDEO-MEDIA_SYS_TOPIC",
