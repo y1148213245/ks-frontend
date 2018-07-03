@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-06-05 17:38:28
  * @Last Modified by: song
- * @Last Modified time: 2018-06-28 15:08:11
+ * @Last Modified time: 2018-07-02 18:11:08
  * 个人资料
  */
  <template>
@@ -133,6 +133,8 @@ export default {
         let res = resp.data;
         if (res.result == '1' && res.data) {
           this.getMember = res.data;
+          this.noNickname = this.getMember.nickName ? false : true; // 是否有昵称
+          this.noIntroduction = this.getMember.introduction ? false : true; // 是否有签名
           // this.descInput();
         }
         this.loading = false;
@@ -160,9 +162,15 @@ export default {
             let res = resp.data;
             if (res.result == '1') {
               let msg = res.data.msg;
-              Toast.success(msg);
+              Toast.success({
+                duration: 1000,
+                message: msg
+              });
             } else {
-              Toast.fail(this.display.failedOp);
+              Toast.fail({
+                duration: 1000,
+                message: this.display.failedOp
+              });
             }
           })
         }
@@ -180,9 +188,15 @@ export default {
             let res = resp.data;
             if (res.result == '1') {
               let msg = res.data.msg;
-              Toast.success(msg);
+              Toast.success({
+                duration: 1000,
+                message: msg
+              });
             } else {
-              Toast.fail(this.display.failedOp);
+              Toast.fail({
+                duration: 1000,
+                message: this.display.failedOp
+              });
             }
           })
         }
@@ -192,8 +206,6 @@ export default {
   watch: {
     member: function (newValue, oldValue) {
       if (newValue.loginName && newValue.loginName !== oldValue.loginName) {
-        this.noNickname = newValue.nickName ? false : true; // 是否有昵称
-        this.noIntroduction = newValue.introduction ? false : true; // 是否有签名
         this.getMemberInfo(newValue.loginName); // 根据用户名获取用户信息
         this.getMember.nickName = this.getMember.nickName ? this.getMember.nickName : newValue.loginName;  //首次修改昵称，输入框内显示用户名
       }

@@ -14,8 +14,11 @@ const description = `图书分类导航`;  // 组件描述信息
 const dev = {
   classification: {
     classification_01: {
-      url: '../data/classification_01_classification.json'
-    }
+      url: '../data/classification_01_classification.json',
+      staticText : {
+        allClassifications: "全部分类",
+      }
+     }
   }
 };
 
@@ -26,7 +29,10 @@ const prod = {
       params: {
         code: "BOOK",
       },
-      broadcastName: 'queryClassificationList'
+      broadcastName: 'queryClassificationList',
+      staticText : {
+        allClassifications: "全部分类",
+      }
     }
   }
 };

@@ -3,15 +3,15 @@
   <div class="work_common_04">
     <div class="work_common_04-success" v-if="status == 0">
       <div class="work_common_04-success_icon"></div>
-      <div class="work_common_04-success_msg">恭喜您,注册成功！</div>
-      <p class="work_common_04-success_interval"><span v-text="time"></span>秒后自动登录...</p>
-      <div class="work_common_04-success_login" v-if="CONFIG.toLoginType == ''"><a :href="CONFIG.toLoginHref">登&nbsp;&nbsp;录</a></div>
+      <div class="work_common_04-success_msg">{{CONFIG && CONFIG.staticText && CONFIG.staticText.registerSuccessInfo ? CONFIG.staticText.registerSuccessInfo : '恭喜您,注册成功！'}}</div>
+      <p class="work_common_04-success_interval"><span v-text="time"></span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.waitingLoginInfo ? CONFIG.staticText.waitingLoginInfo : '秒后自动登录...'}}</p>
+      <div class="work_common_04-success_login" v-if="CONFIG.toLoginType == ''"><a :href="CONFIG.toLoginHref">{{CONFIG && CONFIG.staticText && CONFIG.staticText.loginInfo ? CONFIG.staticText.loginInfo : '登&nbsp;&nbsp;录'}}</a></div>
     </div>
     <div class="work_common_04-error" v-if="status != 0">
       <div class="work_common_04-error_icon"></div>
-      <div v-if="status ==1" class="work_common_04-error_isHad">用户已经存在</div>
-      <div v-if="status ==2" class="work_common_04-error_isTimeout">验证超时</div>
-      <div v-if="status ==3" class="work_common_04-error_notHad">用户名不存在</div>
+      <div v-if="status ==1" class="work_common_04-error_isHad">{{CONFIG && CONFIG.staticText && CONFIG.staticText.userExistInfo ? CONFIG.staticText.userExistInfo : '用户已经存在'}}</div>
+      <div v-if="status ==2" class="work_common_04-error_isTimeout">{{CONFIG && CONFIG.staticText && CONFIG.staticText.verifyTimeOut ? CONFIG.staticText.verifyTimeOut : '验证超时'}}</div>
+      <div v-if="status ==3" class="work_common_04-error_notHad">{{CONFIG && CONFIG.staticText && CONFIG.staticText.userNameNotExist ? CONFIG.staticText.userNameNotExist : '用户名不存在'}}</div>
     </div>
   </div>
 </template>

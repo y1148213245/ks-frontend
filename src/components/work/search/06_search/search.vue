@@ -37,6 +37,8 @@ export default {
   mounted: function () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].search.search_01;
     this.showCondition = this.CONFIG.searchConditionArr && this.CONFIG.searchConditionArr.length > 0 ? this.CONFIG.searchConditionArr[0] : {};
+    var queryParams = URL.parse(document.URL, true).query;
+    this.searchText = queryParams && queryParams.searchText ? queryParams.searchText : '';
   },
   methods: {
     selectCondition (item) {

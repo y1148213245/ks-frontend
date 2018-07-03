@@ -7,7 +7,7 @@
         </li>
       </ul>
     </div>
-    <div class="work_mobile_personalcenter_07_book-list">
+    <div class="work_mobile_personalcenter_07_book-list" v-loading="loading">
       <ul class="work_mobile_personalcenter_07_book-list_ul">
         <li class="work_mobile_personalcenter_07_book-list_li" v-for="(book, index) in boughtBooksList" :key="index" v-if="boughtBooksList && boughtBooksList.length > 0">
           <div class="work_mobile_personalcenter_07_book-list_li_img-box" @click="toBookDetail(book)">
@@ -26,7 +26,17 @@
             </div>
           </div>
         </li>
-        <li v-if="boughtBooksList && boughtBooksList.length == 0" v-text="display.noData"></li>
+        <div class="work_mobile_personalcenter_07_nodata" v-if="boughtBooksList && boughtBooksList.length == 0">
+          <div class="work_mobile_personalcenter_07_nobook" v-if="tab.status == '3'">
+            <!-- 您还没有购买图书 -->
+            <span v-text="display.noData ? display.noData : '您还没有购买图书'"></span>
+            <van-button size="large" type="danger" v-text="display.gotoShop ? display.gotoShop : '去书城逛逛'" @click="gotoShop()"></van-button>
+          </div>
+          <div class="work_mobile_personalcenter_07_hasadd" v-if="tab.status == '1'" v-text="display.hasAddBookshelf ? display.hasAddBookshelf : '您还没有图书加入书架'"></div>
+          <!-- 您还没有图书加入书架 -->
+          <div class="work_mobile_personalcenter_07_noadd" v-if="tab.status == '0'" v-text="display.noAddBookshelf ? display.noAddBookshelf : '您的图书全部在书架中'"></div>
+          <!-- 您的图书全部在书架中 -->
+        </div>
       </ul>
     </div>
   </div>
@@ -58,7 +68,8 @@ export default {
       tab: {
         type: '2',
         status: '3'
-      }
+      },
+      loading: true, // loading
     }
   },
   computed: {
@@ -102,14 +113,21 @@ export default {
         let res = resp.data;
         if (res.result == '1') {
           this.queryMyBoughtBooks(this.loginName, this.tab, 'addBookshelf');
-          Toast.success(res.data && res.data.msg ? res.data.msg : this.display.addSuccess);
+          Toast.success({
+            duration: 1000,
+            message: res.data && res.data.msg ? res.data.msg : this.display.addSuccess
+          });
         } else {
-          Toast.fail(res.error && res.error.msg ? res.error.msg : this.display.addFailed);
+          Toast.fail({
+            duration: 1000,
+            message: res.error && res.error.msg ? res.error.msg : this.display.addFailed
+          });
         }
       })
     },
     //tab切换
     changeTab (tab, index) {
+      this.loading = true;
       this.tab = tab;
       //切换时需要重置pageIndex和pageSize
       this.pageIndex = this.CONFIG.getBoughtBooks.params.pageIndex;
@@ -147,10 +165,14 @@ export default {
           this.totalCount = res.totalCount;
           this.totalPages = res.totalPages;
         }
+        this.loading = false;
       })
     },
     toBookDetail (book) {
       window.open(this.CONFIG.toBookDetail.url + '?pubId=' + book.pubId, '_self');
+    },
+    gotoShop () { //去书城逛逛
+      window.open(this.CONFIG.toshopUrl, '_self');
     }
   },
   watch: {

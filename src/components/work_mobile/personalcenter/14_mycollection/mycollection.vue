@@ -132,7 +132,10 @@ export default {
         if (res.result == '1' && res.data.length > 0) {
           obj.collectionlist = obj.collectionlist.concat(res.data);
         } else if (res.result == '0') {
-          Toast.fail(res.error.errorMsg);
+          Toast.fail({
+            duration: 1000,
+            message: res.error.errorMsg
+          });
 
         }
       })
@@ -145,9 +148,15 @@ export default {
       Get(BASE_URL).then((resp) => {  //取消收藏
         let res = resp.data;
         if (res.result == "0") {
-          Toast.fail(res.error.errorMsg)
+          Toast.fail({
+            duration: 1000,
+            message: res.error.errorMsg
+          })
         } else {
-          Toast.success(res.data.msg);
+          Toast.success({
+            duration: 1000,
+            message: res.data.msg
+          });
           this.collectionlist = [];
           this.initData(this.loginName, '');
         }

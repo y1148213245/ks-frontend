@@ -7,7 +7,9 @@
       <ul class="ui_mobile_list_05_relatebook_list" v-if="getRelateBookList && getRelateBookList.length>0">
         <li class="ui_mobile_list_05_relatebook" v-for="(item, index) in getRelateBookList" v-if="index<7" :key="index">
           <a class="ui_mobile_list_05_a">
-            <img class="ui_mobile_list_05_img" :src="item[keys.pic]" @click="toDetail(item)">
+            <div class="ui_mobile_list_05_img_box" @click="toDetail(item)">
+              <img class="ui_mobile_list_05_img" :src="item[keys.pic]">
+            </div>
             <div class="ui_mobile_list_05_bookname" v-text="item && item[keys.Bookname]" @click="toDetail(item)"></div>
             <div class="ui_mobile_list_05_sysAuthor" v-if="item && bookAuthors && bookAuthors.Authorsfield && item[bookAuthors.Authorsfield]">{{bookAuthors.display}}{{item[bookAuthors.Authorsfield]}}</div>
           </a>

@@ -13,6 +13,14 @@ const dev = {
       },
       toLoginHref: './login.html',
       toLoginType: 'auto',/* 是否自动跳到登录页，‘auto’：自动 ‘’：手动 */
+      staticText: {
+        registerSuccessInfo: "恭喜您,注册成功！",
+        waitingLoginInfo: "秒后自动登录...",
+        loginInfo: "登&nbsp;&nbsp;录",
+        userExistInfo: "用户已经存在",
+        verifyTimeOut: "验证超时",
+        userNameNotExist: "用户名不存在"
+      }
     }
   }
 };
@@ -27,6 +35,14 @@ const prod = {
       },
       toLoginHref: './login.html',
       toLoginType: 'auto',/* 是否自动跳到登录页，‘auto’：自动 ‘’：手动 */
+      staticText: {
+        registerSuccessInfo: "恭喜您,注册成功！",
+        waitingLoginInfo: "秒后自动登录...",
+        loginInfo: "登&nbsp;&nbsp;录",
+        userExistInfo: "用户已经存在",
+        verifyTimeOut: "验证超时",
+        userNameNotExist: "用户名不存在"
+      }
     }
   }
 };

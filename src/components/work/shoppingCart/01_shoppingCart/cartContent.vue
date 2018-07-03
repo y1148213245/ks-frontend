@@ -1471,7 +1471,8 @@
             splitOrderList: temp,
             totalPrice: this.orderDetail.totalMoney + this.orderDetail.saveAmount, // 商品总价（不含优惠运费）
             couponsOrder: this.selectedCouponsPassword, // 优惠券的密码 如果有两张 以数组形式传递
-            point: this.orderDetail.sendPoints
+            point: this.orderDetail.sendPoints,
+            orderType: 'book', // book 图书总单（包括电子书、纸质书、单独期刊） periodical 订阅
           },
           myCallback: function () {
             var argus = {

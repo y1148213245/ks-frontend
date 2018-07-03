@@ -1,5 +1,5 @@
 <template>
-  <div class="work_mobile_personalcenter_15">
+  <div class="work_mobile_personalcenter_15" v-loading="loading">
     <div class="work_mobile_personalcenter_15_list" v-show="currentShow=='list'">
       <van-tabs v-model="active" @click="clickTab">
         <van-tab v-for="(item,index) in tabtitle" :title="item" :key="index">
@@ -8,16 +8,35 @@
       <ul class="work_mobile_personalcenter_15_list_ul">
         <li class="work_mobile_personalcenter_15_list_ul_li" v-if="consumeLists && consumeLists.length > 0" v-for="(item, outIndex) in consumeLists" :key="outIndex">
           <div class="work_mobile_personalcenter_15_list_ul_li_headinformation">
-            <span class="work_mobile_personalcenter_15_list_ul_li_headinformation_parentOrderCode"> {{item.parentOrderCode}} </span>
-            <span class="work_mobile_personalcenter_15_list_ul_li_headinformation_createTime"> {{item.createTime}} </span>
+            <span class="work_mobile_personalcenter_15_list_ul_li_headinformation_parentOrderCode">{{display.orderNumber}}{{item.parentOrderCode}} </span>
+            <span class="work_mobile_personalcenter_15_list_ul_li_headinformation_createTime"> {{item.createTime.slice(0,10)}} </span>
           </div>
           <ul class="work_mobile_personalcenter_15_list_ul_li_mainbox">
             <li class="work_mobile_personalcenter_15_list_ul_li_mainbox_li" v-for="(subItem, index) in item.orderList" :key="index">
               <ul class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul">
                 <li class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_li" v-for="(order, innerindex) in  subItem.itemList" :key="innerindex" @click="toDetails(outIndex,index)">
-                  <van-card :title="order.productName" :desc="order.author" :num="order.productNum" :price="order.memberPrice" :thumb="order.bigPic">
+                  <van-card v-if="orderType=='book'" :title="order.productName" :desc="order.author" :num="order.productNum" :price="order.memberPrice" :thumb="order.bigPic">
+                  </van-card>
+                  <van-card v-else-if="orderType=='periodical'" :title="order.periodicalName" :num="order.productNum" :price="order.memberPrice" :thumb="order.bigPic">
                   </van-card>
                 </li>
+                <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn">
+                  <div v-if="item.payStatus==1 && subItem.deliveryStatus==0" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_pendingDelivery">
+                    <span>{{display.pendingDelivery}}</span>
+                  </div>
+                  <div v-if="item.payStatus==1 && subItem.deliveryStatus==2" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_alreadyShipped">
+                    <span>{{display.alreadyShipped}}</span>
+                    <van-button size="small" @click="toConfirm(outIndex,index)">
+                      {{display.confirmReceipt}}
+                    </van-button>
+                    <van-button size="small" @click="toLogistics">
+                      {{display.lookLogistics}}
+                    </van-button>
+                  </div>
+                  <div v-if="item.payStatus==1 && subItem.deliveryStatus==3" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_receivedGoods">
+                    <span>{{display.receivedGoods}}</span>
+                  </div>
+                </div>
               </ul>
             </li>
             <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation">
@@ -25,6 +44,7 @@
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_collectGoods" v-if="item.payStatus==1">{{display.collectGoods}}</span>
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_complete" v-if="item.payStatus==5">{{display.complete}}</span>
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_cancel" v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
+              <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_totalnum">{{display.gong}}{{item.totalProductNum}}{{display.numtext}}</span>
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_total">{{display.total}}：{{item.realAmount}}</span>
             </div>
             <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_pendingPaymentBtn" v-if="item.payStatus==0 && item.status==1">
@@ -33,14 +53,6 @@
               </van-button>
               <van-button size="small">
                 {{display.payment}}
-              </van-button>
-            </div>
-            <div v-if="item.payStatus==1" class="work_mobile_personalcenter_15_list_ul_li_mainbox_collectGoodsBtn">
-              <van-button size="small" @click="toLogistics">
-                {{display.lookLogistics}}
-              </van-button>
-              <van-button size="small" @click="toConfirm">
-                {{display.confirmReceipt}}
               </van-button>
             </div>
             <div v-if="item.payStatus==5" class="work_mobile_personalcenter_15_list_ul_li_mainbox_completeBtn">
@@ -118,7 +130,9 @@ export default {
       tabtitle: [], //tab切换
       expCode: "YTO", //快递方式
       expNo: "889645294678455192", //快递单号
-      kdnOptionsBaseUrl: "http://www.kdniao.com" //快递鸟地址
+      kdnOptionsBaseUrl: "http://www.kdniao.com", //快递鸟地址
+      loading: true,
+      deliveryStatus: "" //订单发货状态
     };
   },
 
@@ -137,6 +151,7 @@ export default {
     this.ORDERDETAILS = this.CONFIG.getOrderDetails; //获取订单详情接口
     this.ORDERCANCEL = this.CONFIG.cancelOrder; //取消订单接口
     this.ORDERDELETE = this.CONFIG.deleteOrder; //删除订单接口
+    this.CONFIRMRECEIPT = this.CONFIG.confirmReceipt; //确认收货接口
     this.display = this.CONFIG.display;
     this.tabtitle = this.display.tabTitle;
     this.initData();
@@ -180,13 +195,14 @@ export default {
           "&orderType=" +
           this.orderType
       ).then(resp => {
+        this.loading = false;
         let res = resp.data;
-        // this.consumeLists = res.data;
-        if (res.result == "1" && res.data.length > 0) {
-          this.consumeLists = this.consumeLists.concat(res.data);
-          this.totalCount = res.totalCount;
-          this.totalPages = res.totalPages;
-        }
+        this.consumeLists = res.data;
+        // if (res.result == "1" && res.data.length > 0) {
+        //   this.consumeLists = this.consumeLists.concat(res.data);
+        //   this.totalCount = res.totalCount;
+        //   this.totalPages = res.totalPages;
+        // }
       });
     },
     //tab切换
@@ -227,7 +243,19 @@ export default {
         window.location.href;
     },
     //确认收货
-    toConfirm() {},
+    toConfirm(outIndex, index) {
+      var orderId = this.consumeLists[outIndex].orderList[index].orderId;
+      Get(
+        CONFIG.BASE_URL +
+          this.CONFIRMRECEIPT.url +
+          "?orderId=" +
+          orderId +
+          "&loginName=" +
+          this.member.loginName
+      ).then(resp => {
+        console.log(resp);
+      });
+    },
     //取消订单
     cancelOrder(outIndex) {
       var orderId = this.consumeLists[outIndex].id;
@@ -236,9 +264,15 @@ export default {
           console.log(resp);
           if (resp.data.result == 1) {
             this.initData();
-            Toast.success("取消成功");
+            Toast.success({
+              duration: 1000,
+              message: "取消成功"
+            });
           } else {
-            Toast.fail("取消失败");
+            Toast.fail({
+              duration: 1000,
+              message: "取消失败"
+            });
           }
         }
       );
@@ -249,9 +283,15 @@ export default {
       Get(CONFIG.BASE_URL + this.ORDERDELETE.url + "?id=" + id).then(resp => {
         if (resp.data.result == 1) {
           this.initData();
-          Toast.success("删除成功");
+          Toast.success({
+            duration: 1000,
+            message: "删除成功"
+          });
         } else {
-          Toast.fail("删除失败");
+          Toast.fail({
+            duration: 1000,
+            message: "删除失败"
+          });
         }
       });
     }

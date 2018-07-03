@@ -40,6 +40,9 @@ const dev = {
               },
               {
                 pub_status: '1'
+              },
+              {
+                BOOK_BOOK_CASCADID: '1'
               }
             ],
             groupBy: "pub_resource_id",
@@ -151,6 +154,9 @@ const prod = {
               },
               {
                 pub_parent_id: '0'
+              },
+              {
+                BOOK_BOOK_CASCADID: '1'
               }
             ],
             groupBy: "pub_resource_id",

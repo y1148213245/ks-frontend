@@ -292,21 +292,22 @@
 
     <!--支付方式 信息 -->
     <div class="idPayPageOrder" v-show="showPageName=='idPayPageOrder'">
-      <div>
-        <span>请在15分钟内支付订单</span>
-        <div>
-          <span>期刊名称：</span>
-          <span>{{checkMagTypeName}}</span>
+      <span class="idPayPageOrder_title">请在15分钟内支付订单</span>
+      <div class="idPayPageOrder_ul">
+        <div class="idPayPageOrder_li">
+          <span class="idPayPageOrder_label">期刊名称：</span>
+          <span class="idPayPageOrder_text">{{checkMagTypeName}}</span>
         </div>
-        <div>
-          <span>订阅方式：</span>
-          <span>{{TakeNameChange}}</span>
+        <div class="idPayPageOrder_li">
+          <span class="idPayPageOrder_label">订阅方式：</span>
+          <span class="idPayPageOrder_text">{{TakeNameChange}}</span>
         </div>
-        <div>
-          <span>发票信息：</span>
-          <span>{{billInfo_name}}</span>
+        <div class="idPayPageOrder_li">
+          <span class="idPayPageOrder_label">发票信息：</span>
+          <span class="idPayPageOrder_text">{{billInfo_name}}</span>
         </div>
       </div>
+
       <div class="work_shoppingcart_05_pay" v-if="payType && payType.payTypeShow">
         <div v-if="payType && payType.Balance && payType.Balance.iconClass" class="work_shoppingcart_05_pay_balance">
           <span class="work_shoppingcart_05_pay_Balance_radio" :class="{work_shoppingcart_05_pay_avtive:defaultPay=='Balance'}" @click="changeDefaultPay('Balance')"></span>
@@ -715,7 +716,7 @@
           if(response.status == 200 && response.data) {
             let datas = response.data;
             if(datas.data && datas.result == 1 && datas.data.submitStatus) {
-              alert("购买完成！")
+              // alert("购买完成！")
               location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
             } else {
               //console.log(datas.data.errMsg);

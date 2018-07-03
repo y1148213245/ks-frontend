@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-06-14 10:50:00
  * @Last Modified by: song
- * @Last Modified time: 2018-06-15 15:58:35
+ * @Last Modified time: 2018-07-02 18:21:37
  * 手机号注册
  */
  <template>
@@ -105,7 +105,7 @@ export default {
 
   methods: {
     formatPhoneNumber (flag) { // 手机号校验
-      let phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+      let phoneReg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
       if (this.phoneNumber == '') {  // 手机号为空
         this.errormsg = this.display.phoneNumber; // 请输入手机号
         this.isWrongPhone = true;
@@ -162,7 +162,10 @@ export default {
           }, 1000)
         } else { // 发送失败
           let errorMsg = res.error && res.error.errorMsg ? res.error.errorMsg : this.display.failOperation;
-          Toast.fail(errorMsg);
+          Toast.fail({
+            duration: 1000,
+            message: errorMsg
+          });
         }
         this.display.sendCheckNumber = tempInfo; // 发送验证码
       })
@@ -211,13 +214,19 @@ export default {
         Get(CONFIG.BASE_URL + setConfig.url, { 'params': paramsObj }).then((resp) => { // 注册
           let res = resp.data;
           if (res.result == '1') { // 注册成功
-            Toast.success(this.display.successPassword);
+            Toast.success({
+              duration: 1000,
+              message: this.display.successPassword
+            });
             setTimeout(() => { // 注册成功以后跳转登录页面
               window.location.href = this.CONFIG.directUrl;
             }, 1000);
           } else { // 注册失败
             let errorMsg = res.error && res.error.errorMsg ? res.error.errorMsg : this.display.failOperation;
-            Toast.fail(errorMsg);
+            Toast.fail({
+              duration: 1000,
+              message: errorMsg
+            });
           }
         })
       }

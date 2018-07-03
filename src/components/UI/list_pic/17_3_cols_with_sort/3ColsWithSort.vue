@@ -42,8 +42,8 @@
             <p class="book_author">作者：{{getEb.BOOK_SYS_AUTHORS}}</p>
             <p class="book_synopsis" v-text="getEb.BOOK_SYNOPSIS"></p>
             <section v-if="CONFIG && CONFIG.showPrice"> 
-              <p class="ui_list_pic_17_memberprice">原价：{{prod_sale_price | formatPriceNew}}</p>
-              <p class="ui_list_pic_17_saleprice">现价：{{prod_member_price | formatPriceNew}}</p>
+              <p class="ui_list_pic_17_memberprice">原价：{{getEb.prod_sale_price | formatPriceNew}}</p>
+              <p class="ui_list_pic_17_saleprice">现价：{{getEb.prod_member_price | formatPriceNew}}</p>
             </section>
             <p class="book_operate">
               <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="book_buy">购买</a>

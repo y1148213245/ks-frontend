@@ -2,7 +2,7 @@
 <template>
   <div class="work_bookreview_01 work_bookreview_01_skin">
     <div class="title">
-      <span>精彩评论</span>
+      <span>评论</span>
       <span v-if="this.CONFIG && this.CONFIG.toAddReview && this.CONFIG.toAddReview.toAddReviewShow && this.isDiscuss==0" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{this.CONFIG.toAddReview.toAddReviewName}}</span>
     </div>
     <div class="reviewCon" v-if="this.isDiscuss==0">
@@ -220,6 +220,10 @@ export default {
             message: msg,
             type: 'success'
           });
+          //重新获取判断条件
+          if(this.orReGetMenberName){
+            this.getResourceDetail();
+          }
           this.$refs.commentContent.value = ''; //评论完置空评分和内容
           this.starValue = 5;
           var param = {
@@ -266,12 +270,8 @@ export default {
             message: datas.data.msg,
             type: 'success'
           })
-          var param = {
-            pubId: this.pubId,
-            pageNo: '1',
-            pageSize: '15'
-          }
-          this.queryComment(param);
+
+          this.queryComment();
           return false;
         }
       })

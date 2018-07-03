@@ -21,9 +21,15 @@ const dev = {
         inputPwd: "请输入密码",
         forgetPwd: "忘记密码",
         noAccount: "还没有账号？",
-        signUpNow: "立即注册"
-      }
+        signUpNow: "立即注册",
+        accountFrozenInfo: "账号已被冻结，请联系管理员",
+        loginFailed:"登录失败",
+        usernameAndPwdCannotBeEmpty:"用户名或密码不能为空",
+        userNameCannotBeEmpty: "用户名不能为空",
+        accountAndPwdError: "账号或密码错误",
+        pwdCannotBeEmpty: "密码不能为空"
 
+      }
     }
   }
 };
@@ -67,7 +73,13 @@ const prod = {
         inputPwd: "请输入密码",
         forgetPwd: "忘记密码",
         noAccount: "还没有账号？",
-        signUpNow: "立即注册"
+        signUpNow: "立即注册",
+        accountFrozenInfo: "账号已被冻结，请联系管理员",
+        loginFailed:"登录失败",
+        usernameAndPwdCannotBeEmpty:"用户名或密码不能为空",
+        accountAndPwdError: "账号或密码错误",
+        userNameCannotBeEmpty: "用户名不能为空",
+        pwdCannotBeEmpty: "密码不能为空"
       }
     }
   }

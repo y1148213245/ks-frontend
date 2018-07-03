@@ -185,18 +185,21 @@ const dev = {
           method1: "toBuy",
           display2:"开始阅读",
           method2: "toProbation",
+        },
+        bookContentType: { // 书的类型  纸书：91 电子书 94
+          bookType: '91',
+          ebookType: '94',
+        },
+        staticText: {
+          noImg: "暂无图片",
+          noResource: "暂无",
+          quantityOfGoodsMustNotExceedTwoHundred:"商品数量不能大于200",
+          systemPrompt: "系统提示",
+          OK: "确定",
+          noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
+          noEBookInfo:"该书没有对应电子书，无法加入购物车"
         }
       },
-      staticText: {
-        noImg: "暂无图片",
-        noResource: "暂无",
-        quantityOfGoodsMustNotExceedTwoHundred:"商品数量不能大于200",
-        systemPrompt: "系统提示",
-        OK: "确定",
-        noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
-        noEBookInfo:"该书没有对应电子书，无法加入购物车"
-      }
-
     }
   }
 }
@@ -384,17 +387,17 @@ const prod = {
           bookType: '91',
           ebookType: '94',
         },
-      },
-      staticText: {
-        noImg: "暂无图片",
-        noResource: "暂无",
-        quantityOfGoodsMustNotExceedTwoHundred:"商品数量不能大于200",
-        systemPrompt: "系统提示",
-        OK: "确定",
-        noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
-        noEBookInfo:"该书没有对应电子书，无法加入购物车"
-      }
+        staticText: {
+          noImg: "暂无图片",
+          noResource: "暂无",
+          quantityOfGoodsMustNotExceedTwoHundred: "商品数量不能大于200",
+          systemPrompt: "系统提示",
+          OK: "确定",
+          noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
+          noEBookInfo: "该书没有对应电子书，无法加入购物车"
+        }
 
+      },
     }
   }
 }

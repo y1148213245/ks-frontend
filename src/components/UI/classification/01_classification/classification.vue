@@ -3,7 +3,7 @@
   <div class="ui_classification_01">
     <ul class="classificationWrapper">
       <li class="active">
-        <a class="allSort" href="javascript:void(0)" @click="toClassify(-1)">全部分类</a>
+        <a class="allSort" href="javascript:void(0)" @click="toClassify(-1)">{{CONFIG && CONFIG.staticText && CONFIG.staticText.allClassifications ? CONFIG.staticText.allClassifications : '全部分类'}}</a>
       </li>
       <template class="sortNameWrapper" v-for="item in classificationList">
         <li class="sortName">

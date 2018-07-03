@@ -15,11 +15,17 @@ const dev = {
         tabTitle: ["图书", "期刊", "知识服务"],
         empty: '暂无订单',
         pendingPayment: "待付款",
-        collectGoods: "待收货",
+        collectGoods: "进行中",
         complete: "已完成",
         cancel: "已取消",
+        pendingDelivery:"待发货",
+        alreadyShipped:"已发货",
+        receivedGoods:"已收货",
         cancelOrder: "取消订单",
         payment: "付款",
+        gong:"共",
+        numtext:"件商品",
+        orderNumber: "订单编号：",
         lookLogistics: "查看物流",
         confirmReceipt: "确认收货",
         deleteOrder: "删除订单",
@@ -50,6 +56,10 @@ const dev = {
       //删除订单接口
       deleteOrder: {
         url: "order/deleteParentOrder.do",
+      },
+      //确认收货接口
+      confirmReceipt: {
+        url: "order/confirmReceipt.do",
       },
     },
   }

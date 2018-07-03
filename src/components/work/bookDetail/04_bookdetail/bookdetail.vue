@@ -26,6 +26,32 @@
             <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
           </div>
 
+          <!-- edit by song 2018/6/30 现在规定所有的价格都取 prod_member_price 和 prod_sale_price 分别表示售价（会员价）和原价 -->
+          <!-- curPrice 纸质书价格 -->
+          <div v-else-if="config.name == 'bPrice'" class="work_bookdetail_04_bpricecontainter">
+            <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')">
+              <label class="work_bookdetail_04_price_label">{{config.display}}</label>
+              <span v-bind="{class: 'work_bookdetail_04_bPrice_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
+            </section>
+            <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')">
+              <label class="work_bookdetail_04_price_label">{{config.display}}</label>
+              <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_ebPrice_' + config.field}">{{ resourceDetail.relBook[keys[config.field]] | formatPriceNew }}</span>
+              <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_ebPrice_noprice">{{CONFIG && CONFIG.staticText && CONFIG.staticText.noResource ? CONFIG.staticText.noResource : '暂无'}}</span>
+            </section>
+          </div>
+          <!-- relPrice 电子书价格 -->
+          <div v-else-if="config.name == 'ebPrice'" class="work_bookdetail_04_ebpricecontainter">
+            <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')">
+              <label class="work_bookdetail_04_price_label">{{config.display}}</label>
+              <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_bPrice_' + config.field}">{{ resourceDetail.relBook[keys[config.field]] | formatPriceNew }}</span>
+              <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_bPrice_noprice">{{CONFIG && CONFIG.staticText && CONFIG.staticText.noResource ? CONFIG.staticText.noResource : '暂无'}}</span>
+            </section>
+            <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')">
+              <label class="work_bookdetail_04_price_label">{{config.display}}</label>
+              <span v-bind="{class: 'work_bookdetail_04_ebPrice_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
+            </section>
+          </div>
+
           <!-- time 时间 -->
           <div v-else-if="config.name == 'time'" class="work_bookdetail_04_timecontainter">
             <label class="work_bookdetail_04_time_label">{{config.display}}</label>
@@ -63,12 +89,12 @@
           <!-- probation 试读 -->
           <div v-else-if="config.name == 'probation'" class="work_bookdetail_04_probationcontainter" :class="{work_bookdetail_04_noProbation: !resourceDetail[keys.bookFreeDownLoadPath]}" @click="toCustomFun(config)">
 
-            <div  class="work_bookdetail_04_probationcontainter_shidu" v-if="isBuy==0">
+            <div class="work_bookdetail_04_probationcontainter_shidu" v-if="isBuy==0">
               <i v-bind="{class: config.className}"></i>
               <label class="work_bookdetail_04_probation_label">{{config.display}}</label>
               <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
             </div>
-            <div  class="work_bookdetail_04_probationcontainter_add" v-if="isBuy==1">
+            <div class="work_bookdetail_04_probationcontainter_add" v-if="isBuy==1">
               <i v-bind="{class: config.className}"></i>
               <label class="work_bookdetail_04_probation_label">{{config.display1}}</label>
               <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
@@ -88,7 +114,7 @@
           <div v-else class="work_bookdetail_04_other">
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_label">{{config.display}}</label>
-            <span v-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] || CONFIG && CONFIG.staticText && CONFIG.staticText.noResource ? CONFIG.staticText.noResource : '暂无'"></span>
+            <span v-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] ||(CONFIG && CONFIG.staticText && CONFIG.staticText.noResource ? CONFIG.staticText.noResource : '暂无')"></span>
           </div>
         </template>
       </section>
@@ -164,6 +190,7 @@
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex';
 import * as interfaces from "@work/login/common/interfaces.js";
+import * as type from "@work/bookDetail/common/interfaces.js";
 import Vue from 'vue';
 import { Get, Post, DrawImage, getFieldAdapter, toOtherPage } from "@common";
 import URL from 'url';
@@ -195,13 +222,13 @@ export default {
       tabConfigList: {}, // tab配置
       tabActiveIndex: 0,//tab默认点击第一个
       modulename_share: 0,//tab默认点击第一个
-      isAddShelf:0, //默认没有加入书架
-      isBuy:0, //默认没有购买  0代表是否的意思  1代表是的意思
-      isCart:0, //默认没有
-      isDiscuss:0, //默认没有
-      isDownload:0, //默认没有
-      isEb:0, //默认没有
-      bugButton:{},
+      isAddShelf: 0, //默认没有加入书架
+      isBuy: 0, //默认没有购买  0代表是否的意思  1代表是的意思
+      isCart: 0, //默认没有
+      isDiscuss: 0, //默认没有
+      isDownload: 0, //默认没有
+      isEb: 0, //默认没有
+      bugButton: {},
       bookContentType: { // 书的类型  纸书：91 电子书 94
         bookType: '91',
         ebookType: '94',
@@ -240,13 +267,18 @@ export default {
   created: function () {
     this.getMemberInfo().then((member) => {
       this.loginName = member.loginName;
+      this.$store.dispatch("bookDetail/" + type.CART_NUMS, this.loginName);
     });
   },
 
   computed: {
     ...mapGetters("login", {
-      member: interfaces.GET_MEMBER
+      member: interfaces.GET_MEMBER,
     }),
+    ...mapGetters({
+      getCartAmount: "bookDetail/getCartAmount", // 获取购物车原有商品总数量
+      getTotalAmount: "login/getTotalAmount" // 获取购物车商品总数量
+    })
   },
 
   methods: {
@@ -363,7 +395,7 @@ export default {
         //   type: 'error'
         // });
 
-        window.open( '../pages/login.html');
+        window.open('../pages/login.html');
         return false
       }
       this.pubId = this.resourceDetail[this.keys.id];
@@ -387,7 +419,7 @@ export default {
             this.pubId = relativeBook[this.keys.id];
           } else { // 没有对于纸质书
             this.$message({
-              message: CONFIG && CONFIG.staticText && CONFIG.staticText.noEBookInfo ? CONFIG.staticText.noEBookInfo : "该书没有对应电子书，无法加入购物车",
+              message: CONFIG && CONFIG.staticText && CONFIG.staticText.noEBookInfo ? CONFIG.staticText.noEBookInfo : "该书没有对应电子书，无法加入购物车（萨科技达拉斯空当接龙三）",
               type: 'error'
             });
             return false
@@ -403,8 +435,12 @@ export default {
             message: msg,
             type: 'success'
           });
+          //原有的购物车数量
+          let num = this.getCartAmount;
+          this.$store.dispatch("login/getTotalAmount", parseInt(this.quantity) + num);//头部气泡上购物车数量
+          this.$store.dispatch("bookDetail/" + type.CART_NUMS, this.loginName); //每次添加完购物车都要更新购物车数量 
         } else {
-          let errormsg = datas.error &&  datas.error.msg ? datas.data.error.msg : datas.data.msg;
+          let errormsg = datas.error && datas.error.msg ? datas.data.error.msg : datas.data.msg;
           this.$message({
             message: errormsg,
             type: 'error'
@@ -418,7 +454,7 @@ export default {
         //   message: "请登录",
         //   type: 'error'
         // });
-        window.open( '../pages/login.html');
+        window.open('../pages/login.html');
         return false
       }
       let paramsObj = Object.assign({}, this.collectOrLikeConfig.params);

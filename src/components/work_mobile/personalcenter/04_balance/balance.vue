@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-06-07 10:27:26
  * @Last Modified by: song
- * @Last Modified time: 2018-06-26 18:22:05
+ * @Last Modified time: 2018-07-02 18:16:09
  * 余额充值
  * TODO: 公众号商户授权之后还需要联调支付接口 支付成功与失败的回调 提示信息
  */
@@ -82,8 +82,10 @@ export default {
     },
     goToWXPay (item, index) { // 去微信支付
       if (!this.member.loginName) { // 未登录情况下不得支付
-        Toast.fail(this.display.login);// 请您先登录
-        // this.$message(this.display.login);
+        Toast.fail({
+          duration: 1000,
+          message: this.display.login
+        });// 请您先登录
         return false
       }
       this.currentIndex = index;

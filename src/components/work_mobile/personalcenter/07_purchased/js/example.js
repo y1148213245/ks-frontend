@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-06-07 15:26:18
  * @Last Modified by: song
- * @Last Modified time: 2018-06-27 17:35:18
+ * @Last Modified time: 2018-07-02 17:41:28
  * 个人中心消费记录
  */
 
@@ -24,7 +24,10 @@ const dev = {
         navTitle: '已购图书',
         author: '作者：',
         bookName: '书名：',
-        noData: '您还没有购买图书',
+        noData: '您还没有购买图书', 
+        gotoShop: '去书城逛逛',
+        hasAddBookshelf: '您还没有图书加入书架', // tab指向 已加入书架
+        noAddBookshelf: '您的图书全部在书架中', // tab指向 未加入书架
         startRead: '开始阅读',
         addBookshelf: '加入书架',
         noPicture: '暂无图片',
@@ -81,7 +84,8 @@ const dev = {
       },
       toBookDetail: {
         url: '../pages/bookdetail.html'
-      }
+      },
+      toshopUrl: '../pages/index.html'
     },
   }
 }
@@ -94,6 +98,9 @@ const prod = {
         author: '作者：',
         bookName: '书名：',
         noData: '您还没有购买图书',
+        gotoShop: '去书城逛逛',
+        hasAddBookshelf: '您还没有图书加入书架', // tab指向 已加入书架
+        noAddBookshelf: '您的图书全部在书架中', // tab指向 未加入书架
         startRead: '开始阅读',
         addBookshelf: '加入书架',
         noPicture: '暂无图片',
@@ -150,7 +157,8 @@ const prod = {
       },
       toBookDetail: {
         url: '../pages/bookdetail.html'
-      }
+      },
+      toshopUrl: '../pages/index.html'
     },
   }
 }

@@ -47,7 +47,9 @@ linkedin linkedin
 打印 print
 百度中心 ibaidu
 微信 weixin
-股吧 iguba `; // 组件描述信息
+股吧 iguba 
+更多 more
+`; // 组件描述信息
 
 const dev = {
   share: {

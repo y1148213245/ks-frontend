@@ -99,6 +99,7 @@ export default {
       toOrderByBtn:{}, // 排序配置
       activeSetOrder:"pub_a_order asc pub_lastmodified desc id asc",
       pubId:'',   //
+      cascadId:'',   //
     };
   },
 
@@ -111,6 +112,10 @@ export default {
     if(typeof(uriQuery.pubId)!="undefined"){
       this.pubId = uriQuery.pubId;
     }
+    if(typeof(uriQuery.cascadId)!="undefined"){
+      this.cascadId = uriQuery.cascadId;
+    }
+
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_29[this.modulename];
     this.resourceListsConfig = this.CONFIG.getResourceLists;
     this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter)));
@@ -225,9 +230,11 @@ export default {
         if (item.hasOwnProperty(this.keys.colId)) {
           item[this.keys.colId] = this.colId ? this.colId : item[this.keys.colId];
         }
-
         if (item.hasOwnProperty('pub_parent_id')) {
           item.pub_parent_id = this.pubId ? this.pubId : item.pub_parent_id;
+        }
+        if (item.hasOwnProperty('BOOK_BOOK_CASCADID')) {
+          item.BOOK_BOOK_CASCADID = this.cascadId ? this.cascadId : item.BOOK_BOOK_CASCADID;
         }
       })
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);
@@ -244,7 +251,10 @@ export default {
               this.pageNoz = datas.pageNo;
               this.pageSize = datas.pageSize;
             } else if (datas.success) {
-              Toast.fail(datas.description);
+              Toast.fail({
+                duration: 1000,
+                message: datas.description
+              });
             }
           }else{
             this.resourceLists = datas.result;

@@ -206,7 +206,7 @@
 					if(response.status == 200 && response.data) {
 						let datas = response.data;
 						if(datas.data && datas.result == 1 && datas.data.submitStatus) {
-						  alert("购买完成！")
+						  // alert("购买完成！")
 							location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
 						} else {
 							console.log(datas.data.errMsg);
@@ -261,7 +261,7 @@
 				};
 				this.Orderparams = {
 					oremark: "wxShop",
-          orderType: "periodical",   //期刊是这个 其他的都是book
+          orderType: "book",   //期刊是这个 其他的都是book
 					orderCode: "", //不用写
 					balanceAmount: this.bookMoney, // 如果是余额支付，那就写支付金额 不是就写0
 					createTime: null, //不用写

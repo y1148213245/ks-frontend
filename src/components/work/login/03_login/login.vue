@@ -1,24 +1,28 @@
 <!--  -->
 <template>
   <div class="login_03_content">
-    <div class="login_03_titlebox">{{CONFIG && CONFIG.staticText && CONFIG.staticText.loginSys ? CONFIG.staticText.loginSys : '登录'}}</div>
+    <div class="login_03_titlebox">{{getStaticText('loginSys') ? getStaticText('loginSys') : '登录'}}</div>
     <div class="el-input el-input--prefix">
-      <input type="text" class="login_03_userinput" v-model="member.loginName" :placeholder="CONFIG && CONFIG.staticText && CONFIG.staticText.inputUserName ? CONFIG.staticText.inputUserName : '请输入用户名'" @keyup.enter="login"/>
-      <span class="el-input__prefix"><i class="fa fa-user" aria-hidden="true"></i></span>
-	  </div>
+      <input type="text" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" />
+      <span class="el-input__prefix">
+        <i class="fa fa-user" aria-hidden="true"></i>
+      </span>
+    </div>
     <div class="el-input el-input--prefix">
-      <input type="password" class="login_03_password" v-model="member.password" :placeholder="CONFIG && CONFIG.staticText && CONFIG.staticText.inputPwd ? CONFIG.staticText.inputPwd : '请输入密码'" @keyup.enter="login"/>
-      <span class="el-input__prefix"><i class="fa fa-lock" aria-hidden="true"></i></span>
-    </div>
-    <div class="login_03_box_01">
-      <!-- <input type="checkbox" value="" class="login_03_box_01_checkbox" />自动登录 （暂未开发）-->
-      <a href="./forgetPassword.html" class="login_03_box_01_forgetpassword">{{CONFIG && CONFIG.staticText && CONFIG.staticText.forgetPwd ? CONFIG.staticText.forgetPwd : '忘记密码'}}</a>
-    </div>
-    <div class="login_03_box_02"><input type="button" id="login-form-submit" value="登录" class="login_03_box_02_button" @click="login"/></div>
-    <div class="login_03_box_03">{{CONFIG && CONFIG.staticText && CONFIG.staticText.noAccount ? CONFIG.staticText.noAccount : '还没有账号？'}}
-      <a href="./register.html" class="login_03_box_03_register">{{CONFIG && CONFIG.staticText && CONFIG.staticText.signUpNow ? CONFIG.staticText.signUpNow : '立即注册'}}</a>
+      <input type="password" class="login_03_password" v-model="member.password" :placeholder="getStaticText('inputPwd') ? getStaticText('inputPwd') : '请输入密码'" @keyup.enter="login" />
+      <span class="el-input__prefix">
+        <i class="fa fa-lock" aria-hidden="true"></i>
+      </span>
     </div>
 
+    <div class="login_03_box_01">
+      <!-- <input type="checkbox" value="" class="login_03_box_01_checkbox" />自动登录 （暂未开发）-->
+      <a href="./forgetPassword.html" class="login_03_box_01_forgetpassword">{{getStaticText('forgetPwd') ? getStaticText('forgetPwd') : '忘记密码'}}</a>
+    </div>
+    <div class="login_03_box_02"><input type="button" id="login-form-submit" :value="getStaticText('loginSys') ? getStaticText('loginSys') : '登录'" class="login_03_box_02_button" @click="login" /></div>
+    <div class="login_03_box_03">{{getStaticText('noAccount') ? getStaticText('noAccount') : '还没有账号？'}}
+      <a href="./register.html" class="login_03_box_03_register">{{getStaticText('signUpNow') ? getStaticText('signUpNow') : '立即注册'}}</a>
+    </div>
 
     <div class="login_03_content-more_sign" v-if="CONFIG.thirdParty && CONFIG.thirdParty.showItem">
       <h6 v-text="CONFIG.thirdParty.topic"></h6>
@@ -26,13 +30,16 @@
         <template v-for="(item,i) in (CONFIG.thirdParty && CONFIG.thirdParty.showItem || [])">
           <li :key="i" :title="item.title">
             <a :class="'login_03-third_party_'+item.tag" :href="toThirdLogin(item.type)" :target="CONFIG.thirdParty.target">
-              <i class="fa" :class="'fa-'+item.tag"></i></a></li>
+              <i class="fa" :class="'fa-'+item.tag"></i>
+            </a>
+          </li>
         </template>
 
         <template v-for="(item,i) in (CONFIG.thirdParty && CONFIG.thirdParty.customShowItem || [])">
           <li :key="i+'a'" :title="item.title">
             <a :class="'login_03-third_party_'+item.tag" :href="item.href" :target="CONFIG.thirdParty.target">
-              <i class="fa" :class="'fa-'+item.tag"></i>{{item.text}}</a></li>
+              <i class="fa" :class="'fa-'+item.tag"></i>{{item.text}}</a>
+          </li>
         </template>
       </ul>
     </div>
@@ -56,7 +63,7 @@ export default {
       member: {
         loginName: '',
         password: '',
-        flag:'pc'
+        flag: 'pc'
       }
     };
   },
@@ -68,7 +75,7 @@ export default {
   },
 
   mounted () {
-     this.saveReffer();
+    this.saveReffer();
   },
 
   methods: {
@@ -79,13 +86,33 @@ export default {
       this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_03;
     },
     login: function () {
-      this.loginValid(); // 先校验是否为空
+      // this.loginValid(); // 先校验是否为空
+      /* 这样分开写是为了 当用户名填写不正确密码未填写时 提示为空 应该首先提示用户名不正确 */
+      if (this.member.loginName.trim() == '') { // 先校验用户名是否为空
+        this.$message({
+          type: 'warning',
+          message: this.getStaticText('userNameCannotBeEmpty') ? this.getStaticText('userNameCannotBeEmpty') : "用户名不能为空"
+        });
+        return false;
+      } else {
+        this.checkMemberInfo();
+        return false;
+      }
+      if (this.member.password.trim() == '') { //  再校验密码是否为空
+        this.$message({
+          type: 'warning',
+          message: this.getStaticText("pwdCannotBeEmpty") ? this.getStaticText('pwdCannotBeEmpty') : "密码不能为空"
+        });
+        return false;
+      }
+    },
+    checkMemberInfo () {
       this.action_login({ member: this.member }).then((rep) => {
         if (rep.data.result && rep.data.result == '1') {
           if (rep.data.data.checkStatus == 0 || rep.data.data.checkStatus == "0") {
             this.$message({
               type: "error",
-              message: "账号已被冻结，请联系管理员"
+              message: this.getStaticText('accountFrozenInfo') ? this.getStaticText('accountFrozenInfo') : "账号已被冻结，请联系管理员"
             });
           } else {
 
@@ -110,13 +137,14 @@ export default {
         } else if (rep.data.result && rep.data.result == '0') {
           this.$message({
             type: "error",
-            message: rep.data.error && rep.data.error.errorMsg ? rep.data.error.errorMsg : '登录失败'
+            message: rep.data.error && rep.data.error.errorMsg ? rep.data.error.errorMsg : (this.getStaticText('loginFailed') ? this.getStaticText('loginFailed') : '登录失败')
           });
         }
+        return false;
       });
     },
-    loginValid: function () {
-      if (this.member.loginName.trim() == '' || this.member.password.trim() == '') {
+    /*loginValid: function () {
+      if (this.member.loginName.trim() == '' || this.member.password.trim() == '') { // 先校验是否为空
         this.$message({
           type: 'warning',
           message: "用户名或密码不能为空"
@@ -127,7 +155,7 @@ export default {
           message: "账号或密码错误"
         });
       }
-    },
+    },*/
     toThirdLogin (type) {
       return CONFIG.BASE_URL + this.CONFIG.thirdParty.url + type;
     },
@@ -136,10 +164,17 @@ export default {
       let arr = pathName.split('/');
       return arr[arr.length - 1];
     },
-    saveReffer(){
+    saveReffer () {
       let referr = document.referrer;
       if (referr) {
-        window.localStorage.setItem('loginReferr',referr)
+        window.localStorage.setItem('loginReferr', referr)
+      }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
       }
     }
   }

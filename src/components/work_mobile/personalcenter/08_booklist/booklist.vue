@@ -109,7 +109,10 @@ export default {
         if (res.result == '1' && res.data.length > 0) {
           obj.booklist = obj.booklist.concat(res.data);
         } else if (res.result == '0') {
-          Toast.fail(res.error.errorMsg);
+          Toast.fail({
+            duration: 1000,
+            message: res.error.errorMsg
+          });
 
         }
       })
@@ -143,9 +146,15 @@ export default {
     afterDeleteHandle (obj, resp, index) {
       let res = resp.data;
       if (res.result == "0") {
-        Toast.fail(res.error.errorMsg)
+        Toast.fail({
+          duration: 1000,
+          message: res.error.errorMsg
+        })
       } else {
-        Toast.success(res.data.msg);
+        Toast.success({
+          duration: 1000,
+          message: res.data.msg
+        });
         this.booklist = [];
         obj.initData(obj.loginName);
       }
