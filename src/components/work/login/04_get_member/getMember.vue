@@ -1,28 +1,43 @@
 <!-- 获取登陆信息 -->
 <template>
- <div class="work_login_04">
-   <!-- 登录前 -->
-   <template v-if="!member.loginName">
-   <a :href="CONFIG.toLoginHref" class="work_login_04-login">
-     <slot>
-       {{CONFIG && CONFIG.staticText && CONFIG.staticText.loginSys ? CONFIG.staticText : '[登录]'}}
-     </slot>
-   </a>
-   <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
-   <span v-if="member.loginName" class="work_login_04-info">{{CONFIG && CONFIG.staticText && CONFIG.staticText.welcomeBack ? CONFIG.staticText.welcomeBack : '欢迎回来！' }}</span>
-   <a class="work_login_04-exit" v-if="member.loginName" @click="exit">
-     <slot name="exit">
-       {{CONFIG && CONFIG.staticText && CONFIG.staticText.exitSys ? CONFIG.staticText.exitSys : '退出'}}
-     </slot>
-   </a>
-   </template>
- </div>
+
+  <div class="work_login_04">
+
+    <!-- 登录前 -->
+
+    <template v-if="!member.loginName">
+      <a :href="CONFIG.toLoginHref" class="work_login_04-login">
+        <slot>
+          {{getStaticText('loginSys') ? getStaticText('loginSys') : '[登录]'}}
+        </slot>
+      </a>
+      <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
+      <span v-if="getIsShow('register')">
+        <a :href="CONFIG.toRegisterHref">注 册</a>
+      </span>
+    </template>
+    <!-- 登陆后 -->
+
+    <template v-if="member.loginName">
+
+      <a :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
+
+      <span class="work_login_04-info">{{getStaticText('welcomeBack') ? getStaticText('welcomeBack') : '欢迎回来！' }}</span>
+
+      <a class="work_login_04-exit" @click="exit">
+        <slot name="exit">
+          {{getStaticText('exitSys') ? getStaticText('exitSys') : '退出'}}
+        </slot>
+      </a>
+    </template>
+  </div>
+
 </template>
 
 <script>
 import URL from 'url'
 import PROJECT_CONFIG from 'projectConfig'
-import { _axios,Post } from '@common'
+import { _axios, Post } from '@common'
 import { mapGetters, mapActions } from 'vuex'
 import * as interfaces from "@work/login/common/interfaces.js"
 
@@ -58,15 +73,22 @@ export default {
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_04
     },
-    getIsShow(item){
+    getIsShow (item) {
       if (this.CONFIG.hasOwnProperty('showItem')) {
         let arr = this.CONFIG.showItem;
-        if(arr.indexOf(item)>-1){
+        if (arr.indexOf(item) > -1) {
           return true
-        }else{
+        } else {
           return false
         }
-      }else{
+      } else {
+        return false
+      }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
         return false
       }
     },
