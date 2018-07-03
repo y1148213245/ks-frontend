@@ -334,7 +334,7 @@ export default {
 											})
 											this.mobileCode = resp.data.data;
 											let _this = this;
-											_this.sendMobileInterval = 5
+											_this.sendMobileInterval = 60
 											let timer = setInterval(() => {
 												if (_this.sendMobileInterval - 1 >= 0) {
 													_this.sendMobileInterval--;

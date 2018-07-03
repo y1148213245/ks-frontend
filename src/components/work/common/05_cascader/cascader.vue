@@ -3,6 +3,7 @@
  <el-cascader
   :options="trees"
   filterable
+  clearable
   @change="selectOption"
 ></el-cascader>
 </template>
