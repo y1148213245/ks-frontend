@@ -17,8 +17,7 @@ const prod = {
   activityDetail: {
     work_activitydetail_09: {
       "activityCandidate": {
-        url: 'spc/cms/publish/list.do',
-        keys: {},
+        showType:'candidate',/* candidate:参选人,prizewinner:获奖人 */
         getCandidateList:{
           url:'spc/prodb/searchNLP.do',
           params:{

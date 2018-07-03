@@ -1,6 +1,6 @@
 <!-- 投票活动 -->
 <template>
-  <section>
+  <section class="work_activitydetail_08">
     <!-- 活动导航 -->
     <nav class="work_activitydetail_08-nav">
       <template v-for="(item,index) in tabArr">
@@ -14,18 +14,17 @@
       <!-- 奖项说明 -->
       <p v-show="currentTab.tag == 'activityInstructions'" class="work_activitydetail_08-content-instructions" v-html="activityDetail[detailKeys.description]"></p>
       <!-- 活动方案 -->
-      <div v-show="currentTab.tag == 'activityPlan'">活动方案</div>
+      <work_activitydetail_02 v-show="currentTab.tag == 'activityPlan'" :namespace="namespace" :module="CONFIG.activityPlan.modulename"></work_activitydetail_02>
 
       <!-- 投票大赛新闻 -->
 
-      <!-- <work_activitydetail_03 v-show="currentTab.tag == 'activityNews'"></work_activitydetail_03> -->
+      <work_activitydetail_03 :namespace="namespace" v-show="currentTab.tag == 'activityNews'"></work_activitydetail_03>
 
       <!-- 参选人列表 -->
-      <div v-show="currentTab.tag == 'activityCandidate'">参选人列表</div>
-      <work_activitydetail_09 :namespace="namespace" :modulename="CONFIG.activityCandidate.modulename"></work_activitydetail_09>
-      <!-- 获奖人列表 -->
-      <div v-show="currentTab.tag == 'activityPrizewinner'">获奖人列表</div>
+      <work_activitydetail_09 v-show="currentTab.tag == 'activityCandidate'" :namespace="namespace" :modulename="CONFIG.activityCandidate.modulename"></work_activitydetail_09>
 
+      <!-- 获奖人列表 -->
+      <work_activitydetail_09 v-show="currentTab.tag == 'activityPrizewinner'" :namespace="namespace" :modulename="CONFIG.activityPrizewinner.modulename"></work_activitydetail_09>
     </div>
 
   </section>
@@ -73,7 +72,7 @@ export default {
       this.currentTab = item;
     },
     activityDetailLoaded (detail) {
-      
+
       this.activityDetail = detail;
     }
   }

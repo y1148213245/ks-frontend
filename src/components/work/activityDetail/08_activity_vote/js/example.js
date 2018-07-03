@@ -15,6 +15,12 @@ const prod = {
       activityCandidate:{
         modulename:'activityCandidate'
       },
+      activityPlan:{
+        modulename:'activityPlan'
+      },
+      activityPrizewinner:{
+        modulename:'activityPrizewinner'
+      },
       tabArr: [
         {
           tag:'activityInstructions',
