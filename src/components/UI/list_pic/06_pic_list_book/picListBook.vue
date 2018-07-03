@@ -14,6 +14,7 @@
             <p class="title">
               <a :href="(CONFIG && CONFIG.href)+entry.id" class="hot_sell_text" v-text="entry.pub_resource_name" :title="entry.pub_resource_name"></a>
             </p>
+
             <p class="hitcount" v-if="modulename === 'hotsalebank'">{{getStaticText('hits') ? getStaticText('hits') : '点击量：'}}{{entry.pub_read_num || 0}}</p>
             <p :class="{lineHeight: modulename === 'historyrecord'}">{{getStaticText('price') ? getStaticText('price') : '价格：￥'}}
               <span class="price">{{entry.BOOK_EB_PRICE?Number(entry.BOOK_EB_PRICE).toFixed(2):'0.00'}}</span>

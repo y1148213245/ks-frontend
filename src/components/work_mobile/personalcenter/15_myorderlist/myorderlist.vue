@@ -21,10 +21,10 @@
                   </van-card>
                 </li>
                 <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn">
-                  <div v-if="item.payStatus==1 && subItem.deliveryStatus==0" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_pendingDelivery">
+                  <div v-if="subItem.itemList[0].productType!=94 && item.payStatus==1 && subItem.deliveryStatus==0" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_pendingDelivery">
                     <span>{{display.pendingDelivery}}</span>
                   </div>
-                  <div v-if="item.payStatus==1 && subItem.deliveryStatus==2" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_alreadyShipped">
+                  <div v-if="subItem.itemList[0].productType!=94 && item.payStatus==1 && subItem.deliveryStatus==2" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_alreadyShipped">
                     <span>{{display.alreadyShipped}}</span>
                     <van-button size="small" @click="toConfirm(outIndex,index)">
                       {{display.confirmReceipt}}
@@ -33,7 +33,7 @@
                       {{display.lookLogistics}}
                     </van-button>
                   </div>
-                  <div v-if="item.payStatus==1 && subItem.deliveryStatus==3" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_receivedGoods">
+                  <div v-if="subItem.itemList[0].productType!=94 && item.payStatus==1 && subItem.deliveryStatus==3" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_receivedGoods">
                     <span>{{display.receivedGoods}}</span>
                   </div>
                 </div>
@@ -65,7 +65,7 @@
         <span class="work_mobile_personalcenter_15_list_ul_empty" v-if="consumeLists && consumeLists.length == 0">{{display.empty}}</span>
       </ul>
     </div>
-    <div class="work_mobile_personalcenter_15_details" v-show="currentShow=='details'">
+    <div class="work_mobile_personalcenter_15_details" v-show="currentShow=='bookDetails'">
       <div class="work_mobile_personalcenter_15_details_mainbox" v-for="item in orderDetails" :key="item.id">
         <div class="work_mobile_personalcenter_15_details_mainbox_orderstatus">
           <span v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
@@ -91,11 +91,39 @@
         <div>
           <van-button @click="goBack()">返回</van-button>
         </div>
-        <div class="work_mobile_personalcenter_15_details_mainbox_footerinformation">
+        <!-- <div class="work_mobile_personalcenter_15_details_mainbox_footerinformation">
           <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_total">{{display.total}}：{{item.orderTotalPrice | filterFun}}</span>
           <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_express">{{display.express}}：{{item.deliveryPrice | filterFun}}</span>
           <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_realPay">{{display.realPay}}：{{item.orderTotalPrice + item.deliveryPrice | filterFun}}</span>
+        </div> -->
+      </div>
+    </div>
+    <div class="work_mobile_personalcenter_15_details" v-show="currentShow=='periodicalDetails'">
+      <div class="work_mobile_personalcenter_15_details_mainbox" v-for="item in orderDetails" :key="item.id">
+        <div class="work_mobile_personalcenter_15_details_mainbox_orderstatus">
+          <span v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
+          <span v-if="item.payStatus==1">{{display.collectGoods}}</span>
+          <span v-if="item.payStatus==5">{{display.complete}}</span>
+          <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>
+        <div class="work_mobile_personalcenter_15_details_mainbox_timeandcode">
+          <span class="work_mobile_personalcenter_15_details_mainbox_timeandcode_createTime">{{item.createTime}}</span>
+          <span class="work_mobile_personalcenter_15_details_mainbox_timeandcode_orderCode">{{item.orderCode}}</span>
+        </div>
+        <ul class="work_mobile_personalcenter_15_details_mainbox_ul">
+          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_details_mainbox_li">
+            <van-card :title="inneritem.periodicalName" :desc="inneritem.author" :num="inneritem.productNum" :price="inneritem.memberPrice" :thumb="inneritem.bigPic">
+            </van-card>
+          </li>
+        </ul>
+        <div>
+          <van-button @click="goBack()">返回</van-button>
+        </div>
+        <!-- <div class="work_mobile_personalcenter_15_details_mainbox_footerinformation">
+          <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_total">{{display.total}}：{{item.orderTotalPrice | filterFun}}</span>
+          <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_express">{{display.express}}：{{item.deliveryPrice | filterFun}}</span>
+          <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_realPay">{{display.realPay}}：{{item.orderTotalPrice + item.deliveryPrice | filterFun}}</span>
+        </div> -->
       </div>
     </div>
   </div>
@@ -173,6 +201,7 @@ export default {
       // 初始化数据
       this.pageSize = this.ORDERCONFIG.params.pageSize;
       this.pageIndex = this.ORDERCONFIG.params.pageIndex;
+      this.consumeLists = [];
       this.queryMyOrder(loginName); // 获取我的订单
     },
     queryMyOrder(loginName) {
@@ -197,12 +226,12 @@ export default {
       ).then(resp => {
         this.loading = false;
         let res = resp.data;
-        this.consumeLists = res.data;
-        // if (res.result == "1" && res.data.length > 0) {
-        //   this.consumeLists = this.consumeLists.concat(res.data);
-        //   this.totalCount = res.totalCount;
-        //   this.totalPages = res.totalPages;
-        // }
+        // this.consumeLists = res.data;
+        if (res.result == "1" && res.data.length > 0) {
+          this.consumeLists = this.consumeLists.concat(res.data);
+          this.totalCount = res.totalCount;
+          this.totalPages = res.totalPages;
+        }
       });
     },
     //tab切换
@@ -222,7 +251,12 @@ export default {
       Get(CONFIG.BASE_URL + this.ORDERDETAILS.url + "?orderId=" + orderId).then(
         resp => {
           this.orderDetails = resp.data.data;
-          this.currentShow = "details";
+          if (this.orderType == "book") {
+            this.currentShow = "bookDetails";
+          } else if (this.orderType == "periodical") {
+            this.currentShow = "periodicalDetails";
+            console.log(this.orderDetails);
+          }
         }
       );
     },
