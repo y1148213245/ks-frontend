@@ -17,21 +17,47 @@ const prod = {
   activityDetail: {
     work_activitydetail_09: {
       "activityCandidate": {
-        showType:'candidate',/* candidate:参选人,prizewinner:获奖人 */
-        getCandidateList:{
-          url:'spc/prodb/searchNLP.do',
-          params:{
-            doclibCode:'PORTAL_VOTE'
+        showType: 'candidate',/* candidate:参选人,prizewinner:获奖人 */
+        getCandidateList: {
+          url: 'spc/prodb/searchNLP.do',
+          params: {
+            doclibCode: 'PORTAL_VOTE'
           },
-          sysAdapter:'zykAdapter',
-          typeAdapter:'candidateAdapter',
+          fixedParams:[{
+            relations: '5',
+            cols: 'TEXT',
+            symbols: '5',
+            vals: '5'
+          }],
+          getActivityDetailData: [{
+            relations: '1',
+            cols: 'ACTIVITYID',
+            symbols: '2',
+            vals: 'resId'
+          }],
+          sysAdapter: 'zykAdapter',
+          typeAdapter: 'candidateAdapter',
         },
-        activityDetail:{/* 活动详情配置 */
-          event:{
-            listenName:'eventName_loadedDatas',
+        getAwardList: {/* 获取奖项列表配置 */
+          url: 'spc/prodb/searchNL.do',
+          params: {
+            doclibCode: 'PORTAL_AWARD',
+            page: 1,
+            size: 99
           },
-          sysAdapter:'sykAdapter',
-          typeAdapter:'activityVoteAdapter',
+          getActivityDetailData: [{
+            relations: '1',
+            cols: 'ACTIVITYID',
+            symbols: '2',
+            vals: 'resId'
+          }]
+        },
+        activityDetail: {/* 活动详情配置 */
+          event: {
+            listenName: 'eventName_loadedDatas',
+          },
+          sysAdapter: 'sykAdapter',
+          typeAdapter: 'activityVoteAdapter',
         }
       }
 

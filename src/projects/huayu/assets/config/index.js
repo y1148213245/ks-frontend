@@ -89,6 +89,18 @@ var $_$ = {
 						params:{
 							doclibCode:'PORTAL_VOTE'
 						},
+						fixedParams:[{
+							relations: '5',
+							cols: 'TEXT',
+							symbols: '5',
+							vals: '5'
+						}],
+						getActivityDetailData: [{
+							relations: '1',
+							cols: 'ACTIVITYID',
+							symbols: '2',
+							vals: 'resId'
+						}],
 						sysAdapter:'zykAdapter',
 						typeAdapter:'candidateAdapter',
 					},
@@ -107,8 +119,34 @@ var $_$ = {
 						params:{
 							doclibCode:'PORTAL_VOTE'
 						},
+						fixedParams:[{
+							relations: '5',
+							cols: 'TEXT',
+							symbols: '5',
+							vals: '5'
+						}],
+						getActivityDetailData: [{
+							relations: '1',
+							cols: 'ACTIVITYID',
+							symbols: '2',
+							vals: 'resId'
+						}],
 						sysAdapter:'zykAdapter',
 						typeAdapter:'candidateAdapter',
+					},
+					getAwardList: {/* 获取奖项列表配置 */
+						url: 'spc/prodb/searchNL.do',
+						params: {
+							doclibCode: 'PORTAL_AWARD',
+							page: 1,
+							size: 99
+						},
+						getActivityDetailData: [{
+							relations: '1',
+							cols: 'ACTIVITYID',
+							symbols: '2',
+							vals: 'resId'
+						}]
 					},
 					activityDetail:{/* 活动详情配置 */
 						event:{
