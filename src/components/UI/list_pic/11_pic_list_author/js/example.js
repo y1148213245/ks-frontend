@@ -1,6 +1,6 @@
 /*
- * @Author: yan.chaoming 
- * @Date: 2018-01-02 13:56:35 
+ * @Author: yan.chaoming
+ * @Date: 2018-01-02 13:56:35
  * @Last Modified by: song
  * @Last Modified time: 2018-03-23 09:18:12
  * 作者展示
@@ -20,7 +20,11 @@ const dev = {
     list_pic_11: {
       url: '/data/ui_list_pic_11.json',
       detailHref: '',
-      colId: 116
+      colId: 116,
+      staticText:{
+        noCover: "暂无封面",
+        seeMore: "查看更多",
+      }
     }
   }
 }
@@ -38,7 +42,11 @@ const prod = {
         searchText: ''
       },
       detailHref: '',
-      colId: 116
+      colId: 116,
+      staticText: {
+        noCover: "暂无封面",
+        seeMore: "查看更多",
+      }
     }
   }
 }

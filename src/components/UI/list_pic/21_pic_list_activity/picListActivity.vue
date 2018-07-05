@@ -5,15 +5,15 @@
       <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in activityList" :key="index">
         <div class="ui_pic_list_21-card_content"  @click="toDetail(item[keys.id])" >
             <div class="ui_pic_list_21-img_box">
-              <img :src="item[keys.pub_picMiddle]" class="image" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" :href="goDetail(item[keys.id])">
+              <img :src="item[keys.pub_picMiddle]" class="image" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" :href="goDetail(item[keys.id])">
             </div>
             <div class="ui_pic_list_21-title_box" >
               <a class="ac_title" :href="goDetail(item[keys.id])">{{item[keys.PORTAL_ACTIVITY_SYS_TOPIC] }}</a>
               <div class="clearfix">
                 <div class="ac_text">
-                  <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.activityTime ? CONFIG.staticText.activityTime : '活动时间：'}}</span>
+                  <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
                   <time class="time">{{item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW] |
-                    formatDateNEW}}{{CONFIG && CONFIG.staticText && CONFIG.staticText.to ? CONFIG.staticText.to : '至'}}{{item[keys.reviewDate] | formatDateNEW}}
+                    formatDateNEW}}{{getStaticText('to')? getStaticText('to') : '至'}}{{item[keys.reviewDate] | formatDateNEW}}
                   </time>
                 </div>
 
@@ -25,7 +25,7 @@
             </div>
         </div>
       </el-card>
-    <ui_pagination :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging"></ui_pagination>
+      <ui_pagination :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging"></ui_pagination>
   </div>
 </template>
 
@@ -51,10 +51,10 @@ export default {
       keys: null,
       colDetail: '',
       activityStatus: [
-        { title: CONFIG && CONFIG.staticText && CONFIG.staticText.notBegin ? CONFIG.staticText.notBegin : '未开始', class: 'activity_notstart' },
-        { title: CONFIG && CONFIG.staticText && CONFIG.staticText.inProgress ? CONFIG.staticText.inProgress :'进行中', class: 'activity_active' },
-        { title: CONFIG && CONFIG.staticText && CONFIG.staticText.appraisalBonus ? CONFIG.staticText.appraisalBonus :'评奖中', class: 'activity_review' },
-        { title: CONFIG && CONFIG.staticText && CONFIG.staticText.haveFinished ? CONFIG.staticText.haveFinished :'已结束', class: 'activity_end' }
+        { title: this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始', class: 'activity_notstart' },
+        { title: this.getStaticText('inProgress') ? this.getStaticText('inProgress'):'进行中', class: 'activity_active' },
+        { title: this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') :'评奖中', class: 'activity_review' },
+        { title: this.getStaticText('haveFinished') ? this.getStaticText('haveFinished') :'已结束', class: 'activity_end' }
       ]
 
     };
@@ -99,16 +99,16 @@ export default {
         if (data && data instanceof Array && data.length > 0) {
           data.forEach(function (item) {
             if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime < item[keys.reviewDate] && currentTime > item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
-              item.activityStatus = CONFIG && CONFIG.staticText && CONFIG.staticText.inProgress ? CONFIG.staticText.inProgress :'进行中';
+              item.activityStatus = this.getStaticText('inProgress') ? this.getStaticText('inProgress') : '进行中';
             }
             else if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime > item[keys.reviewDate]) {
-              item.activityStatus = CONFIG && CONFIG.staticText && CONFIG.staticText.appraisalBonus ? CONFIG.staticText.appraisalBonus :'评奖中';
+              item.activityStatus = this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') :'评奖中';
             }
             else if (currentTime < item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
-              item.activityStatus = CONFIG && CONFIG.staticText && CONFIG.staticText.notBegin ? CONFIG.staticText.notBegin : '未开始';
+              item.activityStatus = this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始';
             }
             else {
-              item.activityStatus = CONFIG && CONFIG.staticText && CONFIG.staticText.haveFinished ? CONFIG.staticText.haveFinished :'已结束';
+              item.activityStatus = this.getStaticText('haveFinished') ? this.getStaticText('haveFinished') :'已结束';
             }
           })
           this.activityList = data;
@@ -125,7 +125,14 @@ export default {
       this.pageNo = pageNo;
       this.pageSize = pageSize;
       this.getData();
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   }
 };
 </script>

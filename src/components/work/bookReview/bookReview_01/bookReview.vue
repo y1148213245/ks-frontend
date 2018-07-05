@@ -2,25 +2,25 @@
 <template>
   <div class="work_bookreview_01 work_bookreview_01_skin">
     <div class="title">
-      <span>评论</span>
+      <span>{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
       <span v-if="this.CONFIG && this.CONFIG.toAddReview && this.CONFIG.toAddReview.toAddReviewShow && this.isDiscuss==0" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{this.CONFIG.toAddReview.toAddReviewName}}</span>
     </div>
     <div class="reviewCon" v-if="this.isDiscuss==0">
       <div class="review">
-        <span class="reviewSpan">评论</span>
+        <span class="reviewSpan">{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
         <p class="star">
           <el-rate v-model="starValue" :show-text="true" :max="5" void-color="#c1c1c0"></el-rate>
         </p>
       </div>
       <textarea ref="commentContent"></textarea>
 
-      <input type="button" class="reviewBtn" value="评论" @click="bookReview()"/>
+      <input type="button" class="reviewBtn" :value="getStaticText('comments') ? getStaticText('comments') : '评论'" @click="bookReview()"/>
     </div>
 
     <!--评论内容-->
     <div class="bookReviewWrapper" v-if="commentList && commentList.length > 0" v-for="(queryComment, index) in commentList" :key="index" >
       <div class="personalImg">
-        <img onload="DrawImage(this,35,35)" :src="queryComment.picture || defaultPic" alt="暂无头像"/>
+        <img onload="DrawImage(this,35,35)" :src="queryComment.picture || defaultPic" :alt="getStaticText('noHeadPicture') ? getStaticText('noHeadPicture') : '暂无头像'"/>
       </div>
       <div class="reviewLists">
         <div>
@@ -46,7 +46,7 @@
 
       </div>
     </div>
-    <div class="noReview" v-if="commentList.length === 0">暂无评论</div>
+    <div class="noReview" v-if="commentList.length === 0">{{getStaticText('noComments') ? getStaticText('noComments') : '暂无评论'}}</div>
     <!--评论内容-->
     <input type="hidden" id="work_bookreview_01_pagination" v-model="totalCount">
     <ui_pagination class="work_bookreview_01_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination"  :pageMessage="{totalCount: totalCount - 0}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
@@ -184,7 +184,7 @@ export default {
       var content = this.$refs.commentContent.value;
       if(content==''){
         this.$message({
-          message: '评论内容不能为空',
+          message: this.getStaticText('commentsEmptyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论内容不能为空',
           type: 'error'
         })
         return false;
@@ -193,7 +193,7 @@ export default {
       var starNum = this.starValue;
       if (starNum == 0) {
         this.$message({
-          message: '请先评分再提交评论~',
+          message: this.getStaticText('pleaseGradeBeforeSubmitting') ? this.getStaticText('pleaseGradeBeforeSubmitting') : '请先评分再提交评论~',
           type: 'error'
         })
         return false;
@@ -234,7 +234,7 @@ export default {
           this.queryComment(param);
         } else {
           this.$message({
-            message: '评论添加失败',
+            message: this.getStaticText('commentAddFailed') ? this.getStaticText('commentAddFailed') : '评论添加失败',
             type: 'error'
           });
         }
@@ -307,6 +307,13 @@ export default {
         pageSize: pageSize,
       };
       this.queryComment(pagingParams);
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
     },
   }
 }

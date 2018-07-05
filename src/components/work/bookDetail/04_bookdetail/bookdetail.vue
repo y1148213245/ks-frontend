@@ -9,7 +9,7 @@
           <!-- img 图片 -->
           <div v-if="config.name == 'img'" class="work_bookdetail_04_imgcontainter" @click="toCustomFun(config)">
             <label class="work_bookdetail_04_img_label">{{config.display}}</label>
-            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src="resourceDetail[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" @load="dealResourceImg($event)" />
+            <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src="resourceDetail[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)" />
           </div>
 
           <!-- 自定义事件按钮 包括（title 标题） -->
@@ -36,7 +36,7 @@
             <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
               <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_ebPrice_' + config.field}">{{ resourceDetail.relBook[keys[config.field]] | formatPriceNew }}</span>
-              <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_ebPrice_noprice">{{CONFIG && CONFIG.staticText && CONFIG.staticText.noResource ? CONFIG.staticText.noResource : '暂无'}}</span>
+              <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_ebPrice_noprice">{{getStaticText('noResource') ? getStaticText('noResource') : '暂无'}}</span>
             </section>
           </div>
           <!-- relPrice 电子书价格 -->
@@ -44,7 +44,7 @@
             <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
               <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_bPrice_' + config.field}">{{ resourceDetail.relBook[keys[config.field]] | formatPriceNew }}</span>
-              <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_bPrice_noprice">{{CONFIG && CONFIG.staticText && CONFIG.staticText.noResource ? CONFIG.staticText.noResource : '暂无'}}</span>
+              <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_bPrice_noprice">{{getStaticText('noResource') ? getStaticText('noResource') : '暂无'}}</span>
             </section>
             <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
@@ -79,11 +79,22 @@
                 <!--</a>-->
                 <ui_share_01 :namespace="namespace" :modulename="modulename_share"></ui_share_01>
               </div>
-              <label class="work_bookdetail_04_op_label" v-else>
-                <i v-bind="{class: config.className}"></i>{{config.display}}</label>
-              <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
-            </div>
 
+              <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰 -->
+              <section v-else-if="config.name == 'addcart'" :class="{work_bookdetail_04_forbid_addcart: resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook}">
+                <label class="work_bookdetail_04_op_label">
+                  <i v-bind="{class: config.className}"></i>{{config.display}}</label>
+                <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
+              </section>
+
+              <!-- 如果当前这本书是纸质书 && 没有关联电子书 加入电子书按钮置灰 -->
+              <section v-else-if="config.name == 'addebcart'" :class="{work_bookdetail_04_forbid_addebcart: resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91') && !resourceDetail.relBook}">
+                <label class="work_bookdetail_04_op_label">
+                  <i v-bind="{class: config.className}"></i>{{config.display}}</label>
+                <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
+              </section>
+
+            </div>
           </div>
 
           <!-- probation 试读 -->
@@ -114,7 +125,7 @@
           <div v-else class="work_bookdetail_04_other">
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_label">{{config.display}}</label>
-            <span v-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] ||(CONFIG && CONFIG.staticText && CONFIG.staticText.noResource ? CONFIG.staticText.noResource : '暂无')"></span>
+            <span v-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] ||(getStaticText('noResource') ? getStaticText('noResource') : '暂无')"></span>
           </div>
         </template>
       </section>
@@ -377,8 +388,8 @@ export default {
         ++this.quantity;
         if (this.quantity > 200) { // 防止加过200
           this.quantity = 200;
-          this.$alert(CONFIG && CONFIG.staticText && CONFIG.staticText.quantityOfGoodsMustNotExceedTwoHundred ? CONFIG.staticText.quantityOfGoodsMustNotExceedTwoHundred : "商品数量不能大于200", CONFIG && CONFIG.staticText && CONFIG.staticText.systemPrompt ? CONFIG.staticText.systemPrompt : "系统提示", {
-            confirmButtonText: CONFIG && CONFIG.staticText && CONFIG.staticText.OK ? CONFIG.staticText.OK : "确定"
+          this.$alert(this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') ? this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') : "商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
+            confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定"
           });
         }
       } else if (op < 0) {
@@ -405,11 +416,11 @@ export default {
           if (relativeEBook) { // 这本书有对应纸质书
             this.pubId = relativeEBook[this.keys.id];
           } else { // 没有对于纸质书
+            return false
             this.$message({
-              message: CONFIG && CONFIG.staticText && CONFIG.staticText.noPaperBookInfo ? CONFIG.staticText.noPaperBookInfo : "该书没有对应纸质书，无法加入购物车",
+              message: this.getStaticText('noPaperBookInfo') ? this.getStaticText('noPaperBookInfo') : "该书没有对应纸质书，无法加入购物车",
               type: 'error'
             });
-            return false
           }
         }
       } else if (config.name == 'addebcart') { // 执行电子书加入购物车操作
@@ -418,11 +429,11 @@ export default {
           if (relativeBook) { // 这本书有对应纸质书
             this.pubId = relativeBook[this.keys.id];
           } else { // 没有对于纸质书
+            return false
             this.$message({
-              message: CONFIG && CONFIG.staticText && CONFIG.staticText.noEBookInfo ? CONFIG.staticText.noEBookInfo : "该书没有对应电子书，无法加入购物车（萨科技达拉斯空当接龙三）",
+              message: this.getStaticText('noEBookInfo') ? this.getStaticText('noEBookInfo') : "该书没有对应电子书，无法加入购物车",
               type: 'error'
             });
-            return false
           }
         }
       }
@@ -438,7 +449,7 @@ export default {
           //原有的购物车数量
           let num = this.getCartAmount;
           this.$store.dispatch("login/getTotalAmount", parseInt(this.quantity) + num);//头部气泡上购物车数量
-          this.$store.dispatch("bookDetail/" + type.CART_NUMS, this.loginName); //每次添加完购物车都要更新购物车数量 
+          this.$store.dispatch("bookDetail/" + type.CART_NUMS, this.loginName); //每次添加完购物车都要更新购物车数量
         } else {
           let errormsg = datas.error && datas.error.msg ? datas.data.error.msg : datas.data.msg;
           this.$message({
@@ -469,8 +480,14 @@ export default {
           this.getResourceDetail();  //获取图书详情信息
         }
       });
-    }
-
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   },
   watch: {
     member: function (newValue, oldValue) {

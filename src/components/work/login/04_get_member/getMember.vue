@@ -13,7 +13,7 @@
       </a>
       <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
       <span v-if="getIsShow('register')">
-        <a :href="CONFIG.toRegisterHref">注 册</a>
+        <a :href="CONFIG.toRegisterHref">{{getStaticText('register') ? getStaticText('register') : "注 册"}}</a>
       </span>
     </template>
     <!-- 登陆后 -->

@@ -30,7 +30,7 @@
       <div v-if="bookList && bookList.length > 0">
         <dl class="ui_mobile_list_02_booklistcon" v-for="(ebook, index) in bookList" :key="index" v-if="CONFIG.showNum?index < CONFIG.showNum:true">
           <dt class="ui_mobile_list_02_booklistdt" v-if="CONFIG.showItem.indexOf('picture') !== -1 ? true : false">
-            <img class="ui_mobile_list_02_booklistimg" :src="ebook[keys.picture]" @click="toDetail(ebook)">
+            <img class="ui_mobile_list_02_booklistimg" :src="ebook[keys.picture] || require('@static/img/defaultCover.png')" @click="toDetail(ebook)">
           </dt>
           <dd class="ui_mobile_list_02_booklistdd">
             <p class="ui_mobile_list_02_bookname" @click="toDetail(ebook)" v-if="CONFIG.showItem.indexOf('bookname') !== -1 ? true : false">{{ebook[keys.bookname]}}<span class="ui_mobile_list_02-name_icon"  :style="{ backgroundImage: 'url(' + rankbgmUrl + ')'}"  v-text="index+1" v-if="index<5"></span></p>
@@ -45,6 +45,10 @@
                     style="color: orangered; font-size: 14px;display: inline;">star:{{ebook.pub_star_num}}</span>
               <span v-if="ebook.BOOK_PUBDATE !== undefined" style="color: orangered; font-size: 14px;">PUBDATE: {{ebook.BOOK_PUBDATE}}</span>
             </p> -->
+            <p class="ui_mobile_list_02_isbn" v-if="CONFIG.showItem.indexOf('isbn') !== -1 ? true : false">
+              <span v-text="CONFIG.display.isbn"></span>
+              <span>{{ebook[keys.isbn]}}</span>
+            </p>
             <p class="ui_mobile_list_02_abstract" v-if="CONFIG.showItem.indexOf('abstract') !== -1 ? true : false">{{ebook[keys.abstract]}}</p>
             <p class="ui_mobile_list_02_price" v-if="CONFIG.showItem.indexOf('price') !==-1 ? true : false">{{ebook[keys.price] | formatPriceNew}}</p>
             <p class="ui_mobile_list_02_ebPrice" v-if="CONFIG.showItem.indexOf('ebPrice') !==-1 ? true : false">{{ebook[keys.ebPrice] | formatPriceNew}}</p>

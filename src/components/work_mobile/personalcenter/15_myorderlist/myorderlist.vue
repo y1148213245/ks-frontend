@@ -17,7 +17,7 @@
                 <li class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_li" v-for="(order, innerindex) in  subItem.itemList" :key="innerindex" @click="toDetails(outIndex,index)">
                   <van-card v-if="orderType=='book'" :title="order.productName" :desc="order.author" :num="order.productNum" :price="order.memberPrice" :thumb="order.bigPic">
                   </van-card>
-                  <van-card v-else-if="orderType=='periodical'" :title="order.periodicalName" :num="order.productNum" :price="order.memberPrice" :thumb="order.bigPic">
+                  <van-card v-else-if="orderType=='periodical'" :title="order.periodicalName" :desc="order.periodicalRemark" :price="order.totalPrice" :thumb="order.bigPic">
                   </van-card>
                 </li>
                 <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn">
@@ -44,14 +44,15 @@
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_collectGoods" v-if="item.payStatus==1">{{display.collectGoods}}</span>
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_complete" v-if="item.payStatus==5">{{display.complete}}</span>
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_cancel" v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
-              <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_totalnum">{{display.gong}}{{item.totalProductNum}}{{display.numtext}}</span>
-              <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_total">{{display.total}}：{{item.realAmount}}</span>
+              <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_totalnum" v-if="orderType=='book'">{{display.all}}{{item.totalProductNum}}{{display.numtext}}</span>
+              <!-- 期刊不展示数量-->
+              <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_total">{{display.total}}：{{display.money}}{{item.realAmount}}</span>
             </div>
             <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_pendingPaymentBtn" v-if="item.payStatus==0 && item.status==1">
               <van-button size="small" @click="cancelOrder(outIndex)">
                 {{display.cancelOrder}}
               </van-button>
-              <van-button size="small">
+              <van-button size="small" @click="myCallBack(outIndex)">
                 {{display.payment}}
               </van-button>
             </div>
@@ -65,25 +66,25 @@
         <span class="work_mobile_personalcenter_15_list_ul_empty" v-if="consumeLists && consumeLists.length == 0">{{display.empty}}</span>
       </ul>
     </div>
-    <div class="work_mobile_personalcenter_15_details" v-show="currentShow=='bookDetails'">
-      <div class="work_mobile_personalcenter_15_details_mainbox" v-for="item in orderDetails" :key="item.id">
-        <div class="work_mobile_personalcenter_15_details_mainbox_orderstatus">
+    <div class="work_mobile_personalcenter_15_bookDetails" v-show="currentShow=='bookDetails'">
+      <div class="work_mobile_personalcenter_15_bookDetails_mainbox" v-for="item in orderDetails" :key="item.id">
+        <div class="work_mobile_personalcenter_15_bookDetails_mainbox_orderstatus">
           <span v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
           <span v-if="item.payStatus==1">{{display.collectGoods}}</span>
           <span v-if="item.payStatus==5">{{display.complete}}</span>
           <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>
-        <div class="work_mobile_personalcenter_15_details_mainbox_receiptinformation">
-          <span class="work_mobile_personalcenter_15_details_mainbox_receiptinformation_person">{{item.deliveryPerson}}</span>
-          <span class="work_mobile_personalcenter_15_details_mainbox_receiptinformation_contact">{{item.deliveryContact}}</span>
-          <span class="work_mobile_personalcenter_15_details_mainbox_receiptinformation_address">{{item.deliveryAddress}}</span>
+        <div class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation">
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation_person">{{item.deliveryPerson}}</span>
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation_contact">{{item.deliveryContact}}</span>
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation_address">{{item.deliveryAddress}}</span>
         </div>
-        <div class="work_mobile_personalcenter_15_details_mainbox_timeandcode">
-          <span class="work_mobile_personalcenter_15_details_mainbox_timeandcode_createTime">{{item.createTime}}</span>
-          <span class="work_mobile_personalcenter_15_details_mainbox_timeandcode_orderCode">{{item.orderCode}}</span>
+        <div class="work_mobile_personalcenter_15_bookDetails_mainbox_timeandcode">
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_timeandcode_createTime">{{item.createTime}}</span>
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_timeandcode_orderCode">{{item.orderCode}}</span>
         </div>
-        <ul class="work_mobile_personalcenter_15_details_mainbox_ul">
-          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_details_mainbox_li">
+        <ul class="work_mobile_personalcenter_15_bookDetails_mainbox_ul">
+          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_bookDetails_mainbox_li">
             <van-card :title="inneritem.productName" :desc="inneritem.author" :num="inneritem.productNum" :price="inneritem.memberPrice" :thumb="inneritem.bigPic">
             </van-card>
           </li>
@@ -91,39 +92,37 @@
         <div>
           <van-button @click="goBack()">返回</van-button>
         </div>
-        <!-- <div class="work_mobile_personalcenter_15_details_mainbox_footerinformation">
-          <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_total">{{display.total}}：{{item.orderTotalPrice | filterFun}}</span>
-          <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_express">{{display.express}}：{{item.deliveryPrice | filterFun}}</span>
-          <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_realPay">{{display.realPay}}：{{item.orderTotalPrice + item.deliveryPrice | filterFun}}</span>
-        </div> -->
+        <div class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation">
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_total">{{display.total}}：{{display.money}}{{item.orderTotalPrice}}</span>
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_express">{{display.express}}：{{display.money}}{{item.deliveryPrice}}</span>
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_realPay">{{display.realPay}}：{{display.money}}{{item.orderTotalPrice + item.deliveryPrice}}</span>
+        </div>
       </div>
     </div>
-    <div class="work_mobile_personalcenter_15_details" v-show="currentShow=='periodicalDetails'">
-      <div class="work_mobile_personalcenter_15_details_mainbox" v-for="item in orderDetails" :key="item.id">
-        <div class="work_mobile_personalcenter_15_details_mainbox_orderstatus">
+    <div class="work_mobile_personalcenter_15_periodicalDetails" v-show="currentShow=='periodicalDetails'">
+      <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox" v-for="item in orderDetails" :key="item.id">
+        <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox_orderstatus">
           <span v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
           <span v-if="item.payStatus==1">{{display.collectGoods}}</span>
           <span v-if="item.payStatus==5">{{display.complete}}</span>
           <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>
-        <div class="work_mobile_personalcenter_15_details_mainbox_timeandcode">
-          <span class="work_mobile_personalcenter_15_details_mainbox_timeandcode_createTime">{{item.createTime}}</span>
-          <span class="work_mobile_personalcenter_15_details_mainbox_timeandcode_orderCode">{{item.orderCode}}</span>
+        <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox_timeandcode">
+          <span class="work_mobile_personalcenter_15_periodicalDetails_mainbox_timeandcode_createTime">{{item.createTime}}</span>
+          <span class="work_mobile_personalcenter_15_periodicalDetails_mainbox_timeandcode_orderCode">{{item.orderCode}}</span>
         </div>
-        <ul class="work_mobile_personalcenter_15_details_mainbox_ul">
-          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_details_mainbox_li">
-            <van-card :title="inneritem.periodicalName" :desc="inneritem.author" :num="inneritem.productNum" :price="inneritem.memberPrice" :thumb="inneritem.bigPic">
+        <ul class="work_mobile_personalcenter_15_periodicalDetails_mainbox_ul">
+          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_periodicalDetails_mainbox_li">
+            <van-card :title="inneritem.periodicalName" :price="inneritem.totalPrice" :thumb="inneritem.bigPic" :desc="inneritem.periodicalRemark">
             </van-card>
+            <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox_footerinformation">
+              <span class="work_mobile_personalcenter_15_periodicalDetails_mainbox_footerinformation_totalPrice">{{display.total}}：{{display.money}}{{inneritem.realPrice}}</span>
+            </div>
           </li>
         </ul>
         <div>
           <van-button @click="goBack()">返回</van-button>
         </div>
-        <!-- <div class="work_mobile_personalcenter_15_details_mainbox_footerinformation">
-          <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_total">{{display.total}}：{{item.orderTotalPrice | filterFun}}</span>
-          <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_express">{{display.express}}：{{item.deliveryPrice | filterFun}}</span>
-          <span class="work_mobile_personalcenter_15_details_mainbox_footerinformation_realPay">{{display.realPay}}：{{item.orderTotalPrice + item.deliveryPrice | filterFun}}</span>
-        </div> -->
       </div>
     </div>
   </div>
@@ -136,8 +135,6 @@ import { mapGetters } from "vuex";
 import * as interfaces from "@work/login/common/interfaces.js";
 import PROJECT_CONFIG from "projectConfig";
 import { Tab, Tabs, Card, Toast } from "vant"; //标签页 卡片 轻提示
-Vue.use(Tab).use(Tabs);
-Vue.use(Card);
 export default {
   name: "work_mobile_personalcenter_15",
   props: ["namespace"],
@@ -167,6 +164,9 @@ export default {
   computed: {
     ...mapGetters("login", {
       member: interfaces.GET_MEMBER
+    }),
+    ...mapGetters({
+      commitInfo: "personalCenter/getCommitInfo" // 获取订单号等信息
     })
   },
 
@@ -255,7 +255,6 @@ export default {
             this.currentShow = "bookDetails";
           } else if (this.orderType == "periodical") {
             this.currentShow = "periodicalDetails";
-            console.log(this.orderDetails);
           }
         }
       );
@@ -328,6 +327,98 @@ export default {
           });
         }
       });
+    },
+    //去付款
+    myCallBack(outIndex, index) {
+      var payMethod = this.consumeLists[outIndex].orderList[0].payMethod;
+      var _this = this;
+      var loading = {};
+      var params = {
+        param: {
+          parentOrderCode: this.consumeLists[outIndex].parentOrderCode
+        },
+        myCallback: function() {
+          var argus = {
+            orderId: _this.commitInfo.orderId,
+            orderCode: _this.commitInfo.orderCode,
+            status: _this.commitInfo.status, // 订单状态
+            payMethodCode: _this.commitInfo.payMethodCode,
+            paymentType: _this.commitInfo.paymentType // true需要跳转 false不需要
+          };
+          if (this.commitInfo.submitStatus) {
+            // 提交成功
+            if (_this.commitInfo.paymentType) {
+              // 需要跳转支付宝支付/微信扫描二维码页面
+              if (payMethod === "Alipay") {
+                // 支付宝支付
+                loading.close();
+                window.open(
+                  CONFIG.BASE_URL +
+                    "/epay/getPayForm.do?orderId=" +
+                    argus.orderId +
+                    "&loginName=" +
+                    _this.member.loginName +
+                    "&payMethodCode=" +
+                    argus.payMethodCode +
+                    "&siteId=" +
+                    CONFIG.SITE_CONFIG.siteId,
+                  "_self"
+                );
+                window.history.pushState(null, null, "../pages/errorpage.html"); // 添加历史记录
+              } else if (payMethod === "Weixin") {
+                // 微信支付
+                axios
+                  .get(
+                    CONFIG.BASE_URL +
+                      "/epay/getPayForm.do?orderId=" +
+                      argus.orderId +
+                      "&loginName=" +
+                      _this.member.loginName +
+                      "&payMethodCode=" +
+                      argus.payMethodCode +
+                      "&siteId=" +
+                      CONFIG.SITE_CONFIG.siteId
+                  )
+                  .then(function(response) {
+                    loading.close();
+                    var data = response.data.substring(
+                      response.data.indexOf("<a>") + 3,
+                      response.data.indexOf("</a>")
+                    );
+                    var orderCode = response.data.substring(
+                      response.data.indexOf("<div>") + 5,
+                      response.data.indexOf("</div>")
+                    );
+                    window.location.href =
+                      "../pages/qrcode.html?data=" +
+                      data +
+                      "&orderCode=" +
+                      orderCode;
+                  });
+              }
+            } else {
+              // 不需要跳转支付页面 实付金额为0
+              window.location.href =
+                "../pages/commitorder.html#/commitOrder/" +
+                _this.commitInfo.orderCode +
+                "/" +
+                _this.commitInfo.status +
+                "/order";
+            }
+          } else {
+            // 提交失败
+            loading.close();
+            var errorMsg = this.commitInfo.errMsg
+              ? this.commitInfo.errMsg
+              : "订单提交有误";
+            _this.$alert(errorMsg, "系统提示", {
+              confirmButtonText: "确定"
+            });
+          }
+        }
+      };
+      this.$store.dispatch("personalCenter/commitOrder", params);
+      loading = this.$loading({ fullscreen: true });
     }
   },
   filters: {

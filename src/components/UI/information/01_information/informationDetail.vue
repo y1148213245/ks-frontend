@@ -53,6 +53,15 @@
             </div>
           </template>
 
+          <div class="ui_information_01-fontsize" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('fontsize') !== -1 ? true : false">
+            <label class="ui_information_01-label">字体：</label>
+            <div class="ui_information_01-btnbox">
+              <a class="ui_information_01-fontsize-btn" href="javascript:;">大</a>
+              <a class="ui_information_01-fontsize-btn ui_information_01-fontsize-active">中</a>
+              <a class="ui_information_01-fontsize-btn">小</a>
+            </div>
+          </div>
+
         </div>
         <div class="ui_information_01-news_nr" v-html="information[keys.content]"></div>
         <!-- <div class="ui_information_01-news_infoImg">
@@ -180,7 +189,8 @@ export default {
 }
 </script>
 <style>
-.shareHide {
+.shareHide,
+.ui_information_01-fontsize {
   display: none;
 }
 .ui_information_01 {

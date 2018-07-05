@@ -23,7 +23,8 @@ const dev = {
         pubTime: " 出版时间：",
         freeReading: "免费试读",
         seeAll: "查看全部>",
-        noImg: "暂无图片"
+        noImg: "暂无图片",
+        briefIntroduction:"简介",
       }
     }
   }
@@ -51,7 +52,8 @@ const prod = {
         pubTime: " 出版时间：",
         freeReading: "免费试读",
         seeAll: "查看全部>",
-        noImg: "暂无图片"
+        noImg: "暂无图片",
+        briefIntroduction:"简介"
       }
     }
   }

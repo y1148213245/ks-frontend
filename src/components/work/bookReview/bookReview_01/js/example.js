@@ -58,6 +58,14 @@ const dev = {
         toAddReviewName:"评论",
         toAddReviewUrl:'./pages/reviewPublish.html'
       },
+      staticText:{
+        comments:"评论",
+        noHeadPicture:"暂无头像",
+        noComments:"暂无评论",
+        commentsEmptyInfo:"评论内容不能为空",
+        pleaseGradeBeforeSubmitting:"请先评分再提交评论~",
+        commentAddFailed:"评论添加失败"
+      }
     }
   }
 };
@@ -108,6 +116,14 @@ var prod = {
         toAddReviewName:"评论",
         toAddReviewUrl:'../pages/reviewPublish.html'
       },
+      staticText:{
+        comments:"评论",
+        noHeadPicture:"暂无头像",
+        noComments:"暂无评论",
+        commentsEmptyInfo:"评论内容不能为空",
+        pleaseGradeBeforeSubmitting:"请先评分再提交评论~",
+        commentAddFailed:"评论添加失败"
+      }
     }
   }
 }

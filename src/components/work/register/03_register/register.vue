@@ -3,40 +3,44 @@
 <section>
  <div class="register_02_register" v-if="step==1">
     <div class="register_02_register_titlebox">
-      <span class="register_02_register_title">新用户注册</span>
+      <span class="register_02_register_title">{{getStaticText('userRegister') ? getStaticText('userRegister') : '新用户注册'}}</span>
     </div>
     <form id="register-form" name="register-form" class="register_02_register_form" action="#" >
       <div class="register_02_register_form_box">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
             <el-form-item prop="loginName" class="register_02_register_form_box_usernamebox">
-              <i class="register_02_register_form_box_usernamebox_icon"></i><span class="register_02_register_form_box_usernamebox_label">用户名:</span><el-input type="text"  v-model="ruleForm.loginName" placeholder="支持6~16位数字、字母、下划线" class="register_02_register_form_box_usernamebox_input" style="height:20px" ></el-input>
-              <div v-show="this.cheStatus==0" class="el-form-item__error">很抱歉，用户名已存在</div>
-              <div v-show="this.cheStatus==1" class="el-form-item__error" style="color:green" >恭喜您!可以使用</div>
+              <i class="register_02_register_form_box_usernamebox_icon"></i><span class="register_02_register_form_box_usernamebox_label">{{getStaticText('userName') ? getStaticText('userName') : '用户名:'}}</span><el-input type="text"  v-model="ruleForm.loginName" :placeholder="getStaticText('userNameSupportCode') ? getStaticText('userNameSupportCode') : '支持6~16位数字、字母、下划线'" class="register_02_register_form_box_usernamebox_input" style="height:20px" ></el-input>
+              <div v-show="this.cheStatus==0" class="el-form-item__error">
+                {{getStaticText('userExistInfo') ? getStaticText('userExistInfo') : '很抱歉，用户名已存在'}}</div>
+              <div v-show="this.cheStatus==1" class="el-form-item__error" style="color:green" >
+                {{getStaticText('canUseInfo') ? getStaticText('canUseInfo') : '恭喜您!可以使用'}}</div>
             </el-form-item>
 
             <el-form-item prop="pass" class="register_02_register_form_box_passwordbox">
-              <i class="register_02_register_form_box_passwordbox_icon"></i><span class="register_02_register_form_box_passwordbox_label">设置新密码:</span><el-input type="password" v-model="ruleForm.pass" placeholder="密码支持6-16位字符" class="register_02_register_form_box_passwordbox_input"></el-input>
+              <i class="register_02_register_form_box_passwordbox_icon"></i>
+              <span class="register_02_register_form_box_passwordbox_label">{{getStaticText('setNewPwd') ? getStaticText('setNewPwd'): '设置新密码:'}}</span>
+              <el-input type="password" v-model="ruleForm.pass" :placeholder="getStaticText('pwdSupportCode') ? getStaticText('pwdSupportCode') : '密码支持6-16位字符'" class="register_02_register_form_box_passwordbox_input"></el-input>
             </el-form-item>
 
             <el-form-item prop="checkPass" class="register_02_register_form_box_confirm-password-box">
-             <i class="register_02_register_form_box_confirm-password-box_icon"></i><span class="register_02_register_form_box_confirm-password-box_label">确认密码:</span><el-input type="password" v-model="ruleForm.checkPass" placeholder="请再次输入密码" class="register_02_register_form_box_confirm-password-box_input"></el-input>
+             <i class="register_02_register_form_box_confirm-password-box_icon"></i><span class="register_02_register_form_box_confirm-password-box_label">{{getStaticText('staticText.confirmPwd') ? getStaticText('staticText.confirmPwd') : '确认密码:'}}</span><el-input type="password" v-model="ruleForm.checkPass" :placeholder="getStaticText('enterPwdAgain') ? getStaticText('enterPwdAgain') : '请再次输入密码'" class="register_02_register_form_box_confirm-password-box_input"></el-input>
             </el-form-item>
 
             <el-form-item prop="captcha" >
               <div class="register_02_register_form_box_validate-code-box" >
                 <i class="register_02_register_form_box_validate-code-box_icon"></i>
-                <span class="register_02_register_form_box_validate-code-box_label">验证码:</span>
-                <el-input type="text" v-model="ruleForm.captcha" placeholder="请输入验证码" id="input"  class="register_02_register_form_box_validate-code-box_input"></el-input>
+                <span class="register_02_register_form_box_validate-code-box_label">{{getStaticText('verifiCode') ? getStaticText('verifiCode') : '验证码:' }}</span>
+                <el-input type="text" v-model="ruleForm.captcha" :placeholder="getStaticText('inputVerifiCode') ? getStaticText('inputVerifiCode') : '请输入验证码'" id="input"  class="register_02_register_form_box_validate-code-box_input"></el-input>
                 <input type="button" id="code" @click="createCode"/>
                 <el-button type="text" @click="refresh">
                   <span class="yzm_04"></span>
-                  <a href="javascript:void(0)"  class="register_02_register_form_box_validate-code-box_change-picture">换一张</a>
-                  <i class="register_02_register_form_box_validate-code-box_change-icon">刷新</i>
+                  <a href="javascript:void(0)"  class="register_02_register_form_box_validate-code-box_change-picture">{{getStaticText('changeAnotherPage') ? getStaticText('changeAnotherPage') : '换一张'}}</a>
+                  <i class="register_02_register_form_box_validate-code-box_change-icon">{{getStaticText('refreshInfo') ? getStaticText('refreshInfo') : '刷新'}}</i>
                 </el-button>
               </div>
             </el-form-item>
           </el-form>
-          <div class="register_02_register_next-box"><input type="button" class="register_02_register_next-box_button" value="下一步" @click="toNext"/></div>
+          <div class="register_02_register_next-box"><input type="button" class="register_02_register_next-box_button" :value="getStaticText('nextStep') ? getStaticText('nextStep') : '下一步'" @click="toNext"/></div>
 
       </div>
     </form>
@@ -44,8 +48,8 @@
   <!-- 第二步 -->
   <div class="register_02_bind"  v-if="step==2">
 		<div class="register_02_bind_nav-box">
-			<span class="register_02_bind_nav-box_title" v-if="showItem('bindEmail')" :class="{'register_02_bind_nav-box_bind--on':currentSept=='bindEmail'}" @click="showBindMail">邮箱绑定</span>
-      <span v-if="showTag()">|</span><span class="register_02_bind_nav-box_title" v-if="showItem('bindMobile')"  :class="{'register_02_bind_nav-box_bind--on':currentSept=='bindMobile'}" @click="showBindPhone">手机绑定</span>
+			<span class="register_02_bind_nav-box_title" v-if="showItem('bindEmail')" :class="{'register_02_bind_nav-box_bind--on':currentSept=='bindEmail'}" @click="showBindMail">{{getStaticText('emailBind') ? getStaticText('emailBind'): '邮箱绑定'}}</span>
+      <span v-if="showTag()">|</span><span class="register_02_bind_nav-box_title" v-if="showItem('bindMobile')"  :class="{'register_02_bind_nav-box_bind--on':currentSept=='bindMobile'}" @click="showBindPhone">{{getStaticText('phoneNumBind') ? getStaticText('phoneNumBind') : '手机绑定'}}</span>
 		</div>
 
 		<div class="register_02_bind_content">
@@ -54,12 +58,12 @@
           <el-form-item prop="Email" >
             <div class="register_02_bind_content_mail_input-box">
               <i class="register_02_bind_content_mail_input-box_icon"></i>
-              <span class="register_02_bind_content_mail_input-box_label">邮箱:</span>
-              <el-input type="text" v-model="ruleFormE.Email" placeholder="请输入邮箱 email@mail.com" class="register_02_bind_content_mail_input-box_input"
+              <span class="register_02_bind_content_mail_input-box_label">{{getStaticText('email') ? getStaticText('email') : '邮箱:'}}</span>
+              <el-input type="text" v-model="ruleFormE.Email" :placeholder="getStaticText('inputEmailInfo') ? getStaticText('inputEmailInfo') : '请输入邮箱 email@mail.com'" class="register_02_bind_content_mail_input-box_input"
                         @keyup.enter.native="submitFormE($event,'ruleFormE')"></el-input>
             </div>
           </el-form-item>
-          <el-button type="primary" @click="submitFormE('ruleFormE')" class="register_02_bind_content_mail_input-box_button">立即注册</el-button>
+          <el-button type="primary" @click="submitFormE('ruleFormE')" class="register_02_bind_content_mail_input-box_button">{{getStaticText('registerNow') ? getStaticText('registerNow') : '立即注册'}}</el-button>
         </el-form>
 			</div>
 
@@ -70,9 +74,9 @@
           <el-form-item prop="mobileNum" >
             <div class="register_02_bind_content_mobile_input-box">
               <i class="register_02_bind_content_mobile_input-box_mobile-icon"></i>
-              <span class="register_02_bind_content_mobile_input-box_mobile-label">手机号:</span>
-              <el-input type="text" v-model="ruleFormM.mobileNum" placeholder="请输入手机号" class="register_02_bind_content_mobile_input-box_mobile-input"></el-input>
-              <div v-show="this.cheStatus==0" class="el-form-item__error">手机号已被绑定</div>
+              <span class="register_02_bind_content_mobile_input-box_mobile-label">{{getStaticText('phoneNum') ? getStaticText('phoneNum') : '手机号:'}}</span>
+              <el-input type="text" v-model="ruleFormM.mobileNum" :placeholder="getStaticText('inputPhoneNum') ? getStaticText('inputPhoneNum') : '请输入手机号'" class="register_02_bind_content_mobile_input-box_mobile-input"></el-input>
+              <div v-show="this.cheStatus==0" class="el-form-item__error">{{getStaticText('phoneNumBoundInfo') ? getStaticText('phoneNumBoundInfo') : '手机号已被绑定'}}</div>
               <el-button @click="getCode(ruleFormM.mobileNum)" class="register_02_bind_content_mobile_input-box_mobile-button" v-show="this.cheStatus!=0"
               :disabled="isTimeLimit" v-text="buttonMsg"
               ></el-button>
@@ -81,11 +85,11 @@
           <el-form-item prop="sendNum">
             <div class="register_02_bind_content_mobile_input-box">
               <i class="register_02_bind_content_mobile_input-box_validate-icon"></i>
-              <span class="register_02_bind_content_mobile_input-box_validate-label">验证码:</span>
-              <el-input type="text" v-model="ruleFormM.sendNum" placeholder="请输入手机验证码"  class="register_02_bind_content_mobile_input-box_validate-input"></el-input>
+              <span class="register_02_bind_content_mobile_input-box_validate-label">{{getStaticText('verifiCode') ? getStaticText('verifiCode') : '验证码:'}}</span>
+              <el-input type="text" v-model="ruleFormM.sendNum" :placeholder="getStaticText('inputPhoneVerifiCode') ? getStaticText('inputPhoneVerifiCode'): '请输入手机验证码'"  class="register_02_bind_content_mobile_input-box_validate-input"></el-input>
             </div>
           </el-form-item>
-          <el-button type="primary" :disabled="islimitRegisterMobile" @click="submitFormM('ruleFormM')" class="register_02_bind_content_mobile_input-box_button">立即注册</el-button>
+          <el-button type="primary" :disabled="islimitRegisterMobile" @click="submitFormM('ruleFormM')" class="register_02_bind_content_mobile_input-box_button">{{getStaticText('registerNow') ? getStaticText('registerNow') : '立即注册'}}</el-button>
         </el-form>
 
 			</div>
@@ -93,9 +97,12 @@
 			<div class="register_02_bind_content" v-show="isMailsend && currentSept=='bindEmail'">
 				<div class="register_02_bind_content_mail" style="padding-left:0px;">
 					<div class="register_02_bind_content_mail_success-title"></div>
-          <div class="register_02_bind_content_mail_success-content">您的邮箱将会收到一封<span class="register_02_bind_content_mail_success-content-text">验证</span>邮件 <br/> 请登录你的邮箱查看
-          </div>
-          <el-button class="register_02_bind_content-button" type="primary" @click="backLogin">返回登陆页</el-button>
+          <div class="register_02_bind_content_mail_success-content">{{getStaticText('yourEmailWillReceive') ? getStaticText('yourEmailWillReceive') : '您的邮箱将会收到一封'}}
+            <span class="register_02_bind_content_mail_success-content-text">{{getStaticText('verify') ? getStaticText('verufy') : '验证'}}</span>
+            {{getStaticText('email') ? getStaticText('email'): '邮件 '}}<br/>
+            {{getStaticText('checkOutEmail') ? getStaticText('checkOutEmail') : '请登录你的邮箱查看'}}</div>
+          <el-button class="register_02_bind_content-button" type="primary" @click="backLogin">
+            {{getStaticText('backToLogin') ? getStaticText('backToLogin'): '返回登陆页'}}</el-button>
 				</div>
 			</div>
 
@@ -126,10 +133,10 @@ export default {
     var validateloginName = (rule, value, callback, regStatus) => {
       if (value === "") {
         this.cheStatus = 2,
-          callback(new Error("请输入用户名"));
+          callback(new Error(this.getStaticText('pleaseInputUserName') ? this.getStaticText('pleaseInputUserName') : "请输入用户名"));
       } else if (value != value.match(/^[a-z|A-Z]\w{5,15}$/)) {
         this.cheStatus = 2,
-          callback(new Error("请以字母开头，可以使用数字、字母、下划线，长度6到16位"));
+          callback(new Error(this.getStaticText('userNameFormatInfo') ? this.getStaticText('userNameFormatInfo') : "请以字母开头，可以使用数字、字母、下划线，长度6到16位"));
       } else if (value) {
         var params = {
           text: this.ruleForm.loginName,
@@ -161,13 +168,13 @@ export default {
       for (i = 0; i < value.length; i++) {
         char = value.charAt(i);      }
       if (badword.indexOf(char) >= 0) {
-        callback(new Error('格式错误，密码仅支持汉字、字母、数字、"-"、"_"的组合'));
+        callback(new Error(this.getStaticText('pwdFormatErrorInfo') ? this.getStaticText('pwdFormatErrorInfo') : '格式错误，密码仅支持汉字、字母、数字、"-"、"_"的组合'));
       } else if (value === "") {
-        callback(new Error("请输入密码"));
+        callback(new Error(this.getStaticText('pleaseInputPwd') ? this.getStaticText('pleaseInputPwd') : "请输入密码"));
       } else if (value.length <= 5) {
-        callback(new Error("密码至少为6位数"));
+        callback(new Error(this.getStaticText('pwdAtLeastSixDigits') ? this.getStaticText('pwdAtLeastSixDigits') : "密码至少为6位数"));
       } else if (value.length >= 17) {
-        callback(new Error("密码最多为16位数"));
+        callback(new Error(this.getStaticText('pwdCanBeUpToSixteenDigits') ? this.getStaticText('pwdCanBeUpToSixteenDigits') : "密码最多为16位数"));
       } else {
         if (this.ruleForm.checkPass !== "") {
           this.$refs.ruleForm.validateField("checkPass");
@@ -178,9 +185,9 @@ export default {
     /* 确认密码验证 */
     var validatePass3 = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请再次输入密码"));
+        callback(new Error(this.getStaticText('inputPwdAgain')? this.getStaticText('inputPwdAgain') : "请再次输入密码"));
       } else if (value !== this.ruleForm.pass) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error(this.getStaticText('twoPwdDoNotMatch') ? this.getStaticText('twoPwdDoNotMatch') : "两次输入密码不一致!"));
       } else {
         callback();
       }
@@ -189,9 +196,9 @@ export default {
     var validateCaptcha = (rule, value, callback) => {
       var inputCode = value.toUpperCase();
       if (value === "") {
-        callback(new Error("请输入验证码"));
+        callback(new Error(this.getStaticText('inputVerifiCode') ? this.getStaticText('inputVerifiCode') : "请输入验证码"));
       } else if (inputCode != this.code && !(isTest && inputCode == 1)) {
-        callback(new Error("验证码输入错误！!"));
+        callback(new Error(this.getStaticText('verifiCodeInputError') ? this.getStaticText('verifiCodeInputError') : "验证码输入错误！!"));
         value = "";
         this.code = "";
         this.createCode();
@@ -207,9 +214,9 @@ export default {
     /* 手机验证码验证 */
     var validateSendNum = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请输入手机验证码"));
+        callback(new Error(this.getStaticText('inputPhoneVerifiCode') ? this.getStaticText('inputPhoneVerifiCode') : "请输入手机验证码"));
       } else if (value != this.cbSendNum) {
-        callback(new Error("验证码错误"));
+        callback(new Error(this.getStaticText('verifiCodeError') ? this.getStaticText('verifiCodeError') : "验证码错误"));
       } else {
         callback();
       }
@@ -219,10 +226,10 @@ export default {
     var validateMobile = (rule, value, callback) => {
       if (value === "") {
         this.cheStatus = 2;
-        callback(new Error("请输入手机号"));
+        callback(new Error(this.getStaticText('inputPhoneNum') ? this.getStaticText('inputPhoneNum') : "请输入手机号"));
       } else if (value != value.match(/^[1][3,4,5,6,7,8,9][0-9]{9}$/)) {
         this.cheStatus = 2;
-        callback(new Error("请输入正确的手机号"));
+        callback(new Error(this.getStaticText('inputTheCorrectPhoneNum') ? this.getStaticText('inputTheCorrectPhoneNum') : "请输入正确的手机号"));
       } else if (value) {
         var params = {
           text: this.ruleFormM.mobileNum,
@@ -255,7 +262,7 @@ export default {
       cheStatus: "2",
       isTimeLimit: false,
       islimitRegisterMobile:false,
-      buttonMsg: '获取验证码',
+      buttonMsg: this.getStaticText('getVerifiCode') ? this.getStaticText('getVerifiCode') : '获取验证码',
       ruleForm: {
         loginName: "",
         pass: "",
@@ -355,19 +362,19 @@ export default {
         loading.close();
         this.$message({
           type: "error",
-          message: "请输入手机号"
+          message: this.getStaticText('inputPhoneNum') ? this.getStaticText('inputPhoneNum') : "请输入手机号"
         });
       } else if (mobileNum != mobileNum.match(/^[1][3,4,5,6,7,8,9][0-9]{9}$/)) {
         this.$message({
           type: "error",
-          message: "请输入正确手机号"
+          message: this.getStaticText('inputCorrectPhoneNum') ? this.getStaticText('inputCorrectPhoneNum') : "请输入正确手机号"
         });
       } else {
         var params = {
           url: this.CONFIG.sendNum.url,
           mobileNum: mobileNum
         };
-        let loading = this.$loading({ text: "验证码发送中..." });
+        let loading = this.$loading({ text: this.getStaticText('verifiCodeIsSending') ? this.getStaticText('verifiCodeIsSending') : "验证码发送中..." });
         this.action_sendMobileNum(params).then((resp) => {
           let sendStatus = resp.data.result;
           let sendNum = resp.data.data;
@@ -377,14 +384,14 @@ export default {
             this.$message.error(msg)
           } else {
             this.$message({
-              message: '发送成功',
+              message: this.getStaticText('sendSuccess') ? this.getStaticText('sendSuccess') : '发送成功',
               type: 'success'
             });
             this.isTimeLimit = true
             let num = 60;
             let interval = setInterval(() => {
               if (num < 0) {
-                this.buttonMsg = '获取验证码'
+                this.buttonMsg = this.getStaticText('getVerifiCode') ? this.getStaticText('getVerifiCode') : '获取验证码'
                 this.isTimeLimit = false;
                 clearTimeout(interval)
               } else {
@@ -397,7 +404,7 @@ export default {
           loading.close();
 
         }).catch((err) => {
-          this.$message.error('网络超时')
+          this.$message.error(this.getStaticText('networkTimeout') ? this.getStaticText('networkTimeout') : '网络超时')
           loading.close();
         });
       }
@@ -416,7 +423,7 @@ export default {
             loginName: this.loginName,
             checkPass: this.checkPass,
           };
-          let loading = this.$loading({ text: "验证码发送中..." });
+          let loading = this.$loading({ text: this.getStaticText('verifiCodeIsSending') ? this.getStaticText('verifiCodeIsSending') : "验证码发送中..." });
           this.islimitRegisterMobile = true;
           this.antion_register_byMobile(params).then((resp) => {
             let MStatus = resp.data.result;
@@ -438,7 +445,7 @@ export default {
       if (MStatus == 0) {
         this.$message({
           type: "info",
-          message: "注册失败," + response.data.error.errorMsg
+          message: (this.getStaticText('registerFailed') ? this.getStaticText('registerFailed') : "注册失败,") + response.data.error.errorMsg
         });
       } else {
         this.toLogin();
@@ -448,12 +455,12 @@ export default {
       window.location.href = './login.html';
     },
     toLogin () {
-      this.$alert("手机号绑定成功", "恭喜", {
-        confirmButtonText: "确定",
+      this.$alert(this.getStaticText('phoneNumWasSuccessfullyBound') ? this.getStaticText('phoneNumWasSuccessfullyBound') : "手机号绑定成功", this.getStaticText('congratulations') ? this.getStaticText('congratulations') : "恭喜", {
+        confirmButtonText: this.getStaticText('yes') ? this.getStaticText('yes') : "确定",
         callback: action => {
           this.$message({
             type: "info",
-            message: "3秒后返回登录界面"
+            message: this.getStaticText('returnToLoginAfterThreeSeconds') ? this.getStaticText('returnToLoginAfterThreeSeconds') : "3秒后返回登录界面"
           });
           window.setTimeout(function () {
             window.location.href =
@@ -474,7 +481,7 @@ export default {
             email: this.Email,
           };
           /* 注册 */
-          let loading = this.$loading({ text: "验证码发送中..." });
+          let loading = this.$loading({ text: this.getStaticText('verifiCodeIsSending') ? this.getStaticText('verifiCodeIsSending') : "验证码发送中..." });
           this.action_register(params).then((resp) => {
             let EStatus = resp.data.result;
             this.Ecallback(EStatus, resp);
@@ -485,7 +492,7 @@ export default {
         } else {
           this.$message({
             type: "info",
-            message: "请求失败"
+            message: this.getStaticText('requestFailed') ? this.getStaticText('requestFailed') : "请求失败"
           });
           return false;
         }
@@ -496,7 +503,7 @@ export default {
       if (EStatus == 0) {
         this.$message({
           type: "info",
-          message: "注册失败," + rep.data.error.errorMsg
+          message: (this.getStaticText('registerFailed') ? this.getStaticText('registerFailed') : "注册失败,") + rep.data.error.errorMsg
         });
       } else {
         this.isMailsend = true;
@@ -518,7 +525,14 @@ export default {
     },
     showBindMail () {
       this.currentSept = 'bindEmail';
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   }
 }
 

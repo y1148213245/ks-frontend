@@ -5,7 +5,7 @@
       <div class="list_pic_15-list-entry" v-for="entry in list" :key="entry.id">
         <p class="list_pic_15-list-entry-img_box">
           <a class="list_pic_15-list-entry-img_box-a" href="javascript:void(0)" @click="toDetail(entry.id)">
-            <img :src="entry && entry.pub_picMiddle" v-bind:alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" class="list_pic_15-list-entry-img_box-img" onload="DrawImage(this,147,222)">
+            <img :src="entry && entry.pub_picMiddle" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" class="list_pic_15-list-entry-img_box-img" onload="DrawImage(this,147,222)">
 
           </a>
         </p>
@@ -13,9 +13,9 @@
           <a href="" class="list_pic_15-list-entry-author-a" v-text="entry.information_SYS_AUTHORS"></a>
         </p>
         <p class="list_pic_15-list-entry-topic" v-text="entry.information_SYS_TOPIC" @click="toDetail(entry.id)" style="cursor: pointer;"></p>
-        <p class="list_pic_15-list-entry-email" v-text="entry.information_a_collaborator || CONFIG && CONFIG.staticText && CONFIG.staticText.noEmail ? CONFIG.staticText.noEmail : '暂无邮箱' "></p>
+        <p class="list_pic_15-list-entry-email" v-text="entry.information_a_collaborator || (getStaticText('noEmail') ? getStaticText('noEmail') : '暂无邮箱')"></p>
         <p class="list_pic_15-list-entry-callpage">
-          <a href="javascript:void(0)" class="list_pic_15-list-entry-callpage-a" @click="goContribute(entry.information_a_collaborator)">{{CONFIG && CONFIG.staticText && CONFIG.staticText.contributeWork ? CONFIG.staticText.contributeWork : '去投稿'}}</a>
+          <a href="javascript:void(0)" class="list_pic_15-list-entry-callpage-a" @click="goContribute(entry.information_a_collaborator)">{{getStaticText('contributeWork') ? getStaticText('contributeWork') : '去投稿'}}</a>
         </p>
       </div>
     </div>
@@ -111,7 +111,14 @@ export default {
       }
       var url = CONFIG.GO_CONTRIBUTE_URL + "authorName=" + this.member.loginName + "&userName=" + value;
       window.open(url);
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   }
 }
 

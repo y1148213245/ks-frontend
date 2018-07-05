@@ -5,7 +5,7 @@
     <template v-for="(entry,index) in list" v-if="index < 6">
       <li class="listLi" :key="entry.id">
         <div class="authorImgBox">
-          <img onload="DrawImage(this,172,264)" class="authorImg" :src="entry.pub_picSmall" alt="暂无封面"/>
+          <img onload="DrawImage(this,172,264)" class="authorImg" :src="entry.pub_picSmall" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'"/>
         </div>
         <div class="listText">
           <h3><a href="javascript:void(0)" @click="toDetail(entry.id)" class="author" v-html="entry.information_SYS_TOPIC"></a></h3>
@@ -13,7 +13,7 @@
               :title="entry.information_a_abstract"></p>
           <p class="shu">|</p>
           <p class="detail">
-            <a class="lookMore" href="javascript:void(0)" @click="toDetail(entry.id)">查看更多</a>
+            <a class="lookMore" href="javascript:void(0)" @click="toDetail(entry.id)">{{getStaticText('seeMore') ? getStaticText('seeMore') : "查看更多"}}</a>
           </p>
         </div>
       </li>
@@ -25,6 +25,8 @@
 <script>
 import { Post } from '@common';
 import PROJECT_CONFIG from 'projectConfig';
+import $ from "jquery";
+
 
 export default {
   name: 'ui_list_pic_11',
@@ -70,7 +72,14 @@ export default {
           $(this).find(".listText").hide().animate({ left: "172px" }, 400);
         })
       })
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   }
 }
 

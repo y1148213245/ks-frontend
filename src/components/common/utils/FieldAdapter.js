@@ -117,6 +117,7 @@ var FIELD_ADAPTER = {
             resType: "prod_resource_type",
             salePrice: "prod_sale_price",
             memberPrice: "prod_member_price",
+            parentId: 'pub_parent_id',
         },
         bookAdapter: { // 图书
             sysTopic: "BOOK_SYS_TOPIC",
@@ -247,6 +248,11 @@ var FIELD_ADAPTER = {
             price: "VIDEO-MEDIA_PRICE",
             resourceId: "VIDEO-MEDIA_RESOURCEID",
             video: "video",
+            courseNumber: "GROUP_VIDEO_COURSES_NUMBER",
+            courseDuration: "GROUP_VIDEO_COURSES_DURATION",
+            coursePrice: "GROUP_VIDEO_PRICE",
+            courseTitle: "GROUP_VIDEO_SYS_TOPIC"
+
         },
         audioAdapter: { // 音频
             sysTopic: "AUDIO-MEDIA_SYS_TOPIC",

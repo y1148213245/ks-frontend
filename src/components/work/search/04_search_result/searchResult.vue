@@ -1,8 +1,8 @@
 <!--  -->
 <template>
   <div class="search_04">
-    <div v-if="CONFIG.isShowTotalCountTag" class="search_04-search_totalcount">{{CONFIG && CONFIG.staticText && CONFIG.staticText.total ? CONFIG.staticText.total : '共'}}
-      <span class="search_04-search_totalcount-num" v-text="totalCount"></span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.productQuanity ? CONFIG.staticText.productQuanity : '件商品'}}</div>
+    <div v-if="CONFIG.isShowTotalCountTag" class="search_04-search_totalcount">{{getStaticText('total') ? getStaticText('total') : '共'}}
+      <span class="search_04-search_totalcount-num" v-text="totalCount"></span>{{getStaticText('productQuanity') ? getStaticText('productQuanity') : '件商品'}}</div>
 
     <div class="search_04-content">
       <div class="search_04-content-list">
@@ -10,24 +10,24 @@
           <dl class="search_04-content-list-entry_box" v-for='entry in list' :key="entry.id">
             <dt class="search_04-content-list-entry_box-dt">
               <a class="search_04-content-list-entry_box-img_box" href="javascript:void(0)" @click="toDetail(entry.id)">
-                <img class="search_04-content-list-entry_box-img" :src="entry.pub_picBig" onload="DrawImage(this,186,271)" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noCover ? CONFIG.staticText.noCover : '暂无封面'" />
+                <img class="search_04-content-list-entry_box-img" :src="entry.pub_picBig" onload="DrawImage(this,186,271)" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'" />
               </a>
             </dt>
             <dd class="search_04-content-list-entry_box-dd">
               <p class="search_04-content-list-entry_box-title">
                 <a href="javascript:void(0)" @click="toDetail(entry.id)" v-text="entry.pub_resource_name" class="search_04-content-list-entry_box-title-a" :title="entry.pub_resource_name"></a>
               </p>
-              <p class="search_04-content-list-entry_box-author">{{CONFIG && CONFIG.staticText && CONFIG.staticText.author ? CONFIG.staticText.author : '作者：'}}
+              <p class="search_04-content-list-entry_box-author">{{getStaticText('author') ? getStaticText('author') : '作者：'}}
                 <span v-text="entry.BOOK_SYS_AUTHORS" :title="entry.BOOK_SYS_AUTHORS"></span>
               </p>
-              <p class="search_04-content-list-entry_box-isbn" v-if="CONFIG && CONFIG.isShowIsbn">{{CONFIG && CONFIG.staticText && CONFIG.staticText.isbn ? CONFIG.staticText.isbn : 'ISBN：'}}
+              <p class="search_04-content-list-entry_box-isbn" v-if="CONFIG && CONFIG.isShowIsbn">{{getStaticText('isbn') ? getStaticText('isbn') : 'ISBN：'}}
                 <span v-text="entry.BOOK_ISBN" :title="entry.BOOK_ISBN"></span>
               </p>
-              <p class="search_04-content-list-entry_box-pressname" :title="entry.BOOK_PRESS_NAME">{{CONFIG && CONFIG.staticText && CONFIG.staticText.copyright ? CONFIG.staticText.copyright : '版权：'}}{{entry.BOOK_PRESS_NAME}}</p>
-              <p class="search_04-content-list-entry_box-pub-date" :title="entry.BOOK_PUBDATE | fmtDate">{{CONFIG && CONFIG.staticText && CONFIG.staticText.publish ? CONFIG.staticText.publish : '出版：'}}{{entry.BOOK_PUBDATE | fmtDate}}</p>
-              <p class="search_04-content-list-entry_box-price">{{CONFIG && CONFIG.staticText && CONFIG.staticText.yuan ? CONFIG.staticText.yuan : '￥'}}
+              <p class="search_04-content-list-entry_box-pressname" :title="entry.BOOK_PRESS_NAME">{{getStaticText('copyright') ? getStaticText('copyright') : '版权：'}}{{entry.BOOK_PRESS_NAME}}</p>
+              <p class="search_04-content-list-entry_box-pub-date" :title="entry.BOOK_PUBDATE | fmtDate">{{getStaticText('publish') ? getStaticText('publish') : '出版：'}}{{entry.BOOK_PUBDATE | fmtDate}}</p>
+              <p class="search_04-content-list-entry_box-price">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}
                 <span v-text="parseFloat(entry.prod_member_price || 0).toFixed(2) "></span>
-                <span class="search_04-content-list-entry_box-price-span">{{CONFIG && CONFIG.staticText && CONFIG.staticText.yuan ? CONFIG.staticText.yuan : '￥'}}
+                <span class="search_04-content-list-entry_box-price-span">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}
                   <span v-text="parseFloat(entry.BOOK_EB_PRICE || 0).toFixed(2)"></span>
                 </span>
               </p>
@@ -35,17 +35,17 @@
                 <span class="search_04-content-list-entry_box-star-el_box">
                   <el-rate v-model="entry.pub_star_num" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
                 </span>
-                <span v-text="entry.pub_comment_num || 0"></span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.commentQuanity ? CONFIG.staticText.commentQuanity : '条评论'}}
+                <span v-text="entry.pub_comment_num || 0"></span>{{getStaticText('productQuanity') ? getStaticText('productQuanity') : '件商品'}}
               </p>
-              <p class="search_04-content-list-entry_box-synopsis" v-text="entry.BOOK_SYNOPSIS || CONFIG && CONFIG.staticText && CONFIG.staticText.noDigest ? CONFIG.staticText.noDigest : '暂无摘要'" :title="entry.BOOK_SYNOPSIS"></p>
+              <p class="search_04-content-list-entry_box-synopsis" v-text="entry.BOOK_SYNOPSIS || (getStaticText('noDigest') ? getStaticText('noDigest') : '暂无摘要')" :title="entry.BOOK_SYNOPSIS"></p>
               <!-- <p class="search_04-content-list-entry_box-orther_shop">
                 <a href="javascript:void(0)" class="search_04-content-list-entry_box-orther_shop-a" @click="toDetail(entry.id)">第三方购买</a>
               </p> -->
               <p class="search_04-content-list-entry_box-others">
                 <!--<span class="sc shoucang">收藏</span>-->
-                <a href="http://www.jiathis.com/share" class="search_04-content-list-entry_box-others-share" target="_blank">{{CONFIG && CONFIG.staticText && CONFIG.staticText.shareTo ? CONFIG.staticText.share : '分享'}}</a>
-                <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-others-buy">{{CONFIG && CONFIG.staticText && CONFIG.staticText.buy ? CONFIG.staticText.buy : '购买'}}</a>
-                <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-others-to_view">{{CONFIG && CONFIG.staticText && CONFIG.staticText.checkInfo ? CONFIG.staticText.checkInfo : '查看'}}</a>
+                <a href="http://www.jiathis.com/share" class="search_04-content-list-entry_box-others-share" target="_blank">{{getStaticText('shareTo') ? getStaticText('shareTo') : '分享'}}</a>
+                <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-others-buy">{{getStaticText('buy') ? getStaticText('buy') : '购买'}}</a>
+                <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-others-to_view">{{getStaticText('checkInfo') ? getStaticText('checkInfo') : '查看'}}</a>
               </p>
             </dd>
           </dl>
@@ -55,6 +55,7 @@
         <ui_pagination :pageMessage="{totalCount}" :excuteFunction="toPage" :page-sizes="pageSizes" :props-current-page="currentPage"></ui_pagination>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -187,7 +188,14 @@ export default {
     },
     toDetail (pubId) {
       window.location.href = this.CONFIG.detailHref + pubId;
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   },
   filters: {
     fmtDate (obj) {
@@ -198,7 +206,7 @@ export default {
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
       } else {
-        return CONFIG && CONFIG.staticText && CONFIG.staticText.noDate ? CONFIG.staticText.noDate : "暂无日期"
+        return this.getStaticText('noDate') ? this.getStaticText('noDate') : "暂无日期"
       }
     },
   },

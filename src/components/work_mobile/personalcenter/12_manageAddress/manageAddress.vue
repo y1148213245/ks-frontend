@@ -41,9 +41,10 @@
   import { mapGetters } from 'vuex';
   import * as interfaces from "@work/login/common/interfaces.js";
   import PROJECT_CONFIG from 'projectConfig';
+  import areaList from "@common/utils/areaList.js";
   import Vue from "vue";
-  import { Cell, Dialog, AddressEdit, Area, Loading, Toast } from 'vant';
-  Vue.use(Cell).use(Dialog).use(AddressEdit).use(Area).use(Loading).use(Toast);
+  import { Dialog, AddressEdit, Loading, Toast } from 'vant';
+  Vue.use(AddressEdit).use(Loading);
 
   export default {
     name: "work_mobile_personalcenter_12",
@@ -63,7 +64,7 @@
         addressInfo: {},   //收货人信息
         isShowPostal: true,  //是否显示邮编
         isShowDefault: true,  //显示默认地址栏
-        areaList: {},  //地区列表
+        areaList: areaList,  //地区列表
         isEditDialog: '',  //判断是编辑弹窗还是新建地址弹窗 编辑（0），新建（1）
         showDelete: false,
         areaCode: '111111'
@@ -78,7 +79,6 @@
       //获取配置文件中的数据
       this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_12;
       this.display = this.CONFIG.display;
-      this.areaList = this.CONFIG.areaList;
       this.addressInfo = this.CONFIG.addressInfo;
     },
     mounted(){
@@ -152,9 +152,6 @@
         //新添加地址id先给0
         params.id = 0;
         this.show = false;
-        if(params.isDefault == '1'){
-          this.setDefaultAddress(params);
-        }
         Post(CONFIG.BASE_URL + this.CONFIG.addAddress,params).then((resp) => {
           let res = resp.data;
           if (res.result == '1' && res.data) {
@@ -167,9 +164,6 @@
       },
       toEditAddress(params){
         this.show = false;
-        if(params.isDefault == '1'){
-          this.setDefaultAddress(params);
-        }
         Post(CONFIG.BASE_URL + this.CONFIG.updateAddress,params).then((resp) => {
           let res = resp.data;
           if (res.result == '1') {
@@ -184,8 +178,12 @@
       setDefaultAddress(item){
         Get(CONFIG.BASE_URL + this.CONFIG.setDefaultAddress + '?loginName=' + (this.loginName?this.loginName:this.member.loginName) +'&id=' + item.id).then((resp) => {
           let res = resp.data;
-          //TODO:新添加的地址 如何设置id？？等待接口修改
-          this.getAddressList(this.loginName);
+          if(res.result == '1'){
+            this.getAddressList(this.loginName);
+          }else{
+            Toast(res.error.errorMsg);
+          }
+
         })
       },
       dataChange(content){

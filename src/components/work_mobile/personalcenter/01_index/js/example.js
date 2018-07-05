@@ -5,7 +5,53 @@ const name = component.name; // 组件标签名
 
 const title = "个人中心组件"; // 组件title
 
-const description = `微信端个人中心组件`; // 组件描述信息
+const description = `微信端个人中心组件,个人中心首页展示的配置项
+  {
+    title: "",
+    tag: "account",
+    hasLink: true
+  }, {
+    title: "余额",
+    tag: "balance",
+    hasLink: false
+  }, {
+    title: "充值记录",
+    tag: "recharge",
+    hasLink: true
+  }, {
+    title: "消费记录",
+    tag: "consume",
+    hasLink: true
+  }, {
+    title: "已购图书",
+    tag: "purchased",
+    hasLink: true
+  }, {
+    title: "我的书架",
+    tag: "bookshelf",
+    hasLink: true
+  }, {
+    title: "收藏",
+    tag: "collection",
+    hasLink: true
+  }, {
+    title: "已购",
+    tag: "purchasedtwo",
+    hasLink: true
+  }, {
+    title: "管理收货地址",
+    tag: "manageaddress",
+    hasLink: true
+  }, {
+    title: "我的收藏",
+    tag: "mycollection",
+    hasLink: true
+  }, {
+    title: "我的订单",
+    tag: "myorderlist",
+    hasLink: true
+  }
+`; // 组件描述信息
 
 const dev = {
   work_mobile_personalcenter: {
@@ -39,10 +85,22 @@ const dev = {
           title: "收藏",
           tag: "collection",
           hasLink: true
-        },{
-	        title: "我的收藏",
-	        tag: "mycollection",
-	        hasLink: true
+        }, {
+          title: "已购",
+          tag: "purchasedtwo",
+          hasLink: true
+        }, {
+          title: "管理收货地址",
+          tag: "manageaddress",
+          hasLink: true
+        }, {
+          title: "我的收藏",
+          tag: "mycollection",
+          hasLink: true
+        }, {
+          title: "我的订单",
+          tag: "myorderlist",
+          hasLink: true
         }],
         toExit: { /* 退出配置 */
           type: 'href',
@@ -108,10 +166,22 @@ const prod = {
           title: "收藏",
           tag: "collection",
           hasLink: true
-        },{
-	        title: "我的收藏",
-	        tag: "mycollection",
-	        hasLink: true
+        }, {
+          title: "已购",
+          tag: "purchasedtwo",
+          hasLink: true
+        }, {
+          title: "管理收货地址",
+          tag: "manageaddress",
+          hasLink: true
+        }, {
+          title: "我的收藏",
+          tag: "mycollection",
+          hasLink: true
+        }, {
+          title: "我的订单",
+          tag: "myorderlist",
+          hasLink: true
         }],
         toExit: { /* 退出配置 */
           type: 'href',

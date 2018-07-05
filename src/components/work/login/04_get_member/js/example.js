@@ -20,7 +20,8 @@ const dev = {
       staticText: {
         loginSys: "[登录]",
         welcomeBack: "欢迎回来！",
-        exitSys: "退出"
+        exitSys: "退出",
+        register:"注 册"
       }
     }
   }
@@ -46,7 +47,8 @@ const prod = {
       staticText: {
         loginSys: "[登录]",
         welcomeBack: "欢迎回来！",
-        exit: "退出"
+        exit: "退出",
+        register:"注 册"
       }
     }
   }

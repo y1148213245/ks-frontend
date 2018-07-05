@@ -92,7 +92,7 @@
         let paramsObj = Object.assign({}, this.resourceDetailConfig.params);
         paramsObj.pubId = this.pubId;
         // CONFIG.BASE_URL +
-        Get(CONFIG.BASE_URL + this.resourceDetailConfig.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName + '&siteId=' + paramsObj.siteId + '&attachTypes=' + paramsObj.attachTypes).then((rep) => {
+        Get(CONFIG.BASE_URL + this.resourceDetailConfig.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&attachTypes=' + paramsObj.attachTypes).then((rep) => {
           let datas = rep.data;
           if (rep.status == 200 && datas.data) {
             this.resourceDetail = datas.data;

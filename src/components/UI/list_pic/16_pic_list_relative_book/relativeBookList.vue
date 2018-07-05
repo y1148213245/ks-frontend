@@ -4,11 +4,12 @@
     <h6 class="title" v-text="title"></h6>
     <div class="listWrapper">
       <dl class="listCon" v-if="relativeBookList && relativeBookList.length > 0" v-for="(book, index) in relativeBookList" :key="index">
-        <dt class="listDt"><img class="listImg" onload="DrawImage(this,180,105)" :src="book.pub_picSmall" alt="暂无封面"/></dt>
+        <dt class="listDt"><img class="listImg" onload="DrawImage(this,180,105)" :src="book.pub_picSmall" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'"/></dt>
         <dd class="listDd" v-text="book.pub_resource_name" @click="toBookDetail(book.id)"></dd>
       </dl>
     </div>
   </div>
+
 </template>
 
 <script type="text/ecmascript-6">
@@ -50,6 +51,13 @@ export default {
     },
     toBookDetail (pubId) {
       window.location.href = "../pages/bookdetail.html?pubId=" + pubId;
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
     },
   }
 }

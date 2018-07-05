@@ -17,7 +17,7 @@
 
             <p class="hitcount" v-if="modulename === 'hotsalebank'">{{getStaticText('hits') ? getStaticText('hits') : '点击量：'}}{{entry.pub_read_num || 0}}</p>
             <p :class="{lineHeight: modulename === 'historyrecord'}">{{getStaticText('price') ? getStaticText('price') : '价格：￥'}}
-              <span class="price">{{entry.BOOK_EB_PRICE?Number(entry.BOOK_EB_PRICE).toFixed(2):'0.00'}}</span>
+              <span class="price">{{entry.prod_member_price?Number(entry.prod_member_price).toFixed(2):'0.00'}}</span>
             </p>
             <p class="delete" v-if="modulename === 'historyrecord'">
               <a href="javascript:void(0)" @click="deleteOneHistory(entry.id)">

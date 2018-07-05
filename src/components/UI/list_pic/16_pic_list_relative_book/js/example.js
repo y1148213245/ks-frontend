@@ -17,6 +17,9 @@ const dev = {
     list_pic_16_relative: {
       title: '相关图书',
       url:"/data/ui_list_pic_16.json",
+      staticText : {
+        noCover : "暂无封面"
+      }
     }
   }
 };
@@ -30,6 +33,9 @@ const prod = {
         pubId: '',
         size: 3,
       },
+      staticText : {
+        noCover : "暂无封面"
+      }
     }
   }
 };

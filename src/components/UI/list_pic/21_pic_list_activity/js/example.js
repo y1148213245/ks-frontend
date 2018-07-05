@@ -38,15 +38,6 @@ const prod = {
         pageSize: "8",
         searchText: null
       },
-      staticText: {
-        activityTime: "活动时间：",
-        to: "至",
-        noImg: "暂无图片",
-        notBegin: "未开始",
-        inProgress: "进行中",
-        appraisalBonus: "评奖中",
-        haveFinished: "已结束"
-      },
       detailHref: "./activityrace.html",
       keys: {
         pub_picMiddle: "pub_picMiddle",
@@ -66,8 +57,16 @@ const prod = {
         params:{
           colId:'colId'
         }
+      },
+      staticText: {
+        activityTime: "活动时间：",
+        to: "至",
+        noImg: "暂无图片",
+        notBegin: "未开始",
+        inProgress: "进行中",
+        appraisalBonus: "评奖中",
+        haveFinished: "已结束"
       }
-
     }
   }
 };

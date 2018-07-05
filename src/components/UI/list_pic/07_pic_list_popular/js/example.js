@@ -31,7 +31,7 @@ const dev = {
         noBookName: "暂无书名",
         noAuthor: "暂无作者",
         noDate: "暂无日期"
-}
+      }
     }
   }
 }
@@ -40,6 +40,16 @@ const prod = {
   list_pic: {
     popularBook: {
       url:  "spc/cms/publish/list.do",
+      param: {
+        conditions: "[{pub_col_id:'57'},{pub_status:'1'}]",
+        groupBy: "pub_resource_id",
+        orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+        pageNo: "1",
+        pageSize: "15",
+        searchText: "",
+      },
+      number: 15,
+      href: "./bookdetail.html?pubId=",
       staticText: {
         author: "作者：",
         press: " 出版社：",
@@ -52,17 +62,7 @@ const prod = {
         noBookName: "暂无书名",
         noAuthor: "暂无作者",
         noDate: "暂无日期"
-      },
-      param: {
-        conditions: "[{pub_col_id:'57'},{pub_status:'1'}]",
-        groupBy: "pub_resource_id",
-        orderBy: "pub_a_order asc pub_lastmodified desc id asc",
-        pageNo: "1",
-        pageSize: "15",
-        searchText: "",
-      },
-      number: 15,
-      href: "./bookdetail.html?pubId="
+      }
     }
   }
 }
