@@ -41,12 +41,12 @@
           </div>
           <!-- relPrice 电子书价格 -->
           <div v-else-if="config.name == 'ebPrice'" class="work_bookdetail_04_ebpricecontainter">
-            <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')">
+            <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
               <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_bPrice_' + config.field}">{{ resourceDetail.relBook[keys[config.field]] | formatPriceNew }}</span>
               <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_bPrice_noprice">{{getStaticText('noResource') ? getStaticText('noResource') : '暂无'}}</span>
             </section>
-            <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')">
+            <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
               <span v-bind="{class: 'work_bookdetail_04_ebPrice_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
             </section>
@@ -81,14 +81,14 @@
               </div>
 
               <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰 -->
-              <section v-else-if="config.name == 'addcart'" :class="{work_bookdetail_04_forbid_addcart: resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook}">
+              <section v-else-if="config.name == 'addcart'" :class="{work_bookdetail_04_forbid_addcart: resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook}">
                 <label class="work_bookdetail_04_op_label">
                   <i v-bind="{class: config.className}"></i>{{config.display}}</label>
                 <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
               </section>
 
               <!-- 如果当前这本书是纸质书 && 没有关联电子书 加入电子书按钮置灰 -->
-              <section v-else-if="config.name == 'addebcart'" :class="{work_bookdetail_04_forbid_addebcart: resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91') && !resourceDetail.relBook}">
+              <section v-else-if="config.name == 'addebcart'" :class="{work_bookdetail_04_forbid_addebcart: resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91') && !resourceDetail.relBook}">
                 <label class="work_bookdetail_04_op_label">
                   <i v-bind="{class: config.className}"></i>{{config.display}}</label>
                 <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>

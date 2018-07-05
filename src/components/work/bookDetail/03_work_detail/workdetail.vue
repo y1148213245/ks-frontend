@@ -1,25 +1,25 @@
 /*
- * @Author: song 
- * @Date: 2018-02-06 10:34:24 
+ * @Author: song
+ * @Date: 2018-02-06 10:34:24
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-06-06 13:28:43
- */ 
+ */
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
   <div class="work_bookdetail_03">
     <div class="topTitle">
-      <div class="title" v-text="workInfo[keys.title] || '暂无'"></div>
+      <div class="title" v-text="workInfo[keys.title] || (getStaticText('notHave') ? getStaticText('notHave') : '暂无')"></div>
       <div class="work_bookdetail_03_activityname">{{workInfo[keys.activityName]}}</div>
       <time class="work_bookdetail_03_createdTime">{{workInfo[keys.createdTime] | formatTimeNEW}}</time>
       <p class="work_bookdetail_03-activity_abstract" v-text="activityDetail[CONFIG.getActivityInfo.dataKeys.abstract]"></p>
-      <div class="vote" v-show="activityIsActive && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]=='是'">
+      <div class="vote" v-show="activityIsActive && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]== (getStaticText('yes') ? getStaticText('yes') : '是')">
         <!-- 投票组件 -->
         <work_common_03 namespace="common" v-on:vote="totalVoteNum" :docid="workInfo[keys.docId]"></work_common_03>
         <!-- END 投票组件 -->
         <!-- 投票说明 -->
         <div class="work_bookdetail_03-vote_box-content-illustrate">
           <el-tooltip class="item" effect="dark" placement="top">
-            <p class="work_bookdetail_03-vote_box-content-illustrate_info" slot="content" v-html="activityDetail[CONFIG.getActivityInfo.dataKeys.voteDescription] || '暂无说明'"></p>
+            <p class="work_bookdetail_03-vote_box-content-illustrate_info" slot="content" v-html="activityDetail[CONFIG.getActivityInfo.dataKeys.voteDescription] || (getStaticText('noInstructions') ? getStaticText('noInstructions') : '暂无说明')"></p>
             <i class="el-icon-question"></i>
           </el-tooltip>
         </div>
@@ -28,52 +28,52 @@
     </div>
     <div class="workInformation">
       <div class="author">
-        <span>作者：</span>
-        <span v-text="workInfo[keys.author] || '暂无'"></span>
+        <span>{{getStaticText('author') ? getStaticText('author') : '作者：'}}</span>
+        <span v-text="workInfo[keys.author] || (getStaticText('notHave') ? getStaticText('notHave') : '暂无')"></span>
       </div>
       <div class="comment">
         <i class="work_bookdetail_03-comment-icon"></i>
         <span v-text="commentNum"></span>
-        <span>评论</span>
+        <span>{{getStaticText('comments') ? getStaticText('comments') : '评论'}}</span>
       </div>
-      <div class="voteNum" v-show="activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]=='是'">
+      <div class="voteNum" v-show="activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]== (getStaticText('yes') ? getStaticText('yes') : '是')">
         <i class="work_bookdetail_03-vote-icon"></i>
         <span v-text="workInfo[keys.voteNum]"></span>
-        <span>赞</span>
+        <span>{{getStaticText('support') ? getStaticText('support') : '赞'}}</span>
       </div>
       <div class="type">
-        <span>参赛类别：</span>
+        <span>{{getStaticText('competingCategory') ? getStaticText('competingCategory') : "参赛类别："}}</span>
         <span v-text="workInfo[keys.raceType]"></span>
       </div>
       <div class="work_bookdetail_03-area">
-        <span>地区:</span>
+        <span>{{getStaticText('region') ? getStaticText('region') : "地区:"}}</span>
         <span v-text="workInfo[keys.area]"></span>
       </div>
       <div class="work_bookdetail_03-school">
-        <span>学校:</span>
+        <span>{{getStaticText('school') ? getStaticText('school') : "学校:"}}</span>
         <span v-text="workInfo[keys.school]"></span>
       </div>
     </div>
     <div class="abstract">
       <div v-text="workInfo[keys.abstract]"></div>
     </div>
-    <div class="info" v-if="workInfo[keys.workType] == '表单' && ((workInfo[keys.content] && !(workInfo[keys.isHide] =='是' || activityDetail[CONFIG.getActivityInfo.dataKeys.isHide] == '是')) || !activityIsActive)">   <!-- 表单类型的作品 -->
+    <div class="info" v-if="workInfo[keys.workType] == (getStaticText('form') ? getStaticText('form') : '表单') && ((workInfo[keys.content] && !(workInfo[keys.isHide] ==(getStaticText('yes') ? getStaticText('yes') : '是') || activityDetail[CONFIG.getActivityInfo.dataKeys.isHide] == (getStaticText('yes') ? getStaticText('yes') : '是'))) || !activityIsActive)">   <!-- 表单类型的作品 -->
       <div v-html="workInfo[keys.content]"></div>
     </div>
     <div class="workOperation">
       <el-button size="medium" @click="addCollect()" v-if="!isMobile">
         <i class="el-icon-star-off"></i>
-        <span v-if="workInfo[keys.isCollect] == '1'">已收藏</span>
-        <span v-else>收藏文章</span>
+        <span v-if="workInfo[keys.isCollect] == '1'">{{getStaticText('haveCollected') ? getStaticText('haveCollected') : '已收藏'}}</span>
+        <span v-else>{{getStaticText('collectArticles') ? getStaticText('collectArticles') : "收藏文章"}}</span>
       </el-button>
-      <el-button size="medium" v-if="!(workInfo[keys.workType] == '表单') && ((workInfo[keys.attachment] && workInfo[keys.attachment].length>0 && !(workInfo[keys.isHide] =='是' || activityDetail[CONFIG.getActivityInfo.dataKeys.isHide] == '是')) || !activityIsActive)"  @click="loadWork(workInfo[keys.attachment][0].fileRecordID)">  <!-- 附件类型的作品 -->
+      <el-button size="medium" v-if="!(workInfo[keys.workType] == (getStaticText('form') ? getStaticText('form') : '表单')) && ((workInfo[keys.attachment] && workInfo[keys.attachment].length>0 && ! (workInfo[keys.isHide] ==(getStaticText('yes') ? getStaticText('yes') : '是') || activityDetail[CONFIG.getActivityInfo.dataKeys.isHide] == (getStaticText('yes') ? getStaticText('yes') : '是'))) || !activityIsActive)"  @click="loadWork(workInfo[keys.attachment][0].fileRecordID)">  <!-- 附件类型的作品 -->
         <i class="el-icon-download"></i>
-        <span>下载文章</span>
+        <span>{{getStaticText('downloadTheArticle') ? getStaticText('downloadTheArticle') : "下载文章"}}</span>
       </el-button>
     </div>
     <div class="qrcode" v-if="!isMobile">
       <qrcode :value="url" :size="120"></qrcode>
-      <div>微信扫一扫分享</div>
+      <div>{{getStaticText('weChatScanShare') ? getStaticText('weChatScanShare') : "微信扫一扫分享"}}</div>
     </div>
     <work_bookreview_02 v-if="!isMobile" namespace="productiondetail"></work_bookreview_02>
   </div>
@@ -135,7 +135,7 @@ export default {
       if (!this.member.loginName) { // 未登录时
         this.$message({
           type: "info",
-          message: "请您先登录"
+          message: this.getStaticText("pleaseLoginFirst") ? this.getStaticText("pleaseLoginFirst") : "请您先登录"
         });
         return false;
       }
@@ -149,7 +149,7 @@ export default {
         } else {
           this.$message({
             type: "error",
-            message: "操作失败"
+            message: this.getStaticText('operationFailed') ? this.getStaticText('operationFailed') : "操作失败"
           });
         }
       });
@@ -188,7 +188,15 @@ export default {
     loadWork (fileRecordID) {  // 下载附件类型的作品
       let loadUrl = CONFIG.BASE_URL + this.CONFIG.loadUrl + fileRecordID;
       window.open(loadUrl, '_blank');
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
+
   },
   watch: {
     member (newValue, oldValue) {

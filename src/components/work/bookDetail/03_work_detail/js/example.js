@@ -57,6 +57,24 @@ const dev = {
           endDate: 'END_TIMESTAMPNEW',
           startDate: 'BEGIN_TIMESTAMPNEW'
         }
+      },
+      staticText:{
+        notHave:"暂无",
+        yes:"是",
+        noInstructions:"暂无说明",
+        author:"作者：",
+        comments:"评论",
+        support:"赞",
+        competingCategory:"参赛类别：",
+        region:"地区：",
+        school:"学校：",
+        form:"表单",
+        haveCollected:"已收藏",
+        collectArticles:"收藏文章",
+        downloadTheArticle:"下载文章",
+        weChatScanShare:"微信扫一扫分享",
+        pleaseLoginFirst:"请您先登录",
+        operationFailed:"操作失败",
       }
     }
   }
@@ -111,6 +129,24 @@ const prod = {
           isHide:'IS_HIDE',
           voteDescription:'PRAISE_DESCRIPTION'
         }
+      },
+      staticText:{
+        notHave:"暂无",
+        yes:"是",
+        noInstructions:"暂无说明",
+        author:"作者：",
+        comments:"评论",
+        support:"赞",
+        competingCategory:"参赛类别：",
+        region:"地区：",
+        school:"学校：",
+        form:"表单",
+        haveCollected:"已收藏",
+        collectArticles:"收藏文章",
+        downloadTheArticle:"下载文章",
+        weChatScanShare:"微信扫一扫分享",
+        pleaseLoginFirst:"请您先登录",
+        operationFailed:"操作失败",
       }
     }
   }
