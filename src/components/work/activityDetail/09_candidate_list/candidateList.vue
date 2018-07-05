@@ -143,6 +143,7 @@ export default {
 
       Post(CONFIG.BASE_URL + 'spc/prodb/searchNLP.do', params).then(resp => {
         this.candidateList = resp.data.content
+        this.getAwardList();
       })
     },
     /* 添加请求的配置参数 */
@@ -155,7 +156,7 @@ export default {
         params.cols += item.cols + ',';
         params.symbols += item.symbols + ',';
 
-        switch (type) {
+        switch (configType) {
           case 'getActivityDetailData': {
             /* 获取活动详情数据 */
             params.vals += this.activityDetailCache[this.detailKeys[item.vals]] + ',';/* 通过指定适配器字段取活动详情的值 */
@@ -207,7 +208,7 @@ export default {
           }
 
         }
-
+        debugger
         this.awardList = arr;
       })
 

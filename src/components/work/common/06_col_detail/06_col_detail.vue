@@ -1,7 +1,7 @@
 <!-- 栏目详情 -->
 <template>
 <div class="work_common_06">
- <h1 v-if="CONFIG.showItem.indexOf('title') != -1" class="ui_pic_list_21-h1" v-text="colDetail[CONFIG.getColDetail.keys.name]"></h1>
+ <h1 v-if="CONFIG.showItem.indexOf('title') != -1" class="ui_pic_list_21-h1" :style="{backgroundImage:'url('+ (CONFIG.getColDetail.keys.pic ? colDetail[CONFIG.getColDetail.keys.pic] : colDetail.big_pic) +')',backgroundPosition:'center center'}" v-text="colDetail[CONFIG.getColDetail.keys.name]"></h1>
 </div>
 </template>
 

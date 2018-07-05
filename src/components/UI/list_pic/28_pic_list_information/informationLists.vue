@@ -30,7 +30,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_28_resourcelists_li_imgcontainter" v-show="showImgIndex == index && resourceListsConfig.showItem.indexOf('img') !== -1">
               <label class="ui_list_pic_28_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_list_pic_28_resourcelists_li_img" v-bind="{class: 'ui_list_pic_28_resourcelists_' + config.field}" :src="item[keys[config.field]]" alt="暂无图片"/>
+              <img class="ui_list_pic_28_resourcelists_li_img" v-bind="{class: 'ui_list_pic_28_resourcelists_' + config.field}" :src="item[keys[config.field]] || require('@static/img/nopic.jpg')" alt="暂无图片"/>
             </div>
 
             <!-- title 标题 -->

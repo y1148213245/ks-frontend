@@ -1,31 +1,34 @@
 <!-- 活动列表展示页 -->
 <template>
   <div class="ui_pic_list_21 ui_pic_list_21_main">
-      <h1 v-if="CONFIG.showItem.indexOf('title') != -1" class="ui_pic_list_21-h1" v-text="colDetail[CONFIG.getColDetail.keys.name]"></h1>
-      <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in activityList" :key="index">
-        <div class="ui_pic_list_21-card_content"  @click="toDetail(item[keys.id])" >
-            <div class="ui_pic_list_21-img_box">
-              <img :src="item[keys.pub_picMiddle]" class="image" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" :href="goDetail(item[keys.id])">
-            </div>
-            <div class="ui_pic_list_21-title_box" >
-              <a class="ac_title" :href="goDetail(item[keys.id])">{{item[keys.PORTAL_ACTIVITY_SYS_TOPIC] }}</a>
-              <div class="clearfix">
-                <div class="ac_text">
-                  <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
-                  <time class="time">{{item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW] |
-                    formatDateNEW}}{{getStaticText('to')? getStaticText('to') : '至'}}{{item[keys.reviewDate] | formatDateNEW}}
-                  </time>
-                </div>
-
-                <template v-for="(status,i) in activityStatus">
-                  <el-button v-if="item.activityStatus == status.title" type="text" class="button" :key="i" :class="{[status.class]: item.activityStatus == status.title}">{{item.activityStatus}}</el-button>
-                </template>
-
-              </div>
-            </div>
+    <h1 v-if="CONFIG.showItem.indexOf('title') != -1" 
+    class="ui_pic_list_21-h1" 
+    :style="{backgroundImage:'url('+ (CONFIG.getColDetail.keys.pic ? colDetail[CONFIG.getColDetail.keys.pic] : colDetail.big_pic) +')',backgroundPosition:'center center'}" 
+    v-text="colDetail[CONFIG.getColDetail.keys.name]"></h1> 
+    
+    <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in activityList" :key="index">
+      <div class="ui_pic_list_21-card_content" @click="toDetail(item[keys.id])">
+        <div class="ui_pic_list_21-img_box">
+          <img :src="item[keys.pub_picMiddle]" class="image" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" :href="goDetail(item[keys.id])">
         </div>
-      </el-card>
-      <ui_pagination :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging"></ui_pagination>
+        <div class="ui_pic_list_21-title_box">
+          <a class="ac_title" :href="goDetail(item[keys.id])">{{item[keys.PORTAL_ACTIVITY_SYS_TOPIC] }}</a>
+          <div class="clearfix">
+            <div class="ac_text">
+              <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
+              <time class="time">{{item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW] | formatDateNEW}}{{getStaticText('to')? getStaticText('to') : '至'}}{{item[keys.reviewDate] | formatDateNEW}}
+              </time>
+            </div>
+
+            <template v-for="(status,i) in activityStatus">
+              <el-button v-if="item.activityStatus == status.title" type="text" class="button" :key="i" :class="{[status.class]: item.activityStatus == status.title}">{{item.activityStatus}}</el-button>
+            </template>
+
+          </div>
+        </div>
+      </div>
+    </el-card>
+    <ui_pagination :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging"></ui_pagination>
   </div>
 </template>
 
@@ -50,12 +53,7 @@ export default {
       pageSize: '',
       keys: null,
       colDetail: '',
-      activityStatus: [
-        { title: this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始', class: 'activity_notstart' },
-        { title: this.getStaticText('inProgress') ? this.getStaticText('inProgress'):'进行中', class: 'activity_active' },
-        { title: this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') :'评奖中', class: 'activity_review' },
-        { title: this.getStaticText('haveFinished') ? this.getStaticText('haveFinished') :'已结束', class: 'activity_end' }
-      ]
+      activityStatus: []
 
     };
   },
@@ -67,6 +65,12 @@ export default {
     this.colId = URL.parse(document.URL, true).query.colId;
     pubColId[0]["pub_col_id"] = this.colId;
     this.params.conditions = JSON.stringify(pubColId);
+    this.activityStatus = [
+      { title: this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始', class: 'activity_notstart' },
+      { title: this.getStaticText('inProgress') ? this.getStaticText('inProgress') : '进行中', class: 'activity_active' },
+      { title: this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') : '评奖中', class: 'activity_review' },
+      { title: this.getStaticText('haveFinished') ? this.getStaticText('haveFinished') : '已结束', class: 'activity_end' }
+    ]
     this.getColDetail();
     this.getData();
   },
@@ -78,12 +82,12 @@ export default {
     getColDetail () {
       let getCol = this.CONFIG.getColDetail;
       let query = URL.parse(document.URL, true).query;
-      let url =  this.CONFIG.getColDetail.url + '?';
+      let url = this.CONFIG.getColDetail.url + '?';
       for (const key in getCol.params) {
-          const element = getCol.params[key];
-          url += key + '=' + query[element] + '&'
+        const element = getCol.params[key];
+        url += key + '=' + query[element] + '&'
       }
-      url = url.slice(0,url.length-1);
+      url = url.slice(0, url.length - 1);
       Post(CONFIG.BASE_URL + url).then(resp => {
         this.colDetail = resp.data.data;
       })
@@ -97,18 +101,18 @@ export default {
         this.totalCount = req.data.totalCount;
         let currentTime = new Date().getTime();
         if (data && data instanceof Array && data.length > 0) {
-          data.forEach(function (item) {
+          data.forEach(item => {
             if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime < item[keys.reviewDate] && currentTime > item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
               item.activityStatus = this.getStaticText('inProgress') ? this.getStaticText('inProgress') : '进行中';
             }
             else if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime > item[keys.reviewDate]) {
-              item.activityStatus = this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') :'评奖中';
+              item.activityStatus = this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') : '评奖中';
             }
             else if (currentTime < item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
               item.activityStatus = this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始';
             }
             else {
-              item.activityStatus = this.getStaticText('haveFinished') ? this.getStaticText('haveFinished') :'已结束';
+              item.activityStatus = this.getStaticText('haveFinished') ? this.getStaticText('haveFinished') : '已结束';
             }
           })
           this.activityList = data;
