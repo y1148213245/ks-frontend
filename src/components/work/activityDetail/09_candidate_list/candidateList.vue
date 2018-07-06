@@ -182,6 +182,13 @@ export default {
       params.vals = '';
 
       this.addConditions(params, 'getAwardList', 'getActivityDetailData')
+
+      let reg = /,$/gi;
+      params.relations = params.relations.replace(reg, "");
+      params.cols = params.cols.replace(reg, "");
+      params.symbols = params.symbols.replace(reg, "");
+      params.vals = params.vals.replace(reg, "");
+
       Get(CONFIG.BASE_URL + url, {
         params
       }).then((resp) => {
@@ -208,10 +215,9 @@ export default {
           }
 
         }
-        debugger
+        // debugger
         this.awardList = arr;
       })
-
     },
     getStaticText (text) {
 

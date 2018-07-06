@@ -2459,6 +2459,7 @@ var $_$ = {
 			},
 			"work_login_03": {
 				"disBacks": ["register.html", "register_success.html", "forgetPassword.html"],
+				// showItem:['code'],
 				"indexPath": "./index.html"
 			}
 		}

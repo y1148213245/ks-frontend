@@ -27,8 +27,9 @@ const dev = {
         usernameAndPwdCannotBeEmpty:"用户名或密码不能为空",
         userNameCannotBeEmpty: "用户名不能为空",
         accountAndPwdError: "账号或密码错误",
-        pwdCannotBeEmpty: "密码不能为空"
-
+        pwdCannotBeEmpty: "密码不能为空",
+        inputCode:'请输入验证码',
+        codeFailed:'验证码输入错误'
       }
     }
   }
@@ -67,6 +68,7 @@ const prod = {
           // }
         ]
       },
+      // showItem:['code'],/* code:验证码功能 */
       staticText: {
         loginSys: "登录",
         inputUserName: "请输入用户名",
@@ -79,7 +81,9 @@ const prod = {
         usernameAndPwdCannotBeEmpty:"用户名或密码不能为空",
         accountAndPwdError: "账号或密码错误",
         userNameCannotBeEmpty: "用户名不能为空",
-        pwdCannotBeEmpty: "密码不能为空"
+        pwdCannotBeEmpty: "密码不能为空",
+        inputCode:'请输入验证码',
+        codeFailed:'验证码输入错误'
       }
     }
   }

@@ -15,6 +15,14 @@
       </span>
     </div>
 
+    <div class="el-input el-input--prefix login_03_code_box" v-if="getShowItem('code')">
+      <input type="text" class="login_03_code" v-model="inputCode" :placeholder="getStaticText('inputCode') ? getStaticText('inputCode') : '请输入验证码'" @keyup.enter="login" />
+      <span class="el-input__prefix">
+        <i class="fa fa-lock" aria-hidden="true"></i>
+      </span>
+      <input type="button" id="code" @click="createCode" />
+    </div>
+
     <div class="login_03_box_01">
       <!-- <input type="checkbox" value="" class="login_03_box_01_checkbox" />自动登录 （暂未开发）-->
       <a href="./forgetPassword.html" class="login_03_box_01_forgetpassword">{{getStaticText('forgetPwd') ? getStaticText('forgetPwd') : '忘记密码'}}</a>
@@ -51,6 +59,7 @@ import { mapActions } from 'vuex';
 import * as interfaces from '@work/login/common/interfaces.js';
 import URL from 'url';
 import PROJECT_CONFIG from "projectConfig";
+import { CreateCode } from '@common';
 export default {
   name: 'work_login_03_login',
   reused: true,
@@ -64,7 +73,9 @@ export default {
         loginName: '',
         password: '',
         flag: 'pc'
-      }
+      },
+      inputCode: '',/* 输入验证码 */
+      code: ''/* 随机验证码 */
     };
   },
 
@@ -76,6 +87,10 @@ export default {
 
   mounted () {
     this.saveReffer();
+    if (this.getShowItem('code')) {
+      this.createCode();
+    }
+
   },
 
   methods: {
@@ -85,9 +100,35 @@ export default {
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_03;
     },
+    /* 创建验证码 */
+    createCode () {
+      let checkCode = document.getElementById("code");
+      this.code = CreateCode();
+      checkCode.value = this.code;
+    },
+    getShowItem (itemText) {
+      if (this.CONFIG.showItem) {
+        return this.CONFIG.showItem.indexOf(itemText) > -1
+      } else {
+        return false
+      }
+    },
     login: function () {
       // this.loginValid(); // 先校验是否为空
       /* 这样分开写是为了 当用户名填写不正确密码未填写时 提示为空 应该首先提示用户名不正确 */
+
+
+      if (this.getShowItem('code')) { /* 是否配置验证码功能 */
+        /* 验证 */
+        if (this.inputCode.trim().toLowerCase() != this.code.toLowerCase()) {
+          this.$message({
+            type: 'warning',
+            message: this.getStaticText('codeFailed') ? this.getStaticText('codeFailed') : "验证码输入错误"
+          });
+          return false
+        }
+      }
+
       if (this.member.loginName.trim() == '') { // 先校验用户名是否为空
         this.$message({
           type: 'warning',
@@ -216,6 +257,22 @@ export default {
   background: url(./img/bg_10.png) no-repeat;
   background-position: -574px -93px;
 }
+.login_03_code_box {
+  margin-top: 25px;
+}
+.login_03_code {
+  display: inline-block;
+  width: 120px;
+  height: 40px;
+  border-width: 1px;
+  padding-left: 15px;
+  vertical-align: middle;
+  border-style: solid;
+  border-color: #e0e0e0;
+  color: #939393;
+  background-color: transparent;
+  outline: none;
+}
 .login_03_password {
 }
 input:focus.login_03_userinput,
@@ -266,6 +323,19 @@ input:focus.login_03_password {
 .login_03_box_03_register {
   float: right;
 
+  color: #c50000;
+}
+</style>
+<style scoped>
+#code {
+  width: 90px;
+  height: 36px;
+  font-family: Arial;
+  font-style: italic;
+  font-weight: bold;
+  border: 1px solid rgb(217, 193, 191);
+  border-radius: 4px;
+  letter-spacing: 5px;
   color: #c50000;
 }
 </style>
