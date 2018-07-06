@@ -102,15 +102,12 @@ const dev = {
           tag: "myorderlist",
           hasLink: true
         }],
-        toExit: { /* 退出配置 */
-          type: 'href',
-          /* function：调方法退出  href：转跳退出*/
-          href: '../pages/login.html',
-          func: {
-            funcName: '',
-            /* 方法名 */
-            params: [],
-            /* 参数 */
+        toExit:{ /* 退出配置 */
+          type:'href',/* function：调方法退出  href：转跳退出*/
+          href:'../pages/login.html',
+          func:{
+            funcName:'',/* 方法名 */
+            params:[],/* 参数 */
           }
         },
         emitEvent: { // 发广播事件名称
@@ -119,16 +116,30 @@ const dev = {
         display: { // 组件显示的静态文本
           navTitle: "个人中心",
           logOut: "退出登录",
-          recharge: "充值",
-          noPic: "暂无头像"
+          recharge: "充值"
         },
         toSubPCUrl: "../pages/subpersonalcenter.html", // 个人中心二级页面
-        getMemberInfo: {
-          url: "user/getMemberByName.do", // 根据用户名获取用户信息
+        getBoughtBooks: {
+          url: "user/getBookShelfList.do",
           params: {
-            loginName: ""
+            pageIndex: '1', // 页码
+            pageSize: '10', // 每页的数量
+            type: '2', //类型： 试读(1)、购买(2)、全部(3)
+            siteId: '', // 站点id
+            productType: '', //商品类型
+            status: '3' //状态：未加入书架(0)、加入书架(1)、全部(3)
           }
-        }
+        },
+        getCollectList: {
+          url: "collection/getCollectList.do",
+          params: {
+            loginName:'',   //用户名
+            pageIndex:'1',   //页码
+            pageSize:'15',   //每页个数
+            siteId:'',   //站点Id
+            contentType:'',  //内容类型91纸质书 94电子书 PORTAL_WORKS:作品
+          }
+        },
       }
     },
   }
@@ -183,15 +194,12 @@ const prod = {
           tag: "myorderlist",
           hasLink: true
         }],
-        toExit: { /* 退出配置 */
-          type: 'href',
-          /* function：调方法退出  href：转跳退出*/
-          href: '../pages/login.html',
-          func: {
-            funcName: '',
-            /* 方法名 */
-            params: [],
-            /* 参数 */
+        toExit:{ /* 退出配置 */
+          type:'href',/* function：调方法退出  href：转跳退出*/
+          href:'../pages/login.html',
+          func:{
+            funcName:'',/* 方法名 */
+            params:[],/* 参数 */
           }
         },
         emitEvent: { // 发广播事件名称
@@ -200,16 +208,30 @@ const prod = {
         display: { // 组件显示的静态文本
           navTitle: "个人中心",
           logOut: "退出登录",
-          recharge: "充值",
-          noPic: "暂无头像"
+          recharge: "充值"
         },
         toSubPCUrl: "../pages/subpersonalcenter.html", // 个人中心二级页面
-        getMemberInfo: {
-          url: "user/getMemberByName.do", // 根据用户名获取用户信息
+        getBoughtBooks: {
+          url: "user/getBookShelfList.do",
           params: {
-            loginName: ""
+            pageIndex: '1', // 页码
+            pageSize: '10', // 每页的数量
+            type: '2', //类型： 试读(1)、购买(2)、全部(3)
+            siteId: '', // 站点id
+            productType: '', //商品类型
+            status: '3' //状态：未加入书架(0)、加入书架(1)、全部(3)
           }
-        }
+        },
+        getCollectList: {
+          url: "collection/getCollectList.do",
+          params: {
+            loginName:'',   //用户名
+            pageIndex:'1',   //页码
+            pageSize:'15',   //每页个数
+            siteId:'',   //站点Id
+            contentType:'',  //内容类型91纸质书 94电子书 PORTAL_WORKS:作品
+          }
+        },
       }
     },
   }

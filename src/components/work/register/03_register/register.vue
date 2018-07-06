@@ -130,13 +130,13 @@ export default {
 			isTest = false;
 		}
     /* 用户名格式验证 */
-    var validateloginName = (rule, value, callback, regStatus) => {
+    var validateloginName = (rule, value, callback, regStatus) =>{
       if (value === "") {
         this.cheStatus = 2,
           callback(new Error(this.getStaticText('pleaseInputUserName') ? this.getStaticText('pleaseInputUserName') : "请输入用户名"));
       } else if (value != value.match(/^[a-z|A-Z]\w{5,15}$/)) {
         this.cheStatus = 2,
-          callback(new Error(this.getStaticText('userNameFormatInfo') ? this.getStaticText('userNameFormatInfo') : "请以字母开头，可以使用数字、字母、下划线，长度6到16位"));
+          callback(new Error(this.getStaticText('userNameFormatInfo') ? this.getStaticText('userNameFormatInfo'): "请以字母开头，可以使用数字、字母、下划线，长度6到16位"));
       } else if (value) {
         var params = {
           text: this.ruleForm.loginName,
@@ -160,7 +160,7 @@ export default {
       }
     };
     /* 密码格式验证 */
-    var validatePass2 = (rule, value, callback) => {
+    var validatePass2 = (rule, value, callback)=> {
       var i;
       var char;
       var badword;
@@ -262,7 +262,7 @@ export default {
       cheStatus: "2",
       isTimeLimit: false,
       islimitRegisterMobile:false,
-      buttonMsg: this.getStaticText('getVerifiCode') ? this.getStaticText('getVerifiCode') : '获取验证码',
+      buttonMsg: "",
       ruleForm: {
         loginName: "",
         pass: "",
@@ -299,6 +299,7 @@ export default {
     if(this.CONFIG.showItem){
       this.currentSept = this.CONFIG.showItem[0]
     }
+    this.buttonMsg = this.getStaticText('getVerifiCode') ? this.getStaticText('getVerifiCode') : '获取验证码';
   },
 
   mounted () {

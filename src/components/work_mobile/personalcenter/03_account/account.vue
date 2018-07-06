@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-06-05 17:38:28
  * @Last Modified by: song
- * @Last Modified time: 2018-07-02 18:11:08
+ * @Last Modified time: 2018-07-06 11:04:52
  * 个人资料
  */
  <template>
@@ -29,11 +29,13 @@
     <div class="work_mobile_personalcenter_03_editname" v-if="showItem == 'nickName'">
       <div class="work_mobile_personalcenter_03_editname_nickname">{{display.nickName || '昵称'}}</div>
       <div class="work_mobile_personalcenter_03_editname_con">
-        <input class="work_mobile_personalcenter_03_editname_name" type="text" v-model="getMember.nickName" maxlength="10">
-        <i class="el-icon-close" @click="removeName()"></i>
+        <form action="">
+          <input class="work_mobile_personalcenter_03_editname_name" type="text" v-model="getMember.nickName" maxlength="10">
+        </form>
+        <i class="el-icon-close" @click="removeName()" v-if="getMember.nickName"></i>
         <!-- 文本框有内容时显示清除按钮 -->
       </div>
-      <div v-if="noNickname" class="work_mobile_personalcenter_03_nonn">{{CONFIG.display.noNickname}}</div>
+      <div v-if="!getMember.nickName" class="work_mobile_personalcenter_03_nonn">{{CONFIG.display.noNickname}}</div>
       <div class="work_mobile_personalcenter_03_savenn">
         <van-button size="normal" @click="editUserInfo('nickName')">{{display.save || '保存'}}</van-button>
       </div>
@@ -48,7 +50,7 @@
         <textarea class="work_mobile_personalcenter_03_editintro_textarea" :maxlength="display.maxNum" v-model="getMember.introduction"></textarea>
         <span class="work_mobile_personalcenter_03_editintro_textarea_count">{{getMember.introduction.length}}/{{display.maxNum}}</span>
       </div>
-      <div v-if="noIntroduction" class="work_mobile_personalcenter_03_nointro">{{CONFIG.display.noIntroduction}}</div>
+      <div v-if="!getMember.introduction" class="work_mobile_personalcenter_03_nointro">{{CONFIG.display.noIntroduction}}</div>
       <div class="work_mobile_personalcenter_03_saveintro">
         <van-button size="normal" @click="editUserInfo('introduction')">{{display.save || '保存'}}</van-button>
       </div>
@@ -79,8 +81,8 @@ export default {
       display: {}, //组件静态文本
       showItem: "default",
       getMember: {}, // 个人信息
-      noNickname: false, // 昵称为空
-      noIntroduction: false, //签名为空
+      // noNickname: false, // 昵称为空
+      // noIntroduction: false, //签名为空
       // remainNum: '',  //剩余的可输入字数
       loading: true,
     };
@@ -133,8 +135,8 @@ export default {
         let res = resp.data;
         if (res.result == '1' && res.data) {
           this.getMember = res.data;
-          this.noNickname = this.getMember.nickName ? false : true; // 是否有昵称
-          this.noIntroduction = this.getMember.introduction ? false : true; // 是否有签名
+          // this.noNickname = this.getMember.nickName ? false : true; // 是否有昵称
+          // this.noIntroduction = this.getMember.introduction ? false : true; // 是否有签名
           // this.descInput();
         }
         this.loading = false;
@@ -154,10 +156,10 @@ export default {
       // TODO: 后端修改Post请求的接参数方式后优化合并以下代码
       if (item == 'introduction') { // 更改个性签名
         if (this.getMember.introduction == '') { // 昵称为空时不能保存
-          this.noIntroduction = true;
+          // this.noIntroduction = true;
           return false;
         } else {
-          this.noIntroduction = false;
+          // this.noIntroduction = false;
           Post(CONFIG.BASE_URL + this.CONFIG.editPersonalInfo.url + '?loginName=' + this.getMember.loginName + '&introduction=' + this.getMember.introduction).then((resp) => {
             let res = resp.data;
             if (res.result == '1') {
@@ -177,13 +179,13 @@ export default {
       }
       else if (item == 'nickName') { // 更改昵称
         if (this.getMember.nickName == '') { // 昵称为空时不能保存
-          this.noNickname = true;
+          // this.noNickname = true;
           return false;
         } else {
           /*let paramsObj = Object.assign({}, this.CONFIG.editPersonalInfo.params);
            paramsObj.loginName = this.member.loginName;
           paramsObj[item] = item == 'nickName' ? this.nickName : this.introduction; */
-          this.noNickname = false;
+          // this.noNickname = false;
           Post(CONFIG.BASE_URL + this.CONFIG.editPersonalInfo.url + '?loginName=' + this.getMember.loginName + '&userNick=' + this.getMember.nickName).then((resp) => {
             let res = resp.data;
             if (res.result == '1') {

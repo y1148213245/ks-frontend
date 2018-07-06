@@ -3,7 +3,7 @@
   <div class="ui_classification_01">
     <ul class="classificationWrapper">
       <li class="active">
-        <a class="allSort" href="javascript:void(0)" @click="toClassify(-1)">{{CONFIG && CONFIG.staticText && CONFIG.staticText.allClassifications ? CONFIG.staticText.allClassifications : '全部分类'}}</a>
+        <a class="allSort" href="javascript:void(0)" @click="toClassify(-1)">{{getStaticText('allClassifications') ? getStaticText('allClassifications') : '全部分类'}}</a>
       </li>
       <template class="sortNameWrapper" v-for="item in classificationList">
         <li class="sortName">
@@ -24,12 +24,12 @@ export default {
   props: ["namespace"],
   data() {
     return {
+      CONFIG:"",
       classificationList: [] // 分类列表
     };
   },
   mounted() {
-    this.CONFIG =
-      PROJECT_CONFIG[this.namespace].classification.classification_01;
+    this.CONFIG = PROJECT_CONFIG[this.namespace].classification.classification_01;
     this.queryClassificationList();
     this.$bus.$emit(this.CONFIG.broadcastName, -1);
   },
@@ -57,6 +57,14 @@ export default {
     },
     toClassify(cascadeId) {
       this.$bus.$emit(this.CONFIG.broadcastName, cascadeId);
+    },
+    getStaticText (text) {
+      var _this = this;
+      if (_this.CONFIG && _this.CONFIG.staticText && _this.CONFIG.staticText[text]) {
+        return _this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
     }
   }
 };

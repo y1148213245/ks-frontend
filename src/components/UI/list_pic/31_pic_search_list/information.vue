@@ -48,6 +48,7 @@
 
       <div class="ui_list_pic_31_resourcelists_nodata" v-if="resourceLists && resourceLists.length == 0">暂无数据</div>
     </div>
+    <el-input type="hidden" v-model="totalCount" class="totalCount_num"></el-input>
     <ui_pagination class="ui_list_pic_31_ui_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination"  :pageMessage="{totalCount: totalCount}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
   </div>
 </template>
@@ -135,6 +136,9 @@ export default {
         if (datas.success && datas.result && datas.result.length > 0) {
           this.resourceLists = datas.result;
           this.totalCount = datas.totalCount;
+        }else{
+          this.resourceLists = [];
+          this.totalCount = 0;
         }
       });
 

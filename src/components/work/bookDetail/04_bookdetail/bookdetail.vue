@@ -129,6 +129,7 @@
           </div>
         </template>
       </section>
+      <el-input type="hidden" id="pub_comment_num" v-model="pub_comment_num"></el-input>
     </div>
 
     <!-- 有声书音频附件 -->
@@ -244,6 +245,7 @@ export default {
         bookType: '91',
         ebookType: '94',
       },
+      pub_comment_num:'',   //评论数
     };
   },
 
@@ -326,6 +328,21 @@ export default {
           return false;
         }
       }
+
+      if (method == 'addBookShelf') { //加入书架
+        Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=1' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
+          var datas = rep.data;
+          if (datas.result == "1") {
+            let msg = datas.data.msg;
+            this.$message({
+              message: msg,
+              type: 'success'
+            });
+            this.getResourceDetail();  //获取图书详情信息
+          }
+        });
+        return false;
+      }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[method], this.keys));
     },
     selectPublicize (item) { // 切换相关信息显示tab
@@ -348,7 +365,7 @@ export default {
           this.isCart = this.resourceDetail.isCart;
           this.isDownload = this.resourceDetail.isDownload;
           this.isEb = this.resourceDetail.isEb;
-
+          this.pub_comment_num = this.resourceDetail.pub_comment_num;
           if (this.publicizeInfoConfig && this.publicizeInfoConfig.isShowPublicize) {
             this.getPublicizeInfo(); // 获取图书相关信息
           }

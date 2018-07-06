@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-06-07 14:20:40 
  * @Last Modified by: song
- * @Last Modified time: 2018-06-26 17:58:50
+ * @Last Modified time: 2018-07-06 10:08:58
  * 个人中心充值记录
  */
  <template>
@@ -20,7 +20,10 @@
       <ul class="work_mobile_personalcenter_05_record_ul">
         <li v-if="recordLists && recordLists.length > 0" class="work_mobile_personalcenter_05_record_li" v-for="(item, index) in recordLists" :key="index">
           <div class="work_mobile_personalcenter_05_record_divf">
-            <span class="work_mobile_personalcenter_05_record_out">{{+Number(item.price).toFixed(2) + display.money}}</span>
+            <span class="work_mobile_personalcenter_05_record_add">+</span>
+            <span class="work_mobile_personalcenter_05_record_out">
+              {{Number(item.price).toFixed(2) + display.money}}
+            </span>
             <span class="work_mobile_personalcenter_05_record_money">{{display.moneyIcon + Number(item.money).toFixed(2)}}</span>
           </div>
           <div class="work_mobile_personalcenter_05_record_divs">
@@ -48,7 +51,22 @@ export default {
   data () {
     return {
       CONFIG: null,
-      recordLists: [],
+      recordLists: [{
+        price: '6',
+        money: '6',
+        date: '1528353486937',
+        way: '微信支付',
+      }, {
+        price: '16',
+        money: '16',
+        date: '1528353486940',
+        way: '微信支付',
+      }, {
+        price: '80',
+        money: '80',
+        date: '1528353486137',
+        way: '微信支付',
+      }],
       totalCount: '0', // 订单总个数
       totalPages: '0', // 订单总页数
       pageIndex: "1",  // 页码 从 1 开始
@@ -66,7 +84,7 @@ export default {
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_05;
     this.RECHARGECONFIG = this.CONFIG.getRechargeLog; // 获取充值记录
     this.display = this.CONFIG.display;
-    // this.initData('songmin');
+    this.initData('songmin');
   },
 
   mounted () {

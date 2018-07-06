@@ -45,6 +45,9 @@ const dev = {
           pageSize: "10",
           searchText: null
         },
+      },
+      staticText : {
+          zeroBook: "共 0 本"
       }
     }
   }
@@ -85,8 +88,10 @@ const prod = {
           pageSize: "10",
           searchText: null
         },
+      },
+      staticText : {
+        zeroBook: "共 0 本"
       }
-
     }
   }
 };

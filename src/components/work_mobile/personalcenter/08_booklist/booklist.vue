@@ -16,7 +16,9 @@
             <!-- 登录用户免费试读后自动加入书架，书架中显示“试读”标签，购买后变为全文阅读 书架接口type字段： 1 试读 2 购买 -->
             <span class="work_mobile_personalcenter_08_bookslist_readtrying" v-if="item.type == '1'">{{display.readTrying}}</span>
             <span class="work_mobile_personalcenter_08_bookslist_bookname" @click="toProbation(item,modulename)">{{item.productName ? item.productName :'暂无书名' }}</span>
-            <span class="work_mobile_personalcenter_08_bookslist_author">{{item.author?item.author :'暂无作者'}}</span>
+            <span class="work_mobile_personalcenter_08_bookslist_author">
+              <span class="work_mobile_personalcenter_08_bookslist_authortext">作者:</span>
+              {{item.author?item.author :'暂无作者'}}</span>
           </li>
         </ul>
       </div>

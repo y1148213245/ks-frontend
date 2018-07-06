@@ -1,34 +1,34 @@
 <template>
   <div class="work_mobile_personalcenter_14">
     <van-tabs v-model="active" @click="clickTab">
-      <van-tab v-for="(tabtitle,index) in tabtitle" :title="tabtitle.title" :key="index">
+      <van-tab v-for="(tabtitle,index) in tabtitleList" :title="tabtitle.title" :key="index">
         <div class="work_mobile_personalcenter_14_content">
           <div class="work_mobile_personalcenter_14_all_cancel">
-            <a href="#" class="work_mobile_personalcenter_14_all_cancel_btn">{{display.allCancelCollection}}</a>
+            <button class="work_mobile_personalcenter_14_all_cancel_btn" @click="batchCancelCollection(loginName)">{{display.allCancelCollection}}</button>
           </div>
           <div class="work_mobile_personalcenter_14_content_lists">
 
             <van-checkbox-group v-model="result">
-              <van-checkbox v-for="(item , index) in collectionlist" :key="index" :name="item">
+              <van-checkbox v-for="(item , index) in collectionlist" :key="index" :name="item.pubId">
                 <!-- 图书 -->
                 <div v-if="tabtitle.index ==0" class="work_mobile_personalcenter_14_content_lists_list">
-                  <img src="" alt="" class="work_mobile_personalcenter_14_content_lists_list_img">
+                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img">
                   <span class="work_mobile_personalcenter_14_content_lists_list_title">{{item.productName}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_author">{{item.author | formatAuthor }}</span>
-                  <sapn class="work_mobile_personalcenter_14_content_lists_list_serial_number">ISBN:{{item.isbn}}</sapn>
+                  <span class="work_mobile_personalcenter_14_content_lists_list_serial_number">{{display.isbn}}{{item.isbn}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_price">{{item.memberPrice | formatPriceNew }}</span>
                   <button class="work_mobile_personalcenter_14_content_lists_list_cancel_btn" @click="cancelCollection(loginName,item.pubId)">{{display.cancelCollection}}</button>
                 </div>
                 <!-- 期刊 -->
                 <div v-else-if="tabtitle.index ==1" class="work_mobile_personalcenter_14_content_lists_list">
-                  <img src="" alt="" class="work_mobile_personalcenter_14_content_lists_list_img">
+                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img">
                   <span class="work_mobile_personalcenter_14_content_lists_list_title">{{item.productName}}</span>n>
                   <span class="work_mobile_personalcenter_14_content_lists_list_author">{{item.author | formatAuthor }}</span>
                   <button class="work_mobile_personalcenter_14_content_lists_list_cancel_btn" @click="cancelCollection(loginName,item.pubId)">{{display.cancelCollection}}</button>
                 </div>
                 <!-- 知识服务 -->
                 <div v-else class="work_mobile_personalcenter_14_content_lists_list">
-                  <img src="" alt="" class="work_mobile_personalcenter_14_content_lists_list_img">
+                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img">
                   <span class="work_mobile_personalcenter_14_content_lists_list_title">{{item.productName}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_author">{{display.author}}:{{item.author | formatAuthor}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_source">{{display.source}}:{{item.resourceName}}</span>
@@ -68,10 +68,9 @@ export default {
       pageIndex: "1",  // 页码 从 1 开始
       pageSize: "15",  // 每页显示个数
       loginName: '',   //登录名
-      result: [],
+      result: [],  //批量取消存放的pubid
       active: 0,
-      tabtitle: [],
-      pubIds: []
+      tabtitleList: [],
     }
   },
 
@@ -86,11 +85,12 @@ export default {
     this.COLLECTIONCONFIG = this.CONFIG.getCollectList;
     this.CANCELCONFIG = this.CONFIG.cancelCollect;
     this.display = this.CONFIG.display;
-    this.tabtitle = this.display.tabTitle;
-
+    this.tabtitleList = this.display.tabTitle;
   },
 
   mounted () {
+    //发广播
+    this.$bus.$emit(this.CONFIG.emitEvent.contextEventName, this.display.navTitle);
     /*检测滚动条*/
     $(window).scroll(() => {
       /**
@@ -120,10 +120,11 @@ export default {
       if (index == 0) {
         params.contentType = '94'
       } else if (index == 1) {
-        //TODO 暂时不知道期刊和知识服务的contentType
-        params.contentType = ''
+        params.contentType = '149'
       } else {
-        params.contentType = ''
+        //TODO 知识服务暂时写成外链
+        window.open(this.CONFIG.toKnowledgeService);
+        return false;
       }
       //获取收藏列表
       let BASE_URL = CONFIG.BASE_URL + this.COLLECTIONCONFIG.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&contentType=' + params.contentType;
@@ -163,14 +164,11 @@ export default {
       })
     },
 
-    //全部取消
-    allCancelCollection (loginName) {
-      if (this.collectionlist) {
-        for (var i = 0; i < this.collectionlist.length; i++) {
-          this.pubIds.push(this.collectionlist.pubId);
-        }
-      };
-      this.cancelCollection(loginName, this.pubIds.join(","));
+    //批量取消
+    batchCancelCollection (loginName) {
+      if (this.result) {
+        this.cancelCollection(loginName, this.result.join(","));
+      }
     },
     //去详情页
     toDetailsPage () {

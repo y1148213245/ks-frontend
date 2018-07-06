@@ -1434,7 +1434,9 @@
             balanceAmount: this.$store.state.shoppingcart.rmbCoin, // 使用下载币抵扣金额
             createTime: null,
             deliveryAddress: this.curSelectedAddress ? this.curSelectedAddress.province + this.curSelectedAddress.city + this.curSelectedAddress.county + this.curSelectedAddress.address : "",
-            deliveryProvince: this.curSelectedAddress ? this.curSelectedAddress.province : '', // 添加省份
+            deliveryProvince: this.curSelectedAddress ? this.curSelectedAddress.province : '', // 收货地址的省份
+            deliveryCity: this.curSelectedAddress ? this.curSelectedAddress.city : '', // 收货地址的市
+            deliveryArea: this.curSelectedAddress ? this.curSelectedAddress.county : '', // 收货地址的区
             deliveryContact: this.curSelectedAddress ? this.curSelectedAddress.phone : "",
             deliveryPerson: this.curSelectedAddress ? this.curSelectedAddress.contactor : "",
             deliveryPrice: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.deliveryPrice, // 运费

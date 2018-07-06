@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-06-07 10:27:26
  * @Last Modified by: song
- * @Last Modified time: 2018-07-02 18:16:09
+ * @Last Modified time: 2018-07-06 10:17:13
  * 余额充值
  * TODO: 公众号商户授权之后还需要联调支付接口 支付成功与失败的回调 提示信息
  */
@@ -15,6 +15,7 @@
     <div class="work_mobile_personalcenter_04_balance">
       <span class="work_mobile_personalcenter_04_balance_f">{{display.balance}}</span>
       <span class="work_mobile_personalcenter_04_balance_s">{{member.virtualCoin ? Number(member.virtualCoin).toFixed(2) : '0.00'}}</span>
+      <span class="work_mobile_personalcenter_04_balance_m">{{display.money}}</span>
     </div>
     <div class="work_mobile_personalcenter_04_choose">
       <span class="work_mobile_personalcenter_04_chooseway">{{display.chooseAmount}}</span>

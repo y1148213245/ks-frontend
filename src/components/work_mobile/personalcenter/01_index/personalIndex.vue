@@ -27,6 +27,12 @@
         </div>
         <!-- END 已购 -->
 
+        <!-- 我的收藏 -->
+        <div v-else-if="member && nav.tag == 'mycollection'" class="work_mobile_personalcenter_01_mycollectioncon">
+          <span class="work_mobile_personalcenter_01_mycollection">({{collectionlist ? collectionlist.length : '0'}})</span>
+        </div>
+        <!-- END 我的收藏 -->
+
       </van-cell>
     </van-cell-group>
 
@@ -58,7 +64,8 @@
         display: {}, // 静态显示文本
         pageIndex: "1",  // 页码 从 1 开始
         pageSize: "15",  // 每页显示个数
-        boughtBooksList: []  //已购图书列表
+        boughtBooksList: [],  //已购图书列表
+        collectionlist: []  //收藏图书列表
       };
     },
     computed: {
@@ -105,6 +112,7 @@
       },
       initData (loginName) {
         this.queryMyBoughtBooks(loginName);  //页面初始化获取已购买图书的全部数据
+        this.queryCollectionList(loginName);  //页面初始化获取收藏图书的全部数据
       },
       //为了显示已购图书的数量，发一次请求
       queryMyBoughtBooks (loginName) {
@@ -113,9 +121,25 @@
           let res = resp.data;
           if (res.result == '1' && res.data.length > 0) {
             this.boughtBooksList = this.boughtBooksList.concat(res.data);
+          } else{
+            this.boughtBooksList = [];
           }
         })
-      }
+      },
+      //为了显示收藏的数量，发一次请求
+      queryCollectionList (loginName) {
+        let params = Object.assign({}, this.CONFIG.getCollectList.params);
+        //获取收藏列表
+        let BASE_URL = CONFIG.BASE_URL + this.CONFIG.getCollectList.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + params.pageIndex + '&pageSize=' + params.pageSize + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&contentType=' + params.contentType;
+        Get(BASE_URL).then((resp) => {
+          let res = resp.data;
+          if (res.result == '1' && res.data.length > 0) {
+            this.collectionlist = this.collectionlist.concat(res.data);
+          } else{
+            this.collectionlist = [];
+          }
+        })
+      },
     },
     watch: {
       member: function (newValue, oldValue) {

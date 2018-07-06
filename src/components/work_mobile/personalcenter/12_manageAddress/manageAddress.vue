@@ -164,6 +164,9 @@
       },
       toEditAddress(params){
         this.show = false;
+        if(params.isDefault == '1'){
+          this.setDefaultAddress(params);
+        }
         Post(CONFIG.BASE_URL + this.CONFIG.updateAddress,params).then((resp) => {
           let res = resp.data;
           if (res.result == '1') {

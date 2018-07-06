@@ -45,7 +45,7 @@
       return {
         bookDetailInfoList: [],
         bookIntroductions:[],
-        // CONFIG: null
+        CONFIG: "",
       }
     },
     created: function () {
@@ -99,7 +99,7 @@
               bookParam.docID = param[i].id;
               Get(CONFIG.BASE_URL+_this.CONFIG.introductionUrl, {"params": bookParam}).then((rep) => {
                 let content=JSON.parse(JSON.stringify(rep)).data.filter(function(data){
-                  return data.topic== this.getStaticText('briefIntroduction') ? this.getStaticText('briefIntroduction') : "内容简介";
+                  return data.topic== _this.getStaticText('briefIntroduction') ? _this.getStaticText('briefIntroduction') : "内容简介";
                 })[0].content;
                   bookIntroductions.push(content);
                   i++;

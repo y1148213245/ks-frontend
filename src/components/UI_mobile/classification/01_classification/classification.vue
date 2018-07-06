@@ -6,7 +6,7 @@
       <div class="ui_mobile_classification_con">
         <p class="ui_mobile_classification_text" v-text="item[keys.text]"></p>
         <p class="ui_mobile_classification_count" v-if="keys && keys.cascadeId && item[keys.cascadeId]">{{ countsList[item[keys.cascadeId]] | formatCount}}</p>
-        <p class="ui_mobile_classification_count" v-else>共 0 本</p>
+        <p class="ui_mobile_classification_count" v-else>{{getStaticText('zeroBook') ? getStaticText('zeroBook') : '共 0 本'}}</p>
       </div>
     </a>
     </div>
@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       bgmUrl: "",
-      CONFIG: null,
+      CONFIG: "",
       classifyList: [],  // 图书分类
       keys: {},
       countsList: {}, // 存放处理后的分类总数
@@ -77,7 +77,14 @@ export default {
 
       url = url.substring(0, url.length - 1);
       window.location.href = url;
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   }
 }
 
@@ -110,7 +117,7 @@ export default {
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-tap-highlight-color: transparent;
-  outline: none；;
+  outline: none;
 }
 
 .ui_mobile_classification_bgpic {
