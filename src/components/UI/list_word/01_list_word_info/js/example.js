@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-02-05 17:22:30 
+ * @Author: song
+ * @Date: 2018-02-05 17:22:30
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-05-12 21:23:43
  * 活动资讯列表
@@ -18,14 +18,22 @@ const description = `活动资讯列表组件，
 const dev = {
   list_word: {
     list_word_02: {
-      url: '../data/activity_infolist_02_data.json'
+      url: '../data/activity_infolist_02_data.json',
+      staticText : {
+        noDate: "暂无日期"
+      },
+      locationQuery:{
+        keys:{
+          colId:'colId'
+        }
+      },
     }
   }
 };
 
 const prod = {
   list_word: {
-    list_word_02: {
+    list_word_01: {
       url:  'spc/cms/publish/list.do',
       params: {
         conditions: [{pub_col_id:'249'}],   // 华育资讯栏目id=249
@@ -39,6 +47,9 @@ const prod = {
         keys:{
           colId:'colId'
         }
+      },
+      staticText : {
+        noDate: "暂无日期"
       }
     }
   }

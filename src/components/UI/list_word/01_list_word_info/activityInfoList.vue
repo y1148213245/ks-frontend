@@ -14,6 +14,7 @@
       </li>
     </ul>
     <ui_pagination class="ui_list_word_01-paging" v-if="controlPagination" :pageMessage="{totalCount: totalCount - 0 || 0}" :excuteFunction="paging" namespace="pagination"></ui_pagination>
+
   </div>
 </template>
 
@@ -40,18 +41,21 @@ export default {
   data () {
     return {
       activitysList: [], // 活动资讯列表
-      CONFIG: null,
+      CONFIG: "",
       totalCount: 0,
       paramsObj: null,  // 请求参数
       colId:'',
     };
   },
 
-  mounted () {
+  created(){
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_word.list_word_02;
+  },
+
+  mounted () {
     this.getLocationQuery();
     this.queryActivityInfo();
-    
+
   },
 
   methods: {
@@ -74,7 +78,7 @@ export default {
           }
         })
       }
-      
+
       this.paramsObj.conditions = JSON.stringify(conditions)
       Post(CONFIG.BASE_URL + this.CONFIG.url, this.paramsObj).then(rep => {
         this.totalCount = rep.data.totalCount;
@@ -94,13 +98,20 @@ export default {
       };
       this.queryActivityInfo(param);
     },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   },
   filters: {
     formatDate (value) {
       if (value) {
         return moment(value).format("YYYY-MM-DD");
       } else {
-        return '暂无日期';
+        return this.getStaticText('noDate') ? this.getStaticText('noDate') : "暂无日期";
       }
     }
   }

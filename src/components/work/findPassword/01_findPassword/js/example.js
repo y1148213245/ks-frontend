@@ -29,7 +29,6 @@ const dev = {
         pleaseInputNewPwd: "请输入新密码",
         pleaseConfirmNewPwd: "请确认新密码",
         mailboxFormatIsIncorrect:"邮箱格式不正确",
-        pleaseInputEmailVerifiCode:"请输入邮箱验证码",
         verifiCodeError: "验证码输入错误！",
         formatError: "格式错误，密码仅支持汉字、字母、数字、\"-\"、\"_\"的组合",
         pleaseInputPwd: "请输入密码",
@@ -37,11 +36,25 @@ const dev = {
         passwordCanBeUpToSixTeenDigits: "密码最多为16位数",
         pleaseInputPwdAgain: "请再次输入密码",
         twoPwdsDoNotMatch: "两次密码输入不一致",
-        pleaseInputVerifiCode: "请输入验证码"
-
-  }
-
-},
+        pleaseInputVerifiCode: "请输入验证码",
+        findByEmail:"通过邮箱找回",
+        findByMobilePhone:"通过手机找回",
+        mobilePhoneVerify:"手机验证",
+        pleaseInputPhoneNum:"请输入手机号",
+        sendVerifiCode:"发送验证码",
+        loading:"正在加载中...",
+        verifiCodeCorrectInfoAndInputNewPwd:"验证码输入正确，请重新设置密码",
+        verifiCodeIncorrectInfoAndRetry:"验证码输入错误，请重试",
+        sendSuccess:"发送成功",
+        internetTimeOut:"网络超时",
+        verifiCodeHasSentToYourEmailAndVerifyQuickly:"已发送验证码至您邮箱,请在2分钟内输入验证",
+        resetFailed:"重置失败",
+        pwdResetSuccess:"密码重置成功",
+        yes:"确定",
+        congratulations:"恭喜",
+        returnToLoginAfterThreeSeconds:"3秒后返回登录界面"
+      }
+    },
   }
 };
 const prod = {
@@ -71,7 +84,6 @@ const prod = {
         pleaseInputNewPwd: "请输入新密码",
         pleaseConfirmNewPwd: "请确认新密码",
         mailboxFormatIsIncorrect:"邮箱格式不正确",
-        pleaseInputEmailVerifiCode:"请输入邮箱验证码",
         verifiCodeError: "验证码输入错误！",
         formatError: "格式错误，密码仅支持汉字、字母、数字、\"-\"、\"_\"的组合",
         pleaseInputPwd: "请输入密码",
@@ -79,7 +91,24 @@ const prod = {
         passwordCanBeUpToSixTeenDigits: "密码最多为16位数",
         pleaseInputPwdAgain: "请再次输入密码",
         twoPwdsDoNotMatch: "两次密码输入不一致",
-        pleaseInputVerifiCode: "请输入验证码"
+        pleaseInputVerifiCode: "请输入验证码",
+        findByEmail:"通过邮箱找回",
+        findByMobilePhone:"通过手机找回",
+        mobilePhoneVerify:"手机验证",
+        pleaseInputPhoneNum:"请输入手机号",
+        sendVerifiCode:"发送验证码",
+        loading:"正在加载中...",
+        verifiCodeCorrectInfoAndInputNewPwd:"验证码输入正确，请重新设置密码",
+        verifiCodeIncorrectInfoAndRetry:"验证码输入错误，请重试",
+        sendSuccess:"发送成功",
+        internetTimeOut:"网络超时",
+        verifiCodeHasSentToYourEmailAndVerifyQuickly:"已发送验证码至您邮箱,请在2分钟内输入验证",
+        resetFailed:"重置失败",
+        pwdResetSuccess:"密码重置成功",
+        yes:"确定",
+        congratulations:"恭喜",
+        returnToLoginAfterThreeSeconds:"3秒后返回登录界面"
+
       }
     },
   }

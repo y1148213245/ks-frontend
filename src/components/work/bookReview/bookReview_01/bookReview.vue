@@ -24,7 +24,7 @@
       </div>
       <div class="reviewLists">
         <div>
-          <span class="username" v-text="queryComment.loginName"></span>
+          <span class="username" v-text="queryComment.nickName || queryComment.loginName"></span>
           <p class="score">
             <el-rate  v-model="queryComment.starNum - 0" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
           </p>
@@ -149,6 +149,7 @@ export default {
           + "?reviewId=" + toReviewInfo.commentId
           + "&&pubId=" + this.pubId
           + "&&loginName=" + this.loginName
+          + "&&tologinName=" + (toReviewInfo.nickName || toReviewInfo.loginName)
           + "&&picture=" + toReviewInfo.picture
           + "&&createTime=" + toReviewInfo.createTime
           + "&&replyNum=" + toReviewInfo.replyNum
@@ -185,6 +186,13 @@ export default {
       if(content==''){
         this.$message({
           message: this.getStaticText('commentsEmptfyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论内容不能为空',
+          type: 'error'
+        })
+        return false;
+      }
+      if(content.length>250){
+        this.$message({
+          message: this.getStaticText('commentsEmptfyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论不能超过250字',
           type: 'error'
         })
         return false;

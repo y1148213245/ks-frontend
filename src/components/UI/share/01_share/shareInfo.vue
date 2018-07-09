@@ -1,13 +1,13 @@
 <!-- 分享列表组件 Created by zong 2018/06/1 -->
 <template>
   <div class="ui_share_01">
-      <div class="bdsharebuttonbox" v-if="CONFIG && shareLists">
-        <span v-for="(item, index) in shareLists"  :key="index">
-          <a href="#" v-bind:class="item.class" :data-cmd="item.cmd" :title="item.title" ></a>
-        </span>
-      </div>
+    <div class="bdsharebuttonbox" v-if="CONFIG && shareLists">
+      <span v-for="(item, index) in shareLists" :key="index">
+        <a href="#" v-bind:class="item.class" :data-cmd="item.cmd" :title="item.title"></a>
+      </span>
+    </div>
 
- </div>
+  </div>
 </template>
 
 <script>
@@ -27,17 +27,18 @@ export default {
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].share.ui_share_01[this.modulename];
     this.shareLists = this.CONFIG.shareLists;
-    this.shareScript();
+    // this.shareScript();
   },
 
   mounted () {
+    this.shareScript();
   },
   methods: {
     shareScript () {
-      window.onload=function (){
-        document.getElementsByClassName("bdsharebuttonbox")[0].appendChild(document.createElement('script')).src =
-          'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
-      }
+      // window.onload=function (){
+      document.getElementsByClassName("bdsharebuttonbox")[0].appendChild(document.createElement('script')).src =
+        'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
+      // }
     }
   }
 }

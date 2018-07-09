@@ -9,7 +9,7 @@
         </div>
         <div class="bookReviewInfo_03_reviewLists">
           <div>
-            <span class="bookReviewInfo_03_reviewLists_username" v-text="loginName"></span>
+            <span class="bookReviewInfo_03_reviewLists_username" v-text="tologinName"></span>
             <p class="bookReviewInfo_03_reviewLists_score">
               <el-rate  v-model="starNum" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
             </p>
@@ -48,7 +48,7 @@
         </div>
         <div class="work_bookreview_03_skin_bookReviewWrapper_reviewLists">
           <div class="work_bookreview_03_skin_bookReviewWrapper_reviewLists_nameTime">
-            <span class="username" v-text="queryComment.loginName"></span>
+            <span class="username" v-text="queryComment.nickName || queryComment.loginName"></span>
             <span class="createTime" v-text="queryComment.createTime"></span>
           </div>
           <div class="work_bookreview_03_skin_bookReviewWrapper_reviewLists_reviewContent" v-text="queryComment.content"></div>
@@ -80,6 +80,7 @@
         pubId: 0,
         reviewId: 0,
         loginName: '',
+        tologinName:"",
         CONFIG: null,
         reviewInfo:"", //评论详情
         commentList: [], // 评论回复列表
@@ -113,6 +114,8 @@
       this.starNum = Number(arrPar.starNum);
       this.reviewId = arrPar.reviewId;
       this.loginName = arrPar.loginName;
+      this.tologinName = arrPar.tologinName;
+
       if(arrPar.picture=='null'){
         this.picture = '';
       }else{
@@ -179,6 +182,13 @@
           });
           return false;
         }
+        if(content.length>250){
+          this.$message({
+            message: this.getStaticText('commentsEmptfyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论不能超过250字',
+            type: 'error'
+          })
+          return false;
+        }
         // content = encodeURIComponent(content);
         let queryConfig = this.CONFIG.addComment;
         let paramsObj = Object.assign({}, queryConfig.params);
@@ -205,6 +215,7 @@
               pageSize: this.pageSize
             }
             this.queryComment(param);
+            this.replyNum = Number(this.replyNum)+1;
           } else {
             this.$message({
               message: '回复添加失败',
@@ -242,7 +253,8 @@
             this.$message({
               message: datas.data.msg,
               type: 'success'
-            })
+            });
+            this.likeNum = Number(this.likeNum)+1;
             return false;
           }
         })

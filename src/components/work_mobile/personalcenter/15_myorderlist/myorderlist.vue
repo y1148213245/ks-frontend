@@ -52,7 +52,7 @@
               <van-button size="small" @click="cancelOrder(outIndex)">
                 {{display.cancelOrder}}
               </van-button>
-              <van-button size="small" @click="myCallBack(outIndex)">
+              <van-button size="small" @click="toPayOrder(outIndex)">
                 {{display.payment}}
               </van-button>
             </div>
@@ -68,20 +68,20 @@
     </div>
     <div class="work_mobile_personalcenter_15_bookDetails" v-show="currentShow=='bookDetails'">
       <div class="work_mobile_personalcenter_15_bookDetails_mainbox" v-for="item in orderDetails" :key="item.id">
-        <div class="work_mobile_personalcenter_15_bookDetails_mainbox_orderstatus">
-          <span v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
-          <span v-if="item.payStatus==1">{{display.collectGoods}}</span>
-          <span v-if="item.payStatus==5">{{display.complete}}</span>
-          <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
-        </div>
         <div class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation">
           <span class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation_person">{{item.deliveryPerson}}</span>
           <span class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation_contact">{{item.deliveryContact}}</span>
           <span class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation_address">{{item.deliveryAddress}}</span>
         </div>
         <div class="work_mobile_personalcenter_15_bookDetails_mainbox_timeandcode">
-          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_timeandcode_createTime">{{item.createTime}}</span>
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_timeandcode_createTime">{{item.createTime.slice(0,10)}}</span>
           <span class="work_mobile_personalcenter_15_bookDetails_mainbox_timeandcode_orderCode">{{item.orderCode}}</span>
+        </div>
+        <div class="work_mobile_personalcenter_15_bookDetails_mainbox_orderstatus">
+          <span v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
+          <span v-if="item.payStatus==1">{{display.collectGoods}}</span>
+          <span v-if="item.payStatus==5">{{display.complete}}</span>
+          <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>
         <ul class="work_mobile_personalcenter_15_bookDetails_mainbox_ul">
           <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_bookDetails_mainbox_li">
@@ -89,27 +89,37 @@
             </van-card>
           </li>
         </ul>
-        <div>
-          <van-button @click="goBack()">返回</van-button>
-        </div>
         <div class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation">
           <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_total">{{display.total}}：{{display.money}}{{item.orderTotalPrice}}</span>
           <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_express">{{display.express}}：{{display.money}}{{item.deliveryPrice}}</span>
           <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_realPay">{{display.realPay}}：{{display.money}}{{item.orderTotalPrice + item.deliveryPrice}}</span>
         </div>
+        <div class="work_mobile_personalcenter_15_bookDetails_mainbox_pendingPaymentBtn" v-if="item.payStatus==0 && item.status==1">
+          <van-button size="small" @click="cancelOrder(outIndex)">
+            {{display.cancelOrder}}
+          </van-button>
+          <van-button size="small" @click="toPayOrder(outIndex)">
+            {{display.payment}}
+          </van-button>
+        </div>
+        <div v-if="item.payStatus==5" class="work_mobile_personalcenter_15_bookDetails_mainbox_completeBtn">
+          <van-button size="small" @click="deleteOrder(outIndex)">
+            {{display.deleteOrder}}
+          </van-button>
+        </div>
       </div>
     </div>
     <div class="work_mobile_personalcenter_15_periodicalDetails" v-show="currentShow=='periodicalDetails'">
       <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox" v-for="item in orderDetails" :key="item.id">
+        <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox_timeandcode">
+          <span class="work_mobile_personalcenter_15_periodicalDetails_mainbox_timeandcode_createTime">{{item.createTime.slice(0,10)}}</span>
+          <span class="work_mobile_personalcenter_15_periodicalDetails_mainbox_timeandcode_orderCode">{{item.orderCode}}</span>
+        </div>
         <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox_orderstatus">
           <span v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
           <span v-if="item.payStatus==1">{{display.collectGoods}}</span>
           <span v-if="item.payStatus==5">{{display.complete}}</span>
           <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
-        </div>
-        <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox_timeandcode">
-          <span class="work_mobile_personalcenter_15_periodicalDetails_mainbox_timeandcode_createTime">{{item.createTime}}</span>
-          <span class="work_mobile_personalcenter_15_periodicalDetails_mainbox_timeandcode_orderCode">{{item.orderCode}}</span>
         </div>
         <ul class="work_mobile_personalcenter_15_periodicalDetails_mainbox_ul">
           <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_periodicalDetails_mainbox_li">
@@ -120,9 +130,6 @@
             </div>
           </li>
         </ul>
-        <div>
-          <van-button @click="goBack()">返回</van-button>
-        </div>
       </div>
     </div>
   </div>
@@ -259,10 +266,6 @@ export default {
         }
       );
     },
-    //返回订单页
-    goBack() {
-      this.currentShow = "list";
-    },
     //前往物流页
     toLogistics() {
       this.backUrl = window.location.href;
@@ -329,96 +332,9 @@ export default {
       });
     },
     //去付款
-    myCallBack(outIndex, index) {
+    toPayOrder(outIndex) {
       var payMethod = this.consumeLists[outIndex].orderList[0].payMethod;
-      var _this = this;
-      var loading = {};
-      var params = {
-        param: {
-          parentOrderCode: this.consumeLists[outIndex].parentOrderCode
-        },
-        myCallback: function() {
-          var argus = {
-            orderId: _this.commitInfo.orderId,
-            orderCode: _this.commitInfo.orderCode,
-            status: _this.commitInfo.status, // 订单状态
-            payMethodCode: _this.commitInfo.payMethodCode,
-            paymentType: _this.commitInfo.paymentType // true需要跳转 false不需要
-          };
-          if (this.commitInfo.submitStatus) {
-            // 提交成功
-            if (_this.commitInfo.paymentType) {
-              // 需要跳转支付宝支付/微信扫描二维码页面
-              if (payMethod === "Alipay") {
-                // 支付宝支付
-                loading.close();
-                window.open(
-                  CONFIG.BASE_URL +
-                    "/epay/getPayForm.do?orderId=" +
-                    argus.orderId +
-                    "&loginName=" +
-                    _this.member.loginName +
-                    "&payMethodCode=" +
-                    argus.payMethodCode +
-                    "&siteId=" +
-                    CONFIG.SITE_CONFIG.siteId,
-                  "_self"
-                );
-                window.history.pushState(null, null, "../pages/errorpage.html"); // 添加历史记录
-              } else if (payMethod === "Weixin") {
-                // 微信支付
-                axios
-                  .get(
-                    CONFIG.BASE_URL +
-                      "/epay/getPayForm.do?orderId=" +
-                      argus.orderId +
-                      "&loginName=" +
-                      _this.member.loginName +
-                      "&payMethodCode=" +
-                      argus.payMethodCode +
-                      "&siteId=" +
-                      CONFIG.SITE_CONFIG.siteId
-                  )
-                  .then(function(response) {
-                    loading.close();
-                    var data = response.data.substring(
-                      response.data.indexOf("<a>") + 3,
-                      response.data.indexOf("</a>")
-                    );
-                    var orderCode = response.data.substring(
-                      response.data.indexOf("<div>") + 5,
-                      response.data.indexOf("</div>")
-                    );
-                    window.location.href =
-                      "../pages/qrcode.html?data=" +
-                      data +
-                      "&orderCode=" +
-                      orderCode;
-                  });
-              }
-            } else {
-              // 不需要跳转支付页面 实付金额为0
-              window.location.href =
-                "../pages/commitorder.html#/commitOrder/" +
-                _this.commitInfo.orderCode +
-                "/" +
-                _this.commitInfo.status +
-                "/order";
-            }
-          } else {
-            // 提交失败
-            loading.close();
-            var errorMsg = this.commitInfo.errMsg
-              ? this.commitInfo.errMsg
-              : "订单提交有误";
-            _this.$alert(errorMsg, "系统提示", {
-              confirmButtonText: "确定"
-            });
-          }
-        }
-      };
-      this.$store.dispatch("personalCenter/commitOrder", params);
-      loading = this.$loading({ fullscreen: true });
+      console.log(payMethod);
     }
   },
   filters: {

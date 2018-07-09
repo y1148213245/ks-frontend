@@ -6,7 +6,7 @@
     <!-- 组件标题 取配置的name 或者 父栏目名称 -->
     <div class="ui_list_pic_29_comtitle_con" v-if="CONFIG && CONFIG.comTitle && CONFIG.comTitle.isShow && columnDetailInfo && columnKeys">
       <div :key="config_i" v-if="typeof(CONFIG.comTitle.isShowImg!='undefined') && CONFIG.comTitle.isShowImg" class="ui_list_pic_29_comtitle_imgdiv">
-        <img class="ui_list_pic_29_comtitle_imgdiv_img" :src=" columnDetailInfo[columnKeys.bigPic]" alt="暂无图片" />
+        <img class="ui_list_pic_29_comtitle_imgdiv_img" :src=" columnDetailInfo[columnKeys.bigPic]" :alt="getStaticText('noImg') ? getStaticText('noImg') : 暂无图片" />
       </div>
       <h4 class="ui_list_pic_29_comtitle"> {{CONFIG.comTitle.name ? CONFIG.comTitle.name : columnDetailInfo[columnKeys.name]}} </h4>
       <span class="ui_list_pic_29_comtitle_columnDetailInfo">{{columnDetailInfo[columnKeys.code]}}</span>
@@ -30,7 +30,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_29_resourcelists_li_imgcontainter" @click="toCustomFun(item, config, keys)">
               <label class="ui_list_pic_29_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_list_pic_29_resourcelists_li_img" v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}" :src=" item[keys[config.field]] || require('@static/img/defaultCover.png')" alt="暂无图片" @load="dealResourceImg($event)"/>
+              <img class="ui_list_pic_29_resourcelists_li_img" v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}" :src=" item[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"/>
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
@@ -61,7 +61,7 @@
         </li>
       </ul>
 
-      <div class="ui_list_pic_29_resourcelists_nodata" v-if="resourceLists && resourceLists.length == 0">暂无数据</div>
+      <div class="ui_list_pic_29_resourcelists_nodata" v-if="resourceLists && resourceLists.length == 0">{{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}</div>
     </div>
     <ui_pagination class="ui_list_pic_29_ui_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination"  :pageMessage="{totalCount: totalCount}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
   </div>
@@ -81,7 +81,7 @@ export default {
   reused: true,
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       resourceLists: [], //资源列表
       keys: {}, // 接口字段容器
       columnKeys: {}, // 栏目字段适配容器
@@ -272,6 +272,13 @@ export default {
       };
       this.getResourceLists(pagingParams);
     },
+    getStaticText(text){
+      if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
+    }
   }
 }
 

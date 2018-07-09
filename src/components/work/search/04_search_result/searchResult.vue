@@ -4,7 +4,7 @@
     <div v-if="CONFIG.isShowTotalCountTag" class="search_04-search_totalcount">{{getStaticText('total') ? getStaticText('total') : '共'}}
       <span class="search_04-search_totalcount-num" v-text="totalCount"></span>{{getStaticText('productQuanity') ? getStaticText('productQuanity') : '件商品'}}</div>
 
-    <div class="search_04-content">
+    <div class="search_04-content" v-if="list && list.length > 0">
       <div class="search_04-content-list">
         <transition-group name="fade">
           <dl class="search_04-content-list-entry_box" v-for='entry in list' :key="entry.id">
@@ -43,7 +43,8 @@
               </p> -->
               <p class="search_04-content-list-entry_box-others">
                 <!--<span class="sc shoucang">收藏</span>-->
-                <a href="http://www.jiathis.com/share" class="search_04-content-list-entry_box-others-share" target="_blank">{{getStaticText('shareTo') ? getStaticText('shareTo') : '分享'}}</a>
+                <!-- <a href="http://www.jiathis.com/share" class="search_04-content-list-entry_box-others-share" target="_blank">{{getStaticText('shareTo') ? getStaticText('shareTo') : '分享'}}</a> -->
+                <ui_share_01 :namespace="namespace" :modulename="namespace"></ui_share_01>
                 <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-others-buy">{{getStaticText('buy') ? getStaticText('buy') : '购买'}}</a>
                 <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-others-to_view">{{getStaticText('checkInfo') ? getStaticText('checkInfo') : '查看'}}</a>
               </p>
@@ -198,7 +199,8 @@ export default {
     },
   },
   filters: {
-    fmtDate (obj) {
+    fmtDate: (obj) => {
+      let _this = this.a.methods;
       if (obj) {
         var date = new Date(obj);
         var y = 1900 + date.getYear();
@@ -206,7 +208,7 @@ export default {
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
       } else {
-        return this.getStaticText('noDate') ? this.getStaticText('noDate') : "暂无日期"
+        return _this.getStaticText('noDate') ? _this.getStaticText('noDate') : "暂无日期"
       }
     },
   },

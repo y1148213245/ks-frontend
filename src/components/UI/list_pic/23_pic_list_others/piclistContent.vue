@@ -7,28 +7,28 @@
           <div v-if="booklist && booklist.length>0">
             <dl class="listDl" v-for="(entry, index) in booklist" v-if="index < CONFIG.maxNum" :key="index">
               <dt class="listDt">
-                <img class="dtImg" :src="entry.bigPic"  :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" onload="DrawImage(this,90,130)"/>
+                <img class="dtImg" :src="entry.bigPic"  :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" onload="DrawImage(this,90,130)"/>
               </dt>
               <dd class="listDd">
                 <p class="resourceName">
-                  <a class="resourceLink" :href="'../pages/bookdetail.html?pubId=' + entry.pubId" v-text="entry.resourceName || CONFIG && CONFIG.staticText && CONFIG.staticText.noBookName ? CONFIG.staticText.noBookName : '暂无书名'" :title="entry.resourceName"></a>
+                  <a class="resourceLink" :href="'../pages/bookdetail.html?pubId=' + entry.pubId" v-text="entry.resourceName || (getStaticText('noBookName') ? getStaticText('noBookName') : '暂无书名')" :title="entry.resourceName"></a>
                 </p>
                 <p class="author" :title="entry.author">
-                  {{CONFIG && CONFIG.staticText && CONFIG.staticText.author ? CONFIG.staticText.author : '作者:'}}{{entry.author || CONFIG && CONFIG.staticText && CONFIG.staticText.noAuthor ? CONFIG.staticText.noAuthor : '暂无作者'}}</p>
+                  {{getStaticText('author') ? getStaticText('author') : '作者:'}}{{entry.author || getStaticText('noAuthor') ? getStaticText('noAuthor') : '暂无作者'}}</p>
                 <p class="priceCon">
                   <span class="memberPrice">{{entry.memberPrice | formatMoney}}</span>
                   <span class="ebPrice">{{entry.ebPrice | formatMoney}}</span>
                 </p>
                 <p class="star">
                   <el-rate v-model="entry.starNum - 0" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
-                  <span class="comment">{{entry.commentNums || 0}}{{CONFIG && CONFIG.staticText && CONFIG.staticText.comments ? CONFIG.staticText.comments : '条评论'}}</span>
+                  <span class="comment">{{entry.commentNums || 0}}{{getStaticText('comments') ? getStaticText('comments') : '条评论'}}</span>
                 </p>
                 <p class="abstract" :title="entry.bookAbstract" v-html="entry.bookAbstract
-              || CONFIG && CONFIG.staticText && CONFIG.staticText.noIntroduction ? CONFIG.staticText.noIntroduction : '暂无简介'"></p>
+              || (getStaticText('noIntroduction') ? getStaticText('noIntroduction') : '暂无简介')"></p>
               </dd>
             </dl>
           </div>
-          <div v-if="booklist && booklist.length == 0">{{CONFIG && CONFIG.staticText && CONFIG.staticText.noData ? CONFIG.staticText.noData : '暂无数据'}}</div>
+          <div v-if="booklist && booklist.length == 0">{{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}</div>
         </div>
       </div>
 </template>
@@ -48,7 +48,7 @@ export default {
   props: ['namespace', 'modulename'],
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       booklist: [],
       pubId: '',
     };
@@ -59,6 +59,7 @@ export default {
     }),
   },
   created () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_23[this.modulename];
     let _this = this;
     this.$bus.$on('searchAuthor', function (data) {
       if (_this.modulename == 'otherbook') {
@@ -68,7 +69,6 @@ export default {
   },
   mounted () {
     this.pubId = URL.parse(window.location.href, true).query.pubId;
-    this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_23[this.modulename];
   },
 
   methods: {
@@ -118,6 +118,13 @@ export default {
           this.booklist = tempList;
         }
       });
+    },
+    getStaticText(text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
     }
   },
   filters: {

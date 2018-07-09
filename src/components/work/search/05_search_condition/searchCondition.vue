@@ -16,7 +16,7 @@
           </span>
         </td>
         <td height="40" width="300">
-          <span class="work_search_05-table-title">{{getStaticText('ISBNNum') ? this.getStaticText('ISBNNum') : 'ISBNNum:'}}</span>
+          <span class="work_search_05-table-title">{{getStaticText('ISBNNum') ? this.getStaticText('ISBNNum') : 'ISBN:'}}</span>
           <span><el-input style="width: 200px;" size="small" :placeholder="getStaticText('inputISBNNum') ? getStaticText('inputISBNNum') : '请输入ISBN'" v-model="isbn"></el-input></span>
         </td>
         <td rowspan="2"><input type="button" class="work_search_05-table-button" :value="getStaticText('search') ? getStaticText('search') : '检索'" @click="toSearch"/></td>

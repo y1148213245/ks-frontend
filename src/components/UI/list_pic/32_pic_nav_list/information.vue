@@ -121,7 +121,7 @@ export default {
           detailParams = detailParams + '&' + param + '=' + this.requestParams[param];
         }
       }
-      if (config.method == 'toEvent') { // 去详情页需要增加list.do请求的所有参数
+      if (config.method == 'toEvent') {
         this.checkId = item.id;
         this.$bus.$emit(this.CONFIG[config.method].broadcastName, [item.id,item.name,item.id,item.name]);
         return false;

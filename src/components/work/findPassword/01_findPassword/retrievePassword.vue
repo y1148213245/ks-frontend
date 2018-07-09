@@ -4,7 +4,7 @@
 			<!-- 导航tab -->
 			<el-tabs v-model="activeTab" @tab-click="changeTab">
 				<!-- 邮箱找回密码 -->
-				<el-tab-pane label="通过邮箱找回" name="email">
+				<el-tab-pane :label="getStaticText('findByEmail') ? getStaticText('findByEmail') : '通过邮箱找回'" name="email">
 					<el-steps :space="120" :active="active" finish-status="success" align-center>
 						<el-step :title="getStaticText('inputEmail') ? getStaticText('inputEmail') : '输入邮箱'"></el-step>
 						<el-step :title="getStaticText('inputEmailVerifiCode') ? getStaticText('inputEmailVerifiCode') : '填写邮箱验证码'"></el-step>
@@ -45,30 +45,30 @@
 				</el-tab-pane>
 
 				<!-- 手机找回密码 -->
-				<el-tab-pane label="通过手机找回" name="mobile">
+				<el-tab-pane :label=" getStaticText('findByMobilePhone') ? getStaticText('findByMobilePhone') : '通过手机找回'" name="mobile">
 					<el-steps :space="120" :active="mobileStepsActive" finish-status="success" align-center>
-						<el-step title="手机验证"></el-step>
-						<el-step title="更改密码"></el-step>
-						<el-step title="找回完成"></el-step>
+						<el-step :title="getStaticText('mobilePhoneVerify') ? getStaticText('mobilePhoneVerify') : '手机验证'"></el-step>
+						<el-step :title="getStaticText('updatePwd') ? getStaticText('updatePwd') : '更改密码'"></el-step>
+						<el-step :title="getStaticText('findSuccess') ? getStaticText('findSuccess') : '找回完成'"></el-step>
 					</el-steps>
 					<!-- 发送验证码验证手机 -->
 					<div style="margin-top: 20px; height: 200px;" v-if="mobileShowStep == 'validMobile'">
 						<el-form :model="ruleForm" :rules="rules" ref="validMobile">
 							<el-form-item label="手 机" prop="mobile">
-								<el-input id="retrieve_02-input-email" type="text" v-model="ruleForm.mobile" auto-complete="off" placeholder="请输入手机号" style="display:inline-block;width:200px;"></el-input>
+								<el-input id="retrieve_02-input-email" type="text" v-model="ruleForm.mobile" auto-complete="off" :placeholder="getStaticText('pleaseInputPhoneNum') ? getStaticText('pleaseInputPhoneNum') : '请输入手机号'" style="display:inline-block;width:200px;"></el-input>
 								<el-button type="primary" size="medium" @click="submitForm('validMobile')" class="button nomargin" :loading="mobileButtonIsLoading" :disabled="!!sendMobileInterval">
-									<template v-if="!sendMobileInterval">发送验证码</template>
+									<template v-if="!sendMobileInterval">{{getStaticText('sendVerifiCode') ? getStaticText('sendVerifiCode') : "发送验证码"}}</template>
 									<template v-if="sendMobileInterval">&nbsp;&nbsp;{{sendMobileInterval}}s&nbsp;&nbsp;</template>
 								</el-button>
 
 							</el-form-item>
-							<el-form-item label="验证码" prop="mobilecCaptcha">
+							<el-form-item :label="getStaticText('verifiCode') ? getStaticText('verifiCode') : '验证码'" prop="mobilecCaptcha">
 								<div class="captcha">
-									<el-input id="retrieve_02-input-validate" type="text" v-model="ruleForm.mobilecCaptcha" auto-complete="off" placeholder="请确输入验证码" style="width:150px;" @keyup.enter.native="submitForm('validMobile')"></el-input>
+									<el-input id="retrieve_02-input-validate" type="text" v-model="ruleForm.mobilecCaptcha" auto-complete="off" :placeholder="getStaticText('pleaseInputVeirifiCode') ? getStaticText('pleaseInputVeirifiCode') : '请确输入验证码'" style="width:150px;" @keyup.enter.native="submitForm('validMobile')"></el-input>
 								</div>
 							</el-form-item>
 							<div class="col_full nobottommargin btnbox">
-								<el-button type="primary" @click="checkMobileCode" class="button nomargin">下一步</el-button>
+								<el-button type="primary" @click="checkMobileCode" class="button nomargin">{{getStaticText('nextStep') ? getStaticText('nextStep') : "下一步"}}</el-button>
 							</div>
 						</el-form>
 					</div>
@@ -107,10 +107,10 @@ export default {
 	props: ['namespace'],
 	mounted: function () {
 		this.createCode();
-		this.CONFIG = PROJECT_CONFIG[this.namespace].findPassword.work_findpassword_01;
 	},
 	data () {
-		var isTest;
+
+    var isTest;
 		if (CONFIG.hasOwnProperty('IS_VALIDATE_TEST')) {
 			isTest = CONFIG.IS_VALIDATE_TEST;
 		} else {
@@ -118,19 +118,19 @@ export default {
 		}
 
 		var validateEmail = (rule, value, callback) => {
-			if (value === "") {
-				callback(new Error(this.getStaticText('pleaseInputEmail') ? this.getStaticText('pleaseInputEmail') : '请输入邮箱'));
-			} else if (
-				value !=
-				value.match(
-					/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
-				)
-			) {
-				callback(new Error(this.getStaticText('mailboxFormatIsIncorrect') ? this.getStaticText('mailboxFormatIsIncorrect') : '邮箱格式不正确'));
-			} else {
-				callback();
-			}
-		};
+      if (value === "") {
+        callback(new Error(this.getStaticText('pleaseInputEmail') ? this.getStaticText('pleaseInputEmail') : '请输入邮箱'));
+      } else if (
+        value !=
+        value.match(
+          /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+        )
+      ) {
+        callback(new Error(this.getStaticText('mailboxFormatIsIncorrect') ? this.getStaticText('mailboxFormatIsIncorrect') : '邮箱格式不正确'));
+      } else {
+        callback();
+      }
+    };
 		var validateEmailnum = (rule, value, callback) => {
 			let inputCode = value.toUpperCase();
 			if (value === "") {
@@ -194,7 +194,7 @@ export default {
 			}
 		};
 		return {
-			CONFIG: null,
+			CONFIG: "",
 			activeTab: 'email',
 			time: 120,
 			list: [{}],
@@ -227,6 +227,9 @@ export default {
 			}
 		};
 	},
+  created() {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].findPassword.work_findpassword_01;
+  },
 	methods: {
 		changeTab () {
 
@@ -248,7 +251,7 @@ export default {
 								email: this.ruleForm.email,
 								cb: this.findPasswordCallb
 							};
-							let loading = Vue.prototype.$loading({ text: "正在加载中..." });
+							let loading = Vue.prototype.$loading({ text: (this.getStaticText('loading') ? this.getStaticText('loading') : '正在加载中...')});
 							Get(CONFIG.BASE_URL + this.CONFIG.findPasswordUrl + params.email).then(function (response) {
 								let findStatus = response.data.result;
 								let findNum = response.data.data;
@@ -271,12 +274,12 @@ export default {
 							this.active = 2;
 							this.$message({
 								type: "success",
-								message: "验证码输入正确，请重新设置密码"
+								message: this.getStaticText('verifiCodeCorrectInfoAndInputNewPwd') ? this.getStaticText('verifiCodeCorrectInfoAndInputNewPwd') : "验证码输入正确，请重新设置密码"
 							});
 						} else {
 							this.$message({
 								type: "error",
-								message: "验证码输入错误，请重试"
+								message: this.getStaticText('verifiCodeIncorrectInfoAndRetry') ? this.getStaticText('verifiCodeIncorrectInfoAndRetry') : "验证码输入错误，请重试"
 							});
 							console.log("error submit!!");
 							return false;
@@ -330,7 +333,7 @@ export default {
 										if (resp.data.result == 1) {
 											this.$message({
 												type: 'success',
-												message: '发送成功'
+												message: this.getStaticText('sendSuccess') ? this.getStaticText('sendSuccess') : '发送成功'
 											})
 											this.mobileCode = resp.data.data;
 											let _this = this;
@@ -344,11 +347,11 @@ export default {
 											}, 1000)
 
 										} else {
-											this.$message.error('网络超时')
+											this.$message.error(this.getStaticText('internetTimeOut') ? this.getStaticText('internetTimeOut') : '网络超时')
 										}
 										this.mobileButtonIsLoading = false
 									}).catch(error => {
-										this.$message.error('网络超时')
+										this.$message.error(this.getStaticText('internetTimeOut') ? this.getStaticText('internetTimeOut') : '网络超时')
 										this.mobileButtonIsLoading = false
 									})
 								} else {
@@ -395,7 +398,7 @@ export default {
 				this.mobileShowStep = 'changePassword';
 
 			} else {
-				this.$message.error('验证码输入错误');
+				this.$message.error(this.getStaticText('verifiCodeError') ? this.getStaticText('verifiCodeError') : '验证码输入错误');
 			}
 		},
 		findPasswordCallb (findStatus, findNum, rep) {
@@ -405,7 +408,7 @@ export default {
 				this.active = 1;
 				this.$message({
 					type: "success",
-					message: "已发送验证码至您邮箱,请在2分钟内输入验证"
+					message: this.getStaticText('verifiCodeHasSentToYourEmailAndVerifyQuickly') ? this.getStaticText('verifiCodeHasSentToYourEmailAndVerifyQuickly') : "已发送验证码至您邮箱,请在2分钟内输入验证"
 				});
 				this.times();
 			} else {
@@ -425,18 +428,18 @@ export default {
 				this.open();
 			} else {
 				console.log("error submit!!");
-				this.$message.error('重置失败')
+				this.$message.error(this.getStaticText('resetFailed') ? this.getStaticText('resetFailed') : '重置失败')
 				return false;
 			}
 		},
 		open () {
 			var obj = this;
-			this.$alert("密码重置成功", "恭喜", {
-				confirmButtonText: "确定",
+			this.$alert(this.getStaticText('pwdResetSuccess') ? this.getStaticText('pwdResetSuccess') : "密码重置成功", this.getStaticText('congratulations') ? this.getStaticText('congratulations') : "恭喜", {
+				confirmButtonText: this.getStaticText('yes') ? this.getStaticText('yes') : "确定",
 				callback: action => {
 					this.$message({
 						type: "info",
-						message: "3秒后返回登录界面"
+						message: this.getStaticText('returnToLoginAfterThreeSeconds') ? this.getStaticText('returnToLoginAfterThreeSeconds') : "3秒后返回登录界面"
 					});
 					window.setTimeout(function () {
 						window.location.href = obj.CONFIG.href;
