@@ -2,8 +2,8 @@
 <template>
   <section class="work_activitydetail_09">
     <!-- 参选人列表 -->
-    <ul class="work_activitydetail_09-candidate_list" v-if="CONFIG.showType == 'candidate'">
-      <li v-for="(item,i) in candidateList" :key="i">
+    <ul class="work_activitydetail_09-candidate_list el-row" v-if="CONFIG.showType == 'candidate'">
+      <li v-for="(item,i) in candidateList" :key="i" class="el-col el-col-6">
         <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic])" title="头像" @click="openDialog(i)" />
         <span class="work_activitydetail_09-title" @click="openDialog(i)" v-text="item[listKeys.sysTopic]"></span>
         <el-button type="primary" class="work_activitydetail_09-vote" @click="toVote(item)">
@@ -39,10 +39,6 @@
         <li v-for="(item,i) in candidateList" :key="i">
           <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic])" title="头像" @click="openDialog(i)" />
           <span class="work_activitydetail_09-title" @click="openDialog(i)" v-text="item[listKeys.sysTopic]"></span>
-          <el-button type="primary" class="work_activitydetail_09-vote">
-            <i></i>
-            <span>投上一票</span>
-          </el-button>
 
           <span class="work_activitydetail_09-vote_num">{{item[listKeys.voteNum]}}
             <label>票</label>
@@ -54,6 +50,7 @@
 
     <el-dialog :visible.sync="detailVisible" width="40%">
       <div class="work_activitydetail_09-detail">
+        <section>
         <img class="work_activitydetail_09-pic" :src="getPic(currentCandidate[listKeys.pic])" title="头像" />
         <span class="work_activitydetail_09-title" v-text="currentCandidate[listKeys.sysTopic]"></span>
         <el-button type="primary" class="work_activitydetail_09-vote" @click="toVote(currentCandidate)">
@@ -64,7 +61,7 @@
         <span class="work_activitydetail_09-vote_num">{{currentCandidate[listKeys.voteNum]}}
           <label>票</label>
         </span>
-
+        </section>
         <span class="work_activitydetail_09-description" v-html="currentCandidate[listKeys.description]"></span>
       </div>
 
