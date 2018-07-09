@@ -1,22 +1,19 @@
 <!-- 活动列表展示页 -->
 <template>
   <div class="ui_pic_list_21 ui_pic_list_21_main">
-    <h1 v-if="CONFIG.showItem.indexOf('title') != -1" 
-    class="ui_pic_list_21-h1" 
-    :style="{backgroundImage:'url('+ (CONFIG.getColDetail.keys.pic ? colDetail[CONFIG.getColDetail.keys.pic] : colDetail.big_pic) +')',backgroundPosition:'center center'}" 
-    v-text="colDetail[CONFIG.getColDetail.keys.name]"></h1> 
-    
+    <h1 v-if="CONFIG.showItem.indexOf('title') != -1" class="ui_pic_list_21-h1" :style="{backgroundImage:'url('+ (CONFIG.getColDetail.keys.pic ? colDetail[CONFIG.getColDetail.keys.pic] : colDetail.big_pic) +')',backgroundPosition:'center center'}" v-text="colDetail[CONFIG.getColDetail.keys.name]"></h1>
+
     <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in activityList" :key="index">
       <div class="ui_pic_list_21-card_content" @click="toDetail(item[keys.id])">
         <div class="ui_pic_list_21-img_box">
-          <img :src="item[keys.pub_picMiddle]" class="image" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" :href="goDetail(item[keys.id])">
+          <img :src="item[keys.pub_picMiddle]" class="image" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'">
         </div>
         <div class="ui_pic_list_21-title_box">
-          <a class="ac_title" :href="goDetail(item[keys.id])">{{item[keys.PORTAL_ACTIVITY_SYS_TOPIC] }}</a>
+          <a class="ac_title">{{item[getKeys(item,'topic')] }}</a>
           <div class="clearfix">
             <div class="ac_text">
               <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
-              <time class="time">{{item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW] | formatDateNEW}}{{getStaticText('to')? getStaticText('to') : '至'}}{{item[keys.reviewDate] | formatDateNEW}}
+              <time class="time">{{item[getKeys(item,'beginTime')] | formatDateNEW}}{{getStaticText('to')? getStaticText('to') : '至'}}{{(item[getKeys(item,'reviewDate')] || item[getKeys(item,'endTime')])| formatDateNEW}}
               </time>
             </div>
 
@@ -59,7 +56,7 @@ export default {
   },
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_21;
-    this.keys = this.CONFIG.keys;
+    this.keys = this.CONFIG.baseKeys;
     this.params = Object.assign({}, this.CONFIG.params);
     let pubColId = JSON.parse(this.params.conditions);
     this.colId = URL.parse(document.URL, true).query.colId;
@@ -102,17 +99,15 @@ export default {
         let currentTime = new Date().getTime();
         if (data && data instanceof Array && data.length > 0) {
           data.forEach(item => {
-            if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime < item[keys.reviewDate] && currentTime > item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
-              item.activityStatus = this.getStaticText('inProgress') ? this.getStaticText('inProgress') : '进行中';
-            }
-            else if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime > item[keys.reviewDate]) {
-              item.activityStatus = this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') : '评奖中';
-            }
-            else if (currentTime < item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
-              item.activityStatus = this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始';
-            }
-            else {
+            
+            if (currentTime > item[this.getKeys(item, 'endTime')]) {
               item.activityStatus = this.getStaticText('haveFinished') ? this.getStaticText('haveFinished') : '已结束';
+            } else if (currentTime < item[this.getKeys(item, 'beginTime')]) {
+              item.activityStatus = this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始';
+            } else if (this.getKeys(item,'reviewDate') && currentTime > item[this.getKeys(item,'reviewDate')]) {
+              item.activityStatus = this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') : '评奖中';
+            } else {
+              item.activityStatus = this.getStaticText('inProgress') ? this.getStaticText('inProgress') : '进行中';
             }
           })
           this.activityList = data;
@@ -122,8 +117,43 @@ export default {
     goDetail: function (id) {
       return this.CONFIG.detailHref + "?pubId=" + id;
     },
-    toDetail (id) {
-      window.location.href = this.CONFIG.detailHref + "?pubId=" + id
+    getKeys (activity, key) {
+      let keys = this.CONFIG.keys
+      switch (activity[this.keys.resourceType]) {
+        case 'PORTAL_ACTIVITY': {
+          return keys.contribute[key]
+          break;
+        }
+        case 'PORTAL_VOTEACTIVITY': {
+          return keys.vote[key]
+          break;
+        }
+        default: {
+          console.log('is not activity or not property:' + key);
+          return ''
+          break;
+        }
+      }
+    },
+    toDetail (activity) {
+
+      let hrefs = this.CONFIG.detailHref
+      let href = '';
+      switch (activity[this.keys.resourceType]) {
+        case 'PORTAL_ACTIVITY': {
+          href = hrefs.activityrace;
+          break;
+        }
+        case 'PORTAL_VOTEACTIVITY': {
+          href = hrefs.activityvote;
+          break;
+        }
+        default: {/* 默认为 */
+          console.log('is not activity');
+          break;
+        }
+      }
+      window.location.href = href + "?pubId=" + activity[this.keys.id]
     },
     paging ({ pageNo, pageSize }) {
       this.pageNo = pageNo;
@@ -213,7 +243,8 @@ ui_pic_list_21_main .ac_text {
 .ui_pic_list_21-title_box {
   padding: 10px;
 }
-.ui_pic_list_21-img_box {
+.ui_pic_list_21-img_box,
+.ac_title {
   cursor: pointer;
 }
 </style>

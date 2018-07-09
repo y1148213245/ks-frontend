@@ -23,10 +23,6 @@
         <li v-for="(item,i) in candidateList" :key="i">
           <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic])" title="头像" @click="openDialog(i)" />
           <span class="work_activitydetail_09-title" @click="openDialog(i)" v-text="item[listKeys.sysTopic]"></span>
-          <el-button type="primary" class="work_activitydetail_09-vote">
-            <i></i>
-            <span>投上一票</span>
-          </el-button>
 
           <span class="work_activitydetail_09-vote_num">{{item[listKeys.voteNum]}}
             <label>票</label>

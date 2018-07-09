@@ -1,22 +1,24 @@
 <!-- 活动频道列表 -->
 <template>
   <div class="ui_pic_list_22 ui_pic_list_22_main">
+    <!-- 栏目列表 -->
     <section v-for="(activity, activity_index) in activitys" :key="activity_index" v-if="(activity[keys.contentCode] && activity[keys.contentCode].indexOf(CONFIG.showActivityTypeStr)>-1)">
       <div class="ui_pic_list_22-activity_title">
         <span class="ui_pic_list_22-activity_title-icon"></span>
         <a class="ui_pic_list_22-activity_title-a" :href="getListUrl(activity[keys.id])">{{activity[keys.name]}}</a>
       </div>
+      <!-- 活动列表 -->
       <el-card v-for="(item, index) in activityList[activity_index]" :key="index" v-if="index<2">
-        <div class="ui_pic_list_22-card_item-content" @click="toDetail(item[subKeys.id])">
+        <div class="ui_pic_list_22-card_item-content" @click="toDetail(item)">
           <div class="ui_pic_list_22-card_item-content-img_box">
-            <img :src="item[subKeys.pub_picMiddle]" class="ui_pic_list_22-card_item-content-img" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" :href="getDetailUrl(item[subKeys.id])">
+            <img :src="item[subKeys.pub_picMiddle]" class="ui_pic_list_22-card_item-content-img" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'">
           </div>
           <div class="ui_pic_list_22-card_item-content-title_box">
-            <a class="ui_pic_list_22-card_item-content-ac_title" :href="getDetailUrl(item[subKeys.id])">{{item[subKeys.PORTAL_ACTIVITY_SYS_TOPIC] }}</a>
+            <a class="ui_pic_list_22-card_item-content-ac_title">{{item[getKeys(item,'topic')] }}</a>
             <div class="ui_pic_list_22-card_item-content-clearfix">
               <div class="ui_pic_list_22-card_item-content-ac_text">
                 <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
-                <time class="ui_pic_list_22-card_item-content-time">{{item[subKeys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW] | formatDateNEW}}{{getStaticText('to') ? getStaticText('to') : '至'}}{{item[subKeys.reviewDate] | formatDateNEW}}
+                <time class="ui_pic_list_22-card_item-content-time">{{item[getKeys(item,'beginTime')] | formatDateNEW}}{{getStaticText('to') ? getStaticText('to') : '至'}}{{(item[subKeys.reviewDate] || item[getKeys(item,'endTime')]) | formatDateNEW}}
                 </time>
               </div>
               <template v-for="(status,i) in activityStatus">
@@ -53,6 +55,7 @@ export default {
     }
   },
   created () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_22;
     this.activityStatus = [
       {
         title: this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始',
@@ -73,9 +76,8 @@ export default {
     ]
   },
   mounted () {
-    this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_22;
     this.keys = this.CONFIG.keys;
-    this.subKeys = this.CONFIG.getActivityList.keys;
+    this.subKeys = this.CONFIG.getActivityList.baseKeys;
     this.getActivitys();
   },
   methods: {
@@ -93,8 +95,43 @@ export default {
         }
       });
     },
-    toDetail (id) {
-      window.location.href = this.CONFIG.getActivityList.detailHref + "?pubId=" + id
+    getKeys (activity, key) {
+      let keys = this.CONFIG.getActivityList.keys
+      switch (activity[this.subKeys.resourceType]) {
+        case 'PORTAL_ACTIVITY': {
+          return keys.contribute[key]
+          break;
+        }
+        case 'PORTAL_VOTEACTIVITY': {
+          return keys.vote[key]
+          break;
+        }
+        default: {
+          console.log('is not activity or not property:' + key);
+          return ''
+          break;
+        }
+      }
+    },
+    toDetail (activity) {
+
+      let hrefs = this.CONFIG.getActivityList.detailHref
+      let href = '';
+      switch (activity[this.subKeys.resourceType]) {
+        case 'PORTAL_ACTIVITY': {
+          href = hrefs.activityrace;
+          break;
+        }
+        case 'PORTAL_VOTEACTIVITY': {
+          href = hrefs.activityvote;
+          break;
+        }
+        default: {/* 默认为 */
+          console.log('is not activity');
+          break;
+        }
+      }
+      window.location.href = href + "?pubId=" + activity[this.subKeys.id]
     },
     getDetailUrl (id) {
       return this.CONFIG.getActivityList.detailHref + "?pubId=" + id;
@@ -119,17 +156,14 @@ export default {
         let currentTime = new Date().getTime();
         if (data && data instanceof Array && data.length > 0) {
           data.forEach(item => {
-            if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime < item[keys.reviewDate] && currentTime > item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
-              item.activityStatus = this.getStaticText('inProgress') ? this.getStaticText('inProgress') : '进行中';
-            }
-            else if (currentTime < item[keys.PORTAL_ACTIVITY_END_TIMESTAMPNEW] && currentTime > item[keys.reviewDate]) {
-              item.activityStatus = this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') : '评奖中';
-            }
-            else if (currentTime < item[keys.PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW]) {
-              item.activityStatus = this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始';
-            }
-            else {
+            if (currentTime > item[this.getKeys(item, 'endTime')]) {
               item.activityStatus = this.getStaticText('haveFinished') ? this.getStaticText('haveFinished') : '已结束';
+            } else if (currentTime < item[this.getKeys(item, 'beginTime')]) {
+              item.activityStatus = this.getStaticText('notBegin') ? this.getStaticText('notBegin') : '未开始';
+            } else if (this.getKeys(item, 'reviewDate') && currentTime > item[this.getKeys(item, 'reviewDate')]) {
+              item.activityStatus = this.getStaticText('appraisalBonus') ? this.getStaticText('appraisalBonus') : '评奖中';
+            } else {
+              item.activityStatus = this.getStaticText('inProgress') ? this.getStaticText('inProgress') : '进行中';
             }
           })
           _this.activityList[index] = data;
@@ -182,7 +216,9 @@ export default {
   color: #797979;
   white-space: nowrap;
 }
-.ui_pic_list_22-card_item-content-img_box {
+
+.ui_pic_list_22-card_item-content-img_box,
+.ui_pic_list_22-card_item-content-ac_title {
   cursor: pointer;
 }
 </style>

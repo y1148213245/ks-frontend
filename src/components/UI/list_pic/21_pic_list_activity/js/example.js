@@ -38,14 +38,30 @@ const prod = {
         pageSize: "8",
         searchText: null
       },
-      detailHref: "./activityrace.html",
-      keys: {
-        pub_picMiddle: "pub_picMiddle",
+      detailHref: {
+        activityrace:'./activityrace.html',
+        activityvote:'./activityvote.html'
+      },
+      baseKeys:{
         id: "id",
-        PORTAL_ACTIVITY_SYS_TOPIC: "PORTAL_ACTIVITY_SYS_TOPIC",
-        PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW: "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
-        PORTAL_ACTIVITY_END_TIMESTAMPNEW: "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
-        reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW'
+        resourceType:'pub_resource_type',
+        pub_picMiddle: "pub_picMiddle"
+      },
+      keys: {
+        'contribute':{
+          topic: "PORTAL_ACTIVITY_SYS_TOPIC",
+          beginTime: "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
+          endTime: "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
+          reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',
+        },
+        'vote':{
+          topic: "PORTAL_VOTEACTIVITY_SYS_TOPIC",
+          beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
+          endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
+          reviewDate:'',
+          
+        }
+        
       },
       pageSizes:[8,16,32,48],
       showItem:['title'],/* 控制显示,目前控制父栏目标题 title */
