@@ -175,8 +175,22 @@ export default {
       }
       this.initObj["onClick"] = function(swiper,event){
         // 解决loop:true时复制的元素不能跳转的问题,但是只能跳转到一个链接地址
-        //TODO: 更好的解决loop:true时复制的元素不能跳转的问题
-         obj.toCustomFun(obj.picList[swiper.realIndex], obj.CONFIG.complicatedItem.length > 0 ? obj.CONFIG.complicatedItem[0] : {});
+        //TODO: 更好的解决loop:true时复制的元素不能跳转的问题(给可能被点击的元素加属性.属性值为当前配置,这样就可以知道当前元素的对应配置在complicatedItem中的索引)
+        var index;
+        event.path.forEach(element => {
+          //console.dir(element);
+          // "in"遍历对象属性,可检测自身属性和原型链上的属性,但是hasOwnProperty只能检测自身属性,无法检测原型链上的属性
+          if("dataset" in element){
+            if("swiperSlideIndex" in element.dataset){
+                index = Number(element.dataset["swiperSlideIndex"]);
+                if(!isNaN(index)){
+                  index = index;
+                  return;
+                }
+            }
+          }
+        });
+        obj.toCustomFun(obj.picList[index], obj.CONFIG.complicatedItem.length > 0 ? obj.CONFIG.complicatedItem[0] : {});
       };
       this.mySwiper = new Swiper(obj.$el.getElementsByClassName("swiper-container"), this.initObj);
     },

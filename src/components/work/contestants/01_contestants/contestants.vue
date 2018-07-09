@@ -2,58 +2,58 @@
 <template>
   <div class="work_contestants_01 work_contestants_01_main">
     <el-steps :active="active" simple>
-      <el-step title="参赛人信息" icon="el-icon-edit"></el-step>
-      <el-step title="上传作品" icon="el-icon-upload"></el-step>
-      <el-step title="完成" icon="el-icon-check"></el-step>
+      <el-step :title="getStaticText('participantInformation') ? getStaticText('participantInformation') : '参赛人信息'" icon="el-icon-edit"></el-step>
+      <el-step :title="getStaticText('uploadPortfolios') ? getStaticText('uploadPortfolios') : '上传作品'" icon="el-icon-upload"></el-step>
+      <el-step :title="getStaticText('accomplish') ? getStaticText('accomplish') : '完成'" icon="el-icon-check"></el-step>
     </el-steps>
 
     <div v-show="active == 0">
       <el-card class="box-card" :body-style="{ padding: '0 0 0 10px' }">
         <div slot="header" class="clearfix">
-          <span class="ac_table_title ac_title_bottom">选择参赛人员</span>
-          <el-button style="float: right;" type="primary" round icon="el-icon-plus" size="medium" @click="additions = true">新增参赛人员</el-button>
+          <span class="ac_table_title ac_title_bottom">{{getStaticText('selectParticipant') ? getStaticText('selectParticipant') : "选择参赛人员"}}</span>
+          <el-button style="float: right;" type="primary" round icon="el-icon-plus" size="medium" @click="additions = true">{{getStaticText('addParticipant') ? getStaticText('addParticipant') : "新增参赛人员"}}</el-button>
 
-          <el-dialog title="添加参赛人信息" :visible.sync="additions">
+          <el-dialog :title="getStaticText('addParticipantInformation') ? getStaticText('addParticipantInformation') : '添加参赛人信息'" :visible.sync="additions">
             <div>
               <el-form :model="addParticipantsForm" :rules="rules" ref="addParticipantsForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="姓名：" prop="name">
+                <el-form-item :label="(getStaticText('name') ? getStaticText('name') : '姓名') + '：'" prop="name">
                   <el-input v-model="addParticipantsForm.name"></el-input>
                 </el-form-item>
-                <el-form-item label="性别：" prop="sex">
+                <el-form-item :label="(getStaticText('sex') ? getStaticText('sex') : '性别')+ '：'" prop="sex">
                   <el-radio-group v-model="addParticipantsForm.sex">
-                    <el-radio label="1">男</el-radio>
-                    <el-radio label="0">女</el-radio>
+                    <el-radio label="1">{{getStaticText('male') ? getStaticText('male') : "男"}}</el-radio>
+                    <el-radio label="0">{{getStaticText('female') ? getStaticText('female') : "女"}}</el-radio>
                   </el-radio-group>
                 </el-form-item>
-                <el-form-item label="身份证：" prop="identity">
+                <el-form-item :label="(getStaticText('identityCard') ? getStaticText('identityCard') : '身份证')+'：'" prop="identity">
                   <el-input v-model="addParticipantsForm.identity"></el-input>
                 </el-form-item>
-                <el-form-item label="电话：" prop="telNumber">
+                <el-form-item :label="(getStaticText('telePhone') ? getStaticText('telePhone') : '电话')+'：'" prop="telNumber">
                   <el-input v-model="addParticipantsForm.telNumber"></el-input>
                 </el-form-item>
               </el-form>
             </div>
             <span slot="footer" class="dialog-footer">
-              <el-button @click="additions = false">取 消</el-button>
-              <el-button :disabled="isAddingPeople" type="primary" @click="submitAddParticipantsForm('addParticipantsForm')">确 定</el-button>
+              <el-button @click="additions = false">{{getStaticText('cancel') ? getStaticText('cancel') : "取 消"}}</el-button>
+              <el-button :disabled="isAddingPeople" type="primary" @click="submitAddParticipantsForm('addParticipantsForm')">{{getStaticText('confirm') ? getStaticText('confirm') : '确 定'}}</el-button>
             </span>
           </el-dialog>
 
         </div>
         <el-table ref="singleTable" :data="participantsList" max-height="288" style="width: 700px" @current-change="handleCurrentChange" highlight-current-row>
-          <el-table-column align="center" prop="userName" label="姓名" width="120">
+          <el-table-column align="center" prop="userName" :label="getStaticText('name') ? getStaticText('name') : '姓名'" width="120">
           </el-table-column>
-          <el-table-column align="center" prop="gender" label="性别" width="120" :formatter="sexFormat">
+          <el-table-column align="center" prop="gender" :label="getStaticText('sex') ? getStaticText('sex') : '性别'" width="120" :formatter="sexFormat">
           </el-table-column>
-          <el-table-column align="center" prop="mobileNum" label="手机号" width="180">
+          <el-table-column align="center" prop="mobileNum" :label="getStaticText('mobilePhoneNum') ? getStaticText('mobilePhoneNum') : '手机号'" width="180">
           </el-table-column>
-          <el-table-column align="center" prop="identifyId" label="身份证号" show-overflow-tooltip>
+          <el-table-column align="center" prop="identifyId" :label="getStaticText('identityCardNum') ? getStaticText('identityCardNum') : '身份证号'" show-overflow-tooltip>
           </el-table-column>
         </el-table>
 
         <!--已参赛表格 -->
         <el-table :data="participantsedList" max-height="288" style="width: 700px" :row-class-name="setParticipantsListTableCellClassName">
-          <el-table-column align="center" prop="userName" label="已参赛" width="120">
+          <el-table-column align="center" prop="userName" :label="getStaticText('haveEnteredTheCompetition') ? getStaticText('haveEnteredTheCompetition') : '已参赛'" width="120">
           </el-table-column>
           <el-table-column align="center" prop="gender" width="120" :formatter="sexFormat">
           </el-table-column>
@@ -66,40 +66,40 @@
 
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span class="ac_table_title ac_title_bottom">相关信息</span>
+          <span class="ac_table_title ac_title_bottom">{{getStaticText('relevantInformation') ? getStaticText('relevantInformation') : '相关信息'}}</span>
         </div>
         <div class="work_contestants_01-people_box">
-          <label>参赛人:</label>
+          <label>{{getStaticText('pothunter') ? getStaticText('pothunter') : "参赛人"}}:</label>
           <span class="work_contestants_01-people_name">{{currentRow && currentRow.userName}}</span>
-          <label>手机号:</label>
+          <label>{{getStaticText('mobilePhoneNum') ? getStaticText('mobilePhoneNum') : '手机号'}}:</label>
           <span class="work_contestants_01-people_phone">{{currentRow && currentRow.mobileNum}}</span>
         </div>
         <div class="work_contestants_01-supplement is-required">
-          <label class="el-form-item__label">地区：</label>
+          <label class="el-form-item__label">{{getStaticText('region') ? getStaticText('region') : '地区'}}：</label>
           <work_common_05 :namespace="namespace" modulename="contestants_area" :currentarea.sync="addressInformaitionValue" :areastr="addressInformaition" ref="cascader" :config="CONFIG.cascaderConfig"></work_common_05>
         </div>
         <div class="work_contestants_01-supplement is-required">
-          <label class="el-form-item__label">组别：</label>
-          <el-select v-model="classInformaitionValue" placeholder="请选择参赛组别" filterable @change="updateSchool">
+          <label class="el-form-item__label">{{getStaticText('group') ? getStaticText('group') : "组别"}}：</label>
+          <el-select v-model="classInformaitionValue" :placeholder="getStaticText('pleaseSelectTheEntryGroup') ? getStaticText('pleaseSelectTheEntryGroup') : '请选择参赛组别'" filterable @change="updateSchool">
             <el-option v-for="item in classInformaition" :key="item" :label="item.label" :value="item">
             </el-option>
           </el-select>
         </div>
 
         <div class="work_contestants_01-supplement is-required">
-          <label class="el-form-item__label">学校：</label>
-          <el-select v-model="schoolInformaitionValue" placeholder="请选择学校" :disabled="!isSelectSchool" filterable>
+          <label class="el-form-item__label">{{getStaticText('school') ? getStaticText('school') : "学校"}}：</label>
+          <el-select v-model="schoolInformaitionValue" :placeholder="getStaticText('pleaseSelectSchool') ? getStaticText('pleaseSelectSchool') : '请选择学校'" :disabled="!isSelectSchool" filterable>
             <el-option v-for="(item,index) in schoolArr" :label="item.label" :value="item.SYS_TOPIC" :key="index"></el-option>
             <!-- <el-option label="其他" value="其他"></el-option> -->
           </el-select>
         </div>
 
         <div class="work_contestants_01-supplement">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style=" display:inline-block" >
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="年级班级：" prop="class">
-                  <el-input placeholder="请填写年级班级" v-model="addSupplementForm.class" clearable class="work_contestants_01-supplement-class_input"></el-input>
+                <el-form-item :label="(getStaticText('gradeAndClass') ? getStaticText('gradeAndClass') : '年级班级')+':'" prop="class">
+                  <el-input :placeholder="getStaticText('pleaseEnterGradeAndClass') ? getStaticText('pleaseEnterGradeAndClass') : '请填写年级班级'" v-model="addSupplementForm.class" clearable class="work_contestants_01-supplement-class_input"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -107,11 +107,11 @@
         </div>
 
         <div class="work_contestants_01-supplement isLongInput" v-show="isShowCustomeSchool">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="学校：" prop="customSchool">
-                  <el-input placeholder="请填写学校" v-model="addSupplementForm.customSchool" clearable></el-input>
+                <el-form-item :label="(getStaticText('school') ? getStaticText('school') : '学校') + '：'" prop="customSchool">
+                  <el-input :placeholder="getStaticText('pleaseSelectSchool') ? getStaticText('pleaseSelectSchool') : '请填写学校'" v-model="addSupplementForm.customSchool" clearable></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -119,11 +119,11 @@
         </div>
 
         <div class="work_contestants_01-supplement isLongInput">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="学校地址：" prop="schoolAddress">
-                  <el-input placeholder="请填写学校地址" v-model="addSupplementForm.schoolAddress" clearable></el-input>
+                <el-form-item :label="(getStaticText('schoolAddress') ? getStaticText('schoolAddress') : '学校地址')+'：'" prop="schoolAddress">
+                  <el-input :placeholder="getStaticText('pleaseEnterSchoolAddress') ? getStaticText('pleaseEnterSchoolAddress') : '请填写学校地址'" v-model="addSupplementForm.schoolAddress" clearable></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -131,11 +131,11 @@
         </div>
 
         <div class="work_contestants_01-supplement isLongInput">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display: inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="邮箱：" prop="email">
-                  <el-input placeholder="请填写邮箱" v-model="addSupplementForm.email" clearable></el-input>
+                <el-form-item :label="(getStaticText('email') ? getStaticText('email') : '邮箱') + '：'" prop="email">
+                  <el-input :placeholder="getStaticText('pleaseEnterEmail') ? getStaticText('pleaseEnterEmail') : '请填写邮箱'" v-model="addSupplementForm.email" clearable></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -143,11 +143,11 @@
         </div>
 
         <div class="work_contestants_01-supplement isLongInput">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="邮编：" prop="zipCode">
-                  <el-input placeholder="请填写邮编" v-model="addSupplementForm.zipCode" clearable></el-input>
+                <el-form-item :label="(getStaticText('postcode') ? getStaticText('postcode'): '邮编') +'：'" prop="zipCode">
+                  <el-input :placeholder="getStaticText('pleaseInputPostcode') ? getStaticText('pleaseInputPostcode') : '请填写邮编'" v-model="addSupplementForm.zipCode" clearable></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -155,11 +155,11 @@
         </div>
 
         <div class="work_contestants_01-supplement isLongInput">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="指导教师：">
-                  <el-input placeholder="请填写指导教师" v-model="addSupplementForm.teacher" clearable></el-input>
+                <el-form-item :label="(getStaticText('guidanceTeacher') ? getStaticText('guidanceTeacher') : '指导教师')+'：'">
+                  <el-input :placeholder="getStaticText('pleaseEnterGuidanceTeacher') ? getStaticText('pleaseEnterGuidanceTeacher') : '请填写指导教师'" v-model="addSupplementForm.teacher" clearable></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -167,11 +167,11 @@
         </div>
 
         <div class="work_contestants_01-supplement isLongInput">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="指导教师电话：" prop="teacherPhone">
-                  <el-input placeholder="请填写指导教师电话" v-model="addSupplementForm.teacherPhone" clearable></el-input>
+                <el-form-item :label="(getStaticText('guidanceTeacherPhoneNum') ? getStaticText('guidanceTeacherPhoneNum') : '指导教师电话') + '：'" prop="teacherPhone">
+                  <el-input :placeholder="getStaticText('pleaseInputGuidanceTeacherTelephone') ? getStaticText('pleaseInputGuidanceTeacherTelephone') : '请填写指导教师电话'" v-model="addSupplementForm.teacherPhone" clearable></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -179,11 +179,11 @@
         </div>
 
         <div class="work_contestants_01-supplement isLongInput">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display:inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="组织教师：">
-                  <el-input placeholder="请填写组织教师" v-model="addSupplementForm.organizationTeacher" clearable></el-input>
+                <el-form-item :label="(getStaticText('organizationTeacher') ? getStaticText('organizationTeacher') : '组织教师') + '：'">
+                  <el-input :placeholder="getStaticText('pleaseInputOrganizationTeacher') ? getStaticText('pleaseInputOrganizationTeacher') : '请填写组织教师'" v-model="addSupplementForm.organizationTeacher" clearable></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -191,11 +191,11 @@
         </div>
 
         <div class="work_contestants_01-supplement isLongInput">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="组织教师电话：" prop="organizationTeacherPhone">
-                  <el-input placeholder="请填写组织教师电话" v-model="addSupplementForm.organizationTeacherPhone" clearable></el-input>
+                <el-form-item :label="(getStaticText('organizationTeacherPhoneNum') ? getStaticText('organizationTeacherPhoneNum') : '组织教师电话') + '：'" prop="organizationTeacherPhone">
+                  <el-input :placeholder="getStaticText('pleaseInputOrganizationTeacherPhoneNum') ? getStaticText('pleaseInputOrganizationTeacherPhoneNum') : '请填写组织教师电话'" v-model="addSupplementForm.organizationTeacherPhone" clearable></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -203,16 +203,16 @@
         </div>
 
         <div class="work_contestants_01-supplement isLongInput">
-          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display：inline-block">
+          <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
-                <el-form-item label="设为隐私">
+                <el-form-item :label="getStaticText('setToPrivacy') ? getStaticText('setToPrivacy') : '设为隐私'">
                   <el-radio-group v-model="addSupplementForm.isHide">
-                    <el-radio label="是"></el-radio>
-                    <el-radio label="否"></el-radio>
+                    <el-radio :label="getStaticText('yes') ? getStaticText('yes') : '是'"></el-radio>
+                    <el-radio :label="getStaticText('no') ? getStaticText('no') : '否'"></el-radio>
                   </el-radio-group>
                   <el-tooltip class="work_contestants_01-illustrate" effect="dark" placement="top">
-                    <p class="work_contestants_01-illustrate_info" slot="content">隐私功能用于设置是否公开参赛作品，如选择“否”，默认为您自愿公开展示参赛作品。</p>
+                    <p class="work_contestants_01-illustrate_info" slot="content">{{getStaticText('thePrivacyFunctionIntroduction') ? getStaticText('thePrivacyFunctionIntroduction') : "隐私功能用于设置是否公开参赛作品，如选择“否”，默认为您自愿公开展示参赛作品。"}}</p>
                     <i class="el-icon-question"></i>
                   </el-tooltip>
                 </el-form-item>
@@ -222,160 +222,160 @@
           </el-form>
         </div>
       </el-card>
-      <el-button type="primary" class="ac_to_next" @click="submitAddSupplementForm('addSupplementForm')">下一步</el-button>
+      <el-button type="primary" class="ac_to_next" @click="submitAddSupplementForm('addSupplementForm')">{{getStaticText('nextStep') ? getStaticText('nextStep') : "下一步"}}</el-button>
     </div>
     <!-- 上传作品 active == 1-->
     <div v-show="active == 1">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span class="ac_table_title ac_title_bottom">填写作品信息</span>
+          <span class="ac_table_title ac_title_bottom">{{getStaticText('inputProductionInfo') ? getStaticText('inputProductionInfo') : "填写作品信息" }}</span>
         </div>
         <el-form :model="addAnnexWorksForm" :rules="rules" ref="addAnnexWorksForm" label-width="100px" class="demo-ruleForm">
 
-          <el-form-item label="标题：" prop="title">
+          <el-form-item :label="(getStaticText('title') ? getStaticText('title') : '标题')+'：'" prop="title">
             <el-input v-model="addAnnexWorksForm.title"></el-input>
           </el-form-item>
 
-          <el-form-item label="简介：" prop="synopsis" v-if="worktype_isAttachment">
+          <el-form-item :label="(getStaticText('briefIntroduction') ? getStaticText('briefIntroduction') : '简介')+'：'" prop="synopsis" v-if="worktype_isAttachment">
             <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 14 }" v-model="addAnnexWorksForm.synopsis"></el-input>
             <span class="work_contestants_01-abstract-length">{{addAnnexWorksForm.synopsis.length}}/500</span>
           </el-form-item>
 
-          <el-form-item label="文件：" prop="files" v-if="worktype_isAttachment">
+          <el-form-item :label="(getStaticText('file') ? getStaticText('file') : '文件') + '：'" prop="files" v-if="worktype_isAttachment">
             <el-checkbox-group v-model="addAnnexWorksForm.files"></el-checkbox-group>
             <el-upload class="upload-demo" :action="upLoadUrl()" name="file" :before-upload="beforeFileUpload" :on-preview="handlePreview" :on-success="upLoadingSuccess" multiple :limit="1" :on-exceed="handleExceed" :file-list="addAnnexWorksForm.files">
-              <el-button size="small" type="primary">点击上传</el-button>
+              <el-button size="small" type="primary">{{getStaticText('clickOnToUpload') ? getStaticText('clickOnToUpload') : "点击上传"}}</el-button>
             </el-upload>
           </el-form-item>
-          <el-form-item label="正文：" prop="content" v-if="!worktype_isAttachment">
-            <el-input type="textarea" :rows="15" placeholder="请输入正文" v-model="addAnnexWorksForm.content">
+          <el-form-item :label="(getStaticText('mainBody') ? getStaticText('mainBody') : '正文') + '：'" prop="content" v-if="!worktype_isAttachment">
+            <el-input type="textarea" :rows="15" :placeholder="getStaticText('pleaseInputMainBody') ? getStaticText('pleaseInputMainBody') : '请输入正文'" v-model="addAnnexWorksForm.content">
             </el-input>
             <span class="ac_table-content_text_length" v-text="addAnnexWorksForm.content.length"></span>
           </el-form-item>
           <el-form-item>
             <div class="ac_button">
-              <el-button type="primary" @click="previouStep">上一步</el-button>
-              <el-button type="primary" @click="priview">提交</el-button>
+              <el-button type="primary" @click="previouStep">{{getStaticText('lastStep') ? getStaticText('lastStep') : '上一步'}}</el-button>
+              <el-button type="primary" @click="priview">{{getStaticText('submit') ? getStaticText('submit') : "提交"}}</el-button>
             </div>
           </el-form-item>
         </el-form>
 
-        <el-dialog title="预览" :visible.sync="dialogVisible" width="50%">
+        <el-dialog :title="getStaticText('preview') ? getStaticText('preview') : '预览'" :visible.sync="dialogVisible" width="50%">
 
           <section class="work_contestants_01-section1_preview">
-            <h3>基本信息：</h3>
+            <h3>{{getStaticText('basicInformation') ? getStaticText('basicInformation') : "基本信息"}}：</h3>
             <ul>
               <li>
-                <label>姓名:</label>
+                <label>{{getStaticText('name') ? getStaticText('name') : '姓名'}}:</label>
                 <span v-text="currentRow.userName"></span>
               </li>
               <li>
-                <label>性别:</label>
+                <label>{{getStaticText('sex') ? getStaticText('sex') : "性别"}}:</label>
                 <span>{{currentRow.gender | sexFormat}}</span>
               </li>
               <li>
-                <label>手机号:</label>
+                <label>{{getStaticText('mobilePhoneNum') ? getStaticText('mobilePhoneNum') : "手机号"}}:</label>
                 <span v-text="currentRow.mobileNum"></span>
               </li>
               <li>
-                <label>身份证:</label>
+                <label>{{getStaticText('identityCard') ? getStaticText('identityCard') : "身份证"}}:</label>
                 <span v-text="currentRow.identifyId"></span>
               </li>
             </ul>
           </section>
           <section class="work_contestants_01-section2_preview">
-            <h3>补充信息：</h3>
+            <h3>{{getStaticText('additionalInformation') ? getStaticText('additionalInformation') : "补充信息"}}：</h3>
             <ul>
               <li>
-                <label>地区:</label>
+                <label>{{getStaticText('region') ? getStaticText('region') : '地区'}}:</label>
                 <span v-text="addressInformaitionValue"></span>
               </li>
               <li>
-                <label>组别:</label>
+                <label>{{getStaticText('group') ? getStaticText('group') : "组别"}}:</label>
                 <span v-text="classInformaitionValue"></span>
               </li>
               <li>
-                <label>年级班级:</label>
+                <label>{{getStaticText('gradeAndClass') ? getStaticText('gradeAndClass') : "年级班级"}}:</label>
                 <span v-text="addSupplementForm.class"></span>
               </li>
               <li>
-                <label>学校:</label>
+                <label>{{getStaticText('school') ? getStaticText('school') : "学校"}}:</label>
                 <span v-text="schoolInformaitionValue"></span>
               </li>
               <li>
-                <label>其他学校:</label>
+                <label>{{getStaticText('otherSchools') ? getStaticText('otherSchools') : "其他学校"}}:</label>
                 <span v-text="addSupplementForm.customSchool"></span>
               </li>
               <li>
-                <label>学校地址:</label>
+                <label>{{getStaticText('schoolAddress') ? getStaticText('schoolAddress') : "学校地址"}}:</label>
                 <span v-text="addSupplementForm.schoolAddress"></span>
               </li>
               <li>
-                <label>邮箱:</label>
+                <label>{{getStaticText('email') ? getStaticText('email') : "邮箱"}}:</label>
                 <span v-text="addSupplementForm.email"></span>
               </li>
               <li>
-                <label>邮编:</label>
+                <label>{{getStaticText('postcode') ? getStaticText('postcode') : '邮编'}}:</label>
                 <span v-text="addSupplementForm.zipCode"></span>
               </li>
               <li>
-                <label>指导教师:</label>
+                <label>{{getStaticText('guidanceTeacher') ? getStaticText('guidanceTeacher') : "指导教师"}}:</label>
                 <span v-text="addSupplementForm.teacher"></span>
               </li>
               <li>
-                <label>指导教师电话:</label>
+                <label>{{getStaticText('guidanceTeacherPhoneNum') ? getStaticText('guidanceTeacherPhoneNum') : "指导教师电话"}}:</label>
                 <span v-text="addSupplementForm.teacherPhone"></span>
               </li>
               <li>
-                <label>组织教师:</label>
+                <label>{{getStaticText('organizationTeacher') ? getStaticText('organizationTeacher') : "组织教师"}}:</label>
                 <span v-text="addSupplementForm.organizationTeacher"></span>
               </li>
               <li>
-                <label>组织教师电话:</label>
+                <label>{{getStaticText('organizationTeacherPhoneNum') ? getStaticText('organizationTeacherPhoneNum') : '组织教师电话'}}:</label>
                 <span v-text="addSupplementForm.organizationTeacherPhone"></span>
               </li>
               <li>
-                <label>是否隐私:</label>
+                <label>{{getStaticText('whetherPrivacy') ? getStaticText('whetherPrivacy') : "是否隐私"}}:</label>
                 <span v-text="addSupplementForm.isHide"></span>
               </li>
             </ul>
           </section>
           <section class="work_contestants_01-section3_preview">
-            <h3>作品信息：</h3>
+            <h3>{{getStaticText('productionInfo') ? getStaticText('productionInfo') : '作品信息'}}：</h3>
             <ul>
               <li>
-                <label>标题:</label>
+                <label>{{getStaticText('title') ? getStaticText('title') : "标题"}}:</label>
                 <span v-text="addAnnexWorksForm.title"></span>
               </li>
               <li v-if="worktype_isAttachment">
-                <label>简介:</label>
+                <label>{{getStaticText('briefIntroduction') ? getStaticText('briefIntroduction') : '简介'}}:</label>
                 <p v-text="addAnnexWorksForm.synopsis"></p>
               </li>
               <li v-if="!worktype_isAttachment">
-                <label>正文:</label>
+                <label>{{getStaticText('mainBody') ? getStaticText('mainBody') : '正文'}}:</label>
                 <p class="preview_content" v-html="addAnnexWorksForm.contentHtml"></p>
               </li>
               <li v-if="worktype_isAttachment">
-                <label>文件:</label>
+                <label>{{getStaticText('file') ? getStaticText('file') : "文件"}}:</label>
                 <p v-text="fileName"></p>
               </li>
             </ul>
           </section>
 
           <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" :disabled="isLimitSendText" @click="dialogClose">确 定</el-button>
+            <el-button @click="dialogVisible = false">{{getStaticText('cancel') ? getStaticText('cancel') : "取 消"}}</el-button>
+            <el-button type="primary" :disabled="isLimitSendText" @click="dialogClose">{{getStaticText('confirm') ? getStaticText('confirm') : "确 定"}}</el-button>
           </span>
         </el-dialog>
       </el-card>
     </div>
     <div class="ac_last_text" v-show="active == 2">
       <span>
-        <i class="el-icon-success"></i>您的作品已提交成功</span>
+        <i class="el-icon-success"></i>{{getStaticText('productionSubmitSuccessfullyInfo') ? getStaticText('productionSubmitSuccessfullyInfo') : '您的作品已提交成功'}}</span>
       <div class="where_to_go">
-        <el-button type="primary" round @click="toIndex">前往首页</el-button>
-        <el-button type="primary" round @click="toPersonal">前往参与的活动</el-button>
-        <el-button type="primary" round @click="reload">继续投稿</el-button>
+        <el-button type="primary" round @click="toIndex">{{getStaticText('goToHomePage') ? getStaticText('goToHomePage') : "前往首页"}}</el-button>
+        <el-button type="primary" round @click="toPersonal">{{getStaticText('goToTheEventsYouParticipateIn') ? getStaticText('goToTheEventsYouParticipateIn') : "前往参与的活动"}}</el-button>
+        <el-button type="primary" round @click="reload">{{getStaticText('continueToContribute') ? getStaticText('continueToContribute') : "继续投稿"}}</el-button>
       </div>
 
     </div>
@@ -395,36 +395,10 @@ export default {
     namespace: String
   },
   data () {
-    var customSchoolValidate = (rule, value, callback) => {
-      if (this.schoolInformaitionValue === '其他' && value == "") {
-        callback(new Error("请填写学校"));
-      } else {
-        callback();
-      }
-    }
-    var mobileCheck = (rule, value, callback) => {
-      if (value != '' && !/^[\d()\-\s]*$/.test(value)) {
-        callback(new Error("请输入正确电话号"));
-      } else {
-        callback();
-      }
-    }
-    var zipCodeCheck = (rule, value, callback) => {
-      if (value != '' && !/^[1-9][0-9]{5}$/.test(value)) {
-        callback(new Error("请输入正确邮政编码"));
-      } else {
-        callback();
-      }
-    }
-
-    var abstractCheck = (rule, value, callback) => {
-      if (value.length > 500) {
-        callback(new Error("简介不得多于500字"));
-      } else {
-        callback();
-      }
-    }
-
+    var customSchoolValidate;
+    var mobileCheck;
+    var zipCodeCheck;
+    var abstractCheck;
     return {
       // loginName: null,
       editor: "",/* 编辑器实例 */
@@ -449,58 +423,7 @@ export default {
       isShowCustomeSchool: false,/* 是否显示自定义学校输入框 */
       isSelectSchool: false,/* 是否可以选择学校 */
       isLimitSendText: false,/* 是否正在发送正文 */
-      rules: {
-        name: [
-          { required: true, message: "请输入参赛人姓名", trigger: "blur" },
-          { validator: ValidateRules.nameCheck, trigger: "blur" }
-        ],
-        identity: [
-          { required: true, message: "请输入参赛人身份证号", trigger: "blur" },
-          { validator: ValidateRules.IDCheckSimple, trigger: "blur" }
-        ],
-        telNumber: [
-          { required: true, message: "请输入参赛人手机号", trigger: "blur" },
-          { validator: mobileCheck, trigger: "blur" }
-        ],
-        school: [{ required: true, message: "请输入学校", trigger: "blur" }],
-        customSchool: [
-          { required: true, message: "请输入学校", trigger: "blur" },
-          { validator: customSchoolValidate, trigger: "blur" }
-        ],
-        teacher: [
-          { required: true, message: "请输入指导教师", trigger: "blur" }
-        ],
-        teacherPhone: [
-          { validator: mobileCheck, trigger: "blur" }
-        ],
-        organizationTeacherPhone: [
-          { validator: mobileCheck, trigger: "blur" }
-        ],
-        class: [
-          { required: true, message: "请输入年级班级", trigger: "blur" }
-        ],
-        email: [
-          { required: true, message: "请输入邮箱", trigger: "blur" },
-          { validator: ValidateRules.validateEmail, trigger: "blur" }
-        ],
-        zipCode: [
-          { validator: zipCodeCheck, trigger: "blur" }
-        ],
-        schoolAddress: [
-          { required: true, message: "请输入学校地址", trigger: "blur" }
-        ],
-        title: [
-          { required: true, message: "请输入参赛作品标题", trigger: "blur" }
-        ],
-        synopsis: [
-          { required: true, message: "请输入参赛作品简介", trigger: "blur" },
-          { validator: abstractCheck, trigger: "blur" }
-        ],
-        // files: [{ required: true, message: "请上传作品附件", trigger: "blur" }],
-        content: [
-          { required: true, message: "请填写参赛文章", trigger: "blur" }
-        ]
-      },
+      rules: {},
       addParticipantsForm: {
         name: "",
         sex: "1",
@@ -518,7 +441,7 @@ export default {
         zipCode: '',
         organizationTeacher: '',
         organizationTeacherPhone: '',
-        isHide: '否'
+        isHide: CONFIG && CONFIG.staticText && CONFIG.staticText.no ? CONFIG.staticText.no : '否'
       },
       addressInformaitionValue: "",
       classInformaitionValue: "",
@@ -534,22 +457,105 @@ export default {
       participantsedList: []
     };
   },
+
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].contestants.contestants_01;
     var _this = this;
     let stamp = new Date().getTime();
-    Get(CONFIG.BASE_URL + "checkToken.do?stamp=" + stamp).then(function (rep) {
+    Get(CONFIG.BASE_URL + "checkToken.do?stamp=" + stamp).then(rep => {
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
         _this.userId = datas.id;
         _this.loginName = datas.loginName;
         _this.queryParticipants();
       } else {
-        alert("请登录");
+        alert(this.getStaticText('pleaseLogin') ? this.getStaticText('pleaseLogin') : "请登录");
         let url = "./login.html";
         window.location.href = url;
       }
     });
+    this.rules = {
+      name: [
+        { required: true, message: this.getStaticText('pleaseInputParticipantName') ? this.getStaticText('pleaseInputParticipantName') : "请输入参赛人姓名", trigger: "blur" },
+        { validator: ValidateRules.nameCheck, trigger: "blur" }
+      ],
+      identity: [
+        { required: true, message: this.getStaticText('pleaseInputParticipantIDCard') ? this.getStaticText('pleaseInputParticipantIDCard') : "请输入参赛人身份证号", trigger: "blur" },
+        { validator: ValidateRules.IDCheckSimple, trigger: "blur" }
+      ],
+      telNumber: [
+        { required: true, message: this.getStaticText('pleaseInputParticipantPhoneNum') ? this.getStaticText('pleaseInputParticipantPhoneNum') : "请输入参赛人手机号", trigger: "blur" },
+        { validator: mobileCheck, trigger: "blur" }
+      ],
+      school: [{ required: true, message: this.getStaticText('pleaseEnterSchool') ? this.getStaticText('pleaseEnterSchool') : "请输入学校", trigger: "blur" }],
+      customSchool: [
+        { required: true, message: this.getStaticText('pleaseEnterSchool') ? this.getStaticText('pleaseEnterSchool') : "请输入学校", trigger: "blur" },
+        { validator: customSchoolValidate, trigger: "blur" }
+      ],
+      teacher: [
+        { required: true, message: this.getStaticText('pleaseInputGuidanceTeacher') ? this.getStaticText('pleaseInputGuidanceTeacher') : "请输入指导教师", trigger: "blur" }
+      ],
+      teacherPhone: [
+        { validator: mobileCheck, trigger: "blur" }
+      ],
+      organizationTeacherPhone: [
+        { validator: mobileCheck, trigger: "blur" }
+      ],
+      class: [
+        { required: true, message: this.getStaticText('pleaseInputGradeAndClass') ? this.getStaticText('pleaseInputGradeAndClass') : "请输入年级班级", trigger: "blur" }
+      ],
+      email: [
+        { required: true, message: this.getStaticText('pleaseInputEmail') ? this.getStaticText('pleaseInputEmail') : "请输入邮箱", trigger: "blur" },
+        { validator: ValidateRules.validateEmail, trigger: "blur" }
+      ],
+      zipCode: [
+        { validator: zipCodeCheck, trigger: "blur" }
+      ],
+      schoolAddress: [
+        { required: true, message: this.getStaticText('pleaseInputSchoolAddress') ? this.getStaticText('pleaseInputSchoolAddress') : "请输入学校地址", trigger: "blur" }
+      ],
+      title: [
+        { required: true, message: this.getStaticText('pleaseInputEntryTitle') ? this.getStaticText('pleaseInputEntryTitle') : "请输入参赛作品标题", trigger: "blur" }
+      ],
+      synopsis: [
+        { required: true, message: this.getStaticText('pleaseInputEntryIntroduction') ? this.getStaticText('pleaseInputEntryIntroduction') : "请输入参赛作品简介", trigger: "blur" },
+        { validator: abstractCheck, trigger: "blur" }
+      ],
+      // files: [{ required: true, message: "请上传作品附件", trigger: "blur" }],
+      content: [
+        { required: true, message: this.getStaticText('pleaseInputEntryArticle') ? this.getStaticText('pleaseInputEntryArticle') : "请填写参赛文章", trigger: "blur" }
+      ]
+    };
+    this.customSchoolValidate = (rule, value, callback) => {
+      if (this.schoolInformaitionValue === (this.getStaticText('others') ? this.getStaticText('others'): '其他') && value == "") {
+        callback(new Error(this.getStaticText('pleaseInputSchool') ? this.getStaticText('pleaseInputSchool') : "请填写学校"));
+      } else {
+        callback();
+      }
+    };
+    this.mobileCheck = (rule, value, callback) => {
+      if (value != '' && !/^[\d()\-\s]*$/.test(value)) {
+        callback(new Error(this.getStaticText('pleaseInputCorrectPhoneNum') ? this.getStaticText('pleaseInputCorrectPhoneNum') : "请输入正确电话号"));
+      } else {
+        callback();
+      }
+    };
+    this.zipCodeCheck = (rule, value, callback) => {
+      if (value != '' && !/^[1-9][0-9]{5}$/.test(value)) {
+        callback(new Error(this.getStaticText('pleaseInputCorrectPostcode') ? this.getStaticText('pleaseInputCorrectPostcode') : "请输入正确邮政编码"));
+      } else {
+        callback();
+      }
+    };
+    this.abstractCheck = (rule, value, callback) => {
+      if (value.length > 500) {
+        callback(new Error(this.getStaticText('profileShallNotExceedFiveHundredsWords') ? this.getStaticText('profileShallNotExceedFiveHundredsWords') : "简介不得多于500字"));
+      } else {
+        callback();
+      }
+    };
+
+
   },
 
   mounted () {
@@ -702,7 +708,7 @@ export default {
         }
       }).then(rep => {
         this.worktype = rep.data.WORKTYPE;
-        this.worktype_isAttachment = rep.data.WORKTYPE == '附件' ? true : false;
+        this.worktype_isAttachment = rep.data.WORKTYPE == (this.getStaticText('accessory') ? this.getStaticText('accessory') : '附件') ? true : false;
         this.topic = rep.data.SYS_TOPIC;
         this.relatedInformationList = rep.data;
         this.addressInformaition = rep.data.AREALIMT_BIG || rep.data.AREALIMT;/* 优先取多地区字段 */
@@ -728,55 +734,55 @@ export default {
       if (this.currentRow === "") {
         this.$message({
           type: "error",
-          message: "请在列表里选择参赛人"
+          message: this.getStaticText('pleaseSelectTheParticipantInTheList') ? this.getStaticText('pleaseSelectTheParticipantInTheList') : "请在列表里选择参赛人"
         });
         return false;
       } else if (this.addressInformaitionValue == "") {
         this.$message({
           type: "error",
-          message: "请选择地区"
+          message: this.getStaticText('pleaseSelectRegion') ? this.getStaticText('pleaseSelectRegion') : "请选择地区"
         });
         return false;
       } else if (this.classInformaitionValue == "") {
         this.$message({
           type: "error",
-          message: "请选择组别"
+          message: this.getStaticText('pleaseSelectGroup') ? this.getStaticText('pleaseSelectGroup') : "请选择组别"
         });
         return false;
       } else if (this.schoolInformaitionValue == "") {
         this.$message({
           type: "error",
-          message: "请选择选择学校"
+          message: this.getStaticText('pleaseSelectSchool') ? this.getStaticText('pleaseSelectSchool') : "请选择学校"
         });
         return false;
-      } else if (this.schoolInformaitionValue === '其他' && this.addSupplementForm.customSchool == '') {
+      } else if (this.schoolInformaitionValue === (this.getStaticText('others') ? this.getStaticText('others') : '其他') && this.addSupplementForm.customSchool == '') {
         this.$message({
           type: "error",
-          message: "请选择填写学校"
+          message: this.getStaticText('pleaseSelectAndInputSchool') ? this.getStaticText('pleaseSelectAndInputSchool') : "请选择填写学校"
         });
         return false;
       } else if (this.addSupplementForm.schoolAddress == "") {
         this.$message({
           type: "error",
-          message: "请选择填写学校地址"
+          message: this.getStaticText('pleaseSelectAndInputSchoolAddress') ? this.getStaticText('pleaseSelectAndInputSchoolAddress') : "请选择填写学校地址"
         });
         return false;
       } else if (this.addSupplementForm.class == "") {
         this.$message({
           type: "error",
-          message: "请选择填写班级"
+          message: this.getStaticText('pleaseSelectAndInputClass') ? this.getStaticText('pleaseSelectAndInputClass') : "请选择填写班级"
         });
         return false;
       } else if (this.addSupplementForm.teacherPhone != "" && !/\b\d{7,12}\b/.test(this.addSupplementForm.teacherPhone)) {
         this.$message({
           type: "error",
-          message: "请选择填写正确指导教师手机号"
+          message: this.getStaticText('pleaseSelectAndInputCorrectGuidanceTeacherPhoneNum') ? this.getStaticText('pleaseSelectAndInputCorrectGuidanceTeacherPhoneNum') : "请选择填写正确指导教师手机号"
         });
         return false;
       } else if (this.addSupplementForm.organizationTeacherPhone != "" && !/\b\d{7,12}\b/.test(this.addSupplementForm.organizationTeacherPhone)) {
         this.$message({
           type: "error",
-          message: "请选择填写正确组织教师手机号"
+          message: this.getStaticText('pleaseSelectAndInputCorrectOrganizationTeacherPhoneNum') ? this.getStaticText('pleaseSelectAndInputCorrectOrganizationTeacherPhoneNum') : "请选择填写正确组织教师手机号"
         });
         return false;
       } else if (this.addSupplementForm.email == "" ||
@@ -784,13 +790,13 @@ export default {
           this.addSupplementForm.email != this.addSupplementForm.email.match(/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/))) {
         this.$message({
           type: "error",
-          message: "请填写邮箱"
+          message: this.getStaticText('pleaseEnterEmail') ? this.getStaticText('pleaseEnterEmail') : "请填写邮箱"
         });
         return false;
       } else if (this.addSupplementForm.zipCode != '' && !/^[1-9][0-9]{5}$/.test(this.addSupplementForm.zipCode)) {
         this.$message({
           type: "error",
-          message: "请填写正确邮编"
+          message: this.getStaticText('pleaseEnterCorrectPostcode') ? this.getStaticText('pleaseEnterCorrectPostcode') : "请填写正确邮编"
         });
         return false;
       } else {
@@ -825,7 +831,7 @@ export default {
                 } else {
                   this.$message({
                     type: "success",
-                    message: "学生添加成功!"
+                    message: this.getStaticText('studentAddSuccess') ? this.getStaticText('studentAddSuccess') : "学生添加成功!"
                   });
                   this.queryParticipants();
                 }
@@ -865,9 +871,9 @@ export default {
       let size = file.size / 1024;
 
       if (!isDOCX && !isDOC && !isText && !isPdf && !isAudio && !isImage) {
-        this.$message.error("上传作品文件只能是 doc、docx、txt、pdf格式,图片或音频!");
+        this.$message.error(this.getStaticText('uploadProductionFormatInfo') ? this.getStaticText('uploadProductionFormatInfo') : "上传作品文件只能是 doc、docx、txt、pdf格式,图片或音频!");
         if (size > 10240) {
-          this.$message.error("上传作品文件不能超过10M!");
+          this.$message.error(this.getStaticText('uploadProductionSizeInfo') ? this.getStaticText('uploadProductionSizeInfo') : "上传作品文件不能超过10M!");
           return false
         }
       }
@@ -884,12 +890,12 @@ export default {
         this.fileName = file.name;
         this.$message({
           type: "success",
-          message: "文件上传成功"
+          message: this.getStaticText('fileUploadSuccessInfo') ? this.getStaticText('fileUploadSuccessInfo') : "文件上传成功"
         });
       } else {
         this.$message({
           type: "info",
-          message: "文件上传失败，请重试"
+          message: this.getStaticText('fileUploadErrorInfo') ? this.getStaticText('fileUploadErrorInfo') : "文件上传失败，请重试"
         });
       }
     },
@@ -904,7 +910,7 @@ export default {
           if (this.worktype_isAttachment && this.attachID == "") {
             this.$message({
               type: "error",
-              message: "请上传参赛附件"
+              message: this.getStaticText('pleaseUploadEntryAccessory') ? this.getStaticText('pleaseUploadEntryAccessory') : "请上传参赛附件"
             });
             return false;
           } else if (
@@ -913,13 +919,13 @@ export default {
           ) {
             this.$message({
               type: "error",
-              message: "请填写参赛正文"
+              message: this.getStaticText('pleaseInputEntryMainBody') ? this.getStaticText('pleaseInputEntryMainBody') : "请填写参赛正文"
             });
             return false;
           } else if (this.addAnnexWorksForm.synopsis.length > 500) {
             this.$message({
               type: "error",
-              message: "简介不得多于500字"
+              message: this.getStaticText('briefIntroductionSizeInfo') ? this.getStaticText('briefIntroductionSizeInfo') : "简介不得多于500字"
             });
             return false;
           }
@@ -970,7 +976,7 @@ export default {
                 } else if (rep.data.status == "faild") {
                   this.$message({
                     type: "error",
-                    message: "提交失败"
+                    message: this.getStaticText('submitFailed') ? this.getStaticText('submitFailed') : "提交失败"
                   });
                 }
                 this.isLimitSendText = false;
@@ -998,9 +1004,9 @@ export default {
     sexFormat: function (row, column) {
       var date = row[column.property];
       if (date == 1) {
-        return "男";
+        return this.getStaticText('male') ? this.getStaticText('male') : "男";
       } else {
-        return "女";
+        return this.getStaticText('female') ? this.getStaticText('female') : "女";
       }
     },
     // 上传附件
@@ -1008,21 +1014,29 @@ export default {
       // console.log(file);
     },
     handleExceed (files, fileList) {
-      this.$message.warning(`只能上传一个参赛作品附件`);
-    }
+      this.$message.warning( this.getStaticText('onlyOneEntryCanBeUploaded') ? this.getStaticText('onlyOneEntryCanBeUploaded') : '只能上传一个参赛作品附件');
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
+
   },
   filters: {
     sexFormat (val) {
       if (val == 1) {
-        return "男";
+        return this.getStaticText('male') ? this.getStaticText('male') : "男";
       } else {
-        return "女";
+        return this.getStaticText('female') ? this.getStaticText('female') :"女";
       }
     }
   },
   watch: {
     schoolInformaitionValue (val, oldVal) {
-      if (val === '其他') {
+      if (val === (this.getStaticText('others') ? this.getStaticText('others') : '其他')) {
         this.isShowCustomeSchool = true;
       } else {
         this.isShowCustomeSchool = false;

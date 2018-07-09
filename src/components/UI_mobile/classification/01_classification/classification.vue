@@ -9,7 +9,7 @@
         <p class="ui_mobile_classification_count" v-else>{{getStaticText('zeroBook') ? getStaticText('zeroBook') : '共 0 本'}}</p>
       </div>
     </a>
-    </div>
+  </div>
 </template>
 
 <script>

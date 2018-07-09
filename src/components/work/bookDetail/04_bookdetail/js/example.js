@@ -5,7 +5,76 @@ const name = component.name; // 组件标签名
 
 const title = "图书详情组件"; // 组件title
 
-const description = `图书详情组件`; // 组件描述信息
+const description = `图书详情组件
+{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
+  name: 'img', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
+  field: 'picBig', // 取什么字段
+  display: '', // 固定显示内容是什么
+  method: '', // 方法名 要在下面配置
+  className: "",
+}, {
+  name: 'button',
+  field: 'resName',
+  display: '',
+  method: '', // 方法名 要在下面配置
+  className: "",
+}, {
+  name: 'price',
+  field: 'memberPrice',
+  display: '电子书价格：',
+  method: '', // 方法名 要在下面配置
+  className: "",
+}, {
+  name: 'price',
+  field: 'ebPrice',
+  display: '',
+  method: '', // 方法名 要在下面配置
+  className: "",
+}, {
+  name: 'price',
+  field: 'price',
+  display: '纸书定价：',
+  method: '', // 方法名 要在下面配置
+  className: "",
+}, {
+  name: 'probation',
+  field: '',
+  display: '免费试读',
+  display1: '全文阅读',
+  method: 'toProbation', // 方法名 要在下面配置
+  className: "fas fa-book",
+}, {
+  name: 'addcart',
+  field: '',
+  display: '加入购物车',
+  method: 'addCart', // 方法名 要在下面配置
+  className: "",
+}, {
+  name: 'addebcart',
+  field: '',
+  display: '电子书加入购物车',
+  method: 'addCart', // 方法名 要在下面配置
+  className: "",
+}, {
+  name: 'like',
+  field: '',
+  display: '点赞',
+  method: 'collectOrLike',
+  className: "fas fa-thumbs-up",
+}, {
+  name: 'collect',
+  field: '',
+  display: '收藏',
+  method: 'collectOrLike',
+  className: "fas fa-heart",
+}, {
+  name: 'share',
+  field: '',
+  display: '',
+  method: '',
+  className: "",
+}
+`; // 组件描述信息
 
 const dev = {
   work_bookdetail: {
@@ -19,74 +88,22 @@ const dev = {
           },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "bookAdapter", // 类型字段
-          complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
-            name: 'img', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
-            field: 'picBig', // 取什么字段
-            display: '', // 固定显示内容是什么
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'button',
-            field: 'resName',
-            display: '',
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'price',
-            field: 'memberPrice',
-            display: '电子书价格：',
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'price',
-            field: 'ebPrice',
-            display: '',
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'price',
-            field: 'price',
-            display: '纸书定价：',
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'probation',
-            field: '',
-            display: '免费试读',
-            display1: '全文阅读',
-            method: 'toProbation', // 方法名 要在下面配置
-            className: "fas fa-book",
-          }, {
-            name: 'addcart',
-            field: '',
-            display: '加入购物车',
-            method: 'addCart', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'addebcart',
-            field: '',
-            display: '电子书加入购物车',
-            method: 'addCart', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'like',
-            field: '',
-            display: '点赞',
-            method: 'collectOrLike',
-            className: "fas fa-thumbs-up",
-          }, {
-            name: 'collect',
-            field: '',
-            display: '收藏',
-            method: 'collectOrLike',
-            className: "fas fa-heart",
-          }, {
-            name: 'share',
-            field: '',
-            display: '',
-            method: '',
-            className: "",
-          }],
+          complicatedItem: {
+            "one": [{
+              name: '',
+              field: '',
+              display: '',
+              method: '',
+              className: "",
+            }],
+            "two": [{
+              name: '',
+              field: '',
+              display: '',
+              method: '',
+              className: "",
+            }],
+          },
         },
         toProbation: {
           url: CONFIG.READ_URL,
@@ -122,13 +139,13 @@ const dev = {
         },
         infoImgWidth: 320, // 资讯图片的宽 要和图片外层容器  宽一样
         infoImgHeight: 220, // 资讯图片的高 要和图片外层容器  高一样
-        tabConfigList:{           //tab切换配置
-          tabShow:true,
-          reviewShow:true,
-          tabList:["详情","评论"],   //只能改字哦，
-          tabActiveIndex:0, //默认展示第一个就是0 默认第二个就是1
-          toAllReviewName:"查看全部评论",     //查看全部评论
-          toAllReviewMethod:{
+        tabConfigList: { //tab切换配置
+          tabShow: true,
+          reviewShow: true,
+          tabList: ["详情", "评论"], //只能改字哦，
+          tabActiveIndex: 0, //默认展示第一个就是0 默认第二个就是1
+          toAllReviewName: "查看全部评论", //查看全部评论
+          toAllReviewMethod: {
             method: 'toReviewList',
           },
         },
@@ -178,12 +195,12 @@ const dev = {
           },
           fixedKeys: {}
         },
-        bugButton:{
-          display:"立即购买",
+        bugButton: {
+          display: "立即购买",
           method: "toBuy",
-          display1:"加入书架",
+          display1: "加入书架",
           method1: "toBuy",
-          display2:"开始阅读",
+          display2: "开始阅读",
           method2: "toProbation",
         },
         bookContentType: { // 书的类型  纸书：91 电子书 94
@@ -194,11 +211,11 @@ const dev = {
       staticText: {
         noImg: "暂无图片",
         noResource: "暂无",
-        quantityOfGoodsMustNotExceedTwoHundred:"商品数量不能大于200",
+        quantityOfGoodsMustNotExceedTwoHundred: "商品数量不能大于200",
         systemPrompt: "系统提示",
         OK: "确定",
         noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
-        noEBookInfo:"该书没有对应电子书，无法加入购物车"
+        noEBookInfo: "该书没有对应电子书，无法加入购物车"
       }
 
     }
@@ -217,74 +234,22 @@ const prod = {
           },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "bookAdapter", // 类型字段
-          complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
-            name: 'img', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
-            field: 'picBig', // 取什么字段
-            display: '', // 固定显示内容是什么
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'button',
-            field: 'resName',
-            display: '',
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'price',
-            field: 'memberPrice',
-            display: '电子书价格：',
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'price',
-            field: 'ebPrice',
-            display: '',
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'price',
-            field: 'price',
-            display: '纸书定价：',
-            method: '', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'probation',
-            field: '',
-            display: '免费试读',
-            display1: '全文阅读',
-            method: 'toProbation', // 方法名 要在下面配置
-            className: "fas fa-book",
-          }, {
-            name: 'addcart',
-            field: '',
-            display: '加入购物车',
-            method: 'addCart', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'addebcart',
-            field: '',
-            display: '电子书加入购物车',
-            method: 'addCart', // 方法名 要在下面配置
-            className: "",
-          }, {
-            name: 'like',
-            field: '',
-            display: '点赞',
-            method: 'collectOrLike',
-            className: "fas fa-thumbs-up",
-          }, {
-            name: 'collect',
-            field: '',
-            display: '收藏',
-            method: 'collectOrLike',
-            className: "fas fa-heart",
-          }, {
-            name: 'share',
-            field: '',
-            display: '',
-            method: '',
-            className: "",
-          }],
+          complicatedItem: {
+            "one": [{
+              name: '',
+              field: '',
+              display: '',
+              method: '',
+              className: "",
+            }],
+            "two": [{
+              name: '',
+              field: '',
+              display: '',
+              method: '',
+              className: "",
+            }],
+          },
         },
         toProbation: {
           url: CONFIG.READ_URL,
@@ -320,13 +285,13 @@ const prod = {
         },
         infoImgWidth: 320, // 资讯图片的宽 要和图片外层容器  宽一样
         infoImgHeight: 220, // 资讯图片的高 要和图片外层容器  高一样
-        tabConfigList:{           //tab切换配置
-          tabShow:true,
-          reviewShow:true,
-          tabList:["详情","评论"],   //只能改字哦，
-          tabActiveIndex:0, //默认展示第一个就是0 默认第二个就是1
-          toAllReviewName:"查看全部评论",     //查看全部评论
-          toAllReviewMethod:{
+        tabConfigList: { //tab切换配置
+          tabShow: true,
+          reviewShow: true,
+          tabList: ["详情", "评论"], //只能改字哦，
+          tabActiveIndex: 0, //默认展示第一个就是0 默认第二个就是1
+          toAllReviewName: "查看全部评论", //查看全部评论
+          toAllReviewMethod: {
             method: 'toReviewList',
           },
         },
@@ -376,12 +341,12 @@ const prod = {
           },
           fixedKeys: {}
         },
-        bugButton:{
-          display:"立即购买",
+        bugButton: {
+          display: "立即购买",
           method: "toBuy",
-          display1:"加入书架",
+          display1: "加入书架",
           method1: "toBuy",
-          display2:"开始阅读",
+          display2: "开始阅读",
           method2: "toProbation",
         },
         bookContentType: { // 书的类型  纸书：91 电子书 94
@@ -406,7 +371,7 @@ const platform = 'PC';
 const pageType = [];
 const resourceType = [];
 
-const childComponents = ['work_bookdetail_04','work_bookreview_01','ui_share_01'];
+const childComponents = ['work_bookdetail_04', 'work_bookreview_01', 'ui_share_01'];
 
 export {
   name,

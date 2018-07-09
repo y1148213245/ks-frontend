@@ -8,38 +8,70 @@ const name = component.name;
 const title = "资讯详情组件";
 const description = "资讯详情组件，通过点击首页资讯进入，显示资讯详情和评论列表组件。";
 const dev = {
-  queryDetail: {
-    url: '/data/work_information_query_detail.json',
-    params: {
-      pubId: '2715',
-      loginName: ''
-    }
+  information:{
+    information_info_content:{
+      queryDetail: {
+        url: '/data/work_information_query_detail.json',
+        params: {
+          pubId: '2715',
+          loginName: ''
+        }
+      },
+      collectOrLike: {
+        url: '/data/work_information_collect_like.json',
+        params: {
+          loginName: '',
+          pubId: '',
+          operateType: '',
+          siteId: ''
+        }
+      },
+      staticText : {
+        yourPosition:"您的位置：",
+        homePage:"首页",
+        noAuthor:"暂无作者",
+        share:"分享",
+        collect:"收藏",
+        support:"点赞",
+        pleaseLogin:"请登录",
+        informationalContent:"资讯内容"
+      },
+    },
   },
-  collectOrLike: {
-    url: '/data/work_information_collect_like.json',
-    params: {
-      loginName: '',
-      pubId: '',
-      operateType: '',
-      siteId: ''
-    }
-  }
+
+
+
 };
 const prod = {
-  queryDetail: {
-    url:  'spc/cms/publish/detail.do',
-    params: {
-      pubId: '2715',
-      loginName: ''
-    }
-  },
-  collectOrLike: {
-    url:  'collection/addCollect.do',
-    params: {
-      loginName: '',
-      pubId: '',
-      operateType: '',
-      siteId: ''
+  information:{
+    information_info_content:{
+      queryDetail: {
+       url:  'spc/cms/publish/detail.do',
+       params: {
+         pubId: '2715',
+         loginName: ''
+       }
+     },
+      collectOrLike: {
+       url:  'collection/addCollect.do',
+       params: {
+         loginName: '',
+         pubId: '',
+         operateType: '',
+         siteId: ''
+       }
+     },
+      staticText : {
+        yourPosition:"您的位置：",
+        homePage:"首页",
+        noAuthor:"暂无作者",
+        share:"分享",
+        collect:"收藏",
+        support:"点赞",
+        pleaseLogin:"请登录",
+        informationalContent:"资讯内容"
+      },
+
     }
   }
 };

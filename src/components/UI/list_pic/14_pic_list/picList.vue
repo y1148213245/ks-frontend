@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       list: null,
       totalCount: 0,
       pageNo: 0,

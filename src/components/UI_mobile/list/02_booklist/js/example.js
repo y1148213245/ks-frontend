@@ -14,7 +14,22 @@ const description = `图书列表组件`; // 组件描述信息
 const dev = {
   booklist: {
     booklist_01: {
-      url: '../data/list_02_booklist_data.json'
+      url: '../data/list_02_booklist_data.json',
+      'moreRank':{
+        staticText : {
+          hot:"热门",
+          goodReputation:"好评",
+          price:"价格",
+          newBook: "新书",
+          all:"全部",
+          noSecondaryClassification:"暂无二级分类",
+          more:"更多",
+          noData:"暂无数据",
+          noMore:"没有更多啦~",
+          moreRank:"更多排行",
+          packUp:"收起",
+        }
+      },
     }
   }
 };
@@ -82,7 +97,20 @@ const prod = {
         },
         exMoreNum:4, //超过多少个就展示
         isShowAllBotton:true,
-      }
+        staticText : {
+          price:"价格",
+          hot:"热门",
+          goodReputation:"好评",
+          newBook: "新书",
+          all:"全部",
+          noSecondaryClassification:"暂无二级分类",
+          more:"更多",
+          noData:"暂无数据",
+          noMore:"没有更多啦~",
+          moreRank:"更多排行",
+          packUp:"收起",
+        }
+      },
     }
   }
 };

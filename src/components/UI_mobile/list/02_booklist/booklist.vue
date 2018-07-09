@@ -5,25 +5,25 @@
       <!-- <i class="phb_ico_01 mr10"></i> -->
       {{CONFIG.title && CONFIG.title.name}}</div>
     <div class="ui_mobile_list_02_subnav" v-if="listType == 'colId'"> <!-- 按栏目查图书列表 -->
-      <span class="ui_mobile_list_02_read" :class="{ui_mobile_list_02_active:indexValue==0?true:false}" @click="toBookList('pub_read_num desc',0)">热门</span>
-      <span class="ui_mobile_list_02_star" :class="{ui_mobile_list_02_active:indexValue==1?true:false}" @click="toBookList('pub_star_num desc',1)">好评</span>
-      <span class="ui_mobile_list_02_pricecon"><span class="ui_mobile_list_02_saleprice" :class="{ui_mobile_list_02_active:indexValue==2?true:false}" @click="toBookList('prod_sale_price asc',2)">价格</span><a
+      <span class="ui_mobile_list_02_read" :class="{ui_mobile_list_02_active:indexValue==0?true:false}" @click="toBookList('pub_read_num desc',0)">{{getStaticText('hot' ? getStaticText('hot') : "热门")}}</span>
+      <span class="ui_mobile_list_02_star" :class="{ui_mobile_list_02_active:indexValue==1?true:false}" @click="toBookList('pub_star_num desc',1)">{{getStaticText('goodReputation') ? getStaticText('goodReputation') : "好评"}}</span>
+      <span class="ui_mobile_list_02_pricecon"><span class="ui_mobile_list_02_saleprice" :class="{ui_mobile_list_02_active:indexValue==2?true:false}" @click="toBookList('prod_sale_price asc',2)">{{getStaticText('price') ? getStaticText('price') : "价格"}}</span><a
       href="javascript:void(0)" @click="toBookList('prod_sale_price asc',2)"><i
       class="ui_mobile_list_02_asc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a><a href="javascript:void(0)" @click="toBookList('prod_sale_price desc',2)"><i
       class="ui_mobile_list_02_desc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a></span>
-      <span :class="{ui_mobile_list_02_active:indexValue==3?true:false}" @click="toBookList('BOOK_PUBDATE desc',3)">新书</span>
+      <span :class="{ui_mobile_list_02_active:indexValue==3?true:false}" @click="toBookList('BOOK_PUBDATE desc',3)">{{getStaticText('newBook') ? getStaticText('newBook') : "新书"}}</span>
     </div>
 
     <div class="ui_mobile_list_02_sortCon" v-if="listType == 'cascadId'"> <!-- 按分类查图书列表 -->
 
       <div class="ui_mobile_list_02_sort" id="screenBox" v-if="classifyBook && classifyBook.length > 0">
-        <span class="ui_mobile_list_02_sort_allBotton" v-if="isShowAllBotton" :class="{ui_mobile_list_02_sortitem_active:checkCascadeId==cascadId}" @click="loadBookList(cascadId, true)">全部</span>
+        <span class="ui_mobile_list_02_sort_allBotton" v-if="isShowAllBotton" :class="{ui_mobile_list_02_sortitem_active:checkCascadeId==cascadId}" @click="loadBookList(cascadId, true)">{{getStaticText('all') ? getStaticText('all') : "全部"}}</span>
         <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyBook" :key="index" v-text="item.text" :class="{ui_mobile_list_02_sortitem_active:checkCascadeId==item.cascadeId}" @click="loadBookList(item.cascadeId, true)"></span>
       </div>
       <div class="ui_mobile_list_02_sort" id="screenBox" v-else>
-        <span class="ui_mobile_list_02_nosub">暂无二级分类</span>
+        <span class="ui_mobile_list_02_nosub">{{getStaticText('noSecondaryClassification') ? getStaticText('noSecondaryClassification') : "暂无二级分类"}}</span>
       </div>
-      <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyBook && classifyBook.length > exMoreNum">更多</a>
+      <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyBook && classifyBook.length > exMoreNum">{{getStaticText('more' ? getStaticText('more') : "更多")}}</a>
     </div>
 
     <div class="ui_mobile_list_02_booklist">
@@ -55,11 +55,11 @@
           </dd>
         </dl>
       </div>
-      <div class="ui_mobile_list_02_none" v-else>暂无数据</div>
-      <div class="ui_mobile_list_02_none" v-if="bookList && bookList.length >0 && noMore && !CONFIG.showNum">没有更多啦~</div>
+      <div class="ui_mobile_list_02_none" v-else>{{getStaticText('noData') ? getStaticText('noData') : "暂无数据"}}</div>
+      <div class="ui_mobile_list_02_none" v-if="bookList && bookList.length >0 && noMore && !CONFIG.showNum">{{getStaticText('noMore') ? getStaticText('noMore') : "没有更多啦~"}}</div>
     </div>
     <div class="ui_mobile_list_02-more" v-if="CONFIG && CONFIG.toMoreList && CONFIG.toMoreList.isShow">
-      <a href="javascript:void(0)" @click="toMoreLink" >更多排行
+      <a href="javascript:void(0)" @click="toMoreLink" >{{getStaticText('moreRank') ? getStaticText('moreRank') : "更多排行"}}
         <i class="ui_mobile_list_02-more-icon"></i>
       </a>
     </div>
@@ -80,7 +80,7 @@ export default {
     return {
       bgmUrl: "",
       rankbgmUrl: "",
-      CONFIG: null,  // 组件配置
+      CONFIG: "",  // 组件配置
       keys: null,    // 接口字段
       bookList: [],  // 图书列表
       indexValue: 0, // 当前选中筛选条件：热门、好评、价格、新书
@@ -264,18 +264,27 @@ export default {
       }
     },
     showMore () { // 查看更多 按分类查时的功能
-      if ($('#moreBtn').html() == "收起") {
+      var _this = this;
+      if ($('#moreBtn').html() == (_this.getStaticText('packUp') ? _this.getStaticText('packUp') : "收起")) {
         $("#screenBox").css("height", "");
         $("#moreBtn").removeClass("classToClose");
         $("#moreBtn").addClass("classToMore");
-        $('#moreBtn').html("更多");
+        $('#moreBtn').html(_this.getStaticText('more') ? _this.getStaticText('more') : "更多");
       } else {
         $("#screenBox").css("height", "auto");
         $("#moreBtn").removeClass("classToMore");
         $("#moreBtn").addClass("classToClose");
-        $('#moreBtn').html("收起");
+        $('#moreBtn').html(_this.getStaticText('packUp') ? _this.getStaticText('packUp') : "收起");
       }
     },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
+
   }
 }
 </script>

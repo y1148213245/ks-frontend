@@ -93,7 +93,7 @@ export default {
   reused: true,
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       workInfo: {},
       url: '',
       keys: null,  // 作品详情页接口字段兼容
@@ -131,11 +131,13 @@ export default {
   },
 
   methods: {
+
     addCollect () { // 为作品添加收藏 或 取消收藏
+      var _this = this;
       if (!this.member.loginName) { // 未登录时
         this.$message({
           type: "info",
-          message: this.getStaticText("pleaseLoginFirst") ? this.getStaticText("pleaseLoginFirst") : "请您先登录"
+          message: _this.getStaticText("pleaseLoginFirst") ? _this.getStaticText("pleaseLoginFirst") : "请您先登录"
         });
         return false;
       }

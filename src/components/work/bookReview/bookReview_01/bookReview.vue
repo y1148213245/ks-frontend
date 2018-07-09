@@ -70,7 +70,7 @@ export default {
     return {
       pubId: '',
       starValue: 5, // 评分默认分数
-      CONFIG: null,
+      CONFIG: "",
       commentList: [], // 评论列表
       commentListLike:{},
       defaultPic: "",  // 用户默认头像
@@ -184,7 +184,7 @@ export default {
       var content = this.$refs.commentContent.value;
       if(content==''){
         this.$message({
-          message: this.getStaticText('commentsEmptyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论内容不能为空',
+          message: this.getStaticText('commentsEmptfyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论内容不能为空',
           type: 'error'
         })
         return false;

@@ -19,6 +19,7 @@
       <van-dialog
         v-model="show"
         :showConfirmButton="isShowConfirmButton"
+        :showCancelButton="isShowCancelButton"
         :closeOnClickOverlay="isCloseOnClickOverlay"
         :before-close="beforeClose">
 
@@ -60,6 +61,7 @@
         list: [],  //地址列表
         show: false,  //是否显示弹窗
         isShowConfirmButton: false,  //是否展示弹窗确认按钮
+        isShowCancelButton: true, // 是否展示弹窗取消按钮
         isCloseOnClickOverlay: true,  //点击遮罩层关闭弹窗
         addressInfo: {},   //收货人信息
         isShowPostal: true,  //是否显示邮编

@@ -2,7 +2,7 @@
   <div class="star_pic_info_13">
     <ul class="list">
       <li class="item" v-for="(getEb,index) in getQueryEbook">
-        <img class="img" onload="DrawImage(this,75,97)" :src="getEb.pub_picBig" @click="toBookDetail(getEb.id)" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'">
+        <img class="img" onload="DrawImage(this,75,97)" :src="getEb.pub_picBig" @click="toBookDetail(getEb.id)" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'">
         <div class="text">
           <a target="_blank" href="javascript:void(0)" @click="toBookDetail(getEb.id)" v-text="getEb.pub_resource_name"></a>
           <div v-text="getEb.BOOK_SYS_AUTHORS" class="author"></div>
@@ -16,6 +16,7 @@
         </div>
       </li>
     </ul>
+
   </div>
 </template>
 
@@ -28,11 +29,12 @@
       props: ["namespace"],
       data:function(){
         return {
-          getQueryEbook:[]
+          getQueryEbook:[],
+          CONFIG:""
         }
       },
       mounted:function(){
-        this.CONFIG=PROJECT_CONFIG[this.namespace].list_pic.star_pic_info_13;
+        this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.star_pic_info_13;
         this.getBookList(); //图书列表
       },
       methods:{
@@ -59,7 +61,14 @@
           //详情页
           let url = "./bookdetail.html?pubId="+pubId;
           window.location.href = url;
-        }
+        },
+        getStaticText (text) {
+          if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+            return this.CONFIG.staticText[text]
+          } else {
+            return false
+          }
+        },
       }
     }
 </script>

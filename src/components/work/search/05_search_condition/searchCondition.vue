@@ -4,36 +4,36 @@
     <table border="0" class="work_search_05-table">
       <tr>
         <td height="40" width="265">
-          <span class="work_search_05-table-title">书名:</span>
+          <span class="work_search_05-table-title">{{getStaticText('bookName') ? getStaticText('bookName') : '书名:'}}</span>
           <span>
-            <el-input style="width: 200px;" size="small" placeholder="请输入书名" v-model="bookName"></el-input>
+            <el-input style="width: 200px;" size="small" :placeholder="getStaticText('inputBookName') ? getStaticText('inputBookName') : '请输入书名'" v-model="bookName"></el-input>
           </span>
         </td>
         <td height="40" width="265">
-          <span class="work_search_05-table-title">作者:</span>
+          <span class="work_search_05-table-title">{{getStaticText('author') ? this.getStaticText('author') : '作者:'}}</span>
           <span>
-            <el-input style="width: 150px;" size="small" placeholder="请输入作者" v-model="author"></el-input>
+            <el-input style="width: 150px;" size="small" :placeholder="getStaticText('inputAuthor') ? this.getStaticText('inputAuthor') : '请输入作者'" v-model="author"></el-input>
           </span>
         </td>
         <td height="40" width="300">
-          <span class="work_search_05-table-title">ISBN:</span>
-          <span><el-input style="width: 200px;" size="small" placeholder="请输入ISBN" v-model="isbn"></el-input></span>
+          <span class="work_search_05-table-title">{{getStaticText('ISBNNum') ? this.getStaticText('ISBNNum') : 'ISBNNum:'}}</span>
+          <span><el-input style="width: 200px;" size="small" :placeholder="getStaticText('inputISBNNum') ? getStaticText('inputISBNNum') : '请输入ISBN'" v-model="isbn"></el-input></span>
         </td>
-        <td rowspan="2"><input type="button" class="work_search_05-table-button" value="检索" @click="toSearch"/></td>
+        <td rowspan="2"><input type="button" class="work_search_05-table-button" :value="getStaticText('search') ? getStaticText('search') : '检索'" @click="toSearch"/></td>
       </tr>
       <tr>
         <td colspan="2">
-          <span class="work_search_05-table-title">出版时间:</span>
+          <span class="work_search_05-table-title">{{getStaticText('publishTime') ? getStaticText('publishTime') : '出版时间:'}}</span>
           <span class="search_jg_01">
-            <el-date-picker v-model="picker_from_model" type="date" size="small" placeholder="选择日期" :picker-options="pickerOptions_from" @change="picker_from"></el-date-picker>
-          </span>至
+            <el-date-picker v-model="picker_from_model" type="date" size="small" :placeholder="getStaticText('selectDate') ? getStaticText('selectDate') : '选择日期'" :picker-options="pickerOptions_from" @change="picker_from"></el-date-picker>
+          </span>{{getStaticText('to') ? getStaticText('to') : '至'}}
           <span class="search_jg_01">
-          <el-date-picker v-model="picker_to_model" type="date" size="small" placeholder="选择日期" :picker-options="pickerOptions_to" @change="picker_to"></el-date-picker>
+          <el-date-picker v-model="picker_to_model" type="date" size="small" :placeholder="getStaticText('selectDate') ? getStaticText('selectDate') : '选择日期'" :picker-options="pickerOptions_to" @change="picker_to"></el-date-picker>
           </span>
         <td>
-          <span class="work_search_05-table-title">定价:</span>
-          <span><el-input style="width: 100px;" size="small" placeholder="请输入价格" v-model="priceFrom"></el-input></span>至
-          <span><el-input style="width: 100px;" size="small" placeholder="请输入价格" v-model="priceTo"></el-input></span>
+          <span class="work_search_05-table-title">{{getStaticText('price') ? getStaticText('price') : '定价:'}}</span>
+          <span><el-input style="width: 100px;" size="small" :placeholder="getStaticText('inputPrice') ? getStaticText('inputPrice') : '请输入价格'" v-model="priceFrom"></el-input></span>{{getStaticText('to') ? getStaticText('to') : '至'}}
+          <span><el-input style="width: 100px;" size="small" :placeholder="getStaticText('inputPrice') ? getStaticText('inputPrice') : '请输入价格'" v-model="priceTo"></el-input></span>
         </td>
       </tr>
     </table>
@@ -63,7 +63,7 @@ export default {
       pickerOptions_from: {
         //disabledDate(time) {
         //	return time.getTime() < Date.now() - 8.64e7;
-        //}	
+        //}
       },
       pickerOptions_to: {}
     };
@@ -103,6 +103,13 @@ export default {
       let timestamp = Date.parse(new Date(str));
       // timestamp = timestamp / 1000;
       return timestamp;
+    },
+    getStaticText(text){
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
     }
   }
 }
