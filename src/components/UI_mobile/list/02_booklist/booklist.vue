@@ -5,7 +5,7 @@
       <!-- <i class="phb_ico_01 mr10"></i> -->
       {{CONFIG.title && CONFIG.title.name}}</div>
     <div class="ui_mobile_list_02_subnav" v-if="listType == 'colId'"> <!-- 按栏目查图书列表 -->
-      <span class="ui_mobile_list_02_read" :class="{ui_mobile_list_02_active:indexValue==0?true:false}" @click="toBookList('pub_read_num desc',0)">{{getStaticText('hot' ? getStaticText('hot') : "热门")}}</span>
+      <span class="ui_mobile_list_02_read" :class="{ui_mobile_list_02_active:indexValue==0?true:false}" @click="toBookList('pub_read_num desc',0)">{{getStaticText('hot') ? getStaticText('hot') : "热门"}}</span>
       <span class="ui_mobile_list_02_star" :class="{ui_mobile_list_02_active:indexValue==1?true:false}" @click="toBookList('pub_star_num desc',1)">{{getStaticText('goodReputation') ? getStaticText('goodReputation') : "好评"}}</span>
       <span class="ui_mobile_list_02_pricecon"><span class="ui_mobile_list_02_saleprice" :class="{ui_mobile_list_02_active:indexValue==2?true:false}" @click="toBookList('prod_sale_price asc',2)">{{getStaticText('price') ? getStaticText('price') : "价格"}}</span><a
       href="javascript:void(0)" @click="toBookList('prod_sale_price asc',2)"><i
