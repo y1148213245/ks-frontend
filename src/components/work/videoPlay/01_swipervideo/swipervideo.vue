@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-07-03 10:52:51 
- * @Last Modified by: song
- * @Last Modified time: 2018-07-04 10:19:37
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-07-09 19:38:29
  * 视频播放组件 列表是轮播图形式的
  * TODO: 轮播的分页怎么办
  */
@@ -86,10 +86,6 @@ export default {
       Post(CONFIG.BASE_URL + QUERYCONFIG.url, paramsObj).then((res) => {
         let datas = res.data;
         if (datas.success && datas.result.length > 0) {
-          Toast.fail({
-            duration: 1000,
-            message: '成功的'
-          });
           this.videoLists = datas.result; // 视频列表
           if (this.CONFIG.queryParamsType == 'url') { //  从地址栏里取数据
             this.videoLists.forEach((item, index) => {

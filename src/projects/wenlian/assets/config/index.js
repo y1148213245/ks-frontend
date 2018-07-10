@@ -4,7 +4,7 @@
 
 var CONFIG = {
   // BASE_URL: "http://172.19.57.153/portal/api/",
-  BASE_URL: "http://test.founder.com.cn/ynxh/portal/api/",
+  BASE_URL: "http://172.19.36.97:9092/spc-portal-web/",
   // BASE_URL: "../../../api/",//服務器打包
 
   // READ_URL: "http://172.19.57.153:8945/spc-reader/ebook/read.jsp",  // 阅读地址
