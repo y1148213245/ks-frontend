@@ -6,7 +6,7 @@
       <li v-for="(item,i) in candidateList" :key="i" class="el-col el-col-6">
         <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic])" title="头像" @click="openDialog(i)" />
         <span class="work_activitydetail_09-title" @click="openDialog(i)" v-text="item[listKeys.sysTopic]"></span>
-        <el-button type="primary" class="work_activitydetail_09-vote" @click="toVote(item)">
+        <el-button  v-if="activityDetailCache && activityDetailCache[detailKeys.endTimeStamp] && new Date().getTime()<activityDetailCache[detailKeys.endTimeStamp]" type="primary" class="work_activitydetail_09-vote" @click="toVote(item)">
           <i></i>
           <span>投上一票</span>
         </el-button>
@@ -18,45 +18,36 @@
     </ul>
     <!-- 获奖人列表 -->
     <div class="work_activitydetail_09-prizewinner_list" v-if="CONFIG.showType == 'prizewinner'">
-      <h3>普通奖:一等奖</h3>
-      <ul>
-        <li v-for="(item,i) in candidateList" :key="i">
-          <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic])" title="头像" @click="openDialog(i)" />
-          <span class="work_activitydetail_09-title" @click="openDialog(i)" v-text="item[listKeys.sysTopic]"></span>
+      
+      <template v-for="(entry,award_index) in awardList">
+        <h3 :key="award_index+'a'" v-text="entry.title"></h3>
+        <ul :key="award_index">
+          <li v-for="(item,i) in entry.products" :key="i">
+            <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic])" title="头像" @click="openDialog(i)" />
+            <span class="work_activitydetail_09-title" @click="openDialog(i)" v-text="item[listKeys.sysTopic]"></span>
 
-          <span class="work_activitydetail_09-vote_num">{{item[listKeys.voteNum]}}
-            <label>票</label>
-          </span>
-        </li>
-      </ul>
-
-      <h3>普通奖:二等奖</h3>
-      <ul>
-        <li v-for="(item,i) in candidateList" :key="i">
-          <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic])" title="头像" @click="openDialog(i)" />
-          <span class="work_activitydetail_09-title" @click="openDialog(i)" v-text="item[listKeys.sysTopic]"></span>
-
-          <span class="work_activitydetail_09-vote_num">{{item[listKeys.voteNum]}}
-            <label>票</label>
-          </span>
-        </li>
-      </ul>
+            <span class="work_activitydetail_09-vote_num">{{item[listKeys.voteNum]}}
+              <label>票</label>
+            </span>
+          </li>
+        </ul>
+      </template>
     </div>
     <!-- 详情 -->
 
     <el-dialog :visible.sync="detailVisible" width="40%">
       <div class="work_activitydetail_09-detail">
         <section>
-        <img class="work_activitydetail_09-pic" :src="getPic(currentCandidate[listKeys.pic])" title="头像" />
-        <span class="work_activitydetail_09-title" v-text="currentCandidate[listKeys.sysTopic]"></span>
-        <el-button type="primary" class="work_activitydetail_09-vote" @click="toVote(currentCandidate)">
-          <i></i>
-          <span>投上一票</span>
-        </el-button>
+          <img class="work_activitydetail_09-pic" :src="getPic(currentCandidate[listKeys.pic])" title="头像" />
+          <span class="work_activitydetail_09-title" v-text="currentCandidate[listKeys.sysTopic]"></span>
+          <el-button v-if="activityDetailCache && activityDetailCache[detailKeys.endTimeStamp] && new Date().getTime()<activityDetailCache[detailKeys.endTimeStamp] && CONFIG.showType == 'candidate'" type="primary" class="work_activitydetail_09-vote" @click="toVote(currentCandidate)">
+            <i></i>
+            <span>投上一票</span>
+          </el-button>
 
-        <span class="work_activitydetail_09-vote_num">{{currentCandidate[listKeys.voteNum]}}
-          <label>票</label>
-        </span>
+          <span class="work_activitydetail_09-vote_num">{{currentCandidate[listKeys.voteNum]}}
+            <label>票</label>
+          </span>
         </section>
         <span class="work_activitydetail_09-description" v-html="currentCandidate[listKeys.description]"></span>
       </div>
@@ -84,6 +75,7 @@ export default {
       candidateList: [],
       listKeys: null,
       detailKeys: null,
+      awardKeys:null,
       currentCandidate: {},
       awardList: []/* 活动奖项列表 */
     };
@@ -111,6 +103,13 @@ export default {
         this.CONFIG.getCandidateList.sysAdapter,
         this.CONFIG.getCandidateList.typeAdapter
       );
+      /* 奖项字段 */
+      if (this.CONFIG.showType == 'prizewinner') {/* 如果为获奖人列表,获取奖项列表字段适配器 */
+        this.awardKeys = getFieldAdapter(
+          this.CONFIG.getAwardList.sysAdapter,
+          this.CONFIG.getAwardList.typeAdapter
+        );
+      }
 
     },
     getCandidateList (detail) {
@@ -136,7 +135,10 @@ export default {
 
       Post(CONFIG.BASE_URL + 'spc/prodb/searchNLP.do', params).then(resp => {
         this.candidateList = resp.data.content
-        this.getAwardList();
+        if (this.CONFIG.showType == 'prizewinner') {/* 如果为获奖人列表,发送获取奖项列表请求 */
+          this.getAwardList();
+        }
+
       })
     },
     /* 添加请求的配置参数 */
@@ -196,19 +198,19 @@ export default {
             products: [],
           }
 
-          let awardText = element.AWARD_TYPE + ':' + element.SYS_TOPIC;
+          let awardText = element[this.awardKeys.awardType] + ':' + element[this.awardKeys.topic];
           award.title = awardText;
 
           if (list && list instanceof Array) {
             let arrAward = list.filter(entry => {
-              return entry.AWARD && entry.AWARD.indexOf(awardText) != -1
+              return entry[this.listKeys.awardName] && entry[this.listKeys.awardName].indexOf(awardText) != -1
             })
             award.products = arrAward;
             arr.push(award)
           }
 
         }
-        // debugger
+        debugger
         this.awardList = arr;
       })
     },

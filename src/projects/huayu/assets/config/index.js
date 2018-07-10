@@ -120,10 +120,10 @@ var $_$ = {
 							doclibCode:'PORTAL_VOTE'
 						},
 						fixedParams:[{
-							relations: '5',
-							cols: 'TEXT',
-							symbols: '5',
-							vals: '5'
+							relations: '1',
+							cols: 'AWARD_NAME',
+							symbols: '8',
+							vals: '1'
 						}],
 						getActivityDetailData: [{
 							relations: '1',
@@ -141,6 +141,8 @@ var $_$ = {
 							page: 1,
 							size: 99
 						},
+						sysAdapter:'zykAdapter',
+						typeAdapter:'activityAwardAdapter',
 						getActivityDetailData: [{
 							relations: '1',
 							cols: 'ACTIVITYID',

@@ -45,6 +45,9 @@ const prod = {
             page: 1,
             size: 99
           },
+          sysAdapter:'zykAdapter',
+          typeAdapter:'activityAwardAdapter',
+
           getActivityDetailData: [{
             relations: '1',
             cols: 'ACTIVITYID',

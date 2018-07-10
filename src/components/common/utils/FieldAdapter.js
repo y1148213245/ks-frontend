@@ -86,6 +86,10 @@ var FIELD_ADAPTER = {
             description:'DESCRIPTION',/* 描述 */
             pic:'HEAD_PICTURE',/* 头像 */
             voteNum:'VOTE_NUMBERNEW',/* 投票数量 */
+        },
+        activityAwardAdapter:{
+            awardType:'AWARD_TYPE',
+            topic:'SYS_TOPIC'
         }
     },
     sykAdapter: { // 索引库字段
@@ -235,7 +239,8 @@ var FIELD_ADAPTER = {
         },
         activityVoteAdapter: {/* 投票活动 */
             sysTopic: 'PORTAL_VOTEACTIVITY_SYS_TOPIC',
-            description: 'PORTAL_VOTEACTIVITY_DESCRIPTION'
+            description: 'PORTAL_VOTEACTIVITY_DESCRIPTION',
+            endTimeStamp:'PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW'
         },
         videoAdapter: { // 视频
             sysTopic: "VIDEO-MEDIA_SYS_TOPIC",
