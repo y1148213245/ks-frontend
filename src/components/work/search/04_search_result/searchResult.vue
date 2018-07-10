@@ -44,7 +44,7 @@
               <p class="search_04-content-list-entry_box-others">
                 <!--<span class="sc shoucang">收藏</span>-->
                 <!-- <a href="http://www.jiathis.com/share" class="search_04-content-list-entry_box-others-share" target="_blank">{{getStaticText('shareTo') ? getStaticText('shareTo') : '分享'}}</a> -->
-                <ui_share_01 :namespace="namespace" :modulename="namespace"></ui_share_01>
+                <ui_share_01 :namespace="namespace" :modulename="namespace" ref="shareelement"></ui_share_01>
                 <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-others-buy">{{getStaticText('buy') ? getStaticText('buy') : '购买'}}</a>
                 <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-others-to_view">{{getStaticText('checkInfo') ? getStaticText('checkInfo') : '查看'}}</a>
               </p>
@@ -149,6 +149,7 @@ export default {
       this.locationQuery = URL.parse(document.URL, true).query;
     },
     toPage ({ pageNo, pageSize }) {
+
       this.getSearchResult({ pageNo, pageSize });
     },
     getSearchResult ({ pageNo, pageSize, conditions, orderBy, searchText, currentPage }) {
@@ -200,7 +201,7 @@ export default {
   },
   filters: {
     fmtDate: (obj) => {
-      let _this = this.a.methods;
+      // let _this = this.a.methods;
       if (obj) {
         var date = new Date(obj);
         var y = 1900 + date.getYear();
@@ -208,7 +209,8 @@ export default {
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
       } else {
-        return _this.getStaticText('noDate') ? _this.getStaticText('noDate') : "暂无日期"
+        // return _this.getStaticText('noDate') ? _this.getStaticText('noDate') : "暂无日期"
+        return "暂无日期"
       }
     },
   },

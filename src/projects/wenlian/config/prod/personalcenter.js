@@ -42,7 +42,23 @@ export default {
           icon: "el-icon-edit-outline",
           tag: "note"
         }
-      ]
+      ],
+      subConfig: {
+        'account': {
+          getMobileCode: {
+            url: 'user/sendMobileMessage.do' /* /user/sendToMobile.do 文联用  user/sendMobileMessage.do 华育用 */
+          }
+        },
+        'collection': { // 收藏的tab切换
+          tabListShow: [{
+            title: '电子书',
+            type: 94
+          }, {
+            title: '纸质书',
+            type: 91
+          }]
+        }
+      }
     }
   }
 }

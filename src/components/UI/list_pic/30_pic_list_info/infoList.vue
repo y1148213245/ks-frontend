@@ -155,7 +155,7 @@ export default {
     },
     paging ({ pageNo, pageSize }) {
       //当前页码或者每页显示数量发生改变
-      debugger;
+      // debugger;
       var pagingParams = {
         pageNo: pageNo,
         pageSize: pageSize

@@ -10,7 +10,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_swiper_01_resourcelists_li_imgcontainter" @click="toCustomFun(item, config)">
               <label class="ui_swiper_01_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_swiper_01_resourcelists_li_img" v-bind="{class: 'ui_swiper_01_resourcelists_' + config.field}" :src=" item[keys[config.field]] " :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" @load="dealResourceImg($event)"/>
+              <img class="ui_swiper_01_resourcelists_li_img" v-bind="{class: 'ui_swiper_01_resourcelists_' + config.field}" :src=" item[keys[config.field]] " :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"/>
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
@@ -44,9 +44,6 @@
 			</template>
 
 		</el-carousel>
-
-
-
 	</div>
 </template>
 <script type="text/ecmascript-6">
@@ -82,6 +79,13 @@ export default {
           this.picList = data;
         }
       })
+    },
+    getStaticText(text){
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
     }
   }
 };

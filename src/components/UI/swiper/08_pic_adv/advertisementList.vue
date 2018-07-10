@@ -7,7 +7,7 @@
               <!-- <img class="ui_swiper_08_advImg" v-if="CONFIG" @load="advDrawImaget($event)" @click="toDetail(item)" alt="暂无图片" src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1525785202670&di=0cb3084ab6398b76b19e9128fe174d37&imgtype=0&src=http%3A%2F%2Fnpic7.fangtoo.com%2Fcn%2Fzixun%2Fzh-chs%2F2018-03%2F26%2F492377-201803262021263437.jpg'/> -->
               <!-- End测试图片用 -->
               <!-- @load="advDrawImaget($event)" 由美工控制图片尺寸 -->
-              <img class="ui_swiper_08_advImg" v-if="CONFIG"  @click="toDetail(item)" alt="暂无图片" :src="item[keys.picMiddle]"/>
+              <img class="ui_swiper_08_advImg" v-if="CONFIG"  @click="toDetail(item)" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" :src="item[keys.picMiddle]"/>
           </li>
       </ul>
   </div>
@@ -28,8 +28,7 @@ export default {
     };
   },
   created() {
-    this.CONFIG =
-      PROJECT_CONFIG[this.namespace].swiper.swiper_08[this.modulename];
+    this.CONFIG = PROJECT_CONFIG[this.namespace].swiper.swiper_08[this.modulename];
     this.keys = getFieldAdapter(
       this.CONFIG.getResourceLists.sysAdapter,
       this.CONFIG.getResourceLists.typeAdapter
@@ -61,6 +60,13 @@ export default {
     },
     toDetail(item) { // 点击广告图图片的时候 优先级：来源链接 >> 详情
       window.open(item[this.keys.sourceUrl] ? item[this.keys.sourceUrl] : toOtherPage(item, this.CONFIG.toDetail, this.keys));
+    },
+    getStaticText(text){
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
     }
   }
 };

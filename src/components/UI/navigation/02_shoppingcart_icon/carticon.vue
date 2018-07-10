@@ -25,6 +25,7 @@ export default {
     };
   },
   created: function () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].navigation.navigation_02;
     this.getMemberInfo().then(member => {
       var params = {
         param: {
@@ -44,7 +45,6 @@ export default {
     });
   },
   mounted() {
-    this.CONFIG = PROJECT_CONFIG[this.namespace].navigation.navigation_02;
   },
   computed: {
     ...mapGetters("login", {
@@ -65,12 +65,19 @@ export default {
       if (this.isLogin) {
         window.location.href = this.CONFIG.toCartUrl;
       } else {
-        this.$alert("请您先登录", "系统提示", {
-          confirmButtonText: "确定",
+        this.$alert(this.getStaticText('pleaseLoginFirst') ? this.getStaticText('pleaseLoginFirst') : "请您先登录", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
+          confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定",
           callback: action => {
             window.location.href = this.CONFIG.toLoginUrl;
           }
         });
+      }
+    },
+    getStaticText(text){
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
       }
     }
   },

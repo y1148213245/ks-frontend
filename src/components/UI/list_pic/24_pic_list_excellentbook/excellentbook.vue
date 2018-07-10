@@ -1,9 +1,9 @@
 <template>
   <div class="ui_pic_list_24_excellent">
     <div class="ui_pic_list_24_excellent_head">
-      <span class="ui_pic_list_24_excellent_name">精品图书</span>
+      <span class="ui_pic_list_24_excellent_name">{{getStaticText('excellentBooks') ? getStaticText('excellentBooks') : '精品图书'}}</span>
       <span class="ui_pic_list_24_excellent_more">
-        <a @click="toDetailsPage()">MORE+</a>
+        <a @click="toDetailsPage()">{{getStaticText('more') ? getStaticText('more') : 'MORE+'}}</a>
       </span>
     </div>
     <!-- 精品图书上半部分 -->
@@ -32,6 +32,7 @@ export default {
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_24;
     this.getRefinedBook()
   },
+
   methods: {
     getRefinedBook: function () {
       Post(CONFIG.BASE_URL+this.CONFIG.url, this.CONFIG.param).then((rep) => {
@@ -40,6 +41,13 @@ export default {
     },
     toDetailsPage: function () {
       window.location.href = this.CONFIG.href + this.CONFIG.colId;
+    },
+    getStaticText(text){
+      if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
     }
   }
 }

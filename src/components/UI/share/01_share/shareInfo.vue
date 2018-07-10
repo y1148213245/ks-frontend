@@ -31,14 +31,18 @@ export default {
   },
 
   mounted () {
-    this.shareScript();
+    $(document).ready(() => {
+      let len = document.getElementsByClassName("bdsharebuttonbox").length;
+      document.getElementsByClassName("bdsharebuttonbox")[len - 1].appendChild(document.createElement('script')).src =
+        'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
+    })
   },
   methods: {
     shareScript () {
-      // window.onload=function (){
+      window.onload=function (){
       document.getElementsByClassName("bdsharebuttonbox")[0].appendChild(document.createElement('script')).src =
         'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
-      // }
+      }
     }
   }
 }

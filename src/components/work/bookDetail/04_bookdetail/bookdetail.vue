@@ -214,7 +214,7 @@ export default {
   reused: true,
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       resourceDetail: {}, // 详情信息
       resourceDetailConfig: {}, // 详情信息配置
       keys: {}, // 详情接口字段容器
@@ -251,7 +251,6 @@ export default {
 
   mounted () {
     this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
-    this.CONFIG = PROJECT_CONFIG[this.namespace].work_bookdetail.work_bookdetail_04[this.modulename];
     this.modulename_share = this.modulename + 'share';
     this.resourceDetailConfig = this.CONFIG.getResourceDetail;
     this.publicizeInfoConfig = this.CONFIG.getPublicizeInfo;
@@ -278,6 +277,7 @@ export default {
   },
 
   created: function () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].work_bookdetail.work_bookdetail_04[this.modulename];
     this.getMemberInfo().then((member) => {
       this.loginName = member.loginName;
       this.$store.dispatch("bookDetail/" + type.CART_NUMS, this.loginName);

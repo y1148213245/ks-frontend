@@ -1,11 +1,24 @@
 /*
  * @Author: yan.chaoming 
  * @Date: 2018-01-05 18:17:18 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-03-25 16:51:31
+ * @Last Modified by: song
+ * @Last Modified time: 2018-07-09 16:01:30
  */
 export default {
   name: 'searchadvance',
+   share: {
+     ui_share_01: {
+       'searchadvance': {
+         shareLists: [
+           {
+             title: '更多',
+             class: 'bds_more',
+             cmd: 'more',
+           }
+         ]
+       }
+     }
+   },
   search: {
     search_result_04: {
       url:  'spc/cms/publish/list.do',

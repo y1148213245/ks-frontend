@@ -18,6 +18,11 @@ const dev = {
       toCartUrl: '../pages/shoppingcart.html', // 去购物车
       tips: "我的购物车",  // 中间的提示文字 可以为空
       toLoginUrl: '../pages/login.html', // 去登陆
+      staticText : {
+        systemPrompt: "系统提示",
+        OK:"确定",
+        pleaseLoginFirst: "请您先登录"
+      }
     }
   }
 };
@@ -28,6 +33,11 @@ const prod = {
       toCartUrl: '../pages/shoppingcart.html', // 去购物车
       tips: "我的购物车",  // 中间的提示文字 可以为空
       toLoginUrl: '../pages/login.html', // 去登陆
+      staticText : {
+        systemPrompt: "系统提示",
+        OK:"确定",
+        pleaseLoginFirst: "请您先登录"
+      }
     }
   }
 };

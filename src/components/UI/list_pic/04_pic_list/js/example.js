@@ -11,7 +11,17 @@ const dev = {
   list_pic: {
     pic_list_04: {
       url: '/data/list_pic_04_pic_list.json',
-      picLinkUrl: ''
+      picLinkUrl: '',
+      staticText: {
+        author: "作者:",
+        price: "定价：",
+        noData: "暂无数据",
+        cleanRecord: "清空记录",
+        noImg: "暂无图片",
+        yuan: "¥",
+        deleteSuccess:"删除成功！",
+        deleteFailed:"删除失败！"
+      }
     }
   }
 };
@@ -26,7 +36,17 @@ const prod = {
         pageSize: "8",
         searchText: null
       },
-      picLinkUrl: ''
+      picLinkUrl: '',
+      staticText: {
+        author: "作者:",
+        price: "定价：",
+        noData: "暂无数据",
+        cleanRecord: "清空记录",
+        noImg: "暂无图片",
+        yuan: "¥",
+        deleteSuccess:"删除成功！",
+        deleteFailed:"删除失败！"
+      }
     }
   }
 };

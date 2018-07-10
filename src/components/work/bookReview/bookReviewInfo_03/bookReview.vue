@@ -254,7 +254,12 @@
               message: datas.data.msg,
               type: 'success'
             });
-            this.likeNum = Number(this.likeNum)+1;
+            if(datas.data.msg=='点赞成功'){
+              this.likeNum = Number(this.likeNum)+1;
+            }
+            if(datas.data.msg=='取消成功'){
+              this.likeNum = Number(this.likeNum)-1;
+            }
             return false;
           }
         })

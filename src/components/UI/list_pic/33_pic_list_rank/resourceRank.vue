@@ -22,7 +22,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_33_resourcelists_li_imgcontainter" @click="toCustomFun(item, config, keys)">
               <label class="ui_list_pic_33_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" @load="dealResourceImg($event)" />
+              <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)" />
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
@@ -56,7 +56,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_33_resourcelists_li_imgcontainter" @click="toCustomFun(item, config, keys)">
               <label class="ui_list_pic_33_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'" @load="dealResourceImg($event)" />
+              <img class="ui_list_pic_33_resourcelists_li_img" v-bind="{class: 'ui_list_pic_33_resourcelists_' + config.field}" :src=" item[keys[config.field]] " :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)" />
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
@@ -86,7 +86,7 @@
           </template>
         </li>
       </ul>
-      <div class="ui_list_pic_33_resourcelists_nodata" v-if="resourceLists && resourceLists.length == 0">{{CONFIG && CONFIG.staticText && CONFIG.staticText.noData ? CONFIG.staticText.noData : '暂无数据'}}</div>
+      <div class="ui_list_pic_33_resourcelists_nodata" v-if="resourceLists && resourceLists.length == 0">{{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}</div>
     </div>
   </div>
 </template>
@@ -150,6 +150,13 @@ export default {
     },
     dealResourceImg (eve) { // 处理图片尺寸
       DrawImage(eve.path[0], this.CONFIG.infoImgWidth, this.CONFIG.infoImgWidth);
+    },
+    getStaticText(text){
+      if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
     }
   },
 }

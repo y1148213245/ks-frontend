@@ -43,8 +43,12 @@ const dev = {
             colId: "colId", // colId是从适配器里对应的
           },
           fixedKeys: {}
+        },
+        staticText: {
+          noImg: "暂无图片"
         }
-      }
+      },
+
     }
   }
 }
@@ -84,8 +88,12 @@ const prod = {
             colId: "colId", // colId是从适配器里对应的
           },
           fixedKeys: {}
+        },
+        staticText: {
+          noImg: "暂无图片"
         }
-      }
+      },
+
     }
   }
 };

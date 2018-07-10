@@ -210,7 +210,7 @@ export default {
           }
 
         }
-        debugger
+      
         this.awardList = arr;
       })
     },

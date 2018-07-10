@@ -6,25 +6,25 @@
         v-text="detail[keys.topic]"></h3>
     <div style="text-align: center;">
       <!-- <span v-if="keys.author"><span v-if="keys.show_key">作者：</span>{{detail[keys.author]}}</span> -->
-      <span style="margin-left: 16px;" v-if="isShow('time')"><span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.createDate ? CONFIG.staticText.createDate : '创建日期：'}}</span>{{detail[keys.time] | formatTime}}</span>
+      <span style="margin-left: 16px;" v-if="isShow('time')"><span>{{getStaticText('createDate') ? getStaticText('createDate') : '创建日期：'}}</span>{{detail[keys.time] | formatTime}}</span>
       <!-- <span style="margin-left: 16px;" v-if="keys.source">来源：{{detail[keys.source]}}</span> -->
-      <a style="margin-left: 16px;" v-if="isShow('collect')" href="javascript:;" @click="addCollect()">{{detail[keys.isCollect] == 1 ? CONFIG && CONFIG.staticText && CONFIG.staticText.haveCollected ? CONFIG.staticText.haveCollected : '已收藏': CONFIG && CONFIG.staticText && CONFIG.staticText.collect ? CONFIG.collect.haveCollected : '收藏'}}</a>
+      <a style="margin-left: 16px;" v-if="isShow('collect')" href="javascript:;" @click="addCollect()">{{detail[keys.isCollect] == 1 ? (getStaticText('haveCollected') ? getStaticText('haveCollected') : '已收藏') : (getStaticText('collect') ? getStaticText('collect') : "收藏")}}</a>
       <a href="http://www.jiathis.com/share" style="margin-left: 16px;" v-if="isShow('share')"
-         class="search_04-content-list-entry_box-others-share" target="_blank">{{CONFIG && CONFIG.staticText && CONFIG.staticText.shareTo ? CONFIG.staticText.shareTo : '分享'}}</a>
+         class="search_04-content-list-entry_box-others-share" target="_blank">{{getStaticText('shareTo') ? getStaticText('shareTo') : '分享'}}</a>
     </div>
     <div class="abstract" v-if="isShow('abstract')">
-      <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.abstract ? CONFIG.staticText.abstract : '摘要：'}}</span>
+      <span>{{getStaticText('abstract') ? getStaticText('abstract') : '摘要：'}}</span>
       <span v-html="detail[keys.abstract] || ''"></span>
     </div>
     <br/>
     <p class="html-feild" v-html="detail[keys.content]" v-if="keys.content"></p>
     <div class="download" v-if="isShow('download') && attach && attach['attachName']">
-      <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.attachmentDownload ? CONFIG.staticText.attachmentDownload : '附件下载：'}}<a :href="attachUrl">{{attach['attachName']}}</a></span>
+      <span>{{getStaticText('attachmentDownload') ? getStaticText('attachmentDownload') : '附件下载：'}}<a :href="attachUrl">{{attach['attachName']}}</a></span>
     </div>
     <div class="work_informationdetail_02-nav">
-      <a class="work_informationdetail_02-nav-pre" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_preId]}" @click="toPre">{{CONFIG && CONFIG.staticText && CONFIG.staticText.previousChap ? CONFIG.staticText.previousChap : '&lt;&lt;上一篇'}}</a>
-      <a href="javascript:;" @click="returnList()">{{CONFIG && CONFIG.staticText && CONFIG.staticText.backToList ? CONFIG.staticText.backToList : '返回列表'}}</a>
-      <a class="work_informationdetail_02-nav-next" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_nextId]}" @click="toNext">{{CONFIG && CONFIG.staticText && CONFIG.staticText.nextChap ? CONFIG.staticText.nextChap : '下一篇&gt;&gt;'}}</a>
+      <a class="work_informationdetail_02-nav-pre" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_preId]}" @click="toPre">{{getStaticText('previousChap') ? getStaticText('previousChap') : '&lt;&lt;上一篇'}}</a>
+      <a href="javascript:;" @click="returnList()">{{getStaticText('backToList') ? getStaticText('backToList') : '返回列表'}}</a>
+      <a class="work_informationdetail_02-nav-next" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_nextId]}" @click="toNext">{{getStaticText('nextChap') ? getStaticText('nextChap') : '下一篇&gt;&gt;'}}</a>
     </div>
   </div>
 </template>
@@ -50,7 +50,8 @@ export default {
       preNextData: '',/* 上一篇下一篇数据 */
       detail: '',/* 新闻详情 */
       attach: '',/* 附件详情 */
-      attachUrl: ''/* 附件链接 */
+      attachUrl: ''/* 附件链接 */,
+      // CONFIG:null
     };
   },
 
@@ -137,7 +138,7 @@ export default {
       if (!this.member.loginName) { // 未登录时
         this.$message({
           type: "info",
-          message: CONFIG && CONFIG.staticText && CONFIG.staticText.pleaseLoginFirst ? CONFIG.staticText.pleaseLoginFirst : "请您先登录"
+          message: this.getStaticText('pleaseLoginFirst') ? this.getStaticText('pleaseLoginFirst') : "请您先登录"
         });
         return false;
       }
@@ -157,12 +158,12 @@ export default {
         } else if (rep.error.errorCode == '403') {
           this.$message({
             type: "info",
-            message: CONFIG && CONFIG.staticText && CONFIG.staticText.loginTimeOut ? CONFIG.staticText.loginTimeOut : "登录超时,请您登陆"
+            message: this.getStaticText('loginTimeOut') ? this.getStaticText('loginTimeOut') : "登录超时,请您登陆"
           });
         } else {
           this.$message({
             type: "error",
-            message: CONFIG && CONFIG.staticText && CONFIG.staticText.serverMaintenance ? CONFIG.staticText.serverMaintenance : "服务器维护中"
+            message: this.getStaticText('serverMaintenance') ? this.getStaticText('serverMaintenance') : "服务器维护中"
           });
         }
       });
@@ -217,7 +218,15 @@ export default {
       let recordID = this.keys.getAttachParam_recordID + '=' + this.attach[this.keys.fileRecordID];
       let url = CONFIG.BASE_URL + this.projectConfig.attachUrl + '?' + recordID;
       this.attachUrl = url;
-    }
+    },
+    /* 获取静态文本 */
+    getStaticText (text) {
+      if (this.projectConfig && this.projectConfig.staticText && this.projectConfig.staticText[text]) {
+        return this.projectConfig.staticText[text]
+      } else {
+        return false
+      }
+    },
   }
 }
 </script>

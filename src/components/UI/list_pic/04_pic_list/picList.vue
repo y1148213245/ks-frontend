@@ -6,23 +6,23 @@
         <div class="product-image">
           <a :href="'../pages/bookdetail.html?pubId='+item.id+'&contentType='+item.pub_content_type+'&columnId=' + item.pub_col_id"
              target="_blank" class="ebook_hot_imgBox">
-            <img onload="DrawImage(this,100,100)" :src="item.pub_picBig" alt="暂无图片" class="ebook_hot_img"/>
+            <img onload="DrawImage(this,100,100)" :src="item.pub_picBig" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" class="ebook_hot_img"/>
           </a>
         </div>
         <div class="product-desc">
           <div class="product-title"><h5><a
             :href="'../pages/bookdetail.html?pubId='+item.id+'&contentType='+item.pub_content_type+'&columnId=' + item.pub_col_id "
             target="_blank" class="scoped-title_line" :title="item.BOOK_SYS_TOPIC">{{item.BOOK_SYS_TOPIC}}</a></h5></div>
-          <div class="product-author scoped-title_line" :title="item.BOOK_SYS_AUTHORS | notAvailable">作者：{{item.BOOK_SYS_AUTHORS | notAvailable}}</div>
-          <div class="product-price"><label>定价：</label> ¥ {{item.prod_sale_price | twoPoint| notAvailable}}</div>
+          <div class="product-author scoped-title_line" :title="item.BOOK_SYS_AUTHORS | notAvailable">{{getStaticText('author') ? getStaticText('author') : '作者:'}}{{item.BOOK_SYS_AUTHORS | notAvailable}}</div>
+          <div class="product-price"><label>{{getStaticText('price') ? getStaticText('price') : '定价：'}}</label> ¥ {{item.prod_sale_price | twoPoint| notAvailable}}</div>
         </div>
       </div>
     </div>
     <div class="noData" v-if="bookList.length === 0">
-      暂无数据
+      {{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}
     </div>
   </div>
-  <div v-if="modulename === 'historylist'" class="button button-border button-border-thin button-red" @click="deleteHistoryByUser()">清空记录</div>
+  <div v-if="modulename === 'historylist'" class="button button-border button-border-thin button-red" @click="deleteHistoryByUser()">{{getStaticText('cleanRecord') ? getStaticText('cleanRecord') : '清空记录'}}</div>
 </div>
 </template>
 <script type="text/ecmascript-6">
@@ -38,7 +38,8 @@ export default {
   props: ["namespace", "modulename"],
   data: function () {
     return {
-      bookList: []
+      bookList: [],
+      CONFIG:"",
     }
   },
   computed: {
@@ -52,7 +53,7 @@ export default {
   },
   created: function () {
     let moduleName = this.modulename;
-    let url = PROJECT_CONFIG[this.namespace].list_pic.list_pic_04_pic_list;
+    let url = PROJECT_CONFIG[this.namespace].list_pic.pic_list_04;
     this.CONFIG = !this.modulename ? url : url[moduleName];  //判断一个页面有一个还是两个以上该组件
     this.query = URL.parse(document.URL, true).query;
     //get
@@ -128,7 +129,7 @@ export default {
           if (rep.data.result === "1") {
             this.$message({
               type: "success",
-              message: "删除成功!"
+              message: this.getStaticText('deleteSuccess') ? this.getStaticText('deleteSuccess') : "删除成功!"
             });
             let param = Object.assign({}, this.CONFIG.params);
             param.username = this.member.loginName;
@@ -136,7 +137,8 @@ export default {
           } else {
             this.$message({
               type: "error",
-              message: "删除失败!"
+              message: this.getStaticText('deleteFailed') ? this.getStaticText('deleteFailed') : "删除失败!"
+
             });
           }
         })
@@ -145,7 +147,14 @@ export default {
         this.bookList = "";
       }
 
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   },
   watch: {
     member: function (newValue, oldValue) {

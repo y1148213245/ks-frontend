@@ -214,7 +214,7 @@ export default {
     },
     /* 评审状态过滤处理 */
     formateReviewStatus (row, column) {
-      debugger
+      // debugger
 
       let status = row[column.property];
       let isEndActivity = row['ACTIVITY_DETAIL']['IS_ENDACTIVITY']/* 是:已发布评奖结果 */
