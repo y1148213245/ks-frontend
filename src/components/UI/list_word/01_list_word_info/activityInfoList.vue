@@ -111,7 +111,7 @@ export default {
       if (value) {
         return moment(value).format("YYYY-MM-DD");
       } else {
-        return this.getStaticText('noDate') ? this.getStaticText('noDate') : "暂无日期";
+        return "暂无日期";
       }
     }
   }

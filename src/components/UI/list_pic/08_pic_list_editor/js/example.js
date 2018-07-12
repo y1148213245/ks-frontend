@@ -15,8 +15,15 @@ const dev = {
     picListEditor: {
       url: "/data/ui_list_pic_08.json",
       href: "./editorList.html",
-      locationHref: "authordetail.html?pubId="
-    }
+      locationHref: "authordetail.html?pubId=",
+      staticText : {
+        edit: "编辑",
+        noEmail: "暂无邮箱",
+        noIntroduction: "暂无简介",
+        noCover: "暂无封面",
+        email: "邮箱："
+      }
+  }
   }
 };
 
@@ -33,7 +40,14 @@ const prod = {
         searchText: ""
       },
       href: "./editorList.html",
-      locationHref: "authordetail.html?pubId="
+      locationHref: "authordetail.html?pubId=",
+      staticText : {
+        edit: "编辑",
+        noEmail: "暂无邮箱",
+        noIntroduction: "暂无简介",
+        noCover: "暂无封面",
+        email: "邮箱："
+      }
     }
   }
 };

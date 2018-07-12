@@ -7,19 +7,19 @@
     <!--<span>{{newsDetailInfo.information_a_pubTime | formatDate}}</span>-->
     <div style="text-align: center;">
       <span v-if="keys.information_SYS_AUTHORS">
-        <span v-if="keys.show_key">作者：</span>{{newsDetailInfo[keys.information_SYS_AUTHORS]}}</span>
+        <span v-if="keys.show_key">{{getStaticText('author') ? getStaticText('author') : "作者："}}</span>{{newsDetailInfo[keys.information_SYS_AUTHORS]}}</span>
       <span style="margin-left: 16px;" v-if="keys.information_a_pubTime">
-        <span v-if="keys.show_key">创建日期：</span>{{newsDetailInfo[keys.information_a_pubTime] | formatDate}}</span>
-      <span style="margin-left: 16px;" v-if="keys.information_a_source">来源：{{newsDetailInfo[keys.information_a_source]}}</span>
-      <a style="margin-left: 16px;" v-if="keys.information_collect && CONFIG.showItem && CONFIG.showItem.indexOf('collect') > -1" href="javascript:;" @click="addCollect()">收藏</a>
+        <span v-if="keys.show_key">{{getStaticText('createDate') ? getStaticText('createDate') : "创建日期："}}</span>{{newsDetailInfo[keys.information_a_pubTime] | formatDate}}</span>
+      <span style="margin-left: 16px;" v-if="keys.information_a_source">{{getStaticText('source') ? getStaticText('source') : "来源："}}{{newsDetailInfo[keys.information_a_source]}}</span>
+      <a style="margin-left: 16px;" v-if="keys.information_collect && CONFIG.showItem && CONFIG.showItem.indexOf('collect') > -1" href="javascript:;" @click="addCollect()">{{getStaticText('collect') ? getStaticText('collect') : "收藏"}}</a>
       <!-- <a href="http://www.jiathis.com/share" style="margin-left: 16px;" v-if="keys.information_share" class="search_04-content-list-entry_box-others-share" target="_blank">分享</a> -->
 
       <ui_share_01 :namespace="namespace" modulename="work_informationdetail_01_share"></ui_share_01>
 
     </div>
     <div class="abstract" v-if="keys.information_a_abstract">
-      <span>摘要：</span>
-      <span :title="newsDetailInfo[keys.information_a_abstract]" v-html="newsDetailInfo[keys.information_a_abstract] || '暂无摘要'"></span>
+      <span>{{getStaticText('abstract') ? getStaticText('abstract') : "摘要："}}</span>
+      <span :title="newsDetailInfo[keys.information_a_abstract]" v-html="newsDetailInfo[keys.information_a_abstract] || (getStaticText('noAbstract') ? getStaticText('noAbstract') : '暂无摘要')"></span>
     </div>
     <br/>
     <!-- <img style="max-width: 100%;" :src="newsDetailInfo.pub_picBig"> -->
@@ -27,7 +27,7 @@
     <p class="html-feild" v-html="newsDetailInfo[keys.information_a_content]" v-if="keys.information_a_content"></p>
     <!-- 附件待开发 -->
     <div class="download" v-if="CONFIG.showItem && CONFIG.showItem.indexOf('attach') > -1 && newsDetailInfo[keys.pub_widget_url]">
-      <span>附件下载：</span>
+      <span>{{getStaticText('downloadAttachment') ? getStaticText('downloadAttachment') : "附件下载："}}</span>
       <ul>
         <li v-for="(url,index) in newsDetailInfo[keys.pub_widget_url]" :key="index">
           <a :href="url" download="attach" v-text="newsDetailInfo[keys.pub_widget_content][index]"></a>
@@ -35,6 +35,7 @@
       </ul>
 
     </div>
+
   </div>
 </template>
 
@@ -53,7 +54,7 @@ export default {
   data () {
     return {
       newsDetailInfo: {},
-      CONFIG: null,
+      CONFIG: "",
       pubId: '',
       keys: null,
       collectOrLikeConfig: null,
@@ -86,14 +87,22 @@ export default {
       })
     },
     addCollect () {
+      let _this = this;
       let param = Object.assign({}, this.collectOrLikeConfig, {
         pubId: this.pubId,
         siteId: CONFIG.SITE_CONFIG.siteId
       });
       Post(CONFIG.BASE_URL + this.collectOrLikeConfig.url, param).then((rep) => {
-        alert("收藏成功");
+        alert(_this.getStaticText('collectSuccess') ? _this.getStaticText('collectSuccess') : "收藏成功");
       })
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   },
   filters: {
     formatDate: function (value) {

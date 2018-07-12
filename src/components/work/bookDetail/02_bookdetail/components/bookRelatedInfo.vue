@@ -9,13 +9,13 @@
         <span v-if="index !== titleList.length-1">|</span>
       </span>
     </div>
-  
+
     <div class="briefIntro" v-for="(item, index) in titleList" :key="index" v-show="indexValue === item.ind">
       <div v-for="(introduction, ind) in bookIntroduction" v-if="introduction.topic == item.title" :key="ind">
         <span class="briefIntro_content" :class="{showBriefIntro:item.flag}" v-html="introduction.content"></span>
         <!-- <span style="display:none;" class="con-all" v-html="introduction.content"></span> -->
       </div>
-      <a class="showAllIntro" @click="showAllEve(item)"><span>{{!item.flag && indexValue == item.ind?'收起全部':'显示全部'}}</span><i class="btnDown" :class="{'btnUp':!item.flag && indexValue == item.ind}"></i></a>
+      <a class="showAllIntro" @click="showAllEve(item)"><span>{{!item.flag && indexValue == item.ind ? (getStaticText('packUpAll') ? getStaticText('packUpAll') : '收起全部') : (getStaticText('showAll') ? getStaticText('showAll') :'显示全部')}}</span><i class="btnDown" :class="{'btnUp':!item.flag && indexValue == item.ind}"></i></a>
     </div>
 
   </div>
@@ -26,6 +26,7 @@ import { mapGetters, mapActions, mapState } from 'vuex';
 import moment from "moment";
 import Vue from 'vue';
 import $ from 'jquery';
+import PROJECT_CONFIG from "projectConfig";
 
 export default {
   name: "work_bookdetail_02_bookrelatedinfo",
@@ -35,21 +36,28 @@ export default {
   },
   data () {
     return {
+      CONFIG:null,
       indexValue: 0,
-      titleList: [{
+      titleList: []
+    }
+  },
+  created:function(){
+    this.CONFIG = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02.relatedBook;
+    this.titleList = [
+      {
         ind: 0,
-        title: '图书简介',
+        title: this.getStaticText('bookAbstract') ? this.getStaticText('bookAbstract') : '图书简介',
         flag: true,
       }, {
         ind: 1,
-        title: '作者简介',
+        title: this.getStaticText('authorAbstract') ? this.getStaticText('authorAbstract') : '作者简介',
         flag: true,
       }, {
         ind: 2,
-        title: '目录',
+        title: this.getStaticText('contents') ? this.getStaticText('contents') : '目录',
         flag: true,
-      }]
-    }
+      }
+    ]
   },
   computed: {
     ...mapGetters({
@@ -69,6 +77,13 @@ export default {
       //   $(".showAllIntro").children("span").html("收起全部")
       // }
     },
+    getStaticText(text){
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    }
   },
   filters: {
     formatDate: function (time) {

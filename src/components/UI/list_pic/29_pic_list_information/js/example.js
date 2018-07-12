@@ -5,7 +5,7 @@ const name = component.name; // 组件标签名
 
 const title = "资讯组件"; // 组件title
 
-const description = `资讯组件,如果isMobileLoading 设置为true那就有下拉增量刷新功能，如果没写或者设置为false那就没有。`; // 组件描述信息
+const description = `资讯组件,如果isMobileLoading 设置为true那就有下拉增量刷新功能，如果没写或者设置为false那就没有。 method设置为downloadUrl 为文件下载`; // 组件描述信息
 
 const dev = {
   list_pic: {

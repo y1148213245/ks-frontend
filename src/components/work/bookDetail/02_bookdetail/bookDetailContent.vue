@@ -3,21 +3,21 @@
   <div class="work_bookdetail_02 work_bookdetail_02_skin">
     <div class="navigation">
       <span class="curPositionFixed">
-        <span>您的位置：</span>
-        <a class="indexPage" href="../pages/index.html">首页 </a>>>
+        <span>{{getStaticText('yourPosition') ? getStaticText('yourPosition') : '您的位置：'}}</span>
+        <a class="indexPage" href="../pages/index.html">{{getStaticText('homePage') ? getStaticText('homePage') : '首页 '}}</a>>>
       </span>
       <span class="curPositionUnfixed">
-        <a class="ebookPage" href="../pages/ebook.html">电子书城 </a>>>
+        <a class="ebookPage" href="../pages/ebook.html">{{getStaticText('cathyebk') ? getStaticText('cathyebk') : '电子书城 '}}</a>>>
         <span v-text="bookInfo.resourceName"></span>
       </span>
-      
+
     </div>
 
     <div class="bookDetailWrapper">
       <!-- 图书基本信息-->
       <dl class="bookDetailInfo">
         <dt class="bookDetailDt">
-          <img class="bookDetailImg" onload="DrawImage(this,221,317)" :src="bookInfo.bigPic" alt="暂无封面">
+          <img class="bookDetailImg" onload="DrawImage(this,221,317)" :src="bookInfo.bigPic" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'">
         </dt>
         <dd class="bookDetailDd">
           <p class="titleCon">
@@ -30,19 +30,19 @@
             <span class="bdsharebuttonbox" data-tag="share_1">
               <a class="work_bookdetail_02_share_more collectOperation share" data-cmd="more"></a>
             </span>
-            
+
             <span class="collectOperation" @click="collectOrLike('0', bookInfo.contentType, bookInfo.pubId, bookInfo.productId)" :class="{collectActive: bookInfo.isCollect == '1', collectUnactive: bookInfo.isCollect == '0' || bookInfo.isCollect == null || member.loginName == undefined}"></span>
           </p>
 
           <p class="price">
-            电子书价格:
+            {{getStaticText('eBookPrice') ? getStaticText('eBookPrice') : '电子书价格: '}}
             <span class="newPrice">￥{{bookInfo.memberPrice | filterFun}}</span>
             <span class="oldPrice">￥{{bookInfo.ebPrice | filterFun}}</span>
           </p>
 
           <p class="promotion" v-if="bookInfo.activityList && bookInfo.activityList.length > 0">
-            <span>促销：</span>
-            <span class="fullcut">满额减</span>
+            <span>{{getStaticText('onSale') ? getStaticText('onSale') : '促销：'}}</span>
+            <span class="fullcut">{{getStaticText('priceReduction') ? getStaticText('priceReduction') : '满额减'}}</span>
             <span class="fullcutInfo">
               <em :class="{cx_01_on:index == 0 ? true : false}" @click="discount(index)" v-for="(activity,index) in bookInfo.activityList" :key="index">
                 <span v-text="activity.discountName"></span>
@@ -54,13 +54,13 @@
           <work_01_bookdetail_coupons :oneBookDetailInfo="bookInfo" namespace="bookdetail" style="margin-bottom:10px;"></work_01_bookdetail_coupons>
           <!-- 优惠券 END -->
 
-          <p class="paperPrice">纸书定价：￥{{bookInfo.bookPrice | filterFun}}<span class="buyBook"><a :href="buyBookUrl">购买纸书</a></span></p>
+          <p class="paperPrice">{{getStaticText('paperBookPrice') ? getStaticText('paperBookPrice') : '纸书定价：￥'}}{{bookInfo.bookPrice | filterFun}}<span class="buyBook"><a :href="buyBookUrl">{{getStaticText('buyPaperBook') ? getStaticText('buyPaperBook') : '购买纸书'}}</a></span></p>
 
           <p class="otherOpertion">
 
-            <a target="_blank" class="probation" :class="{notProbation: !bookInfo.bookFreeDownLoadPath}" @click="probation(bookInfo.resourceId, 0, bookInfo.resourceName, bookInfo.bookFreeDownLoadPath)"><i class="opertionIcon read"></i><span>免费试读</span></a>
+            <a target="_blank" class="probation" :class="{notProbation: !bookInfo.bookFreeDownLoadPath}" @click="probation(bookInfo.resourceId, 0, bookInfo.resourceName, bookInfo.bookFreeDownLoadPath)"><i class="opertionIcon read"></i><span>{{getStaticText('freeTrials') ? getStaticText('freeTrials') : '免费试读'}}</span></a>
 
-            <a class="addCart" @click="cart(bookInfo.contentType)"><i class="opertionIcon cart"></i><span>加入购物车</span></a>
+            <a class="addCart" @click="cart(bookInfo.contentType)"><i class="opertionIcon cart"></i><span>{{getStaticText('addToShoppingCart') ? getStaticText('addToShoppingCart') : '加入购物车'}}</span></a>
           </p>
         </dd>
       </dl>
@@ -117,11 +117,11 @@ export default {
   },
   mounted () {
     this.pubId = URL.parse(window.location.href, true).query.pubId;
-    this.CONFIG = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02
     this.buyBookUrl = this.CONFIG.buyBookUrl;
     this.probationUrl = this.CONFIG.probationUrl;
   },
   created: function () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].book_detail.book_detail_02,
     this.getMemberInfo().then((member) => {
       var params = {
         loginName: member.loginName ? member.loginName : '',
@@ -182,7 +182,7 @@ export default {
       var loginName = this.member.loginName;
       if (loginName == undefined || loginName == '') {
         this.$message({
-          message: "请登录",
+          message: this.getStaticText('pleaseLogin') ? this.getStaticText('pleaseLogin') : "请登录",
           type: 'error'
         });
         return false;
@@ -201,7 +201,7 @@ export default {
       var loginName = this.member.loginName;
       if (loginName == undefined || loginName == '') {
         _this.$message({
-          message: "请登录",
+          message: this.getStaticText('pleaseLogin') ? this.getStaticText('pleaseLogin') : "请登录",
           type: 'error'
         });
         return false;
@@ -255,7 +255,14 @@ export default {
       }
       var url = this.CONFIG.READ_URL || CONFIG.READ_URL + '?bookId=' + bookId + '&readType=' + readType + '&bookName=' + bookName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
       window.open(url);
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   },
   watch: {
     cartTotalAmount: function (newValue, oldValue) {
@@ -264,7 +271,7 @@ export default {
       }
     },
     bookInfo (newValue, oldValue) {
-      window.document.title = newValue.resourceName ? newValue.resourceName : "商品详情";
+      window.document.title = newValue.resourceName ? newValue.resourceName : (this.getStaticText('productDetails') ? this.getStaticText('productDetails') : '商品详情');
     }
   },
 }
@@ -279,7 +286,7 @@ function addCart (contentType, this_value, loginName) {
   colId = _this.bookInfo.colId; //栏目id
   if (isEb == "0") {
     _this.$message({
-      message: "无价格，不是书，不可加购物车",
+      message: this.getStaticText('noPriceNoBookInfo') ? this.getStaticText('noPriceNoBookInfo') : '无价格，不是书，不可加购物车',
       type: 'error'
     });
     return;

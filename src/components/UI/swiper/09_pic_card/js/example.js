@@ -46,6 +46,7 @@ const dev = {
                     groupBy: "pub_resource_id",
                     orderBy: "pub_a_order asc pub_lastmodified desc id asc"
                 },
+                startNum: 0,
                 swiper: {
                     autoplay: 3000,
                     speed: 300,

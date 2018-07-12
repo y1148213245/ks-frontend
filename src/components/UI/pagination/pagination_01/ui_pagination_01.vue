@@ -1,8 +1,8 @@
 <template>
   <div class="ui_pagination_01">
-    <a class="fl pre" :href="!prev ? urls.prev:'javascript:void(0)'" :class="{clickFalse:prev}">&lt;&lt;上一篇</a>
-    <a href="javascript:;" @click="returnList()">返回列表</a>
-    <a class="fr next" :href="!next ? urls.next:'javascript:void(0)'" :class="{clickFalse:next}">下一篇&gt;&gt;</a>
+    <a class="fl pre" :href="!prev ? urls.prev:'javascript:void(0)'" :class="{clickFalse:prev}">&lt;&lt;{{getStaticText('previousChap') ? getStaticText('previousChap') : '上一篇'}}</a>
+    <a href="javascript:;" @click="returnList()">{{getStaticText('backToList') ? getStaticText('backToList') :"返回列表"}}</a>
+    <a class="fr next" :href="!next ? urls.next:'javascript:void(0)'" :class="{clickFalse:next}">{{getStaticText('nextChap') ? getStaticText('nextChap') : '下一篇'}}&gt;&gt;</a>
   </div>
 </template>
 
@@ -23,11 +23,14 @@ export default {
         next: ''
       },
       prev: false,
-      next: false
+      next: false,
+      CONFIG: null
     }
   },
-  mounted: function () {
+  created:function(){
     this.CONFIG = PROJECT_CONFIG[this.namespace].pagination.ui_pagination_01;
+  },
+  mounted: function () {
     let query = URL.parse(document.URL, true).query;
     this.params = Object.assign({}, query);
     this.getPreNext();
@@ -71,6 +74,13 @@ export default {
     },
     returnList: function () {
       window.location.href = window.sessionStorage.getItem("listUrl");
+    },
+    getStaticText(text){
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
     }
   }
 }

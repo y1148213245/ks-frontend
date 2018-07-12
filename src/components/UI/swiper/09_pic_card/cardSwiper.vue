@@ -16,7 +16,7 @@
     </div>
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
-					<div class="swiper-slide" v-for="(item, index) in picList" :key="index">
+					<div class="swiper-slide" v-for="(item, index) in picList" :key="index" v-if="index >= CONFIG.startNum">
             <template v-for="(config, config_i) in CONFIG.complicatedItem">
               <!-- 需要特殊处理的复杂项 -->
               <!-- img 图片 -->

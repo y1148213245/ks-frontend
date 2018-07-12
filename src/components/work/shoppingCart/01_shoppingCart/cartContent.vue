@@ -6,12 +6,13 @@
       <!-- shopping cart-->
       <div v-if="productList && productList.length>0">
         <div class="container" id="priceChange" v-if="priceChangeList.length !== 0">
-          <div class="priceInfo">价格变更信息：</div>
+          <div class="priceInfo">
+            {{getStaticText('priceChangeInfo') ? getStaticText('priceChangeInfo') : '价格变更信息：'}}</div>
           <div v-for="info in priceChangeList">
             <span v-text="info.name"></span>
-            <span>商品比加入购物车时价格降低了</span>
+            <span>{{getStaticText('priceDescInfo') ? getStaticText('priceDescInfo'): '商品比加入购物车时价格降低了'}}</span>
             <span v-text="info.diffPrice"></span>
-            <span>元</span>
+            <span>{{getStaticText('money') ? getStaticText('money') : '元'}}</span>
           </div>
         </div>
         <div class="container cartContainer">
@@ -23,13 +24,13 @@
                 <ul>
                   <li class="selectAll" @change="selectAll()">
                     <el-checkbox v-model="selectedAll"></el-checkbox>
-                    <span>全选</span>
+                    <span>{{getStaticText('selectAll') ? getStaticText('selectAll') : '全选'}}</span>
                   </li>
-                  <li>商品信息</li>
-                  <li>单价（元）</li>
-                  <li>数量</li>
-                  <li>金额</li>
-                  <li>操作</li>
+                  <li>{{getStaticText('productInfo') ? getStaticText('productInfo') : '商品信息'}}</li>
+                  <li>{{getStaticText('unitPrice') ? getStaticText('unitPrice') : '单价（元）'}}</li>
+                  <li>{{getStaticText('quantity') ? getStaticText('quantity') : '数量'}}</li>
+                  <li>{{getStaticText('sumPrice') ? getStaticText('sumPrice') : '金额'}}</li>
+                  <li>{{getStaticText('operation') ? getStaticText('operation') : '操作'}}</li>
                 </ul>
               </div>
               <!-- product list -->
@@ -38,7 +39,7 @@
                 <div style="height:30px"></div>
                 <div class="promotion" v-if="item.activityName">
                 <span class="promotionInfo" v-bind:class="{checkedLi: item.selectedOne}">
-                  <span>促销</span>
+                  <span>{{getStaticText('onSale') ? getStaticText('onSale') : '促销'}}</span>
                   <span>{{item.activityName}}</span>
                 </span>
                 </div>
@@ -60,7 +61,7 @@
                           v-bind:href="'./bookdetail.html?pubId=' + product.pubId+'&columnId='+product.colId" class="scoped_text" :title="product.productName">{{product.productName}}</a>
                       </div>
                       <div class="author">
-                        <span class="scoped_text">作者：</span>
+                        <span class="scoped_text">{{getStaticText('author') ? getStaticText('author') : '作者：'}}</span>
                         <span v-text="product.author" :title="product.author" class="scoped_text"></span>
                       </div>
                     </div>
@@ -70,7 +71,7 @@
                       <span>{{product.productPrice | formatMoney}}</span>
                     </div>
                     <select name="" v-if="product.productDiscountList.length > 0" style="max-width:350px;" @change="selectActivity($event, product, item)">
-                      <option value="0">不参与任何活动</option>
+                      <option value="0">{{getStaticText('dontParticipateAnyActivities') ? getStaticText('dontParticipateAnyActivities') : '不参与任何活动'}}</option>
                       <option v-for="(item, ind) in product.productDiscountList" v-bind="{selected: item.id === product.activityId ? 'selected' : false, value: item.id}">
                         <span>{{item.discountName}}</span>
                       </option>
@@ -93,18 +94,18 @@
                   <div class="cart-tab-6">
                     <div class="cartOpration">
                       <div class="delete opertion" @click="deleteProduct(product.id)">
-                        <span>删除</span>
+                        <span>{{getStaticText('delete') ? getStaticText('delete') : '删除'}}</span>
                       </div>
                       <div class="favorit opertion" @click="addFavorite(product)">
                     <span v-if="product.isCollect === '0' && isShowCollectButton">
-                      <span>添加收藏</span>
+                      <span>{{getStaticText('addToCollection') ? getStaticText('addToCollection') : '添加收藏'}}</span>
                     </span>
                         <span v-if="product.isCollect === '1' && isShowCollectButton">
-                      <span>已收藏</span>
+                      <span>{{getStaticText('haveCollected') ? getStaticText('haveCollected'): '已收藏'}}</span>
                     </span>
                       </div>
                       <div v-if="product.isCollect != '1' && isShowCollectButton" class="moveFavorite opertion" @click="moveFavorite(product)">
-                        <span>移入收藏</span>
+                        <span>{{getStaticText('moveToCollection') ? getStaticText('moveToCollection') : '移入收藏'}}</span>
                       </div>
                     </div>
                   </div>
@@ -118,15 +119,15 @@
                   </div>
                   <div class="cart-tab-2">
                     <div class="cart-item-pic">
-                      <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)" alt="暂无图片" style="line-height: 80px;text-align: center;float: left;">
+                      <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" style="line-height: 80px;text-align: center;float: left;">
                     </div>
                     <div class="cart-item-title">
                       <div class="item-name">
                         <a
-                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId" class="scoped_text" :title="product.productName">{{product.productName}}</a><span class="scoped_text"> (电子书)</span>
+                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId" class="scoped_text" :title="product.productName">{{product.productName}}</a><span class="scoped_text"> {{getStaticText('ebook') ? getStaticText('ebook') : '(电子书)'}}</span>
                       </div>
                       <div class="author">
-                        <span class="scoped_text">作者：</span>
+                        <span class="scoped_text">{{getStaticText('author') ? getStaticText('author') : '作者：'}}</span>
                         <span v-text="product.author" :title="product.author" class="scoped_text"></span>
                       </div>
                     </div>
@@ -136,7 +137,7 @@
                       <span>{{product.productPrice | formatMoney}}</span>
                     </div>
                     <select name="" v-if="product.productDiscountList.length > 0" style="max-width:350px;" @change="selectActivity($event, product, item)">
-                      <option value="0">不参与任何活动</option>
+                      <option value="0">{{getStaticText('dontParticipateAnyActivities') ? getStaticText('dontParticipateAnyActivities') : '不参与任何活动'}}</option>
                       <option v-for="(item, ind) in product.productDiscountList" v-bind="{selected: item.id === product.activityId ? 'selected' : false, value: item.id}">
                         <span>{{item.discountName}}</span>
                       </option>
@@ -154,18 +155,18 @@
                   <div class="cart-tab-6">
                     <div class="cartOpration">
                       <div class="delete opertion" @click="deleteProduct(product.id)">
-                        <span>删除</span>
+                        <span>{{getStaticText('delete') ? getStaticText('delete') : '删除'}}</span>
                       </div>
                       <div class="favorit opertion" @click="addFavorite(product)">
                     <span v-if="product.isCollect === '0' && isShowCollectButton">
-                      <span>添加收藏</span>
+                      <span>{{getStaticText('addToCollection') ? getStaticText('addToCollection') : '添加收藏'}}</span>
                     </span>
                         <span v-if="product.isCollect === '1' && isShowCollectButton">
-                      <span>已收藏</span>
+                      <span>{{getStaticText('haveCollected') ? getStaticText('haveCollected') : '已收藏'}}</span>
                     </span>
                       </div>
                       <div v-if="product.isCollect != '1' && isShowCollectButton" class="moveFavorite opertion" @click="moveFavorite(product)">
-                        <span>移入收藏</span>
+                        <span>{{getStaticText('moveToCollection') ? getStaticText('moveToCollection') : '移入收藏'}}</span>
                       </div>
                     </div>
                   </div>
@@ -178,27 +179,27 @@
             <div id="clearingWrapper">
               <div class="selectAllProduct" @change="selectAll()">
                 <el-checkbox v-model="selectedAll"></el-checkbox>
-                <span>全选</span>
+                <span>{{getStaticText('selectAll') ? getStaticText('selectAll') : '全选'}}</span>
               </div>
               <div class="clearing">
                 <div class="zeroTips" v-if="showZeroTips">
                   <span></span>
-                  请选择至少一件商品噢~
+                  {{getStaticText('selectAtLeastOne') ? getStaticText('selectAtLeastOne'): '请选择至少一件商品噢~'}}
                 </div>
-                <el-button type="primary" @click="clearing()">结算</el-button>
+                <el-button type="primary" @click="clearing()">{{getStaticText('settleAccounts') ? getStaticText('settleAccounts') : '结算'}}</el-button>
               </div>
               <div class="detail">
                 <div class="totalMoney">
-                  <span class="sitRight">总价：</span>
+                  <span class="sitRight">{{getStaticText('totalPrice') ? getStaticText('totalPrice') : '总价：'}}</span>
                   <span>{{totalMoney | formatMoney}}</span>
                 </div>
                 <div class="save">
-                  <span class="sitRight">已节省：</span>
+                  <span class="sitRight">{{getStaticText('haveSaved') ? getStaticText('haveSaved') : '已节省：'}}</span>
                   <span>{{saveAmount | formatMoney}}</span>
                 </div>
               </div>
               <div class="selectedProduct">
-                <span>已选中<span class="selectedProductCount" v-text="totalNum">0</span>件商品</span>
+                <span>{{getStaticText('haveSelected') ? getStaticText('haveSelected') : '已选中'}}<span class="selectedProductCount" v-text="totalNum">0</span>{{getStaticText('productQuanity') ? getStaticText('productQuanity'): '件商品'}}</span>
               </div>
             </div>
           </div>
@@ -208,7 +209,7 @@
       <div v-if="productList.length==0">
         <div class="emptyCart">
           <img src="./assets/img/emptyCart.png" alt="">
-          <div class="emptyInfo">您的购物车还是空的，赶紧行动吧！</div>
+          <div class="emptyInfo">{{getStaticText('cartEmptyInfo') ? getStaticText('cartEmptyInfo') : '您的购物车还是空的，赶紧行动吧！'}}</div>
         </div>
       </div>
     </div>
@@ -224,12 +225,12 @@
         <!-- END 收货地址组件 -->
 
         <div class="invoice">
-          <div class="infoHead">发票信息</div>
+          <div class="infoHead">{{getStaticText('invoiceInfo') ? getStaticText('invoiceInfo') : '发票信息'}}</div>
           <div :class="{orderContent: needInvoice === '0', chooseInvoice: needInvoice === '1'}">
-            <span>选择是否需要发票：</span>
+            <span>{{getStaticText('chooseWetherNeedInvoice') ? getStaticText('chooseWetherNeedInvoice') : '选择是否需要发票：'}}</span>
             <template>
-              <el-radio v-model="needInvoice" label="1">是</el-radio>
-              <el-radio v-model="needInvoice" label="0">否</el-radio>
+              <el-radio v-model="needInvoice" label="1">{{getStaticText('yes') ? getStaticText('yes'): '是'}}</el-radio>
+              <el-radio v-model="needInvoice" label="0">{{getStaticText('no') ? getStaticText('no') : '否'}}</el-radio>
             </template>
           </div>
 
@@ -241,45 +242,45 @@
 
         <!-- 优惠券模块 -->
         <div class="discount" v-if="isShowCoupon">
-          <div class="infoHead">优惠券</div>
+          <div class="infoHead">{{getStaticText('discountCoupon') ? getStaticText('discountCoupon') : '优惠券'}}</div>
           <div class="myCouponsWrapper">
             <div class="disabledCoupons" v-for="(list, index) in couponsList"  v-if="couponsList.length > 0" :class="{'myCoupons': list.isAvailablesm === true, 'activeCoupons': selectedCouponsPassword === list.password}" @click="selectCoupon(list, index)" @mouseenter="showCancelBtn(list.password)" @mouseleave="hideCancelBtn(list.password)">
               <div v-if="list.type === 'fullCut'">
                 <p style="margin-bottom: 5px;">
                   <span class="f30">￥{{list.cprice}}</span>
-                  <span>满 {{list.fullPrice}} 使用</span>
+                  <span>{{getStaticText('satisfy') ? getStaticText('satisfy') : '满'}} {{list.fullPrice}} {{getStaticText('toUse') ? getStaticText('toUse'): '使用'}}</span>
                 </p>
               </div>
               <div v-if="list.type === 'deduction'">
                 <p style="margin-bottom: 5px;">
                   <span class="f30">￥{{list.cprice}}</span>
-                  <span>直接抵扣</span>
+                  <span>{{getStaticText('deduction') ? getStaticText('deduction') : '直接抵扣'}}</span>
                 </p>
               </div>
               <div v-if="list.type === 'discountRate'">
                 <p style="margin-bottom: 5px;">
-                  <span class="f30">{{list.cprice | formatDiscount}}折</span>
-                  <span>折扣率</span>
+                  <span class="f30">{{list.cprice | formatDiscount}}{{getStaticText('discount') ? getStaticText('discount') : '折'}}</span>
+                  <span>{{getStaticText('discountRate') ? getStaticText('discountRate') : '折扣率'}}</span>
                 </p>
               </div>
               <div>
-                <p class="couponRange">日期：{{list.cbtime | formatTime}} - {{list.cetime | formatTime}}</p>
-                <p class="couponRange">仅限：
-                  <span v-if="list.couponRange === 'book'">纸质书</span>
-                  <span v-if="list.couponRange === 'ebook'">电子书</span>
-                  <span style="cursor: pointer;" :title="list.classifyName">{{list.classifyName | formatName}}分类</span>
+                <p class="couponRange">{{getStaticText('date') ? getStaticText('date') : '日期：'}}{{list.cbtime | formatTime}} - {{list.cetime | formatTime}}</p>
+                <p class="couponRange">{{getStaticText('only') ? getStaticText('only') : '仅限：'}}
+                  <span v-if="list.couponRange === 'book'">{{getStaticText('paperBook') ? getStaticText('paperBook') : '纸质书'}}</span>
+                  <span v-if="list.couponRange === 'ebook'">{{getStaticText('ebook') ? getStaticText('ebook') : '电子书'}}</span>
+                  <span style="cursor: pointer;" :title="list.classifyName">{{list.classifyName | formatName}}{{getStaticText('classification') ? getStaticText('classification') : '分类'}}</span>
                 </p>
               </div>
-              <div class="cancelCoupons" v-if="showCancelCoupons === true && selectedCouponsPassword === list.password" @click.stop="cancelCouponsEve(list)">取消选择</div>
+              <div class="cancelCoupons" v-if="showCancelCoupons === true && selectedCouponsPassword === list.password" @click.stop="cancelCouponsEve(list)">{{getStaticText('deselect') ? getStaticText('deselect') : '取消选择'}}</div>
             </div>
-            <div v-if="couponsList.length === 0">暂无优惠券~</div>
+            <div v-if="couponsList.length === 0">{{getStaticText('noCoupons') ? getStaticText('noCoupons') : '暂无优惠券~'}}</div>
           </div>
         </div>
         <!-- END 优惠券模块 -->
 
         <!-- 支付方式模块 -->
         <div class="payment">
-          <div class="infoHead">支付方式</div>
+          <div class="infoHead">{{getStaticText('modeOfPayment') ? getStaticText('modeOfPayment') : '支付方式'}}</div>
           <div class="orderContent">
             <el-radio-group v-model="payWay" size="small" fill="#f6163c">
           <span v-for="(pay, index) in paymentList" @click="selectPayWay(pay, index)">
@@ -291,24 +292,24 @@
         <!-- END 支付方式模块 -->
 
         <div class="payremark">
-          <div class="infoHead">备注信息</div>
+          <div class="infoHead">{{getStaticText('postscript') ? getStaticText('postscript') : '备注信息'}}</div>
           <div class="orderContent">
-            <span>填写备注信息</span>
-            <el-input placeholder="请输入备注信息" id="payremark" :maxlength="50" @blur="checkPayremark()" v-model="payremark" ref="payremark"></el-input>
-            <p>您还可以输入<span>{{50-payremark.length}}</span>个字</p>
+            <span>{{getStaticText('inputPostscript') ? getStaticText('inputPostscript') : '填写备注信息'}}</span>
+            <el-input :placeholder="getStaticText('pleaseInputPostscript') ? getStaticText('pleaseInputPostscript') : '请输入备注信息'" id="payremark" :maxlength="50" @blur="checkPayremark()" v-model="payremark" ref="payremark"></el-input>
+            <p>{{getStaticText('youCanAlsoInput') ? getStaticText('youCanAlsoInput') : '您还可以输入'}}<span>{{50-payremark.length}}</span>{{getStaticText('wordQuanity') ? getStaticText('wordQuanity') : '个字'}}</p>
           </div>
         </div>
 
         <!-- 已选商品列表模块 -->
         <div class="selectedProductList">
-          <div class="proList">商品列表</div>
+          <div class="proList">{{getStaticText('productList') ? getStaticText('productList') : '商品列表'}}</div>
           <!--order product list-->
           <div class="cart-item">
             <ul class="cart-item-list" v-for="item in orderList" v-if="item.list.length>0">
               <div style="height:30px"></div>
               <div class="promotion" v-if="item.activityName">
               <span class="promotionInfo">
-                  <span>促销</span>
+                  <span>{{getStaticText('onSale') ? getStaticText('onSale') : '促销'}}</span>
                   <span>{{item.activityName}}</span>
               </span>
               </div>
@@ -320,10 +321,10 @@
                   <div class="cart-item-title">
                     <div class="item-name">
                       <span>{{product.productName}}</span>
-                      <span v-if="product.productType == ebookTypeTag">(电子书)</span>
+                      <span v-if="product.productType == ebookTypeTag">{{getStaticText('ebookClass') ? getStaticText('ebookClass') : '(电子书)'}}</span>
                     </div>
                     <div class="author">
-                      <span>作者：</span>
+                      <span>{{getStaticText('author') ? getStaticText('author') : '作者：'}}</span>
                       <span v-text="product.author"></span>
                     </div>
                   </div>
@@ -352,23 +353,23 @@
         <!-- 提交订单尾部 -->
         <div class="orderFooter">
           <div class="amount">
-            <span>共计 {{orderDetail.totalNum}} 件商品</span>
-            <span>应付：{{orderDetail.bookTotalMoney + orderDetail.ebookTotalMoney | formatMoney}}</span>
+            <span>{{getStaticText('totalCount') ? getStaticText('totalCount') : '共计'}}{{orderDetail.totalNum}} {{getStaticText('productQuanity') ? getStaticText('productQuanity'): '件商品'}}</span>
+            <span>{{getStaticText('shouldPay') ? getStaticText('totalCount') : '应付：'}}{{orderDetail.bookTotalMoney + orderDetail.ebookTotalMoney | formatMoney}}</span>
           </div>
           <div class="virtual">
-            <span>共有 {{virtualCoin}} 下载币</span>
-            <span>使用</span>
+            <span>{{getStaticText('totalHave') ? getStaticText('totalHave') : '共有'}}{{virtualCoin}} {{getStaticText('downloadCoin') ? getStaticText('downloadCoin') : '下载币'}}</span>
+            <span>{{getStaticText('toUse') ? getStaticText('toUse') : '使用'}}</span>
             <!-- <input type="number" id="virtualCoin" v-on:input="getRmbCoin()"
                    @keypress="checkVirtual($event)"> -->
             <input type="text" id="virtualCoin" @keyup="checkVirtual()" v-model="downloadCoin">
-            <span>下载币</span>
+            <span>{{getStaticText('downloadCoin') ? getStaticText('downloadCoin') : '下载币'}}</span>
           </div>
-          <div class="coinremark">1下载币=1元</div>
+          <div class="coinremark">{{getStaticText('oneCoinEqualsOneYuan') ? getStaticText('oneCoinEqualsOneYuan') : '1下载币=1元'}}</div>
           <div class="orderDetail" :class="{hideTrans:allEbook === true && needInvoice === '0'}">
-            <div class="disc">优惠：- {{orderDetail.bookSaveMoney + orderDetail.ebookSaveMoney | formatMoney}}</div>
-            <div class="vir">下载币：- {{rmbCoin | formatMoney}}</div>
+            <div class="disc">{{getStaticText('reducePrice') ? getStaticText('reducePrice') : '优惠：-'}} {{orderDetail.bookSaveMoney + orderDetail.ebookSaveMoney | formatMoney}}</div>
+            <div class="vir">{{getStaticText('downloadCoinReduce') ? getStaticText('downloadCoinReduce') : '下载币：-'}} {{rmbCoin | formatMoney}}</div>
             <div class="transWay dropup" v-show="allEbook === false || needInvoice === '1'">
-              <span>配送方式：</span>
+              <span>{{getStaticText('modeOfDistribution') ? getStaticText('modeOfDistribution') : '配送方式：'}}</span>
               <div class="transwayDrop">
                 <el-dropdown size="mini" :split-button="true" type="primary" trigger="click" @command="selectDelivery">
                   {{selectedDelivery.methods}}
@@ -377,19 +378,19 @@
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
-              <span>运费：{{selectedDelivery.deliveryPrice | formatMoney}}</span>
+              <span>{{getStaticText('carriage') ? getStaticText('carriage') : '运费：'}}{{selectedDelivery.deliveryPrice | formatMoney}}</span>
             </div>
           </div>
           <div class="payAmount">
-            <span>实付金额：</span>
+            <span>{{getStaticText('actuallyPaid') ? getStaticText('actuallyPaid') : '实付金额：'}}</span>
             <span class="payTotalAmount"
                   v-if="allEbook === true && needInvoice === '0'">{{orderDetail.bookTotalMoney - orderDetail.bookSaveMoney + orderDetail.ebookTotalMoney - rmbCoin - orderDetail.ebookSaveMoney | formatMoney}}</span>
             <span class="payTotalAmount"
                   v-else>{{orderDetail.bookTotalMoney - orderDetail.bookSaveMoney + orderDetail.ebookTotalMoney - orderDetail.ebookSaveMoney - rmbCoin + selectedDelivery.deliveryPrice | formatMoney}}</span>
           </div>
           <div class="commitOrder">
-            <el-button v-if="!hasCommitOrder" type="primary" size="large" @click="commitOrder()">提交订单</el-button>
-            <el-button v-else plain size="large" disabled>提交订单</el-button>
+            <el-button v-if="!hasCommitOrder" type="primary" size="large" @click="commitOrder()">{{getStaticText('submitOrder') ? getStaticText('submitOrder') : '提交订单'}}</el-button>
+            <el-button v-else plain size="large" disabled>{{getStaticText('submitOrder') ? getStaticText('submitOrder') : '提交订单'}}</el-button>
           </div>
         </div>
         <!-- END 提交订单尾部 -->
@@ -408,6 +409,7 @@
   import $ from "jquery";
   import { Base64 } from 'js-base64';
   // import {DrawImage} from "@common";
+  import PROJECT_CONFIG from "projectConfig";
 
   export default {
     name: "work_shoppingcart_01_cart",
@@ -424,6 +426,7 @@
       }
     },
     created: function () {
+      this.CONFIG = PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_01.cartContent;
       this.getMemberInfo().then((member) => {
         this.member.loginName = member.loginName;
         this.loadCallBack();
@@ -515,6 +518,7 @@
         },
         downloadCoin: "", // 下载币
         balancePay: false, // 下载币全额支付
+        CONFIG:null
       };
     },
     computed: {
@@ -602,8 +606,8 @@
       //验证备注信息
       checkPayremark:function(){
         if(this.$refs.payremark.$refs.input._value.length > 50){
-          this.$alert("备注不能超过50个字符 ", "系统提示", {
-            confirmButtonText: "确定"
+          this.$alert(this.getStaticText('remarksShouldNotExceedFiftyCharacters') ? this.getStaticText('remarksShouldNotExceedFiftyCharacters') : "备注不能超过50个字符 ", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
+            confirmButtonText: this.getStaticText('yes') ? this.getStaticText('yes') : "确定"
           });
         }
       },
@@ -625,7 +629,7 @@
             } else {
               _this.$message({
                 type: "error",
-                message: "活动更换失败~"
+                message: _this.getStaticText('activityReplacementFail') ? _this.getStaticText('activityReplacementFail') : "活动更换失败~"
               });
             }
           }
@@ -709,9 +713,9 @@
       },
       deleteProduct: function (id) {  // 删除商品
         var _this = this;
-        this.$confirm("您确定要删除该商品吗?", "系统提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
+        this.$confirm(_this.getStaticText('areYouSureToDeleteTheItem') ? _this.getStaticText('areYouSureToDeleteTheItem') : "您确定要删除该商品吗?", _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
+          confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定",
+          cancelButtonText: _this.getStaticText('cancel') ? _this.getStaticText('cancel') : "取消",
           type: "warning"
         }).then(function () {
           var param = {
@@ -720,13 +724,13 @@
               if (this.deleteStatus) {
                 _this.$message({
                   type: "success",
-                  message: "删除成功!"
+                  message: _this.getStaticText('deleteSuccess') ? _this.getStaticText('deleteSuccess') : "删除成功!"
                 });
                 _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
               } else {
                 _this.$message({
                   type: "error",
-                  message: "删除失败!"
+                  message: _this.getStaticText('deleteFailed') ? _this.getStaticText('deleteFailed') : "删除失败!"
                 });
               }
             }
@@ -998,8 +1002,8 @@
           ++product.nums;
           if (product.nums > 200) { // 防止加过200
             product.nums = 200;
-            this.$alert("商品数量不能大于200", "系统提示", {
-              confirmButtonText: "确定"
+            this.$alert(this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') ? this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') :"商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
+              confirmButtonText: this.getStaticText('confirm') ? this.getStaticText('confirm') : "确定",
             });
           }
         } else if (val < 0) {
@@ -1041,12 +1045,12 @@
           myCallback: function () {
             if (this.favoriteStatus === "00") {
               _this.$message({
-                message: "收藏成功",
+                message: _this.getStaticText('collectSuccess') ? _this.getStaticText('collectSuccess') : "收藏成功",
                 type: "success"
               });
             } else if (this.favoriteStatus === "000") {
               _this.$message({
-                message: "取消收藏成功",
+                message: _this.getStaticText('cancelCollectSuccess') ? _this.getStaticText('cancelCollectSuccess') : "取消收藏成功",
                 type: "success"
               });
             }
@@ -1068,12 +1072,12 @@
                 _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
                 _this.$message({
                   type: "success",
-                  message: "成功移入收藏夹"
+                  message: _this.getStaticText('moveIntoCollectionFolderSuccess') ? _this.getStaticText('moveIntoCollectionFolderSuccess') : "成功移入收藏夹"
                 });
               } else {
                 _this.$message({
                   type: "error",
-                  message: "移入收藏夹失败"
+                  message: _this.getStaticText('moveIntoCollectionFolderFailed') ? _this.getStaticText('moveIntoCollectionFolderFailed') : "移入收藏夹失败"
                 });
               }
             }
@@ -1097,12 +1101,12 @@
                     _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
                     _this.$message({
                       type: "success",
-                      message: "成功移入收藏夹"
+                      message: _this.getStaticText('moveIntoCollectionFolderSuccess') ? _this.getStaticText('moveIntoCollectionFolderSuccess') : "成功移入收藏夹"
                     });
                   } else {
                     _this.$message({
                       type: "error",
-                      message: "移入收藏夹失败"
+                      message: _this.getStaticText('moveIntoCollectionFolderFailed') ? _this.getStaticText('moveIntoCollectionFolderFailed') : "移入收藏夹失败"
                     });
                   }
                 }
@@ -1150,16 +1154,16 @@
       checkProductNums: function (product) {
         var _this = this;
         if (Number($(".productNums").val()) <= 0) {
-          this.$alert("商品数量必须大于0", "系统提示", {
-            confirmButtonText: "确定",
+          this.$alert(_this.getStaticText('numberOfProductsMustBeMoreThanZero') ? _this.getStaticText('numberOfProductsMustBeMoreThanZero') : "商品数量必须大于0", _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
+            confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定",
             callback: function () {
               $(".productNums").val(1);
               _this.changeQuantity(product, 0, 1);
             }
           });
         } else if (Number($(".productNums").val()) > 200) {
-          this.$alert("商品数量不能大于200", "系统提示", {
-            confirmButtonText: "确定",
+          this.$alert(_this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') ? _this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') : "商品数量不能大于200", _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
+            confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定",
             callback: function () {
               $(".productNums").val(200);
               _this.changeQuantity(product, 0, 200);
@@ -1408,7 +1412,7 @@
         if (this.curSelectedAddress === null && this.allEbook === false) { // 没有填写地址情况
           _this.$message({
             type: "error",
-            message: "收货地址不得为空噢~"
+            message: _this.getStaticText('shippingAddressMustNotBeEmpty') ? _this.getStaticText('shippingAddressMustNotBeEmpty') : "收货地址不得为空噢~"
           });
           return false;
         }
@@ -1550,9 +1554,9 @@
               loadingTag.close();
               var errorMsg = this.commitInfo.errMsg
                 ? this.commitInfo.errMsg
-                : "订单提交有误";
-              _this.$alert(errorMsg, "系统提示", {
-                confirmButtonText: "确定"
+                : (this.getStaticText('orderSubmissionError') ? this.getStaticText('orderSubmissionError') : "订单提交有误");
+              _this.$alert(errorMsg, _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
+                confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定"
               });
             }
           }
@@ -1569,8 +1573,8 @@
         }
         var virtual = Number(_this.downloadCoin);
         if (virtual > _this.virtualCoin) {
-          _this.$alert("下载币不足~", "系统提示", {
-            confirmButtonText: "确定"
+          _this.$alert(_this.getStaticText('downloadCoinNotEnough') ? _this.getStaticText('downloadCoinNotEnough') : "下载币不足~", _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
+            confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定"
           });
           _this.$store.state.shoppingcart.rmbCoin = _this.virtualCoin;
           _this.downloadCoin = _this.virtualCoin;
@@ -1587,20 +1591,20 @@
               }
               if (this.rmbCoin < 0){
                 _this.balancePay = false;
-                _this.$alert("下载币优惠数额不能小于0噢~", "系统提示", {
-                  confirmButtonText: "确定"
+                _this.$alert(_this.getStaticText('downloadCoinDiscountCanNotBeLessThanZero') ? _this.getStaticText('downloadCoinDiscountCanNotBeLessThanZero') : "下载币优惠数额不能小于0噢~", _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
+                  confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定"
                 });
                 _this.$store.state.shoppingcart.rmbCoin = 0;
                 _this.downloadCoin = 0;
               }
               if (this.rmbCoin.toFixed(2) > payAmount) {
                 _this.balancePay = true;
-                _this.$alert("下载币优惠数额不得大于实付金额噢~", "系统提示", {
-                  confirmButtonText: "确定"
+                _this.$alert(_this.getStaticText('downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid') ? _this.getStaticText('downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid') : "下载币优惠数额不得大于实付金额噢~", _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
+                  confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定"
                 });
                 var rate = _this.downloadCoin / _this.$store.state.shoppingcart.rmbCoin.toFixed(3); // 计算转换率
                 _this.$store.state.shoppingcart.rmbCoin = payAmount;
-                _this.downloadCoin = (payAmount * rate).toFixed(2); 
+                _this.downloadCoin = (payAmount * rate).toFixed(2);
               }
             }
           }
@@ -1608,20 +1612,27 @@
         this.$store.dispatch("shoppingcart/" + type.GET_RMB_COIN, params);
       },
       checkVirtual: function () {  //  键盘按下事件 控制下载币输入框只能输入数字 和 小数点
-        if (this.downloadCoin != '' && this.downloadCoin.substr(0, 1) == '.') { //修复第一个字符是小数点 的情况 
+        if (this.downloadCoin != '' && this.downloadCoin.substr(0, 1) == '.') { //修复第一个字符是小数点 的情况
           this.downloadCoin = "";
         }
-        this.downloadCoin = this.downloadCoin.replace(/^0*(0\.|[1-9])/, '$1'); //解决 粘贴不生效  
-        this.downloadCoin = this.downloadCoin.replace(/[^\d.]/g, ""); //清除“数字”和“.”以外的字符  
-        this.downloadCoin = this.downloadCoin.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的       
+        this.downloadCoin = this.downloadCoin.replace(/^0*(0\.|[1-9])/, '$1'); //解决 粘贴不生效
+        this.downloadCoin = this.downloadCoin.replace(/[^\d.]/g, ""); //清除“数字”和“.”以外的字符
+        this.downloadCoin = this.downloadCoin.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的
         this.downloadCoin = this.downloadCoin.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-        this.downloadCoin = this.downloadCoin.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); //只能输入两个小数       
-        if (this.downloadCoin.indexOf(".") < 0 && this.downloadCoin != "") { //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+        this.downloadCoin = this.downloadCoin.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); //只能输入两个小数
+        if (this.downloadCoin.indexOf(".") < 0 && this.downloadCoin != "") { //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
           if (this.downloadCoin.substr(0, 1) == '0' && this.downloadCoin.length == 2) {
             this.downloadCoin = this.downloadCoin.substr(1, this.downloadCoin.length);
           }
         }
         this.getRmbCoin();
+      },
+      getStaticText(text){
+        if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+          return this.CONFIG.staticText[text]
+        }else {
+          return false
+        }
       }
     },
     filters: {

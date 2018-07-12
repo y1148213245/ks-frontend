@@ -12,6 +12,13 @@ const title = "资讯轮播组件"; // 组件title
 const description = `资讯轮播`; // 组件描述信息
 
 const dev = {
+  swiper:{
+    pic_noWords_04:{
+      staticText:{
+        noCover:"暂无封面"
+      }
+    }
+  }
 
 };
 
@@ -28,6 +35,9 @@ const prod = {
         searchText: ""
       },
       infoDetailHref: "../pages/informationInfo.html?pubId=",
+      staticText:{
+        noCover:"暂无封面"
+      }
     }
   }
 };

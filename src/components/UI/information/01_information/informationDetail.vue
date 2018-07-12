@@ -3,13 +3,13 @@
 <template>
   <div class="ui_information_01">
     <div aria-label="Breadcrumb" role="navigation" class="el-breadcrumb">
-      <span class="el-breadcrumb__item">{{CONFIG && CONFIG.staticText && CONFIG.staticText.yourPosition ? CONFIG.staticText.yourPosition : '您的位置：'}}</span>
+      <span class="el-breadcrumb__item">{{getStaticText('yourPosition') ? getStaticText('yourPosition')  : '您的位置：'}}</span>
       <span class="el-breadcrumb__item">
-        <span role="link" class="el-breadcrumb__inner is-link">{{CONFIG && CONFIG.staticText && CONFIG.staticText.homePage ? CONFIG.staticText.homePage : '首页'}}</span>
+        <span role="link" class="el-breadcrumb__inner is-link">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</span>
         <i class="el-breadcrumb__separator el-icon-arrow-right"></i>
       </span>
       <span class="el-breadcrumb__item" aria-current="page">
-        <span role="link" class="el-breadcrumb__inner">{{CONFIG && CONFIG.staticText && CONFIG.staticText.infoContent ? CONFIG.staticText.infoContent : '资讯内容'}}</span>
+        <span role="link" class="el-breadcrumb__inner">{{getStaticText('infoContent') ? getStaticText('infoContent') : '资讯内容'}}</span>
         <i class="el-breadcrumb__separator el-icon-arrow-right"></i>
       </span>
     </div>
@@ -46,7 +46,7 @@
           <template>
             <div class="bdsharebuttonbox shareHide" v-if="CONFIG && shareLists">
               <span>
-                <i class="fa fa-share-alt" aria-hidden="true"></i>{{CONFIG && CONFIG.staticText && CONFIG.staticText.shareTo ? CONFIG.staticText.shareTo : ' 分享到：'}}</span>
+                <i class="fa fa-share-alt" aria-hidden="true"></i>{{getStaticText('shareTo') ? getStaticText('shareTo') : ' 分享到：'}}</span>
               <span v-for="(item, index) in shareLists" :key="index">
                 <a href="#" v-bind:class="item.class" :data-cmd="item.cmd" :title="item.title"></a>
               </span>
@@ -54,11 +54,11 @@
           </template>
 
           <div class="ui_information_01-fontsize" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('fontsize') !== -1 ? true : false">
-            <label class="ui_information_01-label">字体：</label>
+            <label class="ui_information_01-label">{{getStaticText('font') ? getStaticText('font') : '字体'}}：</label>
             <div class="ui_information_01-btnbox">
-              <a class="ui_information_01-fontsize-btn" href="javascript:;">大</a>
-              <a class="ui_information_01-fontsize-btn ui_information_01-fontsize-active">中</a>
-              <a class="ui_information_01-fontsize-btn">小</a>
+              <a class="ui_information_01-fontsize-btn" href="javascript:;">{{getStaticText('big') ? getStaticText('big') : "大"}}</a>
+              <a class="ui_information_01-fontsize-btn ui_information_01-fontsize-active">{{getStaticText('middle') ? getStaticText('middle') : "中"}}</a>
+              <a class="ui_information_01-fontsize-btn">{{getStaticText('small') ? getStaticText('small') : '小'}}</a>
             </div>
           </div>
 
@@ -97,13 +97,15 @@ export default {
       shareLists: [] //新分享
     }
   },
+  created(){
+    this.CONFIG = PROJECT_CONFIG[this.namespace].information.information_01;
+  },
   computed: {
     ...mapGetters("login", { // 获取用户信息
       member: interfaces.GET_MEMBER
     })
   },
   mounted: function () {
-    this.CONFIG = PROJECT_CONFIG[this.namespace].information.information_01;
     this.keys = this.CONFIG.queryDetail.keys;
     this.displayItem = this.CONFIG.queryDetail.display;
     this.pubId = URL.parse(document.URL, true).query.pubId;
@@ -113,22 +115,22 @@ export default {
     } else {
       this.shareLists = [
         {
-          title: 'QQ空间',
+          title: this.getStaticText('QQZone') ? this.getStaticText('QQZone') : 'QQ空间',
           class: 'popup_qzone',
           cmd: 'qzone',
         },
         {
-          title: '微信',
+          title: this.getStaticText('weChat') ? this.getStaticText('weChat') :'微信',
           class: 'popup_weixin',
           cmd: 'weixin',
         },
         {
-          title: '分享到新浪微博',
+          title: this.getStaticText('shareToSinaWeibo') ? this.getStaticText('shareToSinaWeibo') : '分享到新浪微博',
           class: 'bds_tsina',
           cmd: 'tsina',
         },
         {
-          title: '更多',
+          title: this.getStaticText('forMore') ? this.getStaticText('forMore') :'更多',
           class: 'bds_more',
           cmd: 'more',
         }
@@ -152,7 +154,7 @@ export default {
       var loginName = this.member.loginName;
       if (!loginName) {
         this.$message({
-          message: "请登录",
+          message: this.getStaticText('pleaseLogin') ? this.getStaticText('pleaseLogin') : "请登录",
           type: 'warning'
         });
         return;
@@ -171,18 +173,23 @@ export default {
           })
         } else {
           this.$message({
-            message: "操作有误，请稍后重试",
+            message: this.getStaticText('operationErrorInfo') ? this.getStaticText('operationErrorInfo') : "操作有误，请稍后重试",
             type: 'error'
           })
         }
       });
     },
-
-
     shareScript () {
       window.onload = function () {
         document.getElementsByClassName("bdsharebuttonbox")[0].appendChild(document.createElement('script')).src =
           'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
+      }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
       }
     }
   }

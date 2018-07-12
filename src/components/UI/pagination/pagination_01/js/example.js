@@ -23,7 +23,12 @@ const dev = {
         pageSize:'',
         id:''
       },
-      prevNextUrl: "./informationdetail.html?"
+      prevNextUrl: "./informationdetail.html?",
+      staticText:{
+        backToList:"返回列表",
+        previousChap:"上一篇",
+        nextChap:"下一篇",
+      }
     }
   }
 };
@@ -48,6 +53,11 @@ const prod = {
         },
         pageNo:'1',
         pageSize:'999'
+      },
+      staticText : {
+        backToList:"返回列表",
+        previousChap:"上一篇",
+        nextChap:"下一篇",
       }
     }
   }

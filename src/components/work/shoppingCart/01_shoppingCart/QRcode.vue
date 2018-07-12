@@ -2,12 +2,14 @@
 <template>
   <div class="container qrcode">
     <div id="qrcode"></div>
-    <div style="margin-top: 16px;">请使用微信扫一扫支付</div>
+    <div style="margin-top: 16px;">{{getStaticText('payWithWeChatScan') ? getStaticText('payWithWeChatScan') : '请使用微信扫一扫支付'}}</div>
   </div>
 </template>
 <script>
   import axios from 'axios';
   import URL from 'url';
+  import PROJECT_CONFIG from "projectConfig";
+
 
   export default {
     name: "work_shoppingcart_01_qrcode",
@@ -16,7 +18,11 @@
     data() {
       return {
         orderCode: '',
+        CONFIG:null
       }
+    },
+    created(){
+      this.CONFIG = PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_01.qrCode;
     },
     mounted() {
       let href = window.location.href;
@@ -49,6 +55,13 @@
             window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/" + data.payStatus + '/order';
           }
         })
+      },
+      getStaticText(text){
+        if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+          return this.CONFIG.staticText[text]
+        }else {
+          return false
+        }
       }
     }
   }

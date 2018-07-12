@@ -70,7 +70,17 @@ const dev = {
         yourPosition: "您的位置：",
         homePage: "首页",
         infoContent: "资讯内容",
-        shareTo: "分享到："
+        shareTo: "分享到：",
+        QQZone: "QQ空间",
+        weChat:"微信",
+        shareToSinaWeibo: "分享到新浪微博",
+        forMore: "更多",
+        pleaseLogin:"请登录",
+        operationErrorInfo:"操作有误，请稍后重试",
+        font:"字体",
+        big:"大",
+        middle:"中",
+        small:"小"
       }
 
     }
@@ -136,7 +146,17 @@ const prod = {  // 详情组件内含评论组件 评论组件作为子组件 �
         yourPosition: "您的位置：",
         homePage: "首页",
         infoContent: "资讯内容",
-        shareTo: "分享到："
+        shareTo: "分享到：",
+        QQZone: "QQ空间",
+        weChat:"微信",
+        shareToSinaWeibo: "分享到新浪微博",
+        forMore: "更多",
+        pleaseLogin:"请登录",
+        operationErrorInfo:"操作有误，请稍后重试",
+        font:"字体",
+        big:"大",
+        middle:"中",
+        small:"小"
       }
     }
   }

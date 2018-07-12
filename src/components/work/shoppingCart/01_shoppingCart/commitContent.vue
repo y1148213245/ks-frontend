@@ -8,20 +8,24 @@
       <div class="failImg" v-if="commitInfo.status == 0">
         <img src="./assets/img/commitFail.png" alt="">      <!--支付失败-->
       </div>
+
       <div class="orderCode" v-if="commitInfo.type==='order'">  <!--购物车商品订单-->
-        <span>订单 </span>
+        <span>{{getStaticText('order') ? getStaticText('order') : "订单"}} </span>
         <span v-text="commitInfo.code"></span>
-        <span v-if="commitInfo.status == 1"> 支付成功</span>
-        <span v-if="commitInfo.status == 0"> 支付失败</span>
+        <span v-if="commitInfo.status == 1"> {{getStaticText('paidSuccess') ? getStaticText('paidSuccess') : "支付成功"}}</span>
+        <span v-if="commitInfo.status == 0"> {{getStaticText('paidFailed') ? getStaticText('paidFailed') : "支付失败"}}</span>
+
       </div>
+      <!--"-->
       <div class="orderCode" v-if="commitInfo.type==='virtualCoin'"> <!--下载币充值订单-->
-        <span>下载币充值</span>
+        <span>{{getStaticText('downloadCoinCharge') ? getStaticText('downloadCoinCharge') : "下载币充值"}}</span>
         <span v-text="commitInfo.code"></span>
-        <span v-if="commitInfo.status == 1">成功</span>
-        <span v-if="commitInfo.status == 0">失败</span>
+        <span v-if="commitInfo.status == 1">{{getStaticText('success') ? getStaticText('success') : '成功'}}</span>
+        <span v-if="commitInfo.status == 0">{{getStaticText('failed') ? getStaticText('failed') : "失败"}}</span>
+
       </div>
       <div class="viewOrder">
-        <el-button type="primary" @click="viewMyOrder()">查看订单</el-button>
+        <el-button type="primary" @click="viewMyOrder()">{{getStaticText('checkOrder') ? getStaticText('checkOrder') : "查看订单"}}</el-button>
       </div>
     </div>
   </div>
@@ -31,6 +35,7 @@
   import Vue from 'vue';
   import {mapGetters, mapActions} from 'vuex';
   import {SITE_CONFIG} from "projectConfig";
+  import PROJECT_CONFIG from "projectConfig";
 
   export default {
     name: "work_shoppingcart_01_commit",
@@ -42,6 +47,9 @@
       this.commitInfo.status = hash.substring(hash.indexOf('/', hash.indexOf('/') + 1) + 1, hash.lastIndexOf('/'));
       this.commitInfo.type = hash.substring(hash.lastIndexOf('/') + 1, hash.length);
     },
+    created(){
+      this.initConfig();
+    },
     data() {
       return {
         commitInfo: {
@@ -50,6 +58,7 @@
           type: 'order'
         },
         /*commitStatus: true,*/
+        CONFIG:""
       }
     },
     methods: {
@@ -58,7 +67,18 @@
         if (this.commitInfo.type === 'order') {          // 商品订单需要跳转到我的订单
           window.location.href = '../pages/personalcenter.html#list';
         }
+      },
+      getStaticText(text){
+        if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+          return this.CONFIG.staticText[text]
+        }else {
+          return false
+        }
+      },
+      initConfig(){
+        this.CONFIG = PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_01.commitContent;
       }
+
     }
   }
 </script>

@@ -2,8 +2,8 @@
     <div class="ui_list_pic_08 ui_list_pic_08_skin">
         <div class="editorListWrapper" name="data_column_block">
             <h6 class="editorCon" :class="{onlyEditorCon: !show_more}">
-                <span class="editor" v-if="show_more">编辑</span>
-                <span class="onlyEditor" v-else-if="!show_more">编辑</span>
+                <span class="editor" v-if="show_more">{{getStaticText('edit') ? getStaticText('edit') : '编辑'}}</span>
+                <span class="onlyEditor" v-else-if="!show_more">{{getStaticText('edit') ? getStaticText('edit') : '编辑'}}</span>
                 <span class="moreEditor" v-if="show_more">
                   <a :href="(CONFIG && CONFIG.href)">MORE+</a>
                 </span>
@@ -13,15 +13,15 @@
                     <dl class="editorDl" :key="index">
                         <dt class="editorDt">
                             <a href="javascript:void(0)" class="editor_imgBox" @click="toDetail(entry.id)">
-                                <img onload="DrawImage(this,98,98)" class="editor_img" :src="entry && entry.information_a_picSmall" alt="暂无封面"/>
+                                <img onload="DrawImage(this,98,98)" class="editor_img" :src="entry && entry.information_a_picSmall" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'"/>
                             </a>
                         </dt>
                         <dd class="editorDd">
                             <a class="ui_list_pic_08_editor_a" href="javascript:void(0)" @click="toDetail(entry.id)" v-html="entry && entry.information_SYS_TOPIC"></a>
                         </dd>
-                        <dd class="zhaiyao scoped_text" v-text="entry && entry.information_a_abstract || '暂无简介'" :title="entry && entry.information_a_abstract"></dd>
-                        <dd class="mail scoped_title" :title="entry && entry.information_a_collaborator || '暂无邮箱'">
-                            邮箱：{{entry && entry.information_a_collaborator || "暂无邮箱"}}
+                        <dd class="zhaiyao scoped_text" v-text="entry && entry.information_a_abstract || (getStaticText('noIntroduction') ? getStaticText('noIntroduction') : '暂无简介')" :title="entry && entry.information_a_abstract"></dd>
+                        <dd class="mail scoped_title" :title="entry && entry.information_a_collaborator || (getStaticText('noEmail') ? getStaticText('noEmail') : '暂无邮箱')">
+                            {{getStaticText('email') ? getStaticText('email') : '邮箱：'}}{{entry && entry.information_a_collaborator || (getStaticText('noEmail') ? getStaticText('noEmail') : '暂无邮箱')}}
                         </dd>
                     </dl>
                 </template>
@@ -62,6 +62,13 @@ export default {
     },
     toDetail: function (pubId) {
       window.location.href = this.CONFIG.locationHref + pubId + '&currentType=editor#';
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
     }
   }
 }

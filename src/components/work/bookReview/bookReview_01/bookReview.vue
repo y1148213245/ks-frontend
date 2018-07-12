@@ -89,7 +89,7 @@ export default {
   mounted () {
     this.defaultPic = require('./assets/img/people.jpg');  // 处理静态资源打包问题
     this.pubId = URL.parse(document.URL, true).query.pubId;
-    this.CONFIG = PROJECT_CONFIG[this.namespace].bookreview.bookreview_01;
+
     if(typeof(this.CONFIG.operList)!="undefined"){
       this.operList = this.CONFIG.operList;
     }
@@ -105,7 +105,7 @@ export default {
     }
   },
   created: function () {
-
+    this.CONFIG = PROJECT_CONFIG[this.namespace].bookreview.bookreview_01;
   },
   computed: {
     ...mapGetters({

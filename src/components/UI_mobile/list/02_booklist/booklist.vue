@@ -100,6 +100,8 @@ export default {
     };
   },
   created () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01[this.module];
+
     this.$bus.on('showSearchResult', (data) => {
       this.searchText = data;
       this.toBookList(this.orderParam, this.indexValue);
@@ -113,7 +115,6 @@ export default {
     this.cascadId = query.cascadId ? query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
     // this.orderParam = query.cascadId ? "BOOK_PUBDATE desc" : "pub_read_num desc";
     this.orderParam = query.orderBy ? query.orderBy : this.orderParam;
-    this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01[this.module];
     //20180629 增加配置项 zong
     if(typeof(this.CONFIG.exMoreNum)!='undefined'){
       this.exMoreNum = this.CONFIG.exMoreNum;

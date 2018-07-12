@@ -68,18 +68,25 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { Get, Post, DrawImage, getFieldAdapter, toOtherPage , mobileLoading} from "@common";
-import URL from 'url';
+import Vue from "vue";
+import {
+  Get,
+  Post,
+  DrawImage,
+  getFieldAdapter,
+  toOtherPage,
+  mobileLoading
+} from "@common";
+import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 import ui_pagination from "../../pagination/pagination/pagination";
-import { Icon,Toast } from 'vant';
+import { Icon, Toast } from "vant";
 
 export default {
-  name: 'ui_list_pic_29',
-  props: ['namespace', 'modulename'],
+  name: "ui_list_pic_29",
+  props: ["namespace", "modulename"],
   reused: true,
-  data () {
+  data() {
     return {
       CONFIG: "",
       resourceLists: [], //资源列表
@@ -88,72 +95,92 @@ export default {
       colId: "",
       columnDetailInfo: "", // 栏目详细信息
       requestParams: "", // 去详情页需要传查询list.do的所有参数
-      isMobileLoading:false, //默认不是下拉增量加载
-      pageIndex: "1",  // 页码 从 1 开始
-      pageSize: "10",  // 每页显示个数
-      totalPages: '0', // 订单总页数
-      pageNo:"1",
-      pageNoz:"1",
-      pageIndexz:"1",
+      isMobileLoading: false, //默认不是下拉增量加载
+      pageIndex: "1", // 页码 从 1 开始
+      pageSize: "10", // 每页显示个数
+      totalPages: "0", // 订单总页数
+      pageNo: "1",
+      pageNoz: "1",
+      pageIndexz: "1",
       totalCount: 0,
-      toOrderByBtn:{}, // 排序配置
-      activeSetOrder:"pub_a_order asc pub_lastmodified desc id asc",
-      pubId:'',   //
-      cascadId:'',   //
+      toOrderByBtn: {}, // 排序配置
+      activeSetOrder: "pub_a_order asc pub_lastmodified desc id asc",
+      pubId: "", //
+      cascadId: "" //
     };
   },
 
-  created () {
+  created() {
     var uriQuery = URL.parse(document.URL, true).query;
     // this.colId = uriQuery.colId; // 从地址栏接收栏目id
-    if(typeof(uriQuery.colId)!="undefined"){
+    if (typeof uriQuery.colId != "undefined") {
       this.colId = uriQuery.colId;
     }
-    if(typeof(uriQuery.pubId)!="undefined"){
+    if (typeof uriQuery.pubId != "undefined") {
       this.pubId = uriQuery.pubId;
     }
-    if(typeof(uriQuery.cascadId)!="undefined"){
+    if (typeof uriQuery.cascadId != "undefined") {
       this.cascadId = uriQuery.cascadId;
     }
 
-    this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_29[this.modulename];
+    this.CONFIG =
+      PROJECT_CONFIG[this.namespace].list_pic.list_pic_29[this.modulename];
     this.resourceListsConfig = this.CONFIG.getResourceLists;
-    this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter)));
-    if (this.CONFIG.getSubTitle && this.CONFIG.getSubTitle.sysAdapter && this.CONFIG.getSubTitle.typeAdapter) { // 兼容没有配栏目字段适配器的组件
-      this.columnKeys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getSubTitle.sysAdapter, this.CONFIG.getSubTitle.typeAdapter)));
+    this.keys = JSON.parse(
+      JSON.stringify(
+        getFieldAdapter(
+          this.CONFIG.getResourceLists.sysAdapter,
+          this.CONFIG.getResourceLists.typeAdapter
+        )
+      )
+    );
+    if (
+      this.CONFIG.getSubTitle &&
+      this.CONFIG.getSubTitle.sysAdapter &&
+      this.CONFIG.getSubTitle.typeAdapter
+    ) {
+      // 兼容没有配栏目字段适配器的组件
+      this.columnKeys = JSON.parse(
+        JSON.stringify(
+          getFieldAdapter(
+            this.CONFIG.getSubTitle.sysAdapter,
+            this.CONFIG.getSubTitle.typeAdapter
+          )
+        )
+      );
     }
     //增量加载
-    if(typeof(this.CONFIG.isMobileLoading)!='undefined'){
-      if(this.CONFIG.isMobileLoading){
+    if (typeof this.CONFIG.isMobileLoading != "undefined") {
+      if (this.CONFIG.isMobileLoading) {
         this.isMobileLoading = this.CONFIG.isMobileLoading;
       }
     }
-    if(typeof(this.CONFIG.toOrderByBtn)!='undefined'){
-      if(this.CONFIG.toOrderByBtn){
+    if (typeof this.CONFIG.toOrderByBtn != "undefined") {
+      if (this.CONFIG.toOrderByBtn) {
         this.toOrderByBtn = this.CONFIG.toOrderByBtn;
         this.activeSetOrder = this.toOrderByBtn.itemFieldDefult;
       }
     }
     //  = "";
 
-    if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) { // 通过接收广播获取栏目id
-      this.$bus.$on(this.CONFIG.onEvent.eventName, (data) => {
+    if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) {
+      // 通过接收广播获取栏目id
+      this.$bus.$on(this.CONFIG.onEvent.eventName, data => {
         this.resourceLists = [];
         this.totalCount = 0;
         this.changeColId(data[0]);
         this.getResourceLists();
         this.getColumnSubTitle();
-      })
+      });
     } else {
       this.getResourceLists();
       this.getColumnSubTitle();
     }
 
     // this.getColumnSubTitle(); // $on方法回调是异步的
-
   },
 
-  mounted () {
+  mounted() {
     let _this = this;
     /*检测滚动条*/
     $(window).scroll(() => {
@@ -162,8 +189,8 @@ export default {
        * params1: vue对象
        * params2: 回调方法
        */
-      if(_this.isMobileLoading){
-        mobileLoading(_this, 'getResourceLists');
+      if (_this.isMobileLoading) {
+        mobileLoading(_this, "getResourceLists");
         this.pageNoz = _this.pageNo;
         this.pageIndexz = _this.pageIndex;
       }
@@ -171,42 +198,82 @@ export default {
   },
 
   methods: {
-    toSetOrder(item){   //修改默认排序
+    toSetOrder(item) {
+      //修改默认排序
       this.activeSetOrder = item.itemField;
       this.getResourceLists();
     },
-    changeColId (item) { // 在广播事件外修改colId
-        this.colId = item;
+    changeColId(item) {
+      // 在广播事件外修改colId
+      this.colId = item;
     },
-    toCustomFun (item, config, keys) { // 执行自定义事件
+    toCustomFun(item, config, keys) {
+      // 执行自定义事件
       let detailParams = "";
-      if (config.method == 'toDetail') { // 去详情页需要增加list.do请求的所有参数
+      if (config.method == "toDetail") {
+        // 去详情页需要增加list.do请求的所有参数
         for (let param in this.requestParams) {
-          detailParams = detailParams + '&' + param + '=' + this.requestParams[param]
+          detailParams =
+            detailParams + "&" + param + "=" + this.requestParams[param];
         }
-      } else if(config.method == 'sourceUrl'){
+      } else if (config.method == "sourceUrl") {
         window.open(item[this.keys.sourceUrl]);
         return false;
+      } else if (config.method == "downloadUrl") {
+        // 如果sourceUrl为空,则判断pub_widget_url数组里的值 by shenqian
+        let itemUrlArr = item["pub_widget_url"]; //获取下载列表的url数组
+        itemUrlArr &&
+          itemUrlArr.length > 0 &&
+          $.each(urlItem => {
+            let link;
+            if (document.getElementById("downloadFileLink")) {
+              //如果页面存在downloadFileLink元素
+              link = document.getElementById("downloadFileLink");
+              link.parentNode.removeChild(link); // 移除downloadFileLink元素
+            }
+            link = document.createElement("a"); //创建新的downloadFileLink元素
+            link.id = "downloadFileLink";
+            link.download = "";
+            link.target = "_blank";
+            link.href = urlItem;
+            document.body.appendChild(link); // 添加到页面解决火狐无法触发click方法
+            link.click();
+            link.parentNode.removeChild(link); // 移除downloadFileLink元素
+          });
+        return false;
+
+        //npm run dev
+        // 如果sourceUrl为空,则判断pub_widget_url数组里的值 -- end
       }
-      window.open(toOtherPage(item, this.CONFIG[config.method], keys) + detailParams);
+      window.open(
+        toOtherPage(item, this.CONFIG[config.method], keys) + detailParams
+      );
     },
-    getColumnSubTitle () { // 获取栏目副标题
-      Post(CONFIG.BASE_URL + this.CONFIG.getSubTitle.url + '?colId=' + (this.colId ? this.colId : this.CONFIG.getSubTitle.params.colId)).then((rep) => {
+    getColumnSubTitle() {
+      // 获取栏目副标题
+      Post(
+        CONFIG.BASE_URL +
+          this.CONFIG.getSubTitle.url +
+          "?colId=" +
+          (this.colId ? this.colId : this.CONFIG.getSubTitle.params.colId)
+      ).then(rep => {
         let datas = rep.data;
         if (datas.success && datas.data) {
           this.columnDetailInfo = datas.data;
         }
       });
     },
-    getResourceLists (pagingParams) { // 获取资源列表
+    getResourceLists(pagingParams) {
+      // 获取资源列表
       let paramsObj = Object.assign({}, this.resourceListsConfig.params);
-      paramsObj.pageSize = this.resourceListsConfig.maxNum ? this.resourceListsConfig.maxNum + '' : '15';
+      paramsObj.pageSize = this.resourceListsConfig.maxNum
+        ? this.resourceListsConfig.maxNum + ""
+        : "15";
       this.pageSize = paramsObj.pageSize;
       if (pagingParams) {
         paramsObj.pageNo = pagingParams.pageNo;
         paramsObj.pageSize = pagingParams.pageSize;
-      }else{
-
+      } else {
         paramsObj.pageNo = this.pageIndex;
 
         // if(typeof(this.pageIndex)=="number"){
@@ -216,72 +283,86 @@ export default {
         //   paramsObj.pageNo = this.pageNoz;
         //   paramsObj.pageIndex = this.pageIndexz;
         // }
-         paramsObj.pageSize = this.pageSize;
+        paramsObj.pageSize = this.pageSize;
       }
 
-      if(typeof(this.CONFIG.toOrderByBtn)!='undefined'){
-        if(this.CONFIG.toOrderByBtn){
+      if (typeof this.CONFIG.toOrderByBtn != "undefined") {
+        if (this.CONFIG.toOrderByBtn) {
           paramsObj.orderBy = this.activeSetOrder;
         }
       }
       // this.activeSetOrder = paramsObj.orderBy;
 
-      paramsObj.conditions.map((item) => {
+      paramsObj.conditions.map(item => {
         if (item.hasOwnProperty(this.keys.colId)) {
-          item[this.keys.colId] = this.colId ? this.colId : item[this.keys.colId];
+          item[this.keys.colId] = this.colId
+            ? this.colId
+            : item[this.keys.colId];
         }
-        if (item.hasOwnProperty('pub_parent_id')) {
+        if (item.hasOwnProperty("pub_parent_id")) {
           item.pub_parent_id = this.pubId ? this.pubId : item.pub_parent_id;
         }
-        if (item.hasOwnProperty('BOOK_BOOK_CASCADID')) {
-          item.BOOK_BOOK_CASCADID = this.cascadId ? this.cascadId : item.BOOK_BOOK_CASCADID;
-        }
-      })
-      paramsObj.conditions = JSON.stringify(paramsObj.conditions);
-      this.requestParams = paramsObj;
-      Post(CONFIG.BASE_URL + this.resourceListsConfig.url, paramsObj).then((rep) => {
-        let datas = rep.data;
-        if (datas.success && datas.result && datas.result.length > 0) {
-          this.totalCount = datas.totalCount;
-          if(this.isMobileLoading) {
-            if (datas.success && datas.result.length > 0) {
-              this.resourceLists = this.resourceLists.concat(datas.result);
-              this.totalPages = datas.totalPages;
-              this.pageNo = datas.pageNo;
-              this.pageNoz = datas.pageNo;
-              this.pageSize = datas.pageSize;
-            } else if (datas.success) {
-              Toast.fail({
-                duration: 1000,
-                message: datas.description
-              });
-            }
-          }else{
-            this.resourceLists = datas.result;
-          }
+        if (item.hasOwnProperty("BOOK_BOOK_CASCADID")) {
+          item.BOOK_BOOK_CASCADID = this.cascadId
+            ? this.cascadId
+            : item.BOOK_BOOK_CASCADID;
         }
       });
+      paramsObj.conditions = JSON.stringify(paramsObj.conditions);
+      this.requestParams = paramsObj;
+      Post(CONFIG.BASE_URL + this.resourceListsConfig.url, paramsObj).then(
+        rep => {
+          let datas = rep.data;
+          if (datas.success && datas.result && datas.result.length > 0) {
+            this.totalCount = datas.totalCount;
+            if (this.isMobileLoading) {
+              if (datas.success && datas.result.length > 0) {
+                this.resourceLists = this.resourceLists.concat(datas.result);
+                this.totalPages = datas.totalPages;
+                this.pageNo = datas.pageNo;
+                this.pageNoz = datas.pageNo;
+                this.pageSize = datas.pageSize;
+              } else if (datas.success) {
+                Toast.fail({
+                  duration: 1000,
+                  message: datas.description
+                });
+              }
+            } else {
+              this.resourceLists = datas.result;
+            }
+          }
+        }
+      );
     },
-    dealResourceImg (eve) {
-      DrawImage(eve.path[0], this.CONFIG.infoImgWidth, this.CONFIG.infoImgHeight);
+    dealResourceImg(eve) {
+      DrawImage(
+        eve.path[0],
+        this.CONFIG.infoImgWidth,
+        this.CONFIG.infoImgHeight
+      );
     },
-    paging: function ({ pageNo, pageSize }) { // 翻页
+    paging: function({ pageNo, pageSize }) {
+      // 翻页
       var pagingParams = {
         pageNo: pageNo,
-        pageSize: pageSize,
+        pageSize: pageSize
       };
       this.getResourceLists(pagingParams);
     },
-    getStaticText(text){
-      if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
-        return this.CONFIG.staticText[text]
-      }else {
-        return false
+    getStaticText(text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
+      } else {
+        return false;
       }
     }
   }
-}
-
+};
 </script>
 <style>
 .toOrderByBtn_Active {
