@@ -245,12 +245,13 @@ export default {
         bookType: '91',
         ebookType: '94',
       },
-      pub_comment_num:'',   //评论数
+      pub_comment_num: '',   //评论数
     };
   },
 
   mounted () {
     this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
+
     this.modulename_share = this.modulename + 'share';
     this.resourceDetailConfig = this.CONFIG.getResourceDetail;
     this.publicizeInfoConfig = this.CONFIG.getPublicizeInfo;
@@ -498,6 +499,55 @@ export default {
         }
       });
     },
+    /* 通过检索资源名获取pubId */
+    getPubidByLocationQueryFromSyk () {
+      
+      
+          
+      if (!this.pubId) {
+        let config = this.CONFIG.getPubidByLocationQueryFromSyk ? this.CONFIG.getPubidByLocationQueryFromSyk : {
+          url:'spc/cms/publish/list.do',
+          params:{
+            conditions: [],
+            groupBy: "pub_resource_id",
+            orderBy: "pub_a_order asc pub_lastmodified desc",
+            pageNo: "1",
+            pageSize: "10",
+            searchText: ""
+          },queryParams:{
+            title:'BOOK_SYS_TOPIC'
+          }}
+        let paramsObj = JSON.parse(JSON.stringify(config.params));
+
+        let queryParams = {};
+        for(let item in config.queryParams){
+          let val = URL.parse(document.URL, true).query[item];/* 从地址栏接收资源名 */
+          if (val) {/* 判断是否有重复条件 */
+            let isHas = false;
+            paramsObj.conditions.map(entry=>{
+              if(entry.hasOwnProperty(config.queryParams[item])){
+                isHas = true;
+                entry[config.queryParams[item]] = val /* 条件值修改 */
+              }
+            })
+            
+            isHas ? '' : paramsObj.conditions.push({
+            [config.queryParams[item]]:val/* 添加新条件 */
+          })
+          }
+        }
+        
+        paramsObj.conditions = JSON.stringify(paramsObj.conditions)
+        Post(CONFIG.BASE_URL + config.url,paramsObj).then(resp=>{
+          let data = resp.data.result;
+          this.pubId = data[0][this.keys.id]
+          this.getResourceDetail();
+        })
+      } else {
+        this.getResourceDetail();
+      }
+
+    },
     getStaticText (text) {
       if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
         return this.CONFIG.staticText[text]
@@ -509,7 +559,7 @@ export default {
   watch: {
     member: function (newValue, oldValue) {
       this.loginName = newValue.loginName;
-      this.getResourceDetail();
+      this.getPubidByLocationQueryFromSyk();
     }
   }
 }
@@ -521,7 +571,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 

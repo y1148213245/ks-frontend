@@ -74,6 +74,25 @@ const description = `图书详情组件
   method: '',
   className: "",
 }
+[新增]
+取地址栏参数从索引库中取资源pubId
+
+/* 默认配置 */
+getPubidByLocationQueryFromSyk:{/* 通过地址栏参数从索引中查图书详情所需的pubId */
+  url:'spc/cms/publish/list.do',
+  params:{
+    conditions: [],/* 条件配置 */
+    groupBy: "pub_resource_id",
+    orderBy: "pub_a_order asc pub_lastmodified desc",
+    pageNo: "1",
+    pageSize: "10",
+    searchText: "",
+  },
+  queryParams:{ /* 取地址栏参数,值赋给查询参数. key:地址栏参数名,value:查询条件字段名 */
+    title:'BOOK_SYS_TOPIC'
+  }
+},
+[ END 新增]
 `; // 组件描述信息
 
 const dev = {
@@ -353,6 +372,21 @@ const prod = {
         bookContentType: { // 书的类型  纸书：91 电子书 94
           bookType: '91',
           ebookType: '94',
+        },
+        getPubidByLocationQueryFromSyk:{/* 通过地址栏参数从索引中查图书详情所需的pubId */
+          url:'spc/cms/publish/list.do',
+          params:{
+            conditions: [/* 条件配置 */
+            ],
+            groupBy: "pub_resource_id",
+            orderBy: "pub_a_order asc pub_lastmodified desc",
+            pageNo: "1",
+            pageSize: "10",
+            searchText: "",
+          },
+          queryParams:{
+            title:'BOOK_SYS_TOPIC'
+          }
         },
         staticText: {
           noImg: "暂无图片",
