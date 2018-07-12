@@ -1498,7 +1498,11 @@ var $_$ = {
 				"sendNum": {
 					"url": "user/sendMobileMessage.do"
 				},
-				"showItem": ["bindMobile", "bindEmail"]
+				"showItem": ["bindMobile", "bindEmail"],
+				bindMobileConfig:{
+					showPostfix:true,
+					postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
+				}
 			}
 		}
 	},

@@ -74,7 +74,11 @@ const prod = {
 			sendNum:{
 				url:'user/sendMobileMessage.do'   /* /user/sendToMobile.do 文联用  user/sendMobileMessage.do 华育用 */
 			},
-			showItem:['bindMobile']/* 控制功能显示,'bindEmail'绑定邮箱 'bindMobile'绑定手机 */,
+      showItem:['bindMobile']/* 控制功能显示,'bindEmail'绑定邮箱 'bindMobile'绑定手机 */,
+      bindMobileConfig:{
+        showPostfix:false,
+        postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
+      },
       staticText: {
         userRegister: "新用户注册",
         userName: "用户名:",
@@ -124,8 +128,8 @@ const prod = {
         congratulations:"恭喜",
         yes:"确定",
         returnToLoginAfterThreeSeconds:"3秒后返回登录界面",
-        requestFailed:"请求失败"
-
+        requestFailed:"请求失败",
+        inputEmail:'请输入邮箱'
       }
     }
 	}
