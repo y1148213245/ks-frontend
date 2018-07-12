@@ -71,7 +71,7 @@
 
               </div>
             </el-form-item>
-            <el-button type="primary" @click="submitFormE('ruleFormE')" class="register_02_bind_content_mail_input-box_button">{{getStaticText('registerNow') ? getStaticText('registerNow') : '立即注册'}}</el-button>
+            <el-button type="primary" @click="submitFormE($event,'ruleFormE')" class="register_02_bind_content_mail_input-box_button">{{getStaticText('registerNow') ? getStaticText('registerNow') : '立即注册'}}</el-button>
           </el-form>
         </div>
 
@@ -87,7 +87,7 @@
                   <el-input type="text" v-model="ruleFormPE.subfixEmail" :placeholder="getStaticText('inputEmailInfo') ? getStaticText('inputEmailInfo') : '请输入邮箱'" class="register_02_bind_content_mail_input-postFix-box_input" @keyup.enter.native="submitFormE($event,'ruleFormPE')"></el-input>
                   @
                   <el-select v-model="emailPostfix" :placeholder="getStaticText('postFixEmail') ? getStaticText('postFixEmail') : '邮箱'">
-                    <el-option v-for="(item,index) in CONFIG.bindMobileConfig.postfix" :key="index" :label="item" :value="item">
+                    <el-option v-for="(item,index) in GLOBLE_CONFIG.EMAIL_CONFIG.postfix" :key="index" :label="item" :value="item">
                     </el-option>
                   </el-select>
                 </div>
@@ -280,11 +280,11 @@ export default {
       }
     };
     var validateSubfixEmail = (rule, value, callback) => {
-      debugger
+     
       if (value === "") {
         callback(new Error(this.getStaticText('inputEmail') ? this.getStaticText('inputEmail') : "请输入邮箱"));
-      }else if(/^[A-Za-z\d]+$/.test(value)){
-        callback(new Error(this.getStaticText('inputEmailFormatError') ? this.getStaticText('inputEmailFormatError') : "请输入邮箱格式"))
+      }else if(!/^[A-Za-z\d]+$/.test(value)){
+        callback(new Error(this.getStaticText('inputEmailFormatError') ? this.getStaticText('inputEmailFormatError') : "请输入正确邮箱格式"))
       }else{
         callback();
       }
@@ -292,6 +292,7 @@ export default {
 
     return {
       CONFIG: null,
+      GLOBLE_CONFIG:null,
       step: 1,
       currentSept: 'bindEmail',
       isMailsend: false,
@@ -340,6 +341,7 @@ export default {
 
   created () {
     this.initConfig();
+    this.GLOBLE_CONFIG = CONFIG;
     if (this.CONFIG.showItem) {
       this.currentSept = this.CONFIG.showItem[0]
     }
@@ -360,7 +362,7 @@ export default {
     ,
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].register.work_register_03;
-
+      this.emailPostfix = CONFIG.EMAIL_CONFIG && CONFIG.EMAIL_CONFIG.postfix[0]
     },
     showItem (item) {
       if (!this.CONFIG.showItem) {
@@ -373,8 +375,10 @@ export default {
       }
     },
     getShowEmailPostfix () {
-      let vconfig = this.CONFIG.bindMobileConfig;
+      
+      let vconfig = CONFIG.EMAIL_CONFIG;
       if (vconfig && vconfig.showPostfix) {
+        
         return true
       } else {
         return false
@@ -524,7 +528,7 @@ export default {
     },
     /* 绑定邮箱注册 */
     submitFormE (e, ruleFormE) {
-      debugger
+      
       this.$refs[ruleFormE].validate(valid => {
 
         if (valid) {
@@ -538,7 +542,7 @@ export default {
           if (!this.getShowEmailPostfix()) {/* 判断是否有后缀选择 */
             params.email = this.Email
           } else {
-            params.email = this.Email + '@' + this.subfixEmail
+            params.email = this.ruleFormPE.subfixEmail + '@' + this.emailPostfix
           }
 
           /* 注册 */
@@ -553,7 +557,7 @@ export default {
         } else {
           this.$message({
             type: "info",
-            message: this.getStaticText('requestFailed') ? this.getStaticText('requestFailed') : "请求失败"
+            message: this.getStaticText('requestFailed') ? this.getStaticText('requestFailed') : "请填写正确邮箱"
           });
           return false;
         }

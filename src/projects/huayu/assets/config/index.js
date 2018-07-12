@@ -9,6 +9,10 @@ var CONFIG = {
 	"SITE_CONFIG": {
 		"siteId": 8,
 		"chId": 0
+	},
+	EMAIL_CONFIG:{
+		showPostfix:true,
+		postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
 	}
 }
 var $_$ = {
