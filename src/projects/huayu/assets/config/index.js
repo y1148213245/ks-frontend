@@ -585,6 +585,26 @@ var $_$ = {
 				"params": {
 					"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"
 				},
+				getDetail:{
+					'raceNews':{
+						params: {
+							getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYNEWS'/* 库码 */
+						}
+					},
+					'voteNews':{
+						params: {
+							getDetailRequestParam_doclibCode: 'PORTAL_VOTEINFORMATION'/* 库码 */
+						}
+					}
+				},
+				getPreAndNext:{
+					'raceNews':{
+						url:'spc/prodb/activity/prevNextNews.do'
+					},
+					'voteNews':{
+						url:'spc/prodb/activity/votePrevNextNews.do'
+					}
+				},
 				"keys": {
 					"topic": "SYS_TOPIC",
 					"time": "SYS_CREATED",
@@ -1128,6 +1148,18 @@ var $_$ = {
 				"attachTypeCode": "original",
 				"params": {
 					"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"
+				},
+				getDetail:{
+					'raceNews':{
+						params: {
+							getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYNEWS'/* 库码 */
+						}
+					},
+					'voteNews':{
+						params: {
+							getDetailRequestParam_doclibCode: 'PORTAL_VOTEINFORMATION'/* 库码 */
+						}
+					}
 				},
 				"keys": {
 					"topic": "SYS_TOPIC",

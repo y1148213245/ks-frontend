@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-04-09 17:19:54 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-26 10:39:48
+ * @Last Modified time: 2018-07-13 10:16:59
  */
 export default {
   name: "newsdetail",
@@ -16,6 +16,18 @@ export default {
       attachTypeCode:'original',/* 附件类型 */
       params:{
         getDetailRequestParam_doclibCode:'PORTAL_ACTIVITYNEWS'/* 库码 */
+      },
+      getDetail:{
+        'raceNews':{
+          params: {
+            getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYNEWS'/* 库码 */
+          }
+        },
+        'voteNews':{
+          params: {
+            getDetailRequestParam_doclibCode: 'PORTAL_VOTEINFORMATION'/* 库码 */
+          }
+        }
       },
       keys: {
         topic: 'SYS_TOPIC',

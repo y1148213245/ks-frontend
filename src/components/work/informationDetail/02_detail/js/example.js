@@ -33,8 +33,25 @@ const prod = {
       attachUrl: 'dynamicFile/file.do',
       show: ['time', 'collect', 'share', 'abstract', 'download'],/* 显示功能配置 */
       attachTypeCode:'original',/* 附件类型 */
-      params: {
-        getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYNEWS'/* 库码 */
+      getDetail:{
+        'raceNews':{
+          params: {
+            getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYNEWS'/* 库码 */
+          }
+        },
+        'voteNews':{
+          params: {
+            getDetailRequestParam_doclibCode: 'PORTAL_VOTEINFORMATION'/* 库码 */
+          }
+        }
+      },
+      getPreAndNext:{
+        'raceNews':{
+          url:'spc/prodb/activity/prevNextNews.do'
+        },
+        'voteNews':{
+          url:'spc/prodb/activity/votePrevNextNews.do'
+        }
       },
       keys: {
         topic: 'SYS_TOPIC',

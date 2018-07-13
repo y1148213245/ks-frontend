@@ -2,7 +2,7 @@
  * @Author: yan.chaoming 
  * @Date: 2018-04-09 17:19:54 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-04-09 17:20:37
+ * @Last Modified time: 2018-07-13 10:16:18
  */
 export default {
   name: "newsdetail",

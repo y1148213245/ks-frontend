@@ -44,6 +44,8 @@ export default {
   data () {
     return {
       projectConfig: null,
+      newConfig:null,
+      preAndNextConfig:null,
       keys: null,
       newsListItemCache: null,/* 新闻列表数据缓存 */
       preNextParamCache: null,/* 上一篇下一篇请求参数缓存 */
@@ -75,6 +77,10 @@ export default {
   methods: {
     initConfig () {
       this.projectConfig = PROJECT_CONFIG[this.namespace].informationDetail.work_informationdetail_02;
+      
+      let newsType = URL.parse(document.URL, true).query.newsType;
+      this.newConfig = this.projectConfig.getDetail[newsType];
+      this.preAndNextConfig = this.projectConfig.getPreAndNext[newsType]
       this.keys = this.projectConfig.keys;
     },
     /* 加载参数 */
@@ -114,7 +120,7 @@ export default {
       let url = this.projectConfig.getDetailUrl;
 
       let loginName = this.keys.getDetailRequestParam_loginName + '=' + (this.member.loginName || '');
-      let doclibCode = this.keys.getDetailRequestParam_doclibCode + '=' + this.projectConfig.params.getDetailRequestParam_doclibCode;
+      let doclibCode = this.keys.getDetailRequestParam_doclibCode + '=' + this.newConfig.params.getDetailRequestParam_doclibCode;
       let docID = this.keys.getDetailRequestParam_docID + '=' + params.docID;
 
       url += '?' + doclibCode + '&' + docID + '&' + loginName;
@@ -175,7 +181,7 @@ export default {
     /* 获取上一篇下一篇数据 */
     getPreAndNext (preNextParam) {
       let keys = this.keys;
-      let url = this.projectConfig.getPreAndNextUrl;
+      let url = this.preAndNextConfig.url;
 
       let activityId = keys.getPreNextRequestParam_activityId + '=' + preNextParam[keys.eventListenData_preNextConfig_activityId];
       let newID = keys.getPreNextRequestParam_newsID + '=' + this.newsListItemCache.docID;
