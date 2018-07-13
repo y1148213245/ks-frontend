@@ -14,6 +14,7 @@ const description = `活动列表`; // 组件描述信息
 const dev = {
   list_pic: {
     ui_list_pic_21: {
+      url: "../data/ui_list_pic_21.json",
       staticText: {
         activityTime: "活动时间：",
         to: "至",

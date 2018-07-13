@@ -30,7 +30,17 @@ const dev = {
         pubColId: 49,
         colName: ''
       },
-      styleType: "show4"
+      styleType: "show4",
+      staticText: {
+        more: "更多 >>",
+        noCover: "暂无封面",
+        author: "作者：",
+        noAuthor: "暂无作者",
+        price: "定价：",
+        yuan: "¥",
+		    noPriceInfo:"无价格，不是图书，不可加购物车",
+        pleaseLogin:"请登录"
+      }
     }
   },
 
@@ -56,7 +66,17 @@ const prod = {
         // type: "selling"
         colName: ''
       },
-      styleType: "show4"
+      styleType: "show4",
+      staticText: {
+        more: "更多 >>",
+        noCover: "暂无封面",
+        author: "作者：",
+        noAuthor: "暂无作者",
+        price: "定价：",
+        yuan: "¥",
+        noPriceInfo:"无价格，不是图书，不可加购物车",
+        pleaseLogin:"请登录"
+      }
     }
   },
 };

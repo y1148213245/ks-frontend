@@ -5,18 +5,24 @@
         <div class="ui_list_pic_36_column-title">{{display.courseName}}</div>
         <ul class="ui_list_pic_36_videoList">
           <li v-for="(video,index) in videoList" @click="toPlayVideo(video,keys)">
-            <div class="ui_list_pic_36_videoList_columnName" @mouseover="showIcon(index)" @mouseout="hideIcon()">{{index + 1}}、{{video[keys.column]}}</div>
+            <div class="ui_list_pic_36_videoList_columnName" @mouseover="showIcon(index)" @mouseout="hideIcon()">{{index + 1}}{{display.symbol}}{{video[keys.column]}}</div>
             <i class="ui_list_pic_36_videoList_icon" v-if="currentIndex == index"></i>
           </li>
         </ul>
       </div>
-      <ui_pagination :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging"></ui_pagination>
+      <ui_pagination
+        v-if="videoList && videoList.length"
+        :page-sizes="CONFIG.pageSizes"
+        :pageMessage="{totalCount}"
+        :excuteFunction="paging">
+      </ui_pagination>
     </div>
 </template>
 
 <script>
-  import { Post, toOtherPage } from "@common";
+  import { Post, getFieldAdapter, toOtherPage } from "@common";
   import PROJECT_CONFIG from "projectConfig";
+  import URL from 'url';
     export default {
       name: "ui_list_pic_36",
       props: ['namespace', 'modulename'],
@@ -31,13 +37,16 @@
           totalCount: '0',  //总页数
           pageNo: '',
           pageSize: '',
-          params: {}
+          params: {},
+          pubId: '',
+          pub_parent_id: ''
         }
       },
       created(){
+        this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
         this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_36[this.modulename];
         this.display = this.CONFIG.display;
-        this.keys = this.CONFIG.keys;
+        this.keys = getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter);
         this.getVideoList();
       },
       methods: {
@@ -45,10 +54,11 @@
           let paramsObj = Object.assign({}, this.CONFIG.params);
           paramsObj.pageNo = this.pageNo ? this.pageNo : paramsObj.pageNo;
           paramsObj.pageSize = this.pageSize ? this.pageSize : paramsObj.pageSize;
+          //conditions只能传字符串格式，因此这么拼接
+          paramsObj.conditions = "[{pub_parent_id:"+this.pubId+"}]";
           Post(CONFIG.BASE_URL + this.CONFIG.url, paramsObj).then((rep) => {
             let datas = rep.data.result;
             this.totalCount = rep.data.totalCount;
-            console.log(datas);
             if (datas) {
               this.videoList = datas;
             }
@@ -66,7 +76,6 @@
           this.getVideoList();
         },
         toPlayVideo(video,keys){
-          console.log(video);
           window.open(toOtherPage(video, this.CONFIG.toDetail, keys));
         }
       }

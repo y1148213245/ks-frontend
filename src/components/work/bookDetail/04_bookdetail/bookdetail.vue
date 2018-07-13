@@ -126,6 +126,7 @@
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_label">{{config.display}}</label>
             <span v-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] ||(getStaticText('noResource') ? getStaticText('noResource') : '暂无')"></span>
+            <label class="work_bookdetail_04_afterlabel" v-if="resourceDetail[keys[config.field]] && config.afterDisplay">{{config.afterDisplay}}</label>
           </div>
         </template>
       </section>
@@ -133,7 +134,7 @@
     </div>
 
     <!-- 有声书音频附件 -->
-    <div class="work_bookdetail_04_audio_container" v-if="audioAttachmentConfig && audioAttachmentConfig.isShowAudio">
+    <div class="work_bookdetail_04_audio_container" v-if="audioAttachmentConfig && audioAttachmentConfig.isShowAudio && resourceDetail[keys.pubResType] == 'AUDIO-MEDIA'">
       <h4 class="work_bookdetail_04_audio_title" v-text="currentAudio && currentAudio.attachName"></h4>
       <br>
       <audio :src="currentAudio && currentAudio.url || ''" controls controlslist="nodownload"></audio>

@@ -28,14 +28,14 @@ const dev = {
         reviewDate:'reviewDate',//评奖时间,
         illustrationLinks:'links'
       },
+      eventName_loadedDatas:'eventName_loadedDatas',//详情数据加载后触发的事件
+      toUploadPagUrl:'',//上传页链接
       staticText: {
         uploadWork: "上传作品",
         notBegin: "未开始",
         contributeClosed: "截止投稿",
         haveEnded: "已结束"
       },
-      eventName_loadedDatas:'eventName_loadedDatas',//详情数据加载后触发的事件
-      toUploadPagUrl:'',//上传页链接
     }
   }
 };
@@ -64,7 +64,7 @@ const prod = {
         contributeClosed: "截止投稿",
         haveEnded: "已结束"
     }
-  }
+    }
   }
 };
 const platform = 'PC';

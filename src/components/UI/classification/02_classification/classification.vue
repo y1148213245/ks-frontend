@@ -2,7 +2,7 @@
 <template>
   <div class="ui_classification_02">
         <div class="ui_classification_02_all" @click="showAllCata()">
-          <span class="ui_classification_02_allCata">{{CONFIG && CONFIG.staticText && CONFIG.staticText.allClassifications ? CONFIG.staticText.allClassifications : '全部分类'}}</span>
+          <span class="ui_classification_02_allCata">{{getStaticText('allClassifications') ? getStaticText('allClassifications') : '全部分类'}}</span>
           <i :class="{'el-icon-arrow-down': !detailshow}"></i>
           <i :class="{'el-icon-arrow-up': detailshow}"></i>
         </div>
@@ -19,8 +19,8 @@
             </dl>
           </div>
           <a v-if="col_loading_num!=999" class="ui_classification_02_showAllCon" @click="bindShowAll()" href="javascript:">
-            <span :class="{ui_classification_02_showallbtn:showAll}">{{CONFIG && CONFIG.staticText && CONFIG.staticText.showAll ? CONFIG.staticText.showAll : '显示全部'}}</span>
-            <span :class="{ui_classification_02_showallbtn:!showAll}">{{CONFIG && CONFIG.staticText && CONFIG.staticText.closeAll ? CONFIG.staticText.closeAll : '收起全部'}}</span>
+            <span :class="{ui_classification_02_showallbtn:showAll}">{{getStaticText('showAll') ? getStaticText('showAll') : '显示全部'}}</span>
+            <span :class="{ui_classification_02_showallbtn:!showAll}">{{getStaticText('closeAll') ? getStaticText('closeAll') : '收起全部'}}</span>
           </a>
         </div>
       </div>
@@ -36,7 +36,7 @@ export default {
   reused: true,
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       navCategory: [],  // 图书分类导航
       col_loading_num: 5,
       showAll: false, // 是否展示全部分类
@@ -66,7 +66,14 @@ export default {
     },
     toBookList (id) {  // 去图书列表
       window.location.href = this.CONFIG.bookListUrl + '?cascadeId=' + id;
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   }
 }
 

@@ -4,7 +4,7 @@
     <h3 class="ui_navigation_05_title" v-if="CONFIG.comTitle.isShow">{{CONFIG.comTitle.name}}</h3>
     <ul class="ui_navigation_05_ul" v-for="(item1,index1) in tree" :key="index1">
       <li class="ui_navigation_05_ul_li" v-show="CONFIG && (typeof(CONFIG.showColumnArray) == 'undefined' || (typeof(CONFIG.showColumnArray) != 'undefined' && CONFIG.showColumnArray && (CONFIG.showColumnArray).indexOf(item1.id) !== -1))">
-        <span :class="{'ui_navigation_05_item--active':currentActive == item1.id}" class="ui_navigation_05_first" @click.self="navClick(item1,tree)">{{item1.name}}</span>
+        <span :class="{'ui_navigation_05_item--active':currentActive == item1.id}" class="ui_navigation_05_first" @click.self="navClick(item1,tree, true)">{{item1.name}}</span>
 
         <ul class="ui_navigation_05_ul_child1" v-show="item1.childNav.length>0" v-for="(item2,index2) in item1.childNav" :key="index2">
 
@@ -37,6 +37,8 @@ export default {
       defaultBus: true, //created后发送一次默认bus
       currentActive: '',/* 当前选中高亮 */
       colId: "", // 地址栏取栏目id高亮
+      firstOpen: true, // 首次加载栏目树打开第一个栏目的子栏目树
+      firstOpenfirst: false,
     };
   },
   created () {
@@ -68,7 +70,10 @@ export default {
         }
       });
     },
-    createTree (colId, tree, navData) {
+    createTree (colId, tree, navData, flag) {
+      console.log(colId);
+      console.log(tree);
+      console.log(navData);
       this.navInteract(colId);
       //参数说明：(colId：当前栏目的colId，tree:生成的子结构存放数组，navData：接口返回的data结构)
       navData.forEach((val, ind) => {
@@ -113,18 +118,31 @@ export default {
         ]);
         this.defaultBus = false;
       }
+      if (this.firstOpen) {
+        this.navClick(this.tree[0], this.tree, true);
+      }
+      if (flag == true) {
+        this.navClick(this.tree[0].childNav[0], this.tree.childNav);
+      }
     },
-    navClick (item, items) {
-      this.navInteract(item.id);
+    navClick (item, items, flag) {
+      this.firstOpen = false;
+      /*this.firstOpenfirst = false; */
+      this.navInteract(item.id); // 与面包屑导航交互
+      if (items && items.length > 0) {
+        items.map(entry => {  // 手风琴效果
+          if (entry.id != item.id) { // 隐藏同级子栏目
+            entry.showChild = false;
+          }
+        })
+      }
+      /* if (flag == true) {
+        var item = item.childNav[0];
+      } */
       this.currentActive = item.id;
-      items.map(entry => {  // 手风琴效果
-        if (entry.id != item.id) { // 隐藏同级子栏目
-          entry.showChild = false;
-        }
-      })
       if (item.createChild == false) {
         //判断点击的菜单是否已经点击创建过子导航，如果没有则创建子导航
-        this.createTree(item.id, item.childNav, this.navData);
+        this.createTree(item.id, item.childNav, this.navData, flag ? true : false);
         item.createChild = true;
       }
       if (item.childNav == 0 || !this.CONFIG.showChildren) {

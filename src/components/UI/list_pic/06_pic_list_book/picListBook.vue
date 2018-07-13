@@ -59,11 +59,11 @@ export default {
     }),
   },
   created () {
+    this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.picListBook[moduleName];
     this.pubId = URL.parse(document.URL, true).query.pubId;
   },
   mounted () {
     let moduleName = this.modulename;
-    this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.picListBook[moduleName];
     this.title = this.CONFIG.title;
     this.resourceDetailConfig = this.CONFIG.getBookDetail;
     // this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].list_pic.picListBook : PROJECT_CONFIG.list_pic.picListBook;

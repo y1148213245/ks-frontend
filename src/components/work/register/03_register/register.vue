@@ -291,7 +291,7 @@ export default {
     }
 
     return {
-      CONFIG: null,
+      CONFIG: "",
       GLOBLE_CONFIG:null,
       step: 1,
       currentSept: 'bindEmail',
@@ -346,6 +346,7 @@ export default {
       this.currentSept = this.CONFIG.showItem[0]
     }
     this.buttonMsg = this.getStaticText('getVerifiCode') ? this.getStaticText('getVerifiCode') : '获取验证码';
+
   },
 
   mounted () {

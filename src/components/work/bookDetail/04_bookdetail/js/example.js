@@ -7,73 +7,48 @@ const title = "图书详情组件"; // 组件title
 
 const description = `图书详情组件
 { // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
-  name: 'img', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
-  field: 'picBig', // 取什么字段
-  display: '', // 固定显示内容是什么
-  method: '', // 方法名 要在下面配置
-  className: "",
-}, {
-  name: 'button',
-  field: 'resName',
-  display: '',
-  method: '', // 方法名 要在下面配置
-  className: "",
-}, {
-  name: 'price',
-  field: 'memberPrice',
-  display: '电子书价格：',
-  method: '', // 方法名 要在下面配置
-  className: "",
-}, {
-  name: 'price',
-  field: 'ebPrice',
-  display: '',
-  method: '', // 方法名 要在下面配置
-  className: "",
-}, {
-  name: 'price',
-  field: 'price',
-  display: '纸书定价：',
-  method: '', // 方法名 要在下面配置
-  className: "",
-}, {
-  name: 'probation',
-  field: '',
-  display: '免费试读',
-  display1: '全文阅读',
-  method: 'toProbation', // 方法名 要在下面配置
-  className: "fas fa-book",
-}, {
-  name: 'addcart',
-  field: '',
-  display: '加入购物车',
-  method: 'addCart', // 方法名 要在下面配置
-  className: "",
-}, {
-  name: 'addebcart',
-  field: '',
-  display: '电子书加入购物车',
-  method: 'addCart', // 方法名 要在下面配置
-  className: "",
-}, {
-  name: 'like',
-  field: '',
-  display: '点赞',
-  method: 'collectOrLike',
-  className: "fas fa-thumbs-up",
-}, {
-  name: 'collect',
-  field: '',
-  display: '收藏',
-  method: 'collectOrLike',
-  className: "fas fa-heart",
-}, {
-  name: 'share',
-  field: '',
-  display: '',
-  method: '',
-  className: "",
-}
+    name: 'img', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
+    field: 'picBig', // 取什么字段
+    display: '', // 固定显示内容是什么 前
+    afterDisplay: '',//固定显示内容是什么 后
+    method: '', // 方法名 要在下面配置
+    className: "",
+  }, {
+    name: 'button',
+    field: 'sysTopic',
+    display: '',
+    afterDisplay: '',//固定显示内容是什么 后
+    method: '', // 方法名 要在下面配置
+    className: "",
+  }, {
+    name: 'title',
+    field: 'courseTitle',  //待定
+    display: '',
+    afterDisplay: '',//固定显示内容是什么 后
+    method: '', // 方法名 要在下面配置
+    className: "",
+  }, {
+    name: 'courseNumber',
+    field: 'courseNumber',  //待定
+    display: '课程总数：',
+    afterDisplay: '讲',//固定显示内容是什么 后
+    method: '', // 方法名 要在下面配置
+    className: "",
+  }, {
+    name: 'courseDuration',
+    field: 'courseDuration',  //待定
+    display: '课程：',
+    afterDisplay: '日',//固定显示内容是什么 后
+    method: '', // 方法名 要在下面配置
+    className: "",
+  }, {
+    name: 'coursePrice',
+    field: 'coursePrice',  //待定
+    display: '费用：',
+    afterDisplay: '',//固定显示内容是什么 后
+    method: '', // 方法名 要在下面配置
+    className: "",
+  }
 [新增]
 取地址栏参数从索引库中取资源pubId
 
@@ -112,6 +87,7 @@ const dev = {
               name: '',
               field: '',
               display: '',
+              afterDisplay: '',//固定显示内容是什么 后
               method: '',
               className: "",
             }],
@@ -119,6 +95,7 @@ const dev = {
               name: '',
               field: '',
               display: '',
+              afterDisplay: '',//固定显示内容是什么 后
               method: '',
               className: "",
             }],
@@ -259,6 +236,7 @@ const prod = {
               name: '',
               field: '',
               display: '',
+              afterDisplay: '',//固定显示内容是什么 后
               method: '',
               className: "",
             }],
@@ -266,6 +244,7 @@ const prod = {
               name: '',
               field: '',
               display: '',
+              afterDisplay: '',//固定显示内容是什么 后
               method: '',
               className: "",
             }],

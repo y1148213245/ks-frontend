@@ -31,6 +31,10 @@ export default {
     };
   },
 
+  created(){
+
+  },
+
   mounted () {
     this.bgmUrl = require('./data/img/bookclass.png');
     this.CONFIG = PROJECT_CONFIG[this.namespace].classification.classification_01;

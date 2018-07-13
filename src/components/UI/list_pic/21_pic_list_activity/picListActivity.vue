@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       currentDate: new Date(),
       activityList: [],
       totalCount: 0,
@@ -99,7 +99,7 @@ export default {
         let currentTime = new Date().getTime();
         if (data && data instanceof Array && data.length > 0) {
           data.forEach(item => {
-            
+
             if (currentTime > item[this.getKeys(item, 'endTime')]) {
               item.activityStatus = this.getStaticText('haveFinished') ? this.getStaticText('haveFinished') : '已结束';
             } else if (currentTime < item[this.getKeys(item, 'beginTime')]) {

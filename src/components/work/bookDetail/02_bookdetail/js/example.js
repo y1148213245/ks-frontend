@@ -15,6 +15,15 @@ const description = `图书详情组件`;
 const dev = {
   book_detail: {
     book_detail_02: {
+      relatedBook:{
+        staticText:{
+          packUpAll:"收起全部",
+          showAll:"显示全部",
+          bookAbstract:"图书简介",
+          authorAbstract:"作者简介",
+          contents:"目录"
+        }
+      },
       buyBookUrl: 'http://book.dangdang.com/', // 购买纸书 跳转至当当网首页
       probationUrl: '/ebook/read.jsp', //试读地址
       showInfoList: [{ // 控制显示/隐藏图书的其他信息 比如：出版时间、出版社、ISBN、版次...
@@ -41,18 +50,45 @@ const dev = {
         title: "页数:",
         key: "pageNums",
         filter: false
-      }, {
+      },
+        {
         title: "字数:",
         key: "bookWords",
         filter: false
-      }]
-    }
+      }],
+      staticText : {
+        yourPosition: "您的位置：",
+        homePage: "首页",
+        cathyebk: "电子书城",
+        noCover: "暂无封面",
+        eBookPrice: "电子书价格：",
+        onSale: "促销：",
+        priceReduction: "满额减",
+        paperBookPrice: "纸书定价：￥",
+        buyPaperBook: "购买纸书",
+        freeTrials: "免费试读",
+        addToShoppingCart:"加入购物车",
+        noDate: "暂无日期",
+        productDetails: "商品详情",
+        noPriceNoBookInfo: "无价格，不是书，不可加购物车",
+        pleaseLogin: "请登录"
+      }
+    },
   }
 };
 
 const prod = {
   book_detail: {
     book_detail_02: {
+      relatedBook:{
+        staticText:{
+          packUpAll:"收起全部",
+          showAll:"显示全部",
+          bookAbstract:"图书简介",
+          authorAbstract:"作者简介",
+          contents:"目录"
+        }
+      },
       buyBookUrl: 'http://book.dangdang.com/', // 购买纸书 跳转至当当网首页
       probationUrl: '/ebook/read.jsp', //试读地址
       showInfoList: [{ // 控制显示/隐藏图书的其他信息 比如：出版时间、出版社、ISBN、版次...
@@ -84,7 +120,24 @@ const prod = {
         key: "bookWords",
         filter: false
       }],
-      showItem:[]//'audio'显示音频附件
+      showItem:[],//'audio'显示音频附件
+      staticText:{
+        yourPosition: "您的位置：",
+        homePage: "首页",
+        cathyebk: "电子书城",
+        noCover: "暂无封面",
+        eBookPrice: "电子书价格：",
+        onSale: "促销：",
+        priceReduction: "满额减",
+        paperBookPrice: "纸书定价：￥",
+        buyPaperBook: "购买纸书",
+        freeTrials: "免费试读",
+        addToShoppingCart:"加入购物车",
+        noDate: "暂无日期",
+        productDetails: "商品详情",
+        noPriceNoBookInfo: "无价格，不是书，不可加购物车",
+        pleaseLogin:"请登录"
+      }
     }
   }
 };

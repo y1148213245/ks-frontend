@@ -53,7 +53,6 @@ export default {
     let char;
     let badword;
     badword = ';|<>`&!*(~^)#?:"/$=\\' + "'";
-
     if (value === "") {
       callback(new Error("请输入密码"));
     } else if (value.length <= 5) {

@@ -143,11 +143,7 @@ const prod = {
         browserId: '', // 浏览器指纹
         docID: '',
       },
-      staticText: {
-        announcement: "公告",
-        displayExcellentWorks: "优秀作品展示",
 
-      }
     }
   },
   activityDetail: {

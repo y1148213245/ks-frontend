@@ -10,20 +10,23 @@ const description = `课程列表展示组件`; // 组件描述信息
 const dev = {
   list_pic: {
     list_pic_36: {
-      'videolist': {
+      'modulename': {
         display: {
           courseContain: '课程包含内容：',
-          courseName: '课程名称'
+          courseName: '课程名称',
+          symbol: '、'
         },
         url: "spc/cms/publish/list.do",
         params: {
-          conditions: "[{pub_parent_id:'2179'}]",
+          conditions: "[{pub_parent_id:''}]",
           groupBy: "pub_resource_id",
           orderBy: "pub_a_order asc pub_lastmodified desc id asc",
           pageNo: "1",
-          pageSize: "16",
+          pageSize: "10",
           searchText: "",
         },
+        sysAdapter: "sykAdapter", // 系统字段
+        typeAdapter: "videoAdapter", // 类型字段
         toDetail: { // 去视频详情页面
           url: "../pages/videoplay.html",
           dataKeys: {
@@ -32,50 +35,34 @@ const dev = {
           },
           fixedKeys: {}
         },
-        keys: { // 字段兼容
-          bookName: "pub_resource_name",
-          starNum: "pub_star_num",
-          memberPrice: "prod_member_price",
-          ebPrice: "BOOK_EB_PRICE",
-          bookAuthor: "BOOK_SYS_AUTHORS",
-          pubId: "id",
-          contentType: "pub_content_type",
-          colId: "pub_col_id",
-          colName: "pub_col_name",
-          bookPic: "pub_picBig",
-          pressName: "BOOK_PRESS_NAME",
-          pubDate: "BOOK_PUBDATE",
-          column: "VIDEO-MEDIA_SYS_TOPIC",
-          id: "id",
-          parentId: "pub_parent_id"
-        },
-        detailHref: "./bookdetail.html", // 详情
-        moreHref: "./bookList.html", // 更多
-        maxNum: 15,
-        pageSizes:[8,16,32,48],
+        maxNum: 10,
+        pageSizes:[10,30,50,100],
 
       }
-    }
+    },
   }
 }
 
 const prod = {
   list_pic: {
     list_pic_36: {
-      'videolist': {
+      'modulename': {
         display: {
           courseContain: '课程包含内容：',
-          courseName: '课程名称'
+          courseName: '课程名称',
+          symbol: '、'
         },
         url: "spc/cms/publish/list.do",
         params: {
-          conditions: "[{pub_parent_id:'2179'}]",
+          conditions: "[{pub_parent_id:''}]",
           groupBy: "pub_resource_id",
           orderBy: "pub_a_order asc pub_lastmodified desc id asc",
           pageNo: "1",
-          pageSize: "16",
+          pageSize: "10",
           searchText: "",
         },
+        sysAdapter: "sykAdapter", // 系统字段
+        typeAdapter: "videoAdapter", // 类型字段
         toDetail: { // 去视频详情页面
           url: "../pages/videoplay.html",
           dataKeys: {
@@ -84,30 +71,11 @@ const prod = {
           },
           fixedKeys: {}
         },
-        keys: { // 字段兼容
-          bookName: "pub_resource_name",
-          starNum: "pub_star_num",
-          memberPrice: "prod_member_price",
-          ebPrice: "BOOK_EB_PRICE",
-          bookAuthor: "BOOK_SYS_AUTHORS",
-          pubId: "id",
-          contentType: "pub_content_type",
-          colId: "pub_col_id",
-          colName: "pub_col_name",
-          bookPic: "pub_picBig",
-          pressName: "BOOK_PRESS_NAME",
-          pubDate: "BOOK_PUBDATE",
-          column: "VIDEO-MEDIA_SYS_TOPIC",
-          id: "id",
-          parentId: "pub_parent_id"
-        },
-        detailHref: "./bookdetail.html", // 详情
-        moreHref: "./bookList.html", // 更多
-        maxNum: 15,
-        pageSizes:[8,16,32,48],
+        maxNum: 10,
+        pageSizes:[10,30,50,100],
 
       }
-    }
+    },
   }
 }
 

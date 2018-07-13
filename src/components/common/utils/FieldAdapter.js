@@ -79,17 +79,23 @@ var FIELD_ADAPTER = {
             cmsMagOrderMap: "cmsMagOrderMap", //
             PUBLISH_YEAR: 'PUBLISH_YEAR', //年份
         },
-        candidateAdapter: {/* 活动的参赛人 */
-            activityId:'ACTIVITYID',/* 活动id */
-            awardName:'AWARD_NAME',/* 奖项名字 */
-            awardType:'AWARD_TYPE',/* 奖项类型 */
-            description:'DESCRIPTION',/* 描述 */
-            pic:'HEAD_PICTURE',/* 头像 */
-            voteNum:'VOTE_NUMBERNEW',/* 投票数量 */
+        candidateAdapter: { /* 活动的参赛人 */
+            activityId: 'ACTIVITYID',
+            /* 活动id */
+            awardName: 'AWARD_NAME',
+            /* 奖项名字 */
+            awardType: 'AWARD_TYPE',
+            /* 奖项类型 */
+            description: 'DESCRIPTION',
+            /* 描述 */
+            pic: 'HEAD_PICTURE',
+            /* 头像 */
+            voteNum: 'VOTE_NUMBERNEW',
+            /* 投票数量 */
         },
-        activityAwardAdapter:{
-            awardType:'AWARD_TYPE',
-            topic:'SYS_TOPIC'
+        activityAwardAdapter: {
+            awardType: 'AWARD_TYPE',
+            topic: 'SYS_TOPIC'
         }
     },
     sykAdapter: { // 索引库字段
@@ -102,6 +108,7 @@ var FIELD_ADAPTER = {
             colName: "pub_col_name",
             resId: "pub_resource_id",
             resName: "pub_resource_name",
+            pubResType: "pub_resource_type",
             resCata: "pub_resource_cata",
             picMiddle: "pub_picMiddle",
             picSmall: "pub_picSmall",
@@ -237,10 +244,10 @@ var FIELD_ADAPTER = {
             classLimtid: "PORTAL_ACTIVITY_CLASSLIMTID",
             classLimtCascadId: "PORTAL_ACTIVITY_CLASSLIMT_CASCADID"
         },
-        activityVoteAdapter: {/* 投票活动 */
+        activityVoteAdapter: { /* 投票活动 */
             sysTopic: 'PORTAL_VOTEACTIVITY_SYS_TOPIC',
             description: 'PORTAL_VOTEACTIVITY_DESCRIPTION',
-            endTimeStamp:'PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW'
+            endTimeStamp: 'PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW'
         },
         videoAdapter: { // 视频
             sysTopic: "VIDEO-MEDIA_SYS_TOPIC",
@@ -256,8 +263,10 @@ var FIELD_ADAPTER = {
             courseNumber: "GROUP_VIDEO_COURSES_NUMBER",
             courseDuration: "GROUP_VIDEO_COURSES_DURATION",
             coursePrice: "GROUP_VIDEO_PRICE",
-            courseTitle: "GROUP_VIDEO_SYS_TOPIC"
-
+            courseTitle: "GROUP_VIDEO_SYS_TOPIC",
+            column: "VIDEO-MEDIA_SYS_TOPIC",
+            id: "id",
+            parentId: "pub_parent_id"
         },
         audioAdapter: { // 音频
             sysTopic: "AUDIO-MEDIA_SYS_TOPIC",
@@ -301,6 +310,7 @@ var FIELD_ADAPTER = {
             bigPic: "big_pic",
             smallPic: "small_pic",
             describe: "describe", //描述信息
+            parentId: "parentId",
         },
         magazineAdapter: { // 期刊
             sysTopic: "MAGAZINE_SYS_TOPIC",
@@ -349,31 +359,34 @@ var FIELD_ADAPTER = {
             departCascadId: "MAGAZINE_DEPART_CASCADID",
         },
         productArticleAdapter: { // 稿件
-            sysTopic: "PRODUCT-ARTICLE _SYS_TOPIC",
-            subTitle: "PRODUCT-ARTICLE _SUBTITLE",
-            sysAuthors: "PRODUCT-ARTICLE _SYS_AUTHORS",
-            language: "	PRODUCT-ARTICLE _LANGUAGE",
-            abstract: "PRODUCT-ARTICLE _ABSTRACT",
-            docSource: "PRODUCT-ARTICLE _DOCSOURCE",
-            magazine: "PRODUCT-ARTICLE _MAGAZINE",
-            engKeywords: "PRODUCT-ARTICLE _ENGKEYWORDS",
-            columnName: "PRODUCT-ARTICLE _COLUMNNAME",
-            ontology: "PRODUCT-ARTICLE _ONTOLOGY",
-            keyWords: "PRODUCT-ARTICLE _KEYWORDS",
-            themeWord: "PRODUCT-ARTICLE _THEME_WORD",
-            authorUnit: "PRODUCT-ARTICLE _AUTHORUNIT",
-            authorAddress: "PRODUCT-ARTICLE _AUTHORADDRESS",
-            publishYear: "PRODUCT-ARTICLE _PUBLISH_YEAR",
-            periodNum: "PRODUCT-ARTICLE _PERIOD_NUM",
-            publishDate: "PRODUCT-ARTICLE _PUBLISHDATE",
-            totalPeriod: "PRODUCT-ARTICLE _TOTAL_PERIOD",
-            engAbstract: "PRODUCT-ARTICLE _ENGABSTRACT",
-            resourceId: "PRODUCT-ARTICLE _RESOURCEID",
-            knowCat: "PRODUCT-ARTICLE _KNOWCAT",
-            reference: "PRODUCT-ARTICLE _REFERENCE",
-            format: "PRODUCT-ARTICLE _FORMAT",
-            knowCatId: "PRODUCT-ARTICLE _KNOWCATID",
-            knowCascadId: "PRODUCT-ARTICLE _KNOWCASCADID",
+            sysTopic: "PRODUCT-ARTICLE_SYS_TOPIC",
+            subTitle: "PRODUCT-ARTICLE_SUBTITLE",
+            sysAuthors: "PRODUCT-ARTICLE_SYS_AUTHORS",
+            language: "	PRODUCT-ARTICLE_LANGUAGE",
+            abstract: "PRODUCT-ARTICLE_ABSTRACT",
+            docSource: "PRODUCT-ARTICLE_DOCSOURCE",
+            magazine: "PRODUCT-ARTICLE_MAGAZINE",
+            engKeywords: "PRODUCT-ARTICLE_ENGKEYWORDS",
+            columnName: "PRODUCT-ARTICLE_COLUMNNAME",
+            ontology: "PRODUCT-ARTICLE_ONTOLOGY",
+            keyWords: "PRODUCT-ARTICLE_KEYWORDS",
+            themeWord: "PRODUCT-ARTICLE_THEME_WORD",
+            authorUnit: "PRODUCT-ARTICLE_AUTHORUNIT",
+            authorAddress: "PRODUCT-ARTICLE_AUTHORADDRESS",
+            publishYear: "PRODUCT-ARTICLE_PUBLISH_YEAR",
+            periodNum: "PRODUCT-ARTICLE_PERIOD_NUM",
+            publishDate: "PRODUCT-ARTICLE_PUBLISHDATE",
+            totalPeriod: "PRODUCT-ARTICLE_TOTAL_PERIOD",
+            engAbstract: "PRODUCT-ARTICLE_ENGABSTRACT",
+            resourceId: "PRODUCT-ARTICLE_RESOURCEID",
+            knowCat: "PRODUCT-ARTICLE_KNOWCAT",
+            reference: "PRODUCT-ARTICLE_REFERENCE",
+            format: "PRODUCT-ARTICLE_FORMAT",
+            knowCatId: "PRODUCT-ARTICLE_KNOWCATID",
+            knowCascadId: "PRODUCT-ARTICLE_KNOWCASCADID",
+            pages: "PRODUCT-ARTICLE_PAGES",
+            paContent: "PRODUCT-ARTICLE_CONTENT",
+            articleFlag: "PRODUCT-ARTICLE_ARTICLE_FLAG"
         },
         imageAdapter: { //图片
             coverId: "MATERIAL-PIC_COVERID",

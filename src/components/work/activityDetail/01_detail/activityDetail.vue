@@ -9,10 +9,10 @@
     </div>
     <!-- <div class="work_activitydetail_01-text_content" v-text="detail && detail[keys.content] || ''"></div> -->
     <div class="work_activitydetail_01-upload_box" v-if="getIsShow('upload')">
-      <div v-if="activeStatus === 1" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">{{CONFIG && CONFIG.staticText && CONFIG.staticText.uploadWork ? CONFIG.staticText.uploadWork : '上传作品'}}</div>
-      <div v-if="activeStatus === -1" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{CONFIG && CONFIG.staticText && CONFIG.staticText.notBegin ? CONFIG.staticText.notBegin : '未开始'}}</div>
-      <div v-if="activeStatus === 2" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{CONFIG && CONFIG.staticText && CONFIG.staticText.contributeClosed ? CONFIG.staticText.contributeClosed : '截止投稿'}}</div>
-      <div v-if="activeStatus === 0" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{CONFIG && CONFIG.staticText && CONFIG.staticText.haveEnded ? CONFIG.staticText.haveEnded : '已结束'}}</div>
+      <div v-if="activeStatus === 1" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">{{getStaticText('uploadWork') ? getStaticText('uploadWork') : '上传作品'}}</div>
+      <div v-if="activeStatus === -1" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('notBegin') ? getStaticText('notBegin') : '未开始'}}</div>
+      <div v-if="activeStatus === 2" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('contributeClosed') ? getStaticText('contributeClosed') : '截止投稿'}}</div>
+      <div v-if="activeStatus === 0" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('haveEnded') ? getStaticText('haveEnded') : '已结束'}}</div>
     </div>
   </div>
 </template>
@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       keys: null,
       detail: {},
       illustrations: [],
@@ -130,7 +130,14 @@ export default {
         }
         window.location.href = url;
       }
-    }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
   }
 }
 

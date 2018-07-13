@@ -10,7 +10,7 @@
           <!-- img 图片 -->
           <div :key="config_i" v-if="config.name == 'img'" v-bind="{class: 'ui_information_mag_03_imgcontainter' + config.field}">
             <label class="ui_information_mag_03_img_label">{{config.display}}</label>
-            <img  v-bind="{class: 'ui_information_03_' + config.field}" :src=" magInfo[keys[config.field]] " alt="暂无图片" @load="dealResourceImg($event)"/>
+            <img  v-bind="{class: 'ui_information_03_' + config.field}" :src=" magInfo[keys[config.field]] || require('@static/img/defaultCover.png')" alt="暂无图片" @load="dealResourceImg($event)"/>
           </div>
 
           <!-- 自定义事件按钮 包括（title 标题） -->

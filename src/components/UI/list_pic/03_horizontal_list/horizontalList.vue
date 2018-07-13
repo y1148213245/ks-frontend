@@ -3,14 +3,14 @@
 	<div>
 		<div class="fancy-title title-border">
 			<h3>{{catalog_info.text}}</h3>
-			<a href="javascript:void(0)" @click="moreType(catalog_info.cascadeId)" class="more">更多 >></a>
+			<a href="javascript:void(0)" @click="moreType(catalog_info.cascadeId)" class="more">{{getStaticText('more') ? getStaticText('more') : '更多 >>'}}</a>
 		</div>
 		<template v-for="(recommend,rec_index) in recommendList" v-if="rec_index < listNum" v-show="showList">
 			<article class="nopadding" :class="rec_index == 0 ? firstClass : listClass">
 				<div class="product iproduct clearfix">
 					<div class="product-image">
 						<a class="tuijian_list_imgBox" href="javascript:void(0)" @click="toBookDetail(recommend.id,recommend.pub_content_type,recommend.pub_col_id, recommend.pub_col_name)">
-							<img class="tuijian_list_img" onload="DrawImage(this,240,200)" :src="recommend.pub_picBig || '../assets/img/zwfm.png'" alt="暂无封面">
+							<img class="tuijian_list_img" onload="DrawImage(this,240,200)" :src="recommend.pub_picBig || '../assets/img/zwfm.png'" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'">
 						</a>
 						<!-- <div class="product-overlay">
 							<a @click="toCart(recommend.prod_id,recommend.id,recommend.pub_col_id,recommend.pub_is_eb)" class="add-to-cart"><i class="icon-shopping-cart"></i><span>加入购物车</span></a>
@@ -21,8 +21,8 @@
 						<div class="product-title"><h5>
 							<a class="book-name-space" href="javascript:void(0)" @click="toBookDetail(recommend.id,recommend.pub_content_type,recommend.pub_col_id, recommend.pub_col_name)" :title="recommend.pub_resource_name">{{recommend.pub_resource_name}}</a>
 						</h5></div>
-						<div class="product-author" :title="recommend.BOOK_SYS_AUTHORS">作者：{{recommend.BOOK_SYS_AUTHORS || "暂无作者"}}</div>
-						<div class="product-price"><label>定价：</label> ¥ {{recommend.prod_sale_price}}</div>
+						<div class="product-author" :title="recommend.BOOK_SYS_AUTHORS">{{getStaticText('author') ? getStaticText('author') : '作者：'}}{{recommend.BOOK_SYS_AUTHORS || (getStaticText('noAuthor') ? getStaticText('noAuthor') : "暂无作者")}}</div>
+						<div class="product-price"><label>{{getStaticText('price') ? getStaticText('price') : '定价：'}}</label>¥{{recommend.prod_sale_price}}</div>
 					</div>
 				</div>
 			</article>
@@ -40,7 +40,7 @@ export default {
 	props: ["catalog_info", "namespace", "colid"],
 	data: function () {
 		return {
-			CONFIG: null,
+			CONFIG: "",
 			recommendList: [],
 			listNum: 4,
 			listClass: "col-md-3",
@@ -48,8 +48,11 @@ export default {
 			showList: false
 		};
 	},
+  created:function(){
+    this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.horizontal_list_03;
+
+  },
 	mounted: function () {
-		this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.horizontal_list_03;
 
 		this.ajustColumnStyle(this.CONFIG.styleType);
 		this.queryItemList(1);
@@ -103,7 +106,7 @@ export default {
 		//加入购物车 FIXME 购物车
 		toCart (productId, pubId, colId, isEb) {
 			if (isEb == "0") {
-				alert("无价格，不是图书，不可加购物车");
+				alert(this.getStaticText('noPriceInfo') ? this.getStaticText('noPriceInfo') : "无价格，不是图书，不可加购物车");
 				return;
 			}
 			var loginName = this.member.loginName;
@@ -118,10 +121,17 @@ export default {
 				};
 				this.$store.dispatch('bookDetail/' + type.ADD_CART, params);
 			} else {
-				alert("请登录");
+				alert(this.getStaticText('pleaseLogin') ? this.getStaticText('pleaseLogin') : "请登录");
 				return;
 			}
-		}
+		},
+    getStaticText(text){
+		  if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+		    return this.CONFIG.staticText[text]
+      }else {
+		    return false
+      }
+    }
 	}
 };
 </script>

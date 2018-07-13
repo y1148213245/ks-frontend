@@ -20,7 +20,7 @@
         <p class="banquan"><span class="authorText">{{getStaticText('press') ? getStaticText('press') : '出版社：'}}</span><span v-text="entry.BOOK_PRESS_NAME" :title="entry.BOOK_PRESS_NAME" class="authorText"></span></p>
         <p class="banquan"><span class="authorText">{{getStaticText('pubTime') ? getStaticText('pubTime') : ' 出版时间：'}}</span><span v-if="entry.BOOK_PUBDATE?entry.BOOK_PUBDATE:0" :title="entry.BOOK_PUBDATE" class="authorText">{{entry.BOOK_PUBDATE}}</span>
         </p>
-        <p class="price">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}<i>{{entry.bookProdPrice?Number(entry.bookProdPrice).toFixed(2):'0.00'}}</i> <span>{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}{{entry.bookPrice?Number(entry.bookPrice).toFixed(2):'0.00'}}</span></p>
+        <p class="price">￥<i>{{entry.bookProdPrice?Number(entry.bookProdPrice).toFixed(2):'0.00'}}</i> <span>￥{{entry.bookPrice?Number(entry.bookPrice).toFixed(2):'0.00'}}</span></p>
         <p class="other">
           <a href="http://www.jiathis.com/share" class="share" target="_blank">{{getStaticText('share') ? getStaticText('share') : '分享'}}</a>
           <a href="javascript:void(0)" @click="toBookDetail(entry.pubId)" class="goumai f12  color_fff">{{getStaticText('buy') ? getStaticText('buy') : '购买'}}</a>
@@ -43,11 +43,14 @@ export default {
   data () {
     return {
       number: 4,
-      popularBookList: []
+      popularBookList: [],
+      CONFIG:""
     }
   },
-  mounted: function () {
+  created(){
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.popularBook;
+  },
+  mounted: function () {
     this.getPopularBookListData();
   },
   methods: {

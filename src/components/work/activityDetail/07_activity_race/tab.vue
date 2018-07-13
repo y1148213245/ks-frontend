@@ -3,7 +3,7 @@
   <div class="work_activityrace_tab">
     <nav class="work_activityrace_tab-nav">
       <template v-for="(item,index) in tabArr">
-        <div :key="index" class="work_activityrace_tab-item" :class="{'work_activityrace_tab-title--active':currentShow.tag == item.tag,'work_activityrace_tab-product_nav-item--hidden':activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != CONFIG && CONFIG.staticText && CONFIG.staticText.yes ? CONFIG.staticText.yes : '是' && currentShow.tag == 'activityProductWinning' }" @click="change(item)"><span>{{item.title}}</span></div>
+        <div :key="index" class="work_activityrace_tab-item" :class="{'work_activityrace_tab-title--active':currentShow.tag == item.tag,'work_activityrace_tab-product_nav-item--hidden':activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != (getStaticText('yes') ? getStaticText('yes') : '是')  && currentShow.tag == 'activityProductWinning' }" @click="change(item)"><span>{{item.title}}</span></div>
       </template>
     </nav>
     <div class="work_activityrace_tab-content">
@@ -22,14 +22,14 @@
         <div class="components_acitivityrace-right">
           <div class="components_acitivityrace-notice">
               <div class="components_acitivityrace-notice-title_box">
-                  <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.announcement ? CONFIG.staticText.announcement : '公告'}}</span>
+                  <span>{{getStaticText('announcement') ? getStaticText('announcement') : '公告'}}</span>
                 </div>
                 <!-- 公告 -->
               <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
           </div>
           <div class="components_acitivityrace-good_products">
             <div class="components_acitivityrace-good_products-title_box">
-                <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.displayExcellentWorks ? CONFIG.staticText.displayExcellentWorks : '优秀作品展示'}}</span>
+                <span>{{getStaticText('displayExcellentWorks') ? getStaticText('displayExcellentWorks') : '优秀作品展示'}}</span>
             </div>
                 <!-- 优秀参赛作品列表 -->
             <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
@@ -47,14 +47,14 @@
           <el-col :span="4">
             <div class="components_acitivityrace-notice">
               <div class="components_acitivityrace-notice-title_box">
-                <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.announcement ? CONFIG.staticText.announcement : '公告'}}</span>
+                <span>{{getStaticText('announcement') ? getStaticText('announcement') : '公告'}}</span>
               </div>
               <!-- 公告 -->
               <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
             </div>
             <div class="components_acitivityrace-good_products">
               <div class="components_acitivityrace-good_products-title_box">
-                <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.displayExcellentWorks ? CONFIG.staticText.displayExcellentWorks : '优秀作品展示'}}</span>
+                <span>{{getStaticText('displayExcellentWorks') ? getStaticText('displayExcellentWorks') : '优秀作品展示'}}</span>
               </div>
               <!-- 优秀参赛作品列表 -->
               <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
@@ -74,14 +74,14 @@
         <el-col :span="4">
           <div class="components_acitivityrace-notice">
             <div class="components_acitivityrace-notice-title_box">
-              <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.announcement ? CONFIG.staticText.announcement : '公告'}}</span>
+              <span>{{getStaticText('announcement') ? getStaticText('announcement') : '公告'}}</span>
             </div>
             <!-- 公告 -->
             <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
           </div>
           <div class="components_acitivityrace-good_products">
             <div class="components_acitivityrace-good_products-title_box">
-              <span>{{CONFIG && CONFIG.staticText && CONFIG.staticText.displayExcellentWorks ? CONFIG.staticText.displayExcellentWorks : '优秀作品展示'}}</span>
+              <span>{{getStaticText('displayExcellentWorks') ? getStaticText('displayExcellentWorks') : '优秀作品展示'}}</span>
             </div>
             <!-- 优秀参赛作品列表 -->
             <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
@@ -89,7 +89,7 @@
         </el-col>
       </div>
     </div>
-    <el-row v-show="activityDetail.PORTAL_ACTIVITY_IS_COMMENT== CONFIG && CONFIG.staticText && CONFIG.staticText.yes ? CONFIG.staticText.yes : '是'">
+    <el-row v-show="activityDetail.PORTAL_ACTIVITY_IS_COMMENT== (getStaticText('yes') ? getStaticText('yes') : '是') ">
       <el-col :span="24">
         <!-- 活动评论组件 区别于作品评论 -->
         <work_bookreview_02 :namespace="namespace" :is-show-diff=false></work_bookreview_02>
@@ -115,7 +115,8 @@ export default {
       isShowJoin: true,
       activityDetail: {},
       tabArr: [],
-      hashCache: ''
+      hashCache: '',
+      CONFIG:""
     }
   },
 
@@ -177,11 +178,11 @@ export default {
     },
     change (item) {
       if (item.tag == 'activityProductWinning') {
-        if (this.activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != '是') {
+        if (this.activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != (this.getStaticText('yes') ? this.getStaticText('yes') : '是')) {
           this.$message(
             {
               type: 'info',
-              message: CONFIG && CONFIG.staticText && CONFIG.staticText.pleaseWaitForTheReview ? CONFIG.staticText.pleaseWaitForTheReview : '请等待评审'
+              message: this.getStaticText('pleaseWaitForTheReview') ? this.getStaticText('pleaseWaitForTheReview') : '请等待评审'
             }
           )
         } else {
@@ -196,7 +197,15 @@ export default {
     getActivityDetail (detail) {
       this.activityDetail = detail;
       this.getHashToChangeTab();
+    },
+    getStaticText(text){
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
     }
+
   }
 }
 </script>

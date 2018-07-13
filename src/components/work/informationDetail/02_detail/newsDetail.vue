@@ -53,7 +53,7 @@ export default {
       detail: '',/* 新闻详情 */
       attach: '',/* 附件详情 */
       attachUrl: ''/* 附件链接 */,
-      // CONFIG:null
+      CONFIG:null
     };
   },
 

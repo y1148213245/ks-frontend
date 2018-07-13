@@ -18,7 +18,14 @@ const dev = {
       hotsalebank: {
         title: '热销排行',
         url: "/data/ui_list_pic_06.json",
-        href: "./bookdetail.html?pubId="
+        href: "./bookdetail.html?pubId=",
+        staticText: {
+          hits: "点击量：",
+          price: "价格：￥",
+          noCover: "暂无封面",
+          deleteSuccess: "删除成功！",
+          deleteFailed: "删除失败！"
+        }
       },
       historyrecord: {
         title: '浏览历史',
@@ -29,15 +36,16 @@ const dev = {
             pubId: "",
             loginName: ""
           }
+        },
+        staticText: {
+          hits: "点击量：",
+          price: "价格：￥",
+          noCover: "暂无封面",
+          deleteSuccess: "删除成功！",
+          deleteFailed: "删除失败！"
         }
       },
-      staticText: {
-        hits: "点击量：",
-        price: "价格：￥",
-        noCover: "暂无封面",
-        deleteSuccess: "删除成功！",
-        deleteFailed: "删除失败！"
-      }
+
     }
   }
 };
@@ -81,13 +89,13 @@ const prod = {
             loginName: ""
           }
         },
-        // staticText: {
-        //   hits: "点击量：",
-        //   price: "价格：￥",
-        //   deleteSuccess: "删除成功！",
-        //   deleteFailed: "删除失败！",
-        //   noCover: "暂无封面"
-        // }
+        staticText: {
+          hits: "点击量：",
+          price: "价格：￥",
+          deleteSuccess: "删除成功！",
+          deleteFailed: "删除失败！",
+          noCover: "暂无封面"
+        }
       },
     }
   }

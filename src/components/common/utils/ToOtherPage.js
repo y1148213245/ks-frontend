@@ -8,7 +8,12 @@ var toOtherPage = function(item, TO_CONFIG, keys) {
   let url = config.url + '?';
   for (const key in config.dataKeys) {
     const element = config.dataKeys[key];
-    url += key + '=' + item[keys[element]] + '&';
+    //如果是属性的值是数组，则取第一项
+    if(item[keys[element]] instanceof Array){
+      url += key + '=' + item[keys[element]][0] + '&';
+    }else{
+      url += key + '=' + item[keys[element]] + '&';
+    }
   }
   for (const key in config.fixedKeys) {
     const element = config.fixedKeys[key];

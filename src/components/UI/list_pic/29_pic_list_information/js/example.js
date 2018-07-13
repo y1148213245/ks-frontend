@@ -200,7 +200,8 @@ const prod = {
         infoImgWidth: 200, // 资讯图片的宽 要和图片外层容器 .ui_list_pic_28_resourcelists_li_imgcontainter 宽一样
         infoImgHeight: 160, // 资讯图片的高 要和图片外层容器 .ui_list_pic_28_resourcelists_li_imgcontainter 高一样
         onEvent: { // 接收的事件名称
-          eventName: 'showNavContent'
+          eventName: 'showNavContent',
+          onColumnInfo: 'columnInfo',
         },
         pagination: { // 分页信息
           showPagination: true, // 是否显示分页
@@ -227,7 +228,8 @@ const prod = {
         staticText: {
           noImg: "暂无图片",
           noData: "暂无数据"
-        }
+        },
+        showSearchBtn: true, // 检索框
       },
 
     }

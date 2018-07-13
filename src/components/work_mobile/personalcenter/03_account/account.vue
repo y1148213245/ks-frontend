@@ -322,6 +322,7 @@ export default {
                 duration: 1000,
                 message: msg
               });
+              this.checkCode = '';
             } else {
               Toast.fail({
                 duration: 1000,
@@ -378,7 +379,6 @@ export default {
                   duration: 1000,
                   message: msg
                 });
-                this.checkCode = '';
               } else {
                 let msg = res.error.errorMsg;
                 Toast.fail({
@@ -411,11 +411,11 @@ export default {
             _self.getMobileCode(num);
           }else if(name == 'email'){
             _self.isSendEmailCode = true;
-            // _self.getEmailCode(num);
-            Toast.fail({
-              duration: 1000,
-              message: '暂时还没有给邮箱发验证码这个借口，未完待续...'
-            });
+            _self.getEmailCode(num);
+            // Toast.fail({
+            //   duration: 1000,
+            //   message: '暂时还没有给邮箱发验证码这个借口，未完待续...'
+            // });
           }
 
         } else {
@@ -436,11 +436,11 @@ export default {
       if(name == 'mobileno'){
         _self.getMobileCode(num);
       }else if(name == 'email'){
-        // _self.getEmailCode(num);
-        Toast.fail({
-          duration: 1000,
-          message: '暂时还没有给邮箱发验证码这个借口，未完待续...'
-        });
+        _self.getEmailCode(num);
+        // Toast.fail({
+        //   duration: 1000,
+        //   message: '暂时还没有给邮箱发验证码这个借口，未完待续...'
+        // });
       }
     },
     timeInterval(_self){
@@ -489,21 +489,36 @@ export default {
     },
     getEmailCode(num){
       if(num){
-        let params = Object.assign({},this.CONFIG.sendMobileCodeInfo.params);
-        params.email = num;
-        Get(CONFIG.BASE_URL + this.CONFIG.sendEmailCodeInfo.url + '?email=' + params.email).then((resp) => {
+        //首先验证邮箱是否可用
+        let params = Object.assign({},this.CONFIG.checkEmailCodeInfo.params);
+        params.checkText = num;
+        Get(CONFIG.BASE_URL + this.CONFIG.checkEmailCodeInfo.url + '?checkText=' + params.checkText + '&checkType=' + params.checkType).then((resp) => {
           let res = resp.data;
           if (res.result == '1') {
-            let msg = '验证码发送成功';
-            this.codeNum = res.data;
-            Toast.success({
-              duration: 1000,
-              message: msg
-            });
+            //如果邮箱可用，在调修改邮箱借口
+            let params = Object.assign({},this.CONFIG.sendEmailCodeInfo.params);
+            params.email = num;
+            Get(CONFIG.BASE_URL + this.CONFIG.sendEmailCodeInfo.url + '?email=' + params.email).then((resp) => {
+              let res = resp.data;
+              if (res.result == '1') {
+                let msg = '验证码发送成功';
+                this.codeNum = res.data;
+                Toast.success({
+                  duration: 1000,
+                  message: msg
+                });
+              } else {
+                Toast.fail({
+                  duration: 1000,
+                  message: this.display.failedOp
+                });
+              }
+            })
           } else {
+            let msg = res.error.errorMsg;
             Toast.fail({
               duration: 1000,
-              message: this.display.failedOp
+              message: msg
             });
           }
         })

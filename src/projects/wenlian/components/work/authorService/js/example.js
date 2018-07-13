@@ -9,7 +9,6 @@ const description = '投稿方式组件，展示编辑室列表。鼠标浮动�
 const dev = {
   information:{
     work_author_service:{
-      url:'../data/bookDetail_01_bookDetail.json',
       staticText:{
         yourPosition:'您的位置',
         homePage:'首页',

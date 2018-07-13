@@ -68,7 +68,7 @@ export default {
   },
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       member: {
         loginName: '',
         password: '',

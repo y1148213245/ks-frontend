@@ -50,7 +50,7 @@ export default {
   },
   data () {
     return {
-      CONFIG: null,
+      CONFIG: "",
       bookName: '',
       author: '',
       isbn: '',

@@ -19,7 +19,13 @@
     <!-- 排序 最新 热门 -->
     <div class="ui_list_pic_29_orderby_con" v-if="CONFIG && CONFIG.toOrderByBtn && toOrderByBtn.isShow && toOrderByBtn">
       <span class="ui_list_pic_29_orderby_name"> {{CONFIG.toOrderByBtn.name}}</span>
-      <span class="ui_list_pic_29_orderby_span" v-for="(item, index) in toOrderByBtn.itemList" :key="index"  @click="toSetOrder(item)" :class="{toOrderByBtn_Active: item.itemField==activeSetOrder}">{{item.name}}</span>
+      <span class="ui_list_pic_29_orderby_span" v-for="(item, index) in toOrderByBtn.itemList" :key="index" @click="toSetOrder(item)" :class="{toOrderByBtn_Active: item.itemField==activeSetOrder}">{{item.name}}</span>
+    </div>
+
+    <!-- 搜索框 -->
+    <div class="ui_list_pic_29_search_con" v-if="CONFIG.showSearchBtn">
+      <el-input class="ui_list_pic_29_search_input" v-model="searchText"></el-input>
+      <i class="el-icon-search ui_list_pic_29_search_icon" @keyup.enter="getResourceLists()" @click="getResourceLists()"></i>
     </div>
 
     <div class="ui_list_pic_29_resourcelists">
@@ -30,7 +36,7 @@
             <!-- img 图片 -->
             <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_29_resourcelists_li_imgcontainter" @click="toCustomFun(item, config, keys)">
               <label class="ui_list_pic_29_resourcelists_img_label">{{config.display}}</label>
-              <img class="ui_list_pic_29_resourcelists_li_img" v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}" :src=" item[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"/>
+              <img class="ui_list_pic_29_resourcelists_li_img" v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}" :src=" item[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)" />
             </div>
 
             <!-- 自定义事件按钮 包括（title 标题） -->
@@ -42,7 +48,7 @@
             <!-- price 价格 -->
             <span :key="config_i" v-else-if="config.name == 'price'" class="ui_list_pic_29_resourcelists_li_pricecontainter">
               <label class="ui_list_pic_29_resourcelists_price_label">{{config.display}}</label>
-              <span v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}">{{ item[keys[config.field]]  | formatPriceNew }}</span>
+              <span v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}">{{ item[keys[config.field]] | formatPriceNew }}</span>
             </span>
 
             <!-- time 时间 -->
@@ -52,7 +58,7 @@
             </span>
 
             <!-- 其他不需要特殊处理的简单项 -->
-            <span :key="config_i" v-else  class="ui_list_pic_29_resourcelists_other">
+            <span :key="config_i" v-else class="ui_list_pic_29_resourcelists_other">
               <label class="ui_list_pic_29_resourcelists_li_label">{{config.display}}</label>
               <span v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}">{{ item[keys[config.field]] }}</span>
             </span>
@@ -63,7 +69,7 @@
 
       <div class="ui_list_pic_29_resourcelists_nodata" v-if="resourceLists && resourceLists.length == 0">{{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}</div>
     </div>
-    <ui_pagination class="ui_list_pic_29_ui_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination"  :pageMessage="{totalCount: totalCount}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
+    <ui_pagination class="ui_list_pic_29_ui_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination" :pageMessage="{totalCount: totalCount}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
   </div>
 </template>
 
@@ -86,7 +92,7 @@ export default {
   name: "ui_list_pic_29",
   props: ["namespace", "modulename"],
   reused: true,
-  data() {
+  data () {
     return {
       CONFIG: "",
       resourceLists: [], //资源列表
@@ -106,11 +112,12 @@ export default {
       toOrderByBtn: {}, // 排序配置
       activeSetOrder: "pub_a_order asc pub_lastmodified desc id asc",
       pubId: "", //
-      cascadId: "" //
+      cascadId: "", //
+      searchText: ""
     };
   },
 
-  created() {
+  created () {
     var uriQuery = URL.parse(document.URL, true).query;
     // this.colId = uriQuery.colId; // 从地址栏接收栏目id
     if (typeof uriQuery.colId != "undefined") {
@@ -172,15 +179,24 @@ export default {
         this.getResourceLists();
         this.getColumnSubTitle();
       });
+    } else if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.onColumnInfo) {
+      this.$bus.$on(this.CONFIG.onEvent.onColumnInfo, (data) => {
+        this.resourceLists = [];
+        this.totalCount = 0;
+        this.changeColId(data.id);
+        this.getResourceLists();
+        this.getColumnSubTitle();
+      })
     } else {
       this.getResourceLists();
       this.getColumnSubTitle();
     }
 
+
     // this.getColumnSubTitle(); // $on方法回调是异步的
   },
 
-  mounted() {
+  mounted () {
     let _this = this;
     /*检测滚动条*/
     $(window).scroll(() => {
@@ -198,16 +214,16 @@ export default {
   },
 
   methods: {
-    toSetOrder(item) {
+    toSetOrder (item) {
       //修改默认排序
       this.activeSetOrder = item.itemField;
       this.getResourceLists();
     },
-    changeColId(item) {
+    changeColId (item) {
       // 在广播事件外修改colId
       this.colId = item;
     },
-    toCustomFun(item, config, keys) {
+    toCustomFun (item, config, keys) {
       // 执行自定义事件
       let detailParams = "";
       if (config.method == "toDetail") {
@@ -249,13 +265,13 @@ export default {
         toOtherPage(item, this.CONFIG[config.method], keys) + detailParams
       );
     },
-    getColumnSubTitle() {
+    getColumnSubTitle () {
       // 获取栏目副标题
       Post(
         CONFIG.BASE_URL +
-          this.CONFIG.getSubTitle.url +
-          "?colId=" +
-          (this.colId ? this.colId : this.CONFIG.getSubTitle.params.colId)
+        this.CONFIG.getSubTitle.url +
+        "?colId=" +
+        (this.colId ? this.colId : this.CONFIG.getSubTitle.params.colId)
       ).then(rep => {
         let datas = rep.data;
         if (datas.success && datas.data) {
@@ -263,9 +279,10 @@ export default {
         }
       });
     },
-    getResourceLists(pagingParams) {
+    getResourceLists (pagingParams) {
       // 获取资源列表
       let paramsObj = Object.assign({}, this.resourceListsConfig.params);
+      paramsObj.searchText = this.searchText; //检索
       paramsObj.pageSize = this.resourceListsConfig.maxNum
         ? this.resourceListsConfig.maxNum + ""
         : "15";
@@ -335,14 +352,14 @@ export default {
         }
       );
     },
-    dealResourceImg(eve) {
+    dealResourceImg (eve) {
       DrawImage(
         eve.path[0],
         this.CONFIG.infoImgWidth,
         this.CONFIG.infoImgHeight
       );
     },
-    paging: function({ pageNo, pageSize }) {
+    paging: function ({ pageNo, pageSize }) {
       // 翻页
       var pagingParams = {
         pageNo: pageNo,
@@ -350,7 +367,7 @@ export default {
       };
       this.getResourceLists(pagingParams);
     },
-    getStaticText(text) {
+    getStaticText (text) {
       if (
         this.CONFIG &&
         this.CONFIG.staticText &&
@@ -393,5 +410,19 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+.ui_list_pic_29_search_con {
+  width: 400px;
+  position: relative;
+}
+
+.ui_list_pic_29_search_icon {
+  cursor: pointer;
+  position: absolute;
+  right: 8px;
+  font-size: 24px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>
