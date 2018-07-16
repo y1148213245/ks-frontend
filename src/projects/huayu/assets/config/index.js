@@ -585,24 +585,24 @@ var $_$ = {
 				"params": {
 					"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"
 				},
-				getDetail:{
-					'raceNews':{
-						params: {
-							getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYNEWS'/* 库码 */
+				"getDetail":{
+					"raceNews":{
+						"params": {
+							"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"/* 库码 */
 						}
 					},
-					'voteNews':{
-						params: {
-							getDetailRequestParam_doclibCode: 'PORTAL_VOTEINFORMATION'/* 库码 */
+					"voteNews":{
+						"params": {
+							"getDetailRequestParam_doclibCode": "PORTAL_VOTEINFORMATION"/* 库码 */
 						}
 					}
 				},
-				getPreAndNext:{
-					'raceNews':{
-						url:'spc/prodb/activity/prevNextNews.do'
+				"getPreAndNext":{
+					"raceNews":{
+						"url":"spc/prodb/activity/prevNextNews.do"
 					},
-					'voteNews':{
-						url:'spc/prodb/activity/votePrevNextNews.do'
+					"voteNews":{
+						"url":"spc/prodb/activity/votePrevNextNews.do"
 					}
 				},
 				"keys": {

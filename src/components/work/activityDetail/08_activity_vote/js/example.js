@@ -12,47 +12,49 @@ const dev = {
 const prod = {
   activityDetail: {
     work_activitydetail_08: {
-      activityCandidate:{
-        modulename:'activityCandidate'
+      activityCandidate: {
+        modulename: 'activityCandidate'
       },
-      activityPlan:{
-        modulename:'activityPlan'
+      activityPlan: {
+        modulename: 'activityPlan'
       },
-      activityPrizewinner:{
-        modulename:'activityPrizewinner'
+      activityPrizewinner: {
+        modulename: 'activityPrizewinner'
       },
       tabArr: [
         {
-          tag:'activityInstructions',
-          title:'活动说明'
+          tag: 'activityInstructions',
+          title: '活动说明'
         },
         {
-          tag:'activityPlan',
-          title:'活动方案'
+          tag: 'activityPlan',
+          title: '活动方案'
         },
         {
-          tag:'activityNews',
-          title:'活动新闻'
+          tag: 'activityNews',
+          title: '活动新闻'
         },
         {
-          tag:'activityCandidate',
-          title:'参训人'
+          tag: 'activityCandidate',
+          title: '参训人'
         },
         {
-          tag:'activityPrizewinner',
-          title:'获奖人展示'
+          tag: 'activityPrizewinner',
+          title: '获奖人展示'
         }],
-      activityDetail:{/* 活动详情配置 */
-        event:{
-          listenName:'eventName_loadedDatas',
+      activityDetail: {/* 活动详情配置 */
+        event: {
+          listenName: 'eventName_loadedDatas',
         },
-        sysAdapter:'sykAdapter',
-        typeAdapter:'activityVoteAdapter',
+        sysAdapter: 'sykAdapter',
+        typeAdapter: 'activityVoteAdapter',
       }
     }
   }
 };
+
+const childComponents = ["work_activitydetail_08", "work_activitydetail_02", "work_activitydetail_03", "work_activitydetail_09"];
 const platform = 'PC';
 const pageType = ['list'];
 const resourceType = ['book'];
-export { name, title, dev, prod, description, platform, pageType, resourceType };
+export { name, title, dev, prod, description, platform, pageType, resourceType, childComponents };

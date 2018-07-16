@@ -14,9 +14,22 @@
 					<!-- 发送邮箱验证码 -->
 					<div style="margin-top: 20px; height: 200px;" v-if="showStep == 'sendEmeil'">
 						<el-form :model="ruleForm" :rules="rules" ref="sendEmeil">
-							<el-form-item :label="getStaticText('email') ? getStaticText('email') : '邮箱'" prop="email">
+							<!-- 邮箱 -->
+							<el-form-item v-if="!getShowEmailPostfix()" :label="getStaticText('email') ? getStaticText('email') : '邮箱'" prop="email">
 								<el-input id="retrieve_02-input-email" type="text" v-model="ruleForm.email" auto-complete="off" :placeholder="getStaticText('pleaseInputEmail') ? getStaticText('pleaseInputEmail') : '请输入邮箱'" style="display:inline-block;width:300px;"></el-input>
 							</el-form-item>
+							<!-- 带选择后缀的邮箱 -->
+							<el-form-item v-if="getShowEmailPostfix()" :label="getStaticText('email') ? getStaticText('email') : '邮箱'" prop="emailSubfix">
+								
+								<el-input class="retrievePasswordBox_subfix_email_input" type="text" v-model="ruleForm.emailSubfix" :placeholder="getStaticText('inputEmailInfo') ? getStaticText('inputEmailInfo') : '请输入邮箱'"></el-input>
+								@
+								<el-select class="retrievePasswordBox_postfix_email_select" v-model="ruleForm.emailPostfix"  :placeholder="getStaticText('postFixEmail') ? getStaticText('postFixEmail') : '邮箱'">
+									<el-option v-for="(item,index) in GLOBLE_CONFIG.EMAIL_CONFIG.postfix" :key="index" :label="item" :value="item">
+									</el-option>
+								</el-select>
+
+							</el-form-item>
+							<!-- 验证码 -->
 							<el-form-item :label="getStaticText('verifiCode') ? getStaticText('verifiCode') : '验证码'" prop="captcha">
 								<div class="captcha">
 									<el-input id="retrieve_02-input-validate" type="text" v-model="ruleForm.captcha" auto-complete="off" :placeholder="getStaticText('pleaseInputVeirifiCode') ? getStaticText('pleaseInputVeirifiCode') : '请输入验证码'" style="width:150px;" @keyup.enter.native="submitForm('sendEmeil')"></el-input>
@@ -24,6 +37,7 @@
 									<el-button id="retrieve_02-input-update" type="text" @click="createCode">{{getStaticText('canNotSeeClearly') ? getStaticText('canNotSeeClearly') : '看不清楚'}}</el-button>
 								</div>
 							</el-form-item>
+
 							<div class="col_full nobottommargin btnbox">
 								<el-button id="retrieve_02-input-next" type="primary" @click="submitForm('sendEmeil')" class="button nomargin">{{getStaticText('nextStep') ? getStaticText('nextStep') : '下一步'}}</el-button>
 							</div>
@@ -193,8 +207,19 @@ export default {
 				callback();
 			}
 		};
+		var validateSubfixEmail = (rule, value, callback) => {
+     
+      if (value === "") {
+        callback(new Error(this.getStaticText('pleaseInputEmail') ? this.getStaticText('pleaseInputEmail') : "请输入邮箱"));
+      }else if(!/^[A-Za-z\d]+$/.test(value)){
+        callback(new Error(this.getStaticText('inputEmailFormatError') ? this.getStaticText('inputEmailFormatError') : "请输入正确邮箱格式"))
+      }else{
+        callback();
+      }
+    }
 		return {
 			CONFIG: "",
+			GLOBLE_CONFIG:"",
 			activeTab: 'email',
 			time: 120,
 			list: [{}],
@@ -210,6 +235,8 @@ export default {
 			sendMobileInterval: 0,/* 发送手机验证码倒计时 */
 			ruleForm: {
 				email: "",
+				emailSubfix:"",/* 邮箱@之前的部分 */
+				emailPostfix:"",/* 邮箱@之后的部分 */
 				captcha: "",
 				emailnum: "",
 				pass: "",
@@ -223,17 +250,32 @@ export default {
 				checkPass: [{ validator: validateCheckPass, trigger: "blur" }],
 				captcha: [{ validator: validateCaptcha, trigger: "blur" }],
 				emailnum: [{ validator: validateEmailnum, trigger: "blur" }],
-				mobile: [{ validator: ValidateRules.mobileCheck, trigger: "blur" }]
+				mobile: [{ validator: ValidateRules.mobileCheck, trigger: "blur" }],
+				emailSubfix:[{ validator: validateSubfixEmail, trigger: "blur" }]
 			}
 		};
 	},
   created() {
-    this.CONFIG = PROJECT_CONFIG[this.namespace].findPassword.work_findpassword_01;
+		this.CONFIG = PROJECT_CONFIG[this.namespace].findPassword.work_findpassword_01;
+		this.GLOBLE_CONFIG = CONFIG;
+
+		this.getShowEmailPostfix() ? this.ruleForm.emailPostfix = CONFIG.EMAIL_CONFIG.postfix[0] : '';
   },
 	methods: {
 		changeTab () {
 
 		},
+		/* 输入邮箱是否可选后缀 */
+		getShowEmailPostfix () {
+      
+      let vconfig = CONFIG.EMAIL_CONFIG;
+      if (vconfig && vconfig.showPostfix) {
+        
+        return true
+      } else {
+        return false
+      }
+    },
 		getStaticText (text) {
 			if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
 				return this.CONFIG.staticText[text]
@@ -246,9 +288,11 @@ export default {
 			this.$refs[ruleForm].validate(valid => {
 				switch (ruleForm) {
 					case 'sendEmeil': {
+						let email = '';
+						this.getShowEmailPostfix() ? email = this.ruleForm.emailSubfix + '@' + this.ruleForm.emailPostfix : email = this.ruleForm.email;
 						if (valid) {
 							var params = {
-								email: this.ruleForm.email,
+								email: email,
 								cb: this.findPasswordCallb
 							};
 							let loading = Vue.prototype.$loading({ text: (this.getStaticText('loading') ? this.getStaticText('loading') : '正在加载中...')});
@@ -493,7 +537,12 @@ export default {
 .retrievePasswordBox .captcha .input1 {
   width: 150px;
 }
-
+.retrievePasswordBox_subfix_email_input{
+	width: 200px;
+}
+.retrievePasswordBox_postfix_email_select{
+	width: 116px;
+}
 .retrievePasswordBox #retrieve_02-input-code {
   width: 80px;
   font-family: Arial;
