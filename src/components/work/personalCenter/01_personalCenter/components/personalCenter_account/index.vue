@@ -337,7 +337,6 @@
         </el-dialog>
       </div>
     </div>
-    <el-button type="text" @click="emailDialog = true">点击打开 Dialog</el-button>
     <!-- 邮箱弹出框  -->
     <el-dialog title="邮箱" :visible.sync="emailDialog" width="600px">
       <el-form :model="emailForm" :rules="emailRules" ref="emailForm">
