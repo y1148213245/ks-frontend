@@ -246,12 +246,12 @@
             <div v-if="account && account.email">
               <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
               <span v-text="account && account.email"></span>
-              <el-button type="primary" @click="changeEmail" class="butt">修改邮箱</el-button>
+              <el-button type="primary" @click="emailDialog = true" class="butt">修改邮箱</el-button>
             </div>
-            <div v-if="account.email ==''">
+            <div v-if="!account.email">
               <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
               <span>暂未绑定</span>
-              <el-button type="primary" @click="changeEmail" class="butt">绑定邮箱</el-button>
+              <el-button type="primary" @click="emailDialog = true" class="butt">绑定邮箱</el-button>
             </div>
           </div>
 
@@ -337,6 +337,32 @@
         </el-dialog>
       </div>
     </div>
+    <el-button type="text" @click="emailDialog = true">点击打开 Dialog</el-button>
+    <!-- 邮箱弹出框  -->
+    <el-dialog title="邮箱" :visible.sync="emailDialog" width="600px">
+      <el-form :model="emailForm" :rules="emailRules" ref="emailForm">
+        <!-- 邮箱 -->
+        <el-form-item v-if="!getShowEmailPostfix()" :label="'邮箱'" prop="email">
+          <el-input id="center_account-input-email" class="center_account-input-email" type="text" v-model="emailForm.email" auto-complete="off" :placeholder="'请输入邮箱'"></el-input>
+        </el-form-item>
+        <!-- 带选择后缀的邮箱 -->
+        <el-form-item v-if="getShowEmailPostfix()" :label="'邮箱'" prop="emailSubfix">
+
+          <el-input class="center_account_subfix-email_input" type="text" v-model="emailForm.emailSubfix" :placeholder="'请输入邮箱'"></el-input>
+          @
+          <el-select class="center_account-postfix_email_select" v-model="emailForm.emailPostfix" :placeholder="'邮箱'">
+            <el-option v-for="(item,index) in GLOBLE_CONFIG.EMAIL_CONFIG.postfix" :key="index" :label="item" :value="item">
+            </el-option>
+          </el-select>
+
+        </el-form-item>
+
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="emailDialog = false">取 消</el-button>
+        <el-button type="primary" @click="changeEmail">确 定</el-button>
+      </span>
+    </el-dialog>
 
     <!--验证身份-->
     <div v-show="currentShow=='Verification'" style="width:900px;">
@@ -348,7 +374,7 @@
               <div class="account_modify-form">
                 <div v-if="account.email ==''">
                   <span style="display:inline-block;margin:20px;">请先绑定邮箱</span>
-                  <el-button type="primary" @click="changeEmail">绑定邮箱</el-button>
+                  <el-button type="primary" @click="emailDialog = true">绑定邮箱</el-button>
                 </div>
                 <el-form :model="emailValidateNum" :rules="emailValidateNumRules" ref="emailValidateNum" v-if="account.email !=''">
                   <el-form-item label="绑定邮箱:" prop="email">
@@ -460,9 +486,8 @@
                 <span class="yzm_02 f14 color_727 mr15" style="margin-right:15px;">验证码:</span>
                 <el-input type="text" v-model="setMobileDialogForm.sendNum" placeholder="请输入手机验证码" style="width:200px;height:35px;"></el-input>
               </el-form-item>
-              <el-button type="primary" @click="submitChangeMobile('setMobileDialogForm')" >绑 定</el-button>
+              <el-button type="primary" @click="submitChangeMobile('setMobileDialogForm')">绑 定</el-button>
             </el-form>
-            
 
           </div>
         </div>
@@ -612,6 +637,26 @@ export default {
         callback();
       }
     };
+
+    var validateEmailFull = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入邮箱"));
+      } else if (!/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/.test(value)) {
+        callback(new Error("邮箱格式不正确"));
+      } else {
+        callback();
+      }
+    };
+
+    var validateEmailSubfix = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入邮箱"));
+      } else if (!/^[A-Za-z\d]+$/.test(value)) {
+        callback(new Error("邮箱格式不正确"));
+      } else {
+        callback();
+      }
+    };
     var validateEmailnum = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入邮箱验证码"));
@@ -700,7 +745,9 @@ export default {
     let token = Token()
     return {
       CONFIG: null,
+      GLOBLE_CONFIG: null,
       defaultPic: '',
+      emailDialog: false,/* 邮箱弹窗 */
       uploadHeader: {
         token: token
       },
@@ -737,6 +784,16 @@ export default {
         oldPass: "",
         pass: "",
         checkPass: ""
+      },
+      /* 邮箱表单 */
+      emailForm: {
+        email: '',
+        emailSubfix: '',
+        emailPostfix: ''
+      },
+      emailRules: {
+        email: [{ validator: validateEmailFull, trigger: "blur" }],
+        emailSubfix: [{ validator: validateEmailSubfix, trigger: "blur" }]
       },
       emailValidateNum: {
         emailnum: ""
@@ -853,6 +910,8 @@ export default {
   created () {
     this.defaultPic = require('../../assets/img/timg.jpg'); // webpack静态资源打包问题
     this.CONFIG = this.parentConfig.account;
+    this.GLOBLE_CONFIG = CONFIG;
+    this.getShowEmailPostfix() ? this.emailForm.emailPostfix = CONFIG.EMAIL_CONFIG.postfix[0] : '';
   },
   mounted () {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
@@ -1283,25 +1342,52 @@ export default {
         });
       }
     },
-    /*修改邮箱*/
-    changeEmail () {
-      this.$prompt("请输入邮箱", "修改邮箱", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-        inputErrorMessage: "邮箱格式不正确"
-      }).then(({ value }) => {
-        var param = {
-          value: value,
-          cb: this.changeEmailCallb
-        };
-        this.fullLoading = this.$loading({
-          fullscreen: true,
-          text: "验证码发送中..."
-        });
-        this.$store.dispatch("personalCenter/updateEmail", param);
-      });
+    /* 输入邮箱是否可选后缀 */
+    getShowEmailPostfix () {
+
+      let vconfig = CONFIG.EMAIL_CONFIG;
+      if (vconfig && vconfig.showPostfix) {
+
+        return true
+      } else {
+        return false
+      }
     },
+    changeEmail () {
+      this.$refs['emailForm'].validate(valid => {
+        if (valid) {
+          let email = this.getShowEmailPostfix() ? this.emailForm.emailSubfix + '@' + this.emailForm.emailPostfix : this.emailForm.email
+          var param = {
+            value: email,
+            cb: this.changeEmailCallb
+          };
+          this.fullLoading = this.$loading({
+            fullscreen: true,
+            text: "验证码发送中..."
+          });
+          this.$store.dispatch("personalCenter/updateEmail", param);
+        }
+      })
+    },
+    /*修改邮箱*/
+    // changeEmail () {
+    //   this.$prompt("请输入邮箱", "修改邮箱", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+    //     inputErrorMessage: "邮箱格式不正确"
+    //   }).then(({ value }) => {
+    //     var param = {
+    //       value: value,
+    //       cb: this.changeEmailCallb
+    //     };
+    //     this.fullLoading = this.$loading({
+    //       fullscreen: true,
+    //       text: "验证码发送中..."
+    //     });
+    //     this.$store.dispatch("personalCenter/updateEmail", param);
+    //   });
+    // },
     changeEmailCallb (idata, rep) {
       this.fullLoading.close();
       if (idata == 1) {
@@ -1309,6 +1395,7 @@ export default {
           type: "success",
           message: "已发送至您的邮箱，请点击链接绑定邮箱"
         });
+        this.emailDialog = false;
       } else {
         this.$message({
           type: "error",
@@ -1774,11 +1861,20 @@ export default {
 };
 </script>
 <style>
-.account_modify-form  {
+.center_account-input-email {
+  width: 300px;
+}
+.center_account_subfix-email_input {
+  width: 200px;
+}
+.center_account-postfix_email_select {
+  width: 108px;
+}
+.account_modify-form {
   margin: 20px auto;
   width: 500px;
 }
-.account_modify-icon{
+.account_modify-icon {
   margin: 20px auto;
 }
 .wdzh_hy .wdzh_yqhy i,
@@ -2395,8 +2491,8 @@ input.bdhm {
 .main_right .wzdh_bmwtyz,
 .main_right .wzdh_yzsjh,
 .main_right .wzdh_xgmm {
-  text-align:center;
-  border: 1px solid #d9d9d9; 
+  text-align: center;
+  border: 1px solid #d9d9d9;
 }
 
 .wzdh_xgyx .wzdh_xgyx_ico {

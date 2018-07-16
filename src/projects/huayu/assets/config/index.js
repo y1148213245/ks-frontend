@@ -10,10 +10,10 @@ var CONFIG = {
 		"siteId": 8,
 		"chId": 0
 	},
-	EMAIL_CONFIG:{
-		showPostfix:true,
-		postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
-	}
+	// EMAIL_CONFIG:{
+	// 	showPostfix:true,
+	// 	postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
+	// }
 }
 var $_$ = {
 	bookContentType: { // 书的类型  纸书：91 电子书 94
