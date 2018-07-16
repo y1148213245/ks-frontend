@@ -3,26 +3,26 @@
  <div id="search-high-condition" class="work_search_05">
     <table border="0" class="work_search_05-table">
       <tr>
-        <td height="40" width="265">
+        <td height="40" width="265"  class="work_search_05-table-td1">
           <span class="work_search_05-table-title">{{getStaticText('bookName') ? getStaticText('bookName') : '书名:'}}</span>
           <span>
             <el-input style="width: 200px;" size="small" :placeholder="getStaticText('inputBookName') ? getStaticText('inputBookName') : '请输入书名'" v-model="bookName"></el-input>
           </span>
         </td>
-        <td height="40" width="265">
+        <td height="40" width="265"  class="work_search_05-table-td2">
           <span class="work_search_05-table-title">{{getStaticText('author') ? this.getStaticText('author') : '作者:'}}</span>
           <span>
             <el-input style="width: 150px;" size="small" :placeholder="getStaticText('inputAuthor') ? this.getStaticText('inputAuthor') : '请输入作者'" v-model="author"></el-input>
           </span>
         </td>
-        <td height="40" width="300">
+        <td height="40" width="300"  class="work_search_05-table-td3">
           <span class="work_search_05-table-title">{{getStaticText('ISBNNum') ? this.getStaticText('ISBNNum') : 'ISBN:'}}</span>
           <span><el-input style="width: 200px;" size="small" :placeholder="getStaticText('inputISBNNum') ? getStaticText('inputISBNNum') : '请输入ISBN'" v-model="isbn"></el-input></span>
         </td>
         <td rowspan="2"><input type="button" class="work_search_05-table-button" :value="getStaticText('search') ? getStaticText('search') : '检索'" @click="toSearch"/></td>
       </tr>
       <tr>
-        <td colspan="2">
+        <td colspan="2"  class="work_search_05-table-td4">
           <span class="work_search_05-table-title">{{getStaticText('publishTime') ? getStaticText('publishTime') : '出版时间:'}}</span>
           <span class="search_jg_01">
             <el-date-picker v-model="picker_from_model" type="date" size="small" :placeholder="getStaticText('selectDate') ? getStaticText('selectDate') : '选择日期'" :picker-options="pickerOptions_from" @change="picker_from"></el-date-picker>

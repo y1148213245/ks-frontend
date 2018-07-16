@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-07-11 14:27:40 
  * @Last Modified by: song
- * @Last Modified time: 2018-07-12 17:40:17
+ * @Last Modified time: 2018-07-13 16:57:54
  * 通用栏目树导航组件 支持到第二级
  */
  <template>
@@ -73,7 +73,7 @@ export default {
       });
     },
     queryColumnTree () {
-      console.log(this.defaultCheckedKeys);
+      // console.log(this.defaultCheckedKeys);
       let params = { // 请求整个站点栏目树所需参数
         siteId: CONFIG.SITE_CONFIG.siteId,
         chId: CONFIG.SITE_CONFIG.chId

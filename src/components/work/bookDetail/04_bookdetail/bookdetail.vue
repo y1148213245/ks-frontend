@@ -134,7 +134,7 @@
     </div>
 
     <!-- 有声书音频附件 -->
-    <div class="work_bookdetail_04_audio_container" v-if="audioAttachmentConfig && audioAttachmentConfig.isShowAudio && resourceDetail[keys.pubResType] == 'AUDIO-MEDIA'">
+    <div class="work_bookdetail_04_audio_container" v-if="audioAttachmentConfig && audioAttachmentConfig.isShowAudio">
       <h4 class="work_bookdetail_04_audio_title" v-text="currentAudio && currentAudio.attachName"></h4>
       <br>
       <audio :src="currentAudio && currentAudio.url || ''" controls controlslist="nodownload"></audio>

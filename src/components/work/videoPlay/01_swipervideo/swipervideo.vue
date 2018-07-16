@@ -1,17 +1,21 @@
 /*
  * @Author: song 
  * @Date: 2018-07-03 10:52:51 
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-07-09 19:38:29
+ * @Last Modified by: song
+ * @Last Modified time: 2018-07-13 16:07:07
  * 视频播放组件 列表是轮播图形式的
  * TODO: 轮播的分页怎么办
  */
 
 <template>
   <div class="work_videoplay_01">
-    <!-- 播放器 -->
-    <div class="work_videoplay_01_mydplayer" id="myDPlayer"></div>
-    <!-- END 播放器 -->
+    <!-- 视频播放器 -->
+    <div class="work_videoplay_01_mydplayer" id="myDPlayer" v-if="resType == 'VIDEO-MEDIA'"></div>
+    <!-- END 视频播放器 -->
+
+    <!-- 音频播放器 -->
+    <audio :src="playUrl + curVideoObj[keys.rescource]" controls v-if="resType == 'AUDIO-MEDIA' && curVideoObj"></audio>
+    <!-- END 音频播放器 -->
 
     <section v-for="(config, index) in CONFIG.complicatedItem" v-if="curVideoObj" v-bind="{class: 'work_videoplay_01_item_' + config.field}" :key="index">
       <div class="work_videoplay_01_option" @click="toCustomFun(config)">
@@ -49,19 +53,23 @@ export default {
       parentId: '', // 视频组id
       myDPlayerdp: '', // 视频播放器插件
       videoLists: null, // 视频课程列表
-      curVideoObj: null, // 当前播放视频对象
+      curVideoObj: null, // 当前播放视频 / 音频 对象
       curShowIndex: 0, // 当前选中列表中的视频
+      resType: 'VIDEO-MEDIA', // 资源类型：音频 AUDIO-MEDIA / 视频 VIDEO-MEDIA 默认视频
+      playUrl: '', // 资源播放地址
     };
   },
 
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_videoplay.work_videoplay_01[this.modulename];
+    this.playUrl = CONFIG.BASE_URL + this.CONFIG.playVideoUrl; // 资源播放地址
     this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter);
+    let queryObj = URL.parse(document.URL, true).query;
     if (this.CONFIG.queryParamsType == 'url') { // 从视频组里取数据的时候才把参数传到地址栏里
-      let queryObj = URL.parse(document.URL, true).query;
       this.curId = queryObj && queryObj.id ? queryObj.id : ''; // 当前播放的视频id
       this.parentId = queryObj && queryObj.parentId ? queryObj.parentId : '';// 视频组id
     }
+    this.resType = queryObj && queryObj.resType ? queryObj.resType : 'VIDEO-MEDIA';
     this.queryResourceLists(); // 查询视频列表
   },
 
@@ -97,8 +105,11 @@ export default {
           } else {
             this.curVideoObj = this.videoLists[0];
           }
+
           this.$nextTick(() => {
-            this.initDPlayer();
+            if (this.resType == 'VIDEO-MEDIA') { // 如果是视频资源才初始化视频播放器插件
+              this.initDPlayer();
+            }
             this.initSwiper();
           });
         }
@@ -106,14 +117,16 @@ export default {
     },
     toPlayVideo (item) { // 点击播放视频列表里的某一个
       this.curVideoObj = item;
-      this.initDPlayer();
+      if (this.resType == 'VIDEO-MEDIA') { // 如果是视频资源才初始化视频播放器插件
+        this.initDPlayer();
+      }
     },
     initDPlayer () { // 初始化视频播放器
       this.curDPlayer = new DPlayer({ // 播放器
         container: document.getElementById('myDPlayer'), // 挂载容器
-        screenshot: true, // 截屏
+        screenshot: true, // 截屏功能
         video: {
-          url: CONFIG.BASE_URL + this.CONFIG.playVideoUrl + this.curVideoObj[this.keys.resourceId], // 视频地址
+          url: this.playUrl + this.curVideoObj[this.keys.resourceId], // 视频地址
         },
       });
     },

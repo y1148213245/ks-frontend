@@ -176,23 +176,19 @@ export default {
         this.resourceLists = [];
         this.totalCount = 0;
         this.changeColId(data[0]);
-        this.getResourceLists();
-        this.getColumnSubTitle();
+        this.getResourceFun();
       });
-    } else if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.onColumnInfo) {
+    } else if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.onColumnInfo) { // 与左侧导航组件交互
       this.$bus.$on(this.CONFIG.onEvent.onColumnInfo, (data) => {
         this.resourceLists = [];
         this.totalCount = 0;
+        this.searchText = ''; // 每次都要清空搜索内容
         this.changeColId(data.id);
-        this.getResourceLists();
-        this.getColumnSubTitle();
+        this.getResourceFun();
       })
     } else {
-      this.getResourceLists();
-      this.getColumnSubTitle();
+      this.getResourceFun();
     }
-
-
     // this.getColumnSubTitle(); // $on方法回调是异步的
   },
 
@@ -214,6 +210,10 @@ export default {
   },
 
   methods: {
+    getResourceFun () {
+      this.getResourceLists();
+      this.getColumnSubTitle();
+    },
     toSetOrder (item) {
       //修改默认排序
       this.activeSetOrder = item.itemField;
@@ -260,6 +260,8 @@ export default {
 
         //npm run dev
         // 如果sourceUrl为空,则判断pub_widget_url数组里的值 -- end
+      } else if (config.method == "toResourceDetail") { // 去资源详情页（区分视频组、音频组、课件三种资源）
+        window.open(toOtherPage(item, this.CONFIG[config.method][item[this.keys.pubResType]], keys));
       }
       window.open(
         toOtherPage(item, this.CONFIG[config.method], keys) + detailParams

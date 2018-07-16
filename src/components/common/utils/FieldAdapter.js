@@ -249,7 +249,7 @@ var FIELD_ADAPTER = {
             description: 'PORTAL_VOTEACTIVITY_DESCRIPTION',
             endTimeStamp: 'PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW'
         },
-        videoAdapter: { // 视频
+        videoAdapter: { // 视频 包括视频组
             sysTopic: "VIDEO-MEDIA_SYS_TOPIC",
             mediaName: "VIDEO-MEDIA_MEDIA_NAME",
             sysCreated: "	VIDEO-MEDIA_SYS_CREATED",
@@ -262,31 +262,13 @@ var FIELD_ADAPTER = {
             video: "video",
             courseNumber: "GROUP_VIDEO_COURSES_NUMBER",
             courseDuration: "GROUP_VIDEO_COURSES_DURATION",
-            coursePrice: "GROUP_VIDEO_PRICE",
+            coursePrice: "GROUP_VIDEO_PRICE", // 原价
+            courseSalePrice: 'GROUP_VIDEO_SALE_PRICE', // 售价
             courseTitle: "GROUP_VIDEO_SYS_TOPIC",
-            column: "VIDEO-MEDIA_SYS_TOPIC",
-            id: "id",
-            parentId: "pub_parent_id"
+            lecturer: "GROUP_VIDEO_LECTURER", // 讲师
+            groupVideoDesc: "GROUP_VIDEO_DESCRIPTION", // 描述
         },
         audioAdapter: { // 音频
-            sysTopic: "AUDIO-MEDIA_SYS_TOPIC",
-            mediaName: "AUDIO-MEDIA_MEDIA_NAME",
-            sysCreated: "AUDIO-MEDIA_SYS_CREATED",
-            isrcIsbn: "AUDIO-MEDIA_ISRC_ISBN",
-            materialNo: "AUDIO-MEDIA_MATERIAL_NO",
-            format: "AUDIO-MEDIA_FORMAT",
-            mediaCat: "AUDIO-MEDIA_MEDIA_CAT",
-            carrierType: "AUDIO-MEDIA_CARRIER_TYPE",
-            language: "AUDIO-MEDIA_LANGUAGE",
-            editor: "AUDIO-MEDIA_EDITOR",
-            textEditor: "AUDIO-MEDIA_TEXT_EDITOR",
-            recorder: "AUDIO-MEDIA_RECORDER",
-            recordTime: "AUDIO-MEDIA_RECORD_TIME",
-            supportProduct: "AUDIO-MEDIA_SUPPORT_PRODUCT",
-            depart: "AUDIO-MEDIA_DEPART",
-            description: "AUDIO-MEDIA_DESCRIPTION",
-            remark: "AUDIO-MEDIA_REMARK",
-            time: "AUDIO-MEDIA_TIME_LENGTH",
             fileSize: "AUDIO-MEDIA_FILE_SIZE",
             coverId: "AUDIO-MEDIA_COVERID",
             rescource: "AUDIO-MEDIA_RESOURCEID",
@@ -300,6 +282,22 @@ var FIELD_ADAPTER = {
             remotePath: "remotePath",
             refTable: "refTable",
             fileRecordID: "fileRecordID",
+        },
+        audioGroupAdapter: { // 音频组
+          agCat: "YINPINZU_CAT1",
+          agCatCascadId: "YINPINZU_CAT1_CASCADID",
+          coursesDuration: "YINPINZU_COURSES_DURATION",
+          coursesNumber: "YINPINZU_COURSES_NUMBER",
+          coverId: "YINPINZU_COVERID",
+          agDescription: "YINPINZU_DESCRIPTION", // 描述信息
+          agFullText: "YINPINZU_FULL_TEXT",
+          lecturer: "YINPINZU_LECTURER", // 讲师
+          agPicNum: "YINPINZU_PIC_NUM",
+          agPrice: "YINPINZU_PRICE", // 原价
+          agSalePrice: "YINPINZU_SALE_PRICE", // 售价
+          agAuthor: "YINPINZU_SYS_AUTHORS",
+          agCreated: "YINPINZU_SYS_CREATED",
+          agSysTopic: "YINPINZU_SYS_TOPIC"
         },
         columnAdapter: { // 栏目
             colId: "id", // 兼容宗教
