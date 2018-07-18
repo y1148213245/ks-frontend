@@ -1,5 +1,5 @@
 /**
- * created by yy 2038/3/29
+ * Created by zong 2018/06/05
  * 咨询详情页组件的配置文件 放请求的url、params...
  */
 
@@ -22,6 +22,8 @@ const dev = {
         sysAdapter: "zykAdapter", // 资源库
         typeAdapter: "magAdapter", // 类型字段  期刊
         yearTabShow: true, // 类型字段  期刊
+        yearTabShowDisplay: '年', //  单元
+        yearTabShowNum: 4, //  从后面开始取值几个
         queryDetail:{
           url:'../data/03_query_detail.json',
           magName:'测试刊物',
@@ -55,6 +57,8 @@ const prod = {  // 详情组件内含评论组件 评论组件作为子组件 �
         sysAdapter: "zykAdapter", // 资源库
         typeAdapter: "magAdapter", // 类型字段  期刊
         yearTabShow: true, // 类型字段  期刊
+        yearTabShowDisplay: '年', //  单元
+        yearTabShowNum: 4, //  单元
         queryDetail:{
           url:'spc/prodb/getMagInfo.do',
           magName:'测试刊物',

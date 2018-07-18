@@ -167,7 +167,7 @@
           <!-- img 图片 -->
           <div class="work_shoppingcart_05_idMagType_ul_li_imgcontainter" :class="{work_shoppingcart_05_idMagType_ul_li_imgcontainter_active:idMagTypeCheckTime==item.magName}"  @click="selectMagTypeTime(item)">
             <img class="ui_list_pic_34_resourcelists_li_img"
-                 :src="item.magIsrc"
+                 :src=" item.magIsrc || require('@static/img/defaultCover.png')"
                  v-bind:alt="item.magName || 'noPic'" />
           </div>
         </li>

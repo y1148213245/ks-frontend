@@ -415,7 +415,10 @@
     name: "work_shoppingcart_01_cart",
     reused: true,
     props: {
-      namespace: String,
+      namespace: { // 购物车命名空间 需要多语言才配置
+        type: String,
+        default: null
+      },
       isShowCollectButton: {  // 收藏按钮控制 有些站点不需要
         type: Boolean,
         default: true
@@ -426,11 +429,11 @@
       }
     },
     created: function () {
-      this.CONFIG = PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_01.cartContent;
       this.getMemberInfo().then((member) => {
         this.member.loginName = member.loginName;
         this.loadCallBack();
       });
+      this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_01.cartContent : null; // 兼容处理
     },
     mounted: function () {
       var _this = this;
@@ -1445,7 +1448,7 @@
             deliveryPerson: this.curSelectedAddress ? this.curSelectedAddress.contactor : "",
             deliveryPrice: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.deliveryPrice, // 运费
             deliveryRemark: "",
-            deliveryType: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.methods, // 运输方式
+            deliveryType: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.id, // 运输方式
             discountAmount: this.orderDetail.saveAmount, // 商品各种活动优惠 不包含免运费的活动
             id: 0,
             isReceipt: "1",

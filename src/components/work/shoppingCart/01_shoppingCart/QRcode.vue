@@ -14,7 +14,12 @@
   export default {
     name: "work_shoppingcart_01_qrcode",
     reused: true,
-    props: ["namespace"],
+    props: {
+      namespace: { // 生成二维码命名空间 需要多语言时才配置
+        type: String,
+        default: null
+      },
+    },
     data() {
       return {
         orderCode: '',
@@ -22,7 +27,7 @@
       }
     },
     created(){
-      this.CONFIG = PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_01.qrCode;
+      this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_01.qrCode : null; // 兼容处理
     },
     mounted() {
       let href = window.location.href;

@@ -49,9 +49,9 @@
     <template v-if="CONFIG && CONFIG.yearTabShow">
       <div class="ui_infomation_mg_03_tabdiv" v-if="CONFIG && CONFIG.yearTabShow">
         <ul class="ui_infomation_mg_03_tabdiv_ul"  v-if="CONFIG && magInfoList && magInfoList.length>0">
-            <li v-for="(item,index) in magInfoList" :key="index" class="ui_infomation_mg_03_tabdiv_ul_li">
-              <span :class="{'active':currentActive == item.PUBLISH_YEAR}" @click.self="changeContent(item.PUBLISH_YEAR)">{{item.PUBLISH_YEAR}}年</span>
-            </li>
+          <li v-for="(item,index) in magInfoList" :key="index" class="ui_infomation_mg_03_tabdiv_ul_li" v-if="index >= (yearTabShowNum-(CONFIG.yearTabShowNum))">
+            <span :class="{'active':currentActive == item.PUBLISH_YEAR}" @click.self="changeContent(item.PUBLISH_YEAR)">{{item.PUBLISH_YEAR}}{{CONFIG.yearTabShowDisplay}}</span>
+          </li>
         </ul>
       </div>
     </template>
@@ -76,6 +76,7 @@
         complicatedItem:[],
         currentActive:'',
         keys: {},  // 字段兼容
+        yearTabShowNum:0, //获取到的年份数量
       }
     },
     mounted: function () {
@@ -105,10 +106,17 @@
           if (datas.result && datas.data) {
             this.magInfo = datas.data.mag;
             this.magInfoList = datas.data.pubYears;
-
+            this.yearTabShowNum = this.magInfoList.length;
             if (this.magInfoList.length>0) {
-              this.currentActive = this.magInfoList[0].PUBLISH_YEAR;
-              this.toEventFun();
+              if((this.magInfoList.length-(this.CONFIG.yearTabShowNum))>=0){
+                for (var i=1;i>(this.magInfoList.length-(this.CONFIG.yearTabShowNum));i++)
+                {
+                  this.changeContent(this.magInfoList[i-1].PUBLISH_YEAR);
+                  break;
+                }
+              }else{
+                this.changeContent(this.magInfoList[0].PUBLISH_YEAR);
+              }
             }
           }
         });

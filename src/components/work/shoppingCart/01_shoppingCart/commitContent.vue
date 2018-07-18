@@ -40,7 +40,12 @@
   export default {
     name: "work_shoppingcart_01_commit",
     reused: true,
-    props: ["namespace"],
+    props: {
+      namespace: { // 生成订单命名空间 需要多语言时才配置
+        type: String,
+        default: null
+      },
+    },
     mounted: function () {
       var hash = (window.location.hash).substring(window.location.hash.indexOf('/') + 1, window.location.hash.length);
       this.commitInfo.code = hash.substring(hash.indexOf('/') + 1, hash.indexOf('/', hash.indexOf('/') + 1));
@@ -48,7 +53,7 @@
       this.commitInfo.type = hash.substring(hash.lastIndexOf('/') + 1, hash.length);
     },
     created(){
-      this.initConfig();
+      this.CONFIG = this.namespace ? PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_01.commitContent : null;
     },
     data() {
       return {
@@ -74,11 +79,7 @@
         }else {
           return false
         }
-      },
-      initConfig(){
-        this.CONFIG = PROJECT_CONFIG[this.namespace].shoppingCart.shoppingCart_01.commitContent;
       }
-
     }
   }
 </script>

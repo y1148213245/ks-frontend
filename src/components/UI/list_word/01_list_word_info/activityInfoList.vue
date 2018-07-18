@@ -10,7 +10,8 @@
     <ul class="listUl">
       <li class="listLi" v-for="(item, index) in activitysList" :key="index" @click="toInfoDetail(item.id, item.pub_col_id)" v-if="index >= (CONFIG.startNum ? CONFIG.startNum : 0)">
         <a v-text="item.information_SYS_TOPIC"></a>
-        <time class="createTime" v-if="controlTime">{{item.information_a_pubTime | formatDate}}</time>
+        <!--过滤器修改为使用methods中方法格式化时间-->
+        <time class="createTime" v-if="controlTime">{{formatDate(item.information_a_pubTime)}}</time>
       </li>
     </ul>
     <ui_pagination class="ui_list_word_01-paging" v-if="controlPagination" :pageMessage="{totalCount: totalCount - 0 || 0}" :excuteFunction="paging" namespace="pagination"></ui_pagination>
@@ -45,6 +46,7 @@ export default {
       totalCount: 0,
       paramsObj: null,  // 请求参数
       colId:'',
+
     };
   },
 
@@ -55,7 +57,6 @@ export default {
   mounted () {
     this.getLocationQuery();
     this.queryActivityInfo();
-
   },
 
   methods: {
@@ -105,16 +106,24 @@ export default {
         return false
       }
     },
-  },
-  filters: {
     formatDate (value) {
       if (value) {
         return moment(value).format("YYYY-MM-DD");
       } else {
-        return "暂无日期";
+        return this.getStaticText('noDate') ? this.getStaticText('noDate') : "暂无日期";
       }
     }
-  }
+  },
+  // filters: {
+  //   formatDate (value) {
+  //     if (value) {
+  //       return moment(value).format("YYYY-MM-DD");
+  //     } else {
+  //       return vm.getStaticText('noDate') ? vm.getStaticText('noDate') : '暂无日期';
+  //       // return "暂无日期";
+  //     }
+  //   }
+  // }
 }
 
 </script>
