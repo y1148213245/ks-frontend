@@ -133,7 +133,9 @@
         </el-col>
       </el-col>
       <el-col :span="24">
+        <div class="workbench-pie-totalcount">总数:{{pieTaskCount}}</div>
         <div class="workbench-pie-content" id="pie"></div>
+        
       </el-col>
       <div class="workbench-back_activitylist-button_box">
         <el-button type="button" class="el-button--primary" @click="toTaskList(null)">返回</el-button>
@@ -353,7 +355,8 @@ export default {
       currentShow: "activityList",
       select_place: "",
       select_school: "",
-      select_award: ""
+      select_award: "",
+      pieTaskCount:0/* 饼图任务总数 */
     };
   },
 
@@ -1141,16 +1144,17 @@ export default {
       let legendData = [];
       let seriesData = [];
       let color = [];
+      let taskNum = 0;
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const element = data[key];
           let colorRGB = randomRgbColor()
           legendData.push(key);
           seriesData.push({ value: element, name: key })
-          // color.push(colorRGB)
+          taskNum += Number(element);
         }
       }
-
+      this.pieTaskCount = taskNum;
       let option = {
         // title: {
         //   text: '某站点用户访问来源',
@@ -1168,7 +1172,7 @@ export default {
         },
         series: [
           {
-            name: "访问来源",
+            name: "作品比例",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
