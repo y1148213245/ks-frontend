@@ -114,21 +114,30 @@
     <!-- 查看比例 -->
     <el-col v-if="currentShow == 'pie'" :span="24" class="workbench-pie">
       <el-col :span="24" class="workbench-pie-condition">
-        <el-col :span="8">
-          <el-select v-model="select_place" placeholder="选择地区" style="width:90%;" @change="pieSelectChange()">
+        <el-col :span="12">
+          <label class="workbench-pie_search_label">地区:</label>
+          <el-select v-model="select_place" placeholder="选择地区" @change="pieSelectChange()">
             <el-option label="全部" :value="''"></el-option>
             <el-option v-for="(area,index) in areaListOptions" :label="area" :value="area" :key="index"></el-option>
           </el-select>
         </el-col>
-        <el-col :span="8">
-          <el-select v-model="select_school" placeholder="选择学校" style="width:90%;" @change="pieSelectChange()">
+        <el-col :span="12">
+          <label class="workbench-pie_search_label">学校:</label>
+          <el-select v-model="select_school" placeholder="选择学校" @change="pieSelectChange()">
             <el-option label="全部" :value="''"></el-option>
             <el-option v-for="(school,index) in schoolOptions" :label="school.value" :value="school.value" :key="index"></el-option>
           </el-select>
         </el-col>
-        <el-col :span="8">
-          <el-select v-model="select_award" placeholder="选择奖项" style="width:90%;" @change="pieSelectChange()">
+        <el-col :span="12">
+          <label class="workbench-pie_search_label">奖项:</label>
+          <el-select v-model="select_award" placeholder="选择奖项" @change="pieSelectChange()">
             <el-option v-for="(award,index) in awardTypeArr" :label="award" :value="award" :key="index"></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="12">
+          <label class="workbench-pie_search_label">组别:</label>
+          <el-select v-model="select_group" multiple collapse-tags placeholder="请选择组别" @change="pieSelectChange()">
+            <el-option v-for="(item,index) in classlimtOptions" :label="item.label" :value="item.value" :key="index"></el-option>
           </el-select>
         </el-col>
       </el-col>
@@ -356,6 +365,7 @@ export default {
       select_place: "",
       select_school: "",
       select_award: "",
+      select_group:[],
       pieTaskCount:0/* 饼图任务总数 */
     };
   },
@@ -620,7 +630,7 @@ export default {
     },
     /* 获取任务获奖比例 */
     getRatio () {
-
+      console.log(this.select_group);
       let params = {
         activityID: this.activityId,
         teacherID: this.teacherId,
@@ -628,6 +638,13 @@ export default {
         awardType: this.select_award,
         area: this.select_place,
         school: this.select_school
+      }
+      if (this.select_group.length > 0) {
+        let classStr = "";
+        this.select_group.map(item=>{
+          classStr += item + ','
+        })
+        params.classGroup = classStr.replace(/,$/,'');
       }
 
       Get(CONFIG.BASE_URL + "spc/prodb/activity/api/activity/getRatioByTaskID.do", { params }).then(resp => {
@@ -1231,6 +1248,10 @@ export default {
   width: 100%;
 }
 .workbench-pie {
+}
+.workbench-pie .el-select{
+  width: 80%;
+  margin: 10px 0;
 }
 .workbench-pie-condition {
   padding: 10px 0;
