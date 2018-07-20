@@ -22,6 +22,124 @@ var $_$ = {
 	},
 	"SITE_NAME": "site-102",
 	"IS_DISABLE": false,
+	/* 展示类活动页配置 */
+	"activityshow":{
+		activityDetail: {
+			"work_activitydetail_01": {
+				"url": "spc/cms/publish/detail.do",
+				"keys": {
+					"title": "PORTAL_VOTEACTIVITY_SYS_TOPIC",
+					"content": "PORTAL_VOTEACTIVITY_DESCRIPTION",
+					"startDate": "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
+					"endDate": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
+					"resourceId": "pub_resource_id",
+					"illustration": "pub_illustration",
+					"reviewDate": "PORTAL_VOTEACTIVITY_REVIEW_TIMESTAMPNEW",
+					"requestUrlParam_pubId": "pubId",
+					"toUploadPageUrlParam_docId": "docId",
+					"illustrationLinks": "PORTAL_VOTEACTIVITY_ACTIVITY_LINKS"
+				},
+				"eventName_loadedDatas": "eventName_loadedDatas",
+				"toUploadPagUrl": "",
+				showItem:[]
+			},
+			work_activitydetail_08: {
+				activityCandidate: {
+					modulename: 'activityCandidate'
+				},
+				activityPlan: {
+					modulename: 'activityPlan'
+				},
+				activityPrizewinner: {
+					modulename: 'activityPrizewinner'
+				},
+				activityResult:{
+					modulename:'activityResult'
+				},
+				tabArr: [
+					{
+						tag: 'activityInstructions',
+						title: '活动说明'
+					},
+					{
+						tag: 'activityNews',
+						title: '大赛新闻'
+					},
+					{
+						tag: 'activityPlan',
+						title: '奖项设置'
+					},
+					{
+						tag: 'activityResult',
+						title: '比赛结果'
+					}],
+				activityDetail: {/* 活动详情配置 */
+					event: {
+						listenName: 'eventName_loadedDatas',
+					},
+					sysAdapter: 'sykAdapter',
+					typeAdapter: 'activityVoteAdapter',
+				}
+			},
+			/* 活动新闻组件 */
+			"work_activitydetail_03": {
+				"url": "spc/prodb/activity/voteActivityNews.do",
+				"getPicUrl": "dynamicFile/stream.do",
+				"params": {
+					"getListParam_pageNo": "1",
+					"getListParam_pageSize": "99",
+					"getListParam_orderBy": "SYS_DOCUMENTID DESC"
+				},
+				"keys": {
+					"title": "SYS_TOPIC",
+					"picId": "COVERID",
+					"date": "SYS_CREATED",
+					"abstract": "ABSTRACT",
+					"eventListenData_activityId": "pub_resource_id",
+					"getPicParam_coverId": "recordID",
+					"getListParam_activityID": "activityID",
+					"getListParam_pageNo": "page",
+					"getListParam_pageSize": "pageSize",
+					"getListParam_orderBy": "orderBy"
+				},
+				"toDetailMode": {
+					"href": {
+						"url": "./newsdetail.html",
+						"params": {
+							"docID": "SYS_DOCUMENTID"
+						},
+						"activityParams": {
+							"activityID": "pub_resource_id"
+						},
+						"fixedParams": {
+							"page": "1",
+							"pageSize": "99",
+							"orderBy": "SYS_DOCUMENTID DESC"
+						}
+					}
+				},
+				"eventName_listen": "eventName_loadedDatas"
+			},
+			/* 辅文(活动方案)组件 */
+			"work_activitydetail_02": {
+				"activityPlan": {
+					"url": "spc/prodb/getPublicize.do",
+					"topic": "详情",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "eventName_loadedDatas"
+				}
+			}
+		}
+	},
+	/* END 展示类活动页配置 */
+	
 	/* 投票活动页配置 */
 	"activityvote": {
 		/* 详情 */
@@ -574,8 +692,39 @@ var $_$ = {
 		}
 	},
 	"newsdetail": {
+		share: {
+			ui_share_01: {
+				'newsShare': {
+					shareLists: [ // 分享配置
+						{
+							title: '分享到QQ空间', //
+							class: 'bds_qzone', //
+							cmd: 'qzone', //
+						},
+						{
+							title: '分享到新浪微博',
+							class: 'bds_tsina',
+							cmd: 'tsina',
+						},
+						{
+							title: '分享到腾讯微博',
+							class: 'bds_tqq',
+							cmd: 'tqq',
+						},
+						{
+							title: '分享到人人网',
+							class: 'bds_renren',
+							cmd: 'renren',
+						},
+					]
+				}
+			}
+		},
 		"informationDetail": {
 			"work_informationdetail_02": {
+				shareComponent:{/* 分享子组件配置 */
+					moduleName:'newsShare'
+				},
 				"getDetailUrl": "spc/prodb/detail.do",
 				"getPreAndNextUrl": "spc/prodb/activity/prevNextNews.do",
 				"collectUrl": "collection/addWorkCollect.do",
@@ -753,6 +902,7 @@ var $_$ = {
 						"fixedParams": {
 							"page": "1",
 							"pageSize": "99",
+							newsType:"raceNews",
 							"orderBy": "SYS_DOCUMENTID DESC"
 						}
 					}
@@ -1079,7 +1229,131 @@ var $_$ = {
 							"pageable": 1
 						}
 					}
+				},
+				'goodProductMore': {
+					listTitle:'优秀作品',
+					showItem:[],
+					url: 'spc/prodb/getWorkList.do',
+					toProductDetailUrl: 'productiondetail.html',
+					classification: {/* 分类配置,无则不配置 */
+						titles: ['一等奖', '二等奖', '三等奖'],
+						key: 'AWARD',/* 对应数据的字段 */
+					},
+					params: {
+						getListParam_doclibCode: 'PORTAL_WORKS',
+						getListParam_orderCondition:' BY_SPC_SYS_DOCUMENTID_SPC_DESC',
+						getListParam_pageNo:'1',
+						getListParam_pageSize:'5',
+						getListParamOptions: {//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
+							activityId: {
+								getListParam_relations: '1',
+								getListParam_cols: 'ACTIVITYID',
+								getListParam_symbols: '2',
+								getListParam_memberType: '4',
+							},
+							'place': {//扩展属性名
+								getListParam_relations: '1',
+								getListParam_cols: 'AREA',
+								getListParam_symbols: '1',
+								getListParam_memberType: '4',
+							},
+							'school': {
+								getListParam_relations: '1',
+								getListParam_cols: 'SCHOOL',
+								getListParam_symbols: '1',
+								getListParam_memberType: '4',
+							},
+							'group': {
+								getListParam_relations: '1',
+								getListParam_cols: 'CLASS',
+								getListParam_symbols: '1',
+								getListParam_memberType: '4',
+							},
+							'searchText': {
+								getListParam_relations: '1',
+								getListParam_cols: 'SYS_TOPIC',
+								getListParam_symbols: '1',
+								getListParam_memberType: '4',
+							},
+							'author':{
+								getListParam_relations: '1',
+								getListParam_cols: 'POTHUNTER_NAME',
+								getListParam_symbols: '1',
+								getListParam_memberType: '4',
+							},
+							'idCard':{
+								getListParam_relations: '1',
+								getListParam_cols: 'POTHUNTER_IDNUMBER',
+								getListParam_symbols: '2',
+								getListParam_memberType: '4',
+							}
+	
+						},
+						getListParamOptions_fixed: {/* 固定条件配置,无则不配置 */
+							IS_EXCELLENTWORK: {//例
+								getListParam_relations: '1',
+								getListParam_cols: 'IS_EXCELLENTWORK',
+								getListParam_symbols: '2',
+								getListParam_memberType: '4',
+								getListParam_vals: '是',
+							},
+						},
+						toProductDetailParam_resourceType: 'PORTAL_WORKS'
+					},
+					keys: {
+						title: 'SYS_TOPIC',
+						author: 'POTHUNTER_NAME',
+						date: 'SYS_CREATED',
+						abstract: 'DESCRIPTION',
+						teacherCommentNum: 'DIS_COUNT_NUM',
+						voteNum: 'VOTE_COUNT',
+						resourceId: 'SYS_DOCUMENTID',
+						resourceName: 'SYS_TOPIC',
+						activityId: 'ACTIVITYID',
+	
+						eventListienLoadDatas_activityId: 'pub_resource_id',
+						eventListienLoadDatas_voteSwitch: 'PORTAL_ACTIVITY_PRAISE_SWITCH',
+						eventListienLoadDatas_endDate: 'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
+						eventListienLoadDatas_voteDescription: 'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
+						eventListienLoadDatas_reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',
+						eventListienLoadDatas_startDate:'PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW',
+	
+						eventListienSearchDatas: ['place', 'school', 'group', 'searchText','author','idCard'],//扩展查询参数
+						getListParam_doclibCode: 'doclibCode',
+						getListParam_relations: 'relations',
+						getListParam_cols: 'cols',
+						getListParam_symbols: 'symbols',
+						getListParam_vals: 'vals',
+						getListParam_memberType: 'memberType',
+						getListParam_orderCondition:'orderCondition',
+						getListParam_pageNo:'page',
+						getListParam_pageSize:'size',
+	
+						toProductDetailParam_resourceType: 'resourceType',
+						toProductDetailParam_resourceId: 'resourceId',
+						toProductDetailParam_colId: 'colId',
+						toProductDetailParam_resourceName: 'resourceName',
+						toProductDetailParam_activityId: 'activityId',
+					},
+					eventName_listenLoadedData: 'eventName_loadedDatas',
+					eventName_listenSearch: 'eventName_search',
+					isDevelopment: false,
+					getAwardList: {/* 获取奖项列表配置 */
+						url: 'spc/prodb/searchNL.do',
+						params: {
+							doclibCode: 'PORTAL_AWARD',
+							relations: 1,
+							cols: 'ACTIVITYID',
+							symbols: 2,
+							vals: '',
+							status: 0,
+							page: 1,
+							size: 99,
+							pageable: 1
+						}
+					}
 				}
+
 			},
 			"work_activitydetail_06": {
 				"url": "comment/getActivityDiscussDetail.do",
