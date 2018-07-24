@@ -148,6 +148,7 @@ export default {
   width: 100%;
   height: 100%;
   text-align: center;
+  cursor: pointer;
 }
 .work_activitydetail_03-item-content {
   margin-left: 200px;

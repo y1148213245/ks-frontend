@@ -1,64 +1,81 @@
 <!-- 作品列表 -->
 <template>
- <div class="work_activitydetail_05">
-   <div v-if="viewType == 'complete'">
-    <div class="work_activitydetail_05-totalcount">作品数量:<span v-text="totalCount" class="work_activitydetail_05-totalcount_text"></span></div>
-    <template v-for="(item,index) in list">
-      <div class="work_activitydetail_05-item" :key="index">
-        <h2 class="work_activitydetail_05-title"><a v-text="item[keys.title]" @click="toProductDetail(item)" href="javascript:void(0)"></a></h2>
-        <time class="work_activitydetail_05-date_box">{{item[keys.date] | formatTime}}</time>
-        <!-- <p class="work_activitydetail_05-abstract" v-text="item[keys.abstract] || '暂无简介'"></p> -->
-        <div class="work_activitydetail_05-info_box">
-          <span class="work_activitydetail_05-info_box-author_span"><label class="work_activitydetail_05-info_box-author_label">作者：</label>{{item[keys.author] || '暂无作者'}}</span>
-          <span class="work_activitydetail_05-info_box-comment_span"><i class="work_activitydetail_05-info_box-comment_icon"></i>{{item[keys.teacherCommentNum]}}<label class="work_activitydetail_05-info_box-comment_label">评论</label></span>
-          <span class="work_activitydetail_05-info_box-vote_span" v-show="activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '是'"><i class="work_activitydetail_05-info_box-vote_icon"></i>{{item[keys.voteNum]}}<label class="work_activitydetail_05-info_box-vote_label">赞</label></span>
-        </div>
+  <div class="work_activitydetail_05">
+    <div v-if="viewType == 'complete'">
+      <div class="work_activitydetail_05-totalcount" v-if="getIsShow('totalCount')">作品数量:
+        <span v-text="totalCount" class="work_activitydetail_05-totalcount_text"></span>
+      </div>
+      <h3 class="work_activitydetail_05-list_title" v-if="CONFIG.listTitle">{{CONFIG.listTitle}}
         
-        <div class="work_activitydetail_05-vote_box" v-show="activityIsActive && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '是'">
-          <work_common_03 class="work_activitydetail_05-vote_box-content" :namespace="namespace" v-on:vote="totalVoteNum" :docid="item[keys.resourceId]" @click="getDocid(item[keys.resourceId])"></work_common_03>
-          <div class="work_activitydetail_05-vote_box-content-illustrate">
-            <el-tooltip class="item" effect="dark" placement="top">
-              <p class="work_activitydetail_05-vote_box-content-illustrate_info" slot="content" v-html="activityDetailCache[keys.eventListienLoadDatas_voteDescription] || '暂无说明'"></p>
-              <i class="el-icon-question"></i>
-            </el-tooltip>
-             
+      </h3>
+      <template v-for="(item,index) in list">
+        <div class="work_activitydetail_05-item" :key="index">
+          <h2 class="work_activitydetail_05-title">
+            <a v-text="item[keys.title]" @click="toProductDetail(item)" href="javascript:void(0)"></a>
+          </h2>
+          <time class="work_activitydetail_05-date_box">{{item[keys.date] | formatTime}}</time>
+          <!-- <p class="work_activitydetail_05-abstract" v-text="item[keys.abstract] || '暂无简介'"></p> -->
+          <div class="work_activitydetail_05-info_box">
+            <span class="work_activitydetail_05-info_box-author_span">
+              <label class="work_activitydetail_05-info_box-author_label">作者：</label>{{item[keys.author] || '暂无作者'}}</span>
+            <span class="work_activitydetail_05-info_box-comment_span">
+              <i class="work_activitydetail_05-info_box-comment_icon"></i>{{item[keys.teacherCommentNum]}}
+              <label class="work_activitydetail_05-info_box-comment_label">评论</label>
+            </span>
+            <span class="work_activitydetail_05-info_box-vote_span" v-show="activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '是'">
+              <i class="work_activitydetail_05-info_box-vote_icon"></i>{{item[keys.voteNum]}}
+              <label class="work_activitydetail_05-info_box-vote_label">赞</label>
+            </span>
+          </div>
+
+          <div class="work_activitydetail_05-vote_box" v-show="activityIsActive && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] && activityDetailCache[keys.eventListienLoadDatas_voteSwitch] == '是'">
+            <work_common_03 class="work_activitydetail_05-vote_box-content" :namespace="namespace" v-on:vote="totalVoteNum" :docid="item[keys.resourceId]" @click="getDocid(item[keys.resourceId])"></work_common_03>
+            <div class="work_activitydetail_05-vote_box-content-illustrate">
+              <el-tooltip class="item" effect="dark" placement="top">
+                <p class="work_activitydetail_05-vote_box-content-illustrate_info" slot="content" v-html="activityDetailCache[keys.eventListienLoadDatas_voteDescription] || '暂无说明'"></p>
+                <i class="el-icon-question"></i>
+              </el-tooltip>
+
+            </div>
           </div>
         </div>
-      </div>
-    </template>
-    <ui_pagination :pageMessage="{totalCount}" :excuteFunction="paging" layout="prev, pager, next, jumper"></ui_pagination>
+      </template>
+      <ui_pagination :pageMessage="{totalCount}" :excuteFunction="paging" layout="prev, pager, next, jumper"></ui_pagination>
+    </div>
+    <div v-else-if="viewType == 'simple'">
+      <template v-for="(item,index) in list">
+        <div class="work_activitydetail_05-simple-item" :key="index">
+          <h2 class="work_activitydetail_05-simple-title">
+            <a v-text="item[keys.title]" @click="toProductDetail(item)" href="javascript:void(0)"></a>
+          </h2>
+          <span class="work_activitydetail_05-simple-span">
+            <label class="work_activitydetail_05-simple-label">作者：</label>{{item[keys.author] || '暂无作者'}}</span>
+        </div>
+      </template>
+    </div>
+
+    <div v-else-if="viewType == 'classification'">
+
+      <template v-for="(award,index) in awardList" v-if="award.products.length > 0">
+
+        <div class="work_activitydetail_05-classification-title">
+          <span v-text="award.title"></span>
+        </div>
+        <el-table class="work_activitydetail_05-classification-table" :data="award.products">
+          <el-table-column :prop="keys.title" label="标题">
+            <template slot-scope="scope">
+              <a class="work_activitydetail_05-classification-table-a" href="javascript:void(0)" @click="toProductDetail(scope.row)">{{scope.row[keys.title]}}</a>
+            </template>
+          </el-table-column>
+          <el-table-column :prop="keys.author" label="作者"></el-table-column>
+          <el-table-column :prop="keys.date" :formatter="colFormatTime" label="时间"></el-table-column>
+          <el-table-column :prop="keys.abstract" label="简介"></el-table-column>
+        </el-table>
+
+      </template>
+
+    </div>
   </div>
-  <div v-else-if="viewType == 'simple'">
-    <template v-for="(item,index) in list">
-      <div class="work_activitydetail_05-simple-item" :key="index">
-        <h2 class="work_activitydetail_05-simple-title"><a v-text="item[keys.title]" @click="toProductDetail(item)" href="javascript:void(0)"></a></h2>
-        <span class="work_activitydetail_05-simple-span"><label class="work_activitydetail_05-simple-label">作者：</label>{{item[keys.author] || '暂无作者'}}</span>
-      </div>
-    </template>
-  </div>
-
-   <div v-else-if="viewType == 'classification'">
-
-    <template v-for="(award,index) in awardList" v-if="award.products.length > 0">
-
-      <div class="work_activitydetail_05-classification-title">
-        <span v-text="award.title"></span>
-      </div>
-      <el-table class="work_activitydetail_05-classification-table" :data="award.products">
-        <el-table-column :prop="keys.title" label="标题">
-          <template slot-scope="scope">
-          <a class="work_activitydetail_05-classification-table-a" href="javascript:void(0)" @click="toProductDetail(scope.row)">{{scope.row[keys.title]}}</a>
-          </template>
-        </el-table-column>
-        <el-table-column :prop="keys.author" label="作者"></el-table-column>
-        <el-table-column :prop="keys.date" :formatter="colFormatTime" label="时间"></el-table-column>
-        <el-table-column :prop="keys.abstract" label="简介"></el-table-column>
-      </el-table>
-
-    </template>
-
-  </div>
- </div>
 </template>
 
 <script>
@@ -112,6 +129,18 @@ export default {
     getDocid (id) {
       this.docId = id;
     },
+    getIsShow (text) {
+      let showItemConfig = this.CONFIG.showItem
+      if (showItemConfig) {
+        if (showItemConfig.indexOf(text) > -1) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
+    },
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_05[this.module];
       this.keys = this.CONFIG.keys;
@@ -158,9 +187,9 @@ export default {
 
       }
       this.conditionCache = condition;
-       
+
       if (conditions) this.loadData();
-     
+
       function getCondition (keyArr) {
         for (let i = 0, len = keyArr.length; i < len; i++) {
 
@@ -224,17 +253,17 @@ export default {
       /* 增加排序参数 */
       let orderCondition = keys.getListParam_orderCondition + '=' + params.getListParam_orderCondition
 
-     
-  
+
+
       let url = this.CONFIG.url + '?' + doclibCode + '&' + relations + '&' + cols + '&' + symbols + '&' + memberType + '&' + vals + '&' + orderCondition;
 
-       /* 增加分页参数 */
+      /* 增加分页参数 */
       if (keys.getListParam_pageNo && keys.getListParam_pageSize) {
-        let pageNo = keys.getListParam_pageNo + '=' + ((this.pageNo || params.getListParam_pageNo)-1);
+        let pageNo = keys.getListParam_pageNo + '=' + ((this.pageNo || params.getListParam_pageNo) - 1);
         let pageSize = keys.getListParam_pageSize + '=' + (this.pageSize || params.getListParam_pageSize);
         url += '&' + pageNo + '&' + pageSize
       }
-      
+
       Get(CONFIG.BASE_URL + url).then((resp) => {
         let data = resp.data.data.content;
         this.list = data;
@@ -315,6 +344,9 @@ export default {
 <style>
 .work_activitydetail_05 {
   width: 100%;
+}
+.work_activitydetail_05-list_title{
+  text-align: center;
 }
 .work_activitydetail_05-totalcount {
   margin: 10px 0;
