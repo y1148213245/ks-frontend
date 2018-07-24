@@ -15,6 +15,7 @@ const prod = {
       url:'spc/cms/publish/list.do',
       keys: {},
       eventName_loadDate: 'loadSearchResult',
+      // showItem:['dontBind']/* dontBind:不绑定直接登陆功能 */
     }
   }
 };

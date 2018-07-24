@@ -10,7 +10,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">绑定</el-button>
-        <el-button type="warning" @click="bind('0')">不绑定直接登陆</el-button>
+        <el-button v-if="getItemIsShow('dontBind')" type="warning" @click="bind('0')">不绑定直接登陆</el-button>
       </el-form-item>
     </el-form>
     <div class="work_login_01-result" v-if="status == 2 ">
@@ -72,7 +72,7 @@ export default {
   computed: {},
 
   created () {
-    // this.initConfig();
+    this.initConfig();
     this.query = URL.parse(document.URL, true).query;
     this.status = this.query.status
     
@@ -146,6 +146,18 @@ export default {
           window.location.href = reffer || './index.html';
         }
       }, 1000);
+    },
+    getItemIsShow(text){
+      let config = this.CONFIG.showItem;
+      if (config) {
+        if (config.indexOf(text)>-1) {
+          return true
+        }else{
+          return false
+        }
+      }else{
+        return true
+      }
     }
   }
 }

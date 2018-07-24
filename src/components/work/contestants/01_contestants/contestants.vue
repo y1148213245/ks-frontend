@@ -271,7 +271,7 @@
               </li>
               <li>
                 <label>{{getStaticText('sex') ? getStaticText('sex') : "性别"}}:</label>
-                <span>{{currentRow.gender | sexFormat}}</span>
+                <span>{{sexFormatVal(currentRow.gender)}}</span>
               </li>
               <li>
                 <label>{{getStaticText('mobilePhoneNum') ? getStaticText('mobilePhoneNum') : "手机号"}}:</label>
@@ -379,7 +379,6 @@
       </div>
 
     </div>
-
   </div>
 </template>
 
@@ -395,11 +394,13 @@ export default {
     namespace: String
   },
   data () {
-    var customSchoolValidate;
-    var mobileCheck;
-    var zipCodeCheck;
-    var abstractCheck;
     return {
+      /* 表单验证函数 */
+      customSchoolValidate:null,
+      mobileCheck:null,
+      zipCodeCheck:null,
+      abstractCheck:null,
+       /* END 表单验证函数 */
       // loginName: null,
       editor: "",/* 编辑器实例 */
       isAddingPeople: false,
@@ -485,21 +486,21 @@ export default {
       ],
       telNumber: [
         { required: true, message: this.getStaticText('pleaseInputParticipantPhoneNum') ? this.getStaticText('pleaseInputParticipantPhoneNum') : "请输入参赛人手机号", trigger: "blur" },
-        { validator: mobileCheck, trigger: "blur" }
+        { validator: this.mobileCheck, trigger: "blur" }
       ],
       school: [{ required: true, message: this.getStaticText('pleaseEnterSchool') ? this.getStaticText('pleaseEnterSchool') : "请输入学校", trigger: "blur" }],
       customSchool: [
         { required: true, message: this.getStaticText('pleaseEnterSchool') ? this.getStaticText('pleaseEnterSchool') : "请输入学校", trigger: "blur" },
-        { validator: customSchoolValidate, trigger: "blur" }
+        { validator: this.customSchoolValidate, trigger: "blur" }
       ],
       teacher: [
         { required: true, message: this.getStaticText('pleaseInputGuidanceTeacher') ? this.getStaticText('pleaseInputGuidanceTeacher') : "请输入指导教师", trigger: "blur" }
       ],
       teacherPhone: [
-        { validator: mobileCheck, trigger: "blur" }
+        { validator: this.mobileCheck, trigger: "blur" }
       ],
       organizationTeacherPhone: [
-        { validator: mobileCheck, trigger: "blur" }
+        { validator: this.mobileCheck, trigger: "blur" }
       ],
       class: [
         { required: true, message: this.getStaticText('pleaseInputGradeAndClass') ? this.getStaticText('pleaseInputGradeAndClass') : "请输入年级班级", trigger: "blur" }
@@ -509,7 +510,7 @@ export default {
         { validator: ValidateRules.validateEmail, trigger: "blur" }
       ],
       zipCode: [
-        { validator: zipCodeCheck, trigger: "blur" }
+        { validator: this.zipCodeCheck, trigger: "blur" }
       ],
       schoolAddress: [
         { required: true, message: this.getStaticText('pleaseInputSchoolAddress') ? this.getStaticText('pleaseInputSchoolAddress') : "请输入学校地址", trigger: "blur" }
@@ -519,7 +520,7 @@ export default {
       ],
       synopsis: [
         { required: true, message: this.getStaticText('pleaseInputEntryIntroduction') ? this.getStaticText('pleaseInputEntryIntroduction') : "请输入参赛作品简介", trigger: "blur" },
-        { validator: abstractCheck, trigger: "blur" }
+        { validator: this.abstractCheck, trigger: "blur" }
       ],
       // files: [{ required: true, message: "请上传作品附件", trigger: "blur" }],
       content: [
@@ -1023,20 +1024,19 @@ export default {
         return false
       }
     },
-
-  },
-  filters: {
-    sexFormat (val) {
+    sexFormatVal (val) {
       if (val == 1) {
         return this.getStaticText('male') ? this.getStaticText('male') : "男";
       } else {
         return this.getStaticText('female') ? this.getStaticText('female') :"女";
       }
     }
+
   },
+  filters: {},
   watch: {
     schoolInformaitionValue (val, oldVal) {
-      if (val === (this.getStaticText('others') ? this.getStaticText('others') : '其他')) {
+      if (val === '其他') {
         this.isShowCustomeSchool = true;
       } else {
         this.isShowCustomeSchool = false;

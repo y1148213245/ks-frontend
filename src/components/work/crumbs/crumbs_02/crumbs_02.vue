@@ -1,6 +1,7 @@
 <!-- 基于栏目面包屑导航 -->
 <template>
  <el-breadcrumb separator-class="el-icon-arrow-right">
+   <el-breadcrumb-item><span>当前位置：</span></el-breadcrumb-item>
   <el-breadcrumb-item v-for="(item,i) in currentCols" :key="i"><a :href="item.url || 'javascript:void(0)'" v-text="item.name"></a></el-breadcrumb-item>
 </el-breadcrumb>
 </template>
