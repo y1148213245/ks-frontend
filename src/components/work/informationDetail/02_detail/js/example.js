@@ -27,6 +27,9 @@ const dev = {
 const prod = {
   informationDetail: {
     work_informationdetail_02: {
+      shareComponent:{/* 分享子组件配置 */
+        moduleName:'newsShare'
+      },
       getDetailUrl:  'spc/prodb/detail.do',
       getPreAndNextUrl:  'spc/prodb/activity/prevNextNews.do',
       collectUrl:  'collection/addWorkCollect.do',
@@ -124,4 +127,5 @@ const prod = {
 const platform = 'PC';
 const pageType = ['list'];
 const resourceType = ['book'];
-export { name, title, dev, prod, description, platform, pageType, resourceType };
+const childComponents = ["work_informationdetail_02","ui_share_01"];
+export { name, title, dev, prod, description, platform, pageType, resourceType,childComponents };

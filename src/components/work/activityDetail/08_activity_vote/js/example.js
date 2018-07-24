@@ -21,6 +21,9 @@ const prod = {
       activityPrizewinner: {
         modulename: 'activityPrizewinner'
       },
+      activityResult:{
+        modulename:'activityResult'
+      },
       tabArr: [
         {
           tag: 'activityInstructions',

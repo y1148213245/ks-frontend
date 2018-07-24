@@ -47,6 +47,9 @@ const dev = {
         area:'AREA',//地区
         school:'SCHOOL'//学校
       },
+      crumbs:{
+        toActivityListHref:'./activityrace.html?pubId=143#activityProduct'
+      },
       getActivityInfo: {/* 活动详情配置 */
         url: 'spc/prodb/detail.do',
         requestParams: {/* 请求参数配置 */
@@ -55,7 +58,8 @@ const dev = {
         dataKeys: {/* 返回数据的字段名配置 */
           voteSwitch: 'PRAISE_SWITCH',
           endDate: 'END_TIMESTAMPNEW',
-          startDate: 'BEGIN_TIMESTAMPNEW'
+          startDate: 'BEGIN_TIMESTAMPNEW',
+          topic:'SYS_TOPIC'
         }
       },
       staticText:{
@@ -127,8 +131,12 @@ const prod = {
           startDate: 'BEGIN_TIMESTAMPNEW',
           abstract: 'DESCRIPTION',
           isHide:'IS_HIDE',
-          voteDescription:'PRAISE_DESCRIPTION'
+          voteDescription:'PRAISE_DESCRIPTION',
+          topic:'SYS_TOPIC'
         }
+      },
+      crumbs:{
+        toActivityListHref:'./activityrace.html?pubId=143#activityProduct'
       },
       staticText:{
         notHave:"暂无",

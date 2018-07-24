@@ -9,8 +9,9 @@
       <span style="margin-left: 16px;" v-if="isShow('time')"><span>{{getStaticText('createDate') ? getStaticText('createDate') : '创建日期：'}}</span>{{detail[keys.time] | formatTime}}</span>
       <!-- <span style="margin-left: 16px;" v-if="keys.source">来源：{{detail[keys.source]}}</span> -->
       <a style="margin-left: 16px;" v-if="isShow('collect')" href="javascript:;" @click="addCollect()">{{detail[keys.isCollect] == 1 ? (getStaticText('haveCollected') ? getStaticText('haveCollected') : '已收藏') : (getStaticText('collect') ? getStaticText('collect') : "收藏")}}</a>
-      <a href="http://www.jiathis.com/share" style="margin-left: 16px;" v-if="isShow('share')"
-         class="search_04-content-list-entry_box-others-share" target="_blank">{{getStaticText('shareTo') ? getStaticText('shareTo') : '分享'}}</a>
+      <!-- 分享组件 -->
+      <ui_share_01 :namespace="namespace" :modulename="projectConfig.shareComponent.moduleName"></ui_share_01>
+
     </div>
     <div class="abstract" v-if="isShow('abstract')">
       <span>{{getStaticText('abstract') ? getStaticText('abstract') : '摘要：'}}</span>
@@ -198,15 +199,29 @@ export default {
     /* 上一篇 */
     toPre () {
       let preId = this.preNextData[this.keys.preNextData_preId];
+      let driveMode = this.projectConfig.driveMode;
+      let mode = {}
+      if (driveMode.type = 'event') {
+        mode = this.projectConfig.driveMode.eventMode;
+      }else if(driveMode.type = 'location'){
+        mode = this.projectConfig.driveMode.locationMode;
+      }
       if (preId) {
-        this.getParam({ [this.projectConfig.driveMode.eventMode && this.projectConfig.driveMode.eventMode.dataKeys.docID || this.projectConfig.driveMode.locationMode.dataKeys.docID]: preId }, this.preNextParamCache)
+        this.getParam({ [mode && mode.dataKeys.docID || 'docID']: preId }, this.preNextParamCache)
       }
     },
     /* 下一篇 */
     toNext () {
       let nextId = this.preNextData[this.keys.preNextData_nextId];
+      let driveMode = this.projectConfig.driveMode;
+      let mode = {}
+      if (driveMode.type = 'event') {
+        mode = this.projectConfig.driveMode.eventMode;
+      }else if(driveMode.type = 'location'){
+        mode = this.projectConfig.driveMode.locationMode;
+      }
       if (nextId) {
-        this.getParam({ [this.projectConfig.driveMode.eventMode && this.projectConfig.driveMode.eventMode.dataKeys.docID || this.projectConfig.driveMode.locationMode.dataKeys.docID]: nextId }, this.preNextParamCache)
+        this.getParam({ [mode && mode.dataKeys.docID || 'docID']: nextId }, this.preNextParamCache)
       }
     },
     returnList () {
@@ -251,6 +266,9 @@ export default {
   float: left;
 }
 .work_informationdetail_02-nav-next {
+  float: right;
+}
+.ui_share_01 .bdsharebuttonbox a{
   float: right;
 }
 </style>

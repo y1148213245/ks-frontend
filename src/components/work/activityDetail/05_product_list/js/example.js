@@ -49,6 +49,7 @@ const prod = {
   activityDetail: {
     work_activitydetail_05: {
       'module1': {
+        listTitle:'',/* 列表标题 */
         url: 'spc/prodb/getWorkList.do',
         toProductDetailUrl: 'productiondetail.html',
         classification: {/* 分类配置,无则不配置 */

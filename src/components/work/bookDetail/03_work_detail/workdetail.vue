@@ -2,11 +2,17 @@
  * @Author: song
  * @Date: 2018-02-06 10:34:24
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-06-06 13:28:43
+ * @Last Modified time: 2018-07-20 18:05:34
  */
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
   <div class="work_bookdetail_03">
+    <div class="work_bookdetail_03-crumbs">
+      <span>所在位置：</span>
+      <span><a :href="CONFIG.crumbs.toActivityListHref" v-text="activityDetail[CONFIG.getActivityInfo.dataKeys.topic]"></a></span>
+      > 
+      <span>作品详情</span>
+    </div>
     <div class="topTitle">
       <div class="title" v-text="workInfo[keys.title] || (getStaticText('notHave') ? getStaticText('notHave') : '暂无')"></div>
       <div class="work_bookdetail_03_activityname">{{workInfo[keys.activityName]}}</div>
@@ -235,5 +241,11 @@ export default {
 .work_bookdetail_03 .qrcode {
   margin: 20px 0px;
   text-align: center;
+}
+.work_bookdetail_03-crumbs{
+  font-size: 12px;
+}
+.work_bookdetail_03-crumbs span:nth-child(3){
+  color: #9A9A9D;
 }
 </style>

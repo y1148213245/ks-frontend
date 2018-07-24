@@ -11,22 +11,24 @@
     </nav>
     <div class="work_activitydetail_08-content">
 
-      <!-- 奖项说明 -->
-      <p v-show="currentTab.tag == 'activityInstructions'" class="work_activitydetail_08-content-instructions" v-html="activityDetail[detailKeys.description]"></p>
-      <!-- 活动方案 -->
-      <work_activitydetail_02 v-show="currentTab.tag == 'activityPlan'" :namespace="namespace" :module="CONFIG.activityPlan.modulename"></work_activitydetail_02>
+      <!-- 奖项说明(活动详情字段)) -->
+      <p v-if="getIsHas('activityInstructions')" v-show="currentTab.tag == 'activityInstructions'" class="work_activitydetail_08-content-instructions" v-html="activityDetail[detailKeys.description]"></p>
 
-      <!-- 投票大赛新闻 -->
+      <!-- 活动方案(辅文详情) -->
+      <work_activitydetail_02 v-if="getIsHas('activityPlan')" v-show="currentTab.tag == 'activityPlan'" :namespace="namespace" :module="CONFIG.activityPlan.modulename"></work_activitydetail_02>
 
-      <work_activitydetail_03 :namespace="namespace" v-show="currentTab.tag == 'activityNews'"></work_activitydetail_03>
+      <!-- 投票大赛新闻（新闻列表） -->
+      <work_activitydetail_03 v-if="getIsHas('activityNews')" :namespace="namespace" v-show="currentTab.tag == 'activityNews'"></work_activitydetail_03>
 
-      <!-- 参选人列表 -->
-      <work_activitydetail_09 v-show="currentTab.tag == 'activityCandidate'" :namespace="namespace" :modulename="CONFIG.activityCandidate.modulename"></work_activitydetail_09>
+      <!-- 参选人列表（参赛人列表） -->
+      <work_activitydetail_09 v-if="getIsHas('activityCandidate')" v-show="currentTab.tag == 'activityCandidate'" :namespace="namespace" :modulename="CONFIG.activityCandidate.modulename"></work_activitydetail_09>
 
-      <!-- 获奖人列表 -->
-      <work_activitydetail_09 v-show="currentTab.tag == 'activityPrizewinner'" :namespace="namespace" :modulename="CONFIG.activityPrizewinner.modulename"></work_activitydetail_09>
+      <!-- 获奖人列表（参赛人列表） -->
+      <work_activitydetail_09 v-if="getIsHas('activityPrizewinner')" v-show="currentTab.tag == 'activityPrizewinner'" :namespace="namespace" :modulename="CONFIG.activityPrizewinner.modulename"></work_activitydetail_09>
     </div>
 
+    <!-- 展示类活动比赛结果(辅文详情) -->
+    <work_activitydetail_02 v-if="getIsHas('activityResult')" v-show="currentTab.tag == 'activityResult'" :namespace="namespace" :module="CONFIG.activityResult.modulename"></work_activitydetail_02>
   </section>
 </template>
 
@@ -69,11 +71,34 @@ export default {
       );
     },
     tabChange (item) {
+      if (item.tag == 'activityPrizewinner') {
+        if(this.activityDetail[this.detailKeys.endTimeStamp] > new Date().getTime()){
+          this.$message({
+            type:'warning',
+            message:'请等待评审结果'
+          })
+          return false
+        }
+      }
       this.currentTab = item;
     },
     activityDetailLoaded (detail) {
 
       this.activityDetail = detail;
+    },
+    getIsHas (itemText) {
+      let isHas = false;
+      this.tabArr.map(item => {
+        if (item.tag == itemText) {
+          isHas = true;
+        }
+      })
+      if (isHas) {
+        return true
+      } else {
+        return false;
+      }
+
     }
   }
 }

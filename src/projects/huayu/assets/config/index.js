@@ -1,25 +1,19 @@
 var CONFIG = {
+	// "BASE_URL": "../../../api/",
 	"BASE_URL": "http://www.liaoningxinhuajiaoyu.com/portal/api/",
-	// "BASE_URL": "http://172.19.92.76:8080/portal/api/",
-	// "BASE_URL":"http://172.19.57.67:8080/portal/api/",/* 新服务器 */
-	// "BASE_URL":"http://172.19.92.94:8080/portal/api/",
-	// "BASE_URL":"http://172.19.36.97:9092/spc-portal-web/",
 	"READ_URL": "http://172.19.57.153/portal/reader/yuezhi/read.jsp?",
 	"PAGE_MANAGEMENT_URL": "../../../frontend-api/api/",
 	"SITE_CONFIG": {
 		"siteId": 8,
 		"chId": 0
 	},
-	// EMAIL_CONFIG:{
-	// 	showPostfix:true,
-	// 	postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
-	// }
+  "IS_VALIDATE_TEST": true,
+  EMAIL_CONFIG:{
+		showPostfix:true,
+		postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
+}
 }
 var $_$ = {
-	bookContentType: { // 书的类型  纸书：91 电子书 94
-		bookType: '91',
-		ebookType: '94',
-	},
 	"SITE_NAME": "site-102",
 	"IS_DISABLE": false,
 	/* 展示类活动页配置 */
@@ -399,7 +393,7 @@ var $_$ = {
 					"params": {
 						"userId": "",
 						"pageNo": "1",
-						"pageSize": "8"
+						"pageSize": "99"
 					},
 					"competitionedParams": {
 						"IDNumbers": "",
@@ -510,8 +504,12 @@ var $_$ = {
 						"endDate": "END_TIMESTAMPNEW",
 						"startDate": "BEGIN_TIMESTAMPNEW",
 						"isHide": "IS_HIDE",
-						"voteDescription": "PRAISE_DESCRIPTION"
+						"voteDescription": "PRAISE_DESCRIPTION",
+						topic:'SYS_TOPIC'
 					}
+				},
+				crumbs:{
+					toActivityListHref:'./activityrace.html?pubId=143#activityProduct'
 				}
 			}
 		},
@@ -600,10 +598,8 @@ var $_$ = {
 						topic: "PORTAL_VOTEACTIVITY_SYS_TOPIC",
 						beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
 						endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
-						reviewDate:'',
-						
+						reviewDate:''
 					}
-					
 				},
 				"pageSizes": [8, 16, 32, 48],
 				"showItem": [],
@@ -734,7 +730,7 @@ var $_$ = {
 				"params": {
 					"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"
 				},
-				"getDetail":{
+				getDetail:{
 					"raceNews":{
 						"params": {
 							"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"/* 库码 */
@@ -746,7 +742,7 @@ var $_$ = {
 						}
 					}
 				},
-				"getPreAndNext":{
+				getPreAndNext:{
 					"raceNews":{
 						"url":"spc/prodb/activity/prevNextNews.do"
 					},
@@ -1353,7 +1349,6 @@ var $_$ = {
 						}
 					}
 				}
-
 			},
 			"work_activitydetail_06": {
 				"url": "comment/getActivityDiscussDetail.do",
@@ -1399,16 +1394,19 @@ var $_$ = {
 					"title": "活动方案"
 				}, {
 					"tag": "activityNews",
-					"title": "活动新闻"
+					"title": "活动新闻",
+					subModules:['notice','goodProduct']
 				}, {
 					"tag": "activityProduct",
-					"title": "参赛作品"
+					"title": "参赛作品",
+					subModules:['notice','goodProduct']
 				}, {
 					"tag": "activityProductWinning",
 					"title": "获奖作品"
 				}, {
 					"tag": "activityTeather",
-					"title": "名师指导"
+					"title": "名师指导",
+					subModules:['notice','goodProduct']
 				}]
 			}
 		},
@@ -1433,6 +1431,14 @@ var $_$ = {
 						params: {
 							getDetailRequestParam_doclibCode: 'PORTAL_VOTEINFORMATION'/* 库码 */
 						}
+					}
+				},
+				getPreAndNext:{
+					'raceNews':{
+						url:'spc/prodb/activity/prevNextNews.do'
+					},
+					'voteNews':{
+						url:'spc/prodb/activity/votePrevNextNews.do'
 					}
 				},
 				"keys": {
@@ -1631,8 +1637,8 @@ var $_$ = {
 						"params": []
 					}
 				},
-				toRegisterHref: './register.html',
-				showItem: ['register']
+				"toRegisterHref": "./register.html",
+				"showItem": ["register"]
 			}
 		},
 		"search": {
@@ -1730,7 +1736,9 @@ var $_$ = {
 			"list_word_02": {
 				"url": "spc/cms/publish/list.do",
 				"params": {
-					"conditions": "[{pub_col_id:'274'}]",
+					"conditions": [{
+						"pub_col_id": "274"
+					}],
 					"orderBy": "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 					"pageNo": "1",
 					"pageSize": "15",
@@ -1745,24 +1753,7 @@ var $_$ = {
 			}
 		}
 	},
-	"personalcenter": {
-		"personalcenter": {
-			"personalcenter_01": {
-				"navList": [{
-					"title": "我的帐号",
-					"icon": "el-icon-edit",
-					"tag": "account"
-				}, {
-					"title": "我的工作台",
-					"icon": "el-icon-edit",
-					"tag": "workbench"
-				}],
-				"subConfig": {
-					"account": {}
-				}
-			}
-		}
-	},
+	
 	"personalCenter": {
 		"personalcenter": {
 			"personalcenter_01": {
@@ -1771,31 +1762,18 @@ var $_$ = {
 					"icon": "el-icon-edit",
 					"tag": "account"
 				}, {
-					"title": "我的订单",
-					"icon": "el-icon-goods",
-					"tag": "list"
-				}, {
-					"title": "我的书架",
-					"icon": "el-icon-tickets",
-					"tag": "book"
-				}, {
-					"title": "收藏夹",
-					"icon": "el-icon-star-on",
-					"tag": "collecting"
-				}, {
 					"title": "参与的活动",
 					"icon": "el-icon-service",
 					"tag": "joinactivity"
-				},
-				{
+				}, {
 					"title": "我的工作台",
 					"icon": "el-icon-edit",
 					"tag": "workbench"
 				}],
 				"subConfig": {
-					'account': {
-						getMobileCode: {
-							url: 'user/sendMobileMessage.do' /* /user/sendToMobile.do 文联用  user/sendMobileMessage.do 华育用 */
+					"account": {
+						"getMobileCode": {
+							"url": "user/sendMobileMessage.do"
 						}
 					}
 				}
@@ -1809,10 +1787,7 @@ var $_$ = {
 					"url": "user/sendMobileMessage.do"
 				},
 				"showItem": ["bindMobile", "bindEmail"],
-				bindMobileConfig:{
-					showPostfix:true,
-					postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
-				}
+        
 			}
 		}
 	},
@@ -2137,8 +2112,7 @@ var $_$ = {
 						"dataKeys": {
 							"colId": "colId"
 						},
-						"fixedKeys": {},
-						isGetSubCol: true
+						"fixedKeys": {}
 					}
 				},
 				"csdt": {
@@ -2606,6 +2580,189 @@ var $_$ = {
 			}
 		}
 	},
+	"informationlist": {
+		"list_pic": {
+			"list_pic_30": {
+				"newslist": {
+					"comTitle": {
+						"isShow": true,
+						"name": "华育资讯"
+					},
+					"broadcastName": "showNavContent",
+					"display": {},
+					"getResourceLists": {
+						"url": "spc/cms/publish/list.do",
+						"params": {
+							"conditions": [{
+								"pub_col_id": "249",
+								"op": "in"
+							}, {
+								"pub_status": "1"
+							}],
+							"orderBy": "pub_a_order asc pub_lastmodified desc id asc",
+							"pageNo": "1",
+							"pageSize": "15",
+							"searchText": ""
+						},
+						"startNum": 0,
+						"maxNum": 6,
+						"sysAdapter": "sykAdapter",
+						"typeAdapter": "newsAdapter",
+						"display": {
+							"time": "日期",
+							"title": "标题"
+						},
+						"showItem": ["time", "title"],
+						"complicatedItem": [{
+							"name": "time",
+							"field": "lastModified",
+							"display": ""
+						}, {
+							"name": "title",
+							"field": "resName",
+							"display": ""
+						}]
+					},
+					"toDetail": {
+						"url": "../pages/informationdetail.html",
+						"dataKeys": {
+							"pubId": "id"
+						},
+						"fixedKeys": {}
+					},
+					"toMore": {
+						"url": "../pages/informationdetail.html",
+						"dataKeys": {
+							"colId": "colId"
+						},
+						"fixedKeys": {}
+					},
+					"crumb": [{
+						"title": "首页",
+						"href": "./index.html"
+					}]
+				},
+				"modulename": {
+					"comTitle": {
+						"isShow": true,
+						"name": "华育资讯"
+					},
+					"broadcastName": "showNavContent",
+					"display": {},
+					"getResourceLists": {
+						"url": "spc/cms/publish/list.do",
+						"params": {
+							"conditions": [{
+								"pub_col_id": "249",
+								"op": "in"
+							}, {
+								"pub_status": "1"
+							}],
+							"orderBy": "pub_a_order asc pub_lastmodified desc id asc",
+							"pageNo": "1",
+							"pageSize": "15",
+							"searchText": ""
+						},
+						"startNum": 0,
+						"maxNum": 6,
+						"sysAdapter": "sykAdapter",
+						"typeAdapter": "newsAdapter",
+						"display": {
+							"time": "日期",
+							"title": "标题",
+							"author": "作者",
+							"createdTime": "创建时间",
+							"sort": "分类"
+						},
+						"showItem": ["time", "title", "createdTime", "sort", "author"],
+						"complicatedItem": [{
+							"name": "time",
+							"field": "lastModified",
+							"display": "日期"
+						}, {
+							"name": "title",
+							"field": "resName",
+							"display": "标题"
+						}, {
+							"name": "createdTime",
+							"field": "created",
+							"display": "创建时间"
+						}, {
+							"name": "sort",
+							"field": "colName",
+							"display": "分类"
+						}, {
+							"name": "author",
+							"field": "authors",
+							"display": "作者"
+						}]
+					},
+					"toDetail": {
+						"url": "../pages/informationdetail.html",
+						"dataKeys": {
+							"pubId": "id"
+						},
+						"fixedKeys": {}
+					},
+					"toMore": {
+						"url": "../pages/informationlist.html",
+						"dataKeys": {
+							"colId": "colId"
+						},
+						"fixedKeys": {}
+					}
+				}
+			}
+		},
+		"navigation": {
+			"navigation_05": {
+				"newscol": {
+					"colId": 329,
+					"comTitle": {
+						"isShow": true,
+						"name": "华育资讯"
+					},
+					"showChildren": false,
+					"broadcastName": "showNavContent",
+					"display": {},
+					"getNavLists": {
+						"url": "spc/cms/col/getAllColBySiteId.do",
+						"params": {
+							"siteId": 8,
+							"chId": 0
+						},
+						"keys": {
+							"parentId": "parentId",
+							"id": "id",
+							"name": "name"
+						}
+					}
+				},
+				"modulename": {
+					"colId": 245,
+					"comTitle": {
+						"isShow": true,
+						"name": "华育动态新闻"
+					},
+					"showChildren": false,
+					"broadcastName": "showNavContent",
+					"display": {},
+					"getNavLists": {
+						"url": "spc/cms/col/getAllColBySiteId.do",
+						"params": {
+							"siteId": 8,
+							"chId": 0
+						},
+						"keys": {
+							"parentId": "parentId",
+							"id": "id",
+							"name": "name"
+						}
+					}
+				}
+			}
+		}
+	},
 	"xhjy": {
 		"navigation": {
 			"navigation_05": {
@@ -2801,12 +2958,44 @@ var $_$ = {
 		"login": {
 			"work_login_01": {
 				"disBacks": ["register.html", "register_success.html", "forgetPassword.html"],
-				"indexPath": "./index.html"
+				"indexPath": "./index.html",
+				showItem:[]
 			},
 			"work_login_03": {
 				"disBacks": ["register.html", "register_success.html", "forgetPassword.html"],
-				// showItem:['code'],
-				"indexPath": "./index.html"
+				"indexPath": "./index.html",
+				"thirdParty": {
+					"url": "auth/login.do?type=",
+					"target": "_self",
+					"showItem": [{
+						"title": "QQ",
+						"type": "QQ",
+						"tag": "QQ"
+					}, {
+						"title": "微信",
+						"type": "WeiXin",
+						"tag": "WEIXIN"
+					}],
+					"customShowItem": [],
+					"topic": "社交账号登陆"
+				},
+				"showItem": ["code"],
+				"staticText": {
+					"loginSys": "登录",
+					"inputUserName": "请输入用户名",
+					"inputPwd": "请输入密码",
+					"forgetPwd": "忘记密码",
+					"noAccount": "还没有账号？",
+					"signUpNow": "立即注册",
+					"accountFrozenInfo": "账号已被冻结，请联系管理员",
+					"loginFailed": "登录失败",
+					"usernameAndPwdCannotBeEmpty": "用户名或密码不能为空",
+					"accountAndPwdError": "账号或密码错误",
+					"userNameCannotBeEmpty": "用户名不能为空",
+					"pwdCannotBeEmpty": "密码不能为空",
+					"inputCode": "请输入验证码",
+					"codeFailed": "验证码输入错误"
+				}
 			}
 		}
 	},
@@ -2875,34 +3064,6 @@ var $_$ = {
 				}
 			}
 		},
-		share: {
-			ui_share_01: {
-				'work_informationdetail_01_share': {
-					shareLists: [// 分享配置
-						{
-							title: '分享到QQ空间', //
-							class: 'bds_qzone', //
-							cmd: 'qzone', //
-						},
-						{
-							title: '分享到新浪微博',
-							class: 'bds_tsina',
-							cmd: 'tsina',
-						},
-						{
-							title: '分享到腾讯微博',
-							class: 'bds_tqq',
-							cmd: 'tqq',
-						},
-						{
-							title: '分享到人人网',
-							class: 'bds_renren',
-							cmd: 'renren',
-						},
-					]
-				}
-			}
-		},
 		"pagination": {
 			"ui_pagination_01": {
 				"url": "spc/cms/publish/searchNext.do",
@@ -2922,6 +3083,25 @@ var $_$ = {
 					},
 					"pageNo": "1",
 					"pageSize": "999"
+				}
+			}
+		},
+		"share": {
+			"ui_share_01": {
+				"work_informationdetail_01_share": {
+					"shareLists": [{
+						"title": "分享到QQ空间",
+						"class": "bds_qzone",
+						"cmd": "qzone"
+					}, {
+						"title": "分享到新浪微博",
+						"class": "bds_tsina",
+						"cmd": "tsina"
+					}, {
+						"title": "分享到人人网",
+						"class": "bds_renren",
+						"cmd": "renren"
+					}]
 				}
 			}
 		}
