@@ -510,11 +510,13 @@ const prod = {
         },
         {
           tag:'activityNews',
-          title:'活动新闻'
+          title:'活动新闻',
+          subModules:['notice','goodProduct']
         },
         {
           tag:'activityProduct',
-          title:'参赛作品'
+          title:'参赛作品',
+          subModules:['notice','goodProduct']
         },
         {
           tag:'activityProductWinning',
@@ -522,7 +524,8 @@ const prod = {
         },
         {
           tag:'activityTeather',
-          title:'名师指导'
+          title:'名师指导',
+          subModules:['notice','goodProduct']
         }],
       staticText: {
         announcement: "公告",

@@ -3,7 +3,7 @@
   <div class="work_activityrace_tab">
     <nav class="work_activityrace_tab-nav">
       <template v-for="(item,index) in tabArr">
-        <div :key="index" class="work_activityrace_tab-item" :class="{'work_activityrace_tab-title--active':currentShow.tag == item.tag,'work_activityrace_tab-product_nav-item--hidden':activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != (getStaticText('yes') ? getStaticText('yes') : '是')  && currentShow.tag == 'activityProductWinning' }" @click="change(item)"><span>{{item.title}}</span></div>
+        <div :key="index" class="work_activityrace_tab-item" :class="{'work_activityrace_tab-title--active':currentShow.tag == item.tag && !isShowMoreGoodProductList,'work_activityrace_tab-product_nav-item--hidden':activityDetail.PORTAL_ACTIVITY_IS_ENDACTIVITY != (getStaticText('yes') ? getStaticText('yes') : '是')  && currentShow.tag == 'activityProductWinning' }" @click="change(item)"><span>{{item.title}}</span></div>
       </template>
     </nav>
     <div class="work_activityrace_tab-content">
@@ -15,50 +15,16 @@
       <!-- 奖项设置 -->
       <work_activitydetail_02 v-show="currentShow.tag == 'activityPlan'" :namespace="namespace" module="module1"></work_activitydetail_02>
 
-      <div  v-show="currentShow.tag == 'activityNews'">
-        <!-- 大赛新闻 -->
-        <work_activitydetail_03 :namespace="namespace"></work_activitydetail_03>
+      <!-- 大赛新闻 -->
+      <work_activitydetail_03 v-show="currentShow.tag == 'activityNews'" :namespace="namespace"></work_activitydetail_03>
 
-        <div class="components_acitivityrace-right">
-          <div class="components_acitivityrace-notice">
-              <div class="components_acitivityrace-notice-title_box">
-                  <span>{{getStaticText('announcement') ? getStaticText('announcement') : '公告'}}</span>
-                </div>
-                <!-- 公告 -->
-              <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
-          </div>
-          <div class="components_acitivityrace-good_products">
-            <div class="components_acitivityrace-good_products-title_box">
-                <span>{{getStaticText('displayExcellentWorks') ? getStaticText('displayExcellentWorks') : '优秀作品展示'}}</span>
-            </div>
-                <!-- 优秀参赛作品列表 -->
-            <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
-          </div>
-        </div>
-      </div>
       <!-- 参赛作品 -->
       <div  v-show="currentShow.tag == 'activityProduct'">
-          <el-col :span="20" class="work_activityrace_tab-join_box">
+          <el-col :span="20" class="work_activityrace_tab-join_box" v-show="!isShowMoreGoodProductList">
             <!-- 参赛作品条件 -->
             <work_activitydetail_04 :namespace="namespace"></work_activitydetail_04>
             <!-- 参赛作品列表 -->
             <work_activitydetail_05 :namespace="namespace" module="module1"></work_activitydetail_05>
-          </el-col>
-          <el-col :span="4">
-            <div class="components_acitivityrace-notice">
-              <div class="components_acitivityrace-notice-title_box">
-                <span>{{getStaticText('announcement') ? getStaticText('announcement') : '公告'}}</span>
-              </div>
-              <!-- 公告 -->
-              <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
-            </div>
-            <div class="components_acitivityrace-good_products">
-              <div class="components_acitivityrace-good_products-title_box">
-                <span>{{getStaticText('displayExcellentWorks') ? getStaticText('displayExcellentWorks') : '优秀作品展示'}}</span>
-              </div>
-              <!-- 优秀参赛作品列表 -->
-              <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
-            </div>
           </el-col>
       </div>
 
@@ -68,27 +34,41 @@
 
       <!-- 名师指导 -->
       <div class="work_activityrace_tab-teacher_list" v-show="currentShow.tag == 'activityTeather'">
-        <el-col :span="20">
+        <el-col :span="20" v-show="!isShowMoreGoodProductList">
           <work_activitydetail_06  :namespace="namespace"></work_activitydetail_06>
         </el-col>
-        <el-col :span="4">
-          <div class="components_acitivityrace-notice">
-            <div class="components_acitivityrace-notice-title_box">
-              <span>{{getStaticText('announcement') ? getStaticText('announcement') : '公告'}}</span>
-            </div>
-            <!-- 公告 -->
-            <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
+      </div>
+
+      <!-- 更多优秀作品列表 -->
+      <el-col :span="20" class="work_activityrace_tab-good_products_more_box" v-show="currentShow.tag == 'activityMoreGoodProductList'">
+        <!-- <a href="javascript:void(0)" @click="toMoreGoodProduct(false)">返回</a> -->
+        <work_activitydetail_05 :namespace="namespace" module="goodProductMore"></work_activitydetail_05>
+      </el-col>
+      <!-- END 更多优秀作品列表 -->
+
+      <!-- 子模块 -->
+      <div class="components_acitivityrace-right" v-show="currentShow.subModules && currentShow.subModules.length > 0" > 
+          <!-- 公告 -->
+          <div class="components_acitivityrace-notice" v-show="currentShow.subModules && currentShow.subModules.indexOf('notice') > -1">
+              <div class="components_acitivityrace-notice-title_box">
+                  <span>{{getStaticText('announcement') ? getStaticText('announcement') : '公告'}}</span>
+                </div>
+                <!-- 公告组件 -->
+              <work_activitydetail_02 :namespace="namespace" module="module2"></work_activitydetail_02>
           </div>
-          <div class="components_acitivityrace-good_products">
+          <!-- 优秀参赛作品 -->
+          <div class="components_acitivityrace-good_products" v-show="currentShow.subModules && currentShow.subModules.indexOf('goodProduct') > -1">
             <div class="components_acitivityrace-good_products-title_box">
-              <span>{{getStaticText('displayExcellentWorks') ? getStaticText('displayExcellentWorks') : '优秀作品展示'}}</span>
+                <span>{{getStaticText('displayExcellentWorks') ? getStaticText('displayExcellentWorks') : '优秀作品展示'}}</span>
+                <a href="javascript:void(0)" class="components_acitivityrace-good_products-title_box-a" @click="toMoreGoodProduct(true)">更多</a>
             </div>
-            <!-- 优秀参赛作品列表 -->
+            <!-- 优秀参赛作品列表组件 -->
             <work_activitydetail_05 :namespace="namespace" module="module2" viewType="simple"></work_activitydetail_05>
           </div>
-        </el-col>
-      </div>
+        </div>
     </div>
+
+    <!-- 活动评论 -->
     <el-row v-show="activityDetail.PORTAL_ACTIVITY_IS_COMMENT== (getStaticText('yes') ? getStaticText('yes') : '是') ">
       <el-col :span="24">
         <!-- 活动评论组件 区别于作品评论 -->
@@ -116,7 +96,8 @@ export default {
       activityDetail: {},
       tabArr: [],
       hashCache: '',
-      CONFIG:""
+      CONFIG:"",
+      isShowMoreGoodProductList:false
     }
   },
 
@@ -198,6 +179,15 @@ export default {
       this.activityDetail = detail;
       this.getHashToChangeTab();
     },
+    /* 去更多优秀作品列表 */
+    toMoreGoodProduct(){
+      let item = {
+          tag:'activityMoreGoodProductList',
+          title:'更多优秀作品列表',
+          subModules:['notice']
+      }
+      this.change(item)
+    },
     getStaticText(text){
       if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
         return this.CONFIG.staticText[text]
@@ -266,5 +256,9 @@ export default {
 }
 .components_acitivityrace-good_products-title_box {
   padding: 10px 0;
+}
+.components_acitivityrace-good_products-title_box-a{
+  display: inline-block;
+  float: right;
 }
 </style>
