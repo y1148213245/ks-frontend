@@ -1,7 +1,7 @@
 <template>
   <div class="ui_pagination_01">
     <a class="fl pre" :href="!prev ? urls.prev:'javascript:void(0)'" :class="{clickFalse:prev}">&lt;&lt;{{getStaticText('previousChap') ? getStaticText('previousChap') : '上一篇'}}</a>
-    <a href="javascript:;" @click="returnList()">{{getStaticText('backToList') ? getStaticText('backToList') :"返回列表"}}</a>
+    <!-- <a href="javascript:;" @click="returnList()">{{getStaticText('backToList') ? getStaticText('backToList') :"返回列表"}}</a> -->
     <a class="fr next" :href="!next ? urls.next:'javascript:void(0)'" :class="{clickFalse:next}">{{getStaticText('nextChap') ? getStaticText('nextChap') : '下一篇'}}&gt;&gt;</a>
   </div>
 </template>

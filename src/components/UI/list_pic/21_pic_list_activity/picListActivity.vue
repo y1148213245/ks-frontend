@@ -4,7 +4,7 @@
     <h1 v-if="CONFIG.showItem.indexOf('title') != -1" class="ui_pic_list_21-h1" :style="{backgroundImage:'url('+ (CONFIG.getColDetail.keys.pic ? colDetail[CONFIG.getColDetail.keys.pic] : colDetail.big_pic) +')',backgroundPosition:'center center'}" v-text="colDetail[CONFIG.getColDetail.keys.name]"></h1>
 
     <el-card :body-style="{ padding: '0px' }" v-for="(item, index) in activityList" :key="index">
-      <div class="ui_pic_list_21-card_content" @click="toDetail(item[keys.id])">
+      <div class="ui_pic_list_21-card_content" @click="toDetail(item)">
         <div class="ui_pic_list_21-img_box">
           <img :src="item[keys.pub_picMiddle]" class="image" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'">
         </div>
