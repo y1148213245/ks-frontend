@@ -1,6 +1,9 @@
 /*个人中心接口API*/
 import Vue from "vue";
-import { Get,Post } from '@common'
+import {
+  Get,
+  Post
+} from '@common'
 // import {CONFIG.SITE_CONFIG} from 'projectConfig';
 /*jshint esversion: 6 */
 export default {
@@ -115,7 +118,9 @@ export default {
       "&payStatus=" +
       params.payStatus +
       "&status=" +
-      params.status;
+      params.status +
+      "&orderType=" +
+      params.orderType;
     return Get(url);
   },
   /*时间筛选订单*/
@@ -281,8 +286,8 @@ export default {
   },
   /*申请退换货*/
   applyReturnGoods(params) {
-    // var url = CONFIG.BASE_URL + "order/applyReturnGoods.do?";
-    var url = "http://172.19.36.70/portal/api/order/applyReturnGoods.do?";
+    var url = CONFIG.BASE_URL + "order/applyReturnGoods.do?";
+    // var url = "http://172.19.36.70/portal/api/order/applyReturnGoods.do?";
 
     return Post(url, params);
   },
@@ -292,9 +297,37 @@ export default {
       CONFIG.BASE_URL +
       "order/getReturnGoodsList.do?loginName=" +
       params.loginName +
-      "&pageIndex=1&pageSize=15";
+      "&pageIndex=" +
+      params.pageIndex +
+      "&pageSize=" +
+      params.pageSize + "&type=" + params.type + "&flag=" + params.flag;
     return Get(url);
   },
+  /*售后详情接口*/
+  getReturnGoodsDetails(params) {
+    var url =
+      CONFIG.BASE_URL +
+      "order/getOneReturnGoods.do?id=" +
+      params.id;
+    return Get(url);
+  },
+  //提交快递信息
+  submitLogisticsInfo(params) {
+    var url =
+      CONFIG.BASE_URL +
+      "order/submitLogisticsInfo.do?id=" +
+      params.id + "&logisticsCompany=" + params.logisticsCompany + "&logisticsNum=" + params.logisticsNum;
+    return Get(url);
+  },
+  /*取消退换货*/
+  cancleReturnGoods(id) {
+    var url =
+      CONFIG.BASE_URL +
+      "order/cancleReturnGoods.do?id=" +
+      id;
+    return Get(url);
+  },
+
   /*设置密保问题*/
   setPswQuestion(params) {
     var url =
@@ -333,12 +366,14 @@ export default {
   commitOrder(params, cb) {
     Get(
         CONFIG.BASE_URL +
-          "order/submitSplitOrder1.do?parentOrderCode=" +
-          params.parentOrderCode
+        "order/submitSplitOrder1.do?parentOrderCode=" +
+        params.parentOrderCode
       )
-      .then(function(response) {
+      .then(function (response) {
         if (cb && cb instanceof Function) {
-          cb({ commitInfo: response.data.data });
+          cb({
+            commitInfo: response.data.data
+          });
         }
       });
   },
@@ -414,7 +449,7 @@ export default {
       params.loginName +
       "&type=" +
       params.type;
-    Get(url).then(function(response) {
+    Get(url).then(function (response) {
       if (cb && cb instanceof Function) {
         cb({
           couponsList: response.data.result === "1" ? response.data.data : false
@@ -428,7 +463,7 @@ export default {
    */
   querySumCoupons(params, cb) {
     var url = CONFIG.BASE_URL + "user/getSumCounpons.do?loginName=" + params.loginName;
-    Get(url).then(function(response) {
+    Get(url).then(function (response) {
       if (cb && cb instanceof Function) {
         cb({
           sumCoupons: response.data.result === "1" ? response.data.data : false
@@ -444,12 +479,12 @@ export default {
     axios
       .get(
         CONFIG.BASE_URL +
-          "user/activeCoupons.do?couponPassword=" +
-          params.couponPassword +
-          "&loginName=" +
-          params.loginName
+        "user/activeCoupons.do?couponPassword=" +
+        params.couponPassword +
+        "&loginName=" +
+        params.loginName
       )
-      .then(function(response) {
+      .then(function (response) {
         if (cb && cb instanceof Function) {
           var res = response.data; // 返回结果 1：成功 0：失败
           if (res.result === "1") {
@@ -464,17 +499,21 @@ export default {
               // 已经被激活过了
               resInfo.msg = res.error.errorMsg;
             }
-            cb({ checkStatus: resInfo });
+            cb({
+              checkStatus: resInfo
+            });
           } else {
             var resInfo = {
               status: false,
               msg: ""
             };
-            cb({ checkStatus: resInfo });
+            cb({
+              checkStatus: resInfo
+            });
           }
         }
       })
-      .catch(function(error) {});
+      .catch(function (error) {});
   },
   // 参与的活动
   /*查询学生列表*/
@@ -512,7 +551,7 @@ export default {
   // 参与的活动
   myWorks(params) {
     var url =
-      CONFIG.BASE_URL +"spc/prodb/activity/myWorks.do?loginName=" +
+      CONFIG.BASE_URL + "spc/prodb/activity/myWorks.do?loginName=" +
       params.loginName +
       "&status=" +
       (params.status || "") +
@@ -522,7 +561,7 @@ export default {
       (params.page || "99");
     return Get(url);
   },
-   // 设置公开
+  // 设置公开
   setHide(params) {
     var url = CONFIG.BASE_URL + "spc/prodb/saveItem.do";
     return Post(url, params);

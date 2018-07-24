@@ -1,29 +1,31 @@
 <template>
   <div class="work_mobile_personalcenter_08">
-    <div class="work_mobile_personalcenter_08_booksexist" v-if="booklist.length>0">
-      <div class="work_mobile_personalcenter_08_manage">
-        <span class="work_mobile_personalcenter_08_manage_btn" @click="isshowDlete = !isshowDlete" v-text="!isshowDlete?display.manage:display.cancel"></span>
-      </div>
-      <div class="work_mobile_personalcenter_08_bookslist">
-        <ul class="work_mobile_personalcenter_08_bookslist_ul">
-          <li class="work_mobile_personalcenter_08_bookslist_li" v-for="(item,index) in booklist" :key="index">
-            <div class="work_mobile_personalcenter_08_bookslist_imgcon">
-              <img :src="item.midPic?item.midPic:''" alt="" class="work_mobile_personalcenter_08_bookslist_img" @click="toProbation(item,modulename)">
-            </div>
-            <a v-show="isshowDlete" class="work_mobile_personalcenter_08_bookslist_delete_a" @click="deleteBookList(loginName,index,item.pubId)">
-              <van-icon name="delete" />
-            </a>
-            <!-- 登录用户免费试读后自动加入书架，书架中显示“试读”标签，购买后变为全文阅读 书架接口type字段： 1 试读 2 购买 -->
-            <span class="work_mobile_personalcenter_08_bookslist_readtrying" v-if="item.type == '1'">{{display.readTrying}}</span>
-            <span class="work_mobile_personalcenter_08_bookslist_bookname" @click="toProbation(item,modulename)">{{item.productName ? item.productName :'暂无书名' }}</span>
-            <span class="work_mobile_personalcenter_08_bookslist_author">
+    <div class="work_mobile_personalcenter_08_loading" v-loading="loading">
+      <div class="work_mobile_personalcenter_08_booksexist" v-if="booklist.length>0">
+        <div class="work_mobile_personalcenter_08_manage">
+          <span class="work_mobile_personalcenter_08_manage_btn" @click="isshowDlete = !isshowDlete" v-text="!isshowDlete?display.manage:display.cancel"></span>
+        </div>
+        <div class="work_mobile_personalcenter_08_bookslist">
+          <ul class="work_mobile_personalcenter_08_bookslist_ul">
+            <li class="work_mobile_personalcenter_08_bookslist_li" v-for="(item,index) in booklist" :key="index">
+              <div class="work_mobile_personalcenter_08_bookslist_imgcon">
+                <img :src="item.midPic?item.midPic:''" alt="" class="work_mobile_personalcenter_08_bookslist_img" @click="toProbation(item,modulename)">
+              </div>
+              <a v-show="isshowDlete" class="work_mobile_personalcenter_08_bookslist_delete_a" @click="deleteBookList(loginName,index,item.pubId)">
+                <van-icon name="delete" />
+              </a>
+              <!-- 登录用户免费试读后自动加入书架，书架中显示“试读”标签，购买后变为全文阅读 书架接口type字段： 1 试读 2 购买 -->
+              <span class="work_mobile_personalcenter_08_bookslist_readtrying" v-if="item.type == '1'">{{display.readTrying}}</span>
+              <span class="work_mobile_personalcenter_08_bookslist_bookname" @click="toProbation(item,modulename)">{{item.productName ? item.productName :'暂无书名' }}</span>
+              <span class="work_mobile_personalcenter_08_bookslist_author">
               <span class="work_mobile_personalcenter_08_bookslist_authortext">作者:</span>
               {{item.author?item.author :'暂无作者'}}</span>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="work_mobile_personalcenter_08_books_nonexist" v-else>
+    <div class="work_mobile_personalcenter_08_books_nonexist" v-if="!loading && booklist && booklist.length == 0">
       <div class="work_mobile_personalcenter_08_books_nonexist_message">
         <span class="work_mobile_personalcenter_08_books_nonexist_message_content">{{display.empty}}</span>
       </div>
@@ -55,7 +57,9 @@ export default {
       display: '',
       pageIndex: "1",  // 页码 从 1 开始
       pageSize: "15",  // 每页显示个数
-      loginName: ''   //登录名
+      loginName: '',   //登录名
+      // noData: false,  //控制显示书架为空时的展示内容
+      loading: true, // loading
     }
   },
 
@@ -95,6 +99,7 @@ export default {
 
     //获取我的书架(我的收藏)的数据
     queryBookList (loginName) {
+      this.loading = true;
       let obj = this;
       let params = Object.assign({}, obj.BOOKCONFIG.params);
 
@@ -109,13 +114,19 @@ export default {
       Get(BASE_URL).then((resp) => {
         let res = resp.data;
         if (res.result == '1' && res.data.length > 0) {
-          obj.booklist = obj.booklist.concat(res.data);
+          this.loading = false;
+          // this.noData = false;
+          obj.booklist = res.data;
+        }else if(res.result == '1' && res.data.length == 0){
+          this.loading = false;
+          // this.noData = true;
         } else if (res.result == '0') {
           Toast.fail({
             duration: 1000,
             message: res.error.errorMsg
           });
-
+          this.loading = false;
+          // this.noData = true;
         }
       })
     },
@@ -157,7 +168,7 @@ export default {
           duration: 1000,
           message: res.data.msg
         });
-        this.booklist = [];
+        // this.booklist = [];
         obj.initData(obj.loginName);
       }
     },
@@ -166,13 +177,9 @@ export default {
      * 书架点击封面和书名是进试读页面
      **/
     toProbation (item, modulename) { // 执行自定义事件
-      if (modulename == "bookmyshelf") { // 我的书架 -> 试读
-        if (!item.bookFreeDownLoadPath) {  // 没有试读地址的情况
-          Toast.fail(this.display.noProbation); // 提示暂无试读文件
-          return false;
-        }
-        let params = this.PROBATION.params;
-        var url = this.PROBATION.url || CONFIG.READ_URL + '?bookId=' + item.resourceId + '&readType=' + params.readType + '&bookName=' + item.resourceName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+      if (modulename == "bookmyshelf") { // 我的书架 -> 直接去阅读正文地址
+        let params = Object.assign({},this.PROBATION.params) ;
+        var url = CONFIG.READ_URL + '?bookId=' + item.resourceId + '&readType=' + params.readType + '&bookName=' + item.resourceName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
       } else { // 收藏夹 -> 详情页
         var url = this.CONFIG.toDetailUrl + '?pubId=' + item.pubId;
       }

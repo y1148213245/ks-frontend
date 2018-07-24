@@ -36,8 +36,8 @@
 
           <p class="price">
             {{getStaticText('eBookPrice') ? getStaticText('eBookPrice') : '电子书价格: '}}
-            <span class="newPrice">￥{{bookInfo.memberPrice | filterFun}}</span>
-            <span class="oldPrice">￥{{bookInfo.ebPrice | filterFun}}</span>
+            <span class="newPrice">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}{{bookInfo.memberPrice | filterFun}}</span>
+            <span class="oldPrice">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}{{bookInfo.ebPrice | filterFun}}</span>
           </p>
 
           <p class="promotion" v-if="bookInfo.activityList && bookInfo.activityList.length > 0">
@@ -71,7 +71,7 @@
         <p v-if="CONFIG && CONFIG.showInfoList && CONFIG.showInfoList.length>0 && bookInfo">
           <span class="work_bookdetail_02_bookInfo" v-for="(item, index) in CONFIG.showInfoList" :key="index">
             <span> {{ item.title }} </span>
-            <span v-if="item && item.filter"> {{ bookInfo[item.key] | formatDateNEW}} </span>
+            <span v-if="item && item.filter"> {{formatDate(bookInfo[item.key])}} </span>
             <span v-else> {{ bookInfo[item.key] }} </span>
           </span>
         </p>
@@ -112,7 +112,7 @@ export default {
       buyBookUrl: '',
       probationUrl: '',
       flag: true,
-      currentAudio: ''
+      currentAudio: '',
     }
   },
   mounted () {
@@ -148,13 +148,13 @@ export default {
         return '0.00';
       }
     },
-    formatDate (value) {
-      if (value) {
-        return moment(Number(value)).format("YYYY-MM-DD");  // 只接收Number类型
-      } else {
-        return '暂无日期';
-      }
-    }
+    // formatDate (value) {
+    //   if (value) {
+    //     return moment(Number(value)).format("YYYY-MM-DD");  // 只接收Number类型
+    //   } else {
+    //     return '暂无日期';
+    //   }
+    // }
   },
   computed: {
     ...mapGetters({
@@ -263,6 +263,14 @@ export default {
         return false
       }
     },
+    formatDate (value) {
+      if (value) {
+        return moment(Number(value)).format("YYYY-MM-DD");  // 只接收Number类型
+      } else {
+        return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期';
+      }
+    },
+
   },
   watch: {
     cartTotalAmount: function (newValue, oldValue) {

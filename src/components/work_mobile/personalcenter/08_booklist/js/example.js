@@ -33,7 +33,7 @@ const dev = {
           url:'',
           params:{
             bookId:'',
-            readType:0,
+            readType:1,
             bookName:'',
             userName:'',
             siteType:''
@@ -101,7 +101,7 @@ const dev = {
         }
       },
 
-    }
+    },
   }
 }
 
@@ -122,7 +122,7 @@ const prod = {
           url:'',
           params:{
             bookId:'',
-            readType:0,
+            readType:1,
             bookName:'',
             userName:'',
             siteType:''
@@ -189,7 +189,7 @@ const prod = {
         }
       },
 
-    }
+    },
   }
 }
 

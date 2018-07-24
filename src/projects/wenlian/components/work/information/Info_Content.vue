@@ -10,7 +10,7 @@
         <div class="news_tit f20 pb10" v-text="information.pub_resource_name"></div>
         <div class="news_other f14 color_aba pt10 scoped_title_info">
           <span>{{information.information_SYS_AUTHORS || (getStaticText('noAuthor') ? getStaticText('noAuthor') : '暂无作者')}}</span>
-          <span>{{information.information_a_pubTime | formatTimeNEW}}</span>
+          <span>{{formatTimeNEW(information.information_a_pubTime)}}</span>
           <span class="fr share">
 						<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis " target="_blank">
               <i class="news_other_03"></i>{{getStaticText('share') ? getStaticText('share') : "分享"}}
@@ -145,7 +145,40 @@
         }else {
           return false;
         }
-      }
+      },
+      formatTimeNEW (time) {
+        if (time !== undefined && time !== '' && time !== null) {
+          let date = new Date(parseInt(time));
+          return formatDate(date, 'yyyy'+(this.getStaticText('year') ? this.getStaticText('year') : '年')
+            +'MM'+(this.getStaticText('month') ? this.getStaticText('month') : '月')
+            +'dd'+(this.getStaticText('day') ? this.getStaticText('day') : '日')
+            +' hh:mm')
+        }
+
+        function formatDate(date, fmt) {
+          if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+          }
+          let o = {
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'h+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds()
+          }
+          for (let k in o) {
+            if (new RegExp(`(${k})`).test(fmt)) {
+              let str = o[k] + ''
+              fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str))
+            }
+          }
+          return fmt
+        }
+
+        function padLeftZero(str) {
+          return ('00' + str).substr(str.length)
+        }
+      },
     }
   }
 </script>

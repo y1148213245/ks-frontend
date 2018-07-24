@@ -34,7 +34,10 @@ const dev = {
         collect:"收藏",
         support:"点赞",
         pleaseLogin:"请登录",
-        informationalContent:"资讯内容"
+        informationalContent:"资讯内容",
+        year:"年",
+        month:"月",
+        day:"日"
       },
     },
   },
@@ -69,7 +72,10 @@ const prod = {
         collect:"收藏",
         support:"点赞",
         pleaseLogin:"请登录",
-        informationalContent:"资讯内容"
+        informationalContent:"资讯内容",
+        year:"年",
+        month:"月",
+        day:"日"
       },
 
     }

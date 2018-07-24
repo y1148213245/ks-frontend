@@ -16,7 +16,7 @@
     <div class="topTitle">
       <div class="title" v-text="workInfo[keys.title] || (getStaticText('notHave') ? getStaticText('notHave') : '暂无')"></div>
       <div class="work_bookdetail_03_activityname">{{workInfo[keys.activityName]}}</div>
-      <time class="work_bookdetail_03_createdTime">{{workInfo[keys.createdTime] | formatTimeNEW}}</time>
+      <time class="work_bookdetail_03_createdTime">{{formatTimeNEW(workInfo[keys.createdTime])}}</time>
       <p class="work_bookdetail_03-activity_abstract" v-text="activityDetail[CONFIG.getActivityInfo.dataKeys.abstract]"></p>
       <div class="vote" v-show="activityIsActive && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch] && activityDetail[CONFIG.getActivityInfo.dataKeys.voteSwitch]== (getStaticText('yes') ? getStaticText('yes') : '是')">
         <!-- 投票组件 -->
@@ -137,8 +137,7 @@ export default {
   },
 
   methods: {
-
-    addCollect () { // 为作品添加收藏 或 取消收藏
+    addCollect() { // 为作品添加收藏 或 取消收藏
       var _this = this;
       if (!this.member.loginName) { // 未登录时
         this.$message({
@@ -162,10 +161,10 @@ export default {
         }
       });
     },
-    totalVoteNum (num) {
+    totalVoteNum(num) {
       this.workInfo[this.keys.voteNum] = num;
     },
-    queryWorkInfo (loginName) {  // 作品详情信息查询
+    queryWorkInfo(loginName) {  // 作品详情信息查询
       loginName = loginName ? loginName : '';
       Get(CONFIG.BASE_URL + this.CONFIG.url + '?loginName=' + loginName + '&doclibCode=' + this.resourceType + '&docID=' + this.resourceId).then(rep => {
         if (rep.data) {
@@ -173,7 +172,7 @@ export default {
         }
       });
     },
-    queryActivityInfo () {
+    queryActivityInfo() {
       let _this = this;
       let config = this.CONFIG.getActivityInfo;
       let queryObj = URL.parse(document.URL, true).query;
@@ -182,7 +181,7 @@ export default {
         doclibCode: config.requestParams.doclibCode,
         docID: queryObj.activityId
       }
-      Get(CONFIG.BASE_URL + config.url, { params }).then(resp => {
+      Get(CONFIG.BASE_URL + config.url, {params}).then(resp => {
         _this.activityDetail = resp.data;
 
         let thisTimestamp = new Date().getTime();
@@ -193,27 +192,60 @@ export default {
         }
       })
     },
-    loadWork (fileRecordID) {  // 下载附件类型的作品
+    loadWork(fileRecordID) {  // 下载附件类型的作品
       let loadUrl = CONFIG.BASE_URL + this.CONFIG.loadUrl + fileRecordID;
       window.open(loadUrl, '_blank');
     },
-    getStaticText (text) {
+    getStaticText(text) {
       if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
         return this.CONFIG.staticText[text]
       } else {
         return false
       }
     },
+    formatTimeNEW(time) {
+      if (time !== undefined && time !== '' && time !== null) {
+        let date = new Date(parseInt(time));
+        return formatDate(date, 'yyyy'+(this.getStaticText('year') ? this.getStaticText('year') : '年')
+                                +'MM'+(this.getStaticText('month') ? this.getStaticText('month') : '月')
+                                +'dd'+(this.getStaticText('day') ? this.getStaticText('day') : '日')
+                                +' hh:mm')
+      }
+
+      function formatDate(date, fmt) {
+        if (/(y+)/.test(fmt)) {
+          fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+        }
+        let o = {
+          'M+': date.getMonth() + 1,
+          'd+': date.getDate(),
+          'h+': date.getHours(),
+          'm+': date.getMinutes(),
+          's+': date.getSeconds()
+        }
+        for (let k in o) {
+          if (new RegExp(`(${k})`).test(fmt)) {
+            let str = o[k] + ''
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str))
+          }
+        }
+        return fmt
+      }
+
+      function padLeftZero(str) {
+        return ('00' + str).substr(str.length)
+      }
+    },
 
   },
   watch: {
-    member (newValue, oldValue) {
+    member(newValue, oldValue) {
       if (newValue.loginName !== oldValue.loginName || newValue.loginName === undefined) {
         this.queryWorkInfo(newValue.loginName);
       }
     }
   }
-}
+};
 
 </script>
 <style>

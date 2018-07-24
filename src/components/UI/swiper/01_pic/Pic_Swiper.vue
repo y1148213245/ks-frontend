@@ -1,6 +1,5 @@
 <template>
 	<div class="ui_swiper_01_pic">
-
 		<el-carousel :interval="CONFIG.interval" arrow="always" :height="CONFIG.height">
 			<template v-for="(item, index) in picList">
         <div @click="backgroundImgEve(item)" :key="index">
@@ -22,13 +21,13 @@
             <!-- price 价格 -->
             <span :key="config_i" v-else-if="config.name == 'price'" class="ui_swiper_01_resourcelists_li_pricecontainter">
               <label class="ui_swiper_01_resourcelists_price_label">{{config.display}}</label>
-              <span v-bind="{class: 'ui_swiper_01_resourcelists_' + config.field}">{{ item[keys[config.field]]  | formatPriceNew }}</span>
+              <span v-bind="{class: 'ui_swiper_01_resourcelists_' + config.field}">{{formatPriceNew(item[keys[config.field]])}}</span>
             </span>
 
             <!-- time 时间 -->
             <span :key="config_i" v-else-if="config.name == 'time'" class="ui_swiper_01_resourcelists_li_timecontainter">
               <label class="ui_swiper_01_resourcelists_time_label">{{config.display}}</label>
-              <span v-bind="{class: 'ui_swiper_01_resourcelists_' + config.field}">{{ item[keys[config.field]] | formatDateNEW}}</span>
+              <span v-bind="{class: 'ui_swiper_01_resourcelists_' + config.field}">{{formatDateNEW(item[keys[config.field]])}}</span>
             </span>
 
             <!-- 其他不需要特殊处理的简单项 -->
@@ -44,11 +43,12 @@
 			</template>
 
 		</el-carousel>
-	</div>
+  </div>
 </template>
 <script type="text/ecmascript-6">
 import PROJECT_CONFIG from "projectConfig";
 import { Post, getFieldAdapter, toOtherPage } from "@common";
+import moment from "moment"
 
 export default {
   name: "ui_swiper_01_pic",
@@ -57,7 +57,7 @@ export default {
   data: function () {
     return {
       CONFIG: null,
-      picList: []
+      picList: [],
     }
   },
   created: function () {
@@ -85,6 +85,20 @@ export default {
         return this.CONFIG.staticText[text]
       } else {
         return false
+      }
+    },
+    formatDateNEW (value) {
+      if (value){
+        return moment(Number(value)).format("YYYY-MM-DD")
+      } else {
+        return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期'
+      }
+    },
+    formatPriceNew (value) {
+      if (value) {
+        return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥') + Number(value).toFixed(2);
+      } else {
+        return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥')+'0.00';
       }
     }
   }

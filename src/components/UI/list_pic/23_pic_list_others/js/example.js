@@ -14,7 +14,7 @@ const description = `图书列表，购买该书的用户还买列表和该作�
 const dev = {
   list_pic: {
     list_pic_23: {
-      userbook: {
+      'modulename': {
         title: '购买该书的用户还买',
         url: "../data/ui_piclist_19_userbook.json",
         detailHref: "../pages/bookdetail.html?pubId=", // 去详情页
@@ -26,24 +26,11 @@ const dev = {
           noImg: "暂无图片",
           noIntroduction: "暂无简介",
           noBookName: "暂无书名",
-          noAuthor: "暂无作者"
+          noAuthor: "暂无作者",
+          yuan:"￥"
         }
       },
-      otherbook: {
-        title: '该作者其他图书',
-        url: '../data/ui_piclist_19_otherbook.json',
-        detailHref: "../pages/bookdetail.html?pubId=", // 去详情页
-        maxNum: 4, // 控制显示多少个
-        staticText: {
-          author: "作者:",
-          comments: "条评论",
-          noData: "暂无数据",
-          noImg: "暂无图片",
-          noIntroduction: "暂无简介",
-          noBookName: "暂无书名",
-          noAuthor: "暂无作者"
-        }
-      },
+
 
     }
   }
@@ -68,7 +55,8 @@ const prod = {
           noImg: "暂无图片",
           noIntroduction: "暂无简介",
           noBookName: "暂无书名",
-          noAuthor: "暂无作者"
+          noAuthor: "暂无作者",
+          yuan:"￥"
         }
       },
       otherbook: {
@@ -94,7 +82,8 @@ const prod = {
           noImg: "暂无图片",
           noIntroduction: "暂无简介",
           noBookName: "暂无书名",
-          noAuthor: "暂无作者"
+          noAuthor: "暂无作者",
+          yuan:"￥"
         }
       },
 

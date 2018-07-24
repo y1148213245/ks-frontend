@@ -130,7 +130,7 @@
               <span class="register_02_bind_content_mail_success-content-text">{{getStaticText('verify') ? getStaticText('verufy') : '验证'}}</span>
               {{getStaticText('email') ? getStaticText('email'): '邮件 '}}<br/> {{getStaticText('checkOutEmail') ? getStaticText('checkOutEmail') : '请登录你的邮箱查看'}}</div>
             <el-button class="register_02_bind_content-button" type="primary" @click="backLogin">
-              {{getStaticText('backToLogin') ? getStaticText('backToLogin'): '返回登陆页'}}</el-button>
+              {{getStaticText('backToLogin') ? getStaticText('backToLogin'): '返回登录页'}}</el-button>
           </div>
         </div>
 
@@ -280,7 +280,7 @@ export default {
       }
     };
     var validateSubfixEmail = (rule, value, callback) => {
-     
+
       if (value === "") {
         callback(new Error(this.getStaticText('inputEmail') ? this.getStaticText('inputEmail') : "请输入邮箱"));
       }else if(!/^[A-Za-z\d]+$/.test(value)){
@@ -376,10 +376,10 @@ export default {
       }
     },
     getShowEmailPostfix () {
-      
+
       let vconfig = CONFIG.EMAIL_CONFIG;
       if (vconfig && vconfig.showPostfix) {
-        
+
         return true
       } else {
         return false
@@ -529,7 +529,7 @@ export default {
     },
     /* 绑定邮箱注册 */
     submitFormE (e, ruleFormE) {
-      
+
       this.$refs[ruleFormE].validate(valid => {
 
         if (valid) {

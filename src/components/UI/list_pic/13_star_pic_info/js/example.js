@@ -18,7 +18,8 @@ const dev = {
       url: '/data/ui_list_pic_13.json',
       picLinkUrl: '',
       staticText: {
-        noImg: "暂无图片"
+        noImg: "暂无图片",
+        yuan:"￥"
       }
     }
   }
@@ -36,7 +37,8 @@ const prod = {
         pageSize: "4"
       },
       staticText: {
-        noImg: "暂无图片"
+        noImg: "暂无图片",
+        yuan:"￥"
       }
     }
   }

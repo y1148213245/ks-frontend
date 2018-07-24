@@ -5,7 +5,7 @@
       <p class="ui_mobile_classification_bgpic" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></p>
       <div class="ui_mobile_classification_con">
         <p class="ui_mobile_classification_text" v-text="item[keys.text]"></p>
-        <p class="ui_mobile_classification_count" v-if="keys && keys.cascadeId && item[keys.cascadeId]">{{ countsList[item[keys.cascadeId]] | formatCount}}</p>
+        <p class="ui_mobile_classification_count" v-if="keys && keys.cascadeId && item[keys.cascadeId]">{{formatCount(countsList[item[keys.cascadeId]])}}</p>
         <p class="ui_mobile_classification_count" v-else>{{getStaticText('zeroBook') ? getStaticText('zeroBook') : '共 0 本'}}</p>
       </div>
     </a>
@@ -89,6 +89,13 @@ export default {
         return false
       }
     },
+    formatCount (value) {
+      if (value == null || value == undefined) { // 返回为空
+        return this.getStaticText('zeroBook') ? this.getStaticText('zeroBook') : '共 0 本';
+      } else {
+        return (this.getStaticText('total') ? this.getStaticText('total') : '共') + value + (this.getStaticText('unit') ? this.getStaticText('unit') : '本');
+      }
+    }
   }
 }
 

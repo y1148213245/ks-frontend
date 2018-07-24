@@ -36,7 +36,7 @@
             <p class="ui_mobile_list_02_bookname" @click="toDetail(ebook)" v-if="CONFIG.showItem.indexOf('bookname') !== -1 ? true : false">{{ebook[keys.bookname]}}<span class="ui_mobile_list_02-name_icon"  :style="{ backgroundImage: 'url(' + rankbgmUrl + ')'}"  v-text="index+1" v-if="index<5"></span></p>
             <p class="ui_mobile_list_02_author" v-if="CONFIG.showItem.indexOf('author') !== -1 ? true : false">
               <span v-text="CONFIG.display.author"></span>
-              <span>{{ebook[keys.author] | formatAuthor}}</span>
+              <span>{{formatAuthor(ebook[keys.author])}}</span>
             </p>
             <!-- 测试数据 -->
             <!-- <p style="line-height: 12px; margin-top: 0px; margin-bottom: 0px;">
@@ -50,8 +50,8 @@
               <span>{{ebook[keys.isbn]}}</span>
             </p>
             <p class="ui_mobile_list_02_abstract" v-if="CONFIG.showItem.indexOf('abstract') !== -1 ? true : false">{{ebook[keys.abstract]}}</p>
-            <p class="ui_mobile_list_02_price" v-if="CONFIG.showItem.indexOf('price') !==-1 ? true : false">{{ebook[keys.price] | formatPriceNew}}</p>
-            <p class="ui_mobile_list_02_ebPrice" v-if="CONFIG.showItem.indexOf('ebPrice') !==-1 ? true : false">{{ebook[keys.ebPrice] | formatPriceNew}}</p>
+            <p class="ui_mobile_list_02_price" v-if="CONFIG.showItem.indexOf('price') !==-1 ? true : false">{{formatPriceNew(ebook[keys.price])}}</p>
+            <p class="ui_mobile_list_02_ebPrice" v-if="CONFIG.showItem.indexOf('ebPrice') !==-1 ? true : false">{{formatPriceNew(ebook[keys.ebPrice])}}</p>
           </dd>
         </dl>
       </div>
@@ -101,7 +101,6 @@ export default {
   },
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01[this.module];
-
     this.$bus.on('showSearchResult', (data) => {
       this.searchText = data;
       this.toBookList(this.orderParam, this.indexValue);
@@ -151,7 +150,6 @@ export default {
       }
     });
   },
-
   methods: {
     loadBookList (cascadId, isNOConcat) { // 获取图书列表数据 isNOConcat: 是否需要拼接数据
       this.checkCascadeId = cascadId;
@@ -285,6 +283,20 @@ export default {
         return false
       }
     },
+    formatPriceNew (value) {
+      if (value) {
+        return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥') + Number(value).toFixed(2);
+      } else {
+        return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥')+'0.00';
+      }
+    },
+    formatAuthor (value) {
+      if (!value) { // 返回为空
+        return this.getStaticText('noAuthor') ? this.getStaticText('noAuthor') : '暂无作者';
+      } else {
+        return value;
+      }
+    }
 
   }
 }

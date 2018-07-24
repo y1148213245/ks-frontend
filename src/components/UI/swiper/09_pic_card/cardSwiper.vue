@@ -1,10 +1,10 @@
 <template>
-<div class="ui_swiper_09_card">
+  <div class="ui_swiper_09_card">
   <!-- 组件的标题、副标题、去更多传colId 都得从栏目详情的接口里面取值 -->
     <!-- 组件标题 取配置的name 或者 父栏目名称 -->
     <div class="ui_swiper_09_card_comtitle_con" v-if="CONFIG && CONFIG.comTitle && CONFIG.comTitle.isShow && columnDetailInfo && columnKeys">
       <div :key="config_i" v-if="typeof(CONFIG.comTitle.isShowImg!='undefined') && CONFIG.comTitle.isShowImg" class="ui_swiper_09_card_comtitle_imgdiv">
-        <img class="ui_swiper_09_card_comtitle_imgdiv_img" :src=" columnDetailInfo[columnKeys.bigPic]" alt="暂无图片" />
+        <img class="ui_swiper_09_card_comtitle_imgdiv_img" :src=" columnDetailInfo[columnKeys.bigPic]" :alt="getStaticTtext('noImg') ? getStaticTtext('noImg') : '暂无图片'" />
       </div>
       <h4 class="ui_swiper_09_card_comtitle"> {{CONFIG.comTitle.name ? CONFIG.comTitle.name : columnDetailInfo[columnKeys.name]}} </h4>
       <span class="ui_swiper_09_card_comtitle_columnDetailInfo">{{columnDetailInfo[columnKeys.code]}}</span>
@@ -14,15 +14,15 @@
       <span class="ui_swiper_09_card_tomore_name"> {{CONFIG.toMoreBtn.name}}</span>
       <i class="ui_swiper_09_card_tomore_icon" v-bind="{class: CONFIG.toMoreBtn.iconClass}"></i>
     </div>
-	<div class="swiper-container">
-		<div class="swiper-wrapper">
+	  <div class="swiper-container">
+		  <div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="(item, index) in picList" :key="index" v-if="index >= CONFIG.startNum">
             <template v-for="(config, config_i) in CONFIG.complicatedItem">
               <!-- 需要特殊处理的复杂项 -->
               <!-- img 图片 -->
               <div :key="config_i" v-if="config.name == 'img'" class="ui_swiper_09_card_imgcontainter">
                 <label class="ui_swiper_09_card_img_label">{{config.display}}</label>
-                <img class="ui_swiper_09_card_img" v-bind="{class: 'ui_swiper_09_card_' + config.field}" :src="item[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="CONFIG && CONFIG.staticText && CONFIG.staticText.noImg ? CONFIG.staticText.noImg : '暂无图片'"/>
+                <img class="ui_swiper_09_card_img" v-bind="{class: 'ui_swiper_09_card_' + config.field}" :src="item[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="getStaticTtext('noImg') ? getStaticTtext('noImg') : '暂无图片'"/>
               </div>
 
               <!-- 自定义事件按钮 包括（title 标题） -->
@@ -34,13 +34,13 @@
               <!-- price 价格 -->
               <span :key="config_i" v-else-if="config.name == 'price'" class="ui_swiper_09_card_li_pricecontainter">
                 <label class="ui_swiper_09_card_price_label">{{config.display}}</label>
-                <span v-bind="{class: 'ui_swiper_09_card_' + config.field}">{{ item[keys[config.field]]  | formatPriceNew }}</span>
+                <span v-bind="{class: 'ui_swiper_09_card_' + config.field}">{{formatPriceNew(item[keys[config.field]]) }}</span>
               </span>
 
               <!-- time 时间 -->
               <span :key="config_i" v-else-if="config.name == 'time'" class="ui_swiper_09_card_li_timecontainter">
                 <label class="ui_swiper_09_card_time_label">{{config.display}}</label>
-                <span v-bind="{class: 'ui_swiper_09_card_' + config.field}">{{ item[keys[config.field]] | formatDateNEW}}</span>
+                <span v-bind="{class: 'ui_swiper_09_card_' + config.field}">{{formatDateNEW(item[keys[config.field]])}}</span>
               </span>
 
               <!-- 其他不需要特殊处理的简单项 -->
@@ -66,6 +66,7 @@ import URL from 'url';
 import { Post, getFieldAdapter, toOtherPage } from "@common";
 import Swiper from "swiper";
 import "swiper/dist/css/swiper.min.css";
+import moment from "moment";
 
 export default {
   name: "ui_swiper_09_card",
@@ -100,7 +101,7 @@ export default {
     if (this.CONFIG.getSubTitle && this.CONFIG.getSubTitle.sysAdapter && this.CONFIG.getSubTitle.typeAdapter) { // 兼容没有配栏目字段适配器的组件
       this.columnKeys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getSubTitle.sysAdapter, this.CONFIG.getSubTitle.typeAdapter)));
     }
-    
+
     if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) { // 通过接收广播获取栏目id
       this.$bus.$on(this.CONFIG.onEvent.eventName, (data) => {
         this.picList = [];
@@ -202,6 +203,27 @@ export default {
       e.preventDefault();
       this.mySwiper.slideNext();
     },
+    getStaticTtext (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
+    },
+    formatPriceNew (value) {
+      if (value) {
+        return (this.getStaticTtext('yuan') ? this.getStaticTtext('yuan') : '￥') + Number(value).toFixed(2);
+      } else {
+        return (this.getStaticTtext('yuan') ? this.getStaticTtext('yuan') : '￥') +'0.00';
+      }
+    },
+    formatDateNEW (value) {
+    if (value) {
+      return moment(Number(value)).format("YYYY-MM-DD"); // 只接收Number类型
+    } else {
+      return this.getStaticTtext('noDate') ? this.getStaticTtext('noDate') : '暂无日期';
+    }
+  }
   }
 };
 </script>

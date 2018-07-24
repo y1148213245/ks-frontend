@@ -1,327 +1,360 @@
 <template>
-    <section class="personalcenter_list">
-            <!-- 订单列表 -->
-            <div v-show="currentShow=='list'">
-                <div>
-                    <el-button type="primary" v-on:click="all()">全部订单</el-button>
-                    <el-button type="primary" v-on:click="wait()">等待付款</el-button>
-                </div>
-                <div class="ordernav">
-                    <el-row :gutter="1">
-                        <el-col :span="9">
-                            <div class="block">
-                                <el-date-picker v-model="value4" type="datetimerange" range-separator="  ~  " start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2" placeholder="选择时间范围" align="left" value-format="yyyy-MM-dd HH:mm:ss" @change="changeDateValue">
-                                </el-date-picker>
-                            </div>
-                        </el-col>
-                        <el-col :span="9">
-                            <div class="grid-content bg-purple-light">订单详情</div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div class="grid-content bg-purple-light">数量</div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div class="grid-content bg-purple-light">金额</div>
-                        </el-col>
-
-                    </el-row>
-                </div>
-                <div v-if="myOrderList.data && myOrderList.data.length > 0">
-                    <div v-for="(Aitem,outIndex) in myOrderList.data" :key="outIndex">
-                        <div class="mainlist">
-                            <div class="grid-content bg-purple-light" style="padding:0 20px;border: 1px solid rgb(223, 236, 236);">
-                                <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:50px;">
-                                    <i class="el-icon-time"></i> {{Aitem.createTime.split('.')[0]}}</span>
-                                <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:50px;">订单号：{{Aitem.parentOrderCode}}</span>
-                                <!-- <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:50px;" v-if="Aitem.orderList[0].deliveryPerson">收货人：{{Aitem.orderList[0].deliveryPerson}}</span> -->
-                                <!-- 隐藏总单的订单状态 -->
-                                <!-- <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==0 && Aitem.status==1">订单状态：待付款</span>
-                                <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==1">订单状态：进行中</span>
-                                <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==5">订单状态：已完成</span>
-                                <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="Aitem.payStatus==0 && Aitem.status==2">订单状态：已取消</span> -->
-                            </div>
-
-                            <div v-for="(item,index) in Aitem.orderList" :key="index">
-
-                                <div class="grid-content" style="padding:0 20px;border: 1px solid rgb(223, 236, 236);">
-                                    <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:50px;">子单号：{{item.orderCode}}</span>
-                                    <!-- <el-button type="text" @click="dialogTableVisible = true">联系客服</el-button> -->
-                                    <el-button type="text" @click="showDetails(outIndex,index)" style="float:right;display:inline-block;margin-left:20px;">订单详情</el-button>
-
-                                    <!--<el-dialog title="联系客服" :visible.sync="dialogTableVisible">
-                                    <div class="cent">
-                                        <div class="grid-content bg-purple" style="padding:0 20px">
-                                            <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:310px;">订单号：{{item.orderCode}}</span>
-                                        </div>
-                                        <el-row>
-                                            <el-col :span="18">
-                                                <div style="margin: 10px;height: 100px;width:550px;">
-                                                    <img v-bind:src="item.itemList.bigPic" style="height: 100px;width: 100px;float:left;">
-                                                    <div class="itemlist" style="width:450px;">
-                                                        <span style="width:350px;" :title="item.itemList[index].productName">{{item.itemList[0].productName}}</span>
-                                                        <span style="font-size:16px;">作者：{{item.itemList[index].author}}</span>
-                                                        <span style="margin-top:20px;">数量：{{item.itemList[index]. productNum}}</span>
-                                                    </div>
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="6" class="bord bordl">{{item.itemList[0]. productPrice * item.itemList[0]. productNum| filterFun}}</el-col>
-                                        </el-row>
-                                    </div>
-                                    <div style="margin:20px 0 10px 20px">
-                                        <p style="font-size:20px">请发邮件至</p>
-                                        <p style="text-align:center">asdasdasdasd@123.com</p>
-                                    </div>
-                                    </br>
-                                </el-dialog>-->
-
-                                </div>
-
-                                <el-row class="cent" v-for="(item1,innerindex) in item.itemList" :key="innerindex">
-                                    <el-col :span="15">
-                                        <div style="margin: 10px;height: 100px;">
-                                            <img v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" style="float:left;text-align: center;line-height: 100px;" alt="暂无封面">
-                                            <div class="itemlist">
-                                                <span style="margin-top:5px;" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
-                                                <span style="font-size:14px;margin-top:25px;">作者：{{item1.author||"暂无作者"}}</span>
-                                            </div>
-                                        </div>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <div style="font-size:16px;text-align:center;margin-top:45px;">
-                                            <span v-if="item.itemList[0].productType== 94">电子书订单</span>
-                                            <span v-if="item.itemList[0].productType== 91">纸书订单</span>
-                                        </div>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <div style="font-size:16px;text-align:center;margin-top:45px;">x{{item1. productNum}}</div>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <div style="font-size:16px;text-align:center;margin-top:45px;">{{item1. productPrice * item1. productNum | filterFun}}</div>
-                                    </el-col>
-                                </el-row>
-                            </div>
-
-                            <div style="margin-top:5px;">
-
-                                <div v-if="Aitem.payStatus==0 && Aitem.status==1" class="elbutt">
-                                    <el-button type="text" @click="cancelOrder(outIndex)" id="testUseCancelLocation">
-                                        取消订单
-                                    </el-button>
-                                    <el-button type="primary" @click="myCallBack(outIndex)">
-                                        付款
-                                        <i class="el-icon-check el-icon--right"></i>
-                                    </el-button>
-                                </div>
-                                <div v-if="Aitem.payStatus==1" class="elbutt">
-                                    <el-button type="primary" @click="deleteOrder(outIndex)">
-                                        删除订单
-                                        <i class="el-icon-check el-icon-close"></i>
-                                    </el-button>
-                                </div>
-
-                            </div>
-                          <div class="realAmount">
-                            <div v-if="Aitem.payStatus==1" style="display:inline-block;margin-left:30px;">已付款：<span>￥{{Aitem.realAmount || 0 }}</span></div>
-                            <div v-if="Aitem.payStatus==0 && Aitem.status==1">待支付：<span>￥{{Aitem.realAmount}}</span></div>
-                          </div>
-                          <div class="realAmount" v-show="Aitem.balanceAmount!='0.00'" style="display:inline-block">下载币抵扣：<span>￥{{Aitem.balanceAmount || 0 }}</span></div>
-                          <div class="realAmount" v-show="Aitem.couposAmount!='null' && Aitem.couposAmount!='0.00'">优惠券减免：<span>￥{{Aitem.couposAmount || 0 }}</span></div>
-                          <div class="realAmount" v-show="Aitem.orderList[0] && Aitem.orderList[0].activityRemark && Aitem.orderList[0].activityRemark!='0.00'">活动减免：<span>￥{{Aitem.orderList[0] && Aitem.orderList[0] && Aitem.orderList[0].activityRemark || 0 }}</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="emptyColl" v-else>
-                    <img src="../../assets/img/empty.png" alt="">
-                    <div>订单是空的~快去购买吧</div>
-                </div>
-                <ui_pagination :pageMessage="{totalCount: this.myOrderList.data && this.myOrderList.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
+  <section class="personalcenter_list">
+    <!-- 订单列表 -->
+    <div v-show="currentShow=='list'" class="personalcenter_list_main">
+      <div v-if="CONFIG && CONFIG.tabListShow.length > 0" class="personalcenter_list_main_tab">
+        <el-radio-group v-model="radio" @change="changeOrderList">
+          <el-radio-button :label="item.type" v-for="(item, index) in CONFIG.tabListShow" :key="index">{{item.title}}</el-radio-button>
+        </el-radio-group>
+      </div>
+      <div>
+        <el-button type="primary" @click="allOrder()">全部订单</el-button>
+        <el-button type="primary" @click="waitPayOrder()">等待付款</el-button>
+      </div>
+      <div class="personalcenter_list_main_title">
+        <el-row :gutter="1">
+          <el-col :span="9">
+            <el-date-picker class="personalcenter_list_main_title_picker" v-model="timeValue" type="datetimerange" range-separator="  ~  " start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2" placeholder="选择时间范围" align="left" value-format="yyyy-MM-dd HH:mm:ss" @change="changeDateValue">
+            </el-date-picker>
+          </el-col>
+          <el-col :span="9">
+            <div class="bg-purple-light">订单详情</div>
+          </el-col>
+          <el-col :span="3">
+            <div class="bg-purple-light">数量</div>
+          </el-col>
+          <el-col :span="3">
+            <div class="bg-purple-light">金额</div>
+          </el-col>
+        </el-row>
+      </div>
+      <div v-if="myOrderList.data && myOrderList.data.length > 0">
+        <div v-for="(Aitem,outIndex) in myOrderList.data" :key="outIndex">
+          <div class="personalcenter_list_main_listBox">
+            <div class="personalcenter_list_title_common bg-purple-light">
+              <span>
+                <i class="el-icon-time"></i> {{Aitem.createTime.split('.')[0]}}</span>
+              <span>订单号：{{Aitem.parentOrderCode}}</span>
             </div>
-            <!-- 订单详情 -->
-            <div v-show="currentShow=='details'">
-                <div v-for="item in orderDetails" :key="item.id">
-                    <div style="margin-bottom:20px;">
-                    <el-card class="box-card"  v-if="item.itemList[0].productType == 91 ">
-                    <div slot="header" class="clearfix">
-                    <i class="el-icon-location"></i><span>收货信息</span>
-                    </div>
-                    <div  class="text item">
-                    <p>收货人：<span>{{item.deliveryPerson}}</span></p>
-                    <p>电话：<span>{{item.deliveryContact}}</span></p>
-                    <p>收货地址：<span>{{item.deliveryAddress}}</span></p>
-                    </div>
-                    </el-card>
-
-                    <el-card class="box-card" style="vertical-align: top;" v-if="item.receiptType != ''">
-                    <div slot="header" class="clearfix">
-                     <i class="el-icon-printer"></i><span>发票信息</span>
-                    </div>
-                    <div  class="text item">
-                    <p>发票类型：
-                        <span v-if="item.receiptType==1">个人</span>
-                        <span v-if="item.receiptType==2">增值税发票</span>
-                    </p>
-                    <p>发票抬头：<span>{{item.receiptTitle}}</span></p>
-                    <p v-if="item.receiptType==1">发票内容：<span>{{item.receiptId}}</span></p>
-                    </div>
-                    </el-card>
-
-                    <el-card class="box-card" style="vertical-align: top;">
-                    <div slot="header" class="clearfix">
-                    <i class="el-icon-goods"></i><span>支付详情</span>
-                    </div>
-                    <div  class="text item">
-                    <p>支付方式：
-                        <span v-if="item.payMethod=='Weixin'">微信支付</span>
-                        <span v-if="item.payMethod=='Alipay'">支付宝</span>
-                        <span v-if="item.payMethod=='Balance'">下载币</span>
-                    </p>
-                    <p>商品总计：<span>{{item.orderTotalPrice | filterFun}}</span></p>
-                    <p>运费总计：<span>{{item.deliveryPrice}}元</span></p>
-                    </div>
-                    </el-card>
-                    <el-card class="box-card" style="vertical-align: top;">
-                    <div slot="header" class="clearfix">
-                    <i class="el-icon-edit"></i><span>备注信息</span>
-
-                    </div>
-                    <div  class="text item" style="word-break:break-word;">
-                    <p v-text="item.payRemark"></p>
-                    </div>
-                    </el-card>
-                    </div>
-
-
-                    <div style="float:right;margin-right:20px;">
-                        <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="item.payStatus==0 && item.status==1">订单状态：待付款</span>
-                        <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="item.payStatus==1">订单状态：已完成</span>
-                        <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;float:right" v-if="item.payStatus==0 && item.status==2">订单状态：已取消</span>
-                    </div>
-                    <div class="grid-content bg-purple" style="padding:0 20px;border: 1px solid rgb(223, 236, 236);">
-                        <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:50px;">
-
-                            <i class="el-icon-time"></i> {{item.createTime}}</span>
-                        <span style="display:inline-block;float:left;font-size:14px;margin-top:7px;margin-right:50px;">订单号：{{item.orderCode}}</span>
-                    </div>
-                    <el-row class="cent" v-for="item1 in item.itemList" :key="item1.id">
-                        <el-col :span="15">
-                            <div style="height: 100px;">
-                                <img onload="DrawImage(this,120,100)" v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" style="float:left;text-align: center;line-height: 100px;" alt="暂无封面">
-                                <div class="itemlist">
-                                    <span style="margin-top:5px;" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
-                                    <span style="font-size:16px;margin-top:25px;">作者：{{item1.author||"暂无作者"}}</span>
-                                </div>
-                                <!-- <el-button @click="showReturn(item,item1)" v-if="item.itemList[0].productType == 91">退货</el-button> -->
-                            </div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div style="font-size:16px;text-align:center;margin-top:45px;">x{{item1. productNum}}</div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div style="font-size:16px;text-align:center;margin-top:45px;">{{item1. memberPrice * item1. productNum | filterFun}}</div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div style="font-size:16px;text-align:center;margin-top:45px;text-decoration: line-through;">{{item1. productPrice * item1. productNum | filterFun}}</div>
-                        </el-col>
-
-                    </el-row>
-                    <div style="float:right; margin:25px 10px 0 10px;">
-                      <el-button type="primary" @click="goBack()">返回</el-button>
-                    </div>
-                    <div class="paybutt">
-                      <!-- <el-button type="primary" size="large" v-if="this.myOrderList[outIndex]==0 && this.myOrderList[outIndex].status==1">提交订单</el-button> -->
-                        <span style="font-size:20px;margin:20px;">订单总额：{{item.orderTotalPrice + item.deliveryPrice | filterFun}}</span>
-                        </br>
-                    </div>
-
-
-                </div>
-            </div>
-            <!-- 退货 -->
-            <div v-show="currentShow=='return'">
-              <div style="margin-bottom:10px;">
-              <el-steps :space="150" :active="1" :align-center="true" :center="true" >
-                <el-step title="提交申请" icon="el-icon-edit"></el-step>
-                <el-step title="商家审核" icon="el-icon-document"></el-step>
-                <el-step title="用户发货" icon="el-icon-upload2"></el-step>
-                <el-step title="审核退款" icon="el-icon-setting"></el-step>
-                <el-step title="完成退货" icon="el-icon-check"></el-step>
-              </el-steps>
+            <div v-for="(item,index) in Aitem.orderList" :key="index">
+              <div class="personalcenter_list_title_common">
+                <span>子单号：{{item.orderCode}}</span>
+                <el-button class="personalcenter_list_title_common_detailesbtn" type="text" @click="showDetails(outIndex,index)">订单详情</el-button>
               </div>
-
-              <div class="ordernav">
-                    <el-row :gutter="1">
-                        <el-col :span="14">
-                            <div class="grid-content bg-purple-light">商品名称</div>
-                        </el-col>
-                        <el-col :span="4">
-                            <div class="grid-content bg-purple-light">购买数量</div>
-                        </el-col>
-                        <el-col :span="6">
-                            <div class="grid-content bg-purple-light">下单时间</div>
-                        </el-col>
-                    </el-row>
-                </div>
-              <el-row class="cent">
-                  <el-col :span="14">
-                      <div style="margin: 10px;height: 100px;">
-                          <img v-bind:src="returnBigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" style="float:left;text-align: center;line-height: 100px;" alt="暂无封面">
-                          <div class="itemlist">
-                              <span style="margin-top:5px;">{{returnProductName}}</span>
-                              <span style="font-size:14px;margin-top:25px;">作者：{{returnAuthor}}</span>
-                          </div>
-                      </div>
-                  </el-col>
-                  <el-col :span="4">
-                      <div style="font-size:16px;text-align:center;margin-top:45px;">{{max}}</div>
-                  </el-col>
-                  <el-col :span="6">
-                      <div style="font-size:16px;text-align:center;margin-top:45px;">{{returnCreateTime}}</div>
-                  </el-col>
+              <el-row class="personalcenter_list_main_listBox_card" v-for="(item1,innerindex) in item.itemList" :key="innerindex">
+                <el-col :span="15">
+                  <div class="personalcenter_list_main_listBox_card_left">
+                    <img v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
+                    <div class="personalcenter_list_main_listBox_card_left_text">
+                      <span class="mt5" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
+                      <span v-if="orderType=='book'" class="personalcenter_list_main_listBox_card_left_author">作者：{{item1.author||"暂无作者"}}</span>
+                      <span v-else class="personalcenter_list_main_listBox_card_left_author">{{item1.periodicalRemark}}</span>
+                    </div>
+                  </div>
+                </el-col>
+                <el-col :span="3">
+                  <div class="personalcenter_list_main_listBox_card_right">
+                    <span v-if="item.itemList[0].productType== 94">电子书订单</span>
+                    <span v-if="item.itemList[0].productType== 91">纸书订单</span>
+                  </div>
+                </el-col>
+                <el-col :span="3">
+                  <div class="personalcenter_list_main_listBox_card_right">x{{item1. productNum}}</div>
+                </el-col>
+                <el-col :span="3">
+                  <div class="personalcenter_list_main_listBox_card_right">¥{{item1. productPrice * item1. productNum }}</div>
+                </el-col>
               </el-row>
-
-              <div style="border:1px solid rgb(236, 223, 223);margin-top:30px;padding:30px">
-                  <!-- 计数器 -->
-                  <div style=" margin-bottom:20px;">
-                      <span style="margin-right:20px;">退货数量:</span>
-                      <el-input-number v-model="num" @change="handleChange" :min="1" :max="max" size="small"></el-input-number>
-                  </div>
-                  <!-- 文本框 -->
-                  <div style="margin-bottom:20px;">
-                      <div style="margin-right:20px;display:inline-block;">问题描述:</div>
-                      <el-input @change="textChange" @blur="textBlur" class="textarea" type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请描述问题" v-model="textarea" style="width:700px;vertical-align:text-top;float：left;">
-                      </el-input>
-                  </div>
-                  <!-- 图片上传 -->
-                  <div>
-                    <span style="margin-right:20px;">上传图片:</span>
-                      <el-upload
-                        style="display:inline-block;"
-                        action="https://jsonplaceholder.typicode.com/posts/"
-                        list-type="picture-card"
-                        :on-preview="handlePictureCardPreview"
-                        :on-remove="handleRemove">
-                        <i class="el-icon-plus" style="margin:55px auto;!important"></i>
-                      </el-upload>
-                      <el-dialog v-model="dialogVisible" size="tiny">
-                        <img width="100%" :src="dialogImageUrl" alt="">
-                      </el-dialog>
-                  </div>
-                </div>
-                <div style="margin:30px 5px;float:right;">
-                      <el-button type="primary" size="large"  @click="applyReturnGoods()">申请退货</el-button>
-                </div>
             </div>
-    </section>
+
+            <div class="mt5">
+              <div v-if="Aitem.payStatus==0 && Aitem.status==1" class="fr">
+                <el-button type="text" @click="cancelOrder(outIndex)" id="testUseCancelLocation">
+                  取消订单
+                </el-button>
+                <el-button type="primary" @click="myCallBack(outIndex)">
+                  付款
+                  <i class="el-icon-check el-icon--right"></i>
+                </el-button>
+              </div>
+              <div v-if="Aitem.payStatus==1" class="fr">
+                <el-button type="primary" @click="deleteOrder(outIndex)">
+                  删除订单
+                  <i class="el-icon-check el-icon-close"></i>
+                </el-button>
+              </div>
+            </div>
+            <div class="personalcenter_list_main_listBox_footer">
+              <div v-if="Aitem.payStatus==1">已付款：
+                <span>￥{{Aitem.realAmount || 0 }}</span>
+              </div>
+              <div v-if="Aitem.payStatus==0 && Aitem.status==1">待支付：
+                <span>￥{{Aitem.realAmount}}</span>
+              </div>
+            </div>
+            <div class="personalcenter_list_main_listBox_footer" v-show="Aitem.balanceAmount!='0.00'">下载币抵扣：
+              <span>￥{{Aitem.balanceAmount || 0 }}</span>
+            </div>
+            <div class="personalcenter_list_main_listBox_footer" v-show="Aitem.couposAmount!='null' && Aitem.couposAmount!='0.00'">优惠券减免：
+              <span>￥{{Aitem.couposAmount || 0 }}</span>
+            </div>
+            <div class="personalcenter_list_main_listBox_footer" v-show="Aitem.orderList[0] && Aitem.orderList[0].activityRemark && Aitem.orderList[0].activityRemark!='0.00'">活动减免：
+              <span>￥{{Aitem.orderList[0] && Aitem.orderList[0] && Aitem.orderList[0].activityRemark || 0 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="personalcenter_list_main_emptyColl" v-else>
+        <img src="../../assets/img/empty.png" alt="">
+        <div>订单是空的~快去购买吧</div>
+      </div>
+      <ui_pagination :pageMessage="{totalCount: this.myOrderList.data && this.myOrderList.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
+    </div>
+    <!-- 图书订单详情 -->
+    <div v-show="currentShow=='bookDetails'">
+      <div id="demoID" v-show="KDNShow && KDNConfig"></div>
+      <div v-for="item in orderDetails" :key="item.id">
+        <div class="mb20">
+          <el-card class="personalcenter_list_bookDetails_boxCard" v-if="item.itemList[0].productType == 91">
+            <div slot="header" class="personalcenter_list_bookDetails_boxCard_clearfix">
+              <i class="el-icon-location"></i>
+              <span>收货信息</span>
+            </div>
+            <div class="personalcenter_list_bookDetails_boxCard_text">
+              <p>收货人：
+                <span>{{item.deliveryPerson}}</span>
+              </p>
+              <p>电话：
+                <span>{{item.deliveryContact}}</span>
+              </p>
+              <p>收货地址：
+                <span>{{item.deliveryAddress}}</span>
+              </p>
+            </div>
+          </el-card>
+
+          <el-card class="personalcenter_list_bookDetails_boxCard" v-if="item.receiptType != ''">
+            <div slot="header" class="personalcenter_list_bookDetails_boxCard_clearfix">
+              <i class="el-icon-printer"></i>
+              <span>发票信息</span>
+            </div>
+            <div class="personalcenter_list_bookDetails_boxCard_text">
+              <p>发票类型：
+                <span v-if="item.receiptType==1">个人</span>
+                <span v-if="item.receiptType==2">增值税发票</span>
+              </p>
+              <p>发票抬头：
+                <span>{{item.receiptTitle}}</span>
+              </p>
+              <p v-if="item.receiptType==1">发票内容：
+                <span>{{item.receiptId}}</span>
+              </p>
+            </div>
+          </el-card>
+
+          <el-card class="personalcenter_list_bookDetails_boxCard">
+            <div slot="header" class="personalcenter_list_bookDetails_boxCard_clearfix">
+              <i class="el-icon-goods"></i>
+              <span>支付详情</span>
+            </div>
+            <div class="personalcenter_list_bookDetails_boxCard_text">
+              <p>支付方式：
+                <span v-if="item.payMethod=='Weixin'">微信支付</span>
+                <span v-if="item.payMethod=='Alipay'">支付宝</span>
+                <span v-if="item.payMethod=='Balance'">下载币</span>
+              </p>
+              <p>商品总计：
+                <span>{{item.orderTotalPrice }}</span>
+              </p>
+              <p>运费总计：
+                <span>{{item.deliveryPrice}}元</span>
+              </p>
+            </div>
+          </el-card>
+          <el-card class="personalcenter_list_bookDetails_boxCard">
+            <div slot="header" class="personalcenter_list_bookDetails_boxCard_clearfix">
+              <i class="el-icon-edit"></i>
+              <span>备注信息</span>
+            </div>
+            <div class="personalcenter_list_bookDetails_boxCard_text_payRemark">
+              <p v-text="item.payRemark"></p>
+            </div>
+          </el-card>
+        </div>
+        <div class="personalcenter_list_bookDetails_status">
+          <span v-if="item.payStatus==0 && item.status==1">订单状态：待付款</span>
+          <span v-if="item.payStatus==1">订单状态：已完成</span>
+          <span v-if="item.payStatus==0 && item.status==2">订单状态：已取消</span>
+        </div>
+        <div class="personalcenter_list_title_common bg-purple-light">
+          <span>
+            <i class="el-icon-time"></i> {{item.createTime}}</span>
+          <span>订单号：{{item.orderCode}}</span>
+        </div>
+        <el-row class="personalcenter_list_main_listBox_card" v-for="item1 in item.itemList" :key="item1.id">
+          <el-col :span="15">
+            <div class="personalcenter_list_main_listBox_card_left">
+              <img onload="DrawImage(this,120,100)" v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
+              <div class="personalcenter_list_main_listBox_card_left_text">
+                <span class="mt5" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
+                <span class="personalcenter_list_main_listBox_card_left_author">作者：{{item1.author||"暂无作者"}}</span>
+              </div>
+              <div v-if="item.itemList[0].productType == 91 && exchangeState" class="personalcenter_list_main_listBox_card_left_returnBtn">
+                <el-button type="text" @click="showReturn(item,item1,1)">退货</el-button>
+                <el-button type="text" @click="showReturn(item,item1,2)">换货</el-button>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="3">
+            <div class="personalcenter_list_main_listBox_card_right">x{{item1. productNum}}</div>
+          </el-col>
+          <el-col :span="3">
+            <div class="personalcenter_list_main_listBox_card_right">¥ {{item1. memberPrice * item1. productNum }}</div>
+          </el-col>
+          <el-col :span="3">
+            <div class="personalcenter_list_main_listBox_card_right personalcenter_list_bookDetails_textDecoration">¥ {{item1. productPrice * item1. productNum }}</div>
+          </el-col>
+        </el-row>
+        <div class="personalcenter_list_bookDetails_goBackBtn">
+          <el-button type="primary" @click="goBack()">返回</el-button>
+        </div>
+        <div class="personalcenter_list_bookDetails_footerPrice">
+          <span>订单总额：¥ {{item.orderTotalPrice + item.deliveryPrice }}</span>
+          </br>
+        </div>
+      </div>
+    </div>
+    <!-- 期刊订单详情 -->
+    <div v-show="currentShow=='periodicalDetails'">
+      <div v-for="item in orderDetails" :key="item.id">
+        <div class="personalcenter_list_title_common bg-purple-light">
+          <span>
+            <i class="el-icon-time"></i> {{item.createTime}}</span>
+          <span>订单号：{{item.orderCode}}</span>
+        </div>
+        <el-row class="personalcenter_list_main_listBox_card" v-for="item1 in item.itemList" :key="item1.id">
+          <el-col :span="21">
+            <div class="personalcenter_list_main_listBox_card_left">
+              <img onload="DrawImage(this,120,100)" v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
+              <div class="personalcenter_list_main_listBox_card_left_text">
+                <span class="mt5" :title="item1.productName">{{item1.periodicalName||"暂无刊名"}}</span>
+                <span class="personalcenter_list_main_listBox_card_left_author">{{item1.periodicalRemark}}</span>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="3">
+            <div class="personalcenter_list_main_listBox_card_right">¥ {{item1.realPrice}}</div>
+          </el-col>
+        </el-row>
+        <div class="personalcenter_list_bookDetails_goBackBtn">
+          <el-button type="primary" @click="goBack()">返回</el-button>
+        </div>
+        <!-- <div class="personalcenter_list_bookDetails_footerPrice">
+          <span>订单总额：{{item1.realPrice}}</span>
+          </br>
+        </div> -->
+      </div>
+    </div>
+    </div>
+    <!-- 退货 -->
+    <div v-show="currentShow=='return'">
+      <div>
+        <el-steps :active="0" simple>
+          <el-step title="提交申请" icon="el-icon-edit"></el-step>
+          <el-step title="商家审核" icon="el-icon-document"></el-step>
+          <el-step title="用户发货" icon="el-icon-upload2"></el-step>
+          <el-step title="审核退款" icon="el-icon-setting"></el-step>
+          <el-step title="完成退货" icon="el-icon-check"></el-step>
+        </el-steps>
+      </div>
+      <div class="personalcenter_list_main_title">
+        <el-row :gutter="1">
+          <el-col :span="14">
+            <div class="personalcenter_list_title_common bg-purple-light">商品名称</div>
+          </el-col>
+          <el-col :span="4">
+            <div class="personalcenter_list_title_common bg-purple-light">购买数量</div>
+          </el-col>
+          <el-col :span="6">
+            <div class="personalcenter_list_title_common bg-purple-light">下单时间</div>
+          </el-col>
+        </el-row>
+      </div>
+      <el-row class="personalcenter_list_main_listBox_card">
+        <el-col :span="14">
+          <div class="personalcenter_list_main_listBox_card_left">
+            <img v-bind:src="returnBigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
+            <div class="personalcenter_list_main_listBox_card_left_text">
+              <span class="mt5">{{returnProductName}}</span>
+              <span class="personalcenter_list_main_listBox_card_left_author">作者：{{returnAuthor}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="personalcenter_list_main_listBox_card_right">{{max}}</div>
+        </el-col>
+        <el-col :span="6">
+          <div class="personalcenter_list_main_listBox_card_right">{{returnCreateTime}}</div>
+        </el-col>
+      </el-row>
+
+      <div class="personalcenter_list_returnForm">
+        <!-- 计数器 -->
+        <div class="mb20">
+          <span class="mr20">退货数量:</span>
+          <el-input-number v-model="num" @change="handleChange" :min="1" :max="max" size="small"></el-input-number>
+        </div>
+        <!-- 文本框 -->
+        <div class="mb20">
+          <div class="mr20 disinlblo">问题描述:</div>
+          <el-input @change="textChange" @blur="textBlur" class="textarea" type="textarea" min="10" max="500" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请描述问题" v-model="textarea" style="width:700px;vertical-align:text-top;float：left;">
+          </el-input>
+        </div>
+        <!-- 图片上传 -->
+        <div>
+          <span class="mr20">上传图片:</span>
+          <el-upload class="disinlblo" :action="uploadUrl()" list-type="picture-card" name="headPicUrl" :headers="setToken" :limit="5" :before-upload="beforeHandleUpload" :on-preview="handlePictureCardPreview" :on-exceed="handleExceed" :on-remove="handleSuccess" :on-success="handleSuccess">
+            <i class="el-icon-plus personalcenter_list_returnForm_plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
+        </div>
+      </div>
+      <div v-if="goodsType==2">
+        <work_shoppingcart_01_components_address namespace="address" @deliveryAddress="getDeliveryAddress"></work_shoppingcart_01_components_address>
+      </div>
+      <div class="personalcenter_list_returnForm_btn">
+        <el-button type="primary" size="large" @click="applyReturnGoods()">申请退货</el-button>
+      </div>
+    </div>
+  </section>
 </template>
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-
+import kdnApi from "../../assets/js/KDN.js";
 export default {
   name: "list",
   reused: true,
-  props: ["namespace"],
+  props: ["namespace", "parentConfig"],
+  created() {
+    this.CONFIG = this.parentConfig.list;
+    this.radio =
+      this.CONFIG && this.CONFIG.tabListShow.length > 0
+        ? this.CONFIG.tabListShow[0].type
+        : "book";
+    this.exchangeState =
+      this.CONFIG && this.CONFIG.exchangeState
+        ? this.CONFIG.exchangeState
+        : false;
+    this.KDNConfig =
+      this.CONFIG && this.CONFIG.KDNConfig
+        ? this.CONFIG.KDNConfig
+        : false;
+  },
   mounted() {
+    this.siteId = CONFIG.SITE_CONFIG.siteId;
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
     });
@@ -333,30 +366,68 @@ export default {
       myOrderList: "personalCenter/getOrderList", // 获取订单列表
       orderDetails: "personalCenter/getOrderDetails", // 获取订单详情
       commitInfo: "personalCenter/getCommitInfo" // 获取订单号等信息
-    })
+    }),
+    setToken() {
+      return {
+        token: window.localStorage.getItem("token")
+      };
+    }
   },
   data() {
     return {
+      siteId: "",
       currentShow: "list",
-      title: ["list", "details", "return"],
-      myData: [],
-      dialogTableVisible: false,
       // 订单列表状态
+      exchangeState: "", //退换货是否显示
+      KDNConfig: "", //物流信息是否显示
       payStatusNum: "",
       displayCancel: "",
+      radio: null, //tab
+      CONFIG: null, // 当前组件配置
+      orderType: "book", // 总单类型
+      KDNShow: "false",
       // 退换货
       num: 1,
       max: 10,
       textarea: "",
-      dialogImageUrl: "",
-      dialogVisible: false,
       returnNum: "",
-      returnAuthor: "",
-      returnCreateTime: "",
-      returnBigPic: "",
-      returnProductName: "",
-      returnReasons: "",
+      dialogImageUrl: "",
+      dialogVisible: false, //上传图片放大功能
+      returnBigPic: "", //页面展示图片
+      returnProductName: "", //页面展示商品名称
+      returnAuthor: "", //页面展示作者
+      returnCreateTime: "", //页面展示购买时间
       //退换货结束
+      //退换货参数
+      goodsOrderItemId: "",
+      goodsAuthor: "", //作者
+      goodsConfirmTime: "", //时间传空
+      goodsCreateTime: "", //时间传空
+      curSelectedAddress: {}, // 当前选择的地址 从地址选择子组件中接收到的
+      goodsDeliveryStatus: 0, //值传0
+      goodsId: 0, //值传0
+      goodsLoginName: "", //用户名
+      goodsLogisticsCompany: "", //物流名称,值传空
+      goodsLogisticsNum: "", //物流单号,值传空
+      goodsNum: "", //退换货数量
+      goodsOrderCode: "",
+      goodsBigPic: "", //商品图片
+      goodsPictureList: [], //上传图片
+      goodsProductName: "", //商品名称
+      goodsOriginalNum: "", //购买总数
+      goodsPubId: "",
+      goodsReasons: "", //退货原因
+      goodsRefund: "", //值传空
+      goodsReturnGoodsStatus: 0, //值传0
+      goodsReturnMoneyStatus: 0, //值传0
+      goodsSingleRefund: "", //值传空
+      goodsStatus: 0, //值传0
+      goodsSubmitLogisticsTime: "", //时间传空
+      goodsType: 1, //1--退货 2 换
+      goodsVerifyApplyReason: "", //值传空
+      goodsVerifyReason: "", //值传空
+      //退换货参数结束
+
       pickerOptions2: {
         shortcuts: [
           {
@@ -388,77 +459,158 @@ export default {
           }
         ]
       },
-      value4: ""
+      timeValue: ""
     };
   },
   filters: {
     filterFun: function(value) {
-      return "¥ " + value.toFixed(2) + "元";
+      if (typeof value == "string") {
+        return "¥ " + parseInt(value).toFixed(2) + "元";
+      } else {
+        return "¥ " + value.toFixed(2) + "元";
+      }
     }
   },
   methods: {
-    /*显示状态*/
-    showCurrent(index) {
-      this.currentShow = this.title[index];
-    },
     // 展示退换货
-    showReturn(item, item1) {
-      let productName = item1.productName;
-      let author = item1.author;
-      let bigPic = item1.bigPic;
-      let orderCode = item.orderCode;
-      let loginName = item.loginName;
-      let returnNum = item1.productNum;
-      let createTime = item.createTime;
-      let pubId = item1.pubId;
-
-      this.max = returnNum;
-      this.returnAuthor = author;
-      this.returnCreateTime = createTime;
-      this.returnProductName = productName;
-      this.returnBigPic = bigPic;
-
-      console.log(orderCode);
-      console.log(returnNum);
-      console.log(createTime);
-      console.log(loginName);
-      console.log(pubId);
-      console.log(productName);
-      console.log(author);
-      console.log(bigPic);
-      console.log(returnNum);
+    showReturn(item, item1, type) {
+      this.returnBigPic = item1.bigPic; //展示图片
+      this.returnProductName = item1.productName; //展示商品名称
+      this.returnAuthor = item1.author; //展示作者
+      this.returnCreateTime = item.createTime; //展示时间
+      this.max = item1.productNum; //退换货数量
+      this.goodsOriginalNum = item1.productNum;
+      this.goodsType = type; //退货or换货
+      this.goodsOrderItemId = item1.id;
+      this.goodsAuthor = item1.author;
+      this.goodsLoginName = item.loginName;
+      this.goodsProductName = item1.productName;
+      this.goodsBigPic = item1.bigPic;
+      this.goodsOrderCode = item.orderCode;
+      this.goodsPubId = item1.pubId;
+      this.goodsNum = 1;
       this.currentShow = "return";
     },
     // 文本框
     textChange(value) {
-      console.log(value);
-      let textValue = value;
-      this.returnReasons = textValue;
+      this.goodsReasons = value;
     },
     textBlur() {
-      if (this.returnReasons.length == 0) {
+      if (this.goodsReasons.length == 0) {
       }
-      console.log(this.returnReasons);
     },
     // 退换货计数器
     handleChange(value) {
-      console.log(value);
+      this.goodsNum = value;
     },
     // 退换货图片上传
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
+    handleExceed(files, fileList) {
+      this.$message.warning(`抱歉，最多上传5张图片`);
+    },
+    beforeHandleUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isPNG = file.type === "image/png";
+      const isBMP = file.type === "image/bmp";
+      const isLt5M = file.size / 1024 / 1024 < 5;
+
+      if (!isJPG && !isPNG && isBMP) {
+        this.$message.error("请上传PNG、JPG或BMP类型图片");
+      }
+      if (!isLt5M) {
+        this.$message.error("上传头像图片大小不能超过 5MB!");
+      }
+      return isBMP || isJPG || (isPNG && isLt5M);
+    },
+    handleRemove(file, fileList) {
+      let picArr = [];
+      for (let i = 0; i < fileList.length; i++) {
+        picArr.push(fileList[i].response.data);
+      }
+      this.goodsPictureList = picArr;
+    },
+    handleSuccess(response, file, fileList) {
+      let picArr = [];
+      for (let i = 0; i < fileList.length; i++) {
+        picArr.push(fileList[i].response.data);
+      }
+      this.goodsPictureList = picArr;
+    },
+    // 接收收货地址信息
+    getDeliveryAddress(data) {
+      this.curSelectedAddress = data;
+    },
+    uploadUrl: function() {
+      return CONFIG.BASE_URL + "user/uploadPic.do";
+    },
     // 退换货申请
     applyReturnGoods() {
+      if (this.curSelectedAddress === null && this.goodsType == 2) {
+        // 没有填写地址情况
+        _this.$message({
+          type: "error",
+          message: "收货地址不得为空噢~"
+        });
+        return false;
+      }
       var params = {
-        orderItemId:1,
-
+        orderItemId: this.goodsOrderItemId,
+        originalNum: this.goodsOriginalNum,
+        author: this.goodsAuthor,
+        confirmTime: this.goodsConfirmTime, //""
+        createTime: this.goodsCreateTime, //""
+        deliveryAddress: this.curSelectedAddress
+          ? this.curSelectedAddress.province +
+            this.curSelectedAddress.city +
+            this.curSelectedAddress.county +
+            this.curSelectedAddress.address
+          : "",
+        deliveryContact: this.curSelectedAddress
+          ? this.curSelectedAddress.phone
+          : "",
+        deliveryPerson: this.curSelectedAddress
+          ? this.curSelectedAddress.contactor
+          : "",
+        deliveryStatus: this.goodsDeliveryStatus, //0
+        id: this.goodsId, //0
+        loginName: this.goodsLoginName,
+        logisticsCompany: this.goodsLogisticsCompany,
+        logisticsNum: this.goodsLogisticsNum,
+        num: this.goodsNum,
+        orderCode: this.goodsOrderCode,
+        bigPic: this.goodsBigPic,
+        pictureList: this.goodsPictureList,
+        productName: this.goodsProductName,
+        pubId: this.goodsPubId,
+        reasons: this.goodsReasons,
+        refund: this.goodsRefund, //""
+        returnGoodsStatus: this.goodsReturnGoodsStatus, //0
+        returnMoneyStatus: this.goodsReturnMoneyStatus, //0
+        singleRefund: this.goodsSingleRefund, //""
+        status: this.goodsStatus, //0
+        submitLogisticsTime: this.goodsSubmitLogisticsTime, //""
+        type: this.goodsType, //0
+        verifyApplyReason: this.goodsVerifyApplyReason, //""
+        verifyReason: this.goodsVerifyReason, //""
+        cb: this.applyReturnGoodsCb
       };
       this.$store.dispatch("personalCenter/applyReturnGoods", params);
+    },
+    applyReturnGoodsCb(data) {
+      if (data.result == 1) {
+        this.$message({
+          message: data.data.msg,
+          type: "success"
+        });
+      } else {
+        this.$message.error("抱歉，申请提交失败");
+      }
+      this.goodsPictureList = [];
+      this.textarea = "";
+      this.currentShow = "list";
     },
     // 详情页返回列表页
     goBack() {
@@ -473,14 +625,31 @@ export default {
       this.$store.dispatch("personalCenter/queryOrderDetails", param);
     },
     showDetailsCallb() {
-      this.currentShow = "details";
+      if (this.orderType == "book") {
+        if (this.orderDetails[0].itemList[0].productType == "91") {
+          this.KDNShow = true;
+          kdnApi.run({
+            serviceType: "B",
+            expCode: "YTO",
+            expNo: "889645294678455192",
+            showType: "normal",
+            container: "demoID"
+          });
+        } else {
+          this.KDNShow = false;
+        }
+        this.currentShow = "bookDetails";
+      } else if (this.orderType == "periodical") {
+        this.currentShow = "periodicalDetails";
+      }
     },
     loadedCallBack() {
       var param = {
         pageIndex: 1,
         pageSize: 8,
         payStatus: "",
-        status: ""
+        status: "",
+        orderType: this.orderType
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
@@ -515,21 +684,25 @@ export default {
                     "&loginName=" +
                     _this.member.loginName +
                     "&payMethodCode=" +
-                    argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId,
+                    argus.payMethodCode +
+                    "&siteId=" +
+                    CONFIG.SITE_CONFIG.siteId,
                   "_self"
                 );
                 window.history.pushState(null, null, "../pages/errorpage.html"); // 添加历史记录
               } else if (payMethod === "Weixin") {
                 // 微信支付
-
                 axios
                   .get(
                     CONFIG.BASE_URL +
                       "/epay/getPayForm.do?orderId=" +
                       argus.orderId +
                       "&loginName=" +
-                      _this.member.loginName + "&payMethodCode=" +
-                    argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId
+                      _this.member.loginName +
+                      "&payMethodCode=" +
+                      argus.payMethodCode +
+                      "&siteId=" +
+                      CONFIG.SITE_CONFIG.siteId
                   )
                   .then(function(response) {
                     loading.close();
@@ -582,25 +755,27 @@ export default {
       this.$store.dispatch("personalCenter/queryTimeList", param);
     },
     // 订单筛选 删除 取消
-    all() {
+    allOrder() {
       this.payStatusNum = "";
       this.displayCancel = "";
       var param = {
         pageIndex: 1,
         pageSize: 8,
         payStatus: "",
-        status: ""
+        status: "",
+        orderType: this.orderType
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
-    wait() {
+    waitPayOrder() {
       this.payStatusNum = 0;
       this.displayCancel = 1;
       var param = {
         pageIndex: 1,
         pageSize: 8,
         payStatus: 0,
-        status: 1
+        status: 1,
+        orderType: this.orderType
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
@@ -609,7 +784,8 @@ export default {
         pageIndex: pageNo,
         pageSize: pageSize,
         payStatus: this.payStatusNum,
-        status: this.displayCancel
+        status: this.displayCancel,
+        orderType: this.orderType
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
@@ -627,7 +803,8 @@ export default {
           pageIndex: 1,
           pageSize: 8,
           payStatus: this.payStatusNum,
-          status: this.displayCancel
+          status: this.displayCancel,
+          orderType: this.orderType
         };
         this.$store.dispatch("personalCenter/queryOrderList", param);
         this.$message({
@@ -655,7 +832,8 @@ export default {
           pageIndex: 1,
           pageSize: 8,
           payStatus: this.payStatusNum,
-          status: this.displayCancel
+          status: this.displayCancel,
+          orderType: this.orderType
         };
         this.$store.dispatch("personalCenter/queryOrderList", param);
         this.$message({
@@ -668,25 +846,102 @@ export default {
           message: "删除失败，请重试"
         });
       }
+    },
+    changeOrderList(val) {
+      if (val == "book") {
+        this.orderType = "book";
+      } else if (val == "periodical") {
+        this.orderType = "periodical";
+      } else {
+        console.log("知识服务订单");
+      }
+      var param = {
+        pageIndex: 1,
+        pageSize: 8,
+        payStatus: "",
+        status: "",
+        orderType: this.orderType
+      };
+      this.$store.dispatch("personalCenter/queryOrderList", param);
     }
   }
 };
 </script>
 <style scoped>
-.mainlist {
-  margin: 50px 0;
+.fr {
+  float: right;
 }
-
-.cent {
+.mt5 {
+  margin-top: 5px;
+}
+.mb10 {
+  margin-bottom: 10px;
+}
+.mb20 {
+  margin-bottom: 20px;
+}
+.mr20 {
+  margin-right: 20px;
+}
+.disinlblo {
+  display: inline-block;
+}
+.bg-purple-light {
+  background: #e5e9f2;
+  border-radius: 4px;
+}
+.personalcenter_list_title_common {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
   border: 1px solid rgb(223, 236, 236);
 }
-
-.itemlist {
+.personalcenter_list_title_common span {
+  float: left;
+  font-size: 14px;
+  margin-right: 50px;
+}
+.personalcenter_list_title_common_detailesbtn {
+  float: right;
+  margin-left: 20px;
+}
+.personalcenter_list_main_tab {
+  margin-bottom: 20px;
+}
+.personalcenter_list_main_title {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+}
+.personalcenter_list_main_title_picker {
+  width: 100%;
+}
+.personalcenter_list_main_listBox {
+  margin: 50px 0;
+}
+.personalcenter_list_main_listBox_card {
+  border: 1px solid rgb(223, 236, 236);
+}
+.personalcenter_list_main_listBox_card_left {
+  margin: 10px;
+  height: 100px;
+}
+.personalcenter_list_main_listBox_card_left_returnBtn {
+  width: 550px;
+  padding-top: 60px;
+}
+.personalcenter_list_main_listBox_card_left_img {
+  float: left;
+  text-align: center;
+  line-height: 100px;
+}
+.personalcenter_list_main_listBox_card_left_text {
   height: 100px;
   float: left;
 }
-
-.itemlist span {
+.personalcenter_list_main_listBox_card_left_text span {
   font-size: 18px;
   padding-left: 20px;
   line-height: 30px;
@@ -697,159 +952,124 @@ export default {
   width: 380px;
 }
 
-.itemlist span:last-child {
+.personalcenter_list_main_listBox_card_left_text span:last-child {
   font-size: 14px;
 }
-
-.bord {
-  height: 140px;
-  line-height: 140px;
-  font-size: 18px;
-  text-align: center;
-  border-right: 1px solid rgb(223, 236, 236);
+.personalcenter_list_main_listBox_card_left_author {
+  font-size: 14px;
+  margin-top: 25px;
 }
-
-.bordl {
-  border-left: 1px solid rgb(223, 236, 236);
-}
-
-.ordernav {
-  margin-top: 20px;
-  text-align: center;
+.personalcenter_list_main_listBox_card_right {
   font-size: 16px;
-  line-height: 36px;
-}
-
-.elbutt {
-  float: right;
-}
-
-.el-row {
-  &:last-child {
-    margin-bottom: 0;
-  }
-  overflow: hidden;
-}
-
-.el-col {
-  border-radius: 4px;
-}
-
-.bg-purple-dark {
-  background: #99a9bf;
-}
-
-.bg-purple {
-  background: #d3dce6;
-}
-
-.bg-purple-light {
-  background: #e5e9f2;
-}
-
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-
-.emptyColl {
   text-align: center;
-  padding: 50px 0px;
+  margin-top: 45px;
 }
-
-.emptyColl img {
-  width: 150px;
-}
-.item {
-  font-size: 16px;
-  line-height: 36px;
-}
-
-.title {
-  padding-left: 20px;
-}
-
-.det p {
-  text-indent: 0.5em;
-  width: 192.7px;
-  word-break: break-all;
-}
-.el-col {
-  border-radius: 4px;
-}
-
-.bg-purple-dark {
-  background: #99a9bf;
-}
-
-.bg-purple {
-  background: #d3dce6;
-}
-
-.bg-purple-light {
-  background: #e5e9f2;
-}
-
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-
-.paybutt {
-  display: block;
-  margin-top: 30px;
-  float: right;
-}
-.realAmount {
+.personalcenter_list_main_listBox_footer {
   font-size: 18px;
   float: right;
   margin: 5px 20px 0 0;
 }
-.realAmount span {
+.personalcenter_list_main_listBox_footer span {
   color: red;
 }
-/* 退换货 */
-</style>
-<style>
-.el-input-number__decrease {
-  height: 29px !important;
+.personalcenter_list_main_emptyColl {
+  text-align: center;
+  padding: 50px 0px;
 }
-.el-input-number__increase {
-  height: 29px !important;
+.personalcenter_list_main_emptyColl img {
+  width: 150px;
 }
-.el-icon-minus {
-  margin-top: 8px;
+/* KDN */
+.kdnlogin-box {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 900px;
+  height: 600px;
+  border: 1px solid #ccc;
+  margin-left: -350px;
+  margin-top: -300px;
+  background-color: #fff;
 }
-.el-icon-plus {
-  margin-top: 7px;
+.kdnlogin-title {
+  height: 40px;
+  line-height: 40px;
+  background-color: #e5e5e5;
+  padding-left: 15px;
 }
-.box-card {
+.kdnlogin-close {
+  color: #333;
+  float: right;
+  vertical-align: middle;
+  margin-top: -1px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.kdnlogin-close:hover {
+  color: #555;
+}
+/* KDN */
+/* 详情页 */
+.personalcenter_list_bookDetails_textDecoration {
+  text-decoration: line-through;
+}
+.personalcenter_list_bookDetails_boxCard {
+  vertical-align: top;
   width: 210px;
   display: inline-block;
 }
-.box-card p {
+.personalcenter_list_bookDetails_boxCard p {
   margin-bottom: 10px;
 }
-.box-card .clearfix span {
+.personalcenter_list_bookDetails_boxCard_clearfix span {
   margin-left: 3px;
   color: #303133;
   font-size: 16px;
 }
-.box-card .text p {
+.personalcenter_list_bookDetails_boxCard_text p {
   color: #303133;
   font-size: 14px;
 }
-.box-card .text p span {
+.personalcenter_list_bookDetails_boxCard_text_payRemark {
+  color: #303133;
+  font-size: 14px;
+  word-break: break-word;
+}
+.personalcenter_list_bookDetails_boxCard_text p span {
   color: #606266;
 }
+.personalcenter_list_bookDetails_status {
+  float: right;
+  margin-right: 20px;
+  font-size: 14px;
+  line-height: 42px;
+}
+.personalcenter_list_bookDetails_goBackBtn {
+  float: right;
+  margin: 25px 10px 0 10px;
+}
+.personalcenter_list_bookDetails_footerPrice {
+  display: block;
+  margin-top: 30px;
+  float: right;
+}
+.personalcenter_list_bookDetails_footerPrice span {
+  font-size: 20px;
+  margin: 20px;
+}
+/* 详情页 */
+/*退换货*/
+.personalcenter_list_returnForm {
+  border: 1px solid rgb(236, 223, 223);
+  margin-top: 30px;
+  padding: 30px;
+}
+.personalcenter_list_returnForm_plus {
+  margin: 55px auto;
+}
+.personalcenter_list_returnForm_btn {
+  margin: 30px 5px;
+  float: right;
+}
+/*退换货*/
 </style>

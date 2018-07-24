@@ -2,8 +2,10 @@
 <template>
   <div class="search_04">
     <div v-if="CONFIG.isShowTotalCountTag" class="search_04-search_totalcount">{{getStaticText('total') ? getStaticText('total') : '共'}}
-      <span class="search_04-search_totalcount-num" v-text="totalCount"></span>{{getStaticText('productQuanity') ? getStaticText('productQuanity') : '件商品'}}</div>
-
+      <span class="search_04-search_totalcount-num" v-text="totalCount"></span>{{getStaticText('productQuantity') ? getStaticText('productQuantity') : '件商品'}}</div>
+    <div  class="search_04-noresult" v-if="list && list.length == 0">
+      {{getStaticText('noRelevantBooks') ? getStaticText('noRelevantBooks') : '暂无相关书籍'}}
+    </div>
     <div class="search_04-content" v-if="list && list.length > 0">
       <div class="search_04-content-list">
         <transition-group name="fade">
@@ -24,7 +26,7 @@
                 <span v-text="entry.BOOK_ISBN" :title="entry.BOOK_ISBN"></span>
               </p>
               <p class="search_04-content-list-entry_box-pressname" :title="entry.BOOK_PRESS_NAME">{{getStaticText('copyright') ? getStaticText('copyright') : '版权：'}}{{entry.BOOK_PRESS_NAME}}</p>
-              <p class="search_04-content-list-entry_box-pub-date" :title="entry.BOOK_PUBDATE | fmtDate">{{getStaticText('publish') ? getStaticText('publish') : '出版：'}}{{entry.BOOK_PUBDATE | fmtDate}}</p>
+              <p class="search_04-content-list-entry_box-pub-date" :title="fmtDate(entry.BOOK_PUBDATE)">{{getStaticText('publish') ? getStaticText('publish') : '出版：'}}{{fmtDate(entry.BOOK_PUBDATE)}}</p>
               <p class="search_04-content-list-entry_box-price">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}
                 <span v-text="parseFloat(entry.prod_member_price || 0).toFixed(2) "></span>
                 <span class="search_04-content-list-entry_box-price-span">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}
@@ -35,7 +37,7 @@
                 <span class="search_04-content-list-entry_box-star-el_box">
                   <el-rate v-model="entry.pub_star_num" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
                 </span>
-                <span v-text="entry.pub_comment_num || 0"></span>{{getStaticText('productQuanity') ? getStaticText('productQuanity') : '件商品'}}
+                <span v-text="entry.pub_comment_num || 0"></span>{{getStaticText('productQuantity') ? getStaticText('productQuantity') : '件商品'}}
               </p>
               <p class="search_04-content-list-entry_box-synopsis" v-text="entry.BOOK_SYNOPSIS || (getStaticText('noDigest') ? getStaticText('noDigest') : '暂无摘要')" :title="entry.BOOK_SYNOPSIS"></p>
               <!-- <p class="search_04-content-list-entry_box-orther_shop">
@@ -49,6 +51,7 @@
                 <a href="javascript:void(0)" @click="toDetail(entry.id)" class="search_04-content-list-entry_box-others-to_view">{{getStaticText('checkInfo') ? getStaticText('checkInfo') : '查看'}}</a>
               </p>
             </dd>
+
           </dl>
         </transition-group>
       </div>
@@ -56,7 +59,6 @@
         <ui_pagination :pageMessage="{totalCount}" :excuteFunction="toPage" :page-sizes="pageSizes" :props-current-page="currentPage"></ui_pagination>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -198,10 +200,7 @@ export default {
         return false
       }
     },
-  },
-  filters: {
-    fmtDate: (obj) => {
-      // let _this = this.a.methods;
+    fmtDate (obj) {
       if (obj) {
         var date = new Date(obj);
         var y = 1900 + date.getYear();
@@ -209,8 +208,7 @@ export default {
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
       } else {
-        // return _this.getStaticText('noDate') ? _this.getStaticText('noDate') : "暂无日期"
-        return "暂无日期"
+        return this.getStaticText('noDate') ? this.getStaticText('noDate') : "暂无日期"
       }
     },
   },
@@ -222,6 +220,11 @@ export default {
   font-family: 'Microsoft Yahei', '微软雅黑', '\5FAE\8F6F\96C5\9ED1', '宋体';
   font-size: 12px;
   color: #888888;
+}
+.search_04-noresult{
+  font-size: 16px;
+  margin: 150px 0;
+  text-align: center;
 }
 .search_04-search_totalcount {
   padding-right: 30px;

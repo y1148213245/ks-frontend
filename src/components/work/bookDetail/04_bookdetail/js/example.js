@@ -210,7 +210,9 @@ const dev = {
           systemPrompt: "系统提示",
           OK: "确定",
           noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
-          noEBookInfo: "该书没有对应电子书，无法加入购物车"
+          noEBookInfo: "该书没有对应电子书，无法加入购物车",
+          noDate: "暂无日期",
+          yuan:"￥"
         }
 
       },
@@ -374,7 +376,9 @@ const prod = {
           systemPrompt: "系统提示",
           OK: "确定",
           noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
-          noEBookInfo: "该书没有对应电子书，无法加入购物车"
+          noEBookInfo: "该书没有对应电子书，无法加入购物车",
+          noDate:"暂无日期",
+          yuan:"￥"
         }
 
       },

@@ -14,8 +14,8 @@ const description = `图书列表组件`; // 组件描述信息
 const dev = {
   booklist: {
     booklist_01: {
-      url: '../data/list_02_booklist_data.json',
-      'moreRank':{
+      'module':{
+        url: '../data/list_02_booklist_data.json',
         staticText : {
           hot:"热门",
           goodReputation:"好评",
@@ -28,6 +28,8 @@ const dev = {
           noMore:"没有更多啦~",
           moreRank:"更多排行",
           packUp:"收起",
+          yuan:"￥",
+          noAuthor:"暂无作者"
         }
       },
     }
@@ -109,6 +111,8 @@ const prod = {
           noMore:"没有更多啦~",
           moreRank:"更多排行",
           packUp:"收起",
+          yuan:"￥",
+          noAuthor:"暂无作者"
         }
       },
     }

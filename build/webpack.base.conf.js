@@ -23,7 +23,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    babel: "babel-polyfill",
+    // babel: "babel-polyfill",
     app: './src/projects/' + baseConfig.concurrentProject + "/main/index.js",
     project: './src/projects/' + baseConfig.concurrentProject + "/main/project.js",
   },
@@ -32,7 +32,8 @@ module.exports = {
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+      : config.dev.assetsPublicPath,
+    library: "API_INTERFACE", /* 暴露全局变量 */
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -46,6 +47,7 @@ module.exports = {
       '@project': resolve('src/projects/' + baseConfig.concurrentProject),
       '@components': resolve("src/components"),
       '@static': resolve("static"),
+      '@api': resolve("src/api"),
     }
   },
   module: {

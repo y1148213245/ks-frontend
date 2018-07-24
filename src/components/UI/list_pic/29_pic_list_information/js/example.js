@@ -111,7 +111,9 @@ const dev = {
         },
         staticText: {
           noImg: "暂无图片",
-          noData: "暂无数据"
+          noData: "暂无数据",
+          noDate:"暂无日期",
+          yuan:"￥"
         }
       },
 
@@ -227,7 +229,9 @@ const prod = {
         },
         staticText: {
           noImg: "暂无图片",
-          noData: "暂无数据"
+          noData: "暂无数据",
+          noDate:"暂无日期",
+          yuan:"￥"
         },
         showSearchBtn: true, // 检索框
       },

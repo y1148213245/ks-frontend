@@ -41,7 +41,7 @@ const dev = {
           },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "newsAdapter", // 类型字段
-          showItem: ["lastModifyDate", "createdDate", "content"], // 控制显示项 ！！！只需要控制复杂项的显示 
+          showItem: ["lastModifyDate", "createdDate", "content"], // 控制显示项 ！！！只需要控制复杂项的显示
           complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
             name: 'title', // 名称 用来区分是简单项还是复杂项 （ title 标题、 price 价格、 time 时间、 img 图片 都属于复杂项，需要填写name的值）
             field: 'topic', // 取什么字段
@@ -69,6 +69,9 @@ const dev = {
           }],
         },
         broadcastName: "showNavContent",
+        staticText : {
+          noDate:"暂无日期"
+        }
       }
     }
   }
@@ -107,7 +110,7 @@ const prod = {
           },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "newsAdapter", // 类型字段
-          showItem: ["lastModifyDate", "createdDate", "content"], // 控制显示项 ！！！只需要控制复杂项的显示 
+          showItem: ["lastModifyDate", "createdDate", "content"], // 控制显示项 ！！！只需要控制复杂项的显示
           complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
             name: 'title', // 名称 用来区分是简单项还是复杂项 （ title 标题、 price 价格、 time 时间、 img 图片 都属于复杂项，需要填写name的值）
             field: 'topic', // 取什么字段
@@ -135,6 +138,9 @@ const prod = {
           }],
         },
         broadcastName: "showNavContent",
+        staticText : {
+          noDate:"暂无日期"
+        }
       }
     }
   }

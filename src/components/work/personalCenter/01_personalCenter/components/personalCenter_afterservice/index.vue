@@ -1,80 +1,328 @@
 <template>
-<section class="personalcenter_afterservice">
-    <el-table
-    :data="returnGoodsList"
-    border
-    style="width: 100%"
-    >
-     <el-table-column
-      align="center"
-      prop="id"
-      label="退换货编号"
-      width="100">
-    </el-table-column>
-    <el-table-column
-      align="center"
-      prop="orderCode"
-      label="订单编号"
-      width="220">
-    </el-table-column>
-    <el-table-column
-      align="center"
-      prop="productName"
-      label="商品名称"
-      width="100">
-    </el-table-column>
-    <el-table-column
-      align="center"
-      prop="createTime"
-      label="日期"
-      sortable
-      width="150">
-    </el-table-column>
-    <el-table-column
-      align="center"
-      prop="num"
-      label="数量"
-      width="60"
-      >
-    </el-table-column>
-    <el-table-column
-      align="center"
-      prop="type"
-      label="全部状态"
-      width="100"
-      :formatter="dateFormat"
-      :filters="[{ text: '未完成', value: 1 }, { text: '待支付', value: 2 }]"
-      :filter-method="filterTag"
-      filter-placement="bottom-end"
-      >
-    </el-table-column>
-		<el-table-column label="操作" width="140" align="center">
-      <template slot-scope="scope" v-if="">
-        <el-button
-          size="small"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button
-          size="small"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-      </template>
-    </el-table-column>
-    
-  </el-table>
-</section>
+  <section class="personalcenter_afterservice">
+    <div v-show="currentShow=='afterserviceDetails'">
+      <div v-if="CONFIG && CONFIG.tabTypeShow.length > 0" class="mb20">
+        订单类型：
+        <el-radio-group v-model="typeRadio" @change="changeTabType">
+          <el-radio :label="item.type" v-for="(item, index) in CONFIG.tabTypeShow" :key="index">{{item.title}}</el-radio>
+        </el-radio-group>
+      </div>
+      <div v-if="CONFIG && CONFIG.tabStateShow.length > 0" class="mb20">
+        订单状态：
+        <el-radio-group v-model="stateRadio" @change="changeTabState">
+          <el-radio :label="item.type" v-for="(item, index) in CONFIG.tabStateShow" :key="index">{{item.title}}</el-radio>
+        </el-radio-group>
+      </div>
+      <el-table :data="returnGoodsList" border style="width: 100%">
+        <el-table-column align="center" prop="id" label="退换货编号" width="120">
+        </el-table-column>
+        <el-table-column align="center" prop="orderCode" label="订单编号" width="260">
+        </el-table-column>
+        <el-table-column align="center" prop="productName" label="商品名称" width="220">
+        </el-table-column>
+        <el-table-column align="center" prop="createTime" label="日期" width="120">
+        </el-table-column>
+        <el-table-column align="center" prop="num" label="数量" width="80">
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="showDetails(scope.row)" type="text" size="small">
+              查看
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <!-- 退货详情 -->
+    <div v-show="currentShow=='afterserviceReturnDetails'">
+      <div v-if="!returnCancel">
+        <el-steps :active="returnDetailsActive" align-center>
+          <!-- v-if渲染 -->
+          <el-step title="提交申请" icon="el-icon-edit"></el-step>
+          <el-step title="商家审核" icon="el-icon-document" v-if="!exchangeDetailsErr"></el-step>
+          <el-step title="商家审核未通过" icon="el-icon-document" v-if="exchangeDetailsErr"></el-step>
+          <el-step title="用户发货" icon="el-icon-upload2"></el-step>
+          <el-step title="审核退款" icon="el-icon-setting" v-if="!exchangeDetailsErr"></el-step>
+          <el-step title="审核退款未通过" icon="el-icon-setting" v-if="exchangeDetailsErr"></el-step>
+          <el-step title="完成退货" icon="el-icon-check"></el-step>
+        </el-steps>
+      </div>
+      <!-- Book card -->
+      <div class="afterservice_main_title">
+        <el-row :gutter="1">
+          <el-col :span="14">
+            <div class="afterservice_title_common bg-purple-light">商品名称</div>
+          </el-col>
+          <el-col :span="4">
+            <div class="afterservice_title_common bg-purple-light">购买数量</div>
+          </el-col>
+          <el-col :span="6">
+            <div class="afterservice_title_common bg-purple-light">下单时间</div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="afterservice_main_card">
+        <el-row>
+          <el-col :span="14">
+            <div class="afterservice_main_card_left">
+              <img v-bind:src="returnGoodsDetails.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" class="afterservice_main_card_left_img" alt="暂无封面">
+              <div class="afterservice_main_card_left_text">
+                <span class="mt5">{{returnGoodsDetails.productName}}</span>
+                <span class="afterservice_main_card_left_author">作者：{{returnGoodsDetails.author}}</span>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div class="afterservice_main_card_right">{{returnGoodsDetails.originalNum}}</div>
+          </el-col>
+          <el-col :span="6">
+            <div class="afterservice_main_card_right">{{returnGoodsDetails.createTime}}</div>
+          </el-col>
+        </el-row>
+      </div>
+      <!-- Book card end-->
+      <!-- details -->
+      <div class="afterservice_details">
+        <div class="mtb15">
+          <span>退货数量：{{returnGoodsDetails.num}}</span>
+        </div>
+        <div class="mtb15">
+          <span>问题描述：{{returnGoodsDetails.reasons}}</span>
+        </div>
+        <div class="mtb15">
+          <span class="afterservice_details_img" v-if="imgArr.length">图片：
+            <div v-for="item in imgArr" class="afterservice_details_imgbox"><img :src="item" /></div>
+          </span>
+          <span v-else>暂无图片</span>
+        </div>
+        <div v-if="returnDetailsActive>2">
+          <div class="mtb15">
+            <span>退款金额：￥{{returnGoodsDetails.refund}}</span>
+            <span>返还虚拟币：￥{{returnGoodsDetails.refundVirtualCoin}}</span>
+          </div>
+          <div class="mtb15">
+            <span>快递单号：{{returnGoodsDetails.logisticsNum}}</span>
+          </div>
+        </div>
+      </div>
+      <!-- details end -->
 
+      <!-- 处理中 -->
+      <div class="afterservice_footer">
+        <div class="afterservice_textcenter" v-if="returnDetailsActive==1 && returnDetailsErr==false">
+          <hr>
+          <div>退货申请审核中...</div>
+          <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消退货申请</el-button>
+        </div>
+        <!--不同意申请-->
+        <div v-if="returnDetailsActive==1 && returnDetailsErr==true">
+          <hr>
+          <span class="afterservice_red">退货审核不通过</span>
+          <div>审核意见:{{returnGoodsDetails.verifyApplyReason}}</div>
+        </div>
+        <!-- 待您邮寄 -->
+        <div v-if="returnDetailsActive==2">
+          <hr>
+          <span class="afterservice_red mtb15">退货审核通过</span>
+          <div class="mtb15">
+            <span>退款金额：￥{{returnGoodsDetails.refund}}</span>
+            <span>返还虚拟币：￥{{returnGoodsDetails.refundVirtualCoin}}</span>
+          </div>
+          <div class="mtb15">
+            <span>退货说明：{{returnGoodsDetails.reasons}}</span>
+          </div>
+          <div class="mtb15">
+            <span>快递公司：</span>
+            <el-select v-model="courierCompany" placeholder="请选择快递公司" @change="handleChange">
+              <el-option v-for="item in courierOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+            </el-cascader>
+          </div>
+          <div class="mtb15">
+            <span>快递单号：</span>
+            <el-input v-model.number="courierNumber" placeholder="请填写快递单号" style="width:200px;display:inline-block"></el-input>
+          </div>
+          <div class="afterservice_textcenter">
+            <el-button type="primary" @click="subInformation">提交</el-button>
+            <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消退货申请</el-button>
+          </div>
+        </div>
+        <!-- 处理中 -->
+        <div class="afterservice_textcenter" v-if="returnDetailsActive==3">
+          <hr>
+          <div>商家收货中...</div>
+          <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消退货申请</el-button>
+        </div>
+        <!--等待退款-->
+        <div v-if="returnDetailsActive==4">
+          <hr>
+          <span class="afterservice_red">商家收到退货商品，同意退款 </span>
+          <div class="afterservice_textcenter">请等待退款到账</div>
+        </div>
+        <!--不同意退款-->
+        <div v-if="returnDetailsActive==4 && returnDetailsErr==true">
+          <hr>
+          <span class="afterservice_red">商家收到退货商品，不同意退款</span>
+          <div>审核意见:{{returnGoodsDetails.verifyReason}}</div>
+        </div>
+        <!-- 已完成 -->
+        <div class="afterservice_textcenter" v-if="returnDetailsActive==5">
+          <hr>
+          <span>退货完成</span>
+        </div>
+        <!-- 取消换货 -->
+        <div class="afterservice_textcenter" v-if="returnCancel">
+          <hr>
+          <div>退货申请已取消</div>
+        </div>
+      </div>
+    </div>
+    <!-- 换货详情 -->
+    <div v-show="currentShow=='afterserviceExchangeDetails'">
+      <div v-if="!exchangeCancel">
+        <el-steps :active="exchangeDetailsActive" align-center>
+          <!-- v-if渲染 -->
+          <el-step title="提交申请" icon="el-icon-edit"></el-step>
+          <el-step title="商家审核" icon="el-icon-document" v-if="!exchangeDetailsErr"></el-step>
+          <el-step title="商家审核未通过" icon="el-icon-error" v-if="exchangeDetailsErr"></el-step>
+          <el-step title="用户发货" icon="el-icon-upload2"></el-step>
+          <el-step title="生成换货订单" icon="el-icon-setting"></el-step>
+        </el-steps>
+      </div>
+      <!-- Book card -->
+      <div class="afterservice_main_title">
+        <el-row :gutter="1">
+          <el-col :span="14">
+            <div class="afterservice_title_common bg-purple-light">商品名称</div>
+          </el-col>
+          <el-col :span="4">
+            <div class="afterservice_title_common bg-purple-light">购买数量</div>
+          </el-col>
+          <el-col :span="6">
+            <div class="afterservice_title_common bg-purple-light">下单时间</div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="afterservice_main_card">
+        <el-row>
+          <el-col :span="14">
+            <div class="afterservice_main_card_left">
+              <img v-bind:src="returnGoodsDetails.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" class="afterservice_main_card_left_img" alt="暂无封面">
+              <div class="afterservice_main_card_left_text">
+                <span class="mt5">{{returnGoodsDetails.productName}}</span>
+                <span class="afterservice_main_card_left_author">作者：{{returnGoodsDetails.author}}</span>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div class="afterservice_main_card_right">{{returnGoodsDetails.num}}</div>
+          </el-col>
+          <el-col :span="6">
+            <div class="afterservice_main_card_right">{{returnGoodsDetails.createTime}}</div>
+          </el-col>
+        </el-row>
+      </div>
+      <!-- Book card end-->
+      <!-- details -->
+      <div class="afterservice_details">
+        <div class="mtb15">
+          <span>换货数量：{{returnGoodsDetails.num}}</span>
+        </div>
+        <div class="mtb15">
+          <span>问题描述：{{returnGoodsDetails.reasons}}</span>
+        </div>
+        <div class="mtb15">
+          <span class="afterservice_details_img" v-if="imgArr.length">图片：
+            <div v-for="item in imgArr" class="afterservice_details_imgbox"><img :src="item" /></div>
+          </span>
+          <span v-else>暂无图片</span>
+        </div>
+      </div>
+      <!-- details end -->
+
+      <div class="afterservice_footer">
+        <!-- 处理中 -->
+        <div class="afterservice_textcenter" v-if="exchangeDetailsActive==1 && exchangeDetailsErr==false">
+          <hr>
+          <div>换货申请审核中...</div>
+          <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消换货申请</el-button>
+        </div>
+        <!-- 不同意换货 -->
+        <div v-if="exchangeDetailsActive==1 && exchangeDetailsErr==true">
+          <hr>
+          <span class="afterservice_red">换货审核不通过</span>
+          <div>审核意见:{{returnGoodsDetails.verifyApplyReason}}</div>
+        </div>
+        <!-- 待您邮寄 -->
+        <div v-if="exchangeDetailsActive==2">
+          <hr>
+          <span class="afterservice_red mtb15">换货审核通过</span>
+          <div class="mtb15">
+            <span>换货说明：{{returnGoodsDetails.reasons}}</span>
+          </div>
+          <div class="mtb15">
+            <span>快递公司：</span>
+            <el-select v-model="courierCompany" placeholder="请选择快递公司" @change="handleChange">
+              <el-option v-for="item in courierOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+            </el-cascader>
+          </div>
+          <div class="mtb15">
+            <span>快递单号：</span>
+            <el-input v-model.number="courierNumber" placeholder="请填写快递单号" style="width:200px;display:inline-block"></el-input>
+          </div>
+          <div class="afterservice_textcenter">
+            <el-button type="primary" @click="subInformation">提交</el-button>
+            <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消换货申请</el-button>
+          </div>
+        </div>
+        <!-- 处理中 -->
+        <div class="afterservice_textcenter" v-if="exchangeDetailsActive==3">
+          <hr>
+          <div>商家收货中...</div>
+          <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消换货申请</el-button>
+        </div>
+        <!-- 已完成 -->
+        <div class="afterservice_textcenter" v-if="exchangeDetailsActive==4">
+          <hr>
+          <div>商家收到换货商品，同意换货</div>
+        </div>
+        <!-- 取消换货 -->
+        <div class="afterservice_textcenter" v-if="exchangeCancel">
+          <hr>
+          <div>换货申请已取消</div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-
+import api from "../../api/personalCenterApi.js";
 export default {
   name: "afterservice",
   reused: true,
-  props: ["namespace"],
+  props: ["namespace", "parentConfig"],
+  created() {
+    this.CONFIG = this.parentConfig.afterservice;
+    this.typeRadio =
+      this.CONFIG && this.CONFIG.tabTypeShow.length > 0
+        ? this.CONFIG.tabTypeShow[0].type
+        : "";
+    this.stateRadio =
+      this.CONFIG && this.CONFIG.tabStateShow.length > 0
+        ? this.CONFIG.tabStateShow[0].type
+        : "";
+    this.courierOptions =
+      this.CONFIG && this.CONFIG.courierOptions.length > 0
+        ? this.CONFIG.courierOptions
+        : [];
+  },
   mounted() {
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
@@ -82,22 +330,281 @@ export default {
   },
   computed: {
     ...mapGetters({
-      returnGoodsList: "personalCenter/getReturnGoodsList"
+      returnGoodsList: "personalCenter/getReturnGoodsList", // 获取退货列表
+      returnGoodsDetails: "personalCenter/getReturnGoodsDetails" // 获取退货详情
     })
   },
   data() {
-    return {};
+    return {
+      typeRadio: "", //订单类型
+      stateRadio: "", //订单状态
+      currentShow: "afterserviceDetails", //展示切换
+      imgArr: [], //图片数组
+      exchangeDetailsActive: 0, //换货active
+      returnDetailsActive: 0, //退货active
+      exchangeDetailsErr: false, //换货申请未通过
+      returnDetailsErr: false, //退货申请未通过
+      returnCancel: false, //取消退货
+      exchangeCancel: false, //取消换货
+      courierOptions: [],
+      courierNumber: "", //快递单号
+      logisticsCompany: "", //快递公司
+      courierCompany: []
+    };
   },
   methods: {
     loadedCallBack() {
-      this.$store.dispatch("personalCenter/getReturnGoodsList", {});
+      var param = {
+        pageIndex: 1,
+        pageSize: 10,
+        type: this.typeRadio,
+        flag: this.stateRadio
+      };
+      this.$store.dispatch("personalCenter/getReturnGoodsList", param);
     },
-    filterTag(value, row) {
-      return row.type === value;
+    //类型筛选
+    changeTabType(val) {
+      this.typeRadio = val;
+      this.loadedCallBack();
     },
-    dateFormat(row, column,cellValue) {
-      return cellValue == 1 ? '未完成' : cellValue == 0 ? '待支付' : '已完成';
+    //状态筛选
+    changeTabState(val) {
+      this.stateRadio = val;
+      this.loadedCallBack();
+    },
+    showDetails(data) {
+      var param = {
+        id: data.id,
+        cb: this.showDetailsCallb
+      };
+      this.$store.dispatch("personalCenter/queryReturnGoodsDetails", param);
+      if (data.type == 1) {
+        this.currentShow = "afterserviceReturnDetails";
+        if (
+          data.deliveryStatus == 0 &&
+          data.status == 0 &&
+          data.returnMoneyStatus == 0
+        ) {
+          //处理中
+          this.returnDetailsActive = 1;
+        } else if (
+          data.status == 1 &&
+          data.deliveryStatus == 1 &&
+          data.returnMoneyStatus == 0
+        ) {
+          //待您邮寄
+          this.returnDetailsActive = 2;
+        } else if (
+          data.status == 1 &&
+          data.deliveryStatus == 2 &&
+          data.returnMoneyStatus == 0
+        ) {
+          //处理中
+          this.returnDetailsActive = 3;
+        } else if (
+          data.status == 1 &&
+          data.deliveryStatus == 3 &&
+          data.returnMoneyStatus == 1
+        ) {
+          //退款中
+          this.returnDetailsActive = 4;
+        } else if (
+          data.status == 1 &&
+          data.deliveryStatus == 3 &&
+          data.returnMoneyStatus == 2
+        ) {
+          //已完成
+          this.returnDetailsActive = 5;
+        } else if (
+          data.status == 2 &&
+          data.deliveryStatus == 0 &&
+          data.returnMoneyStatus == 0
+        ) {
+          //审核不同意退货
+          this.returnDetailsErr = true;
+          this.returnDetailsActive = 1;
+        } else if (
+          data.status == 1 &&
+          data.deliveryStatus == 3 &&
+          data.returnMoneyStatus == 3
+        ) {
+          //收货后不同意退货
+          this.returnDetailsErr = true;
+          this.returnDetailsActive = 4;
+        } else if (data.status == 5) {
+          //取消退货
+          this.returnCancel = true;
+        }
+      } else if (data.type == 2) {
+        this.currentShow = "afterserviceExchangeDetails";
+        if (data.deliveryStatus == 0 && data.status == 0) {
+          //处理中
+          this.exchangeDetailsActive = 1;
+        } else if (data.status == 1 && data.deliveryStatus == 1) {
+          //待您邮寄
+          this.exchangeDetailsActive = 2;
+        } else if (data.status == 1 && data.deliveryStatus == 2) {
+          //处理中
+          this.exchangeDetailsActive = 3;
+        } else if (data.status == 1 && data.deliveryStatus == 4) {
+          //已完成
+          this.exchangeDetailsActive = 4;
+        } else if (data.status == 2 && data.deliveryStatus == 0) {
+          //不同意换货
+          this.exchangeDetailsErr = true;
+          this.exchangeDetailsActive = 1;
+        } else if (data.status == 5) {
+          //取消换货
+          this.exchangeCancel = true;
+        }
+      }
+    },
+    showDetailsCallb() {
+      this.imgArr = this.returnGoodsDetails.pictureList;
+    },
+    handleChange(value) {
+      // this.$message(value);
+      this.logisticsCompany = value;
+    },
+    //提交快递信息
+    subInformation() {
+      if (this.courierNumber == "") {
+        this.$message.error("请填写快递单号");
+        return false;
+      } else if (this.logisticsCompany == "") {
+        this.$message.error("请选择快递公司");
+        return false;
+      } else {
+        var params = {
+          id: this.returnGoodsDetails.id,
+          logisticsCompany: this.logisticsCompany,
+          logisticsNum: this.courierNumber
+        };
+        api.submitLogisticsInfo(params).then(function(response) {
+          if (response.result == 1) {
+            this.$message.success("信息提交成功");
+          } else {
+            this.$message.error("抱歉，信息提交失败");
+          }
+          this.currentShow = "afterserviceDetails";
+        });
+      }
+    },
+    withdraw(idNum) {
+      var id = idNum;
+      api.cancleReturnGoods(id).then(function(response) {
+        if (response.result == 1) {
+          this.$message({
+            message: "取消成功",
+            type: "success"
+          });
+        } else {
+          this.$message.error("抱歉，取消失败");
+        }
+        this.currentShow = "afterserviceDetails";
+      });
     }
   }
 };
 </script>
+<style>
+.el-table__body-wrapper,
+.el-table__footer-wrapper,
+.el-table__header-wrapper {
+  width: 101%;
+}
+</style>
+
+<style scoped>
+.mb20 {
+  margin-bottom: 20px;
+}
+.mtb15 {
+  margin: 15px 0;
+}
+.afterservice_textcenter {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+.afterservice_red {
+  color: red;
+}
+.afterservice_main_title {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+}
+.afterservice_title_common {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  border: 1px solid rgb(223, 236, 236);
+}
+.bg-purple-light {
+  background: #e5e9f2;
+  border-radius: 4px;
+}
+.afterservice_main_card {
+  border: 1px solid rgb(223, 236, 236);
+}
+.afterservice_main_card_left {
+  margin: 10px;
+  height: 100px;
+}
+.afterservice_main_card_left_img {
+  float: left;
+  text-align: center;
+  line-height: 100px;
+}
+.afterservice_main_card_left_text {
+  height: 100px;
+  float: left;
+}
+.afterservice_main_card_left_text span {
+  font-size: 18px;
+  padding-left: 20px;
+  line-height: 30px;
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 380px;
+}
+
+.afterservice_main_card_left_text span:last-child {
+  font-size: 14px;
+}
+.afterservice_main_card_left_author {
+  font-size: 14px;
+  margin-top: 25px;
+}
+.afterservice_main_card_right {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 45px;
+}
+.afterservice_details {
+  font-size: 16px;
+  margin: 10px;
+}
+.afterservice_details_img {
+  vertical-align: top;
+}
+.afterservice_details_imgbox {
+  display: inline-block;
+}
+.afterservice_details_imgbox img {
+  width: 150px;
+  height: 150px;
+  margin-left: 10px;
+}
+.afterservice_footer {
+  margin: 10px;
+}
+.afterservice_footer hr {
+  margin-bottom: 20px;
+}
+</style>

@@ -24,7 +24,7 @@ const dev = {
     search_result_04: {
       staticText: {
         total: "共",
-        productQuanity: "件商品",
+        productQuantity: "件商品",
         noCover: "暂无封面",
         author: "作者：",
         copyright: "版权：",
@@ -35,7 +35,8 @@ const dev = {
         shareTo: "分享",
         buy: "购买",
         checkInfo: "查看",
-        noDate: "暂无日期"
+        noDate: "暂无日期",
+        noRelevantBooks:"暂无相关书籍"
       }
     }
   }
@@ -71,7 +72,7 @@ const prod = {
         buy: "购买",
         checkInfo: "查看",
         noDate: "暂无日期",
-        isbn: "ISBN："
+        noRelevantBooks:"暂无相关书籍"
       },
       isShowIsbn: false
     }

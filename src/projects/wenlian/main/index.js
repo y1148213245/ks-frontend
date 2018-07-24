@@ -1,4 +1,4 @@
-// import "babel-polyfill";
+import "babel-polyfill";
 import Vue from 'vue';
 import './filter';
 //element ui
@@ -17,6 +17,7 @@ import store from "./store.js";
 import VueBus from "vue-bus";  // 通过 cnpm install vue-bus安装
 import VueCodemirror from 'vue-codemirror'; // vue 在线代码编辑器
 import 'codemirror/lib/codemirror.css'; // 编辑器的主题样式
+import componentsApi from "@api"; // 数据组件公共api
 
 Vue.use(VueOccupy);
 Vue.use(ElementUI);
@@ -44,4 +45,6 @@ new Vue({
   }
 });
 
-
+export {
+  componentsApi
+}

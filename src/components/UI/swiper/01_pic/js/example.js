@@ -34,7 +34,9 @@ const dev = {
         fixedKeys: {}
       },
       staticText: {
-        noImg: "暂无图片"
+        noImg: "暂无图片",
+        noDate: "暂无日期",
+        yuan:"￥"
       }
 		}
 	}
@@ -70,7 +72,9 @@ const prod = {
         fixedKeys: {}
       },
       staticText: {
-        noImg: "暂无图片"
+        noImg: "暂无图片",
+        noDate: "暂无日期",
+        yuan: "￥"
       }
 		}
 	}

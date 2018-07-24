@@ -68,7 +68,7 @@
                   </div>
                   <div class="cart-tab-3">
                     <div class="item-price">
-                      <span>{{product.productPrice | formatMoney}}</span>
+                      <span>{{formatMoney(product.productPrice)}}</span>
                     </div>
                     <select name="" v-if="product.productDiscountList.length > 0" style="max-width:350px;" @change="selectActivity($event, product, item)">
                       <option value="0">{{getStaticText('dontParticipateAnyActivities') ? getStaticText('dontParticipateAnyActivities') : '不参与任何活动'}}</option>
@@ -134,7 +134,7 @@
                   </div>
                   <div class="cart-tab-3">
                     <div class="item-price">
-                      <span>{{product.productPrice | formatMoney}}</span>
+                      <span>{{formatMoney(product.productPrice)}}</span>
                     </div>
                     <select name="" v-if="product.productDiscountList.length > 0" style="max-width:350px;" @change="selectActivity($event, product, item)">
                       <option value="0">{{getStaticText('dontParticipateAnyActivities') ? getStaticText('dontParticipateAnyActivities') : '不参与任何活动'}}</option>
@@ -148,7 +148,7 @@
                   </div>
                   <div class="cart-tab-5">
                     <div class="item-price-total">
-                      <span>￥</span>
+                      <span>{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}</span>
                       <span> {{product.productPrice * product.nums}}</span>
                     </div>
                   </div>
@@ -191,11 +191,11 @@
               <div class="detail">
                 <div class="totalMoney">
                   <span class="sitRight">{{getStaticText('totalPrice') ? getStaticText('totalPrice') : '总价：'}}</span>
-                  <span>{{totalMoney | formatMoney}}</span>
+                  <span>{{formatMoney(totalMoney)}}</span>
                 </div>
                 <div class="save">
                   <span class="sitRight">{{getStaticText('haveSaved') ? getStaticText('haveSaved') : '已节省：'}}</span>
-                  <span>{{saveAmount | formatMoney}}</span>
+                  <span>{{formatMoney(saveAmount)}}</span>
                 </div>
               </div>
               <div class="selectedProduct">
@@ -247,13 +247,13 @@
             <div class="disabledCoupons" v-for="(list, index) in couponsList"  v-if="couponsList.length > 0" :class="{'myCoupons': list.isAvailablesm === true, 'activeCoupons': selectedCouponsPassword === list.password}" @click="selectCoupon(list, index)" @mouseenter="showCancelBtn(list.password)" @mouseleave="hideCancelBtn(list.password)">
               <div v-if="list.type === 'fullCut'">
                 <p style="margin-bottom: 5px;">
-                  <span class="f30">￥{{list.cprice}}</span>
+                  <span class="f30">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}{{list.cprice}}</span>
                   <span>{{getStaticText('satisfy') ? getStaticText('satisfy') : '满'}} {{list.fullPrice}} {{getStaticText('toUse') ? getStaticText('toUse'): '使用'}}</span>
                 </p>
               </div>
               <div v-if="list.type === 'deduction'">
                 <p style="margin-bottom: 5px;">
-                  <span class="f30">￥{{list.cprice}}</span>
+                  <span class="f30">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}{{list.cprice}}</span>
                   <span>{{getStaticText('deduction') ? getStaticText('deduction') : '直接抵扣'}}</span>
                 </p>
               </div>
@@ -331,7 +331,7 @@
                 </div>
                 <div class="cart-tab-2">
                   <div class="item-price">
-                    <span>{{product.productPrice | formatMoney}}</span>
+                    <span>{{formatMoney(product.productPrice)}}</span>
                   </div>
                 </div>
                 <div class="cart-tab-3">
@@ -341,7 +341,7 @@
                 </div>
                 <div class="cart-tab-4">
                   <div class="item-price-total">
-                    <span> {{product.productPrice * product.nums | formatMoney}}</span>
+                    <span> {{formatMoney(product.productPrice * product.nums)}}</span>
                   </div>
                 </div>
               </li>
@@ -354,7 +354,7 @@
         <div class="orderFooter">
           <div class="amount">
             <span>{{getStaticText('totalCount') ? getStaticText('totalCount') : '共计'}}{{orderDetail.totalNum}} {{getStaticText('productQuanity') ? getStaticText('productQuanity'): '件商品'}}</span>
-            <span>{{getStaticText('shouldPay') ? getStaticText('totalCount') : '应付：'}}{{orderDetail.bookTotalMoney + orderDetail.ebookTotalMoney | formatMoney}}</span>
+            <span>{{getStaticText('shouldPay') ? getStaticText('totalCount') : '应付：'}}{{formatMoney(orderDetail.bookTotalMoney + orderDetail.ebookTotalMoney)}}</span>
           </div>
           <div class="virtual">
             <span>{{getStaticText('totalHave') ? getStaticText('totalHave') : '共有'}}{{virtualCoin}} {{getStaticText('downloadCoin') ? getStaticText('downloadCoin') : '下载币'}}</span>
@@ -366,8 +366,8 @@
           </div>
           <div class="coinremark">{{getStaticText('oneCoinEqualsOneYuan') ? getStaticText('oneCoinEqualsOneYuan') : '1下载币=1元'}}</div>
           <div class="orderDetail" :class="{hideTrans:allEbook === true && needInvoice === '0'}">
-            <div class="disc">{{getStaticText('reducePrice') ? getStaticText('reducePrice') : '优惠：-'}} {{orderDetail.bookSaveMoney + orderDetail.ebookSaveMoney | formatMoney}}</div>
-            <div class="vir">{{getStaticText('downloadCoinReduce') ? getStaticText('downloadCoinReduce') : '下载币：-'}} {{rmbCoin | formatMoney}}</div>
+            <div class="disc">{{getStaticText('reducePrice') ? getStaticText('reducePrice') : '优惠：-'}} {{formatMoney(orderDetail.bookSaveMoney + orderDetail.ebookSaveMoney)}}</div>
+            <div class="vir">{{getStaticText('downloadCoinReduce') ? getStaticText('downloadCoinReduce') : '下载币：-'}} {{formatMoney(rmbCoin)}}</div>
             <div class="transWay dropup" v-show="allEbook === false || needInvoice === '1'">
               <span>{{getStaticText('modeOfDistribution') ? getStaticText('modeOfDistribution') : '配送方式：'}}</span>
               <div class="transwayDrop">
@@ -378,15 +378,15 @@
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
-              <span>{{getStaticText('carriage') ? getStaticText('carriage') : '运费：'}}{{selectedDelivery.deliveryPrice | formatMoney}}</span>
+              <span>{{getStaticText('carriage') ? getStaticText('carriage') : '运费：'}}{{formatMoney(selectedDelivery.deliveryPrice)}}</span>
             </div>
           </div>
           <div class="payAmount">
             <span>{{getStaticText('actuallyPaid') ? getStaticText('actuallyPaid') : '实付金额：'}}</span>
             <span class="payTotalAmount"
-                  v-if="allEbook === true && needInvoice === '0'">{{orderDetail.bookTotalMoney - orderDetail.bookSaveMoney + orderDetail.ebookTotalMoney - rmbCoin - orderDetail.ebookSaveMoney | formatMoney}}</span>
+                  v-if="allEbook === true && needInvoice === '0'">{{formatMoney(orderDetail.bookTotalMoney - orderDetail.bookSaveMoney + orderDetail.ebookTotalMoney - rmbCoin - orderDetail.ebookSaveMoney)}}</span>
             <span class="payTotalAmount"
-                  v-else>{{orderDetail.bookTotalMoney - orderDetail.bookSaveMoney + orderDetail.ebookTotalMoney - orderDetail.ebookSaveMoney - rmbCoin + selectedDelivery.deliveryPrice | formatMoney}}</span>
+                  v-else>{{formatMoney(orderDetail.bookTotalMoney - orderDetail.bookSaveMoney + orderDetail.ebookTotalMoney - orderDetail.ebookSaveMoney - rmbCoin + selectedDelivery.deliveryPrice)}}</span>
           </div>
           <div class="commitOrder">
             <el-button v-if="!hasCommitOrder" type="primary" size="large" @click="commitOrder()">{{getStaticText('submitOrder') ? getStaticText('submitOrder') : '提交订单'}}</el-button>
@@ -1636,16 +1636,23 @@
         }else {
           return false
         }
-      }
-    },
-    filters: {
+      },
       formatMoney: function (value) {
         if (value) {
-          return "¥ " + Number(value).toFixed(2);
+          return (this.getStaticText('yuan') ? this.getStaticText('yuan') : "¥ ") + Number(value).toFixed(2);
         } else {
-          return "¥ " + value;
+          return (this.getStaticText('yuan') ? this.getStaticText('yuan') : "¥ ") + value;
         }
       },
+    },
+    filters: {
+      // formatMoney: function (value) {
+      //   if (value) {
+      //     return "¥ " + Number(value).toFixed(2);
+      //   } else {
+      //     return "¥ " + value;
+      //   }
+      // },
       formatTime: function (value) {
         if (value) {
           return moment(value).format("YYYY.MM.DD");

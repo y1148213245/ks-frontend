@@ -108,15 +108,7 @@
             this.magInfoList = datas.data.pubYears;
             this.yearTabShowNum = this.magInfoList.length;
             if (this.magInfoList.length>0) {
-              if((this.magInfoList.length-(this.CONFIG.yearTabShowNum))>=0){
-                for (var i=1;i>(this.magInfoList.length-(this.CONFIG.yearTabShowNum));i++)
-                {
-                  this.changeContent(this.magInfoList[i-1].PUBLISH_YEAR);
-                  break;
-                }
-              }else{
-                this.changeContent(this.magInfoList[0].PUBLISH_YEAR);
-              }
+              this.changeContent(this.magInfoList[this.magInfoList.length-(this.CONFIG.yearTabShowNum)].PUBLISH_YEAR);
             }
           }
         });

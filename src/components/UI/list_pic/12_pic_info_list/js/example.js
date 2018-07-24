@@ -25,6 +25,9 @@ const dev = {
         seeAll: "查看全部>",
         noImg: "暂无图片",
         briefIntroduction:"简介",
+        yuan:"￥",
+        notHaveYet:"暂无",
+        noDate:"暂无日期"
       }
     }
   }
@@ -53,7 +56,10 @@ const prod = {
         freeReading: "免费试读",
         seeAll: "查看全部>",
         noImg: "暂无图片",
-        briefIntroduction:"简介"
+        briefIntroduction:"简介",
+        yuan:"￥",
+        notHaveYet:"暂无",
+        noDate:"暂无日期"
       }
     }
   }

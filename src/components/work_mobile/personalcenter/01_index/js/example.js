@@ -56,7 +56,7 @@ const description = `微信端个人中心组件,个人中心首页展示的配�
 const dev = {
   work_mobile_personalcenter: {
     work_mobile_personalcenter_01: {
-      "modulename": {
+      "personal": {
         showLists: [{
           title: "",
           tag: "account",
@@ -140,6 +140,12 @@ const dev = {
             contentType:'',  //内容类型91纸质书 94电子书 PORTAL_WORKS:作品
           }
         },
+        getMember: {
+          url: "user/getMemberByName.do",
+          params: {
+            loginName: ''
+          }
+        }
       }
     },
   }
@@ -148,7 +154,7 @@ const dev = {
 const prod = {
   work_mobile_personalcenter: {
     work_mobile_personalcenter_01: {
-      "modulename": {
+      "personal": {
         showLists: [{
           title: "",
           tag: "account",
@@ -232,6 +238,12 @@ const prod = {
             contentType:'',  //内容类型91纸质书 94电子书 PORTAL_WORKS:作品
           }
         },
+        getMember: {
+          url: "user/getMemberByName.do",
+          params: {
+            loginName: ''
+          }
+        }
       }
     },
   }

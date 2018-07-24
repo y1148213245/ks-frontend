@@ -2,35 +2,35 @@
 <!-- Edit by song 2018/03/31 TODO: 字段兼容还没做 -->
 <template>
   <div class="ui_list_pic_23 ui_list_pic_23_skin">
-        <div class="titleHead" v-if="CONFIG && CONFIG.title" v-text="CONFIG.title"></div>
-        <div class="listWrapper">
-          <div v-if="booklist && booklist.length>0">
-            <dl class="listDl" v-for="(entry, index) in booklist" v-if="index < CONFIG.maxNum" :key="index">
-              <dt class="listDt">
-                <img class="dtImg" :src="entry.bigPic"  :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" onload="DrawImage(this,90,130)"/>
-              </dt>
-              <dd class="listDd">
-                <p class="resourceName">
-                  <a class="resourceLink" :href="'../pages/bookdetail.html?pubId=' + entry.pubId" v-text="entry.resourceName || (getStaticText('noBookName') ? getStaticText('noBookName') : '暂无书名')" :title="entry.resourceName"></a>
-                </p>
-                <p class="author" :title="entry.author">
-                  {{getStaticText('author') ? getStaticText('author') : '作者:'}}{{entry.author || getStaticText('noAuthor') ? getStaticText('noAuthor') : '暂无作者'}}</p>
-                <p class="priceCon">
-                  <span class="memberPrice">{{entry.memberPrice | formatMoney}}</span>
-                  <span class="ebPrice">{{entry.ebPrice | formatMoney}}</span>
-                </p>
-                <p class="star">
-                  <el-rate v-model="entry.starNum - 0" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
-                  <span class="comment">{{entry.commentNums || 0}}{{getStaticText('comments') ? getStaticText('comments') : '条评论'}}</span>
-                </p>
-                <p class="abstract" :title="entry.bookAbstract" v-html="entry.bookAbstract
-              || (getStaticText('noIntroduction') ? getStaticText('noIntroduction') : '暂无简介')"></p>
-              </dd>
-            </dl>
+    <div class="titleHead" v-if="CONFIG && CONFIG.title" v-text="CONFIG.title"></div>
+    <div class="listWrapper">
+      <div v-if="booklist && booklist.length>0">
+        <dl class="listDl" v-for="(entry, index) in booklist" v-if="index < CONFIG.maxNum" :key="index">
+          <dt class="listDt">
+            <img class="dtImg" :src="entry.bigPic"  :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" onload="DrawImage(this,90,130)"/>
+          </dt>
+          <dd class="listDd">
+            <p class="resourceName">
+              <a class="resourceLink" :href="'../pages/bookdetail.html?pubId=' + entry.pubId" v-text="entry.resourceName || (getStaticText('noBookName') ? getStaticText('noBookName') : '暂无书名')" :title="entry.resourceName"></a>
+            </p>
+            <p class="author" :title="entry.author">
+              {{getStaticText('author') ? getStaticText('author') : '作者:'}}{{entry.author || getStaticText('noAuthor') ? getStaticText('noAuthor') : '暂无作者'}}</p>
+            <p class="priceCon">
+              <span class="memberPrice">{{formatMoney(entry.memberPrice)}}</span>
+              <span class="ebPrice">{{formatMoney(entry.ebPrice)}}</span>
+            </p>
+            <p class="star">
+              <el-rate v-model="entry.starNum - 0" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
+              <span class="comment">{{entry.commentNums || 0}}{{getStaticText('comments') ? getStaticText('comments') : '条评论'}}</span>
+            </p>
+            <p class="abstract" :title="entry.bookAbstract" v-html="entry.bookAbstract
+           || (getStaticText('noIntroduction') ? getStaticText('noIntroduction') : '暂无简介')"></p>
+          </dd>
+        </dl>
           </div>
-          <div v-if="booklist && booklist.length == 0">{{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}</div>
-        </div>
-      </div>
+      <div v-if="booklist && booklist.length == 0">{{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}</div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -125,17 +125,16 @@ export default {
       }else {
         return false
       }
-    }
-  },
-  filters: {
+    },
     formatMoney: function (value) {
       if (value == '' || value == undefined) { //如果后台没有返回价格值 系统给置成0元
-        return "¥ 0.00";
+        return (this.getStaticText('yuan') ? this.getStaticText('yuan') : "¥") + "0.00";
       } else {
-        return "¥ " + parseFloat(value).toFixed(2);
+        return (this.getStaticText('yuan') ? this.getStaticText('yuan') : "¥ ") + parseFloat(value).toFixed(2);
       }
     }
   },
+
   watch: {
     member: function (newValue, oldVlue) {
       if (newValue.loginName && newValue.loginName != oldVlue.loginName && this.modulename == 'userbook') {

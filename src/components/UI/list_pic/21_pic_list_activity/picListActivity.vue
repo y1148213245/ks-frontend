@@ -13,7 +13,7 @@
           <div class="clearfix">
             <div class="ac_text">
               <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
-              <time class="time">{{item[getKeys(item,'beginTime')] | formatDateNEW}}{{getStaticText('to')? getStaticText('to') : '至'}}{{(item[getKeys(item,'reviewDate')] || item[getKeys(item,'endTime')])| formatDateNEW}}
+              <time class="time">{{formatDateNEW(item[getKeys(item,'beginTime')])}}{{getStaticText('to')? getStaticText('to') : '至'}}{{(item[getKeys(item,'reviewDate')] || formatDateNEW(item[getKeys(item,'endTime')]))}}
               </time>
             </div>
 
@@ -33,6 +33,7 @@
 import PROJECT_CONFIG from "projectConfig";
 import { Post } from "@common";
 import URL from "url";
+import moment from "moment";
 
 export default {
   name: "ui_list_pic_21",
@@ -167,6 +168,13 @@ export default {
         return false
       }
     },
+    formatDateNEW (value) {
+    if (value) {
+      return moment(Number(value)).format("YYYY-MM-DD"); // 只接收Number类型
+    } else {
+      return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期';
+    }
+   }
   }
 };
 </script>

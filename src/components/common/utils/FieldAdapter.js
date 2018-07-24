@@ -355,6 +355,7 @@ var FIELD_ADAPTER = {
             magCascadId: "MAGAZINE_MAG_CASCADID",
             departId: "MAGAZINE_DEPARTID",
             departCascadId: "MAGAZINE_DEPART_CASCADID",
+            magZg: "MAGAZINE_MAG_ZG"  //主管主办
         },
         productArticleAdapter: { // 稿件
             sysTopic: "PRODUCT-ARTICLE_SYS_TOPIC",

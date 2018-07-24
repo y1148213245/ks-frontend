@@ -71,7 +71,8 @@ const dev = {
         noDate: "暂无日期",
         productDetails: "商品详情",
         noPriceNoBookInfo: "无价格，不是书，不可加购物车",
-        pleaseLogin: "请登录"
+        pleaseLogin: "请登录",
+        yuan:"￥"
       }
     },
   }
@@ -136,7 +137,8 @@ const prod = {
         noDate: "暂无日期",
         productDetails: "商品详情",
         noPriceNoBookInfo: "无价格，不是书，不可加购物车",
-        pleaseLogin:"请登录"
+        pleaseLogin:"请登录",
+        yuan:"￥"
       }
     }
   }

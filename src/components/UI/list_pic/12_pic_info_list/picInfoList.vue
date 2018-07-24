@@ -15,9 +15,9 @@
                        disabled-void-color="#c1c1c0" v-if="bookDetailInfo && bookDetailInfo.pub_star_num != 0"></el-rate>
             </p>
             <p class="author f14 book_chuban_text">{{getStaticText('author') ? getStaticText('author') : '作者：'}}<span v-text="bookDetailInfo && bookDetailInfo.author"></span></p>
-            <p class="banquan book_chuban_text">{{getStaticText('press') ? getStaticText('press') : ' 出版社：'}}{{bookDetailInfo && bookDetailInfo.BOOK_PRESS_NAME | notAvailableNew}}</p>
-            <p class="chuban">{{getStaticText('pubTime') ? getStaticText('pubTime') : ' 出版时间：'}}{{bookDetailInfo && bookDetailInfo.pubTime | formatDateNEW}}</p>
-            <p class="price f16">{{bookDetailInfo && bookDetailInfo.memberPrice | formatPriceNew}}<span>{{bookDetailInfo && bookDetailInfo.ebPrice | formatPriceNew}}</span>
+            <p class="banquan book_chuban_text">{{getStaticText('press') ? getStaticText('press') : ' 出版社：'}}{{notAvailableNew(bookDetailInfo && bookDetailInfo.BOOK_PRESS_NAME)}}</p>
+            <p class="chuban">{{getStaticText('pubTime') ? getStaticText('pubTime') : ' 出版时间：'}}{{formatDateNEW(bookDetailInfo && bookDetailInfo.pubTime)}}</p>
+            <p class="price f16">{{formatPriceNew(bookDetailInfo && bookDetailInfo.memberPrice)}}<span>{{formatPriceNew(bookDetailInfo && bookDetailInfo.ebPrice)}}</span>
             </p>
             <p class="reader">
               <a target="_blank" href="javascript:void(0)" @click="shidu(bookDetailInfo && bookDetailInfo.resourceId,0,bookDetailInfo && bookDetailInfo.resourceName)">{{getStaticText('freeReading') ? getStaticText('freeReading') : '免费试读'}}</a>
@@ -30,6 +30,7 @@
         <a href="javascript:;" @click="viewAll()" class="more">{{getStaticText('seeAll') ? getStaticText('seeAll') : '查看全部>'}}</a>
       </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -45,7 +46,7 @@
       return {
         bookDetailInfoList: [],
         bookIntroductions:[],
-        CONFIG: "",
+        CONFIG: null,
       }
     },
     created: function () {
@@ -150,6 +151,26 @@
           return false
         }
       },
+      formatDateNEW (value) {
+        if (value) {
+          return moment(Number(value)).format("YYYY-MM-DD"); // 只接收Number类型
+        } else {
+          return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期';
+        }
+      },
+      formatPriceNew (value) {
+        if (value) {
+          return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥') + Number(value).toFixed(2);
+        } else {
+          return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥')+'0.00';
+        }
+      },
+      notAvailableNew (value) {
+        if (!value) {
+          return this.getStaticText('notHaveYet') ? this.getStaticText('notHaveYet') : '暂无';
+        }
+        return value;
+      }
     }
   }
 </script>

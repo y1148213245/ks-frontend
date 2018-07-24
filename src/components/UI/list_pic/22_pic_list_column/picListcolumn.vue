@@ -18,7 +18,7 @@
             <div class="ui_pic_list_22-card_item-content-clearfix">
               <div class="ui_pic_list_22-card_item-content-ac_text">
                 <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
-                <time class="ui_pic_list_22-card_item-content-time">{{item[getKeys(item,'beginTime')] | formatDateNEW}}{{getStaticText('to') ? getStaticText('to') : '至'}}{{(item[subKeys.reviewDate] || item[getKeys(item,'endTime')]) | formatDateNEW}}
+                <time class="ui_pic_list_22-card_item-content-time">{{formatDateNEW(item[getKeys(item,'beginTime')])}}{{getStaticText('to') ? getStaticText('to') : '至'}}{{(item[subKeys.reviewDate] || formatDateNEW(item[getKeys(item,'endTime')]))}}
                 </time>
               </div>
               <template v-for="(status,i) in activityStatus">
@@ -37,6 +37,7 @@
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 import { Post } from "@common";
+import moment from "moment"
 
 export default {
   name: "ui_list_pic_22",
@@ -178,6 +179,13 @@ export default {
         return false
       }
     },
+    formatDateNEW (value) {
+    if (value) {
+      return moment(Number(value)).format("YYYY-MM-DD");
+    } else {
+      return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期';
+    }
+  }
   },
 };
 </script>

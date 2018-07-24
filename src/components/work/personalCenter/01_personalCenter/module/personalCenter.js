@@ -2,7 +2,11 @@ import api from "../api/personalCenterApi.js";
 // import loginApi from 'api/wl/loginApi.js';
 import loginApi from "../../../login/module/login_store";
 import Vue from "vue";
-import { Get, Post, _axios } from "@common";
+import {
+  Get,
+  Post,
+  _axios
+} from "@common";
 
 var state = {
   member: {}, //用户信息
@@ -19,12 +23,13 @@ var state = {
   myComment: [], //评论列表
   commitInfo: {}, // 提交订单信息
   returnGoodsList: [], // 售后记录
+  returnGoodsDetails: [], //售后详情
   couponsList: [], // 个人中心优惠券列表
   sumCoupons: {}, // 个人中心可用和已用优惠券的金额
   /*checkStatus: false, // 优惠码校验情况*/
-  searchNoteList: [],// 个人中心随手记列表
-  activityList:[],// 参与的活动列表展示
-  activityMemberList:[]// 参与的活动管理报名人列表
+  searchNoteList: [], // 个人中心随手记列表
+  activityList: [], // 参与的活动列表展示
+  activityMemberList: [] // 参与的活动管理报名人列表
 };
 var getters = {
   getMember: state => state.member,
@@ -41,6 +46,7 @@ var getters = {
   getMyComment: state => state.myComment,
   getCommitInfo: state => state.commitInfo,
   getReturnGoodsList: state => state.returnGoodsList,
+  getReturnGoodsDetails: state => state.returnGoodsDetails,
   getCouponsList: state => state.couponsList,
   getSumCoupons: state => state.sumCoupons,
   /*getCheckStatus: (state) => state.checkStatus,*/
@@ -50,19 +56,23 @@ var getters = {
 };
 
 var actions = {
-  updateCurrentShow({ commit }, param) {
+  updateCurrentShow({
+    commit
+  }, param) {
     commit("setCurrentShow", param);
   },
   /*查询账户信息*/
-  queryUser({ commit }, param) {
+  queryUser({
+    commit
+  }, param) {
     /*登陆验证*/
     let stamp = new Date().getTime();
-    return Get(CONFIG.BASE_URL+ "checkToken.do?stamp="+stamp).then(function(rep) {
+    return Get(CONFIG.BASE_URL + "checkToken.do?stamp=" + stamp).then(function (rep) {
       let datas = rep.data.data;
       if (datas && datas.checkStatus == "1") {
         commit("setMember", datas);
         /*账户信息加载*/
-        api.queryUser(datas.loginName).then(function(response) {
+        api.queryUser(datas.loginName).then(function (response) {
           var data = response.data.data;
           var account = {
             loginName: data.loginName,
@@ -90,81 +100,115 @@ var actions = {
   },
 
   /*查询积分详情*/
-  queryPointRecord({ commit, getters }, params) {
+  queryPointRecord({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.queryPointRecord(params).then(function(response) {
+    api.queryPointRecord(params).then(function (response) {
       let pointRecord = response.data;
       commit("setPointRecord", pointRecord);
     });
   },
   /*查询下载币详情*/
-  queryVirtualMoney({ commit, getters }, params) {
+  queryVirtualMoney({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.queryVirtualMoney(params).then(function(response) {
+    api.queryVirtualMoney(params).then(function (response) {
       let virtualMoneyList = response.data;
       commit("setVirtualMoney", virtualMoneyList);
     });
   },
   /*查询收货地址*/
-  queryAddress({ commit, getters }, params) {
+  queryAddress({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.queryAddress(params).then(function(response) {
+    api.queryAddress(params).then(function (response) {
       let addresses = response.data.data;
       commit("setAddresses", addresses);
     });
   },
   /*新增收货地址*/
-  addAddress({ commit, getters }, params) {
+  addAddress({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.addAddress(params).then(function(response) {
+    api.addAddress(params).then(function (response) {
       let addStatus = response.data.result;
       params.cb(addStatus);
     });
   },
   /*修改收货地址*/
-  updateAddress({ commit, getters }, params) {
+  updateAddress({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.updateAddress(params).then(function(response) {
+    api.updateAddress(params).then(function (response) {
       let updateStatus = response.data.result;
       params.cb(updateStatus);
     });
   },
   /*设置默认地址*/
-  defaultAddress({ commit, getters }, params) {
+  defaultAddress({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.defaultAddress(params).then(function(response) {
+    api.defaultAddress(params).then(function (response) {
       let setStatus = response.data.result;
       params.cb(setStatus);
     });
   },
   /*删除收货地址*/
-  deleteAddress({ commit, getters }, params) {
-    api.deleteAddress(params).then(function(response) {
+  deleteAddress({
+    commit,
+    getters
+  }, params) {
+    api.deleteAddress(params).then(function (response) {
       let deleteStatus = response.data.result;
       params.cb(deleteStatus);
     });
   },
   /*查询支付方式*/
-  queryPaymentList({ commit, getters }) {
-    api.queryPaymentList().then(function(response) {
+  queryPaymentList({
+    commit,
+    getters
+  }) {
+    api.queryPaymentList().then(function (response) {
       let paymentList = response.data.data;
       commit("setPaymentList", paymentList);
     });
   },
   /*查询商品列表*/
-  queryOrderList({ commit, getters }, params) {
+  queryOrderList({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    let loading = Vue.prototype.$loading({ text: "正在加载中..." });
-    api.queryOrderList(params).then(function(response) {
+    let loading = Vue.prototype.$loading({
+      text: "正在加载中..."
+    });
+    api.queryOrderList(params).then(function (response) {
       let orderList = response.data;
       commit("setOrderList", orderList);
       loading.close();
     });
   },
   /*查询商品详情*/
-  queryOrderDetails({ commit, getters }, params) {
-    let loading = Vue.prototype.$loading({ text: "正在加载中..." });
-    api.queryOrderDetails(params).then(function(response) {
+  queryOrderDetails({
+    commit,
+    getters
+  }, params) {
+    let loading = Vue.prototype.$loading({
+      text: "正在加载中..."
+    });
+    api.queryOrderDetails(params).then(function (response) {
       let orderDetails = response.data.data;
       commit("setOrderDetailst", orderDetails);
       loading.close();
@@ -172,51 +216,71 @@ var actions = {
     });
   },
   /*时间筛选订单*/
-  queryTimeList({ commit, getters }, params) {
+  queryTimeList({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    let loading = Vue.prototype.$loading({ text: "正在加载中..." });
-    api.queryTimeList(params).then(function(response) {
+    let loading = Vue.prototype.$loading({
+      text: "正在加载中..."
+    });
+    api.queryTimeList(params).then(function (response) {
       let newdata = response.data;
       commit("setNewList", newdata);
       loading.close();
     });
   },
   /*修改邮箱*/
-  updateEmail({ commit, getters }, params) {
+  updateEmail({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.updateEmail(params).then(function(response) {
+    api.updateEmail(params).then(function (response) {
       let Idata = response.data.result;
       params.cb(Idata, response);
     });
   },
   /*修改密码*/
-  updatePassWord({ commit, getters }, params) {
+  updatePassWord({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.updatePassWord(params).then(function(response) {
+    api.updatePassWord(params).then(function (response) {
       let Idata = response.data.result;
       params.cb(Idata, response);
     });
   },
   /*设置密保问题*/
-  setPswQuestion({ commit, getters }, params) {
+  setPswQuestion({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.setPswQuestion(params).then(function(response) {
+    api.setPswQuestion(params).then(function (response) {
       let Idata = response.data.result;
       params.cb(Idata, response);
     });
   },
   /*密保问题验证身份*/
-  checkPswQuestion({ commit, getters }, params) {
+  checkPswQuestion({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.checkPswQuestion(params).then(function(response) {
+    api.checkPswQuestion(params).then(function (response) {
       let Idata = response.data.data.code;
       params.cb(Idata, response);
     });
   },
   /*通过验证身份重置密码*/
-  modifyPassword({ commit, getters }, params) {
+  modifyPassword({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.modifyPassword(params).then(function(response) {
+    api.modifyPassword(params).then(function (response) {
       let setStatus = response.data.result;
       params.cb(setStatus);
     });
@@ -231,35 +295,51 @@ var actions = {
   //   })
   // },
   /*取消订单*/
-  cancelOrder({ commit, getters }, params) {
-    api.cancelOrder(params).then(function(response) {
+  cancelOrder({
+    commit,
+    getters
+  }, params) {
+    api.cancelOrder(params).then(function (response) {
       let Idata = response.data.result;
       params.cb(Idata, response);
     });
   },
   /*删除订单*/
-  deleteOrder({ commit, getters }, params) {
-    api.deleteOrder(params).then(function(response) {
+  deleteOrder({
+    commit,
+    getters
+  }, params) {
+    api.deleteOrder(params).then(function (response) {
       let Idata = response.data.result;
       params.cb(Idata, response);
     });
   },
   /*获取书架*/
-  querybookShelfInfo({ commit, getters }, params) {
+  querybookShelfInfo({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
     params.type = 2;
-    let loading = Vue.prototype.$loading({ text: "正在加载中..." });
-    api.querybookShelfInfo(params).then(function(response) {
+    let loading = Vue.prototype.$loading({
+      text: "正在加载中..."
+    });
+    api.querybookShelfInfo(params).then(function (response) {
       let bookShelfInfo = response.data;
       commit("setBookShelfInfo", bookShelfInfo);
       loading.close();
     });
   },
   /*获取收藏夹*/
-  queryCollectionInfo({ commit, getters }, params) {
+  queryCollectionInfo({
+    commit,
+    getters
+  }, params) {
     params.param.loginName = getters.getMember.loginName;
-    let loading = Vue.prototype.$loading({ text: "正在加载中..." });
-    api.queryCollectionInfo(params.param).then(function(response) {
+    let loading = Vue.prototype.$loading({
+      text: "正在加载中..."
+    });
+    api.queryCollectionInfo(params.param).then(function (response) {
       let collectionInfo = response.data;
       commit("setCollectionInfo", {
         collectionInfo: collectionInfo,
@@ -269,17 +349,25 @@ var actions = {
     });
   },
   /*移除收藏夹*/
-  deleteCollProduct({ commit, getters }, params) {
+  deleteCollProduct({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.deleteCollProduct(params).then(function(response) {
+    api.deleteCollProduct(params).then(function (response) {
       let delCollStatus = response.data.result;
       params.cb(delCollStatus);
     });
   },
   /*找回密码邮箱验证码*/
-  findPassword({ commit, getters }, params) {
-    let loading = Vue.prototype.$loading({ text: "正在加载中..." });
-    api.findPassword(params).then(function(response) {
+  findPassword({
+    commit,
+    getters
+  }, params) {
+    let loading = Vue.prototype.$loading({
+      text: "正在加载中..."
+    });
+    api.findPassword(params).then(function (response) {
       let findStatus = response.data.result;
       let findNum = response.data.data;
       params.cb(findStatus, findNum, response);
@@ -287,61 +375,86 @@ var actions = {
     });
   },
   /*重置密码*/
-  setPassword({ commit, getters }, params) {
-    api.setPassword(params).then(function(response) {
+  setPassword({
+    commit,
+    getters
+  }, params) {
+    api.setPassword(params).then(function (response) {
       let setStatus = response.data.result;
       params.cb(setStatus);
     });
   },
   /*邮箱注册账号*/
-  registerSys({ commit, getters }, params) {
-    api.registerSys(params).then(function(response) {
+  registerSys({
+    commit,
+    getters
+  }, params) {
+    api.registerSys(params).then(function (response) {
       let EStatus = response.data.result;
       params.cb(EStatus, response);
     });
   },
   /*手机注册账号*/
-  registerByMobileNum({ commit, getters }, params) {
-    api.registerByMobileNum(params).then(function(response) {
+  registerByMobileNum({
+    commit,
+    getters
+  }, params) {
+    api.registerByMobileNum(params).then(function (response) {
       let regStatus = response.data.result;
       params.cb(regStatus);
     });
   },
   /*头像上传*/
-  uploadHeadPic({ commit, getters }, params) {
+  uploadHeadPic({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.uploadHeadPic(params).then(function(response) {
+    api.uploadHeadPic(params).then(function (response) {
       let uplStatus = response.data.result;
       params.cb(uplStatus);
     });
   },
   /*验证用户信息*/
-  checkUserInfo({ commit, getters }, params) {
-    api.checkUserInfo(params).then(function(response) {
+  checkUserInfo({
+    commit,
+    getters
+  }, params) {
+    api.checkUserInfo(params).then(function (response) {
       let checkStatus = response.data.result;
       params.cb(checkStatus);
     });
   },
   /*查询评论列表*/
-  getMyComment({ commit, getters }, params) {
+  getMyComment({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.getMyComment(params).then(function(response) {
+    api.getMyComment(params).then(function (response) {
       let myComment = response.data.data;
       let commentScore = parseFloat(response.data.data.commentScore);
       commit("setMyComment", myComment);
     });
   },
   /*下载币积分兑换接口*/
-  exchangeVirtualCoin({ commit, getters }, params) {
+  exchangeVirtualCoin({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.exchangeVirtualCoin(params).then(function(response) {
+    api.exchangeVirtualCoin(params).then(function (response) {
       let exchangeStatus = response.data.result;
       params.cb(exchangeStatus);
     });
   },
   /*订单付款*/
-  commitOrder({ commit }, params) {
-    api.commitOrder(params.param, ({ commitInfo }) =>
+  commitOrder({
+    commit
+  }, params) {
+    api.commitOrder(params.param, ({
+        commitInfo
+      }) =>
       commit("setcommitOrder", {
         commitInfo: commitInfo,
         myCallback: params.myCallback
@@ -349,38 +462,70 @@ var actions = {
     );
   },
   /*申请退换货*/
-  applyReturnGoods({ commit, getters }, params) {
-    api.applyReturnGoods(params).then(function(response) {
-      // let applyReturnStatus = response.data.result;
-      // params.cb(applyReturnStatus);
+  applyReturnGoods({
+    commit,
+    getters
+  }, params) {
+    api.applyReturnGoods(params).then(function (response) {
+      let applyReturnStatus = response.data;
+      params.cb(applyReturnStatus);
     });
   },
   /*售后记录*/
-  getReturnGoodsList({ commit, getters }, params) {
+  getReturnGoodsList({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.getReturnGoodsList(params).then(function(response) {
+    api.getReturnGoodsList(params).then(function (response) {
       let returnGoodsList = response.data.data;
       commit("setReturnGoodsList", returnGoodsList);
     });
   },
-
+  /*查询商品详情*/
+  queryReturnGoodsDetails({
+    commit,
+    getters
+  }, params) {
+    let loading = Vue.prototype.$loading({
+      text: "正在加载中..."
+    });
+    api.getReturnGoodsDetails(params).then(function (response) {
+      let returnGoodsDetails = response.data.data;
+      commit("setReturnGoodsDetails", returnGoodsDetails);
+      loading.close();
+      params.cb();
+    });
+  },
   /*查询优惠券列表*/
-  queryCoupons({ commit }, params) {
-    api.queryCoupons(params, ({ couponsList }) =>
+  queryCoupons({
+    commit
+  }, params) {
+    api.queryCoupons(params, ({
+        couponsList
+      }) =>
       commit("setCoupons", couponsList)
     );
   },
 
   /*查询优惠券可用/已用总金额*/
-  querySumCoupons({ commit }, params) {
-    api.querySumCoupons(params, ({ sumCoupons }) =>
+  querySumCoupons({
+    commit
+  }, params) {
+    api.querySumCoupons(params, ({
+        sumCoupons
+      }) =>
       commit("setSumCoupons", sumCoupons)
     );
   },
 
   /*优惠码激活*/
-  queryActiveCoupons({ commit }, datas) {
-    api.checkCoupons(datas.param, ({ checkStatus }) =>
+  queryActiveCoupons({
+    commit
+  }, datas) {
+    api.checkCoupons(datas.param, ({
+        checkStatus
+      }) =>
       commit("setActiveCoupons", {
         checkStatus: checkStatus,
         myCallback: datas.myCallback
@@ -388,9 +533,14 @@ var actions = {
     );
   },
   /*发送手机验证码*/
-  sendToMobile({ commit, getters }, params) {
-    let loading = Vue.prototype.$loading({ text: "验证码发送中..." });
-    api.sendToMobile(params).then(function(response) {
+  sendToMobile({
+    commit,
+    getters
+  }, params) {
+    let loading = Vue.prototype.$loading({
+      text: "验证码发送中..."
+    });
+    api.sendToMobile(params).then(function (response) {
       let sendStatus = response.data.result;
       let sendNum = response.data.data;
       params.cb(sendStatus, sendNum);
@@ -398,54 +548,77 @@ var actions = {
     });
   },
   /*个人中心设置手机号*/
-  bindMobile({ commit, getters }, params) {
-    api.bindMobile(params).then(function(response) {
+  bindMobile({
+    commit,
+    getters
+  }, params) {
+    api.bindMobile(params).then(function (response) {
       let sendStatus = response.data.data.code;
       params.cb(sendStatus, response);
     });
   },
   /*个人中心更改手机号*/
-  changeBindMobile({ commit, getters }, params) {
-    api.changeBindMobile(params).then(function(response) {
+  changeBindMobile({
+    commit,
+    getters
+  }, params) {
+    api.changeBindMobile(params).then(function (response) {
       let sendStatus = response.data.data.code;
       params.cb(sendStatus, response);
     });
   },
   // 个人中心随手记列表
-  searchNoteList({ commit, getters }, params) {
-    let loading = Vue.prototype.$loading({ text: "正在加载中..." });
-    api.searchNoteList(params).then(function(response) {
+  searchNoteList({
+    commit,
+    getters
+  }, params) {
+    let loading = Vue.prototype.$loading({
+      text: "正在加载中..."
+    });
+    api.searchNoteList(params).then(function (response) {
       let searchNoteList = response.data;
       commit("setSearchNoteList", searchNoteList);
       loading.close();
     });
   },
   /*随手记上传*/
-  saveNote({ commit, getters }, params) {
-    api.saveNote(params).then(function(response) {
+  saveNote({
+    commit,
+    getters
+  }, params) {
+    api.saveNote(params).then(function (response) {
       params.cb(response.data.status);
     });
   },
   /*随手记删除*/
-  deleteNote({ commit, getters }, params) {
+  deleteNote({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.deleteNote(params).then(function(response) {
+    api.deleteNote(params).then(function (response) {
       params.cb(response.data);
     });
   },
   // 参与的活动
   /*参与的活动列表*/
-  activityList({ commit, getters }, params) {
+  activityList({
+    commit,
+    getters
+  }, params) {
     params.loginName = getters.getMember.loginName;
-    api.myWorks(params).then(function(response) {
+    api.myWorks(params).then(function (response) {
       let activityList = response.data.data;
       commit("setActivityList", activityList);
     });
   },
   /*查询学生列表*/
-  getActivityMemberByUser({ commit, getters }, params) {
+  getActivityMemberByUser({
+    commit,
+    getters
+  }, params) {
     params.userId = getters.getMember.id;
-    api.getActivityMemberByUser(params).then(function(response) {
+    api.getActivityMemberByUser(params).then(function (response) {
       let activityMemberList = response.data.data;
       commit("setActivityMemberList", activityMemberList);
     });
@@ -464,6 +637,8 @@ var mutations = {
   setPaymentList: (state, paymentList) => (state.paymentList = paymentList),
   setOrderDetailst: (state, orderDetails) =>
     (state.orderDetails = orderDetails),
+  setReturnGoodsDetails: (state, returnGoodsDetails) =>
+    (state.returnGoodsDetails = returnGoodsDetails),
   setBookShelfInfo: (state, bookShelfInfo) =>
     (state.bookShelfInfo = bookShelfInfo),
   setReturnGoodsList: (state, returnGoodsList) =>

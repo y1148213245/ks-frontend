@@ -48,13 +48,13 @@
             <!-- price 价格 -->
             <span :key="config_i" v-else-if="config.name == 'price'" class="ui_list_pic_29_resourcelists_li_pricecontainter">
               <label class="ui_list_pic_29_resourcelists_price_label">{{config.display}}</label>
-              <span v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}">{{ item[keys[config.field]] | formatPriceNew }}</span>
+              <span v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}">{{formatPriceNew(item[keys[config.field]])}}</span>
             </span>
 
             <!-- time 时间 -->
             <span :key="config_i" v-else-if="config.name == 'time'" class="ui_list_pic_29_resourcelists_li_timecontainter">
               <label class="ui_list_pic_29_resourcelists_time_label">{{config.display}}</label>
-              <span v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}">{{ item[keys[config.field]] | formatDateNEW}}</span>
+              <span v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}">{{formatDateNEW(item[keys[config.field]])}}</span>
             </span>
 
             <!-- 其他不需要特殊处理的简单项 -->
@@ -87,6 +87,7 @@ import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 import ui_pagination from "../../pagination/pagination/pagination";
 import { Icon, Toast } from "vant";
+import moment from "moment"
 
 export default {
   name: "ui_list_pic_29",
@@ -379,7 +380,21 @@ export default {
       } else {
         return false;
       }
+    },
+    formatDateNEW (value) {
+    if (value) {
+      return moment(Number(value)).format("YYYY-MM-DD"); // 只接收Number类型
+    } else {
+      return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期';
     }
+  },
+    formatPriceNew (value) {
+    if (value) {
+      return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥') + Number(value).toFixed(2);
+    } else {
+      return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥') +'0.00';
+    }
+  }
   }
 };
 </script>

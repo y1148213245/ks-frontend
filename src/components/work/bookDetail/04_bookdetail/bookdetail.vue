@@ -23,7 +23,7 @@
 
           <div v-else-if="config.name == 'price'" class="work_bookdetail_04_pricecontainter">
             <label class="work_bookdetail_04_price_label">{{config.display}}</label>
-            <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
+            <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{formatPriceNew(resourceDetail[keys[config.field]]) }}</span>
           </div>
 
           <!-- edit by song 2018/6/30 现在规定所有的价格都取 prod_member_price 和 prod_sale_price 分别表示售价（会员价）和原价 -->
@@ -31,11 +31,11 @@
           <div v-else-if="config.name == 'bPrice'" class="work_bookdetail_04_bpricecontainter">
             <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
-              <span v-bind="{class: 'work_bookdetail_04_bPrice_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
+              <span v-bind="{class: 'work_bookdetail_04_bPrice_' + config.field}">{{formatPriceNew(resourceDetail[keys[config.field]])}}</span>
             </section>
             <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
-              <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_ebPrice_' + config.field}">{{ resourceDetail.relBook[keys[config.field]] | formatPriceNew }}</span>
+              <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_ebPrice_' + config.field}">{{formatPriceNew(resourceDetail.relBook[keys[config.field]])}}</span>
               <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_ebPrice_noprice">{{getStaticText('noResource') ? getStaticText('noResource') : '暂无'}}</span>
             </section>
           </div>
@@ -43,19 +43,19 @@
           <div v-else-if="config.name == 'ebPrice'" class="work_bookdetail_04_ebpricecontainter">
             <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
-              <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_bPrice_' + config.field}">{{ resourceDetail.relBook[keys[config.field]] | formatPriceNew }}</span>
+              <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_bPrice_' + config.field}">{{formatPriceNew(resourceDetail.relBook[keys[config.field]])}}</span>
               <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_bPrice_noprice">{{getStaticText('noResource') ? getStaticText('noResource') : '暂无'}}</span>
             </section>
             <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
-              <span v-bind="{class: 'work_bookdetail_04_ebPrice_' + config.field}">{{ resourceDetail[keys[config.field]] | formatPriceNew }}</span>
+              <span v-bind="{class: 'work_bookdetail_04_ebPrice_' + config.field}">{{formatPriceNew(resourceDetail[keys[config.field]]) }}</span>
             </section>
           </div>
 
           <!-- time 时间 -->
           <div v-else-if="config.name == 'time'" class="work_bookdetail_04_timecontainter">
             <label class="work_bookdetail_04_time_label">{{config.display}}</label>
-            <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]] | formatDateNEW}}</span>
+            <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{formatDateNEW(resourceDetail[keys[config.field]])}}</span>
           </div>
 
           <!-- 纸质书/电子书加入购物车 、收藏、点赞、分享  资讯收藏、点赞、分享-->
@@ -175,7 +175,6 @@
         </div>
       </div>
       <!-- END 书籍相关信息 -->
-
       <!-- 评论信息 -->
       <div class="work_bookdetail_04_review" v-if="tabConfigList && tabConfigList.reviewShow && tabActiveIndex == 1">
         <work_bookreview_01 :namespace="namespace" v-show="tabConfigList.reviewShow"></work_bookreview_01>
@@ -197,6 +196,8 @@
         <label class="work_bookdetail_04_btnlabel">{{bugButton.display2}}</label>
       </div>
     </div>
+
+
   </div>
 </template>
 
@@ -208,6 +209,7 @@ import Vue from 'vue';
 import { Get, Post, DrawImage, getFieldAdapter, toOtherPage } from "@common";
 import URL from 'url';
 import PROJECT_CONFIG from "projectConfig";
+import moment from "moment";
 
 export default {
   name: 'work_bookdetail_04',
@@ -502,9 +504,6 @@ export default {
     },
     /* 通过检索资源名获取pubId */
     getPubidByLocationQueryFromSyk () {
-      
-      
-          
       if (!this.pubId) {
         let config = this.CONFIG.getPubidByLocationQueryFromSyk ? this.CONFIG.getPubidByLocationQueryFromSyk : {
           url:'spc/cms/publish/list.do',
@@ -531,13 +530,13 @@ export default {
                 entry[config.queryParams[item]] = val /* 条件值修改 */
               }
             })
-            
+
             isHas ? '' : paramsObj.conditions.push({
             [config.queryParams[item]]:val/* 添加新条件 */
           })
           }
         }
-        
+
         paramsObj.conditions = JSON.stringify(paramsObj.conditions)
         Post(CONFIG.BASE_URL + config.url,paramsObj).then(resp=>{
           let data = resp.data.result;
@@ -556,6 +555,20 @@ export default {
         return false
       }
     },
+    formatDateNEW (value) {
+      if (value) {
+        return moment(Number(value)).format("YYYY-MM-DD"); // 只接收Number类型
+      } else {
+        return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期';
+      }
+    },
+    formatPriceNew (value) {
+    if (value) {
+      return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥') + Number(value).toFixed(2);
+    } else {
+      return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥')+'0.00';
+    }
+    }
   },
   watch: {
     member: function (newValue, oldValue) {

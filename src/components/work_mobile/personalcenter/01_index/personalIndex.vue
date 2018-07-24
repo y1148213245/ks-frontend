@@ -110,6 +110,7 @@ export default {
       }
     },
     initData (loginName) {
+      this.getMember(loginName);
       this.queryMyBoughtBooks(loginName);  //页面初始化获取已购买图书的全部数据
       this.queryCollectionList(loginName);  //页面初始化获取收藏图书的全部数据
     },
@@ -139,6 +140,20 @@ export default {
         }
       })
     },
+    //因为返回来的token中的数据不是实时的，所以在调一次用户数据接口
+    getMember(loginName){
+      Get(CONFIG.BASE_URL + this.CONFIG.getMember.url + '?loginName=' + (loginName ? loginName : this.member.loginName) ).then((resp) => {
+        let res = resp.data;
+        if (res.result == '1' && res.data.length > 0) {
+          this.member = res.data;
+        } else {
+          Toast.fail({
+            duration: 1000,
+            message: res.error.msg
+          });
+        }
+      })
+    }
   },
   watch: {
     member: function (newValue, oldValue) {

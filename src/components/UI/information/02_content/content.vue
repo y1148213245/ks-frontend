@@ -6,13 +6,13 @@
           <!-- 最后修改时间 -->
           <span :key=config_i class="ui_information_02_lastModifyDate" v-if="config.name == 'lastModifyDate'" v-show="resourceConfig.showItem.indexOf('lastModifyDate') !=-1">
             <label class="ui_information_02_lastModifyDate_label">{{config.display}}</label>
-            <span v-bind="{class: 'ui_information_02_' + config.field}">{{ content[keys[config.field]] | formatDateNEW}}</span>
+            <span v-bind="{class: 'ui_information_02_' + config.field}">{{formatDateNEW(content[keys[config.field]])}}</span>
           </span>
 
           <!-- 创建时间 -->
           <span :key=config_i class="ui_information_02_createdDate" v-else-if="config.name == 'createdDate'" v-show="resourceConfig.showItem.indexOf('createdDate') !=-1">
             <label class="ui_information_02_createdDate_label">{{config.display}}</label>
-            <span v-bind="{class: 'ui_information_02_' + config.field}">{{ content[keys[config.field]] | formatDateNEW}}</span>
+            <span v-bind="{class: 'ui_information_02_' + config.field}">{{formatDateNEW(content[keys[config.field]])}}</span>
           </span>
 
           <!-- 创建时间 -->
@@ -26,13 +26,15 @@
             <label class="ui_information_02_content_other_label">{{config.display}}</label>
             <span v-bind="{class: 'ui_information_02_content_other_' + config.field}">{{content[keys[config.field]] }}</span>
           </span>
-        </template>  
+        </template>
       </p>
   </section>
+
 </template>
 <script>
 import PROJECT_CONFIG from "projectConfig";
 import { Get, Post, getFieldAdapter } from "@common";
+import moment from "moment"
 
 export default {
   name: "ui_information_02",
@@ -45,7 +47,7 @@ export default {
       keys: null,
       colId: null,
       list: [],
-      pubId: null
+      pubId: null,
     };
   },
   created() {
@@ -61,7 +63,7 @@ export default {
     this.$bus.$on(this.CONFIG.broadcastName, this.getContent);
   },
   methods: {
-    getContent(colId) {
+    getContent (colId) {
       this.colId = colId[0];
       //取list
       let paramsObj1 = this.CONFIG.getResourceLists.params;
@@ -93,7 +95,22 @@ export default {
           }
         }
       );
+    },
+    getStaticText (text) {
+      if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
+    },
+    formatDateNEW (value) {
+      if (value){
+          return moment(Number(value)).format("YYYY-MM-DD")
+      } else {
+          return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期'
+      }
     }
+
   }
 };
 </script>

@@ -31,7 +31,7 @@
       <div class="work_mobile_personalcenter_03_editname_nickname">{{display.nickName || '昵称'}}</div>
       <div class="work_mobile_personalcenter_03_editname_con">
         <form action="">
-          <input class="work_mobile_personalcenter_03_editname_name" type="text" v-model="getMember.nickName" maxlength="10">
+          <input class="work_mobile_personalcenter_03_editname_name" @change="editUserInfo('nickName')" type="text" v-model="getMember.nickName" maxlength="10">
         </form>
         <i class="el-icon-close" @click="removeName(showItem)" v-if="getMember.nickName"></i>
         <!-- 文本框有内容时显示清除按钮 -->
@@ -117,7 +117,7 @@
     <div class="work_mobile_personalcenter_03_editintro" v-if="showItem == 'introduction'">
       <div class="work_mobile_personalcenter_03_editintro_intro">{{display.introduction || '签名'}}</div>
       <div class="work_mobile_personalcenter_03_editintro_con">
-        <textarea class="work_mobile_personalcenter_03_editintro_textarea" :maxlength="display.maxNum" v-model="getMember.introduction"></textarea>
+        <textarea class="work_mobile_personalcenter_03_editintro_textarea" :maxlength="display.maxNum" @change="editUserInfo('introduction')" v-model="getMember.introduction"></textarea>
         <span class="work_mobile_personalcenter_03_editintro_textarea_count">{{getMember.introduction.length}}/{{display.maxNum}}</span>
       </div>
       <div v-if="!getMember.introduction" class="work_mobile_personalcenter_03_nointro">{{CONFIG.display.noIntroduction}}</div>
@@ -276,7 +276,7 @@ export default {
           })
         }
       }
-      else if (item == 'nickName') { // 更改昵称
+      else if (item == 'nickName') {// 更改昵称
         if (this.getMember.nickName == '') { // 昵称为空时不能保存
           // this.noNickname = true;
           return false;

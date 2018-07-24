@@ -47,7 +47,9 @@ const dev = {
         },
       },
       staticText : {
-          zeroBook: "共 0 本"
+        zeroBook:"共 0 本",
+        total: "共",
+        unit: "本"
       }
     }
   }
@@ -90,7 +92,9 @@ const prod = {
         },
       },
       staticText : {
-        zeroBook: "共 0 本"
+        zeroBook:"共 0 本",
+        total: "共",
+        unit: "本"
       }
     }
   }

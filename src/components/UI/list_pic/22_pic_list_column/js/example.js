@@ -20,7 +20,8 @@ const dev = {
     notBegin: "未开始",
     inProgress: "进行中",
     appraisalBonus: "评奖中",
-    haveFinished: "已结束"
+    haveFinished: "已结束",
+    noDate: "暂无日期"
 }
 };
 
@@ -70,9 +71,9 @@ const prod = {
             beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
             endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
             reviewDate:'',
-            
+
           }
-          
+
         }
       },
       staticText: {
@@ -83,7 +84,8 @@ const prod = {
         notBegin: "未开始",
         inProgress: "进行中",
         appraisalBonus: "评奖中",
-        haveFinished: "已结束"
+        haveFinished: "已结束",
+        noDate: "暂无日期"
       }
     }
   }

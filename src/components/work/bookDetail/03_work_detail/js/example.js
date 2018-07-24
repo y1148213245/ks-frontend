@@ -79,6 +79,9 @@ const dev = {
         weChatScanShare:"微信扫一扫分享",
         pleaseLoginFirst:"请您先登录",
         operationFailed:"操作失败",
+        year:"年",
+        month:"月",
+        day:"日"
       }
     }
   }
@@ -155,6 +158,9 @@ const prod = {
         weChatScanShare:"微信扫一扫分享",
         pleaseLoginFirst:"请您先登录",
         operationFailed:"操作失败",
+        year:"年",
+        month:"月",
+        day:"日"
       }
     }
   }
