@@ -14,8 +14,7 @@
         <van-cell class="work_mobile_personalcenter_03_cell" :class="'work_mobile_personalcenter_03_' + nav.tag" v-for="(nav, index) in showLists" :key="index" :title="nav.title" :is-link="nav.hasLink" @click="enterEditModule(nav)">
           <!-- 头像在微信端不可更改，未设置头像用户显示默认头像，用第三方账号登录直接显示第三方账号头像 -->
           <div class="work_mobile_personalcenter_03_picturecon" v-if="nav.tag == 'picture'">
-            <img v-if="JSON.stringify(getMember) != '{}' && getMember[nav.tag]" :src="getMember[nav.tag]" :alt="display.noPic || '暂无头像'" />
-            <img v-if="JSON.stringify(getMember) != '{}' && !getMember[nav.tag]" :src="'../assets/img/people.jpg'" :alt="display.noPic || '暂无头像'" />
+            <img :src="getMember[nav.tag]" :onerror="'../assets/img/people.jpg'" :alt="display.noPic || '暂无头像'" />
           </div>
           <div class="work_mobile_personalcenter_03_other" v-else>
             <span v-if="nav.tag == 'password'"></span>
@@ -118,7 +117,9 @@
     <div class="work_mobile_personalcenter_03_editintro" v-if="showItem == 'introduction'">
       <div class="work_mobile_personalcenter_03_editintro_intro">{{display.introduction || '签名'}}</div>
       <div class="work_mobile_personalcenter_03_editintro_con">
-        <textarea class="work_mobile_personalcenter_03_editintro_textarea" :maxlength="display.maxNum" @change="editUserInfo('introduction')" v-model="getMember.introduction"></textarea>
+         <form action="">
+          <textarea class="work_mobile_personalcenter_03_editintro_textarea" :maxlength="display.maxNum" @change="editUserInfo('introduction')" v-model="getMember.introduction"></textarea>
+         </form>
         <span class="work_mobile_personalcenter_03_editintro_textarea_count">{{getMember.introduction.length}}/{{display.maxNum}}</span>
       </div>
       <div v-if="!getMember.introduction" class="work_mobile_personalcenter_03_nointro">{{CONFIG.display.noIntroduction}}</div>
@@ -540,6 +541,9 @@ export default {
 }
 </script>
 <style>
+[v-cloak] {
+  display: none;
+}
 .work_mobile_personalcenter_03 {
   font-size: 0.35rem;
 }

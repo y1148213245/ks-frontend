@@ -8,9 +8,9 @@
         <!-- 我的资料 -->
         <div v-if="member && nav.tag == 'account'" class="work_mobile_personalcenter_01_account">
           <div class="work_mobile_personalcenter_01_account_img">
-            <img :src="member.picture || '../assets/img/people.jpg'" alt="暂无头像">
+            <img :src="member.picture" :onerror="'../assets/img/people.jpg'" alt="暂无头像">
           </div>
-          <span class="work_mobile_personalcenter_01_account_name">{{member.loginName}}</span>
+          <span class="work_mobile_personalcenter_01_account_name">{{member.nickName?member.nickName:member.loginName}}</span>
         </div>
         <!-- END 我的资料 -->
 
@@ -167,6 +167,9 @@ export default {
 }
 </script>
 <style>
+[v-cloak] {
+  display: none !important;
+}
 .work_mobile_personalcenter_01 {
   font-size: 0.3rem;
 }

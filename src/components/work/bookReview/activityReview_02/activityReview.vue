@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-02-05 13:56:44 
+ * @Author: song
+ * @Date: 2018-02-05 13:56:44
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-04-26 17:10:17
  */
@@ -62,7 +62,7 @@ export default {
       keys: null,
       review: '',  // 评论内容
       reviewList: [], // 评论列表
-      showType: '1',  // 显示哪一种类型的评论：教师评论 or 普通用户评论 
+      showType: '1',  // 显示哪一种类型的评论：教师评论 or 普通用户评论
       reviewType: [],
       // 活动、资讯详情评论 地址栏必须传 pubId colId （视为默认正常情况）
       // 作品详情评论 地址栏必须传 resourceName resourceType resourceId colId 特殊情况 索引库查不到信息
@@ -98,7 +98,7 @@ export default {
       }else if(this.CONFIG.getParamType == 'href'){
         this.getHrefParam ();
       }
-      
+
     },
     getEventParam (data) {
       this.pubId = data[this.keys.pubId];
@@ -154,7 +154,7 @@ export default {
         });
         return false;
       }
-      if (this.review == '') {  // 没有填写评论内容不得提交评论
+      if (this.review.replace(/\s+/g,"") == '') {  // 没有填写评论内容不得提交评论
         this.$message({
           type: "info",
           message: '请添加评论内容'
@@ -173,7 +173,7 @@ export default {
       } else {  // 其他详情（活动、资讯详情） 可以理解为默认情况
         paramsObj.pubId = this.pubId;
       }
-      
+
       Post(CONFIG.BASE_URL+this.CONFIG.addreview.url, paramsObj).then(rep => {
         if (rep.data.result === '1') {  //请求成功
           this.queryReviewList();

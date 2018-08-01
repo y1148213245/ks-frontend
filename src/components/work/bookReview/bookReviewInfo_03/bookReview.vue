@@ -175,7 +175,7 @@
           return false;
         }
         var content = this.$refs.commentContent.value;
-        if(content==''){
+        if(content.replace(/\s+/g,"")==''){
           this.$message({
             message: "评论内容不能为空",
             type: 'error'

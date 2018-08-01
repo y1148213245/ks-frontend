@@ -84,6 +84,7 @@ export default {
       resourseType:'',
       resourceDetail:{},
       isDiscuss:0,  //是否能评论 0可以 1不行
+      queryConfigAddReview:0, //是否能评论完了 0可以 1不行
     }
   },
   mounted () {
@@ -183,7 +184,7 @@ export default {
       }
       var bookDetail = this.bookInfo;
       var content = this.$refs.commentContent.value;
-      if(content==''){
+      if(content.replace(/\s+/g,"")==''){
         this.$message({
           message: this.getStaticText('commentsEmptfyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论内容不能为空',
           type: 'error'
@@ -220,7 +221,12 @@ export default {
         paramsObj.resourceName = this.resourceDetail.resourceName;
         paramsObj.resourceType = this.resourceDetail.resourceType;
       }
+      if(this.queryConfigAddReview){
+        return false;
+      }
+      this.queryConfigAddReview = 1;
       Post(CONFIG.BASE_URL + queryConfig.url, paramsObj).then((rep) => {
+        this.queryConfigAddReview = 0;
         var result = rep.data.result;
         if (result === "1") {
           var msg = rep.data.data.msg;

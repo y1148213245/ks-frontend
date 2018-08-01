@@ -320,7 +320,7 @@ export default {
             : item[this.keys.colId];
         }
         if (item.hasOwnProperty("pub_parent_id")) {
-          item.pub_parent_id = this.colId ? this.colId : item.pub_parent_id;
+          item.pub_parent_id = this.pubId ? this.pubId : item.pub_parent_id;
         }
         if (item.hasOwnProperty("BOOK_BOOK_CASCADID")) {
           item.BOOK_BOOK_CASCADID = this.cascadId

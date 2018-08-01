@@ -522,7 +522,6 @@
 
       <div class="addressDetails">
         <el-table border :data="virtualMoneyList.data" style="width: 100%">
-          <span v-text="virtualMoneyList"></span>
           <el-table-column type="index" width="150" label="序号" align="center">
           </el-table-column>
           <el-table-column label="类型" prop="flag" align="center" :formatter="typeFormat">
@@ -533,7 +532,6 @@
           </el-table-column>
         </el-table>
         <ui_pagination :pageMessage="{totalCount: this.virtualMoneyList.data && this.virtualMoneyList.totalCount - 0 || 0}" :page-sizes="[8,16,32,64]" :excuteFunction="virtualPaging"></ui_pagination>
-
       </div>
       <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
     </div>
@@ -557,7 +555,7 @@
         <div v-else>
           <el-radio-group v-model="payWay" size="small" fill="#f6163c">
             <span v-for="(pay, index) in paymentList" @click="selectPayWay(pay.payCode)">
-              <el-radio :label="index">{{pay.comments}}</el-radio>
+              <el-radio :label="index">{{pay.payName}}</el-radio>
             </span>
           </el-radio-group>
           <div class="paybutt">
@@ -1029,10 +1027,10 @@ export default {
       this.currentShow = this.title[index];
     },
     /*下载币分页*/
-    virtualPaging({ pagesNo, pageSize }) {
+    virtualPaging({ pageNo, pageSize }) {
       var param = {
         loginName: "",
-        pageIndex: pagesNo,
+        pageIndex: pageNo,
         pageSize: pageSize
       };
       this.$store.dispatch("personalCenter/queryVirtualMoney", param);

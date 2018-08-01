@@ -249,6 +249,7 @@ export default {
         ebookType: '94',
       },
       pub_comment_num: '',   //评论数
+      collectLikeOn:1,   //点赞或收藏是否在提交中   // 0 代表没有 可以执行  1代表不能，不能执行
     };
   },
 
@@ -309,14 +310,14 @@ export default {
       if (config.method == 'toProbation') { // 执行免费试读操作
         //加入书架
         if(this.CONFIG.addBookshelfBeforeProbation) {
-          Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=1' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
+          Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=3' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
             var datas = rep.data;
             if (datas.result == "1") {
-              let msg = datas.data.msg;
-              this.$message({
-                message: msg,
-                type: 'success'
-              });
+              // let msg = datas.data.msg;
+              // this.$message({
+              //   message: msg,
+              //   type: 'success'
+              // });
               this.getResourceDetail();  //获取图书详情信息
             }
           });
@@ -492,6 +493,10 @@ export default {
         window.open('../pages/login.html');
         return false
       }
+      if (this.collectLikeOn) {  // 未登录
+        return false;
+      }
+      this.collectLikeOn = 1;
       let paramsObj = Object.assign({}, this.collectOrLikeConfig.params);
       Post(CONFIG.BASE_URL + this.collectOrLikeConfig.url + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&operateType=' + (config.name == 'collect' ? 0 : 1) + '&productId=' + this.resourceDetail[this.keys.productId] + '&siteId=' + paramsObj.siteId).then((rep) => {
         var datas = rep.data;
@@ -503,6 +508,7 @@ export default {
           });
           this.getResourceDetail();  //获取图书详情信息
         }
+        this.collectLikeOn = 0;
       });
     },
     /* 通过检索资源名获取pubId */
