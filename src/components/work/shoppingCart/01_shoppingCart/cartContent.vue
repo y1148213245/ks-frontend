@@ -110,7 +110,7 @@
                     </div>
                   </div>
                 </li>
-                <li v-for="product in item.list" v-if="item.productType == ebookTypeTag" class="ebookWrapper"
+                <li v-for="product in item.list" v-if="item.productType == ebookTypeTag || item.productType == ejournalTypeTag" class="ebookWrapper"
                     v-bind:class="{checkedLi: product.checked}">
                   <div class="cart-tab-1">
                     <div class="cart-item-check">
@@ -123,8 +123,9 @@
                     </div>
                     <div class="cart-item-title">
                       <div class="item-name">
-                        <a
-                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId" class="scoped_text" :title="product.productName">{{product.productName}}</a><span class="scoped_text"> {{getStaticText('ebook') ? getStaticText('ebook') : '(电子书)'}}</span>
+                        <a v-bind:href="'./bookdetail.html?pubId=' + product.pubId" class="scoped_text" :title="product.productName">{{product.productName}}</a>
+                        <span class="scoped_text" v-if="item.productType == ebookTypeTag"> {{getStaticText('ebook') ? getStaticText('ebook') : '(电子书)'}}</span>
+                        <span class="scoped_text" v-if="item.productType == ejournalTypeTag"> {{getStaticText('ejournal') ? getStaticText('ejournal') : '(电子期刊)'}}</span>
                       </div>
                       <div class="author">
                         <span class="scoped_text">{{getStaticText('author') ? getStaticText('author') : '作者：'}}</span>
@@ -322,6 +323,7 @@
                     <div class="item-name">
                       <span>{{product.productName}}</span>
                       <span v-if="product.productType == ebookTypeTag">{{getStaticText('ebookClass') ? getStaticText('ebookClass') : '(电子书)'}}</span>
+                      <span v-if="product.productType == ejournalTypeTag">{{getStaticText('ejournalClass') ? getStaticText('ejournalClass') : '(电子期刊)'}}</span>
                     </div>
                     <div class="author">
                       <span>{{getStaticText('author') ? getStaticText('author') : '作者：'}}</span>
@@ -504,6 +506,7 @@
         selectedCouponsPassword: "", // 当前选择的优惠券id
         bookTypeTag: "91", // 纸书类型代号
         ebookTypeTag: "94", // 电子书类型代号
+        ejournalTypeTag: '149', // 电子期刊类型代号
         showCancelCoupons: false,
         elementTop: 0,  // 底部结算栏距离顶部的高度
         curSelectedAddress: {}, // 当前选择的地址 从地址选择子组件中接收到的
@@ -934,7 +937,7 @@
             // book
             bookTotalMoneyArray.push(item.totalPrice);
             bookSaveMoneyArray.push(item.saveValue);
-          } else if (item.productType === _this.ebookTypeTag) {
+          } else if (item.productType === _this.ebookTypeTag || item.productType === _this.ejournalTypeTag) {
             // ebook
             ebookTotalMoneyArray.push(item.totalPrice);
             ebookSaveMoneyArray.push(item.saveValue);
@@ -1227,7 +1230,7 @@
               // 纸质书
               _this.allEbook = false;
             }
-            if (item.productType === _this.ebookTypeTag) {
+            if (item.productType === _this.ebookTypeTag || item.productType === _this.ejournalTypeTag) {
               // 电子书
               _this.allBook = false;
             }
@@ -1641,7 +1644,7 @@
         if (value) {
           return (this.getStaticText('yuan') ? this.getStaticText('yuan') : "¥ ") + Number(value).toFixed(2);
         } else {
-          return (this.getStaticText('yuan') ? this.getStaticText('yuan') : "¥ ") + value;
+          return (this.getStaticText('yuan') ? this.getStaticText('yuan') : "¥ ") + '0.00';
         }
       },
     },

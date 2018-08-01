@@ -62,7 +62,7 @@ const prod = {
             orderBy: 'orderParam'
           },
           fixedKeys: {//固定参数，左为参数名，右为参数值，可自行扩展。
-
+            app: 1  /* 左侧为转跳参数；右侧为值 */
           }
         },
         showItem: ['picture', 'bookname', 'author', 'abstract', 'price'], // 控制显示哪些项

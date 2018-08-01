@@ -10,9 +10,9 @@ module.exports = {
   	// 	// pathRewrite: {'^/portal/file' : ''},
   	// 	changeOrigin: true
     // },
-    '../../../file/': {
-  		target: 'http://172.19.92.76:8080',
-  		pathRewrite: {'^/portal/file' : ''},
+    '../../../file': {
+  		target: 'http://172.19.57.67:8080',
+  		pathRewrite: {'^../../../file' : 'portal/file'},
   		changeOrigin: true
   	}
   }

@@ -25,8 +25,7 @@
                   <el-rate v-model="entry.starNum - 0" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
                   <span class="comment">{{entry.commentNums || 0}}条评论</span>
                 </p>
-                <p class="abstract" :title="entry.bookAbstract" v-html="entry.bookAbstract 
-              || '暂无简介'"></p>
+                <p class="abstract" :title="entry.bookAbstract" v-html="entry.bookAbstract || '暂无简介'"></p>
               </dd>
             </dl>
           </div>
@@ -126,7 +125,7 @@ export default {
       if (value) {
         return "¥ " + parseFloat(value).toFixed(2);
       } else {
-        return "¥ " + value;
+        return "¥ 0.00" ;
       }
     }
   },

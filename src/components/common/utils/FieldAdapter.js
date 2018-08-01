@@ -92,6 +92,8 @@ var FIELD_ADAPTER = {
             /* 头像 */
             voteNum: 'VOTE_NUMBERNEW',
             /* 投票数量 */
+            company:'COMPANY',
+            /* 所属单位 */
         },
         activityAwardAdapter: {
             awardType: 'AWARD_TYPE',
@@ -129,6 +131,7 @@ var FIELD_ADAPTER = {
             salePrice: "prod_sale_price",
             memberPrice: "prod_member_price",
             parentId: 'pub_parent_id',
+            fileRecordID: 'fileRecordID'
         },
         bookAdapter: { // 图书
             sysTopic: "BOOK_SYS_TOPIC",
@@ -247,7 +250,8 @@ var FIELD_ADAPTER = {
         activityVoteAdapter: { /* 投票活动 */
             sysTopic: 'PORTAL_VOTEACTIVITY_SYS_TOPIC',
             description: 'PORTAL_VOTEACTIVITY_DESCRIPTION',
-            endTimeStamp: 'PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW'
+            endTimeStamp: 'PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW',
+            beginTimeStamp:'PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW'
         },
         videoAdapter: { // 视频 包括视频组
             sysTopic: "VIDEO-MEDIA_SYS_TOPIC",
@@ -282,6 +286,9 @@ var FIELD_ADAPTER = {
             remotePath: "remotePath",
             refTable: "refTable",
             fileRecordID: "fileRecordID",
+            remark: "AUDIO-MEDIA_REMARK",  //备注
+            description: "AUDIO-MEDIA_DESCRIPTION",  // 内容简介
+            recorder: "AUDIO-MEDIA_RECORDER"  // 制作人
         },
         audioGroupAdapter: { // 音频组
           agCat: "YINPINZU_CAT1",
@@ -404,7 +411,7 @@ var FIELD_ADAPTER = {
             actTime: "MATERIAL-PIC_ACT_TIME",
             actSpot: "MATERIAL-PIC_ACT_SPOT"
         },
-        talentAdapter: {
+        talentAdapter: { // 人才招聘
             coverId: "COVERID",
             resourceId: "RESOURCEID",
             sysTopic: "SYS_TOPIC",
@@ -445,6 +452,24 @@ var FIELD_ADAPTER = {
             familySituation: "FAMILY_SITUATION",
             otherSituation: "OTHER_SITUATION",
             description: "DESCRIPTION"
+        },
+        sampleBookAdapter:{  // 样书
+            name: "NAME",  // 姓名
+            school: "SCHOOL",  // 执教学校
+            college: "COLLEGE",  // 所属院系
+            profession: "PROFESSIONAL_TITLE",  // 职称
+            duty: "ADMINISTRATIVE_DUTIES",   // 行政职务
+            teachLevel: "TEACHING_LEVEL",   // 教学层次
+            email: "EMAIL",
+            presentWay: "PRESENTED_WAY",  // 赠书方式
+            address: "ADDRESS", // 地址
+            course: "COURSE",  // 所授课程
+            scale: "SCALE", // 授课学生规模
+            teachMaterial: "TEACHING_MATERIAL", // 现用教材
+            cooPurpose: "COOPERATIVE_PURPOSE", // 是否有与我社的合作出版意向
+            selectTopic: "SELECTED_TOPIC",  // 选题名称或方向
+            otherOpinion: "OTHER_OPINIONS",  // 其他意见
+            telephone: "TELEPHONE" // 联系电话
         }
     }
 };

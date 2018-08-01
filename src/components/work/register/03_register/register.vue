@@ -283,7 +283,7 @@ export default {
 
       if (value === "") {
         callback(new Error(this.getStaticText('inputEmail') ? this.getStaticText('inputEmail') : "请输入邮箱"));
-      }else if(!/^[A-Za-z\d]+$/.test(value)){
+      }else if(!/^[A-Za-z\d_]+$/.test(value)){
         callback(new Error(this.getStaticText('inputEmailFormatError') ? this.getStaticText('inputEmailFormatError') : "请输入正确邮箱格式"))
       }else{
         callback();

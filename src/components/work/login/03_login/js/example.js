@@ -25,9 +25,9 @@ const dev = {
         accountFrozenInfo: "账号已被冻结，请联系管理员",
         loginFailed:"登录失败",
         usernameAndPwdCannotBeEmpty:"用户名或密码不能为空",
-        userNameCannotBeEmpty: "用户名不能为空",
+        userNameCannotBeEmpty: "请输入账号",
         accountAndPwdError: "账号或密码错误",
-        pwdCannotBeEmpty: "密码不能为空",
+        pwdCannotBeEmpty: "请输入密码",
         inputCode:'请输入验证码',
         codeFailed:'验证码输入错误'
       }
@@ -39,7 +39,8 @@ const prod = {
   name: 'login',
   login: {
     work_login_03: {
-      disBacks: ['register.html', 'register_success.html', 'forgetPassword.html'],
+      isPC: 'false',  //兼容PC和移动端
+      disBacks: ['register.html', 'register_success.html', 'forgetPassword.html','login.html'],
       indexPath: './index.html',
       thirdParty: {
         topic:'社交账号登陆',
@@ -69,6 +70,13 @@ const prod = {
         ]
       },
       // showItem:['code'],/* code:验证码功能 */
+      checkUsername: {
+        url: 'user/checkUserInfo.do',
+        params: {
+          checkText: '',   //验证文本
+          checkType: '1'  //验证类型  1用户名  2邮箱   3手机号
+        }
+      },
       staticText: {
         loginSys: "登录",
         inputUserName: "请输入用户名",
@@ -80,10 +88,11 @@ const prod = {
         loginFailed:"登录失败",
         usernameAndPwdCannotBeEmpty:"用户名或密码不能为空",
         accountAndPwdError: "账号或密码错误",
-        userNameCannotBeEmpty: "用户名不能为空",
-        pwdCannotBeEmpty: "密码不能为空",
+        userNameCannotBeEmpty: "请输入账号",
+        pwdCannotBeEmpty: "请输入密码",
         inputCode:'请输入验证码',
-        codeFailed:'验证码输入错误'
+        codeFailed:'验证码输入错误',
+        unRegisterName: '账号未注册'
       }
     }
   }

@@ -92,7 +92,7 @@ Vue.filter('notAvailableNew', function(value) {
 });
 
 
-// 处理栏目名 
+// 处理栏目名
 Vue.filter('formatColumnName', (value) => {
     if (value.lastIndexOf('~') !== -1) {
         return value.substring(value.lastIndexOf('~') + 1, value.length);

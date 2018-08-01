@@ -72,14 +72,14 @@ const dev = {
             method: '',
             hoverEvent: "true",
           }, {
-            name: 'price', // 现价
-            field: 'ebPrice',
+            name: 'price', // 现价  现价要写在原价前面
+            field: 'memberPrice',
             display: '',
             method: '',
             hoverEvent: "true",
           }, {
             name: 'price', // 原价
-            field: 'memberPrice',
+            field: 'ebPrice',
             display: '',
             method: '',
             hoverEvent: "true",
@@ -91,13 +91,13 @@ const dev = {
             hoverEvent: "false",
           }, {
             name: 'price', // 现价
-            field: 'ebPrice',
+            field: 'memberPrice',
             display: '',
             method: '',
             hoverEvent: "false",
           }, {
             name: 'price', // 原价
-            field: 'memberPrice',
+            field: 'ebPrice',
             display: '',
             method: '',
             hoverEvent: "false",
@@ -195,13 +195,13 @@ const prod = {
             hoverEvent: "true",
           }, {
             name: 'price', // 现价
-            field: 'ebPrice',
+            field: 'memberPrice',
             display: '',
             method: '',
             hoverEvent: "true",
           }, {
             name: 'price', // 原价
-            field: 'memberPrice',
+            field: 'ebPrice',
             display: '',
             method: '',
             hoverEvent: "true",
@@ -213,13 +213,13 @@ const prod = {
             hoverEvent: "false",
           }, {
             name: 'price', // 现价
-            field: 'ebPrice',
+            field: 'memberPrice',
             display: '',
             method: '',
             hoverEvent: "false",
           }, {
             name: 'price', // 原价
-            field: 'memberPrice',
+            field: 'ebPrice',
             display: '',
             method: '',
             hoverEvent: "false",

@@ -10,7 +10,7 @@
 
           <li class="ui_navigation_05_ul_child1_li" :class="{'ui_navigation_05_item--active':currentActive == item2.id}" v-show="item1.showChild || currentActive == item2.id" @click.self="navClick(item2,item1.childNav)">
             {{item2.name}}
-            <ul class="ui_navigation_05_ul_child2" v-show="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
+            <ul class="ui_navigation_05_ul_child2" v-if="showThreeColumn" v-show="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
               <li class="ui_navigation_05_ul_child2_li" :class="{'ui_navigation_05_item--active':currentActive == item3.id}" v-show="item2.showChild" @click.self="changeContent(item3.id)">{{item3.name}}</li>
             </ul>
           </li>
@@ -37,6 +37,7 @@ export default {
       defaultBus: true, //created后发送一次默认bus
       currentActive: '',/* 当前选中高亮 */
       colId: "", // 地址栏取栏目id高亮
+      showThreeColumn: true,  //是否显示三级目录
     };
   },
   created () {
@@ -44,6 +45,7 @@ export default {
     this.CONFIG =
       PROJECT_CONFIG[this.namespace].navigation.navigation_05[this.modulename];
     this.keys = this.CONFIG.getNavLists.keys;
+    this.showThreeColumn = this.CONFIG.showThreeColumn;
     this.getNavList();
 
 
@@ -76,6 +78,7 @@ export default {
           var treeObj = {
             id: val[this.keys.id],
             name: val[this.keys.name],
+            parentId: val[this.keys.parentId],
             childNav: [],
             showChild: false, //子导航是否展示(鼠标单击控制展示收起)
             createChild: false //是否已经点击创建过子导航
@@ -83,13 +86,11 @@ export default {
           tree.push(treeObj);
         }
       });
-      // console.log(tree);
       //发送默认bus
       if (this.defaultBus) {
         this.currentActive = this.colId ? this.colId : this.tree[0].id;
         this.navInteract(this.currentActive);
         let curIndex = 0;
-        // console.log(this.currentActive);
         this.tree.map((item, index) => {
           if (item.id == this.currentActive) {
             curIndex = index
@@ -115,7 +116,14 @@ export default {
       }
     },
     navClick (item, items) {
+      if (this.CONFIG.directLink && this.CONFIG.directLink.switchFlag && this.CONFIG.directLink.directRules[item.id]) {
+        // 点击左侧导航直接跳转链接 因为点击左侧不同导航时右侧内容的内容显示不一样
+        window.open(this.CONFIG.directLink.directRules[item.id] + item.id, '_blank');
+        return false
+      }
       this.navInteract(item.id);
+      //在资料中心中需要渲染三级栏目，因此通过该方法将完整数据广播给资料中心
+      this.changeContentTwo(item);
       this.currentActive = item.id;
         items.map(entry => {  // 手风琴效果
           if (entry.id != item.id) { // 隐藏同级子栏目
@@ -149,6 +157,11 @@ export default {
         childId,
         childName
       ]);
+    },
+    changeContentTwo(item){
+      if(this.CONFIG.transTitle){
+        this.$bus.$emit(this.CONFIG.transTitle, item);
+      }
     }
   }
 };

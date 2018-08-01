@@ -13,11 +13,11 @@
       </div>
       <div class="personalcenter_list_main_title">
         <el-row :gutter="1">
-          <el-col :span="9">
+          <el-col :span="10">
             <el-date-picker class="personalcenter_list_main_title_picker" v-model="timeValue" type="datetimerange" range-separator="  ~  " start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2" placeholder="选择时间范围" align="left" value-format="yyyy-MM-dd HH:mm:ss" @change="changeDateValue">
             </el-date-picker>
           </el-col>
-          <el-col :span="9">
+          <el-col :span="8">
             <div class="bg-purple-light">订单详情</div>
           </el-col>
           <el-col :span="3">
@@ -349,9 +349,7 @@ export default {
         ? this.CONFIG.exchangeState
         : false;
     this.KDNConfig =
-      this.CONFIG && this.CONFIG.KDNConfig
-        ? this.CONFIG.KDNConfig
-        : false;
+      this.CONFIG && this.CONFIG.KDNConfig ? this.CONFIG.KDNConfig : false;
   },
   mounted() {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
@@ -756,6 +754,7 @@ export default {
     },
     // 订单筛选 删除 取消
     allOrder() {
+      this.timeValue = "";
       this.payStatusNum = "";
       this.displayCancel = "";
       var param = {
@@ -768,6 +767,7 @@ export default {
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
     waitPayOrder() {
+      this.timeValue = "";
       this.payStatusNum = 0;
       this.displayCancel = 1;
       var param = {

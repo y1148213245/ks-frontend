@@ -30,7 +30,7 @@
               <p class="search_04-content-list-entry_box-price">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}
                 <span v-text="parseFloat(entry.prod_member_price || 0).toFixed(2) "></span>
                 <span class="search_04-content-list-entry_box-price-span">{{getStaticText('yuan') ? getStaticText('yuan') : '￥'}}
-                  <span v-text="parseFloat(entry.BOOK_EB_PRICE || 0).toFixed(2)"></span>
+                  <span v-text="parseFloat((entry.prod_product_type == '91' ? entry.BOOK_PRICE : entry.BOOK_EB_PRICE) || 0).toFixed(2)"></span>
                 </span>
               </p>
               <p class="search_04-content-list-entry_box-star">

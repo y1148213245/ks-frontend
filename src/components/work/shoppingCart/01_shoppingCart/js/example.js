@@ -12,23 +12,17 @@ const title = "购物车组件"; // 组件 title
 const description = `我的购物车`; // 组件描述信息
 
 const dev = {
-  shoppingCart :{
-    shoppingCart_01:{
-      commitContent:{
-        url: '/data/shoppingCart_01_shoppingCart.json',
-        picLinkUrl: '',
-        staticText:{
-          order:"订单",
-          paidSuccess:"支付成功",
-          paidFailed:"支付失败",
-          success:"成功",
-          failed:"失败",
-          checkOrder:"查看订单",
-          downloadCoinCharge:"下载币充值"
-        }
-      },
-      cartContent:{
-        url: '/data/shoppingCart_01_shoppingCart.json',
+  shoppingCart: {
+    shoppingCart_01: {
+      cartContent: {
+        url: 'cart/getCartAndActivity.do',
+        params: {
+          loginName: "",
+          siteId: CONFIG.SITE_CONFIG.siteId,
+          timeStamp: new Date().getTime(), // 加时间戳是为了不从缓存里取数据
+        },
+        bookType: '91', // 纸质书
+        ebookType: '94', // 电子书
         picLinkUrl: '',
         staticText: {
           priceChangeInfo: "价格变更信息：",
@@ -69,6 +63,7 @@ const dev = {
           only: "仅限：",
           paperBook: "纸质书",
           ebook: "电子书",
+          ejournal: '电子期刊',
           classification: "分类",
           deselect: "取消选择",
           noCoupons: "暂无优惠券",
@@ -81,6 +76,7 @@ const dev = {
           productList: "商品列表",
           onSale: "促销",
           ebookClass: "(电子书)",
+          ejournalClass: '(电子期刊)',
           totalCount: "共计",
           shouldPay: "应付：",
           totalHave: "共有",
@@ -88,14 +84,14 @@ const dev = {
           oneCoinEqualsOneYuan: "1下载币=1元",
           reducePrice: "优惠：- ",
           downloadCoinReduce: "下载币：- ",
-          modeOfDistribution: "配送方式："	,
+          modeOfDistribution: "配送方式：",
           carriage: "运费：",
           actuallyPaid: "实付金额：",
           submitOrder: "提交订单",
-          remarksShouldNotExceedFiftyCharacters:'备注不能超过50个字符',
-          systemPrompt:"系统提示",
-          activityReplacementFail:"活动更换失败~",
-          areYouSureToDeleteTheItem:"您确定要删除该商品吗?",
+          remarksShouldNotExceedFiftyCharacters: '备注不能超过50个字符',
+          systemPrompt: "系统提示",
+          activityReplacementFail: "活动更换失败~",
+          areYouSureToDeleteTheItem: "您确定要删除该商品吗?",
           cancel: "取消",
           deleteSuccess: "删除成功！",
           deleteFailed: "删除失败！",
@@ -108,16 +104,29 @@ const dev = {
           shippingAddressMustNotBeEmpty: "收货地址不得为空噢~",
           orderSubmissionError: "订单提交有误",
           downloadCoinNotEnough: "下载币不足~",
-          downloadCoinDiscountCanNotBeLessThanZero:"下载币优惠数额不能小于0噢~",
-          downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid:"下载币优惠数额不得大于实付金额噢~",
-          confirm:"确定"
+          downloadCoinDiscountCanNotBeLessThanZero: "下载币优惠数额不能小于0噢~",
+          downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid: "下载币优惠数额不得大于实付金额噢~",
+          confirm: "确定"
         }
       },
-      qrCode:{
+      commitContent: {
         url: '/data/shoppingCart_01_shoppingCart.json',
         picLinkUrl: '',
-        staticText:{
-          payWithWeChatScan:"请使用微信扫一扫支付"
+        staticText: {
+          order: "订单",
+          paidSuccess: "支付成功",
+          paidFailed: "支付失败",
+          success: "成功",
+          failed: "失败",
+          checkOrder: "查看订单",
+        }
+      },
+      qrCode: {
+        url: '/data/shoppingCart_01_shoppingCart.json',
+        picLinkUrl: '',
+        staticText: {
+          payWithWeChatScan: "请使用微信扫一扫支付",
+          downloadCoinCharge: "下载币充值"
         }
       }
     },
@@ -177,6 +186,7 @@ const prod = {
             only: "仅限：",
             paperBook: "纸质书",
             ebook: "电子书",
+            ejournal: '电子期刊',
             classification: "分类",
             deselect: "取消选择",
             noCoupons: "暂无优惠券",
@@ -189,6 +199,7 @@ const prod = {
             productList: "商品列表",
             onSale: "促销",
             ebookClass: "(电子书)",
+            ejournalClass: '(电子期刊)',
             totalCount: "共计",
             shouldPay: "应付：",
             totalHave: "共有",

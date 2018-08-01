@@ -130,7 +130,7 @@
         </div>
         <div class="newWrapper">
           <div>收货地区：</div>
-          <div class="selectPCC">
+          <div class="selectPCC" >
             <select id="s_province" name="s_province" @blur="checkArea()"></select>
             <select id="s_city" name="s_city" @blur="checkArea()"></select>
             <select id="s_county" name="s_county" @blur="checkArea()"></select>
@@ -497,7 +497,7 @@
     <div v-show="currentShow=='virtualMoney'">
       <div class="num">
         <ul>
-          <el-radio-group v-model="value">
+          <el-radio-group v-model="virtualValue">
             <li>
               <el-radio :label="5">5元 &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp兑换500下载币</el-radio>
             </li>
@@ -545,20 +545,25 @@
             <div class="grid-content bg-purple">&nbsp &nbsp &nbsp支付项目</div>
           </el-col>
         </el-row>
-        <h3>&nbsp &nbsp &nbsp充值下载币 {{this.value}}0</h3>
+        <div class="ml30">充值下载币 {{this.virtualValue}}00</div>
         <el-row>
           <el-col :span="24">
             <div class="grid-content bg-purple">&nbsp &nbsp &nbsp支付方式</div>
           </el-col>
         </el-row>
-        <el-radio-group v-model="payWay" size="small" fill="#f6163c">
-          <span v-for="(pay, index) in paymentList" @click="selectPayWay(pay, pay.id)">
-            <el-radio :label="index">{{pay.payName}}</el-radio>
-          </span>
-        </el-radio-group>
-        <div class="paybutt">
-          <p>应付金额：{{this.value}}.00元</p>
-          <el-button type="primary" class="butt_back" @click="RechargeVirtual">提交订单</el-button>
+        <div v-if="paymentList.length==0" class="ml30">
+          暂无支付方式
+        </div>
+        <div v-else>
+          <el-radio-group v-model="payWay" size="small" fill="#f6163c">
+            <span v-for="(pay, index) in paymentList" @click="selectPayWay(pay.payCode)">
+              <el-radio :label="index">{{pay.comments}}</el-radio>
+            </span>
+          </el-radio-group>
+          <div class="paybutt">
+            <p>应付金额：{{this.virtualValue}}.00元</p>
+            <el-button type="primary" class="butt_back" @click="RechargeVirtual">提交订单</el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -571,7 +576,9 @@ import Vuex from "vuex";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import { Get, Token } from "@common";
+import api from "../../api/personalCenterApi";
 import $ from "jquery";
+
 Vue.use(Vuex);
 Vue.prototype.$ajax = axios;
 
@@ -589,7 +596,7 @@ export default {
       default: true
     }
   },
-  data: function () {
+  data: function() {
     /*修改密码*/
     var validatePass1 = (rule, value, callback) => {
       if (value === "") {
@@ -640,7 +647,11 @@ export default {
     var validateEmailFull = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入邮箱"));
-      } else if (!/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/.test(value)) {
+      } else if (
+        !/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/.test(
+          value
+        )
+      ) {
         callback(new Error("邮箱格式不正确"));
       } else {
         callback();
@@ -650,7 +661,7 @@ export default {
     var validateEmailSubfix = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入邮箱"));
-      } else if (!/^[A-Za-z\d]+$/.test(value)) {
+      } else if (!/^[A-Za-z\d_]+$/.test(value)) {
         callback(new Error("邮箱格式不正确"));
       } else {
         callback();
@@ -732,21 +743,17 @@ export default {
       if (value === "") {
         callback(new Error("请输入手机验证码"));
       } else if (value != this.cbOldSendNum) {
-        console.log("校验" + this.cbOldSendNum);
-        console.log("输入" + value);
         callback(new Error("验证码错误"));
       } else {
-        console.log("校验" + this.cbOldSendNum);
-        console.log("输入" + value);
         callback();
       }
     };
-    let token = Token()
+    let token = Token();
     return {
       CONFIG: null,
       GLOBLE_CONFIG: null,
-      defaultPic: '',
-      emailDialog: false,/* 邮箱弹窗 */
+      defaultPic: "",
+      emailDialog: false /* 邮箱弹窗 */,
       uploadHeader: {
         token: token
       },
@@ -786,9 +793,9 @@ export default {
       },
       /* 邮箱表单 */
       emailForm: {
-        email: '',
-        emailSubfix: '',
-        emailPostfix: ''
+        email: "",
+        emailSubfix: "",
+        emailPostfix: ""
       },
       emailRules: {
         email: [{ validator: validateEmailFull, trigger: "blur" }],
@@ -863,7 +870,7 @@ export default {
       currentShow: "main",
       cryptoguardAnswer: "",
       select: "",
-      value: 5,
+      virtualValue: 5,
       addAddressDialog: false, // 新增地址模态弹框
       completeAddress: "这是一条完整的地址",
       /*数据源*/
@@ -897,22 +904,25 @@ export default {
       updateAddressDialog: false,
       modalState: true,
       payWay: 0,
-      payMethod: "1", // 支付方式 0 微信支付 1 支付宝支付
+      payMethodCode: "",
       siteId: "",
       imageUrl: "",
       fullLoading: "", //全屏加载框
       phoneError: "", //新建收货地址--联系电话验证信息
       contactorError: "", //新建收货地址--收货人验证信息
-      goodsInfo: [] //新建收货地址--验证信息
+      goodsInfo: [], //新建收货地址--验证信息
+      paymentList: [] //支付方式
     };
   },
-  created () {
-    this.defaultPic = require('../../assets/img/timg.jpg'); // webpack静态资源打包问题
+  created() {
+    this.defaultPic = require("../../assets/img/timg.jpg"); // webpack静态资源打包问题
     this.CONFIG = this.parentConfig.account;
     this.GLOBLE_CONFIG = CONFIG;
-    this.getShowEmailPostfix() ? this.emailForm.emailPostfix = CONFIG.EMAIL_CONFIG.postfix[0] : '';
+    this.getShowEmailPostfix()
+      ? (this.emailForm.emailPostfix = CONFIG.EMAIL_CONFIG.postfix[0])
+      : "";
   },
-  mounted () {
+  mounted() {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
@@ -924,22 +934,21 @@ export default {
       pointRecords: "getPointRecord",
       virtualMoneyList: "getVirtualMoney",
       addresses: "getAddresses",
-      paymentList: "getPaymentList",
       myComment: "getMyComment"
     })
   },
   filters: {
-    toNum: function (value) {
+    toNum: function(value) {
       return parseFloat(value);
     },
     //  手机号中间隐藏
-    toTel: function (str) {
+    toTel: function(str) {
       if (str) {
         return str.slice(0, 3) + "******" + str.slice(-4);
       }
     },
     //时间格式化
-    dateFormat: function (row, column) {
+    dateFormat: function(row, column) {
       var date = row[column.property];
       if (date == undefined) {
         return "";
@@ -947,7 +956,7 @@ export default {
       return moment(date).format("YYYY-MM-DD HH:mm:ss");
     },
     //类型格式化
-    typeFormat: function (row, column) {
+    typeFormat: function(row, column) {
       var date = row[column.property];
       if (date == 0) {
         return "充值";
@@ -955,14 +964,14 @@ export default {
         return "消费";
       }
     },
-    myAddressCity: function (value) {
+    myAddressCity: function(value) {
       for (var y = 0; y < CityInfo.length; y++) {
         if (CityInfo[y].value == value) {
           return CityInfo[y].label;
         }
       }
     },
-    myAddressErae: function (value) {
+    myAddressErae: function(value) {
       for (var y = 0; y < CityInfo.length; y++) {
         for (var z = 0; z < CityInfo[y].children.length; z++) {
           if (CityInfo[y].children[z].value == value && value != undefined) {
@@ -971,7 +980,7 @@ export default {
         }
       }
     },
-    myAddressMinerae: function (value) {
+    myAddressMinerae: function(value) {
       for (var y = 0; y < CityInfo.length; y++) {
         for (var z = 0; z < CityInfo[y].children.length; z++) {
           for (var i = 0; i < CityInfo[y].children[z].children.length; i++) {
@@ -988,15 +997,18 @@ export default {
   },
   methods: {
     /*帐号信息加载完毕回调*/
-    loadedCallBack () {
+    loadedCallBack() {
       this.$store.dispatch("personalCenter/queryPointRecord", {});
       this.$store.dispatch("personalCenter/queryVirtualMoney", {});
       this.$store.dispatch("personalCenter/queryAddress", {});
-      this.$store.dispatch("personalCenter/queryPaymentList", {});
       this.$store.dispatch("personalCenter/getMyComment", {});
+      api.queryPaymentList(this.siteId).then(response => {
+        this.paymentList = response.data.data;
+        this.payMethodCode = this.paymentList[0].payCode;
+      });
     },
     /*积分分页*/
-    pointRecordPaging ({ pageNo, pageSize }) {
+    pointRecordPaging({ pageNo, pageSize }) {
       var param = {
         loginName: "",
         pageIndex: pageNo,
@@ -1004,7 +1016,7 @@ export default {
       };
       this.$store.dispatch("personalCenter/queryPointRecord", param);
     },
-    typeFormat: function (row, column) {
+    typeFormat: function(row, column) {
       var date = row[column.property];
       if (date == 0) {
         return "充值";
@@ -1013,11 +1025,11 @@ export default {
       }
     },
     /*显示状态*/
-    showCurrent (index) {
+    showCurrent(index) {
       this.currentShow = this.title[index];
     },
     /*下载币分页*/
-    virtualPaging ({ pagesNo, pageSize }) {
+    virtualPaging({ pagesNo, pageSize }) {
       var param = {
         loginName: "",
         pageIndex: pagesNo,
@@ -1026,24 +1038,22 @@ export default {
       this.$store.dispatch("personalCenter/queryVirtualMoney", param);
     },
     /*修改地址*/
-    handleChange (value) {
+    handleChange(value) {
       this.form.city = this.form.selectedOptions[0];
       this.form.erae = this.form.selectedOptions[1];
       this.form.minerae = this.form.selectedOptions[2];
     },
     /*地址管理模块*/
-    editClick (index, row) {
+    editClick(index, row) {
       var _this = this;
       this.updateAddressDialog = true;
       initDom();
 
-      function initDom () {
-        setTimeout(function () {
+      function initDom() {
+        setTimeout(function() {
           if ($(document.getElementById("t_contactor")).length > 0) {
             //解决弹框出来的时候DOM可能还没有加载完成问题
             _this.address = JSON.parse(JSON.stringify(_this.addresses[index]));
-            console.log(_this.address);
-
             (_this.form.city = _this.address.province),
               (_this.form.erae = _this.address.city),
               (_this.form.minerae = _this.address.county),
@@ -1052,17 +1062,18 @@ export default {
             $("#tt_erae").html(_this.address.city);
             $("#tt_minerae").html(_this.address.county);
             if (_this.modalState) {
-              // _init_area(document);
+              _init_area(document);
               _this.modalState = false; // 初始化第二遍会出错
             }
-          } else {
+          }
+          else {
             initDom();
           }
         }, 150);
       }
     },
     /*编辑收货地址*/
-    confirmUpdateAddress: function (flag) {
+    confirmUpdateAddress: function(flag) {
       // 点击确定/取消添加地址按钮
       var _this = this;
       let isAllNull =
@@ -1124,7 +1135,7 @@ export default {
       }
     },
 
-    updateAddressCallback: function (updateStatus) {
+    updateAddressCallback: function(updateStatus) {
       if (updateStatus == 1) {
         this.$message({
           type: "success",
@@ -1139,13 +1150,13 @@ export default {
       }
     },
     /*删除收货地址*/
-    deleteAddress: function (id) {
+    deleteAddress: function(id) {
       var _this = this;
       this.$confirm("您确定要删除该收货地址吗?", "系统提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function () {
+      }).then(function() {
         var param = {
           ids: id,
           cb: _this.deleteAddresscb
@@ -1153,7 +1164,7 @@ export default {
         _this.$store.dispatch("personalCenter/deleteAddress", param);
       });
     },
-    deleteAddresscb: function (deleteStatus) {
+    deleteAddresscb: function(deleteStatus) {
       if (deleteStatus == 1) {
         this.$message({
           type: "success",
@@ -1168,7 +1179,7 @@ export default {
       }
     },
     /*新增收获地址*/
-    confirmNewAdd: function (flag) {
+    confirmNewAdd: function(flag) {
       // 点击确定/取消添加地址按钮
       var _this = this;
       if (flag) {
@@ -1177,10 +1188,7 @@ export default {
         this.checkPhone();
         this.checkDetail();
         this.checkArea();
-        if (
-          this.goodsInfo.find(function (item) {
-            return item == "false";
-          }) === undefined
+        if (this.goodsInfo.find(function(item) {return item == "false";}) === undefined
         ) {
           // 都不为空
           this.emptyPCC = false;
@@ -1213,7 +1221,7 @@ export default {
       this.newAddAddress.county = "";
       this.newAddAddress.address = "";
     },
-    addAddressCallback (addStatus) {
+    addAddressCallback(addStatus) {
       if (addStatus == 1) {
         this.$store.dispatch("personalCenter/queryAddress", {});
         this.$message({
@@ -1227,7 +1235,7 @@ export default {
         });
       }
     },
-    checkContactor: function () {
+    checkContactor: function() {
       // 联系人失去焦点校验
       // this.emptyContactor = $("#s_contactor").val() === "" ? true : false;
       // 联系人失去焦点校验
@@ -1246,7 +1254,7 @@ export default {
         this.goodsInfo.push("true");
       }
     },
-    checkDetail: function () {
+    checkDetail: function() {
       // 详细地址失去焦点校验
       // this.emptyDetail = $("#s_address").val() === "" ? true : false;
       // 详细地址失去焦点校验
@@ -1258,7 +1266,7 @@ export default {
         this.goodsInfo.push("true");
       }
     },
-    checkPhone: function () {
+    checkPhone: function() {
       // 联系方式失去焦点校验
       // this.emptyPhone = $("#s_phone").val() === "" ? true : false;
       // 联系号码格式校验 只能是数字 并且不能超过11位 ??? input type="number" 踩坑
@@ -1282,7 +1290,7 @@ export default {
         this.goodsInfo.push("true");
       }
     },
-    checkNumberType: function (event) {
+    checkNumberType: function(event) {
       // 联系号码不得超过11位
       if (!String.fromCharCode(event.keyCode).match(/\d/)) {
         event.preventDefault();
@@ -1291,7 +1299,7 @@ export default {
         event.preventDefault();
       }
     },
-    checkArea: function () {
+    checkArea: function() {
       this.emptyPCC = false;
       if (
         $("#s_province").val() === "省份" ||
@@ -1305,11 +1313,11 @@ export default {
         this.goodsInfo.push("true");
       }
     },
-    addNewAddress: function () {
+    addNewAddress: function() {
       this.addAddressDialog = true;
       initDom();
-      function initDom () {
-        setTimeout(function () {
+      function initDom() {
+        setTimeout(function() {
           if (document.getElementById("s_province")) {
             //解决弹框出来的时候DOM可能还没有加载完成问题
             _init_area(document);
@@ -1320,14 +1328,14 @@ export default {
       }
     },
     /*设置默认地址*/
-    setDefaultAddress: function (id) {
+    setDefaultAddress: function(id) {
       var params = {
         id: id,
         cb: this.setDefaultCallback
       };
       this.$store.dispatch("personalCenter/defaultAddress", params);
     },
-    setDefaultCallback (setStatus) {
+    setDefaultCallback(setStatus) {
       if (setStatus == 1) {
         this.$message({
           type: "success",
@@ -1342,20 +1350,20 @@ export default {
       }
     },
     /* 输入邮箱是否可选后缀 */
-    getShowEmailPostfix () {
-
+    getShowEmailPostfix() {
       let vconfig = CONFIG.EMAIL_CONFIG;
       if (vconfig && vconfig.showPostfix) {
-
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     },
-    changeEmail () {
-      this.$refs['emailForm'].validate(valid => {
+    changeEmail() {
+      this.$refs["emailForm"].validate(valid => {
         if (valid) {
-          let email = this.getShowEmailPostfix() ? this.emailForm.emailSubfix + '@' + this.emailForm.emailPostfix : this.emailForm.email
+          let email = this.getShowEmailPostfix()
+            ? this.emailForm.emailSubfix + "@" + this.emailForm.emailPostfix
+            : this.emailForm.email;
           var param = {
             value: email,
             cb: this.changeEmailCallb
@@ -1366,7 +1374,7 @@ export default {
           });
           this.$store.dispatch("personalCenter/updateEmail", param);
         }
-      })
+      });
     },
     /*修改邮箱*/
     // changeEmail () {
@@ -1387,7 +1395,7 @@ export default {
     //     this.$store.dispatch("personalCenter/updateEmail", param);
     //   });
     // },
-    changeEmailCallb (idata, rep) {
+    changeEmailCallb(idata, rep) {
       this.fullLoading.close();
       if (idata == 1) {
         this.$message({
@@ -1403,7 +1411,7 @@ export default {
       }
     },
     /*设置密保问题*/
-    submitCryptoguarForm (cryptoguarForm) {
+    submitCryptoguarForm(cryptoguarForm) {
       this.$refs.cryptoguarForm.validate(valid => {
         if (valid) {
           var params = {
@@ -1417,7 +1425,7 @@ export default {
         }
       });
     },
-    submitCryptoguarCallb (idata, rep) {
+    submitCryptoguarCallb(idata, rep) {
       if (idata == 1) {
         this.$store.dispatch("personalCenter/queryUser");
         this.$message({
@@ -1433,7 +1441,7 @@ export default {
     },
 
     /*个人中心更改手机号*/
-    submitChangeMobile (setMobileDialogForm) {
+    submitChangeMobile(setMobileDialogForm) {
       this.$refs.setMobileDialogForm.validate(valid => {
         if (valid) {
           var params = {
@@ -1447,7 +1455,7 @@ export default {
         }
       });
     },
-    changeMobileCallback (sendStatus, rep) {
+    changeMobileCallback(sendStatus, rep) {
       if (sendStatus) {
         this.$message({
           type: "error",
@@ -1460,14 +1468,14 @@ export default {
           type: "success",
           message: rep.data.data.msg
         });
-        window.setTimeout(function () {
+        window.setTimeout(function() {
           window.location.reload();
         }, 1000);
       }
     },
 
     /*个人中心设置手机号*/
-    submitSetMobileWindowForm (setMobileDialogForm) {
+    submitSetMobileWindowForm(setMobileDialogForm) {
       this.$refs.setMobileDialogForm.validate(valid => {
         if (valid) {
           var params = {
@@ -1481,7 +1489,7 @@ export default {
         }
       });
     },
-    setMobileCallback (sendStatus, rep) {
+    setMobileCallback(sendStatus, rep) {
       if (sendStatus) {
         this.setMobileDialog = false;
         this.$refs.setMobileDialogForm.resetFields();
@@ -1500,7 +1508,7 @@ export default {
     },
 
     // 设置手机号获取验证码
-    getCode (number) {
+    getCode(number) {
       if (number === "") {
         this.$message({
           type: "error",
@@ -1513,14 +1521,29 @@ export default {
         });
       } else {
         var params = {
-          url: this.CONFIG.getMobileCode.url,
-          mobileNum: number,
-          cb: this.MobileCallback
+          text: number,
+          type: 3
         };
-        this.$store.dispatch("personalCenter/sendToMobile", params);
+        api.checkUserInfo(params).then(response => {
+          let result = response.data.result;
+          if (result == 1) {
+            var params = {
+              url: this.CONFIG.getMobileCode.url,
+              mobileNum: number,
+              cb: this.MobileCallback
+            };
+            this.$store.dispatch("personalCenter/sendToMobile", params);
+          } else {
+            this.$message({
+              type: "info",
+              message: "抱歉，手机号已被绑定"
+            });
+            return false;
+          }
+        });
       }
     },
-    MobileCallback (sendStatus, sendNum) {
+    MobileCallback(sendStatus, sendNum) {
       if (sendStatus == 1) {
         this.cbsendNum = sendNum;
         this.$message({
@@ -1535,8 +1558,7 @@ export default {
       }
     },
     // 旧手机获取验证码
-    getOldCode (number) {
-
+    getOldCode(number) {
       var params = {
         url: this.CONFIG.getMobileCode.url,
         mobileNum: number,
@@ -1544,13 +1566,13 @@ export default {
       };
       this.$store.dispatch("personalCenter/sendToMobile", params);
     },
-    oldMobileCallback (sendStatus, oldSendNum) {
+    oldMobileCallback(sendStatus, oldSendNum) {
       if (sendStatus == 1) {
         this.cbOldSendNum = oldSendNum;
       }
     },
     // 验证身份--手机号验证通过
-    submitMobileValidateNum (oldMobileValidateForm) {
+    submitMobileValidateNum(oldMobileValidateForm) {
       this.$refs.oldMobileValidateForm.validate(valid => {
         if (valid) {
           if (this.modifyType == 1) {
@@ -1564,7 +1586,7 @@ export default {
       });
     },
     /*修改密码*/
-    submitForm (ruleForm) {
+    submitForm(ruleForm) {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           var param = {
@@ -1578,7 +1600,7 @@ export default {
         }
       });
     },
-    changePasswordCallb (idata, rep) {
+    changePasswordCallb(idata, rep) {
       if (idata == 1) {
         this.$message({
           type: "success",
@@ -1592,60 +1614,59 @@ export default {
       }
     },
     /*密码输入框重置*/
-    resetForm (formName) {
-      this.$nextTick(function () {
+    resetForm(formName) {
+      this.$nextTick(function() {
         this.$refs[formName].resetFields();
       });
     },
     /*下载币充值*/
-    selectPayWay: function (item, id) {
-      console.log(item);
-      this.payWay = id;
-      this.payMethod = item.id;
+    selectPayWay: function(payCode) {
+      this.payMethodCode = payCode;
     },
-    RechargeVirtual () {
-      var _this = this;
+    RechargeVirtual() {
       this.$confirm("点击确认支付", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          var param = {
-            paynum: this.value
+          var params = {
+            price: this.virtualValue,
+            loginName: this.account.loginName,
+            payMethodCode: this.payMethodCode,
+            siteId: this.siteId
           };
-          console.log(_this.payMethod);
-
-          if (_this.payMethod === "1") {
-            // 支付宝支付
+          if (this.payMethodCode === "Alipay") {
+            //   // 支付宝支付
             window.open(
               CONFIG.BASE_URL +
-              "epay/getVirtualCoinPayForm.do?price=" +
-              this.value +
-              "&loginName=" +
-              this.account.loginName +
-              "&payMethodId=" +
-              _this.payMethod +
-              "&siteId=" +
-              this.siteId,
+                "epay/getVirtualCoinPayForm.do?price=" +
+                params.price +
+                "&loginName=" +
+                params.loginName +
+                "&payMethodCode=" +
+                params.payMethodCode +
+                "&siteId=" +
+                params.siteId,
               "_self"
             );
             window.history.pushState(null, null, "./errorpage.html"); // 添加历史记录
-          } else if (_this.payMethod === "0") {
+          } else if (this.payMethodCode === "Weixin") {
             // 微信支付
             axios
               .get(
                 CONFIG.BASE_URL +
-                "epay/getVirtualCoinPayForm.do?price=" +
-                this.value +
-                "&loginName=" +
-                this.account.loginName +
-                "&payMethodId=" +
-                _this.payMethod +
-                "&siteId=" +
-                this.siteId
+                  "epay/getVirtualCoinPayForm.do?price=" +
+                  params.price +
+                  "&loginName=" +
+                  params.loginName +
+                  "&payMethodCode=" +
+                  params.payMethodCode +
+                  "&siteId=" +
+                  params.siteId
               )
-              .then(function (response) {
+              .then(function(response) {
+                console.log(response.data);
                 var data = response.data.substring(
                   response.data.indexOf("<a>") + 3,
                   response.data.indexOf("</a>")
@@ -1668,7 +1689,7 @@ export default {
         });
     },
     // 头像上传
-    handleAvatarSuccess (res, file) {
+    handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       if (res.result == 1) {
         this.loading.close();
@@ -1684,7 +1705,7 @@ export default {
         });
       }
     },
-    avatarLoading () {
+    avatarLoading() {
       this.loading = this.$loading({
         lock: true,
         text: "正在上传...",
@@ -1693,7 +1714,7 @@ export default {
         target: document.querySelector(".div1")
       });
     },
-    beforeAvatarUpload (file) {
+    beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -1705,13 +1726,15 @@ export default {
       }
       return isJPG && isLt2M;
     },
-    uploadUrl: function () {
+    uploadUrl: function() {
       return (
-        CONFIG.BASE_URL + "/user/uploadHeadPic.do?loginName=" + this.account.loginName
+        CONFIG.BASE_URL +
+        "/user/uploadHeadPic.do?loginName=" +
+        this.account.loginName
       );
     },
     //详情页
-    toBookDetail (pubId) {
+    toBookDetail(pubId) {
       let toBookDetailUrl = locationUtils.addParams(
         { pubId: pubId },
         this.detailUrl
@@ -1719,7 +1742,7 @@ export default {
       window.location.href = toBookDetailUrl;
     },
     // 身份验证--邮箱验证获取验证码
-    submitEmailValidateForm () {
+    submitEmailValidateForm() {
       this.vcodeButt = false;
       if (this.vcodeType == 1) {
         this.butt = true;
@@ -1734,7 +1757,7 @@ export default {
       });
       this.$store.dispatch("personalCenter/findPassword", params);
     },
-    emailValidateCallb (findStatus, findNum, rep) {
+    emailValidateCallb(findStatus, findNum, rep) {
       this.fullLoading.close();
       this.findNum = findNum;
       if (findStatus == 1) {
@@ -1751,7 +1774,7 @@ export default {
       }
     },
     // 验证身份--邮箱验证通过
-    submitEmailValidateNum (emailValidateNum) {
+    submitEmailValidateNum(emailValidateNum) {
       this.$refs.emailValidateNum.validate(valid => {
         if (valid) {
           if (this.modifyType == 1) {
@@ -1764,19 +1787,19 @@ export default {
         }
       });
     },
-    modifyPass () {
+    modifyPass() {
       this.showCurrent(6);
       this.modifyType = 1;
     },
-    modifyMobile () {
+    modifyMobile() {
       this.showCurrent(6);
       this.modifyType = 2;
     },
     // 邮箱验证码倒计时
-    times () {
+    times() {
       var self = this;
       var countTime = 120;
-      var t = setInterval(function () {
+      var t = setInterval(function() {
         self.time = countTime;
         Vue.set([self.time], "time", countTime);
         countTime--;
@@ -1790,7 +1813,7 @@ export default {
       }, 1000);
     },
     //密保问题请求发送
-    submitQuestionsValidateNum () {
+    submitQuestionsValidateNum() {
       this.$refs.questionsValidateForm.validate(valid => {
         if (valid) {
           var params = {
@@ -1804,7 +1827,7 @@ export default {
         }
       });
     },
-    questionsValidateCallb (idata, rep) {
+    questionsValidateCallb(idata, rep) {
       if (idata == 201) {
         if (this.modifyType == 1) {
           this.showCurrent(7);
@@ -1819,7 +1842,7 @@ export default {
       }
     },
     //验证身份--密码修改
-    submitModifyPassword (modifyPassword) {
+    submitModifyPassword(modifyPassword) {
       this.$refs.modifyPassword.validate(valid => {
         if (valid) {
           var params = {
@@ -1833,10 +1856,10 @@ export default {
         }
       });
     },
-    setPasswordCallb (setStatus) {
+    setPasswordCallb(setStatus) {
       if (setStatus == 1) {
         this.open();
-        window.setTimeout(function () {
+        window.setTimeout(function() {
           Get(CONFIG.BASE_URL + "logout.do").then(rep => {
             if (Number(rep.status) === 200) {
               window.location.href = "./login.html";
@@ -1848,12 +1871,12 @@ export default {
         return false;
       }
     },
-    open () {
+    open() {
       this.$alert("密码重置成功,请重新登录", "恭喜", {
         confirmButtonText: "确定"
       });
     },
-    back () {
+    back() {
       window.location.reload();
     }
   }
@@ -1917,6 +1940,9 @@ export default {
 }
 .mr30 {
   margin-right: 30px;
+}
+.ml30 {
+  margin-left: 30px;
 }
 .mt30 {
   margin-top: 30px;
@@ -2075,6 +2101,7 @@ export default {
   font-size: 12px;
   color: red !important;
   text-align: left !important;
+  display:block;
 }
 
 input::-webkit-outer-spin-button,
@@ -2202,7 +2229,7 @@ input[type="number"] {
 }
 
 .tdialog {
-  width: 60% !important;
+  /*width: 60% !important;*/
   margin: 0 auto;
 }
 

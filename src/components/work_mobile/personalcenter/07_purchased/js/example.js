@@ -24,7 +24,7 @@ const dev = {
         navTitle: '已购图书',
         author: '作者：',
         bookName: '书名：',
-        noData: '您还没有购买图书', 
+        noData: '您还没有购买图书',
         gotoShop: '去书城逛逛',
         hasAddBookshelf: '您还没有图书加入书架', // tab指向 已加入书架
         noAddBookshelf: '您的图书全部在书架中', // tab指向 未加入书架
@@ -83,7 +83,7 @@ const dev = {
         }
       },
       toBookDetail: {
-        url: '../pages/bookdetail.html'
+        url: '../pages/bookDetail.html'
       },
       toshopUrl: '../pages/index.html'
     },
@@ -156,7 +156,7 @@ const prod = {
         }
       },
       toBookDetail: {
-        url: '../pages/bookdetail.html'
+        url: '../pages/bookDetail.html'
       },
       toshopUrl: '../pages/index.html'
     },

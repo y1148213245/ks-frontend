@@ -241,7 +241,7 @@ export default {
         let itemUrlArr = item["pub_widget_url"]; //获取下载列表的url数组
         itemUrlArr &&
           itemUrlArr.length > 0 &&
-          $.each(urlItem => {
+          $.each(itemUrlArr, function(key, value){
             let link;
             if (document.getElementById("downloadFileLink")) {
               //如果页面存在downloadFileLink元素
@@ -252,7 +252,7 @@ export default {
             link.id = "downloadFileLink";
             link.download = "";
             link.target = "_blank";
-            link.href = urlItem;
+            link.href = value;
             document.body.appendChild(link); // 添加到页面解决火狐无法触发click方法
             link.click();
             link.parentNode.removeChild(link); // 移除downloadFileLink元素
@@ -320,7 +320,7 @@ export default {
             : item[this.keys.colId];
         }
         if (item.hasOwnProperty("pub_parent_id")) {
-          item.pub_parent_id = this.pubId ? this.pubId : item.pub_parent_id;
+          item.pub_parent_id = this.colId ? this.colId : item.pub_parent_id;
         }
         if (item.hasOwnProperty("BOOK_BOOK_CASCADID")) {
           item.BOOK_BOOK_CASCADID = this.cascadId

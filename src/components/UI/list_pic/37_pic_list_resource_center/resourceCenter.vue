@@ -5,27 +5,32 @@
       <button v-for="(item,index) in tabList"
               :class="(currentIndex==index)?'active':''"
               v-text="item.name"
-              @click="changeTab(index)"
+              @click="changeTab(item,index)"
               :key="index">
       </button>
     </div>
-    <table>
-      <thead>
-        <th v-for="(item,index) in tHeadList" v-text="item" :key="index"></th>
+    <table class="ui_list_pic_37_table">
+      <thead class="ui_list_pic_37_thead">
+        <th v-for="(item,index) in CONFIG.tHeadList" v-text="item" :key="index"></th>
       </thead>
-      <tbody>
+      <tbody class="ui_list_pic_37_tbody">
         <tr v-for="(item,index) in tBodyList" :key="index">
-          <td v-text="item.resourceType"></td>
-          <td v-text="item.resourceName"></td>
-          <td v-text="item.resourceDate"></td>
+          <td :class='"ui_list_pic_37_tbody_"+item[keys.pubResType]'>{{item[keys.pubResType] || display.noData || '暂无数据'}}</td>
+          <td @click="toContent(item)">{{item[keys.resName] || display.noData || '暂无数据'}}</td>
+          <td>{{item[keys.created] | formatDateNEW}}</td>
         </tr>
       </tbody>
     </table>
+    <ui_pagination v-if="tBodyList && tBodyList.length" :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging">
+    </ui_pagination>
   </div>
 </template>
 
 <script>
   import PROJECT_CONFIG from "projectConfig";
+  import { Get, Post, getFieldAdapter, toOtherPage } from "@common";
+  import { mapGetters } from 'vuex';
+  import * as interfaces from "@work/login/common/interfaces.js";
     export default {
       name: "ui_list_pic_37",
       props: ['namespace', 'modulename'],
@@ -39,15 +44,19 @@
           currentIndex: 0,  //控制tab样式切换的  默认显示全部（0）
           CONFIG: null,  //获取配置
           display: {},  //展示静态文本的
-          tempArr: [],
+          keys: {},  //字段配置
+          totalCount: '0',  //总页数
+          pageNo: '',
+          pageSize: '',
+          tempItem: '', //临时保存数据
+          zipAttachment: {},  //存储附件
+          zipAttachmentId: ''  //存储附件Id
         };
       },
       created(){
         this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_37[this.modulename];
+        this.keys = getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter);
         this.display = this.CONFIG.display;
-        this.tabList = this.display.tabList;
-        this.tHeadList = this.display.tHeadList;
-        this.tBodyList = this.display.tBodyList;
         this.resourceTitle = this.display.resourceTitle;
       },
       mounted(){
@@ -57,54 +66,90 @@
           _self.resourceTitle = item.name;
           //渲染三级栏目
           _self.showThreeColumn(item);
-          //渲染资源列表
-          _self.getResourceList(item);
         });
+      },
+      computed: {
+        ...mapGetters("login", {
+          member: interfaces.GET_MEMBER,
+        })
       },
       methods: {
         //切换tab
-        changeTab(index){
+        changeTab(item,index){
           this.currentIndex = index;
-          let arr = [];
-          if(1 == index){
-            for(let i=0,len=this.tempArr.length; i<len; i++){
-              if(this.tempArr[i].type == '1'){
-                arr.push(this.tempArr[i]);
-              }
-            }
-          }else if(2 == index){
-            for(let i=0,len=this.tempArr.length; i<len; i++){
-              if(this.tempArr[i].type == '2'){
-                arr.push(this.tempArr[i]);
-              }
-            }
-          }else {
-            arr = this.tempArr;
-          }
-          this.tBodyList = arr;
+          //将栏目暂存起来，用于翻页时，给getListByColumnId传递参数
+          this.tempItem = Object.assign({},item);
+          this.getListByColumnId(item);
         },
         showThreeColumn(item){
-          if(item.parentId !=0 && item.childNav){
+          //点击栏目时，先清空tab和数据列表
+          this.tabList = [];
+          this.tBodyList = [];
+          //如果点击的是二级栏目，则将二级栏目下的三级栏目渲染在tab列表中
+          if(item.parentId != this.CONFIG.colId && item.childNav){
             this.tabList = item.childNav;
-          }else {
-            this.tabList = [];
           }
+          //通过栏目id获取栏目下的数据
+          this.getListByColumnId(item);
         },
-        getResourceList(item){
-          if(item.parentId !=0 && item.childNav) {
-            this.tBodyList = this.resourceList(item);
-            this.tempArr = this.tBodyList;
-          }
-        },
-        resourceList(item){
-          let arr = this.CONFIG.data;
-          let arrTemp = [];
-          for(let i=0,len=arr.length; i<len; i++){
-            if(arr[i].grade == item.grade){
-              arrTemp.push(arr[i]);
+        //通过栏目id获取栏目下的数据
+        getListByColumnId(item){
+          //先清理数据
+          this.tBodyList = [];
+          let params = Object.assign({},this.CONFIG.getList.params);
+          params.pageNo = this.pageNo ? this.pageNo : params.pageNo;
+          params.pageSize = this.pageSize ? this.pageSize : params.pageSize;
+          params.conditions="[{pub_col_id:"+item.id+"}]";
+          Post(CONFIG.BASE_URL + this.CONFIG.getList.url, params).then((rep) => {
+            this.totalCount = rep.data.totalCount;
+            if(rep.data.success && rep.data.result && rep.data.result.length > 0){
+              this.tBodyList = rep.data.result;
             }
+          });
+        },
+        paging ({ pageNo, pageSize }) {
+          this.pageNo = pageNo;
+          this.pageSize = pageSize;
+          this.getListByColumnId(this.tempItem);
+        },
+        toContent(item){
+          switch (item[this.keys.pubResType]) {
+            case this.display.book:   //去阅读电子书
+              let params = Object.assign({},this.CONFIG.toEbook.params) ;
+              let url = CONFIG.READ_URL + '?bookId=' + item[this.keys.id] + '&readType=' + params.readType + '&bookName=' + item[this.keys.resName] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+              window.open(url);
+              break;
+            case this.display.audio:  //去播放音频
+              window.open(toOtherPage(item,this.CONFIG.toPlayAudio,this.keys));
+              break;
+            case this.display.video:  //去播放视频
+              window.open(toOtherPage(item,this.CONFIG.toPlayVideo,this.keys));
+              break;
+            case this.display.download:  //去下载
+              this.getZipAttachment(item);
+              break;
           }
-          return arrTemp;
+        },
+        getZipAttachment (item) { // 获取附件
+          let paramsObj = Object.assign({}, this.CONFIG.getZipAttachment.params);
+          paramsObj.pubId = item.id;
+          Get(CONFIG.BASE_URL + this.CONFIG.getZipAttachment.url + '?pubId=' + paramsObj.pubId + '&loginName=' + (this.member.loginName?this.member.loginName:'') + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&attachTypes=' + paramsObj.attachTypes).then((rep) => {
+            let datas = rep.data;
+            if (datas.result == '1' && datas.data) {
+              this.zipAttachment = datas.data;
+              if(this.zipAttachment[paramsObj.attachTypes]){
+                //获取到需要下载的资源的ID
+                this.zipAttachmentId = this.zipAttachment[paramsObj.attachTypes][0][this.keys.fileRecordID];
+                if(this.zipAttachmentId){
+                  this.toDownload();
+                }
+              }
+            }
+          });
+        },
+        toDownload(){  //通过附件的fileRecordID字段下载附件
+          let url = CONFIG.BASE_URL + this.CONFIG.toDownload.url + '?recordID=' + this.zipAttachmentId;
+          window.open(url);
         }
       }
     }

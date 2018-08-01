@@ -9,7 +9,7 @@
   <div class="ui_list_word_01">
     <ul class="listUl">
       <li class="listLi" v-for="(item, index) in activitysList" :key="index" @click="toInfoDetail(item.id, item.pub_col_id)" v-if="index >= (CONFIG.startNum ? CONFIG.startNum : 0)">
-        <a v-text="item.information_SYS_TOPIC"></a>
+        <a v-html="item.information_SYS_TOPIC"></a>
         <!--过滤器修改为使用methods中方法格式化时间-->
         <time class="createTime" v-if="controlTime">{{formatDate(item.information_a_pubTime)}}</time>
       </li>
@@ -51,7 +51,7 @@ export default {
   },
 
   created(){
-    this.CONFIG = PROJECT_CONFIG[this.namespace].list_word.list_word_02;
+    this.CONFIG = PROJECT_CONFIG[this.namespace].list_word.list_word_01;
   },
 
   mounted () {

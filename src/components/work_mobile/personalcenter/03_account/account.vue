@@ -15,10 +15,11 @@
           <!-- 头像在微信端不可更改，未设置头像用户显示默认头像，用第三方账号登录直接显示第三方账号头像 -->
           <div class="work_mobile_personalcenter_03_picturecon" v-if="nav.tag == 'picture'">
             <img v-if="JSON.stringify(getMember) != '{}' && getMember[nav.tag]" :src="getMember[nav.tag]" :alt="display.noPic || '暂无头像'" />
-            <img v-if="JSON.stringify(getMember) != '{}' && !getMember[nav.tag]" :src="require('@static/img/people.jpg')" :alt="display.noPic || '暂无头像'" />
+            <img v-if="JSON.stringify(getMember) != '{}' && !getMember[nav.tag]" :src="'../assets/img/people.jpg'" :alt="display.noPic || '暂无头像'" />
           </div>
           <div class="work_mobile_personalcenter_03_other" v-else>
             <span v-if="nav.tag == 'password'"></span>
+            <span v-else-if="nav.tag == 'nickName'">{{getMember[nav.tag] || getMember.loginName || display.noData || '暂无数据'}} </span>
             <span v-else> {{getMember[nav.tag] || display.noData || '暂无数据'}} </span>
           </div>
         </van-cell>

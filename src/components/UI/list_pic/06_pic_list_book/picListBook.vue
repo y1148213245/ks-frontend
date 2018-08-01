@@ -107,7 +107,16 @@ export default {
             };
             dataList.push(temp);
           }
-          this.list = dataList;
+          //去除浏览记录中重复的图书清单；
+          var hash = {},result = [];
+          for (var i = 0,elem;(elem = dataList[i]) != null;i++){
+            if (!hash[elem]){
+              result.push(dataList[i]);
+              hash[elem] = true;
+            }
+          }
+          this.list = result;
+          // this.list = dataList;
         } else {
           this.list = [];
         }

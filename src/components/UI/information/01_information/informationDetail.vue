@@ -5,7 +5,7 @@
     <div aria-label="Breadcrumb" role="navigation" class="el-breadcrumb">
       <span class="el-breadcrumb__item">{{getStaticText('yourPosition') ? getStaticText('yourPosition')  : '您的位置：'}}</span>
       <span class="el-breadcrumb__item">
-        <span role="link" class="el-breadcrumb__inner is-link">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</span>
+        <span role="link" class="el-breadcrumb__inner is-link"><a href="../pages/index.html">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</a></span>
         <i class="el-breadcrumb__separator el-icon-arrow-right"></i>
       </span>
       <span class="el-breadcrumb__item" aria-current="page">

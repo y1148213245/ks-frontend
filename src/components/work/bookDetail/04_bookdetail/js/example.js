@@ -112,6 +112,7 @@ const dev = {
             readType: 0, // 0 试读 1 全读
           }
         },
+        addBookshelfBeforeProbation:false,
         toDetail: { // 去资讯详情页面
           url: "../pages/informationdetail.html",
           dataKeys: {
@@ -136,6 +137,7 @@ const dev = {
         infoImgWidth: 320, // 资讯图片的宽 要和图片外层容器  宽一样
         infoImgHeight: 220, // 资讯图片的高 要和图片外层容器  高一样
         tabConfigList: { //tab切换配置
+          tabConfigshow: false,
           tabShow: true,
           reviewShow: true,
           tabList: ["详情", "评论"], //只能改字哦，

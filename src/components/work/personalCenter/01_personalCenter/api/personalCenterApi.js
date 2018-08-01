@@ -92,17 +92,10 @@ export default {
     return Get(url);
   },
   /*获取支付方式*/
-  queryPaymentList() {
-    var url = CONFIG.BASE_URL + "cart/getPayMethod.do";
+  queryPaymentList(siteId) {
+    var url = CONFIG.BASE_URL + "cart/getPayMethod.do?siteId=" + siteId;
     return Get(url);
   },
-  /*下载币充值*/
-  // RechargeVirtual(params) {
-  // var url =CONFIG.BASE_URL+'rechargeVirtualCoin/rechargeByLoginName.do?loginName=' + params.loginName + '&coinValue=' + params.paynum * 100 + '&siteId=' + CONFIG.SITE_CONFIG.siteId;
-  // var url = 'http://172.19.36.70/portal/api/epay/getVirtualCoinPayForm.do?price=1&loginName=1&payMethodId=1&siteId=1'
-  // var url = CONFIG.BASE_URL+'epay/getVirtualCoinPayForm.do?price=1&loginName=1&payMethodId=1&siteId=1'
-  // return Get(url);
-  // },
   /*获取订单列表*/
   queryOrderList(params) {
     var url =

@@ -23,7 +23,7 @@
               <div class="namePrice">
                 <div v-text="item.productName" :title="item.productName"></div>
                 <div>价格：
-                  <span>{{item.productPrice | formatPriceNew}}</span>
+                  <span>{{item.memberPrice | formatPriceNew}}</span>
                 </div>
               </div>
               <div class="readBox">
@@ -55,14 +55,14 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "collecting",
   reused: true,
-  props: ["namespace", 'parentConfig'],
-  mounted: function () {
+  props: ["namespace", "parentConfig"],
+  mounted: function() {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
     });
   },
-  data () {
+  data() {
     return {
       siteId: "",
       modalStatus: false,
@@ -70,6 +70,7 @@ export default {
       autofocus: true,
       radio: null,
       CONFIG: null, // 当前组件配置
+      contentType: ""
     };
   },
   computed: {
@@ -77,51 +78,59 @@ export default {
       collectionInfo: "getCollectionInfo"
     })
   },
-  created () {
+  created() {
     this.CONFIG = this.parentConfig.collection;
-    this.radio = this.CONFIG && this.CONFIG.tabListShow.length > 0 ? this.CONFIG.tabListShow[0].type : 94
+    this.radio =
+      this.CONFIG && this.CONFIG.tabListShow.length > 0
+        ? this.CONFIG.tabListShow[0].type
+        : 94;
   },
   methods: {
-    loadedCallBack () {
+    loadedCallBack() {
       var params = {
         param: {
           pageIndex: 1,
           pageSize: 8,
-          contentType: this.CONFIG && this.CONFIG.tabListShow.length > 0 ? this.CONFIG.tabListShow[0].type : 94,
+          contentType:
+            this.CONFIG && this.CONFIG.tabListShow.length > 0
+              ? this.CONFIG.tabListShow[0].type
+              : 94
         },
-        myCallBack: function () { }
+        myCallBack: function() {}
       };
       this.$store.dispatch("personalCenter/queryCollectionInfo", params);
     },
-    pagingF: function ({ pageNo, pageSize }) {
+    pagingF: function({ pageNo, pageSize }) {
       var params = {
         param: {
           pageIndex: pageNo,
-          pageSize: pageSize
+          pageSize: pageSize,
+          contentType: this.contentType
         },
-        myCallBack: function () { }
+        myCallBack: function() {}
       };
       this.$store.dispatch("personalCenter/queryCollectionInfo", params);
     },
-    bookList (val) {
+    bookList(val) {
+      this.contentType = val;
       var params = {
         param: {
           pageIndex: 1,
           pageSize: 8,
           contentType: val
         },
-        myCallBack: function () { }
+        myCallBack: function() {}
       };
       this.$store.dispatch("personalCenter/queryCollectionInfo", params);
     },
-    deleteCollProduct: function (item) {
+    deleteCollProduct: function(item) {
       // 删除收藏商品
       var _this = this;
       this.$confirm("您确定要将商品移除收藏夹吗?", "系统提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function () {
+      }).then(function() {
         var params = {
           id: item.pubId,
           cb: _this.deleteCollProductcb
@@ -129,7 +138,7 @@ export default {
         _this.$store.dispatch("personalCenter/deleteCollProduct", params);
       });
     },
-    deleteCollProductcb: function (delCollStatus) {
+    deleteCollProductcb: function(delCollStatus) {
       var _this = this;
       if (delCollStatus == 1) {
         this.$message({
@@ -138,7 +147,7 @@ export default {
         });
         var params = {
           param: {},
-          myCallBack: function () {
+          myCallBack: function() {
             _this.isSelectAll();
           }
         };
@@ -151,10 +160,10 @@ export default {
         });
       }
     },
-    selectCollProduct: function (item) {
+    selectCollProduct: function(item) {
       this.isSelectAll();
     },
-    deleteLots: function () {
+    deleteLots: function() {
       var tempList = this.collectionInfo.data;
       var len = tempList.length;
       var pubidList = [];
@@ -175,7 +184,7 @@ export default {
       };
       this.deleteCollProduct(pubIds);
     },
-    selectAll: function () {
+    selectAll: function() {
       var tempList = this.collectionInfo.data;
       var len = tempList.length;
       for (var j = 0; j < len; j++) {
@@ -186,7 +195,7 @@ export default {
         }
       }
     },
-    isSelectAll: function () {
+    isSelectAll: function() {
       var status = true;
       var data = this.collectionInfo.data;
       for (var j = 0; j < data.length; j++) {

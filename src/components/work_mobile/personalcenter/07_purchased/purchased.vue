@@ -1,5 +1,5 @@
 <template>
-  <div class="work_mobile_personalcenter_07">
+  <div class="work_mobile_personalcenter_07" v-loading="loading">
     <div class="work_mobile_personalcenter_07_tabs">
       <ul class="work_mobile_personalcenter_07_tabs_ul">
         <li class="work_mobile_personalcenter_07_tabs_li" v-for="(tab,index) in tabsList" :class="[index == currentIndex ? 'isActive' : '']" @click="changeTab(tab,index)" :key="index">
@@ -7,7 +7,7 @@
         </li>
       </ul>
     </div>
-    <div class="work_mobile_personalcenter_07_book-list" v-loading="loading">
+    <div class="work_mobile_personalcenter_07_book-list">
       <ul class="work_mobile_personalcenter_07_book-list_ul">
         <li class="work_mobile_personalcenter_07_book-list_li" v-for="(book, index) in boughtBooksList" :key="index" v-if="boughtBooksList && boughtBooksList.length > 0">
           <div class="work_mobile_personalcenter_07_book-list_li_img-box" @click="toBookDetail(book)">
@@ -26,7 +26,7 @@
             </div>
           </div>
         </li>
-        <div class="work_mobile_personalcenter_07_nodata" v-if="boughtBooksList && boughtBooksList.length == 0">
+        <div class="work_mobile_personalcenter_07_nodata" v-if="boughtBooksList && boughtBooksList.length == 0 && !loading">
           <div class="work_mobile_personalcenter_07_nobook" v-if="tab.status == '3'">
             <!-- 您还没有购买图书 -->
             <span v-text="display.noData ? display.noData : '您还没有购买图书'"></span>
@@ -134,10 +134,9 @@
         this.pageSize = this.CONFIG.getBoughtBooks.params.pageSize;
         //切换tab
         this.currentIndex = index;
-        //因为数组是拼接的，所以获取数据前先清空数据列表
-        this.boughtBooksList = [];
         //获取数据
-        this.queryMyBoughtBooks(this.loginName, this.tab);
+        this.loadMyBoughtBooks(this.loginName, this.tab);
+
       },
       initData (loginName) {
         this.pageIndex = this.CONFIG.getBoughtBooks.params.pageIndex;
@@ -148,9 +147,11 @@
         // params.status = status;
         this.tab.type = params.type;
         this.tab.status = params.status;
-        this.queryMyBoughtBooks(loginName, this.tab);  //页面初始化获取已购买图书的全部数据
+        this.loadMyBoughtBooks(loginName, this.tab);  //页面初始化获取已购买图书的全部数据
       },
+      //下拉刷新时需要拼接图书列表
       queryMyBoughtBooks (loginName, tab, op) {
+        this.loading = true;
         let params = Object.assign({}, this.CONFIG.getBoughtBooks.params);
         Get(CONFIG.BASE_URL + this.CONFIG.getBoughtBooks.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&type=' + (tab ? tab.type : this.tab.type) + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&productType=' + params.productType + '&status=' + (tab ? tab.status : this.tab.status)).then((resp) => {
           let res = resp.data;
@@ -165,6 +166,22 @@
             this.totalCount = res.totalCount;
             this.totalPages = res.totalPages;
           }
+          this.loading = false;
+        })
+      },
+      //tab切换时不要拼接，拼接有bug，数据会重复累加
+      loadMyBoughtBooks(loginName, tab){
+        //因为数组是拼接的，所以获取数据前先清空数据列表
+        this.boughtBooksList = [];
+        this.loading = true;
+        let params = Object.assign({}, this.CONFIG.getBoughtBooks.params);
+        Get(CONFIG.BASE_URL + this.CONFIG.getBoughtBooks.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&type=' + (tab ? tab.type : this.tab.type) + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&productType=' + params.productType + '&status=' + (tab ? tab.status : this.tab.status)).then((resp) => {
+          let res = resp.data;
+          if (res.result == '1') {
+            this.boughtBooksList = res.data;
+          }
+          this.totalCount = res.totalCount;
+          this.totalPages = res.totalPages;
           this.loading = false;
         })
       },

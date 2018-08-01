@@ -11,73 +11,77 @@ const dev = {
   list_pic: {
     list_pic_37: {
       'resourceCenter': {
+        colId: 510,  //资料中心栏目id
         display: {
-          resourceTitle: '参考答案',
-          tabList: [],  //存放tab的数组 通过栏目树传进来的参数格式如下
-          // id: val[this.keys.id],
-          // name: val[this.keys.name],
-          // parentId: val[this.keys.parentId],
-          // childNav: [],
-          // showChild: false, //子导航是否展示(鼠标单击控制展示收起)
-          // createChild: false //是否已经点击创建过子导航
-          tHeadList: [  //存放table头部信息的数组
-            '文件类型',
-            '资料名称',
-            '日期'
-          ],
-          tBodyList: [  //存放table内容信息的数组
-            {
-              resourceType: '电子书',
-              resourceName: '数学',
-              resourceDate: '2016-03-15'
-            },
-            {
-              resourceType: 'PDF',
-              resourceName: '语文',
-              resourceDate: '2016-05-25'
-            },
-            {
-              resourceType: 'zip',
-              resourceName: '英语',
-              resourceDate: '2016-11-05'
-            }
-          ],
+          resourceTitle: '',
+          noData: '暂无数据',
+          book: 'BOOK',
+          video: 'VIDEO-MEDIA',
+          audio: 'AUDIO-MEDIA',
+          download: 'ZILIAOKU',   //TODO:去下载字段待确定
         },
+        tabList: [],  //存放tab的数组 通过栏目树传进来的参数格式如下
+        tHeadList: [  //存放table头部信息的数组
+          '文件类型',
+          '资料名称',
+          '日期'
+        ],
+        tBodyList: [],
+        sysAdapter: 'sykAdapter',
+        typeAdapter: 'systemAdapter',
         transTitle: "transNavTitle",
-        data: [
-          {
-            grade: '1',  //小学（1），初中（2），高中（3）
-            type: '1',  // 全部（0），训练（1），复习（2）
-            fileType: '1', //音频（1），视频（2），PDF（3），ZIP（4）
-            resourceName: '数学',
-            resourceDate: '2016-03-15',
-            resourceType: 'PDF'
-          },
-          {
-            grade: '2',  //小学（1），初中（2），高中（3）
-            type: '1',  // 全部（0），训练（1），复习（2）
-            fileType: '2', //音频（1），视频（2），PDF（3），ZIP（4）
-            resourceName: '语文',
-            resourceDate: '2017-03-15',
-            resourceType: 'ZIP'
-          },
-          {
-            grade: '3',  //小学（1），初中（2），高中（3）
-            type: '2',  // 全部（0），训练（1），复习（2）
-            fileType: '3', //音频（1），视频（2），PDF（3），ZIP（4）
-            resourceName: '英语',
-            resourceDate: '2026-03-15',
-            resourceType: '视频'
-          },
-          {
-            grade: '1',  //小学（1），初中（2），高中（3）
-            type: '2',  // 全部（0），训练（1），复习（2）
-            fileType: '4', //音频（1），视频（2），PDF（3），ZIP（4）
-            resourceName: '物理',
-            resourceDate: '2116-03-15',
-            resourceType: '音频'
+        toEbook: {
+          url: '',  //去电子书阅读器
+          params:{
+            bookId:'',
+            readType:1,
+            bookName:'',
+            userName:'',
+            siteType:''
           }
-        ]
+        },
+        toPlayAudio: {
+          url: '../pages/bookdetail.html',  //去播放音频的地址
+          dataKeys: {
+            pubId: "id", // id是从适配器里对应的
+          },
+          fixedKeys: {}
+        },
+        toPlayVideo: {
+          url: '../pages/bookdetail.html',  //去播放视频的地址
+          dataKeys: {
+            pubId: "id", // id是从适配器里对应的
+          },
+          fixedKeys: {}
+        },
+        getZipAttachment: {
+          url: "resource/detail.do",
+          params: {
+            loginName: "",
+            pubId: "",
+            siteId: '',
+            attachTypes: "all", // 附件类型
+          },
+        },
+        toDownload: {
+          url: 'dynamicFile/file.do',  //去下载文件
+          dataKeys: {
+            recordID: "fileRecordID", // id是从适配器里对应的
+          },
+          fixedKeys: {}
+        },
+        getList: {
+          url: 'spc/cms/publish/list.do',
+          params: {
+            conditions: "[{pub_col_id:''}]",
+            groupBy: "pub_resource_id",
+            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+            pageNo: "1",
+            pageSize: "10",
+            searchText: "",
+          }
+        },
+        pageSizes:[10,30,50,100]
       }
     }
   }
@@ -87,73 +91,77 @@ const prod = {
   list_pic: {
     list_pic_37: {
       'resourceCenter': {
+        colId: 510,  //资料中心栏目id
         display: {
-          resourceTitle: '参考答案',
-          tabList: [],  //存放tab的数组 通过栏目树传进来的参数格式如下
-          // id: val[this.keys.id],
-          // name: val[this.keys.name],
-          // parentId: val[this.keys.parentId],
-          // childNav: [],
-          // showChild: false, //子导航是否展示(鼠标单击控制展示收起)
-          // createChild: false //是否已经点击创建过子导航
-          tHeadList: [  //存放table头部信息的数组
-            '文件类型',
-            '资料名称',
-            '日期'
-          ],
-          tBodyList: [  //存放table内容信息的数组
-            {
-              resourceType: '电子书',
-              resourceName: '数学',
-              resourceDate: '2016-03-15'
-            },
-            {
-              resourceType: 'PDF',
-              resourceName: '语文',
-              resourceDate: '2016-05-25'
-            },
-            {
-              resourceType: 'zip',
-              resourceName: '英语',
-              resourceDate: '2016-11-05'
-            }
-          ],
+          resourceTitle: '',
+          noData: '暂无数据',
+          book: 'BOOK',
+          video: 'VIDEO-MEDIA',
+          audio: 'AUDIO-MEDIA',
+          download: 'ZILIAOKU',   //TODO:去下载字段待确定
         },
+        tabList: [],  //存放tab的数组 通过栏目树传进来的参数格式如下
+        tHeadList: [  //存放table头部信息的数组
+          '文件类型',
+          '资料名称',
+          '日期'
+        ],
+        tBodyList: [],
+        sysAdapter: 'sykAdapter',
+        typeAdapter: 'systemAdapter',
         transTitle: "transNavTitle",
-        data: [
-          {
-            grade: '1',  //小学（1），初中（2），高中（3）
-            type: '1',  // 全部（0），训练（1），复习（2）
-            fileType: '1', //音频（1），视频（2），PDF（3），ZIP（4）
-            resourceName: '数学',
-            resourceDate: '2016-03-15',
-            resourceType: 'PDF'
-          },
-          {
-            grade: '2',  //小学（1），初中（2），高中（3）
-            type: '1',  // 全部（0），训练（1），复习（2）
-            fileType: '2', //音频（1），视频（2），PDF（3），ZIP（4）
-            resourceName: '语文',
-            resourceDate: '2017-03-15',
-            resourceType: 'ZIP'
-          },
-          {
-            grade: '3',  //小学（1），初中（2），高中（3）
-            type: '2',  // 全部（0），训练（1），复习（2）
-            fileType: '3', //音频（1），视频（2），PDF（3），ZIP（4）
-            resourceName: '英语',
-            resourceDate: '2026-03-15',
-            resourceType: '视频'
-          },
-          {
-            grade: '1',  //小学（1），初中（2），高中（3）
-            type: '2',  // 全部（0），训练（1），复习（2）
-            fileType: '4', //音频（1），视频（2），PDF（3），ZIP（4）
-            resourceName: '物理',
-            resourceDate: '2116-03-15',
-            resourceType: '音频'
+        toEbook: {
+          url: '',  //去电子书阅读器
+          params:{
+            bookId:'',
+            readType:1,
+            bookName:'',
+            userName:'',
+            siteType:''
           }
-        ]
+        },
+        toPlayAudio: {
+          url: '../pages/bookdetail.html',  //去播放音频的地址
+          dataKeys: {
+            pubId: "id", // id是从适配器里对应的
+          },
+          fixedKeys: {}
+        },
+        toPlayVideo: {
+          url: '../pages/bookdetail.html',  //去播放视频的地址
+          dataKeys: {
+            pubId: "id", // id是从适配器里对应的
+          },
+          fixedKeys: {}
+        },
+        getZipAttachment: {
+          url: "resource/detail.do",
+          params: {
+            loginName: "",
+            pubId: "",
+            siteId: '',
+            attachTypes: "all", // 附件类型
+          },
+        },
+        toDownload: {
+          url: 'dynamicFile/file.do',  //去下载文件
+          dataKeys: {
+            recordID: "fileRecordID", // id是从适配器里对应的
+          },
+          fixedKeys: {}
+        },
+        getList: {
+          url: 'spc/cms/publish/list.do',
+          params: {
+            conditions: "[{pub_col_id:''}]",
+            groupBy: "pub_resource_id",
+            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+            pageNo: "1",
+            pageSize: "10",
+            searchText: "",
+          }
+        },
+        pageSizes:[10,30,50,100]
       }
     }
   }

@@ -1,6 +1,6 @@
 /*
- * @Author: yan.chaoming 
- * @Date: 2018-01-05 15:51:44 
+ * @Author: yan.chaoming
+ * @Date: 2018-01-05 15:51:44
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-03-23 09:36:31
  * 排序组件
@@ -29,7 +29,7 @@ const dev = {
         },
         {
           title:'按最新',
-          orderBy:'BOOK_PUBDATE desc',
+          orderBy:'pub_created desc',
         }
       ],
       eventName:''
@@ -51,7 +51,7 @@ const prod = {
         },
         {
           title:'按最新',
-          orderBy:'BOOK_PUBDATE desc',
+          orderBy:'pub_created desc',
         }
       ],
       eventName:''

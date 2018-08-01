@@ -2,9 +2,9 @@ import component from "../form.vue";
 
 const name = component.name; // 组件标签名
 
-const title = "应聘填表组件"; // 组件title
+const title = "表单组件"; // 组件title
 
-const description = `应聘填表组件`; // 组件描述信息
+const description = `表单组件`; // 组件描述信息
 
 const dev = {
     form: {
@@ -490,6 +490,48 @@ const prod = {
                 rows: 5,
                 model: "description",
                 field: "description"
+            }, {
+                type: "select",
+                select: [{
+                    id: 1,
+                    label: "职称",
+                    model: "position",
+                    field: "position",
+                    isMultiple: false,
+                    className: "select-position",
+                    url: "../data/select1.json",
+                    params: {
+                        pub_param: 1
+                    }
+                }, {
+                    id: 2,
+                    label: "教学层次",
+                    model: "educationLevel",
+                    field: "educationLevel",
+                    isMultiple: false,
+                    className: "select-educationLevel",
+                    url: "../data/select2.json",
+                    params: {
+                        pub_param: 2
+                    }
+                }, {
+                    id: 3,
+                    label: "授课学生规模",
+                    model: "studentScale",
+                    field: "studentScale",
+                    isMultiple: false,
+                    className: "select-studentScale",
+                    options: [{
+                        value: '选项1',
+                        label: '黄金糕'
+                    }, {
+                        value: '选项2',
+                        label: '双皮奶'
+                    }, {
+                        value: '选项3',
+                        label: '蚵仔煎'
+                    }]
+                }]
             }, {
                 type: "button",
                 name: "提交"

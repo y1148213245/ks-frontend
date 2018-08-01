@@ -14,8 +14,8 @@
           </div>
         </div>-->
         <div class="couponActive">
-          <el-input placeholder="请输入优惠码" v-model="password"></el-input>
-          <el-button size="small" @click="activeCoupon()">激活</el-button>
+          <el-input placeholder="请输入优惠码" v-model="password" style="height:32px;vertical-align: middle;"></el-input>
+          <el-button size="small" @click="activeCoupon()" style="ertical-align: middle;">激活</el-button>
         </div>
         <div class="wzdh_yhq_con_list cl mt30">
           <div class="wzdh_yhq_con_list_title color_727 line-h24 f18 pb15 pl12">优惠券列表</div>
@@ -214,7 +214,7 @@ export default {
       if (value) {
         return Number(value).toFixed(2) + " 元";
       } else {
-        return value;
+        return "0.00 元";
       }
     }
   }
@@ -264,7 +264,7 @@ export default {
 }
 
 #couponsCom .wzdh_yhq .wzdh_yhq_con {
-  width: 690px;
+  /*width: 690px;*/
   margin: 0 auto;
 }
 

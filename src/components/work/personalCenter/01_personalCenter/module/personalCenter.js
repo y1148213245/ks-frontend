@@ -15,7 +15,6 @@ var state = {
   pointRecord: [], //积分详情
   virtualMoney: [], //下载币详情
   addresses: [], //地址详情
-  paymentList: [], //支付方式
   orderList: [], //订单列表
   orderDetails: [], //订单详情
   bookShelfInfo: [], //书架列表
@@ -38,7 +37,6 @@ var getters = {
   getPointRecord: state => state.pointRecord,
   getVirtualMoney: state => state.virtualMoney,
   getAddresses: state => state.addresses,
-  getPaymentList: state => state.paymentList,
   getOrderList: state => state.orderList,
   getOrderDetails: state => state.orderDetails,
   getBookShelfInfo: state => state.bookShelfInfo,
@@ -134,7 +132,6 @@ var actions = {
   },
   /*新增收货地址*/
   addAddress({
-    commit,
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
@@ -145,7 +142,6 @@ var actions = {
   },
   /*修改收货地址*/
   updateAddress({
-    commit,
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
@@ -156,7 +152,6 @@ var actions = {
   },
   /*设置默认地址*/
   defaultAddress({
-    commit,
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
@@ -173,16 +168,6 @@ var actions = {
     api.deleteAddress(params).then(function (response) {
       let deleteStatus = response.data.result;
       params.cb(deleteStatus);
-    });
-  },
-  /*查询支付方式*/
-  queryPaymentList({
-    commit,
-    getters
-  }) {
-    api.queryPaymentList().then(function (response) {
-      let paymentList = response.data.data;
-      commit("setPaymentList", paymentList);
     });
   },
   /*查询商品列表*/
@@ -203,7 +188,6 @@ var actions = {
   /*查询商品详情*/
   queryOrderDetails({
     commit,
-    getters
   }, params) {
     let loading = Vue.prototype.$loading({
       text: "正在加载中..."
@@ -232,7 +216,6 @@ var actions = {
   },
   /*修改邮箱*/
   updateEmail({
-    commit,
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
@@ -254,7 +237,6 @@ var actions = {
   },
   /*设置密保问题*/
   setPswQuestion({
-    commit,
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
@@ -265,7 +247,6 @@ var actions = {
   },
   /*密保问题验证身份*/
   checkPswQuestion({
-    commit,
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
@@ -276,7 +257,6 @@ var actions = {
   },
   /*通过验证身份重置密码*/
   modifyPassword({
-    commit,
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
@@ -350,7 +330,6 @@ var actions = {
   },
   /*移除收藏夹*/
   deleteCollProduct({
-    commit,
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
@@ -634,7 +613,6 @@ var mutations = {
   setAddresses: (state, addresses) => (state.addresses = addresses),
   setOrderList: (state, orderList) => (state.orderList = orderList),
   setNewList: (state, newdata) => (state.orderList = newdata),
-  setPaymentList: (state, paymentList) => (state.paymentList = paymentList),
   setOrderDetailst: (state, orderDetails) =>
     (state.orderDetails = orderDetails),
   setReturnGoodsDetails: (state, returnGoodsDetails) =>

@@ -148,7 +148,7 @@
     </div>
     <!-- END 有声书音频附件 -->
 
-    <div class="work_bookdetail_04_tabBody">
+    <div class="work_bookdetail_04_tabBody" v-if="tabConfigList && tabConfigList.tabConfigshow">
       <!-- TAB切换 信息 -->
       <div class="work_bookdetail_04_tab" v-if="tabConfigList && tabConfigList.tabShow">
         <ul class="work_bookdetail_04_tab_div_ul" v-if="tabConfigList.tabList.length>0">
@@ -308,17 +308,20 @@ export default {
     toCustomFun (config) { // 执行自定义事件
       if (config.method == 'toProbation') { // 执行免费试读操作
         //加入书架
-        Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=1' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
-          var datas = rep.data;
-          if (datas.result == "1") {
-            let msg = datas.data.msg;
-            this.$message({
-              message: msg,
-              type: 'success'
-            });
-            this.getResourceDetail();  //获取图书详情信息
-          }
-        });
+        if(this.CONFIG.addBookshelfBeforeProbation) {
+          Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=1' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
+            var datas = rep.data;
+            if (datas.result == "1") {
+              let msg = datas.data.msg;
+              this.$message({
+                message: msg,
+                type: 'success'
+              });
+              this.getResourceDetail();  //获取图书详情信息
+            }
+          });
+        }
+
 
         if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 没有试读地址
           return false;

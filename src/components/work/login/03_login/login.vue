@@ -3,7 +3,8 @@
   <div class="login_03_content">
     <div class="login_03_titlebox">{{getStaticText('loginSys') ? getStaticText('loginSys') : '登录'}}</div>
     <div class="el-input el-input--prefix">
-      <input type="text" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" />
+      <input type="text" v-if="isPC == 'true'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" />
+      <input type="text" v-if="isPC == 'false'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" @blur="checkUsername"/>
       <span class="el-input__prefix">
         <i class="fa fa-user" aria-hidden="true"></i>
       </span>
@@ -59,7 +60,7 @@ import { mapActions } from 'vuex';
 import * as interfaces from '@work/login/common/interfaces.js';
 import URL from 'url';
 import PROJECT_CONFIG from "projectConfig";
-import { CreateCode } from '@common';
+import { Get, CreateCode } from '@common';
 export default {
   name: 'work_login_03_login',
   reused: true,
@@ -69,6 +70,7 @@ export default {
   data () {
     return {
       CONFIG: "",
+      isPC: '',
       member: {
         loginName: '',
         password: '',
@@ -99,6 +101,7 @@ export default {
     }),
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_03;
+      this.isPC = this.CONFIG.isPC ? this.CONFIG.isPC : 'true';
     },
     /* 创建验证码 */
     createCode () {
@@ -132,20 +135,20 @@ export default {
       if (this.member.loginName.trim() == '') { // 先校验用户名是否为空
         this.$message({
           type: 'warning',
-          message: this.getStaticText('userNameCannotBeEmpty') ? this.getStaticText('userNameCannotBeEmpty') : "用户名不能为空"
+          message: this.getStaticText('userNameCannotBeEmpty') ? this.getStaticText('userNameCannotBeEmpty') : "请输入账号"
+        });
+        return false;
+      } else if (this.member.password.trim() == '') { //  再校验密码是否为空
+        this.$message({
+          type: 'warning',
+          message: this.getStaticText("pwdCannotBeEmpty") ? this.getStaticText('pwdCannotBeEmpty') : "请输入密码"
         });
         return false;
       } else {
         this.checkMemberInfo();
         return false;
       }
-      if (this.member.password.trim() == '') { //  再校验密码是否为空
-        this.$message({
-          type: 'warning',
-          message: this.getStaticText("pwdCannotBeEmpty") ? this.getStaticText('pwdCannotBeEmpty') : "密码不能为空"
-        });
-        return false;
-      }
+
     },
     checkMemberInfo () {
       this.action_login({ member: this.member }).then((rep) => {
@@ -183,6 +186,20 @@ export default {
         }
         return false;
       });
+    },
+    checkUsername(){  //单独验证用户名
+      let params = Object.assign({},this.CONFIG.checkUsername.params);
+      params.checkText = this.member.loginName;
+      Get(CONFIG.BASE_URL+this.CONFIG.checkUsername.url +'?checkText=' +params.checkText + '&checkType=' + params.checkType).then((rep) => {
+        console.log(rep.data.result);
+        if(rep.data.result == '1'){
+          this.$message({
+            type: "error",
+            message: this.getStaticText('unRegisterName') ? this.getStaticText('unRegisterName') : '账号未注册'
+          });
+        }
+
+      })
     },
     /*loginValid: function () {
       if (this.member.loginName.trim() == '' || this.member.password.trim() == '') { // 先校验是否为空
