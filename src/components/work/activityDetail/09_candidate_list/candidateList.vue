@@ -4,13 +4,13 @@
     <!-- 参选人列表 -->
     <ul class="work_activitydetail_09-candidate_list el-row" v-if="CONFIG.showType == 'candidate'">
       <li v-for="(item,i) in candidateList" :key="i" class="el-col el-col-6">
-        <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic])" title="头像" @click="openDialog(i)" />
+        <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic]) || require('@static/img/nopic.jpg')" title="头像" @click="openDialog(i)" />
         <span class="work_activitydetail_09-title" @click="openDialog(i)" v-text="item[listKeys.sysTopic]"></span>
-        <el-button  v-if="activityDetailCache && activityDetailCache[detailKeys.endTimeStamp] && new Date().getTime()<activityDetailCache[detailKeys.endTimeStamp]" type="primary" class="work_activitydetail_09-vote" @click="toVote(item)">
+        <el-button  v-if="activityDetailCache && activityDetailCache[detailKeys.endTimeStamp] && new Date().getTime()<activityDetailCache[detailKeys.endTimeStamp] && new Date().getTime() > activityDetailCache[detailKeys.beginTimeStamp]" type="primary" class="work_activitydetail_09-vote" @click="toVote(item)">
           <i></i>
           <span>投上一票</span>
         </el-button>
-
+        <span class="work_activitydetail_09-vote_company" v-text="item[listKeys.company]"></span>
         <span class="work_activitydetail_09-vote_num">{{item[listKeys.voteNum]}}
           <label>票</label>
         </span>
@@ -19,16 +19,16 @@
     <!-- 获奖人列表 -->
     <div class="work_activitydetail_09-prizewinner_list" v-if="CONFIG.showType == 'prizewinner'">
       
-      <template v-for="(entry,award_index) in awardList">
+      <template v-for="(entry,award_index) in awardList" v-if="entry.title.indexOf('未得奖') < 0">
         <h3 :key="award_index+'a'" v-text="entry.title"></h3>
         <ul :key="award_index">
           <li v-for="(item,i) in entry.products" :key="i">
-            <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic])" title="头像" @click="openDialog(i)" />
-            <span class="work_activitydetail_09-title" @click="openDialog(i)" v-text="item[listKeys.sysTopic]"></span>
-
-            <span class="work_activitydetail_09-vote_num">{{item[listKeys.voteNum]}}
+            <img class="work_activitydetail_09-pic" :src="getPic(item[listKeys.pic]) || require('@static/img/nopic.jpg')" title="头像" @click="openDialog(i,{voteNum:false})" />
+            <span class="work_activitydetail_09-title" @click="openDialog(i,{voteNum:false})" v-text="item[listKeys.sysTopic]"></span>
+            <span class="work_activitydetail_09-vote_company" v-text="item[listKeys.company]"></span>
+            <!-- <span class="work_activitydetail_09-vote_num">{{item[listKeys.voteNum]}}
               <label>票</label>
-            </span>
+            </span> -->
           </li>
         </ul>
       </template>
@@ -38,14 +38,15 @@
     <el-dialog :visible.sync="detailVisible" width="40%">
       <div class="work_activitydetail_09-detail">
         <section>
-          <img class="work_activitydetail_09-pic" :src="getPic(currentCandidate[listKeys.pic])" title="头像" />
+          <img class="work_activitydetail_09-pic" :src="getPic(currentCandidate[listKeys.pic]) || require('@static/img/nopic.jpg')" title="头像" />
           <span class="work_activitydetail_09-title" v-text="currentCandidate[listKeys.sysTopic]"></span>
-          <el-button v-if="activityDetailCache && activityDetailCache[detailKeys.endTimeStamp] && new Date().getTime()<activityDetailCache[detailKeys.endTimeStamp] && CONFIG.showType == 'candidate'" type="primary" class="work_activitydetail_09-vote" @click="toVote(currentCandidate)">
+          <el-button v-if="activityDetailCache && activityDetailCache[detailKeys.endTimeStamp] && new Date().getTime()<activityDetailCache[detailKeys.endTimeStamp] && CONFIG.showType == 'candidate' && new Date().getTime() > activityDetailCache[detailKeys.beginTimeStamp]" type="primary" class="work_activitydetail_09-vote" @click="toVote(currentCandidate)">
             <i></i>
             <span>投上一票</span>
           </el-button>
 
-          <span class="work_activitydetail_09-vote_num">{{currentCandidate[listKeys.voteNum]}}
+          <span class="work_activitydetail_09-vote_company" v-text="currentCandidate[listKeys.company]"></span>
+          <span class="work_activitydetail_09-vote_num" v-show="detail_isShowItems.voteNum">{{currentCandidate[listKeys.voteNum]}}
             <label>票</label>
           </span>
         </section>
@@ -77,7 +78,10 @@ export default {
       detailKeys: null,
       awardKeys:null,
       currentCandidate: {},
-      awardList: []/* 活动奖项列表 */
+      awardList: [],/* 活动奖项列表 */
+      detail_isShowItems:{
+        voteNum:true
+      }/* 参赛人详情显示配置 */
     };
   },
 
@@ -218,7 +222,13 @@ export default {
 
     },
     /* 打开详情弹窗 */
-    openDialog (index) {
+    openDialog (index,showConfig) {
+      if (showConfig) {
+        this.detail_isShowItems = {
+          ...this.detail_isShowItems,
+          ...showConfig
+        }
+      }
       this.detailVisible = true;
       this.currentCandidate = this.candidateList[index]
     },
@@ -246,6 +256,12 @@ export default {
           if (this.currentCandidate.hasOwnProperty(this.listKeys.voteNum)) {
             this.currentCandidate[this.listKeys.voteNum]++
           }
+        }else{
+          let msg = data.error
+          this.$message({
+            type: 'warning',
+            message: msg
+          })
         }
       })
     }
@@ -257,5 +273,8 @@ export default {
 .work_activitydetail_09-pic {
   width: 150px;
   height: 200px;
+}
+.work_activitydetail_09-vote_company{
+  display: block;
 }
 </style>
