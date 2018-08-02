@@ -11,8 +11,12 @@
       <el-card class="box-card" :body-style="{ padding: '0 0 0 10px' }">
         <div slot="header" class="clearfix">
           <span class="ac_table_title ac_title_bottom">{{getStaticText('selectParticipant') ? getStaticText('selectParticipant') : "选择参赛人员"}}</span>
-          <el-button style="float: right;" type="primary" round icon="el-icon-plus" size="medium" @click="additions = true">{{getStaticText('addParticipant') ? getStaticText('addParticipant') : "新增参赛人员"}}</el-button>
+          
+          <el-button style="float: right;" type="primary" round icon="el-icon-plus" size="medium" @click="openParticipantDialog('add')">{{getStaticText('addParticipant') ? getStaticText('addParticipant') : "新增参赛人员"}}</el-button>
 
+          <el-button style="float: right;margin-right:20px;" type="warning" round  size="medium" @click="openParticipantDialog('update')">{{getStaticText('updateParticipant') ? getStaticText('updateParticipant') : "修改"}}</el-button>
+
+          <!-- 添加参赛人信息 -->
           <el-dialog :title="getStaticText('addParticipantInformation') ? getStaticText('addParticipantInformation') : '添加参赛人信息'" :visible.sync="additions">
             <div>
               <el-form :model="addParticipantsForm" :rules="rules" ref="addParticipantsForm" label-width="100px" class="demo-ruleForm">
@@ -40,6 +44,9 @@
           </el-dialog>
 
         </div>
+        
+
+        <!-- 未参赛表格 -->
         <el-table ref="singleTable" :data="participantsList" max-height="288" style="width: 700px" @current-change="handleCurrentChange" highlight-current-row>
           <el-table-column align="center" prop="userName" :label="getStaticText('name') ? getStaticText('name') : '姓名'" width="120">
           </el-table-column>
@@ -64,6 +71,7 @@
         </el-table>
       </el-card>
 
+      <!-- 基本信息 -->
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span class="ac_table_title ac_title_bottom">{{getStaticText('relevantInformation') ? getStaticText('relevantInformation') : '相关信息'}}</span>
@@ -224,6 +232,7 @@
       </el-card>
       <el-button type="primary" class="ac_to_next" @click="submitAddSupplementForm('addSupplementForm')">{{getStaticText('nextStep') ? getStaticText('nextStep') : "下一步"}}</el-button>
     </div>
+
     <!-- 上传作品 active == 1-->
     <div v-show="active == 1">
       <el-card class="box-card">
@@ -431,6 +440,8 @@ export default {
         identity: "",
         telNumber: ""
       },
+      participantDialogTitle:"",/* 参赛人dialog标题 */
+      participantDialogType:"",/* 参赛人dialog编辑状态 add添加参赛人  update添加参赛人 */
       addSupplementForm: {
         school: "",
         customSchool: "",
@@ -601,6 +612,40 @@ export default {
     dialogClose () {
       this.submitAddAnnexWorksForm('addAnnexWorksForm');
       this.dialogVisible = false;
+    },
+    /* 打开参赛人dialog */
+    openParticipantDialog(type){
+      this.additions = true;
+      this.participantDialogType = type;
+     
+      switch (type) {
+        case 'add':{
+          this.additions = true;
+          this.participantDialogTitle = "添加参赛人"
+          this.addParticipantsForm = {
+            name: "",
+            sex: "1",
+            identity: "",
+            telNumber: ""
+          }
+          break;
+        }
+        case 'update':{
+          if (this.currentRow != '') {
+            this.additions = true
+            this.participantDialogTitle = "编辑参赛人"
+            this.addParticipantsForm = {
+              name: this.currentRow.userName,
+              sex: String(this.currentRow.gender),
+              identity: this.currentRow.identifyId,
+              telNumber: this.currentRow.mobileNum
+            }
+          }
+          break;
+        }  
+        default:
+          break;
+      }
     },
     queryParticipants () {
       let _this = this;
@@ -809,42 +854,79 @@ export default {
     submitAddParticipantsForm (addParticipantsForm) {
       this.$refs[addParticipantsForm].validate(valid => {
         if (valid) {
-          if (!this.isAddingPeople) {
-            this.isAddingPeople = true;
-            var param = {
-              createTime: "",
-              gender: this.addParticipantsForm.sex,
-              id: 0,
-              identifyId: this.addParticipantsForm.identity,
-              mobileNum: this.addParticipantsForm.telNumber,
-              userId: this.userId,
-              userName: this.addParticipantsForm.name
-            };
-            api
-              .addActivityMember(param)
-              .then(response => {
-                // console.log(response);
-                if (response.data.data.errorCode) {
-                  this.$message({
-                    type: "error",
-                    message: response.data.data.errorMsg
+          switch (this.participantDialogType) {
+            case 'add':{
+              if (!this.isAddingPeople) {
+                this.isAddingPeople = true;
+                var param = {
+                  createTime: "",
+                  gender: this.addParticipantsForm.sex,
+                  id: 0,
+                  identifyId: this.addParticipantsForm.identity,
+                  mobileNum: this.addParticipantsForm.telNumber,
+                  userId: this.userId,
+                  userName: this.addParticipantsForm.name
+                };
+                api
+                  .addActivityMember(param)
+                  .then(response => {
+                    // console.log(response);
+                    if (response.data.data.errorCode) {
+                      this.$message({
+                        type: "error",
+                        message: response.data.data.errorMsg
+                      });
+                    } else {
+                      this.$message({
+                        type: "success",
+                        message: this.getStaticText('studentAddSuccess') ? this.getStaticText('studentAddSuccess') : "学生添加成功!"
+                      });
+                      this.queryParticipants();
+                    }
+                    this.additions = false;
+                    this.$refs[addParticipantsForm].resetFields(); //清空表单
+                    this.isAddingPeople = false;
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    this.isAddingPeople = false;
                   });
-                } else {
+              }
+               break;
+            }
+            case 'update':{
+             let params = {
+                createTime: "",
+                gender: Number(this.addParticipantsForm.sex),
+                id: this.currentRow.id,
+                identifyId: this.addParticipantsForm.identity,
+                mobileNum: this.addParticipantsForm.telNumber,
+                userId: this.userId,
+                userName: this.addParticipantsForm.name
+              };
+              api.modifyActivityMember(params).then(resp=>{
+                let data = resp.data;
+                if (data.result == 1) {
                   this.$message({
                     type: "success",
-                    message: this.getStaticText('studentAddSuccess') ? this.getStaticText('studentAddSuccess') : "学生添加成功!"
+                    message: "信息修改成功!"
                   });
                   this.queryParticipants();
+                }else{
+                  let msg = data.error.errorMsg;
+                  this.$message({
+                    type: "error",
+                    message: msg
+                  });
                 }
                 this.additions = false;
-                this.$refs[addParticipantsForm].resetFields(); //清空表单
-                this.isAddingPeople = false;
               })
-              .catch(err => {
-                console.log(err);
-                this.isAddingPeople = false;
-              });
+             break;
+            }
+            default:
+              break;
           }
+          
         } else {
           console.log("error submit!!");
           return false;
