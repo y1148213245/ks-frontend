@@ -201,9 +201,9 @@ export default {
       let preId = this.preNextData[this.keys.preNextData_preId];
       let driveMode = this.projectConfig.driveMode;
       let mode = {}
-      if (driveMode.type = 'event') {
+      if (driveMode.type == 'event') {
         mode = this.projectConfig.driveMode.eventMode;
-      }else if(driveMode.type = 'location'){
+      }else if(driveMode.type == 'location'){
         mode = this.projectConfig.driveMode.locationMode;
       }
       if (preId) {
@@ -215,9 +215,9 @@ export default {
       let nextId = this.preNextData[this.keys.preNextData_nextId];
       let driveMode = this.projectConfig.driveMode;
       let mode = {}
-      if (driveMode.type = 'event') {
+      if (driveMode.type == 'event') {
         mode = this.projectConfig.driveMode.eventMode;
-      }else if(driveMode.type = 'location'){
+      }else if(driveMode.type == 'location'){
         mode = this.projectConfig.driveMode.locationMode;
       }
       if (nextId) {

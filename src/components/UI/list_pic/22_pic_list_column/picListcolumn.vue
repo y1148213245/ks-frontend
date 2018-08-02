@@ -15,7 +15,7 @@
           </div>
           <div class="ui_pic_list_22-card_item-content-title_box">
             <a class="ui_pic_list_22-card_item-content-ac_title">{{item[getKeys(item,'topic')] }}</a>
-            <div class="ui_pic_list_22-card_item-content-clearfix">
+            <div class="ui_pic_list_22-card_item-content-clearfix" v-if="getKeys(item,'beginTime')">
               <div class="ui_pic_list_22-card_item-content-ac_text">
                 <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
                 <time class="ui_pic_list_22-card_item-content-time">{{formatDateNEW(item[getKeys(item,'beginTime')])}}{{getStaticText('to') ? getStaticText('to') : '至'}}{{(item[subKeys.reviewDate] || formatDateNEW(item[getKeys(item,'endTime')]))}}
@@ -107,6 +107,9 @@ export default {
           return keys.vote[key]
           break;
         }
+        case 'PORTAL_SHOWACTIVITY':{
+          return keys.show[key]
+        }
         default: {
           console.log('is not activity or not property:' + key);
           return ''
@@ -125,6 +128,10 @@ export default {
         }
         case 'PORTAL_VOTEACTIVITY': {
           href = hrefs.activityvote;
+          break;
+        }
+        case 'PORTAL_SHOWACTIVITY':{
+          href = hrefs.activityshow;
           break;
         }
         default: {/* 默认为 */

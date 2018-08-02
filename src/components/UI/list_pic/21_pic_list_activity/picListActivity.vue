@@ -10,7 +10,7 @@
         </div>
         <div class="ui_pic_list_21-title_box">
           <a class="ac_title">{{item[getKeys(item,'topic')] }}</a>
-          <div class="clearfix">
+          <div class="clearfix" v-if="getKeys(item,'beginTime')">
             <div class="ac_text">
               <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
               <time class="time">{{formatDateNEW(item[getKeys(item,'beginTime')])}}{{getStaticText('to')? getStaticText('to') : '至'}}{{(item[getKeys(item,'reviewDate')] || formatDateNEW(item[getKeys(item,'endTime')]))}}
@@ -129,6 +129,9 @@ export default {
           return keys.vote[key]
           break;
         }
+        case 'PORTAL_SHOWACTIVITY':{
+          return keys.show[key]
+        }
         default: {
           console.log('is not activity or not property:' + key);
           return ''
@@ -147,6 +150,10 @@ export default {
         }
         case 'PORTAL_VOTEACTIVITY': {
           href = hrefs.activityvote;
+          break;
+        }
+        case 'PORTAL_SHOWACTIVITY':{
+          href = hrefs.activityshow;
           break;
         }
         default: {/* 默认为 */

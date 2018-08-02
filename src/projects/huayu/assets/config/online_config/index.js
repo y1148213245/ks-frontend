@@ -27,7 +27,7 @@ var $_$ = {
 					"startDate": "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
 					"endDate": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
 					"resourceId": "pub_resource_id",
-					"illustration": "pub_illustration",
+					"illustration": "pub_POSTER",
 					"reviewDate": "PORTAL_VOTEACTIVITY_REVIEW_TIMESTAMPNEW",
 					"requestUrlParam_pubId": "pubId",
 					"toUploadPageUrlParam_docId": "docId",
@@ -108,7 +108,8 @@ var $_$ = {
 						"fixedParams": {
 							"page": "1",
 							"pageSize": "99",
-							"orderBy": "SYS_DOCUMENTID DESC"
+							"orderBy": "SYS_DOCUMENTID DESC",
+							newsType:"showNews"
 						}
 					}
 				},
@@ -310,7 +311,8 @@ var $_$ = {
 						"fixedParams": {
 							"page": "1",
 							"pageSize": "99",
-							"orderBy": "SYS_DOCUMENTID DESC"
+							"orderBy": "SYS_DOCUMENTID DESC",
+							newsType:"voteNews",
 						}
 					}
 				},
@@ -580,7 +582,8 @@ var $_$ = {
 				},
 				detailHref: {
 					activityrace:'./activityrace.html',
-					activityvote:'./activityvote.html'
+					activityvote:'./activityvote.html',
+					activityshow:'./activityshow.html'
 				},
 				baseKeys:{
 					id: "id",
@@ -599,6 +602,12 @@ var $_$ = {
 						beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
 						endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
 						reviewDate:''
+					},
+					'show':{
+						topic: "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+						beginTime: "",
+						endTime: "",
+						reviewDate:'',
 					}
 				},
 				"pageSizes": [8, 16, 32, 48],
@@ -740,6 +749,11 @@ var $_$ = {
 						"params": {
 							"getDetailRequestParam_doclibCode": "PORTAL_VOTEINFORMATION"/* 库码 */
 						}
+					},
+					'showNews':{
+						params: {
+							getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYINFORMATION'/* 库码 */
+						}
 					}
 				},
 				getPreAndNext:{
@@ -748,6 +762,9 @@ var $_$ = {
 					},
 					"voteNews":{
 						"url":"spc/prodb/activity/votePrevNextNews.do"
+					},
+					'showNews':{
+						url:'spc/prodb/activity/showPrevNextNews.do'
 					}
 				},
 				"keys": {
@@ -1704,7 +1721,8 @@ var $_$ = {
 					},
 					detailHref: {
 						activityrace:'./activityrace.html',
-						activityvote:'./activityvote.html'
+						activityvote:'./activityvote.html',
+						activityshow:'./activityshow.html'
 					},
 					baseKeys:{
 						id: "id",
@@ -1716,14 +1734,20 @@ var $_$ = {
 							topic: "PORTAL_ACTIVITY_SYS_TOPIC",
 							beginTime: "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
 							endTime: "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
-							reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',
+							reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW'
 						},
 						'vote':{
 							topic: "PORTAL_VOTEACTIVITY_SYS_TOPIC",
 							beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
 							endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
-							reviewDate:'',
+							reviewDate:''
 							
+						},
+						'show':{
+							topic: "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+							beginTime: "",
+							endTime: "",
+							reviewDate:''
 						}
 					}
 				},

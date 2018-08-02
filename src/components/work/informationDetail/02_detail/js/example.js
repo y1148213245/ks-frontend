@@ -46,6 +46,11 @@ const prod = {
           params: {
             getDetailRequestParam_doclibCode: 'PORTAL_VOTEINFORMATION'/* 库码 */
           }
+        },
+        'showNews':{
+          params: {
+            getDetailRequestParam_doclibCode: 'PORTAL_SHOWINFORMATION'/* 库码 */
+          }
         }
       },
       getPreAndNext:{
@@ -54,6 +59,9 @@ const prod = {
         },
         'voteNews':{
           url:'spc/prodb/activity/votePrevNextNews.do'
+        },
+        'showNews':{
+          url:'spc/prodb/activity/showPrevNextNews.do'
         }
       },
       keys: {

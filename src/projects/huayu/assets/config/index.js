@@ -1,6 +1,5 @@
 var CONFIG = {
-	// "BASE_URL": "../../../api/",
-	"BASE_URL": "http://www.liaoningxinhuajiaoyu.com/portal/api/",
+	"BASE_URL": "http://172.19.57.67:8080/portal/api/",
 	"READ_URL": "http://172.19.57.153/portal/reader/yuezhi/read.jsp?",
 	"PAGE_MANAGEMENT_URL": "../../../frontend-api/api/",
 	"SITE_CONFIG": {
@@ -10,134 +9,14 @@ var CONFIG = {
   "IS_VALIDATE_TEST": true,
   EMAIL_CONFIG:{
 		showPostfix:true,
-		postfix:['163.com','qq.com','sina.com','sohu.com','126.com',"outlook.com","yahoo.com"]
+		postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
 }
 }
 var $_$ = {
-	"SITE_NAME": "site-102",
+	"SITE_NAME": "site-133",
 	"IS_DISABLE": false,
-	/* 展示类活动页配置 */
-	"activityshow":{
-		activityDetail: {
-			"work_activitydetail_01": {
-				"url": "spc/cms/publish/detail.do",
-				"keys": {
-					"title": "PORTAL_VOTEACTIVITY_SYS_TOPIC",
-					"content": "PORTAL_VOTEACTIVITY_DESCRIPTION",
-					"startDate": "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
-					"endDate": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
-					"resourceId": "pub_resource_id",
-					"illustration": "pub_illustration",
-					"reviewDate": "PORTAL_VOTEACTIVITY_REVIEW_TIMESTAMPNEW",
-					"requestUrlParam_pubId": "pubId",
-					"toUploadPageUrlParam_docId": "docId",
-					"illustrationLinks": "PORTAL_VOTEACTIVITY_ACTIVITY_LINKS"
-				},
-				"eventName_loadedDatas": "eventName_loadedDatas",
-				"toUploadPagUrl": "",
-				showItem:[]
-			},
-			work_activitydetail_08: {
-				activityCandidate: {
-					modulename: 'activityCandidate'
-				},
-				activityPlan: {
-					modulename: 'activityPlan'
-				},
-				activityPrizewinner: {
-					modulename: 'activityPrizewinner'
-				},
-				activityResult:{
-					modulename:'activityResult'
-				},
-				tabArr: [
-					{
-						tag: 'activityInstructions',
-						title: '活动说明'
-					},
-					{
-						tag: 'activityNews',
-						title: '大赛新闻'
-					},
-					{
-						tag: 'activityPlan',
-						title: '奖项设置'
-					},
-					{
-						tag: 'activityResult',
-						title: '比赛结果'
-					}],
-				activityDetail: {/* 活动详情配置 */
-					event: {
-						listenName: 'eventName_loadedDatas',
-					},
-					sysAdapter: 'sykAdapter',
-					typeAdapter: 'activityVoteAdapter',
-				}
-			},
-			/* 活动新闻组件 */
-			"work_activitydetail_03": {
-				"url": "spc/prodb/activity/voteActivityNews.do",
-				"getPicUrl": "dynamicFile/stream.do",
-				"params": {
-					"getListParam_pageNo": "1",
-					"getListParam_pageSize": "99",
-					"getListParam_orderBy": "SYS_DOCUMENTID DESC"
-				},
-				"keys": {
-					"title": "SYS_TOPIC",
-					"picId": "COVERID",
-					"date": "SYS_CREATED",
-					"abstract": "ABSTRACT",
-					"eventListenData_activityId": "pub_resource_id",
-					"getPicParam_coverId": "recordID",
-					"getListParam_activityID": "activityID",
-					"getListParam_pageNo": "page",
-					"getListParam_pageSize": "pageSize",
-					"getListParam_orderBy": "orderBy"
-				},
-				"toDetailMode": {
-					"href": {
-						"url": "./newsdetail.html",
-						"params": {
-							"docID": "SYS_DOCUMENTID"
-						},
-						"activityParams": {
-							"activityID": "pub_resource_id"
-						},
-						"fixedParams": {
-							"page": "1",
-							"pageSize": "99",
-							"orderBy": "SYS_DOCUMENTID DESC"
-						}
-					}
-				},
-				"eventName_listen": "eventName_loadedDatas"
-			},
-			/* 辅文(活动方案)组件 */
-			"work_activitydetail_02": {
-				"activityPlan": {
-					"url": "spc/prodb/getPublicize.do",
-					"topic": "详情",
-					"keys": {
-						"topic": "topic",
-						"content": "content",
-						"eventName_listen_resourceId": "pub_resource_id",
-						"eventName_listen_resourceType": "pub_resource_type",
-						"requestUrlParam_docId": "docID",
-						"requestUrlParam_code": "code"
-					},
-					"eventName_listen": "eventName_loadedDatas"
-				}
-			}
-		}
-	},
-	/* END 展示类活动页配置 */
-	
-	/* 投票活动页配置 */
 	"activityvote": {
-		/* 详情 */
-		activityDetail: {
+		"activityDetail": {
 			"work_activitydetail_01": {
 				"url": "spc/cms/publish/detail.do",
 				"keys": {
@@ -154,130 +33,136 @@ var $_$ = {
 				},
 				"eventName_loadedDatas": "eventName_loadedDatas",
 				"toUploadPagUrl": "",
-				showItem:[]
+				"showItem": []
 			},
-			/* 投票活动复合组件 */
-			work_activitydetail_08: {
-				activityCandidate:{
-					modulename:'activityCandidate'
-				},
-				activityPlan:{
-					modulename:'activityPlan'
-				},
-				activityPrizewinner:{
-					modulename:'activityPrizewinner'
-				},
-				activityDetail:{/* 活动详情配置 */
-					event:{
-						listenName:'eventName_loadedDatas',
-					},
-					sysAdapter:'sykAdapter',
-					typeAdapter:'activityVoteAdapter',
-				},
-				tabArr: [
-					{
-						tag:'activityInstructions',
-						title:'活动说明'
-					},
-					{
-						tag:'activityPlan',
-						title:'活动方案'
-					},
-					{
-						tag:'activityNews',
-						title:'活动新闻'
-					},
-					{
-						tag:'activityCandidate',
-						title:'参选人'
-					},
-					{
-						tag:'activityPrizewinner',
-						title:'获奖人展示'
-					}],
-			},
-			/* 参赛人组件 */
-			work_activitydetail_09: {
+			"work_activitydetail_08": {
 				"activityCandidate": {
-					showType:'candidate',/* candidate:参选人,prizewinner:获奖人 */
-					getCandidateList:{
-						url:'spc/prodb/searchNLP.do',
-						params:{
-							doclibCode:'PORTAL_VOTE'
-						},
-						fixedParams:[{
-							relations: '5',
-							cols: 'TEXT',
-							symbols: '5',
-							vals: '5'
-						}],
-						getActivityDetailData: [{
-							relations: '1',
-							cols: 'ACTIVITYID',
-							symbols: '2',
-							vals: 'resId'
-						}],
-						sysAdapter:'zykAdapter',
-						typeAdapter:'candidateAdapter',
-					},
-					activityDetail:{/* 活动详情配置 */
-						event:{
-							listenName:'eventName_loadedDatas',
-						},
-						sysAdapter:'sykAdapter',
-						typeAdapter:'activityVoteAdapter',
-					}
+					"modulename": "activityCandidate"
+				},
+				"activityPlan": {
+					"modulename": "activityPlan"
 				},
 				"activityPrizewinner": {
-					showType:'prizewinner',/* candidate:参选人,prizewinner:获奖人 */
-					getCandidateList:{
-						url:'spc/prodb/searchNLP.do',
-						params:{
-							doclibCode:'PORTAL_VOTE'
-						},
-						fixedParams:[{
-							relations: '1',
-							cols: 'AWARD_NAME',
-							symbols: '8',
-							vals: '1'
-						}],
-						getActivityDetailData: [{
-							relations: '1',
-							cols: 'ACTIVITYID',
-							symbols: '2',
-							vals: 'resId'
-						}],
-						sysAdapter:'zykAdapter',
-						typeAdapter:'candidateAdapter',
+					"modulename": "activityPrizewinner"
+				},
+				"activityDetail": {
+					"event": {
+						"listenName": "eventName_loadedDatas"
+				},
+					"sysAdapter": "sykAdapter",
+					"typeAdapter": "activityVoteAdapter"
 					},
-					getAwardList: {/* 获取奖项列表配置 */
-						url: 'spc/prodb/searchNL.do',
-						params: {
-							doclibCode: 'PORTAL_AWARD',
-							page: 1,
-							size: 99
+				"tabArr": [{
+					"tag": "activityInstructions",
+					"title": "活动说明"
+				}, {
+					"tag": "activityPlan",
+					"title": "活动方案"
+				}, {
+					"tag": "activityNews",
+					"title": "活动新闻"
+				}, {
+					"tag": "activityCandidate",
+					"title": "参选人"
+				}, {
+					"tag": "activityPrizewinner",
+					"title": "获奖人展示"
+				}]
+					},
+			"work_activitydetail_09": {
+				"activityCandidate": {
+					"showType": "candidate",
+					"getCandidateList": {
+						"url": "spc/prodb/searchNLP.do",
+						"params": {
+							"doclibCode": "PORTAL_VOTE"
+					},
+						"fixedParams": [{
+							"relations": "5",
+							"cols": "TEXT",
+							"symbols": "5",
+							"vals": "5"
+					}],
+						"getActivityDetailData": [{
+							"relations": "1",
+							"cols": "ACTIVITYID",
+							"symbols": "2",
+							"vals": "resId"
+						}],
+						"sysAdapter": "zykAdapter",
+						"typeAdapter": "candidateAdapter"
+					},
+					"activityDetail": {
+						"event": {
+							"listenName": "eventName_loadedDatas"
+			},
+						"sysAdapter": "sykAdapter",
+						"typeAdapter": "activityVoteAdapter"
+				},
+					"getAwardList": {
+						"url": "spc/prodb/searchNL.do",
+						"params": {
+							"doclibCode": "PORTAL_AWARD",
+							"page": 1,
+							"size": 99
 						},
-						sysAdapter:'zykAdapter',
-						typeAdapter:'activityAwardAdapter',
-						getActivityDetailData: [{
-							relations: '1',
-							cols: 'ACTIVITYID',
-							symbols: '2',
-							vals: 'resId'
+						"sysAdapter": "zykAdapter",
+						"typeAdapter": "activityAwardAdapter",
+						"getActivityDetailData": [{
+							"relations": "1",
+							"cols": "ACTIVITYID",
+							"symbols": "2",
+							"vals": "resId"
 						}]
+						}
+				},
+				"activityPrizewinner": {
+					"showType": "prizewinner",
+					"getCandidateList": {
+						"url": "spc/prodb/searchNLP.do",
+						"params": {
+							"doclibCode": "PORTAL_VOTE"
+			},
+						"fixedParams": [{
+							"relations": "5",
+							"cols": "TEXT",
+							"symbols": "5",
+							"vals": "5"
+					}],
+						"getActivityDetailData": [{
+							"relations": "1",
+							"cols": "ACTIVITYID",
+							"symbols": "2",
+							"vals": "resId"
+						}],
+						"sysAdapter": "zykAdapter",
+						"typeAdapter": "candidateAdapter"
 					},
-					activityDetail:{/* 活动详情配置 */
-						event:{
-							listenName:'eventName_loadedDatas',
+					"getAwardList": {
+						"url": "spc/prodb/searchNL.do",
+						"params": {
+							"doclibCode": "PORTAL_AWARD",
+							"page": 1,
+							"size": 99
 						},
-						sysAdapter:'sykAdapter',
-						typeAdapter:'activityVoteAdapter',
+						"getActivityDetailData": [{
+							"relations": "1",
+							"cols": "ACTIVITYID",
+							"symbols": "2",
+							"vals": "resId"
+						}],
+						"sysAdapter": "zykAdapter",
+						"typeAdapter": "activityAwardAdapter"
+					},
+					"activityDetail": {
+						"event": {
+							"listenName": "eventName_loadedDatas"
+						},
+						"sysAdapter": "sykAdapter",
+						"typeAdapter": "activityVoteAdapter"
 					}
 				}
-				
-	
 			},
-			/* 活动新闻组件 */
 			"work_activitydetail_03": {
 				"url": "spc/prodb/activity/voteActivityNews.do",
 				"getPicUrl": "dynamicFile/stream.do",
@@ -310,13 +195,17 @@ var $_$ = {
 						"fixedParams": {
 							"page": "1",
 							"pageSize": "99",
-							"orderBy": "SYS_DOCUMENTID DESC"
+							"orderBy": "SYS_DOCUMENTID DESC",
+							"newsType": "voteNews"
 						}
+					},
+					"type": "href",
+					"event": {
+						"name": "eventName_toNewsDetail"
 					}
 				},
 				"eventName_listen": "eventName_loadedDatas"
 			},
-			/* 辅文(活动方案)组件 */
 			"work_activitydetail_02": {
 				"activityPlan": {
 					"url": "spc/prodb/getPublicize.do",
@@ -330,11 +219,24 @@ var $_$ = {
 						"requestUrlParam_code": "code"
 					},
 					"eventName_listen": "eventName_loadedDatas"
+				},
+				"module": {
+					"url": "spc/prodb/getPublicize.do",
+					"showType": "simple",
+					"topic": "奖项设置",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "loadSearchResult"
 				}
 			}
 		}
 	},
-	/* END 投票活动页配置 */
 	"findPassword": {
 		"findPassword": {
 			"work_findPassword_01": {
@@ -368,7 +270,7 @@ var $_$ = {
 						"toTop": "返回顶部"
 					},
 					"toQQ": {
-						"url": "http://wpa.qq.com/msgrd?v=3&uin=275591164&site=qq&menu=yes"
+						"url": "http://wpa.qq.com/msgrd?v=3&uin=1148213245&site=qq&menu=yes"
 					}
 				},
 				"modulename": {
@@ -388,7 +290,7 @@ var $_$ = {
 		"contestants": {
 			"contestants_01": {
 				"competitionList": {
-					"url": "user/getActivityMemberByUser.do",
+					"url": "/user/getActivityMemberByUser.do?",
 					"competitionedUrl": "spc/prodb/activity/activityPothunterExist.do",
 					"params": {
 						"userId": "",
@@ -421,7 +323,7 @@ var $_$ = {
 						"eventData_docID": "pub_resource_id",
 						"getPlaceRequest_doclibCode": "doclibCode",
 						"getPlaceRequest_docID": "docID",
-						"getPlaceRequestBack_areas": "AREALIMT_BIG",
+						"getPlaceRequestBack_areas": "AREALIMT",
 						"getPlaceRequestBack_classes": "CLASSLIMT",
 						"getSchoolRequest_doclibCode": "doclibCode",
 						"getSchoolRequest_relations": "relations",
@@ -491,8 +393,7 @@ var $_$ = {
 					"activityName": "ACTIVITY_NAME",
 					"createdTime": "SYS_CREATED",
 					"area": "AREA",
-					"school": "SCHOOL",
-					"workType": "WORKSTYPE"
+					"school": "SCHOOL"
 				},
 				"getActivityInfo": {
 					"url": "spc/prodb/detail.do",
@@ -504,12 +405,8 @@ var $_$ = {
 						"endDate": "END_TIMESTAMPNEW",
 						"startDate": "BEGIN_TIMESTAMPNEW",
 						"isHide": "IS_HIDE",
-						"voteDescription": "PRAISE_DESCRIPTION",
-						topic:'SYS_TOPIC'
+						"voteDescription": "PRAISE_DESCRIPTION"
 					}
-				},
-				crumbs:{
-					toActivityListHref:'./activityrace.html?pubId=143#activityProduct'
 				}
 			}
 		},
@@ -570,6 +467,36 @@ var $_$ = {
 	"activitylist": {
 		"list_pic": {
 			"ui_list_pic_21": {
+				"detailHref": {
+					"activityrace": "./activityrace.html",
+					"activityvote": "./activityvote.html",
+					 activityshow:'./activityshow.html'
+				},
+				"baseKeys": {
+					"id": "id",
+					"resourceType": "pub_resource_type",
+					"pub_picMiddle": "pub_picMiddle"
+				},
+				"keys": {
+					"contribute": {
+						"topic": "PORTAL_ACTIVITY_SYS_TOPIC",
+						"beginTime": "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
+						"endTime": "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
+						"reviewDate": "PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW"
+					},
+					"vote": {
+						"topic": "PORTAL_VOTEACTIVITY_SYS_TOPIC",
+						"beginTime": "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
+						"endTime": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
+						"reviewDate": ""
+					},
+					'show':{
+            topic: "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+            beginTime: "",
+            endTime: "",
+            reviewDate:'',
+          }
+				},
 				"url": "spc/cms/publish/list.do",
 				"params": {
 					"conditions": "[{\"pub_col_id\":\"253\"}]",
@@ -577,29 +504,6 @@ var $_$ = {
 					"pageNo": "1",
 					"pageSize": "8",
 					"searchText": null
-				},
-				detailHref: {
-					activityrace:'./activityrace.html',
-					activityvote:'./activityvote.html'
-				},
-				baseKeys:{
-					id: "id",
-					resourceType:'pub_resource_type',
-					pub_picMiddle: "pub_picMiddle"
-				},
-				keys: {
-					'contribute':{
-						topic: "PORTAL_ACTIVITY_SYS_TOPIC",
-						beginTime: "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
-						endTime: "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
-						reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',
-					},
-					'vote':{
-						topic: "PORTAL_VOTEACTIVITY_SYS_TOPIC",
-						beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
-						endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
-						reviewDate:''
-					}
 				},
 				"pageSizes": [8, 16, 32, 48],
 				"showItem": [],
@@ -620,7 +524,7 @@ var $_$ = {
 					"getList": {
 						"url": "spc/cms/publish/list.do",
 						"params": {
-							"conditions": "[{pub_col_id:'275'}]",
+							"conditions": "[{pub_col_id:'274'}]",
 							"orderBy": "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 							"pageNo": "1",
 							"pageSize": "15",
@@ -631,31 +535,15 @@ var $_$ = {
 							"sourceLink": "information_a_sourceUrl"
 						}
 					}
-				},
-				"modulename": {
-					"getList": {
-						"url": "spc/cms/publish/list.do",
-						"params": {
-							"conditions": "[{pub_col_id:'263'}]",
-							"orderBy": "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
-							"pageNo": "1",
-							"pageSize": "15",
-							"searchText": null
-						},
-						"keys": {
-							"pic": "pub_picBig",
-							"sourceLink": "information_a_sourceUrl"
 						}
 					}
-				}
-			}
 		},
 		"list_word": {
 			"list_word_02": {
 				"url": "spc/cms/publish/list.do",
 				"params": {
 					"conditions": [{
-						"pub_col_id": "274"
+						"pub_col_id": "273"
 					}],
 					"orderBy": "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 					"pageNo": "1",
@@ -727,27 +615,32 @@ var $_$ = {
 				"attachUrl": "dynamicFile/file.do",
 				"show": ["time", "collect", "share", "abstract", "download"],
 				"attachTypeCode": "original",
-				"params": {
-					"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"
-				},
-				getDetail:{
-					"raceNews":{
+				"getDetail": {
+					"raceNews": {
 						"params": {
-							"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"/* 库码 */
+							"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"
 						}
 					},
-					"voteNews":{
+					"voteNews": {
 						"params": {
-							"getDetailRequestParam_doclibCode": "PORTAL_VOTEINFORMATION"/* 库码 */
+								"getDetailRequestParam_doclibCode": "PORTAL_VOTEINFORMATION"
+						}
+					},
+					'showNews':{
+						params: {
+							getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYINFORMATION'/* 库码 */
 						}
 					}
 				},
-				getPreAndNext:{
-					"raceNews":{
-						"url":"spc/prodb/activity/prevNextNews.do"
+				"getPreAndNext": {
+					"raceNews": {
+						"url": "spc/prodb/activity/prevNextNews.do"
 					},
-					"voteNews":{
-						"url":"spc/prodb/activity/votePrevNextNews.do"
+					"voteNews": {
+						"url": "spc/prodb/activity/votePrevNextNews.do"
+					},
+					'showNews':{
+						url:'spc/prodb/activity/showPrevNextNews.do'
 					}
 				},
 				"keys": {
@@ -791,7 +684,21 @@ var $_$ = {
 						}
 					}
 				},
-				"eventName_back": "eventName_backNewsList"
+				"eventName_back": "eventName_backNewsList",
+				"staticText": {
+					"createDate": "创建日期：",
+					"collect": "收藏",
+					"haveCollected": "已收藏",
+					"shareTo": "分享",
+					"abstract": "摘要：",
+					"attachmentDownload": "附件下载：",
+					"backToList": "返回列表",
+					"previousChap": "<<上一篇",
+					"nextChap": "下一篇>>",
+					"pleaseLoginFirst": "请您先登录",
+					"loginTimeOut": "登录超时，请您登陆",
+					"serverMaintenance": "服务器维护中"
+			}
 			}
 		}
 	},
@@ -821,7 +728,13 @@ var $_$ = {
 					"illustrationLinks": "PORTAL_ACTIVITY_ACTIVITY_LINKS"
 				},
 				"eventName_loadedDatas": "eventName_loadedDatas",
-				"toUploadPagUrl": "./uploadproduction.html"
+				"toUploadPagUrl": "./uploadproduction.html",
+				"staticText": {
+					"uploadWork": "上传作品",
+					"notBegin": "未开始",
+					"contributeClosed": "截止投稿",
+					"haveEnded": "已结束"
+				}
 			},
 			"work_activitydetail_02": {
 				"module1": {
@@ -898,9 +811,13 @@ var $_$ = {
 						"fixedParams": {
 							"page": "1",
 							"pageSize": "99",
-							newsType:"raceNews",
-							"orderBy": "SYS_DOCUMENTID DESC"
+							"orderBy": "SYS_DOCUMENTID DESC",
+							"newsType": "raceNews"
 						}
+					},
+					"type": "href",
+					"event": {
+						"name": "eventName_toNewsDetail"
 					}
 				},
 				"eventName_listen": "eventName_loadedDatas"
@@ -1039,9 +956,9 @@ var $_$ = {
 						"getListParam_symbols": "symbols",
 						"getListParam_vals": "vals",
 						"getListParam_memberType": "memberType",
-						"getListParam_orderCondition": "orderCondition",
 						"getListParam_pageNo": "page",
 						"getListParam_pageSize": "size",
+						"getListParam_orderCondition": "orderCondition",
 						"toProductDetailParam_resourceType": "resourceType",
 						"toProductDetailParam_resourceId": "resourceId",
 						"toProductDetailParam_colId": "colId",
@@ -1076,8 +993,6 @@ var $_$ = {
 					"params": {
 						"getListParam_doclibCode": "PORTAL_WORKS",
 						"getListParam_orderCondition": " BY_SPC_SYS_DOCUMENTID_SPC_DESC",
-						"getListParam_pageNo": "1",
-						"getListParam_pageSize": "15",
 						"getListParamOptions": {
 							"activityId": {
 								"getListParam_relations": "1",
@@ -1123,8 +1038,6 @@ var $_$ = {
 						"getListParam_vals": "vals",
 						"getListParam_memberType": "memberType",
 						"getListParam_orderCondition": "orderCondition",
-						"getListParam_pageNo": "page",
-						"getListParam_pageSize": "size",
 						"toProductDetailParam_resourceType": "resourceType",
 						"toProductDetailParam_resourceId": "resourceId",
 						"toProductDetailParam_colId": "colId",
@@ -1145,8 +1058,6 @@ var $_$ = {
 					"params": {
 						"getListParam_doclibCode": "PORTAL_WORKS",
 						"getListParam_orderCondition": " BY_SPC_SYS_DOCUMENTID_SPC_DESC",
-						"getListParam_pageNo": "1",
-						"getListParam_pageSize": "15",
 						"getListParamOptions": {
 							"activityId": {
 								"getListParam_relations": "1",
@@ -1200,8 +1111,6 @@ var $_$ = {
 						"getListParam_vals": "vals",
 						"getListParam_memberType": "memberType",
 						"getListParam_orderCondition": "orderCondition",
-						"getListParam_pageNo": "page",
-						"getListParam_pageSize": "size",
 						"toProductDetailParam_resourceType": "resourceType",
 						"toProductDetailParam_resourceId": "resourceId",
 						"toProductDetailParam_colId": "colId",
@@ -1421,26 +1330,6 @@ var $_$ = {
 				"params": {
 					"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"
 				},
-				getDetail:{
-					'raceNews':{
-						params: {
-							getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYNEWS'/* 库码 */
-						}
-					},
-					'voteNews':{
-						params: {
-							getDetailRequestParam_doclibCode: 'PORTAL_VOTEINFORMATION'/* 库码 */
-						}
-					}
-				},
-				getPreAndNext:{
-					'raceNews':{
-						url:'spc/prodb/activity/prevNextNews.do'
-					},
-					'voteNews':{
-						url:'spc/prodb/activity/votePrevNextNews.do'
-					}
-				},
 				"keys": {
 					"topic": "SYS_TOPIC",
 					"time": "SYS_CREATED",
@@ -1530,6 +1419,137 @@ var $_$ = {
 			}
 		}
 	},
+	/* 展示类活动页配置 */
+	"activityshow":{
+		activityDetail: {
+			"work_activitydetail_01": {
+				"url": "spc/cms/publish/detail.do",
+				"keys": {
+					"title": "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+					"content": "PORTAL_SHOWACTIVITY_TEXTCONTENT",
+					"startDate": "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
+					"endDate": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
+					"resourceId": "pub_resource_id",
+					"illustration": "pub_POSTER",
+					"reviewDate": "PORTAL_VOTEACTIVITY_REVIEW_TIMESTAMPNEW",
+					"requestUrlParam_pubId": "pubId",
+					"toUploadPageUrlParam_docId": "docId",
+					"illustrationLinks": "PORTAL_VOTEACTIVITY_ACTIVITY_LINKS"
+				},
+				"eventName_loadedDatas": "eventName_loadedDatas",
+				"toUploadPagUrl": "",
+				showItem:[]
+			},
+			work_activitydetail_08: {
+				activityCandidate: {
+					modulename: 'activityCandidate'
+				},
+				activityPlan: {
+					modulename: 'activityPlan'
+				},
+				activityPrizewinner: {
+					modulename: 'activityPrizewinner'
+				},
+				activityResult:{
+					modulename:'activityResult'
+				},
+				tabArr: [
+					{
+						tag: 'activityInstructions',
+						title: '活动说明'
+					},
+					{
+						tag: 'activityNews',
+						title: '大赛新闻'
+					},
+					{
+						tag: 'activityPlan',
+						title: '奖项设置'
+					},
+					{
+						tag: 'activityResult',
+						title: '比赛结果'
+					}],
+				activityDetail: {/* 活动详情配置 */
+					event: {
+						listenName: 'eventName_loadedDatas',
+					},
+					sysAdapter: 'sykAdapter',
+					typeAdapter: 'activityShowAdapter',
+				}
+			},
+			/* 活动新闻组件 */
+			"work_activitydetail_03": {
+				"url": "spc/prodb/activity/showActivityNews.do",
+				"getPicUrl": "dynamicFile/stream.do",
+				"params": {
+					"getListParam_pageNo": "1",
+					"getListParam_pageSize": "99",
+					"getListParam_orderBy": "SYS_DOCUMENTID DESC"
+				},
+				"keys": {
+					"title": "SYS_TOPIC",
+					"picId": "COVERID",
+					"date": "SYS_CREATED",
+					"abstract": "ABSTRACT",
+					"eventListenData_activityId": "pub_resource_id",
+					"getPicParam_coverId": "recordID",
+					"getListParam_activityID": "activityID",
+					"getListParam_pageNo": "page",
+					"getListParam_pageSize": "pageSize",
+					"getListParam_orderBy": "orderBy"
+				},
+				"toDetailMode": {
+					"href": {
+						"url": "./newsdetail.html",
+						"params": {
+							"docID": "SYS_DOCUMENTID"
+						},
+						"activityParams": {
+							"activityID": "pub_resource_id"
+						},
+						"fixedParams": {
+							"page": "1",
+							"pageSize": "99",
+							"orderBy": "SYS_DOCUMENTID DESC",
+							newsType:"showNews",
+						}
+					}
+				},
+				"eventName_listen": "eventName_loadedDatas"
+			},
+			/* 辅文(活动方案)组件 */
+			"work_activitydetail_02": {
+				"activityPlan": {
+					"url": "spc/prodb/getPublicize.do",
+					"topic": "详情",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "eventName_loadedDatas"
+				},
+				"activityResult": {
+					"url": "spc/prodb/getPublicize.do",
+					"topic": "比赛结果",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "eventName_loadedDatas"
+				}
+			}
+		}
+	},
+	/* END 展示类活动页配置 */
 	"header": {
 		"navigation": {
 			"navigation_02": {
@@ -1539,23 +1559,23 @@ var $_$ = {
 			"navigation_03": {
 				"targetType": "_self",
 				"currentSelect": [{
-					"id": "268",
+					"id": "265",
 					"htmls": ["index.html"]
 				}, {
-					"id": "269",
-					"htmls": ["xhjy.html"]
+					"id": "266",
+					"htmls": []
 				}, {
-					"id": "270",
-					"htmls": ["zxsc.html"]
+					"id": "267",
+					"htmls": []
 				}, {
-					"id": "271",
+					"id": "268",
 					"htmls": ["informationdetail.html", "informationlist.html", "newslist.html"]
 				}, {
-					"id": "272",
-					"htmls": ["jyzy.html"]
+					"id": "269",
+					"htmls": []
 				}, {
-					"id": "273",
-					"htmls": ["activity.html", "activityrace.html", "activitylist.html", "informationdetail.html", "productiondetail.html", "uploadproduction.html"]
+					"id": "270",
+					"htmls": ["activity.html", "activityrace.html", "activitylist.html"]
 				}],
 				"getCols": {
 					"url": "spc/cms/col/getAllColBySiteId",
@@ -1574,29 +1594,29 @@ var $_$ = {
 					}
 				},
 				"showType": {
-					"parentId": "267",
-					"showChildNav": [271]
+					"parentId": "264",
+					"showChildNav": [268]
 				}
 			},
 			"navigation_06": {
 				"targetType": "_self",
 				"currentSelect": [{
-					"id": "268",
+					"id": "265",
 					"htmls": ["index.html"]
 				}, {
-					"id": "269",
+					"id": "266",
 					"htmls": ["xhjy.html"]
 				}, {
-					"id": "270",
+					"id": "267",
 					"htmls": ["zxsc.html"]
 				}, {
-					"id": "271",
+					"id": "268",
 					"htmls": ["informationdetail.html", "informationlist.html", "newslist.html"]
 				}, {
-					"id": "272",
+					"id": "269",
 					"htmls": ["jyzy.html"]
 				}, {
-					"id": "273",
+					"id": "270",
 					"htmls": ["activity.html", "activityrace.html", "activitylist.html", "informationdetail.html", "productiondetail.html", "uploadproduction.html"]
 				}],
 				"getCols": {
@@ -1616,12 +1636,8 @@ var $_$ = {
 					}
 				},
 				"showType": {
-					"parentId": "267",
-					"showChildNav": [271]
-				},
-				"url": "spc/cms/col/getColNextLevelNode",
-				"params": {
-					"colId": "39"
+					"parentId": "264",
+					"showChildNav": [268]
 				}
 			}
 		},
@@ -1654,7 +1670,7 @@ var $_$ = {
 				"getListData": {
 					"url": "spc/cms/publish/list.do",
 					"params": {
-						"conditions": "[{pub_col_id:'266'}]",
+						"conditions": "[{pub_col_id:'263'}]",
 						"orderBy": "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 						"pageNo": "1",
 						"pageSize": "15",
@@ -1704,7 +1720,8 @@ var $_$ = {
 					},
 					detailHref: {
 						activityrace:'./activityrace.html',
-						activityvote:'./activityvote.html'
+						activityvote:'./activityvote.html',
+						activityshow:'./activityshow.html'
 					},
 					baseKeys:{
 						id: "id",
@@ -1722,8 +1739,13 @@ var $_$ = {
 							topic: "PORTAL_VOTEACTIVITY_SYS_TOPIC",
 							beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
 							endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
+							reviewDate:''
+						},
+						'show':{
+							topic: "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+							beginTime: "",
+							endTime: "",
 							reviewDate:'',
-							
 						}
 					}
 				},
@@ -1737,7 +1759,7 @@ var $_$ = {
 				"url": "spc/cms/publish/list.do",
 				"params": {
 					"conditions": [{
-						"pub_col_id": "274"
+						"pub_col_id": "273"
 					}],
 					"orderBy": "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 					"pageNo": "1",
@@ -1753,7 +1775,6 @@ var $_$ = {
 			}
 		}
 	},
-	
 	"personalCenter": {
 		"personalcenter": {
 			"personalcenter_01": {
@@ -1786,8 +1807,7 @@ var $_$ = {
 				"sendNum": {
 					"url": "user/sendMobileMessage.do"
 				},
-				"showItem": ["bindMobile", "bindEmail"],
-        
+				"showItem": ["bindMobile", "bindEmail"]
 			}
 		}
 	},
@@ -1812,7 +1832,7 @@ var $_$ = {
 				"interval": 5000,
 				"url": "spc/cms/publish/list.do",
 				"params": {
-					"conditions": "[{'pub_col_id':'280'}]",
+					"conditions": "[{'pub_col_id':'279'}]",
 					"orderBy": "pub_a_order asc pub_lastmodified desc id asc",
 					"pageNo": "1",
 					"pageSize": "15",
@@ -1841,7 +1861,7 @@ var $_$ = {
 					"getResourceLists": {
 						"url": "spc/cms/publish/list.do",
 						"params": {
-							"conditions": "[{pub_col_id: '283'}]",
+							"conditions": "[{pub_col_id: '282'}]",
 							"orderBy": "pub_a_order asc pub_lastmodified desc id asc",
 							"pageNo": "1",
 							"pageSize": "15",
@@ -1921,7 +1941,7 @@ var $_$ = {
 					"getSubTitle": {
 						"url": "spc/cms/col/getColumnByIdForSite",
 						"params": {
-							"colId": "282"
+							"colId": "281"
 						},
 						"sysAdapter": "sykAdapter",
 						"typeAdapter": "columnAdapter"
@@ -1930,7 +1950,7 @@ var $_$ = {
 						"url": "spc/cms/publish/list.do",
 						"params": {
 							"conditions": [{
-								"pub_col_id": "282"
+								"pub_col_id": "281"
 							}, {
 								"pub_status": "1"
 							}],
@@ -1944,7 +1964,6 @@ var $_$ = {
 						"maxNum": 1,
 						"sysAdapter": "sykAdapter",
 						"typeAdapter": "newsAdapter",
-						"showItem": ["img", "title"],
 						"complicatedItem": [{
 							"name": "img",
 							"field": "picBig",
@@ -2037,9 +2056,7 @@ var $_$ = {
 						"url": "spc/cms/col/getColumnByIdForSite",
 						"params": {
 							"colId": "250"
-						},
-						"sysAdapter": "sykAdapter",
-						"typeAdapter": "columnAdapter"
+						}
 					},
 					"onEvent": {
 						"eventName": "showNavContent"
@@ -2084,7 +2101,7 @@ var $_$ = {
 							"searchText": ""
 						},
 						"startNum": 0,
-						"maxNum": 4,
+						"maxNum": 6,
 						"sysAdapter": "sykAdapter",
 						"typeAdapter": "newsAdapter",
 						"showItem": ["img", "title"],
@@ -2118,7 +2135,7 @@ var $_$ = {
 				"csdt": {
 					"comTitle": {
 						"isShow": true,
-						"name": "分公司动态"
+						"name": "城市动态"
 					},
 					"toMoreBtn": {
 						"isShow": true,
@@ -2137,7 +2154,7 @@ var $_$ = {
 						"url": "spc/cms/publish/list.do",
 						"params": {
 							"conditions": [{
-								"pub_col_id": "252"
+								"pub_col_id": "277"
 							}, {
 								"pub_status": "1"
 							}],
@@ -2148,7 +2165,7 @@ var $_$ = {
 							"searchText": ""
 						},
 						"startNum": 0,
-						"maxNum": 4,
+						"maxNum": 6,
 						"sysAdapter": "sykAdapter",
 						"typeAdapter": "newsAdapter",
 						"showItem": ["img", "title"],
@@ -2189,7 +2206,7 @@ var $_$ = {
 						"iconClass": "el-icon-back",
 						"name": "更多"
 					},
-					"haveChildNavTag": true,
+					"haveChildNavTag": false,
 					"display": {},
 					"getColumnList": {
 						"url": "spc/cms/col/getColNextLevelNode",
@@ -2212,7 +2229,7 @@ var $_$ = {
 							"searchText": ""
 						},
 						"startNum": 0,
-						"maxNum": 4,
+						"maxNum": 6,
 						"sysAdapter": "sykAdapter",
 						"typeAdapter": "newsAdapter",
 						"showItem": ["img", "title"],
@@ -2253,7 +2270,7 @@ var $_$ = {
 						"iconClass": "el-icon-back",
 						"name": "更多"
 					},
-					"haveChildNavTag": true,
+					"haveChildNavTag": false,
 					"display": {},
 					"getColumnList": {
 						"url": "spc/cms/col/getColNextLevelNode",
@@ -2276,7 +2293,7 @@ var $_$ = {
 							"searchText": ""
 						},
 						"startNum": 0,
-						"maxNum": 4,
+						"maxNum": 6,
 						"sysAdapter": "sykAdapter",
 						"typeAdapter": "newsAdapter",
 						"showItem": ["img", "title"],
@@ -2340,7 +2357,7 @@ var $_$ = {
 							"searchText": ""
 						},
 						"startNum": 0,
-						"maxNum": 4,
+						"maxNum": 6,
 						"sysAdapter": "sykAdapter",
 						"typeAdapter": "newsAdapter",
 						"showItem": ["img", "title"],
@@ -2364,7 +2381,7 @@ var $_$ = {
 						"fixedKeys": {}
 					},
 					"toMore": {
-						"url": "../pages/newslist.html",
+						"url": "../pages/informationlist.html",
 						"dataKeys": {
 							"colId": "colId"
 						},
@@ -2377,20 +2394,13 @@ var $_$ = {
 			"list_word_02": {
 				"url": "spc/cms/publish/list.do",
 				"params": {
-					"conditions": [{
-						"pub_col_id": "282"
-					}],
+					"conditions": "[{pub_col_id:'280'}]",
 					"orderBy": "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
 					"pageNo": "1",
 					"pageSize": "15",
 					"searchText": null
 				},
-				"startNum": 1,
-				"locationQuery": {
-					"keys": {
-						"colId": "colId"
-					}
-				}
+				"startNum": 0
 			}
 		}
 	},
@@ -2413,6 +2423,7 @@ var $_$ = {
 							}, {
 								"pub_status": "1"
 							}],
+							"groupBy": "pub_resource_id",
 							"orderBy": "pub_a_order asc pub_lastmodified desc id asc",
 							"pageNo": "1",
 							"pageSize": "15",
@@ -2424,9 +2435,10 @@ var $_$ = {
 						"typeAdapter": "newsAdapter",
 						"display": {
 							"time": "日期",
-							"title": "标题"
+							"title": "标题",
+							"sort": "分类"
 						},
-						"showItem": ["time", "title"],
+						"showItem": ["time", "title", "sort"],
 						"complicatedItem": [{
 							"name": "time",
 							"field": "lastModified",
@@ -2434,6 +2446,10 @@ var $_$ = {
 						}, {
 							"name": "title",
 							"field": "resName",
+							"display": ""
+						}, {
+							"name": "sort",
+							"field": "colName",
 							"display": ""
 						}]
 					},
@@ -2471,7 +2487,7 @@ var $_$ = {
 						"params": {
 							"conditions": [{
 								"pub_col_id": "249",
-								"op": "in"
+								"lk": "in"
 							}, {
 								"pub_status": "1"
 							}],
@@ -2538,189 +2554,6 @@ var $_$ = {
 					"comTitle": {
 						"isShow": true,
 						"name": "华育动态新闻"
-					},
-					"showChildren": false,
-					"broadcastName": "showNavContent",
-					"display": {},
-					"getNavLists": {
-						"url": "spc/cms/col/getAllColBySiteId.do",
-						"params": {
-							"siteId": 8,
-							"chId": 0
-						},
-						"keys": {
-							"parentId": "parentId",
-							"id": "id",
-							"name": "name"
-						}
-					}
-				},
-				"modulename": {
-					"colId": 245,
-					"comTitle": {
-						"isShow": true,
-						"name": "华育动态新闻"
-					},
-					"showChildren": false,
-					"broadcastName": "showNavContent",
-					"display": {},
-					"getNavLists": {
-						"url": "spc/cms/col/getAllColBySiteId.do",
-						"params": {
-							"siteId": 8,
-							"chId": 0
-						},
-						"keys": {
-							"parentId": "parentId",
-							"id": "id",
-							"name": "name"
-						}
-					}
-				}
-			}
-		}
-	},
-	"informationlist": {
-		"list_pic": {
-			"list_pic_30": {
-				"newslist": {
-					"comTitle": {
-						"isShow": true,
-						"name": "华育资讯"
-					},
-					"broadcastName": "showNavContent",
-					"display": {},
-					"getResourceLists": {
-						"url": "spc/cms/publish/list.do",
-						"params": {
-							"conditions": [{
-								"pub_col_id": "249",
-								"op": "in"
-							}, {
-								"pub_status": "1"
-							}],
-							"orderBy": "pub_a_order asc pub_lastmodified desc id asc",
-							"pageNo": "1",
-							"pageSize": "15",
-							"searchText": ""
-						},
-						"startNum": 0,
-						"maxNum": 6,
-						"sysAdapter": "sykAdapter",
-						"typeAdapter": "newsAdapter",
-						"display": {
-							"time": "日期",
-							"title": "标题"
-						},
-						"showItem": ["time", "title"],
-						"complicatedItem": [{
-							"name": "time",
-							"field": "lastModified",
-							"display": ""
-						}, {
-							"name": "title",
-							"field": "resName",
-							"display": ""
-						}]
-					},
-					"toDetail": {
-						"url": "../pages/informationdetail.html",
-						"dataKeys": {
-							"pubId": "id"
-						},
-						"fixedKeys": {}
-					},
-					"toMore": {
-						"url": "../pages/informationdetail.html",
-						"dataKeys": {
-							"colId": "colId"
-						},
-						"fixedKeys": {}
-					},
-					"crumb": [{
-						"title": "首页",
-						"href": "./index.html"
-					}]
-				},
-				"modulename": {
-					"comTitle": {
-						"isShow": true,
-						"name": "华育资讯"
-					},
-					"broadcastName": "showNavContent",
-					"display": {},
-					"getResourceLists": {
-						"url": "spc/cms/publish/list.do",
-						"params": {
-							"conditions": [{
-								"pub_col_id": "249",
-								"op": "in"
-							}, {
-								"pub_status": "1"
-							}],
-							"orderBy": "pub_a_order asc pub_lastmodified desc id asc",
-							"pageNo": "1",
-							"pageSize": "15",
-							"searchText": ""
-						},
-						"startNum": 0,
-						"maxNum": 6,
-						"sysAdapter": "sykAdapter",
-						"typeAdapter": "newsAdapter",
-						"display": {
-							"time": "日期",
-							"title": "标题",
-							"author": "作者",
-							"createdTime": "创建时间",
-							"sort": "分类"
-						},
-						"showItem": ["time", "title", "createdTime", "sort", "author"],
-						"complicatedItem": [{
-							"name": "time",
-							"field": "lastModified",
-							"display": "日期"
-						}, {
-							"name": "title",
-							"field": "resName",
-							"display": "标题"
-						}, {
-							"name": "createdTime",
-							"field": "created",
-							"display": "创建时间"
-						}, {
-							"name": "sort",
-							"field": "colName",
-							"display": "分类"
-						}, {
-							"name": "author",
-							"field": "authors",
-							"display": "作者"
-						}]
-					},
-					"toDetail": {
-						"url": "../pages/informationdetail.html",
-						"dataKeys": {
-							"pubId": "id"
-						},
-						"fixedKeys": {}
-					},
-					"toMore": {
-						"url": "../pages/informationlist.html",
-						"dataKeys": {
-							"colId": "colId"
-						},
-						"fixedKeys": {}
-					}
-				}
-			}
-		},
-		"navigation": {
-			"navigation_05": {
-				"newscol": {
-					"colId": 329,
-					"comTitle": {
-						"isShow": true,
-						"name": "华育资讯"
 					},
 					"showChildren": false,
 					"broadcastName": "showNavContent",
@@ -2877,42 +2710,6 @@ var $_$ = {
 						"typeAdapter": "newsAdapter",
 						"showItem": ["lastModifyDate", "createdDate", "content"],
 						"complicatedItem": [{
-							"name": "content",
-							"field": "content",
-							"display": ""
-						}]
-					},
-					"broadcastName": "showNavContent"
-				},
-				"modulename": {
-					"comTitle": {
-						"isShow": true,
-						"name": "资讯"
-					},
-					"display": {},
-					"getResourceLists": {
-						"url": "spc/cms/publish/list.do",
-						"params": {
-							"conditions": [{
-								"pub_col_id": "249"
-							}, {
-								"pub_status": "1"
-							}],
-							"orderBy": "pub_a_order asc pub_lastmodified desc id asc",
-							"pageNo": "1",
-							"pageSize": "15",
-							"searchText": ""
-						}
-					},
-					"getResource": {
-						"url": "spc/cms/publish/detail.do",
-						"params": {
-							"loginName": ""
-						},
-						"sysAdapter": "sykAdapter",
-						"typeAdapter": "newsAdapter",
-						"showItem": ["lastModifyDate", "createdDate", "content"],
-						"complicatedItem": [{
 							"name": "title",
 							"field": "topic",
 							"display": ""
@@ -2958,8 +2755,7 @@ var $_$ = {
 		"login": {
 			"work_login_01": {
 				"disBacks": ["register.html", "register_success.html", "forgetPassword.html"],
-				"indexPath": "./index.html",
-				showItem:[]
+				"indexPath": "./index.html"
 			},
 			"work_login_03": {
 				"disBacks": ["register.html", "register_success.html", "forgetPassword.html"],
@@ -2978,28 +2774,43 @@ var $_$ = {
 					}],
 					"customShowItem": [],
 					"topic": "社交账号登陆"
-				},
-				"showItem": ["code"],
-				"staticText": {
-					"loginSys": "登录",
-					"inputUserName": "请输入用户名",
-					"inputPwd": "请输入密码",
-					"forgetPwd": "忘记密码",
-					"noAccount": "还没有账号？",
-					"signUpNow": "立即注册",
-					"accountFrozenInfo": "账号已被冻结，请联系管理员",
-					"loginFailed": "登录失败",
-					"usernameAndPwdCannotBeEmpty": "用户名或密码不能为空",
-					"accountAndPwdError": "账号或密码错误",
-					"userNameCannotBeEmpty": "用户名不能为空",
-					"pwdCannotBeEmpty": "密码不能为空",
-					"inputCode": "请输入验证码",
-					"codeFailed": "验证码输入错误"
 				}
 			}
 		}
 	},
 	"informationdetail": {
+		"informationDetail": {
+			"work_informationdetail_01": {
+				"url": "spc/cms/publish/detail.do",
+				"params": {
+					"pubId": "",
+					"loginName": ""
+				},
+				"keys": {
+					"show_key": false,
+					"information_SYS_AUTHORS": "information_SYS_AUTHORS",
+					"information_a_pubTime": "information_a_pubTime",
+					"information_SYS_TOPIC": "information_SYS_TOPIC",
+					"information_a_content": "information_a_content",
+					"information_collect": "information_collect",
+					"information_share": "information_share",
+					"pub_widget_url": "pub_widget_url",
+					"pub_widget_content": "pub_widget_content"
+				},
+				"collectOrLike": {
+					"url": "collection/addCollect.do",
+					"params": {
+						"pubId": "",
+						"operateType": "0",
+						"siteId": ""
+				}
+				},
+				"showItem": [],
+				"event": {
+					"detailReady": "listenInfoDetail"
+			}
+		}
+	},
 		"crumbs": {
 			"work_crumbs_02": {
 				"detail": {
@@ -3029,38 +2840,6 @@ var $_$ = {
 							}
 						}
 					}
-				}
-			}
-		},
-		"informationDetail": {
-			"work_informationdetail_01": {
-				"url": "spc/cms/publish/detail.do",
-				"params": {
-					"pubId": "",
-					"loginName": ""
-				},
-				"keys": {
-					"show_key": false,
-					"information_SYS_AUTHORS": "information_SYS_AUTHORS",
-					"information_a_pubTime": "information_a_pubTime",
-					"information_SYS_TOPIC": "information_SYS_TOPIC",
-					"information_a_content": "information_a_content",
-					"information_collect": "information_collect",
-					"information_share": "information_share",
-					"pub_widget_url": "pub_widget_url",
-					"pub_widget_content": "pub_widget_content"
-				},
-				"collectOrLike": {
-					"url": "collection/addCollect.do",
-					"params": {
-						"pubId": "",
-						"operateType": "0",
-						"siteId": ""
-					}
-				},
-				"showItem": [],
-				"event": {
-					"detailReady": "listenInfoDetail"
 				}
 			}
 		},
@@ -3098,10 +2877,93 @@ var $_$ = {
 						"class": "bds_tsina",
 						"cmd": "tsina"
 					}, {
+						"title": "分享到腾讯微博",
+						"class": "bds_tqq",
+						"cmd": "tqq"
+					}, {
 						"title": "分享到人人网",
 						"class": "bds_renren",
 						"cmd": "renren"
 					}]
+				}
+			}
+		}
+	},
+	"songmintest": {
+		"list_pic": {
+			"list_pic_29": {
+				"test": {
+					"comTitle": {
+						"isShow": true,
+						"name": "资讯"
+					},
+					"toMoreBtn": {
+						"isShow": true,
+						"iconClass": "el-icon-back",
+						"name": "更多",
+						"method": "toMore"
+					},
+					"getSubTitle": {
+						"url": "spc/cms/col/getColumnByIdForSite",
+						"params": {
+							"colId": "250"
+						},
+						"sysAdapter": "sykAdapter",
+						"typeAdapter": "columnAdapter"
+					},
+					"getResourceLists": {
+						"url": "spc/cms/publish/list.do",
+						"params": {
+							"conditions": [{
+								"pub_col_id": "250"
+							}, {
+								"pub_status": "1"
+							}],
+							"groupBy": "pub_resource_id",
+							"orderBy": "pub_a_order asc pub_lastmodified desc id asc",
+							"pageNo": "1",
+							"pageSize": "15",
+							"searchText": ""
+						},
+						"startNum": 0,
+						"maxNum": 1,
+						"sysAdapter": "sykAdapter",
+						"typeAdapter": "newsAdapter",
+						"complicatedItem": [{
+							"name": "img",
+							"field": "picBig",
+							"display": "",
+							"method": "toDetail"
+						}, {
+							"name": "button",
+							"field": "resName",
+							"display": "",
+							"method": "toDetail"
+						}]
+					},
+					"toDetail": {
+						"url": "../pages/informationdetail.html",
+						"dataKeys": {
+							"pubId": "id"
+						},
+						"fixedKeys": {}
+					},
+					"toMore": {
+						"url": "../pages/informationlist.html",
+						"dataKeys": {
+							"colId": "id"
+						},
+						"fixedKeys": {}
+					},
+					"infoImgWidth": 200,
+					"infoImgHeight": 160,
+					"onEvent": {
+						"eventName": "showNavContent"
+					},
+					"pagination": {
+						"showPagination": true,
+						"pagesize": [15, 30, 50, 100]
+					}
 				}
 			}
 		}

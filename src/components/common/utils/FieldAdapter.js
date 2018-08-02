@@ -253,6 +253,10 @@ var FIELD_ADAPTER = {
             endTimeStamp: 'PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW',
             beginTimeStamp:'PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW'
         },
+        activityShowAdapter:{/* 展示类活动 */
+            sysTopic: 'PORTAL_SHOWACTIVITY_SYS_TOPIC',
+            description: 'PORTAL_SHOWACTIVITY_TEXTCONTENT',
+        },
         videoAdapter: { // 视频 包括视频组
             sysTopic: "VIDEO-MEDIA_SYS_TOPIC",
             mediaName: "VIDEO-MEDIA_MEDIA_NAME",

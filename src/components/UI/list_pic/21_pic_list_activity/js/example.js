@@ -42,7 +42,8 @@ const prod = {
       },
       detailHref: {
         activityrace:'./activityrace.html',
-        activityvote:'./activityvote.html'
+        activityvote:'./activityvote.html',
+        activityshow:'./activityshow.html'
       },
       baseKeys:{
         id: "id",
@@ -61,7 +62,12 @@ const prod = {
           beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
           endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
           reviewDate:'',
-
+        },
+        'show':{
+          topic: "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+          beginTime: "",
+          endTime: "",
+          reviewDate:'',
         }
 
       },

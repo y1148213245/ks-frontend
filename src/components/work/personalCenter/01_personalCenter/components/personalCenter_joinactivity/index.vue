@@ -108,7 +108,7 @@
           <div class="newWrapper">
             <div>姓名：</div>
             <input id="ac_name" type="text" maxlength="40" v-model="identityInformation.userName" @blur="checkName()">
-            <span class="warningInfo" v-if="emptyName">请填写收货人</span>
+            <span class="warningInfo" v-if="emptyName">请填写参赛人</span>
           </div>
           <div class="newWrapper">
             <div>性别：</div>
