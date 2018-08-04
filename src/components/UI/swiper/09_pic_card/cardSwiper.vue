@@ -191,7 +191,9 @@ export default {
             }
           }
         });
-        obj.toCustomFun(obj.picList[index], obj.CONFIG.complicatedItem.length > 0 ? obj.CONFIG.complicatedItem[0] : {});
+        // + obj.CONFIG.startNum是因为起始索引会因为需求改变
+        obj.CONFIG.startNum  = obj.CONFIG.startNum ? obj.CONFIG.startNum : 0;
+        obj.toCustomFun(obj.picList[index + obj.CONFIG.startNum], obj.CONFIG.complicatedItem.length > 0 ? obj.CONFIG.complicatedItem[0] : {});
       };
       this.mySwiper = new Swiper(obj.$el.getElementsByClassName("swiper-container"), this.initObj);
     },

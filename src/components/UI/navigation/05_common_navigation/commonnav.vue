@@ -89,6 +89,7 @@ export default {
       //发送默认bus
       if (this.defaultBus) {
         this.currentActive = this.colId ? this.colId : this.tree[0].id;
+        this.$bus.$emit(this.CONFIG.transDefaultColId, this.tree[0]);
         this.navInteract(this.currentActive);
         let curIndex = 0;
         this.tree.map((item, index) => {

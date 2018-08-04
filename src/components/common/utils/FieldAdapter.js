@@ -396,7 +396,7 @@ var FIELD_ADAPTER = {
             knowCascadId: "PRODUCT-ARTICLE_KNOWCASCADID",
             pages: "PRODUCT-ARTICLE_PAGES",
             paContent: "PRODUCT-ARTICLE_CONTENT",
-            articleFlag: "PRODUCT-ARTICLE_ARTICLE_FLAG"
+            articleNature: "PRODUCT-ARTICLE_ARTICLE_NATURE"
         },
         imageAdapter: { //图片
             coverId: "MATERIAL-PIC_COVERID",

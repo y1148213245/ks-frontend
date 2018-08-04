@@ -1,9 +1,12 @@
 <!-- Created by song 2018/3/15 图书列表组件 -->
 <template>
   <div class="ui_mobile_list_02">
+
+    <!--排行榜上标题显示-->
     <div class="ui_mobile_list_02-title" v-if="CONFIG && CONFIG.title && CONFIG.title.isShow">
       <!-- <i class="phb_ico_01 mr10"></i> -->
       {{CONFIG.title && CONFIG.title.name}}</div>
+    <!--按照栏目查图书列表比如热门、好评、价格的导航栏-->
     <div class="ui_mobile_list_02_subnav" v-if="listType == 'colId'"> <!-- 按栏目查图书列表 -->
       <span class="ui_mobile_list_02_read" :class="{ui_mobile_list_02_active:indexValue==0?true:false}" @click="toBookList('pub_read_num desc',0)">{{getStaticText('hot') ? getStaticText('hot') : "热门"}}</span>
       <span class="ui_mobile_list_02_star" :class="{ui_mobile_list_02_active:indexValue==1?true:false}" @click="toBookList('pub_star_num desc',1)">{{getStaticText('goodReputation') ? getStaticText('goodReputation') : "好评"}}</span>
@@ -13,7 +16,7 @@
       class="ui_mobile_list_02_desc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a></span>
       <span :class="{ui_mobile_list_02_active:indexValue==3?true:false}" @click="toBookList('BOOK_PUBDATE desc',3)">{{getStaticText('newBook') ? getStaticText('newBook') : "新书"}}</span>
     </div>
-
+    <!--二级分类title-->
     <div class="ui_mobile_list_02_sortCon" v-if="listType == 'cascadId'"> <!-- 按分类查图书列表 -->
 
       <div class="ui_mobile_list_02_sort" id="screenBox" v-if="classifyBook && classifyBook.length > 0">
@@ -25,7 +28,7 @@
       </div>
       <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyBook && classifyBook.length > exMoreNum">{{getStaticText('more' ? getStaticText('more') : "更多")}}</a>
     </div>
-
+    <!--图书列表-->
     <div class="ui_mobile_list_02_booklist">
       <div v-if="bookList && bookList.length > 0">
         <dl class="ui_mobile_list_02_booklistcon" v-for="(ebook, index) in bookList" :key="index" v-if="CONFIG.showNum?index < CONFIG.showNum:true">
@@ -58,6 +61,7 @@
       <div class="ui_mobile_list_02_none" v-else>{{getStaticText('noData') ? getStaticText('noData') : "暂无数据"}}</div>
       <div class="ui_mobile_list_02_none" v-if="bookList && bookList.length >0 && noMore && !CONFIG.showNum">{{getStaticText('noMore') ? getStaticText('noMore') : "没有更多啦~"}}</div>
     </div>
+    <!--更多-->
     <div class="ui_mobile_list_02-more" v-if="CONFIG && CONFIG.toMoreList && CONFIG.toMoreList.isShow">
       <a href="javascript:void(0)" @click="toMoreLink" >{{getStaticText('moreRank') ? getStaticText('moreRank') : "更多排行"}}
         <i class="ui_mobile_list_02-more-icon"></i>
@@ -83,7 +87,7 @@ export default {
       CONFIG: "",  // 组件配置
       keys: null,    // 接口字段
       bookList: [],  // 图书列表
-      indexValue: 0, // 当前选中筛选条件：热门、好评、价格、新书
+      indexValue: null, // 当前选中筛选条件：热门、好评、价格、新书
       noMore: false,
       colId: '', // 栏目
       cascadId: '', // 分类
@@ -478,6 +482,8 @@ export default {
   line-height: 0.36rem;
   color: #888888;
   font-size: 0.24rem;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
 }
 
 .ui_mobile_list_02_price {

@@ -41,7 +41,7 @@ navigation: {
           colId: 'pub_col_id'
         }
       },
-      showColumnArray: [], // 过滤显示的栏目 （并不是所有的栏目都应该显示） 比如：showColumnArray: [307, 308]
+      // showColumnArray: [], // 过滤显示的栏目 （并不是所有的栏目都应该显示）过滤显示哪个栏目 比如：showColumnArray: [307, 308]
       directLink: { // 点击左侧导航直接跳转链接 因为点击左侧不同导航时右侧内容的内容显示不一样
         switchFlag: false, // 跳转功能开关
         directRules: { // 跳转链接根据栏目id不同而不同
@@ -61,48 +61,47 @@ const dev = {
   navigation: {
     navigation_05: {
       "moduleName": {
-        colId: 0,//以此节点为根元素
-        comTitle: {
-          isShow: true,
-          name: "华育动态新闻"
+        "colId": 510,
+        "comTitle": {
+          "isShow": true,
+          "name": "资料中心"
         },
-        showChildren: true,//如果有子导航，点击父导航是否展开  true展开，false发广播
-        showThreeColumn: false,  //是否显示三级目录
-        broadcastName: "showNavContent",
-        transTitle: "transNavTitle",
-        display: { // vue template 固定显示内容
-        },
-        getNavLists: { // 获取某一栏目下的数据列表
-          url: "../data/commonNavigation.json",
-          params: {
-            siteId: CONFIG.SITE_CONFIG.siteId,
-            chId: CONFIG.SITE_CONFIG.chId,
+        "showChildren": true,
+        "showThreeColumn": false,
+        "broadcastName": "showNavContent",
+        "transTitle": "transNavTitle",
+        "transDefaultColId": "transDefaultColId",
+        "display": {},
+        "getNavLists": {
+          "url": "spc/cms/col/getAllColBySiteId.do",
+          "params": {
+            "siteId": 33,
+            "chId": 0
           },
-          keys: {
-            parentId: "parentId",
-            id: "id",
-            name: "name"
+          "keys": {
+            "parentId": "parentId",
+            "id": "id",
+            "name": "name"
           }
         },
-        broadcastEventName: { // 与面包屑导航通讯
-          transCol: "listenInfoDetail",
-          transTitle: 'listenTitle', // 右侧三级导航通信
-          keys: {
-            colId: 'pub_col_id'
+        "broadcastEventName": {
+          "transCol": "listenInfoDetail",
+          "transTitle": "listenTitle",
+          "keys": {
+            "colId": "pub_col_id"
           }
         },
-        // showColumnArray: [], // 过滤显示的栏目 （并不是所有的栏目都应该显示）
-        directLink: { // 点击左侧导航直接跳转链接 因为点击左侧不同导航时右侧内容的内容显示不一样
-          switchFlag: false, // 跳转功能开关
-          directRules: { // 跳转链接根据栏目id不同而不同
-            '1118': '../pages/newslistsnxw?colId=',
-            '1119': '../pages/newslistyjxw?colId=',
-            '1120': '../pages/newslistzcfg?colId=',
-            '1121': '../pages/newslisttpxw?colId=',
-            '1122': '../pages/newslistspjx?colId=',
+        "directLink": {
+          "switchFlag": false,
+          "directRules": {
+            "1118": "../pages/newslistsnxw?colId=",
+            "1119": "../pages/newslistyjxw?colId=",
+            "1120": "../pages/newslistzcfg?colId=",
+            "1121": "../pages/newslisttpxw?colId=",
+            "1122": "../pages/newslistspjx?colId="
           }
         }
-      }
+      },
     },
   }
 }
@@ -111,48 +110,47 @@ const prod = {
   navigation: {
     navigation_05: {
       "moduleName": {
-        colId: 0,//以此节点为根元素
-        comTitle: {
-          isShow: true,
-          name: "华育动态新闻"
+        "colId": 510,
+        "comTitle": {
+          "isShow": true,
+          "name": "资料中心"
         },
-        showChildren: true,//如果有子导航，点击父导航是否展开  true展开，false发广播
-        showThreeColumn: false,  //是否显示三级目录
-        broadcastName: "showNavContent",
-        transTitle: "transNavTitle",
-        display: { // vue template 固定显示内容
-        },
-        getNavLists: { // 获取某一栏目下的数据列表
-          url: "spc/cms/col/getAllColBySiteId.do",
-          params: {
-            siteId: CONFIG.SITE_CONFIG.siteId,
-            chId: CONFIG.SITE_CONFIG.chId,
+        "showChildren": true,
+        "showThreeColumn": false,
+        "broadcastName": "showNavContent",
+        "transTitle": "transNavTitle",
+        "transDefaultColId": "transDefaultColId",
+        "display": {},
+        "getNavLists": {
+          "url": "spc/cms/col/getAllColBySiteId.do",
+          "params": {
+            "siteId": 33,
+            "chId": 0
           },
-          keys: {
-            parentId: "parentId",
-            id: "id",
-            name: "name"
+          "keys": {
+            "parentId": "parentId",
+            "id": "id",
+            "name": "name"
           }
         },
-        broadcastEventName: {
-          transCol: "listenInfoDetail", // 与面包屑导航通讯
-          transTitle: 'listenTitle',  //与在其他组件中的三级栏目通信
-          keys: {
-            colId: 'pub_col_id'
+        "broadcastEventName": {
+          "transCol": "listenInfoDetail",
+          "transTitle": "listenTitle",
+          "keys": {
+            "colId": "pub_col_id"
           }
         },
-        // showColumnArray: [], // 过滤显示的栏目 （并不是所有的栏目都应该显示）
-        directLink: { // 点击左侧导航直接跳转链接 因为点击左侧不同导航时右侧内容的内容显示不一样
-          switchFlag: false, // 跳转功能开关
-          directRules: { // 跳转链接根据栏目id不同而不同
-            '1118': '../pages/newslistsnxw?colId=',
-            '1119': '../pages/newslistyjxw?colId=',
-            '1120': '../pages/newslistzcfg?colId=',
-            '1121': '../pages/newslisttpxw?colId=',
-            '1122': '../pages/newslistspjx?colId=',
+        "directLink": {
+          "switchFlag": false,
+          "directRules": {
+            "1118": "../pages/newslistsnxw?colId=",
+            "1119": "../pages/newslistyjxw?colId=",
+            "1120": "../pages/newslistzcfg?colId=",
+            "1121": "../pages/newslisttpxw?colId=",
+            "1122": "../pages/newslistspjx?colId="
           }
         }
-      }
+      },
     },
   }
 };

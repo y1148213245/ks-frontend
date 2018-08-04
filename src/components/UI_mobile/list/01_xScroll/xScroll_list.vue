@@ -212,6 +212,8 @@ export default {
   white-space: normal;
   line-height: 0.39rem;
   height: 0.75rem;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
 }
 .ui_list_01-scroll-list-author {
   color: #8b8b8b;

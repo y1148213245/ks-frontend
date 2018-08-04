@@ -2,7 +2,7 @@
 <template>
   <div class="shoppingCartWrapper">
     <!-- 购物车商品列表页面 -->
-    <div id="cartWrapper" class="main_car" v-show="showItem == 'showCartWrapper'">
+    <div id="cartWrapper" class="main_car" v-show="showItem == 'showCartWrapper'" v-loading="loading">
       <!-- shopping cart-->
       <div v-if="productList && productList.length>0">
         <div class="container" id="priceChange" v-if="priceChangeList.length !== 0">
@@ -366,7 +366,12 @@
             <input type="text" id="virtualCoin" @keyup="checkVirtual()" v-model="downloadCoin">
             <span>{{getStaticText('downloadCoin') ? getStaticText('downloadCoin') : '下载币'}}</span>
           </div>
-          <div class="coinremark">{{getStaticText('oneCoinEqualsOneYuan') ? getStaticText('oneCoinEqualsOneYuan') : '1下载币=1元'}}</div>
+          <!-- 下载币和人民币的比例关系是根据后台配置的比例来的 不是固定的 -->
+          <div class="coinremark">
+            <span>{{getStaticText('oneCoinEqualsOneYuan') ? getStaticText('oneCoinEqualsOneYuan') : '1下载币='}}</span>
+            <span v-text="exchangeRate"></span>
+            <span>{{getStaticText('money') ? getStaticText('money') : '元'}}</span> 
+          </div>
           <div class="orderDetail" :class="{hideTrans:allEbook === true && needInvoice === '0'}">
             <div class="disc">{{getStaticText('reducePrice') ? getStaticText('reducePrice') : '优惠：-'}} {{formatMoney(orderDetail.bookSaveMoney + orderDetail.ebookSaveMoney)}}</div>
             <div class="vir">{{getStaticText('downloadCoinReduce') ? getStaticText('downloadCoinReduce') : '下载币：-'}} {{formatMoney(rmbCoin)}}</div>
@@ -467,6 +472,8 @@
     },
     data () {
       return {
+        loading: false,
+        exchangeRate: 1, // 虚拟币和人民币的换算比例 默认1
         member: {
           loginName: ''
         },
@@ -724,6 +731,7 @@
           cancelButtonText: _this.getStaticText('cancel') ? _this.getStaticText('cancel') : "取消",
           type: "warning"
         }).then(function () {
+          _this.loading = true; // 加loading防止操作请求时间太长 造成视觉误差
           var param = {
             ids: id,
             cb: function () {
@@ -739,6 +747,7 @@
                   message: _this.getStaticText('deleteFailed') ? _this.getStaticText('deleteFailed') : "删除失败!"
                 });
               }
+              _this.loading = false;
             }
           };
           _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
@@ -1244,6 +1253,16 @@
             ); // 纸质书状态
           }
         });
+        /* 一提交订单就查看一下虚拟币和人民币的比例 */
+        var coinparams = {
+          param: 1,
+          myCallbacks: function () {
+            if (this.rmbCoin) {  // 下载币兑换成功
+              _this.exchangeRate = this.rmbCoin
+            }
+          }
+        };
+        this.$store.dispatch("shoppingcart/" + type.GET_RMB_COIN, coinparams);
         this.setRecordOrder();
         this.dealCouponStyle();
       },

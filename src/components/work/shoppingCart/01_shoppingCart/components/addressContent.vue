@@ -176,41 +176,6 @@
         // 确认/取消新增地址
         var _this = this;
         if (flag) {
-          // 点击确定
-          // if ($("#s_contactor").val() === "") {
-          //   // 收件人为空
-          //   this.emptyContactor = true;
-          //   return false;
-          // } else
-        // else if (phoneVal=== "" || !phoneVal.match(/^[0-9]*$/) || phoneVal.length > 10) {
-        //     // 联系方式为空
-        //     this.phoneError="请填写联系电话";
-        //     if (!phoneVal.match(/^[0-9]*$/)) {
-        //       // 控制只能输入数字
-        //       this.phoneError="电话不符合格式 - 请输入数字";
-        //     }
-        //     if (phoneVal.length > 10) {
-        //       this.phoneError="电话不符合格式 - 长度过长";
-        //     }
-        //     this.emptyPhone = true;
-        //     this.emptyPCC = false;
-        //     return false;
-        //   }
-        //   if (
-        //     $("#s_province").val() === "省份" ||
-        //     $("#s_city").val() === "地级市" ||
-        //     $("#s_county").val() === "市、县级市"
-        //   ) {
-        //     // 省市区没有选择或者没有选择完全
-        //     this.emptyPCC = true;
-        //     return false;
-        //   } else
-        //   if ($("#s_address").val() === "") {
-        //     // 详细地址为空
-        //     this.emptyDetail = true;
-        //     this.emptyPCC = false;
-        //     return false;
-        //   }else {
           this.goodsInfo=[];
           this.checkContactor();
           this.checkPhone();
@@ -265,6 +230,8 @@
           }else{
             return false;
           }
+          } else {
+            this.addAddressDialog = false;
           }
       },
       newAddAddressClose () {

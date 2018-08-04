@@ -114,7 +114,8 @@ export default {
       activeSetOrder: "pub_a_order asc pub_lastmodified desc id asc",
       pubId: "", //
       cascadId: "", //
-      searchText: ""
+      searchText: "",
+      columnName: ""  // 稿件的栏目名称
     };
   },
 
@@ -129,6 +130,11 @@ export default {
     }
     if (typeof uriQuery.cascadId != "undefined") {
       this.cascadId = uriQuery.cascadId;
+    }
+
+    // 稿件的栏目名称(适应博览,博览财富)
+    if (typeof uriQuery.columnName != "undefined") {
+      this.columnName = uriQuery.columnName;
     }
 
     this.CONFIG =
@@ -326,6 +332,10 @@ export default {
           item.BOOK_BOOK_CASCADID = this.cascadId
             ? this.cascadId
             : item.BOOK_BOOK_CASCADID;
+        }
+
+        if (item.hasOwnProperty("PRODUCT-ARTICLE_COLUMNNAME")) {
+          item["PRODUCT-ARTICLE_COLUMNNAME"] = this.columnName ? this.columnName : item["PRODUCT-ARTICLE_COLUMNNAME"];
         }
       });
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);

@@ -9,14 +9,14 @@
               :key="index">
       </button>
     </div>
-    <table class="ui_list_pic_37_table">
+    <table class="ui_list_pic_37_table el-table el-table--border">
       <thead class="ui_list_pic_37_thead">
         <th v-for="(item,index) in CONFIG.tHeadList" v-text="item" :key="index"></th>
       </thead>
       <tbody class="ui_list_pic_37_tbody">
         <tr v-for="(item,index) in tBodyList" :key="index">
           <td :class='"ui_list_pic_37_tbody_"+item[keys.pubResType]'>{{item[keys.pubResType] || display.noData || '暂无数据'}}</td>
-          <td @click="toContent(item)">{{item[keys.resName] || display.noData || '暂无数据'}}</td>
+          <td class="ui_list_pic_37_tbody_contentTitle" @click="toContent(item)">{{item[keys.resName] || display.noData || '暂无数据'}}</td>
           <td>{{item[keys.created] | formatDateNEW}}</td>
         </tr>
       </tbody>
@@ -50,7 +50,7 @@
           pageSize: '',
           tempItem: '', //临时保存数据
           zipAttachment: {},  //存储附件
-          zipAttachmentId: ''  //存储附件Id
+          zipAttachmentId: '',  //存储附件Id
         };
       },
       created(){
@@ -66,6 +66,11 @@
           _self.resourceTitle = item.name;
           //渲染三级栏目
           _self.showThreeColumn(item);
+        });
+        //用于初次加载，默认渲染tree中的第一个栏目中的数据
+        this.$bus.$on(_self.CONFIG.transDefaultColId,function (item) {
+         _self.resourceTitle = item.name;
+         _self.getListByColumnId(item);
         });
       },
       computed: {
@@ -116,14 +121,18 @@
           switch (item[this.keys.pubResType]) {
             case this.display.book:   //去阅读电子书
               let params = Object.assign({},this.CONFIG.toEbook.params) ;
-              let url = CONFIG.READ_URL + '?bookId=' + item[this.keys.id] + '&readType=' + params.readType + '&bookName=' + item[this.keys.resName] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+              let url = CONFIG.READ_URL + '?bookId=' + item[this.keys.resId] + '&readType=' + params.readType + '&bookName=' + item[this.keys.resName] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+              
               window.open(url);
               break;
             case this.display.audio:  //去播放音频
-              window.open(toOtherPage(item,this.CONFIG.toPlayAudio,this.keys));
+              let audioParams = Object.assign({},this.CONFIG.toPlayAudio.params);
+              window.open(toOtherPage(item,this.CONFIG.toPlayAudio,this.keys)+'&mediaResId='+item[audioParams.audioResId]);
               break;
             case this.display.video:  //去播放视频
-              window.open(toOtherPage(item,this.CONFIG.toPlayVideo,this.keys));
+              //把video_resource_id传给视频播放器，因为播放单个视频时需要这个id
+              let videoParams = Object.assign({},this.CONFIG.toPlayVideo.params);
+              window.open(toOtherPage(item,this.CONFIG.toPlayVideo,this.keys)+'&mediaResId='+item[videoParams.videoResId]);
               break;
             case this.display.download:  //去下载
               this.getZipAttachment(item);
@@ -149,7 +158,7 @@
         },
         toDownload(){  //通过附件的fileRecordID字段下载附件
           let url = CONFIG.BASE_URL + this.CONFIG.toDownload.url + '?recordID=' + this.zipAttachmentId;
-          window.open(url);
+          window.open(url,"_self");
         }
       }
     }
@@ -159,5 +168,9 @@
 .active {
   background-color: dodgerblue;
   color: #ffffff;
+}
+.ui_list_pic_37_tbody_contentTitle {
+  cursor: pointer;
+  text-decoration: underline;
 }
 </style>

@@ -29,6 +29,21 @@ const dev = {
 const prod = {
   navigation: {
     navigation_01: {
+      queryClassification: {
+        url: "spc/prodb/treeByCode.do", // 请求分类
+        params: {
+          code: "BOOK",
+        },
+        keys: { // 字段兼容
+          cascadeId: "cascadeId", // 分类Id
+          text: "text", // 分类名
+          children: "children", // 分类下的子类
+        },
+        broadcastName: 'queryClassificationList'
+      },
+      getColDetail:{
+        url:'spc/cms/col/getColumnByIdForSite'
+      },
       left: {
         url: "",
         icon: "el-icon-arrow-left"

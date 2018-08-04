@@ -9,20 +9,20 @@
 
 <template>
   <div class="work_videoplay_01">
-    <!-- 视频播放器 -->
-    <div class="work_videoplay_01_mydplayer" id="myDPlayer" v-if="resType == 'VIDEO-MEDIA'"></div>
-    <!-- END 视频播放器 -->
-
-    <!-- 音频播放器 -->
-    <audio :src="playUrl + curVideoObj[keys.rescource]" controls v-if="resType == 'AUDIO-MEDIA' && curVideoObj"></audio>
-    <!-- END 音频播放器 -->
-
     <section v-for="(config, index) in CONFIG.complicatedItem" v-if="curVideoObj" v-bind="{class: 'work_videoplay_01_item_' + config.field}" :key="index">
       <div class="work_videoplay_01_option" @click="toCustomFun(config)">
         <label class="work_videoplay_01_label" v-text="config.display"></label>
         <span v-if="config.field" v-bind="{class: 'work_videoplay_01_' + config.field}" v-text="curVideoObj[keys[config.field]]"></span>
       </div>
     </section>
+    <!-- 视频播放器 -->
+    <div class="work_videoplay_01_mydplayer" id="myDPlayer" v-if="resType == 'VIDEO-MEDIA'"></div>
+    <!-- END 视频播放器 -->
+
+    <!-- 音频播放器 -->
+    <!-- 如果地址栏中有parentId存在，则是音频组，否则是单个音频 -->
+    <audio :src="playUrl + (parentId ? curVideoObj[keys.rescource] : mediaResId)" controls v-if="resType == 'AUDIO-MEDIA'"></audio>
+    <!-- END 音频播放器 -->
 
     <!-- 系列课程列表 -->
     <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
@@ -51,6 +51,7 @@ export default {
       CONFIG: null,
       curId: '', // 当前播放的视频
       parentId: '', // 视频组id
+      mediaResId: '',//播放单个视频时需要的VIDEO-MEDIA_RESOURCEID
       myDPlayerdp: '', // 视频播放器插件
       videoLists: null, // 视频课程列表
       curVideoObj: null, // 当前播放视频 / 音频 对象
@@ -68,9 +69,10 @@ export default {
     if (this.CONFIG.queryParamsType == 'url') { // 从视频组里取数据的时候才把参数传到地址栏里
       this.curId = queryObj && queryObj.id ? queryObj.id : ''; // 当前播放的视频id
       this.parentId = queryObj && queryObj.parentId ? queryObj.parentId : '';// 视频组id
+      this.mediaResId = queryObj && queryObj.mediaResId ? queryObj.mediaResId : '';//播放单个视频时需要的的VIDEO-MEDIA_RESOURCEID
     }
     this.resType = queryObj && queryObj.resType ? queryObj.resType : 'VIDEO-MEDIA';
-    this.queryResourceLists(); // 查询视频列表
+    this.getListOrPlayVideo(); // 查询视频列表
   },
 
   mounted () {
@@ -78,7 +80,27 @@ export default {
   },
 
   methods: {
+    getListOrPlayVideo(){
+      
+      if(!this.parentId){   //没有parentId表示非视频组，那么播放单个视频
+        this.CONFIG.showVideoList = false;  //单个视频不显示轮播列表
+        this.$nextTick(() => {
+          if (this.resType == 'VIDEO-MEDIA') { // 如果是视频资源才初始化视频播放器插件
+            this.curDPlayer = new DPlayer({ // 播放器
+              container: document.getElementById('myDPlayer'), // 挂载容器
+              screenshot: true, // 截屏功能
+              video: {
+                url: this.playUrl + this.mediaResId, // 视频地址
+              },
+            });
+          }
+        });
+      }else{    //有parentId表示视频组，那么去视频组播放视频
+        this.queryResourceLists();
+      }
+    },
     queryResourceLists () {
+      this.CONFIG.showVideoList = true; //视频组需要显示轮播列表
       let QUERYCONFIG = this.CONFIG.getResourceLists;
       let paramsObj = JSON.parse(JSON.stringify(QUERYCONFIG.params));
       paramsObj.conditions.map((item) => {

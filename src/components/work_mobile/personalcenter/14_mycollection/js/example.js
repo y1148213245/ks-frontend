@@ -38,6 +38,9 @@ const dev = {
         priceType:'￥',
         isbn: 'ISBN:'
       },
+      bookType: "91",  // 纸质书
+      ebookType: "94",  // 电子书
+      magazineType: "149",  // 期刊
       toKnowledgeService: 'https://www.baidu.com/', //TODO知识服务外链，还没有地址，先这么写
       getCollectList: {
         url: "collection/getCollectList.do",

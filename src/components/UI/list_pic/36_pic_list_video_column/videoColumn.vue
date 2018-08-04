@@ -40,7 +40,7 @@ export default {
     }
   },
   created () {
-    this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
+    this.pubId = 2179;//URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_36[this.modulename];
     this.display = this.CONFIG.display;
     this.keys = getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter);
@@ -52,7 +52,17 @@ export default {
       paramsObj.pageNo = this.pageNo ? this.pageNo : paramsObj.pageNo;
       paramsObj.pageSize = this.pageSize ? this.pageSize : paramsObj.pageSize;
       //conditions只能传字符串格式，因此这么拼接
-      paramsObj.conditions = "[{pub_parent_id:" + this.pubId + "}]";
+      paramsObj.conditions.map((item) => {
+        if (item.hasOwnProperty('pub_parent_id')) {
+          item.pub_parent_id = this.pubId;
+        }
+        if (item.hasOwnProperty('pub_site_id')) {
+          item.pub_site_id = CONFIG.SITE_CONFIG.siteId;
+        }
+      })
+
+      paramsObj.conditions = JSON.stringify(paramsObj.conditions);
+      //paramsObj.conditions = "[{pub_parent_id:" + this.pubId + "},{pub_site_id:" + CONFIG.SITE_CONFIG.siteId + "}]";
       Post(CONFIG.BASE_URL + this.CONFIG.url, paramsObj).then((rep) => {
         let datas = rep.data.result;
         this.totalCount = rep.data.totalCount;

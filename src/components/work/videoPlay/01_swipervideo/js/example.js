@@ -27,76 +27,80 @@ conditions: [{ // 配置成对象 组件里面传值要转成字符串
 
 const dev = {
   work_videoplay: {
-    work_videoplay_01: {
-      "modulename": {
-        getResourceLists: {
-          url: 'spc/cms/publish/list.do',
-          params: {
-            conditions: [{ // 配置成对象 组件里面传值要转成字符串
-              pub_col_id: '1024'
-            }, { // 配置成对象 组件里面传值要转成字符串
-              pub_site_id: ''
-            }],
-            /*  conditions: [{ // 配置成对象 组件里面传值要转成字符串
-               pub_parent_id: ''
-             }], */
-            groupBy: "pub_resource_id",
-            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
-            pageNo: "1",
-            pageSize: "10",
-            searchText: "",
+    "work_videoplay_01": {
+      "videoplay": {
+        "getResourceLists": {
+          "url": "spc/cms/publish/list.do",
+          "params": {
+            "conditions": [   // 配置成对象 组件里面传值要转成字符串
+              {
+                "pub_parent_id": ""
+              },
+              {
+                "pub_site_id": ""
+              }
+            ],
+            "groupBy": "pub_resource_id",
+            "orderBy": "pub_a_order asc pub_lastmodified desc id asc",
+            "pageNo": "1",
+            "pageSize": "10",
+            "searchText": ""
           },
-          sysAdapter: "sykAdapter", // 系统字段
-          typeAdapter: "videoAdapter", // 类型字段
+          "sysAdapter": "sykAdapter",  // 系统字段
+          "typeAdapter": "videoAdapter"  // 类型字段
         },
-        complicatedItem: [{
-          name: '',
-          field: 'resName',
-          display: '',
-          method: '', // 方法名 要在下面配置
-        }],
-        playVideoUrl: 'dynamicFile/stream.do?recordID=', // 视频播放地址
-        showVideoList: false, // 是否显示下方视频轮播列表
-        queryParamsType: 'url', //  取参数的方式 'url'表示从地址栏里面取； ''表示从配置里取
-      }
+        "complicatedItem": [
+          {
+            "name": "",
+            "field": "resName",
+            "display": "",
+            "method": ""  // 方法名 要在下面配置
+          }
+        ],
+        "playVideoUrl": "dynamicFile/stream.do?recordID=",   // 视频播放地址
+        "showVideoList": true,  // 是否显示下方视频轮播列表
+        "queryParamsType": "url",  //  取参数的方式 'url'表示从地址栏里面取； ''表示从配置里取
+      },
     }
   }
 }
 
 const prod = {
   work_videoplay: {
-    work_videoplay_01: {
-      "modulename": {
-        getResourceLists: {
-          url: 'spc/cms/publish/list.do',
-          params: {
-            conditions: [{ // 配置成对象 组件里面传值要转成字符串
-              pub_col_id: '1024'
-            }, { // 配置成对象 组件里面传值要转成字符串
-              pub_site_id: ''
-            }],
-            /*  conditions: [{ // 配置成对象 组件里面传值要转成字符串
-               pub_parent_id: ''
-             }], */
-            groupBy: "pub_resource_id",
-            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
-            pageNo: "1",
-            pageSize: "10",
-            searchText: "",
+    "work_videoplay_01": {
+      "videoplay": {
+        "getResourceLists": {
+          "url": "spc/cms/publish/list.do",
+          "params": {
+            "conditions": [   // 配置成对象 组件里面传值要转成字符串
+              {
+                "pub_parent_id": ""
+              },
+              {
+                "pub_site_id": ""
+              }
+            ],
+            "groupBy": "pub_resource_id",
+            "orderBy": "pub_a_order asc pub_lastmodified desc id asc",
+            "pageNo": "1",
+            "pageSize": "10",
+            "searchText": ""
           },
-          sysAdapter: "sykAdapter", // 系统字段
-          typeAdapter: "videoAdapter", // 类型字段
+          "sysAdapter": "sykAdapter",  // 系统字段
+          "typeAdapter": "videoAdapter"  // 类型字段
         },
-        complicatedItem: [{
-          name: '',
-          field: 'resName',
-          display: '',
-          method: '', // 方法名 要在下面配置
-        }],
-        playVideoUrl: 'dynamicFile/stream.do?recordID=',
-        showVideoList: false, // 是否显示下方视频轮播列表
-        queryParamsType: 'url', //  取参数的方式 'url'表示从地址栏里面取； ''表示从配置里取
-      }
+        "complicatedItem": [
+          {
+            "name": "",
+            "field": "resName",
+            "display": "",
+            "method": ""  // 方法名 要在下面配置
+          }
+        ],
+        "playVideoUrl": "dynamicFile/stream.do?recordID=",   // 视频播放地址
+        "showVideoList": true,  // 是否显示下方视频轮播列表
+        "queryParamsType": "url",  //  取参数的方式 'url'表示从地址栏里面取； ''表示从配置里取
+      },
     }
   }
 }

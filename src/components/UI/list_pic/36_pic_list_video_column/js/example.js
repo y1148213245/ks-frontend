@@ -18,7 +18,14 @@ const dev = {
         },
         url: "spc/cms/publish/list.do",
         params: {
-          conditions: "[{pub_parent_id:''}]",
+          conditions: [
+            {
+              "pub_parent_id": ""
+            },
+            {
+              "pub_site_id": ""
+            }
+          ],
           groupBy: "pub_resource_id",
           orderBy: "pub_a_order asc pub_lastmodified desc id asc",
           pageNo: "1",
@@ -27,7 +34,7 @@ const dev = {
         },
         sysAdapter: "sykAdapter", // 系统字段
         typeAdapter: "videoAdapter", // 类型字段
-        toDetail: { // 去视频详情页面
+        toPlayVideo: { // 去视频详情页面
           url: "../pages/videoplay.html",
           dataKeys: {
             parentId: "parentId", // id是从适配器里对应的
@@ -38,7 +45,7 @@ const dev = {
         maxNum: 10,
         pageSizes:[10,30,50,100],
 
-      }
+      },
     },
   }
 }
@@ -54,7 +61,14 @@ const prod = {
         },
         url: "spc/cms/publish/list.do",
         params: {
-          conditions: "[{pub_parent_id:''}]",
+          conditions: [
+            {
+              "pub_parent_id": ""
+            },
+            {
+              "pub_site_id": ""
+            }
+          ],
           groupBy: "pub_resource_id",
           orderBy: "pub_a_order asc pub_lastmodified desc id asc",
           pageNo: "1",
@@ -63,7 +77,7 @@ const prod = {
         },
         sysAdapter: "sykAdapter", // 系统字段
         typeAdapter: "videoAdapter", // 类型字段
-        toDetail: { // 去视频详情页面
+        toPlayVideo: { // 去视频详情页面
           url: "../pages/videoplay.html",
           dataKeys: {
             parentId: "parentId", // id是从适配器里对应的
@@ -74,7 +88,7 @@ const prod = {
         maxNum: 10,
         pageSizes:[10,30,50,100],
 
-      }
+      },
     },
   }
 }

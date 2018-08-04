@@ -382,7 +382,7 @@
                   </el-form-item>
                   <el-form-item label="邮箱验证码:" prop="emailnum" v-if="butt">
                     <el-input type="text" v-model="emailValidateNum.emailnum" auto-complete="off" placeholder="请输入邮箱验证码" style="display:inline-block;width:220px;"></el-input>
-                    <span style="margin-left:10px;color:red">{{time}}</span>
+                    <span style="margin-left:10px;color:red">{{emailTime}}</span>
                   </el-form-item>
                   <div>
                     <el-button type="primary" @click="submitEmailValidateNum('emailValidateNum')" v-if="butt">下一步</el-button>
@@ -406,9 +406,10 @@
                   </el-form-item>
                   <el-form-item label="手机验证码:" prop="oldSendNum">
                     <el-input type="text" v-model="oldMobileValidateForm.oldSendNum" auto-complete="off" placeholder="请输入手机验证码" style="display:inline-block;width:220px;"></el-input>
+                    <span style="margin-left:10px;color:red" v-if="butt_phone">{{phoneTime}}</span>
                   </el-form-item>
                   <div>
-                    <el-button type="primary" @click="submitMobileValidateNum('oldMobileValidateForm')">下一步</el-button>
+                    <el-button type="primary" @click="submitMobileValidateNum('oldMobileValidateForm')" v-if="butt">下一步</el-button>
                   </div>
                 </el-form>
               </div>
@@ -767,13 +768,15 @@ export default {
         "modifyMobile"
       ],
       // 计时器
-      time: "",
+      emailTime: "",
+      phoneTime: "",
       // 验证码发送状态
       vcodeType: 0,
       vcodeButt: true,
       // 修改类型 1密码 2手机
       modifyType: "",
       butt: true,
+      butt_phone: true,
       /*修改密码*/
       dialogFormVisible: false,
       // 修改密保问题弹窗状态
@@ -1563,6 +1566,8 @@ export default {
         cb: this.oldMobileCallback
       };
       this.$store.dispatch("personalCenter/sendToMobile", params);
+      this.butt_phone = true;
+      this.times(120,"phone");
     },
     oldMobileCallback(sendStatus, oldSendNum) {
       if (sendStatus == 1) {
@@ -1763,7 +1768,7 @@ export default {
           type: "success",
           message: "已发送验证码至您邮箱,请在2分钟内输入验证"
         });
-        this.times();
+        this.times(40,"email");
       } else {
         this.$message({
           type: "info",
@@ -1794,21 +1799,34 @@ export default {
       this.modifyType = 2;
     },
     // 邮箱验证码倒计时
-    times() {
+    times(num,type) {
       var self = this;
-      var countTime = 120;
-      var t = setInterval(function() {
-        self.time = countTime;
-        Vue.set([self.time], "time", countTime);
-        countTime--;
-        if (countTime <= 0) {
-          self.butt = false;
-          countTime = 0;
-          self.vcodeType = 1;
-          self.vcodeButt = true;
-          clearInterval(t);
-        }
-      }, 1000);
+      var countTime = num;
+      if(type=="email"){
+        var t1 = setInterval(function() {
+          self.emailTime = countTime;
+          Vue.set([self.emailTime], "emailTime", countTime);
+          countTime--;
+          if (countTime <= 0) {
+            self.butt = false;
+            countTime = 0;
+            self.vcodeType = 1;
+            self.vcodeButt = true;
+            clearInterval(t1);
+          }
+        }, 1000);
+      }else if(type=="phone"){
+        var t2 = setInterval(function() {
+          self.phoneTime = countTime;
+          Vue.set([self.phoneTime], "phoneTime", countTime);
+          countTime--;
+          if (countTime <= 0) {
+            self.butt_phone = false;
+            countTime = 0;
+            clearInterval(t2);
+          }
+        }, 1000);
+      }
     },
     //密保问题请求发送
     submitQuestionsValidateNum() {

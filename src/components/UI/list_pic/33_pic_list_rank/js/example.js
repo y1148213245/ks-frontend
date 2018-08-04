@@ -135,7 +135,7 @@ const dev = {
 const prod = {
   list_pic: {
     list_pic_33: {
-      'modulename': {
+      'test': {
         comTitle: {
           isShow: true,
           name: "销售排行榜"
@@ -158,8 +158,8 @@ const prod = {
           url: "spc/cms/publish/list.do",
           params: {
             conditions: [{
-                pub_col_id: '131'
-              },
+              pub_col_id: '131'
+            },
               {
                 pub_status: '1'
               }

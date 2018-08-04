@@ -17,7 +17,7 @@
 
             <p class="hitcount" v-if="modulename === 'hotsalebank'">{{getStaticText('hits') ? getStaticText('hits') : '点击量：'}}{{entry.pub_read_num || 0}}</p>
             <p :class="{lineHeight: modulename === 'historyrecord'}">{{getStaticText('price') ? getStaticText('price') : '价格：￥'}}
-              <span class="price">{{entry.prod_member_price?Number(entry.prod_member_price).toFixed(2):'0.00'}}</span>
+              <span class="price">{{entry.memberPrice?Number(entry.memberPrice).toFixed(2):'0.00'}}</span>
             </p>
             <p class="delete" v-if="modulename === 'historyrecord'">
               <a href="javascript:void(0)" @click="deleteOneHistory(entry.id)">
@@ -47,7 +47,7 @@ export default {
       list: [],
       CONFIG: null,
       title: '',
-      pubId: '',
+      pubId: ''
     }
   },
   computed: {
@@ -97,26 +97,17 @@ export default {
         if (hasData) {
           var dataList = []; // 历史记录返回的数据字段与模板上的不同 处理一下字段名称
           var len = data.length;
-          for (var i = 0; i < len; i++) {
+          for (var i = 0; i < len; i++) {console.log(data[i].memberPrice)
             var temp = {
               pub_picBig: data[i].bigPic, // 封面图
               pub_read_num: data[i].pub_read_num, //点击量
-              BOOK_EB_PRICE: data[i].ebPrice,  // 价格
+              memberPrice: data[i].memberPrice,  // 价格
               pub_resource_name: data[i].resourceName, // 书名
               id: data[i].pubId
             };
             dataList.push(temp);
           }
-          //去除浏览记录中重复的图书清单；
-          var hash = {},result = [];
-          for (var i = 0,elem;(elem = dataList[i]) != null;i++){
-            if (!hash[elem]){
-              result.push(dataList[i]);
-              hash[elem] = true;
-            }
-          }
-          this.list = result;
-          // this.list = dataList;
+          this.list = dataList;
         } else {
           this.list = [];
         }
@@ -166,12 +157,11 @@ export default {
           this.dealHistory(resourceDetail);
         }
       });
-
     },
     dealHistory (item) {
       var queryStorage = JSON.parse(window.localStorage.getItem('newHistoryLog')) ? JSON.parse(window.localStorage.getItem('newHistoryLog')) : [];
       for (let i in queryStorage) {
-        if (this.pubId == queryStorage[i].id) { // 浏览历史里面已经有了
+        if (this.bookInfo.resourceName == queryStorage[i].pub_resource_name || this.pubId == queryStorage[i].id ) { // 浏览历史里面已经有了
           queryStorage.splice(i, 1); // 先删除
           break;
         }

@@ -263,6 +263,9 @@ export default {
       this.tabConfigList = this.CONFIG.tabConfigList;  //tab配置
       this.tabActiveIndex = this.CONFIG.tabConfigList.tabActiveIndex;  //tab配置
     }
+    if (typeof (this.CONFIG.tabConfigList.tabConfigshow) == "undefined") { //如果没配置就展示吧
+      this.CONFIG.tabConfigList.tabConfigshow = true;
+    }
     if (typeof (this.CONFIG.bugButton) != "undefined") {
       this.bugButton = this.CONFIG.bugButton;  //购买按钮配置
     }
@@ -323,8 +326,11 @@ export default {
           });
         }
 
-
         if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 没有试读地址
+          this.$message({
+            message: "本书没有试读地址",
+            type: 'error'
+          });
           return false;
         }
       }

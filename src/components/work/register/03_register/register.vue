@@ -127,7 +127,7 @@
           <div class="register_02_bind_content_mail" style="padding-left:0px;">
             <div class="register_02_bind_content_mail_success-title"></div>
             <div class="register_02_bind_content_mail_success-content">{{getStaticText('yourEmailWillReceive') ? getStaticText('yourEmailWillReceive') : '您的邮箱将会收到一封'}}
-              <span class="register_02_bind_content_mail_success-content-text">{{getStaticText('verify') ? getStaticText('verufy') : '验证'}}</span>
+              <span class="register_02_bind_content_mail_success-content-text">{{getStaticText('verify') ? getStaticText('verify') : '验证'}}</span>
               {{getStaticText('email') ? getStaticText('email'): '邮件 '}}<br/> {{getStaticText('checkOutEmail') ? getStaticText('checkOutEmail') : '请登录你的邮箱查看'}}</div>
             <el-button class="register_02_bind_content-button" type="primary" @click="backLogin">
               {{getStaticText('backToLogin') ? getStaticText('backToLogin'): '返回登录页'}}</el-button>

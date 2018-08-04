@@ -293,6 +293,10 @@
     <!--支付方式 信息 -->
     <div class="idPayPageOrder" v-show="showPageName=='idPayPageOrder'">
       <span class="idPayPageOrder_title">请在15分钟内支付订单</span>
+      <div class="idPayPageOrder_totalmoney-box">
+          <span class="idPayPageOrder_label">实付金额：</span>
+          <span class="idPayPageOrder_text">{{bookMoney}}</span>
+      </div>
       <div class="idPayPageOrder_ul">
         <div class="idPayPageOrder_li">
           <span class="idPayPageOrder_label">期刊名称：</span>
@@ -323,6 +327,15 @@
           <span class="work_shoppingcart_05_pay_icon work_shoppingcart_05_pay_Weixin_icon" v-bind="{class: payType.Weixin.iconClass}"></span>
           <span class="work_shoppingcart_05_pay_name work_shoppingcart_05_pay_Weixin_name" v-text="payType.Weixin.name"></span>
         </div>
+
+        <!-- 支付宝支付  start -->
+        <div v-if="payType && payType.Alipay && payType.Alipay.AlipayShow" class="work_shoppingcart_05_pay_balance">
+          <span class="work_shoppingcart_05_pay_Balance_radio" :class="{work_shoppingcart_05_pay_avtive:defaultPay=='Alipay'}" @click="changeDefaultPay('Alipay')"></span>
+          <span class="work_shoppingcart_05_pay_icon work_shoppingcart_05_pay_Alipay_icon" v-bind="{class: payType.Alipay.iconClass}"></span>
+          <span class="work_shoppingcart_05_pay_name work_shoppingcart_05_pay_Alipay_name" v-text="payType.Alipay.name"></span>
+        </div>
+        <!-- 支付宝支付  end -->
+
         <div v-if="payType && payType.Balance && balanceHintShow" class="work_shoppingcart_05_pay_balanceHint">
           <span v-text="payType.Balance.balanceHint"></span>
         </div>
@@ -414,7 +427,7 @@
         contentType: $_$.bookContentType,
         pubId: "", //要加入购物车的书的pubId
         payType: {}, //支付方式配置
-        defaultPay: "Balance", //默认支付方式  Balance  Weixin
+        defaultPay: "Balance", //默认支付方式  Balance  Weixin  Alipay
         menberMoney: "0", //有多少余额
         bookMoney: "0", // 应该付款多少钱
         balanceHintShow: false, //是不是展示没钱提示
@@ -770,7 +783,7 @@
           list: [this.tempList],
         };
         this.Orderparams = {
-          oremark: "wxShop",
+          oremark: this.CONFIG.platform,
           orderType: "periodical",   //期刊是这个 其他的都是book
           orderCode: "", //不用写
           balanceAmount: 0, // 如果是余额支付，那就写支付金额 不是就写0
@@ -787,7 +800,7 @@
           loginName: this.loginName,
           payAmount: this.bookMoney, // 应付金额 = 商品总价 + 运费
           payCode: "", //不用写
-          payMethod: 'Weixin', // 支付方式： Weixin 微信支付 Alipay 支付宝支付  Balance 余额支付
+          payMethod: this.defaultPay, // 支付方式： Weixin 微信支付 Alipay 支付宝支付  Balance 余额支付
           payRemark: '', // 订单备注
           payStatus: "", //空
           payTime: null,
