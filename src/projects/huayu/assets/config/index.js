@@ -54,10 +54,10 @@ var $_$ = {
 					},
 				"tabArr": [{
 					"tag": "activityInstructions",
-					"title": "活动说明"
+					"title": "投票详情"
 				}, {
 					"tag": "activityPlan",
-					"title": "活动方案"
+					"title": "奖项设置"
 				}, {
 					"tag": "activityNews",
 					"title": "活动新闻"

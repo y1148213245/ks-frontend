@@ -116,7 +116,7 @@ export default {
     /* 时间戳转日期 */
     formatTime (str) {
       if (str) {
-        return Moment(str).format("YYYY-MM-DD hh:mm")
+        return Moment(str).format("YYYY-MM-DD HH:mm")
       } else {
         return '暂无日期'
       }

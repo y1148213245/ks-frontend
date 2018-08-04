@@ -54,10 +54,10 @@ var $_$ = {
 					},
 				"tabArr": [{
 					"tag": "activityInstructions",
-					"title": "活动说明"
+					"title": "投票详情"
 				}, {
 					"tag": "activityPlan",
-					"title": "活动方案"
+					"title": "奖项设置"
 				}, {
 					"tag": "activityNews",
 					"title": "活动新闻"
@@ -469,7 +469,8 @@ var $_$ = {
 			"ui_list_pic_21": {
 				"detailHref": {
 					"activityrace": "./activityrace.html",
-					"activityvote": "./activityvote.html"
+					"activityvote": "./activityvote.html",
+					 activityshow:'./activityshow.html'
 				},
 				"baseKeys": {
 					"id": "id",
@@ -488,7 +489,13 @@ var $_$ = {
 						"beginTime": "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
 						"endTime": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
 						"reviewDate": ""
-					}
+					},
+					'show':{
+            topic: "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+            beginTime: "",
+            endTime: "",
+            reviewDate:'',
+          }
 				},
 				"url": "spc/cms/publish/list.do",
 				"params": {
@@ -610,13 +617,18 @@ var $_$ = {
 				"attachTypeCode": "original",
 				"getDetail": {
 					"raceNews": {
-				"params": {
-					"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"
+						"params": {
+							"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYNEWS"
 						}
 					},
 					"voteNews": {
 						"params": {
-							"getDetailRequestParam_doclibCode": "PORTAL_VOTEINFORMATION"
+								"getDetailRequestParam_doclibCode": "PORTAL_VOTEINFORMATION"
+						}
+					},
+					'showNews':{
+						params: {
+							getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYINFORMATION'/* 库码 */
 						}
 					}
 				},
@@ -626,6 +638,9 @@ var $_$ = {
 					},
 					"voteNews": {
 						"url": "spc/prodb/activity/votePrevNextNews.do"
+					},
+					'showNews':{
+						url:'spc/prodb/activity/showPrevNextNews.do'
 					}
 				},
 				"keys": {
@@ -684,7 +699,7 @@ var $_$ = {
 					"loginTimeOut": "登录超时，请您登陆",
 					"serverMaintenance": "服务器维护中"
 			}
-		}
+			}
 		}
 	},
 	"activityrace": {
@@ -1404,6 +1419,137 @@ var $_$ = {
 			}
 		}
 	},
+	/* 展示类活动页配置 */
+	"activityshow":{
+		activityDetail: {
+			"work_activitydetail_01": {
+				"url": "spc/cms/publish/detail.do",
+				"keys": {
+					"title": "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+					"content": "PORTAL_SHOWACTIVITY_TEXTCONTENT",
+					"startDate": "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
+					"endDate": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
+					"resourceId": "pub_resource_id",
+					"illustration": "pub_POSTER",
+					"reviewDate": "PORTAL_VOTEACTIVITY_REVIEW_TIMESTAMPNEW",
+					"requestUrlParam_pubId": "pubId",
+					"toUploadPageUrlParam_docId": "docId",
+					"illustrationLinks": "PORTAL_VOTEACTIVITY_ACTIVITY_LINKS"
+				},
+				"eventName_loadedDatas": "eventName_loadedDatas",
+				"toUploadPagUrl": "",
+				showItem:[]
+			},
+			work_activitydetail_08: {
+				activityCandidate: {
+					modulename: 'activityCandidate'
+				},
+				activityPlan: {
+					modulename: 'activityPlan'
+				},
+				activityPrizewinner: {
+					modulename: 'activityPrizewinner'
+				},
+				activityResult:{
+					modulename:'activityResult'
+				},
+				tabArr: [
+					{
+						tag: 'activityInstructions',
+						title: '活动说明'
+					},
+					{
+						tag: 'activityNews',
+						title: '大赛新闻'
+					},
+					{
+						tag: 'activityPlan',
+						title: '奖项设置'
+					},
+					{
+						tag: 'activityResult',
+						title: '比赛结果'
+					}],
+				activityDetail: {/* 活动详情配置 */
+					event: {
+						listenName: 'eventName_loadedDatas',
+					},
+					sysAdapter: 'sykAdapter',
+					typeAdapter: 'activityShowAdapter',
+				}
+			},
+			/* 活动新闻组件 */
+			"work_activitydetail_03": {
+				"url": "spc/prodb/activity/showActivityNews.do",
+				"getPicUrl": "dynamicFile/stream.do",
+				"params": {
+					"getListParam_pageNo": "1",
+					"getListParam_pageSize": "99",
+					"getListParam_orderBy": "SYS_DOCUMENTID DESC"
+				},
+				"keys": {
+					"title": "SYS_TOPIC",
+					"picId": "COVERID",
+					"date": "SYS_CREATED",
+					"abstract": "ABSTRACT",
+					"eventListenData_activityId": "pub_resource_id",
+					"getPicParam_coverId": "recordID",
+					"getListParam_activityID": "activityID",
+					"getListParam_pageNo": "page",
+					"getListParam_pageSize": "pageSize",
+					"getListParam_orderBy": "orderBy"
+				},
+				"toDetailMode": {
+					"href": {
+						"url": "./newsdetail.html",
+						"params": {
+							"docID": "SYS_DOCUMENTID"
+						},
+						"activityParams": {
+							"activityID": "pub_resource_id"
+						},
+						"fixedParams": {
+							"page": "1",
+							"pageSize": "99",
+							"orderBy": "SYS_DOCUMENTID DESC",
+							newsType:"showNews",
+						}
+					}
+				},
+				"eventName_listen": "eventName_loadedDatas"
+			},
+			/* 辅文(活动方案)组件 */
+			"work_activitydetail_02": {
+				"activityPlan": {
+					"url": "spc/prodb/getPublicize.do",
+					"topic": "详情",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "eventName_loadedDatas"
+				},
+				"activityResult": {
+					"url": "spc/prodb/getPublicize.do",
+					"topic": "比赛结果",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "eventName_loadedDatas"
+				}
+			}
+		}
+	},
+	/* END 展示类活动页配置 */
 	"header": {
 		"navigation": {
 			"navigation_02": {
@@ -1574,7 +1720,8 @@ var $_$ = {
 					},
 					detailHref: {
 						activityrace:'./activityrace.html',
-						activityvote:'./activityvote.html'
+						activityvote:'./activityvote.html',
+						activityshow:'./activityshow.html'
 					},
 					baseKeys:{
 						id: "id",
@@ -1593,6 +1740,12 @@ var $_$ = {
 							beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
 							endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
 							reviewDate:''
+						},
+						'show':{
+							topic: "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+							beginTime: "",
+							endTime: "",
+							reviewDate:'',
 						}
 					}
 				},
