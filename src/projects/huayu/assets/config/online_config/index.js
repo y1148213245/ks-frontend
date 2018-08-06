@@ -50,6 +50,9 @@ var $_$ = {
 				activityResult:{
 					modulename:'activityResult'
 				},
+				activityNotice:{
+					modulename:'activityNotice'
+				},
 				tabArr: [
 					{
 						tag: 'activityInstructions',
@@ -57,7 +60,8 @@ var $_$ = {
 					},
 					{
 						tag: 'activityNews',
-						title: '大赛新闻'
+						title: '大赛新闻',
+						subModules:['notice']
 					},
 					{
 						tag: 'activityPlan',
@@ -129,6 +133,19 @@ var $_$ = {
 						"requestUrlParam_code": "code"
 					},
 					"eventName_listen": "eventName_loadedDatas"
+				},
+				"activityNotice": {
+					"url": "spc/prodb/getPublicize.do",
+					"topic": "公告",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "eventName_loadedDatas"
 				}
 			}
 		}
@@ -168,6 +185,9 @@ var $_$ = {
 				activityPrizewinner:{
 					modulename:'activityPrizewinner'
 				},
+				activityNotice:{
+					modulename:'activityNotice'
+				},
 				activityDetail:{/* 活动详情配置 */
 					event:{
 						listenName:'eventName_loadedDatas',
@@ -186,11 +206,13 @@ var $_$ = {
 					},
 					{
 						tag:'activityNews',
-						title:'活动新闻'
+						title:'活动新闻',
+						subModules:['notice']
 					},
 					{
 						tag:'activityCandidate',
-						title:'参选人'
+						title:'参选人',
+						subModules:['notice']
 					},
 					{
 						tag:'activityPrizewinner',
@@ -323,6 +345,19 @@ var $_$ = {
 				"activityPlan": {
 					"url": "spc/prodb/getPublicize.do",
 					"topic": "详情",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "eventName_loadedDatas"
+				},
+				"activityNotice": {
+					"url": "spc/prodb/getPublicize.do",
+					"topic": "公告",
 					"keys": {
 						"topic": "topic",
 						"content": "content",

@@ -6,14 +6,14 @@ var CONFIG = {
 		"siteId": 8,
 		"chId": 0
 	},
-  "IS_VALIDATE_TEST": true,
-  EMAIL_CONFIG:{
-		showPostfix:true,
-		postfix:['163.com','qq.com','sina.com','sohu.com','126.com']
-}
+	"IS_VALIDATE_TEST": true,
+	"EMAIL_CONFIG": {
+		"showPostfix": true,
+		"postfix": ["163.com", "qq.com", "sina.com", "sohu.com", "126.com"]
+	}
 }
 var $_$ = {
-	"SITE_NAME": "site-133",
+	"SITE_NAME": "site-291",
 	"IS_DISABLE": false,
 	"activityvote": {
 		"activityDetail": {
@@ -45,13 +45,16 @@ var $_$ = {
 				"activityPrizewinner": {
 					"modulename": "activityPrizewinner"
 				},
+				activityNotice:{
+					modulename:'activityNotice'
+				},
 				"activityDetail": {
 					"event": {
 						"listenName": "eventName_loadedDatas"
-				},
+					},
 					"sysAdapter": "sykAdapter",
 					"typeAdapter": "activityVoteAdapter"
-					},
+				},
 				"tabArr": [{
 					"tag": "activityInstructions",
 					"title": "投票详情"
@@ -60,15 +63,17 @@ var $_$ = {
 					"title": "奖项设置"
 				}, {
 					"tag": "activityNews",
-					"title": "活动新闻"
+					"title": "活动新闻",
+					subModules:['notice']
 				}, {
 					"tag": "activityCandidate",
-					"title": "参选人"
+					"title": "参选人",
+					subModules:['notice']
 				}, {
 					"tag": "activityPrizewinner",
 					"title": "获奖人展示"
 				}]
-					},
+			},
 			"work_activitydetail_09": {
 				"activityCandidate": {
 					"showType": "candidate",
@@ -76,13 +81,13 @@ var $_$ = {
 						"url": "spc/prodb/searchNLP.do",
 						"params": {
 							"doclibCode": "PORTAL_VOTE"
-					},
+						},
 						"fixedParams": [{
 							"relations": "5",
 							"cols": "TEXT",
 							"symbols": "5",
 							"vals": "5"
-					}],
+						}],
 						"getActivityDetailData": [{
 							"relations": "1",
 							"cols": "ACTIVITYID",
@@ -95,10 +100,10 @@ var $_$ = {
 					"activityDetail": {
 						"event": {
 							"listenName": "eventName_loadedDatas"
-			},
+						},
 						"sysAdapter": "sykAdapter",
 						"typeAdapter": "activityVoteAdapter"
-				},
+					},
 					"getAwardList": {
 						"url": "spc/prodb/searchNL.do",
 						"params": {
@@ -114,7 +119,7 @@ var $_$ = {
 							"symbols": "2",
 							"vals": "resId"
 						}]
-						}
+					}
 				},
 				"activityPrizewinner": {
 					"showType": "prizewinner",
@@ -122,13 +127,13 @@ var $_$ = {
 						"url": "spc/prodb/searchNLP.do",
 						"params": {
 							"doclibCode": "PORTAL_VOTE"
-			},
+						},
 						"fixedParams": [{
 							"relations": "5",
 							"cols": "TEXT",
 							"symbols": "5",
 							"vals": "5"
-					}],
+						}],
 						"getActivityDetailData": [{
 							"relations": "1",
 							"cols": "ACTIVITYID",
@@ -210,6 +215,19 @@ var $_$ = {
 				"activityPlan": {
 					"url": "spc/prodb/getPublicize.do",
 					"topic": "详情",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "eventName_loadedDatas"
+				},
+				"activityNotice": {
+					"url": "spc/prodb/getPublicize.do",
+					"topic": "公告",
 					"keys": {
 						"topic": "topic",
 						"content": "content",
@@ -470,7 +488,7 @@ var $_$ = {
 				"detailHref": {
 					"activityrace": "./activityrace.html",
 					"activityvote": "./activityvote.html",
-					 activityshow:'./activityshow.html'
+					"activityshow": "./activityshow.html"
 				},
 				"baseKeys": {
 					"id": "id",
@@ -490,12 +508,12 @@ var $_$ = {
 						"endTime": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
 						"reviewDate": ""
 					},
-					'show':{
-            topic: "PORTAL_SHOWACTIVITY_SYS_TOPIC",
-            beginTime: "",
-            endTime: "",
-            reviewDate:'',
-          }
+					"show": {
+						"topic": "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+						"beginTime": "",
+						"endTime": "",
+						"reviewDate": ""
+					}
 				},
 				"url": "spc/cms/publish/list.do",
 				"params": {
@@ -535,8 +553,8 @@ var $_$ = {
 							"sourceLink": "information_a_sourceUrl"
 						}
 					}
-						}
-					}
+				}
+			}
 		},
 		"list_word": {
 			"list_word_02": {
@@ -576,38 +594,33 @@ var $_$ = {
 		}
 	},
 	"newsdetail": {
-		share: {
-			ui_share_01: {
-				'newsShare': {
-					shareLists: [ // 分享配置
-						{
-							title: '分享到QQ空间', //
-							class: 'bds_qzone', //
-							cmd: 'qzone', //
-						},
-						{
-							title: '分享到新浪微博',
-							class: 'bds_tsina',
-							cmd: 'tsina',
-						},
-						{
-							title: '分享到腾讯微博',
-							class: 'bds_tqq',
-							cmd: 'tqq',
-						},
-						{
-							title: '分享到人人网',
-							class: 'bds_renren',
-							cmd: 'renren',
-						},
-					]
+		"share": {
+			"ui_share_01": {
+				"newsShare": {
+					"shareLists": [{
+						"title": "分享到QQ空间",
+						"class": "bds_qzone",
+						"cmd": "qzone"
+					}, {
+						"title": "分享到新浪微博",
+						"class": "bds_tsina",
+						"cmd": "tsina"
+					}, {
+						"title": "分享到腾讯微博",
+						"class": "bds_tqq",
+						"cmd": "tqq"
+					}, {
+						"title": "分享到人人网",
+						"class": "bds_renren",
+						"cmd": "renren"
+					}]
 				}
 			}
 		},
 		"informationDetail": {
 			"work_informationdetail_02": {
-				shareComponent:{/* 分享子组件配置 */
-					moduleName:'newsShare'
+				"shareComponent": {
+					"moduleName": "newsShare"
 				},
 				"getDetailUrl": "spc/prodb/detail.do",
 				"getPreAndNextUrl": "spc/prodb/activity/prevNextNews.do",
@@ -623,12 +636,12 @@ var $_$ = {
 					},
 					"voteNews": {
 						"params": {
-								"getDetailRequestParam_doclibCode": "PORTAL_VOTEINFORMATION"
+							"getDetailRequestParam_doclibCode": "PORTAL_VOTEINFORMATION"
 						}
 					},
-					'showNews':{
-						params: {
-							getDetailRequestParam_doclibCode: 'PORTAL_ACTIVITYINFORMATION'/* 库码 */
+					"showNews": {
+						"params": {
+							"getDetailRequestParam_doclibCode": "PORTAL_ACTIVITYINFORMATION"
 						}
 					}
 				},
@@ -639,8 +652,8 @@ var $_$ = {
 					"voteNews": {
 						"url": "spc/prodb/activity/votePrevNextNews.do"
 					},
-					'showNews':{
-						url:'spc/prodb/activity/showPrevNextNews.do'
+					"showNews": {
+						"url": "spc/prodb/activity/showPrevNextNews.do"
 					}
 				},
 				"keys": {
@@ -698,7 +711,7 @@ var $_$ = {
 					"pleaseLoginFirst": "请您先登录",
 					"loginTimeOut": "登录超时，请您登陆",
 					"serverMaintenance": "服务器维护中"
-			}
+				}
 			}
 		}
 	},
@@ -1135,126 +1148,122 @@ var $_$ = {
 						}
 					}
 				},
-				'goodProductMore': {
-					listTitle:'优秀作品',
-					showItem:[],
-					url: 'spc/prodb/getWorkList.do',
-					toProductDetailUrl: 'productiondetail.html',
-					classification: {/* 分类配置,无则不配置 */
-						titles: ['一等奖', '二等奖', '三等奖'],
-						key: 'AWARD',/* 对应数据的字段 */
+				"goodProductMore": {
+					"listTitle": "优秀作品",
+					"showItem": [],
+					"url": "spc/prodb/getWorkList.do",
+					"toProductDetailUrl": "productiondetail.html",
+					"classification": {
+						"titles": ["一等奖", "二等奖", "三等奖"],
+						"key": "AWARD"
 					},
-					params: {
-						getListParam_doclibCode: 'PORTAL_WORKS',
-						getListParam_orderCondition:' BY_SPC_SYS_DOCUMENTID_SPC_DESC',
-						getListParam_pageNo:'1',
-						getListParam_pageSize:'5',
-						getListParamOptions: {//扩展查询参数配置，扩展属性名应与“扩展查询参数”字段配置一致
-							activityId: {
-								getListParam_relations: '1',
-								getListParam_cols: 'ACTIVITYID',
-								getListParam_symbols: '2',
-								getListParam_memberType: '4',
+					"params": {
+						"getListParam_doclibCode": "PORTAL_WORKS",
+						"getListParam_orderCondition": " BY_SPC_SYS_DOCUMENTID_SPC_DESC",
+						"getListParam_pageNo": "1",
+						"getListParam_pageSize": "5",
+						"getListParamOptions": {
+							"activityId": {
+								"getListParam_relations": "1",
+								"getListParam_cols": "ACTIVITYID",
+								"getListParam_symbols": "2",
+								"getListParam_memberType": "4"
 							},
-							'place': {//扩展属性名
-								getListParam_relations: '1',
-								getListParam_cols: 'AREA',
-								getListParam_symbols: '1',
-								getListParam_memberType: '4',
+							"place": {
+								"getListParam_relations": "1",
+								"getListParam_cols": "AREA",
+								"getListParam_symbols": "1",
+								"getListParam_memberType": "4"
 							},
-							'school': {
-								getListParam_relations: '1',
-								getListParam_cols: 'SCHOOL',
-								getListParam_symbols: '1',
-								getListParam_memberType: '4',
+							"school": {
+								"getListParam_relations": "1",
+								"getListParam_cols": "SCHOOL",
+								"getListParam_symbols": "1",
+								"getListParam_memberType": "4"
 							},
-							'group': {
-								getListParam_relations: '1',
-								getListParam_cols: 'CLASS',
-								getListParam_symbols: '1',
-								getListParam_memberType: '4',
+							"group": {
+								"getListParam_relations": "1",
+								"getListParam_cols": "CLASS",
+								"getListParam_symbols": "1",
+								"getListParam_memberType": "4"
 							},
-							'searchText': {
-								getListParam_relations: '1',
-								getListParam_cols: 'SYS_TOPIC',
-								getListParam_symbols: '1',
-								getListParam_memberType: '4',
+							"searchText": {
+								"getListParam_relations": "1",
+								"getListParam_cols": "SYS_TOPIC",
+								"getListParam_symbols": "1",
+								"getListParam_memberType": "4"
 							},
-							'author':{
-								getListParam_relations: '1',
-								getListParam_cols: 'POTHUNTER_NAME',
-								getListParam_symbols: '1',
-								getListParam_memberType: '4',
+							"author": {
+								"getListParam_relations": "1",
+								"getListParam_cols": "POTHUNTER_NAME",
+								"getListParam_symbols": "1",
+								"getListParam_memberType": "4"
 							},
-							'idCard':{
-								getListParam_relations: '1',
-								getListParam_cols: 'POTHUNTER_IDNUMBER',
-								getListParam_symbols: '2',
-								getListParam_memberType: '4',
+							"idCard": {
+								"getListParam_relations": "1",
+								"getListParam_cols": "POTHUNTER_IDNUMBER",
+								"getListParam_symbols": "2",
+								"getListParam_memberType": "4"
 							}
-	
 						},
-						getListParamOptions_fixed: {/* 固定条件配置,无则不配置 */
-							IS_EXCELLENTWORK: {//例
-								getListParam_relations: '1',
-								getListParam_cols: 'IS_EXCELLENTWORK',
-								getListParam_symbols: '2',
-								getListParam_memberType: '4',
-								getListParam_vals: '是',
-							},
+						"getListParamOptions_fixed": {
+							"IS_EXCELLENTWORK": {
+								"getListParam_relations": "1",
+								"getListParam_cols": "IS_EXCELLENTWORK",
+								"getListParam_symbols": "2",
+								"getListParam_memberType": "4",
+								"getListParam_vals": "是"
+							}
 						},
-						toProductDetailParam_resourceType: 'PORTAL_WORKS'
+						"toProductDetailParam_resourceType": "PORTAL_WORKS"
 					},
-					keys: {
-						title: 'SYS_TOPIC',
-						author: 'POTHUNTER_NAME',
-						date: 'SYS_CREATED',
-						abstract: 'DESCRIPTION',
-						teacherCommentNum: 'DIS_COUNT_NUM',
-						voteNum: 'VOTE_COUNT',
-						resourceId: 'SYS_DOCUMENTID',
-						resourceName: 'SYS_TOPIC',
-						activityId: 'ACTIVITYID',
-	
-						eventListienLoadDatas_activityId: 'pub_resource_id',
-						eventListienLoadDatas_voteSwitch: 'PORTAL_ACTIVITY_PRAISE_SWITCH',
-						eventListienLoadDatas_endDate: 'PORTAL_ACTIVITY_END_TIMESTAMPNEW',
-						eventListienLoadDatas_voteDescription: 'PORTAL_ACTIVITY_PRAISE_DESCRIPTION',
-						eventListienLoadDatas_reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',
-						eventListienLoadDatas_startDate:'PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW',
-	
-						eventListienSearchDatas: ['place', 'school', 'group', 'searchText','author','idCard'],//扩展查询参数
-						getListParam_doclibCode: 'doclibCode',
-						getListParam_relations: 'relations',
-						getListParam_cols: 'cols',
-						getListParam_symbols: 'symbols',
-						getListParam_vals: 'vals',
-						getListParam_memberType: 'memberType',
-						getListParam_orderCondition:'orderCondition',
-						getListParam_pageNo:'page',
-						getListParam_pageSize:'size',
-	
-						toProductDetailParam_resourceType: 'resourceType',
-						toProductDetailParam_resourceId: 'resourceId',
-						toProductDetailParam_colId: 'colId',
-						toProductDetailParam_resourceName: 'resourceName',
-						toProductDetailParam_activityId: 'activityId',
+					"keys": {
+						"title": "SYS_TOPIC",
+						"author": "POTHUNTER_NAME",
+						"date": "SYS_CREATED",
+						"abstract": "DESCRIPTION",
+						"teacherCommentNum": "DIS_COUNT_NUM",
+						"voteNum": "VOTE_COUNT",
+						"resourceId": "SYS_DOCUMENTID",
+						"resourceName": "SYS_TOPIC",
+						"activityId": "ACTIVITYID",
+						"eventListienLoadDatas_activityId": "pub_resource_id",
+						"eventListienLoadDatas_voteSwitch": "PORTAL_ACTIVITY_PRAISE_SWITCH",
+						"eventListienLoadDatas_endDate": "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
+						"eventListienLoadDatas_voteDescription": "PORTAL_ACTIVITY_PRAISE_DESCRIPTION",
+						"eventListienLoadDatas_reviewDate": "PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW",
+						"eventListienLoadDatas_startDate": "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
+						"eventListienSearchDatas": ["place", "school", "group", "searchText", "author", "idCard"],
+						"getListParam_doclibCode": "doclibCode",
+						"getListParam_relations": "relations",
+						"getListParam_cols": "cols",
+						"getListParam_symbols": "symbols",
+						"getListParam_vals": "vals",
+						"getListParam_memberType": "memberType",
+						"getListParam_orderCondition": "orderCondition",
+						"getListParam_pageNo": "page",
+						"getListParam_pageSize": "size",
+						"toProductDetailParam_resourceType": "resourceType",
+						"toProductDetailParam_resourceId": "resourceId",
+						"toProductDetailParam_colId": "colId",
+						"toProductDetailParam_resourceName": "resourceName",
+						"toProductDetailParam_activityId": "activityId"
 					},
-					eventName_listenLoadedData: 'eventName_loadedDatas',
-					eventName_listenSearch: 'eventName_search',
-					isDevelopment: false,
-					getAwardList: {/* 获取奖项列表配置 */
-						url: 'spc/prodb/searchNL.do',
-						params: {
-							doclibCode: 'PORTAL_AWARD',
-							relations: 1,
-							cols: 'ACTIVITYID',
-							symbols: 2,
-							vals: '',
-							status: 0,
-							page: 1,
-							size: 99,
-							pageable: 1
+					"eventName_listenLoadedData": "eventName_loadedDatas",
+					"eventName_listenSearch": "eventName_search",
+					"isDevelopment": false,
+					"getAwardList": {
+						"url": "spc/prodb/searchNL.do",
+						"params": {
+							"doclibCode": "PORTAL_AWARD",
+							"relations": 1,
+							"cols": "ACTIVITYID",
+							"symbols": 2,
+							"vals": "",
+							"status": 0,
+							"page": 1,
+							"size": 99,
+							"pageable": 1
 						}
 					}
 				}
@@ -1304,18 +1313,18 @@ var $_$ = {
 				}, {
 					"tag": "activityNews",
 					"title": "活动新闻",
-					subModules:['notice','goodProduct']
+					"subModules": ["notice", "goodProduct"]
 				}, {
 					"tag": "activityProduct",
 					"title": "参赛作品",
-					subModules:['notice','goodProduct']
+					"subModules": ["notice", "goodProduct"]
 				}, {
 					"tag": "activityProductWinning",
 					"title": "获奖作品"
 				}, {
 					"tag": "activityTeather",
 					"title": "名师指导",
-					subModules:['notice','goodProduct']
+					"subModules": ["notice", "goodProduct"]
 				}]
 			}
 		},
@@ -1419,9 +1428,8 @@ var $_$ = {
 			}
 		}
 	},
-	/* 展示类活动页配置 */
-	"activityshow":{
-		activityDetail: {
+	"activityshow": {
+		"activityDetail": {
 			"work_activitydetail_01": {
 				"url": "spc/cms/publish/detail.do",
 				"keys": {
@@ -1438,47 +1446,46 @@ var $_$ = {
 				},
 				"eventName_loadedDatas": "eventName_loadedDatas",
 				"toUploadPagUrl": "",
-				showItem:[]
+				"showItem": []
 			},
-			work_activitydetail_08: {
-				activityCandidate: {
-					modulename: 'activityCandidate'
+			"work_activitydetail_08": {
+				"activityCandidate": {
+					"modulename": "activityCandidate"
 				},
-				activityPlan: {
-					modulename: 'activityPlan'
+				"activityPlan": {
+					"modulename": "activityPlan"
 				},
-				activityPrizewinner: {
-					modulename: 'activityPrizewinner'
+				"activityPrizewinner": {
+					"modulename": "activityPrizewinner"
 				},
-				activityResult:{
-					modulename:'activityResult'
+				"activityResult": {
+					"modulename": "activityResult"
 				},
-				tabArr: [
-					{
-						tag: 'activityInstructions',
-						title: '活动说明'
+				activityNotice:{
+					modulename:'activityNotice'
+				},
+				"tabArr": [{
+					"tag": "activityInstructions",
+					"title": "活动说明"
+				}, {
+					"tag": "activityNews",
+					"title": "大赛新闻",
+					subModules:['notice']
+				}, {
+					"tag": "activityPlan",
+					"title": "奖项设置"
+				}, {
+					"tag": "activityResult",
+					"title": "比赛结果"
+				}],
+				"activityDetail": {
+					"event": {
+						"listenName": "eventName_loadedDatas"
 					},
-					{
-						tag: 'activityNews',
-						title: '大赛新闻'
-					},
-					{
-						tag: 'activityPlan',
-						title: '奖项设置'
-					},
-					{
-						tag: 'activityResult',
-						title: '比赛结果'
-					}],
-				activityDetail: {/* 活动详情配置 */
-					event: {
-						listenName: 'eventName_loadedDatas',
-					},
-					sysAdapter: 'sykAdapter',
-					typeAdapter: 'activityShowAdapter',
+					"sysAdapter": "sykAdapter",
+					"typeAdapter": "activityShowAdapter"
 				}
 			},
-			/* 活动新闻组件 */
 			"work_activitydetail_03": {
 				"url": "spc/prodb/activity/showActivityNews.do",
 				"getPicUrl": "dynamicFile/stream.do",
@@ -1512,17 +1519,29 @@ var $_$ = {
 							"page": "1",
 							"pageSize": "99",
 							"orderBy": "SYS_DOCUMENTID DESC",
-							newsType:"showNews",
+							"newsType": "showNews"
 						}
 					}
 				},
 				"eventName_listen": "eventName_loadedDatas"
 			},
-			/* 辅文(活动方案)组件 */
 			"work_activitydetail_02": {
 				"activityPlan": {
 					"url": "spc/prodb/getPublicize.do",
 					"topic": "详情",
+					"keys": {
+						"topic": "topic",
+						"content": "content",
+						"eventName_listen_resourceId": "pub_resource_id",
+						"eventName_listen_resourceType": "pub_resource_type",
+						"requestUrlParam_docId": "docID",
+						"requestUrlParam_code": "code"
+					},
+					"eventName_listen": "eventName_loadedDatas"
+				},
+				"activityNotice": {
+					"url": "spc/prodb/getPublicize.do",
+					"topic": "公告",
 					"keys": {
 						"topic": "topic",
 						"content": "content",
@@ -1549,7 +1568,6 @@ var $_$ = {
 			}
 		}
 	},
-	/* END 展示类活动页配置 */
 	"header": {
 		"navigation": {
 			"navigation_02": {
@@ -1718,34 +1736,34 @@ var $_$ = {
 						"pageSize": "3",
 						"searchText": null
 					},
-					detailHref: {
-						activityrace:'./activityrace.html',
-						activityvote:'./activityvote.html',
-						activityshow:'./activityshow.html'
+					"detailHref": {
+						"activityrace": "./activityrace.html",
+						"activityvote": "./activityvote.html",
+						"activityshow": "./activityshow.html"
 					},
-					baseKeys:{
-						id: "id",
-						resourceType:'pub_resource_type',
-						pub_picMiddle: "pub_picMiddle"
+					"baseKeys": {
+						"id": "id",
+						"resourceType": "pub_resource_type",
+						"pub_picMiddle": "pub_picMiddle"
 					},
-					keys: {
-						'contribute':{
-							topic: "PORTAL_ACTIVITY_SYS_TOPIC",
-							beginTime: "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
-							endTime: "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
-							reviewDate:'PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW',
+					"keys": {
+						"contribute": {
+							"topic": "PORTAL_ACTIVITY_SYS_TOPIC",
+							"beginTime": "PORTAL_ACTIVITY_BEGIN_TIMESTAMPNEW",
+							"endTime": "PORTAL_ACTIVITY_END_TIMESTAMPNEW",
+							"reviewDate": "PORTAL_ACTIVITY_REVIEW_TIMESTAMPNEW"
 						},
-						'vote':{
-							topic: "PORTAL_VOTEACTIVITY_SYS_TOPIC",
-							beginTime: "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
-							endTime: "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
-							reviewDate:''
+						"vote": {
+							"topic": "PORTAL_VOTEACTIVITY_SYS_TOPIC",
+							"beginTime": "PORTAL_VOTEACTIVITY_BEGIN_TIMESTAMPNEW",
+							"endTime": "PORTAL_VOTEACTIVITY_END_TIMESTAMPNEW",
+							"reviewDate": ""
 						},
-						'show':{
-							topic: "PORTAL_SHOWACTIVITY_SYS_TOPIC",
-							beginTime: "",
-							endTime: "",
-							reviewDate:'',
+						"show": {
+							"topic": "PORTAL_SHOWACTIVITY_SYS_TOPIC",
+							"beginTime": "",
+							"endTime": "",
+							"reviewDate": ""
 						}
 					}
 				},
@@ -2803,14 +2821,14 @@ var $_$ = {
 						"pubId": "",
 						"operateType": "0",
 						"siteId": ""
-				}
+					}
 				},
 				"showItem": [],
 				"event": {
 					"detailReady": "listenInfoDetail"
+				}
 			}
-		}
-	},
+		},
 		"crumbs": {
 			"work_crumbs_02": {
 				"detail": {

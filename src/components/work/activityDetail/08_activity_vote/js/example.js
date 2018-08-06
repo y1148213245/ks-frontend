@@ -24,6 +24,9 @@ const prod = {
       activityResult:{
         modulename:'activityResult'
       },
+      activityNotice:{
+        modulename:'activityNotice'
+      },
       tabArr: [
         {
           tag: 'activityInstructions',

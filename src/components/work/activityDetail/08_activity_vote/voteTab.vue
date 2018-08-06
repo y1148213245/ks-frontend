@@ -29,6 +29,18 @@
 
     <!-- 展示类活动比赛结果(辅文详情) -->
     <work_activitydetail_02 v-if="getIsHas('activityResult')" v-show="currentTab.tag == 'activityResult'" :namespace="namespace" :module="CONFIG.activityResult.modulename"></work_activitydetail_02>
+
+    <!-- 子模块 -->
+    <div class="work_activitydetail_08-tab_content-right" v-show="currentTab.subModules && currentTab.subModules.length > 0">
+      <!-- 公告 -->
+      <div class="work_activitydetail_08-tab_content-notice" v-show="currentTab.subModules && currentTab.subModules.indexOf('notice') > -1">
+        <div class="work_activitydetail_08-notice-title_box">
+          <span>公告</span>
+        </div>
+        <!-- 公告组件 -->
+        <work_activitydetail_02 :namespace="namespace" :module="CONFIG.activityNotice.modulename"></work_activitydetail_02>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -72,10 +84,10 @@ export default {
     },
     tabChange (item) {
       if (item.tag == 'activityPrizewinner') {
-        if(this.activityDetail[this.detailKeys.endTimeStamp] > new Date().getTime()){
+        if (this.activityDetail[this.detailKeys.endTimeStamp] > new Date().getTime()) {
           this.$message({
-            type:'warning',
-            message:'请等待评审结果'
+            type: 'warning',
+            message: '请等待评审结果'
           })
           return false
         }
@@ -104,4 +116,25 @@ export default {
 }
 </script>
 <style>
+.work_activitydetail_08-tab_content-right {
+  width: 400px;
+  float: right;
+}
+.work_activitydetail_08-tab_content-notice {
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #f2f2f2;
+  box-shadow: 0 1px 3px 0 rgba(189, 189, 189, 0.19);
+}
+.work_activitydetail_08-notice-title_box {
+  padding: 10px 0;
+  border-bottom: 1px solid #dcdcdc;
+  font-size: 16px;
+  font-weight: bold;
+}
+.work_activitydetail_08-notice-title_box span{
+    border-bottom: 4px solid #ec5144;
+    padding-bottom: 8px;
+    letter-spacing: 6px;
+}
 </style>
