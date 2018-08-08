@@ -114,6 +114,14 @@ const prod = {
           }
         }
       },
+      getActivityDetail:{
+        url:'spc/cms/publish/detail.do',
+        getLocationKey:{
+          pubId:'activityPubId'
+        },
+        sysAdapter:'sykAdapter',
+        typeAdapter:'activityAdapter'
+      },
       eventName_back: 'eventName_backNewsList',
       staticText: {
         createDate: "创建日期：",
