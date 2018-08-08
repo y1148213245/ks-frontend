@@ -72,6 +72,7 @@ export default {
     },
     createTree (colId, tree, navData) {
       this.navInteract(colId);
+      let reverseByColId = this.CONFIG.reverseByColId; //获取是否按照id反向排序
       //参数说明：(colId：当前栏目的colId，tree:生成的子结构存放数组，navData：接口返回的data结构)
       navData.forEach((val, ind) => {
         if (val[this.keys.parentId] == colId) {
@@ -83,7 +84,11 @@ export default {
             showChild: false, //子导航是否展示(鼠标单击控制展示收起)
             createChild: false //是否已经点击创建过子导航
           };
-          tree.push(treeObj);
+          if(reverseByColId){ //如果反向排序 , 则反压进数组
+            tree.unshift(treeObj); //将对象按照顺序从头部添加进数组
+          }else{ //否则进行默认排序
+            tree.push(treeObj);
+          } 
         }
       });
       //发送默认bus

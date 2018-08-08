@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-02-05 17:24:29
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-05-16 10:40:11
+ * @Last Modified time: 2018-08-08 10:47:41
  */
 <!-- 活动资讯列表 -->
 <template>

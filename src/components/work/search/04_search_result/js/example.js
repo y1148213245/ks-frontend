@@ -58,6 +58,7 @@ const prod = {
       eventName_loadDate: 'loadSearchResult',
       detailHref: './bookdetail.html?pubId=',
       isMobileLoading: false,
+      isMoreFieldSearch:['prod_name','BOOK_SYNOPSIS','pub_resource_name'],
       staticText: {
         total: "共",
         productQuanity: "件商品",

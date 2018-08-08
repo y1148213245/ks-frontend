@@ -730,9 +730,68 @@
             let datas = response.data;
             if(datas.data && datas.result == 1 && datas.data.submitStatus) {
               // alert("购买完成！")
-              location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
+              // location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
+              // 添加历史记录
+              window.history.pushState(
+                null,
+                null,
+                "../pages/subscribe.html?pubId=3510"
+              );
+              // 提交成功
+              //判断支付方式回调
+              // 需要跳转支付宝支付/微信扫描二维码页面
+              if (datas.data.payMethodCode === "Alipay") {
+                // 支付宝支付
+                // loadingTag.close();
+                window.open(
+                  CONFIG.BASE_URL +
+                  "epay/getPayForm.do?orderId=" +
+                  datas.data.orderId +
+                  "&loginName=" +
+                  _this.loginName +
+                  "&payMethodCode=" +
+                  datas.data.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId,
+                  "_self"
+                );
+              } else if (_this.payMethod === "Weixin") {
+                // 微信支付
+                axios.get(
+                  CONFIG.BASE_URL +
+                  "epay/getPayForm.do?orderId=" +
+                  argus.orderId +
+                  "&loginName=" +
+                  _this.member.loginName +
+                  "&payMethodCode=" +
+                  argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId
+                )
+                  .then(function (response) {
+                    var data = response.data.substring(
+                      response.data.indexOf("<a>") + 3,
+                      response.data.indexOf("</a>")
+                    );
+                    var orderCode = response.data.substring(
+                      response.data.indexOf("<div>") + 5,
+                      response.data.indexOf("</div>")
+                    );
+                    window.location.href =
+                      "../pages/qrcode.html?data=" +
+                      data +
+                      "&orderCode=" +
+                      orderCode;
+                    loadingTag.close();
+                  });
+              } else if (_this.payMethod === "Balance") {
+                //  余额支付
+                // alert("购买完成！")
+                location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
+              }
+
+
             } else {
-              //console.log(datas.data.errMsg);
+              console.log(datas.data.errMsg);
+
+              // 提交失败
+              // loadingTag.close();
             }
           }
           loading.close();

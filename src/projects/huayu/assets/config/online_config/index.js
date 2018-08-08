@@ -107,7 +107,8 @@ var $_$ = {
 							"docID": "SYS_DOCUMENTID"
 						},
 						"activityParams": {
-							"activityID": "pub_resource_id"
+							"activityID": "pub_resource_id",
+							'activityPubId':'id'
 						},
 						"fixedParams": {
 							"page": "1",
@@ -328,7 +329,8 @@ var $_$ = {
 							"docID": "SYS_DOCUMENTID"
 						},
 						"activityParams": {
-							"activityID": "pub_resource_id"
+							"activityID": "pub_resource_id",
+							'activityPubId':'id'
 						},
 						"fixedParams": {
 							"page": "1",
@@ -802,6 +804,14 @@ var $_$ = {
 						url:'spc/prodb/activity/showPrevNextNews.do'
 					}
 				},
+				getActivityDetail:{
+					url:'spc/cms/publish/detail.do',
+					getLocationKey:{
+						pubId:'activityPubId'
+					},
+					sysAdapter:'sykAdapter',
+					typeAdapter:'activityAdapter'
+				},
 				"keys": {
 					"topic": "SYS_TOPIC",
 					"time": "SYS_CREATED",
@@ -945,7 +955,8 @@ var $_$ = {
 							"docID": "SYS_DOCUMENTID"
 						},
 						"activityParams": {
-							"activityID": "pub_resource_id"
+							"activityID": "pub_resource_id",
+							'activityPubId':'id'
 						},
 						"fixedParams": {
 							"page": "1",
@@ -1792,6 +1803,29 @@ var $_$ = {
 	},
 	"list": {
 		"list_word": {
+			"list_word_01": {
+				"url": "spc/cms/publish/list.do",
+				"params": {
+					"conditions": [
+						{
+							"pub_col_id": "249"
+						}
+					],
+					"orderBy": "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
+					"pageNo": "1",
+					"pageSize": "15",
+					"searchText": null
+				},
+				"startNum": 0,
+				"locationQuery": {
+					"keys": {
+						"colId": "colId"
+					}
+				},
+				"staticText": {
+					"noDate": "暂无日期"
+				}
+			},
 			"list_word_02": {
 				"url": "spc/cms/publish/list.do",
 				"params": {
@@ -2026,7 +2060,7 @@ var $_$ = {
 						"fixedKeys": {}
 					},
 					"toMore": {
-						"url": "../pages/newslist.html",
+						"url": "../pages/informationlist.html",
 						"dataKeys": {
 							"colId": "id"
 						},
@@ -2433,6 +2467,29 @@ var $_$ = {
 			}
 		},
 		"list_word": {
+			"list_word_01": {
+				"url": "spc/cms/publish/list.do",
+				"params": {
+					"conditions": [
+						{
+							"pub_col_id": "282"
+						}
+					],
+					"orderBy": "pub_a_order1 asc pub_a_order2 desc pub_lastmodified desc id asc",
+					"pageNo": "1",
+					"pageSize": "15",
+					"searchText": null
+				},
+				"startNum": 1,
+				"locationQuery": {
+					"keys": {
+						"colId": "colId"
+					}
+				},
+				"staticText": {
+					"noDate": "暂无日期"
+				}
+			},
 			"list_word_02": {
 				"url": "spc/cms/publish/list.do",
 				"params": {
@@ -2593,9 +2650,9 @@ var $_$ = {
 		"navigation": {
 			"navigation_05": {
 				"newscol": {
-					"colId": 245,
+					"colId": 329,
 					"comTitle": {
-						"isShow": true,
+						"isShow": false,
 						"name": "华育动态新闻"
 					},
 					"showChildren": false,
@@ -2778,7 +2835,7 @@ var $_$ = {
 				"newscol": {
 					"colId": 329,
 					"comTitle": {
-						"isShow": true,
+						"isShow": false,
 						"name": "华育资讯"
 					},
 					"showChildren": false,

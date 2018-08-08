@@ -1,4 +1,4 @@
-<!--  -->
+<!--  zongsir  20180805 edit -->
 <template>
   <div class="search_04">
     <div v-if="CONFIG.isShowTotalCountTag" class="search_04-search_totalcount">{{getStaticText('total') ? getStaticText('total') : '共'}}
@@ -163,7 +163,24 @@ export default {
       param.pageSize = pageSize ? pageSize : param.pageSize;
       param.conditions = conditions ? conditions : param.conditions;
       param.orderBy = orderBy ? orderBy : param.orderBy;
-      param.searchText = searchText ? searchText : (this.locationQuery && this.locationQuery.searchText || '');
+
+      //是否是多字段模糊查询
+      //增量加载
+      param.searchText = '';
+      var newSearchText = searchText ? searchText : (this.locationQuery && this.locationQuery.searchText || '');
+      if (typeof (this.CONFIG.isMoreFieldSearch) != 'undefined') {
+        if (this.CONFIG.isMoreFieldSearch) {
+          for (var i=0;i<this.CONFIG.isMoreFieldSearch.length;i++)
+          {
+            param.searchText = param.searchText+' '+this.CONFIG.isMoreFieldSearch[i]+":"+"*"+newSearchText+"*";
+            if(i<(this.CONFIG.isMoreFieldSearch.length-1)){
+              param.searchText = param.searchText + ' OR ';
+            }
+          }
+        }
+      }else{
+        param.searchText = newSearchText;
+      }
 
       Post(CONFIG.BASE_URL + config.url, param).then((req) => {
         let data = req.data.result;

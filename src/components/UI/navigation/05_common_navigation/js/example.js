@@ -100,7 +100,8 @@ const dev = {
             "1121": "../pages/newslisttpxw?colId=",
             "1122": "../pages/newslistspjx?colId="
           }
-        }
+        },
+        "reverseByColId":false //是否按照id反向排序 , 默认false或者不传值按照colId排序 , true则按照colId反向排序
       },
     },
   }
@@ -149,7 +150,8 @@ const prod = {
             "1121": "../pages/newslisttpxw?colId=",
             "1122": "../pages/newslistspjx?colId="
           }
-        }
+        },
+        "reverseByColId":false //是否按照id反向排序 , 默认false或者不传值按照colId排序 , true则按照colId反向排序
       },
     },
   }

@@ -143,6 +143,14 @@ export default {
     },
     //取消收藏
     cancelCollection (loginName, pubId) {
+      //为空就听啦
+      if(pubId==''){
+        Toast.fail({
+          duration: 1000,
+          message: this.display.noSelect?this.display.noSelect:"NO SELECT"
+        })
+        return false;
+      }
       //TODO DELETE请求方式中的pubId/pubIds目前是写死的
       let BASE_URL = CONFIG.BASE_URL + this.CANCELCONFIG.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&pubIds=' + pubId;
 
@@ -161,6 +169,8 @@ export default {
           this.collectionlist = [];
           this.initData(this.loginName, '');
         }
+        // 搞完了之后重置
+        this.result = [];
       })
     },
 
