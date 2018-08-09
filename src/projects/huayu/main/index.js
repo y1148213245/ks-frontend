@@ -12,13 +12,13 @@ import Vant from 'vant'
 import 'swiper/dist/css/swiper.css'
 import 'vant/lib/vant-css/index.css'
 
-import ScanVues from "@common/scans/ScanVues";
-import store from "./store.js";
+// import ScanVues from "@common/scans/ScanVues";
+// import store from "./store.js";
 import VueBus from "vue-bus"; // 通过 cnpm install vue-bus安装
 import VueCodemirror from 'vue-codemirror'; // vue 在线代码编辑器
 import 'codemirror/lib/codemirror.css'; // 编辑器的主题样式
 import componentsApi from "@api"; // 数据组件公共api
-
+import initVueComponents from './SelectedComponents'
 Vue.use(VueOccupy);
 Vue.use(ElementUI);
 Vue.use(VueBus); // 在一个模块化工程中使用，必须通过Vue.use()使用vue-bus
@@ -27,20 +27,21 @@ Vue.use(Vant)
 
 new Vue({
   el: '#app',
-  store,
+  // store,
   created() {
     //引入全局components
-    ScanVues();
+    // ScanVues();
+    initVueComponents();
     //项目目录下的components
-    if (window.GLOBAL_PROJECT_VUES) {
-      for (var _name in window.GLOBAL_PROJECT_VUES) {
-        let item = window.GLOBAL_PROJECT_VUES[_name];
-        if (item.name && item.reused) {
-          Vue.component(item.name, item);
-        }
-      }
-      window.GLOBAL_PROJECT_VUES = null;
-    }
+    // if (window.GLOBAL_PROJECT_VUES) {
+    //   for (var _name in window.GLOBAL_PROJECT_VUES) {
+    //     let item = window.GLOBAL_PROJECT_VUES[_name];
+    //     if (item.name && item.reused) {
+    //       Vue.component(item.name, item);
+    //     }
+    //   }
+    //   window.GLOBAL_PROJECT_VUES = null;
+    // }
     document.getElementById("app").style["display"] = "block";
   }
 });

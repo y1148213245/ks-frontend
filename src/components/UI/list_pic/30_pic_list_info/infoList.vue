@@ -106,7 +106,7 @@ export default {
       this.childName = message[3];
       this.busMessage = message;
       this.getList();
-    },
+    }, 
     getList (colId, pagingParams) {
       this.infoList = [];
       // this.pageMessage.totalCount = 0  /* 总数变化会初始化分页页码 */
