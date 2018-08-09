@@ -109,7 +109,7 @@ export default {
     },
     getList (colId, pagingParams) {
       this.infoList = [];
-      this.pageMessage.totalCount = 0
+      // this.pageMessage.totalCount = 0  /* 总数变化会初始化分页页码 */
       // 查询数据
       let paramsObj = Object.assign({}, this.resourceListsConfig.params);
       let queryChildId = this.childId && this.childId.length > 0 ? this.childId.join(" ") : this.colId;

@@ -2657,6 +2657,7 @@ var $_$ = {
 					},
 					"showChildren": false,
 					"broadcastName": "showNavContent",
+					"transDefaultColId": "transDefaultColId",
 					"display": {},
 					"getNavLists": {
 						"url": "spc/cms/col/getAllColBySiteId.do",

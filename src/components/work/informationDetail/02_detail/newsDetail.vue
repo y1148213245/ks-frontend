@@ -162,7 +162,7 @@ export default {
     loadActivityDetail(){
       let query = URL.parse(document.URL, true).query;
       let url = this.CONFIG.getActivityDetail.url;
-      debugger
+      // debugger
       let params = {
         pubId:query[this.CONFIG.getActivityDetail.getLocationKey.pubId],
         loginName:''

@@ -44,6 +44,7 @@ a:hover{color: #5E8242}
 .work_informationdetail_02 .html-feild{font-size: 14px;color: #4A4A4A;line-height: 1.6;margin-top: 2.6em}
 .work_informationdetail_02-nav a,.ui_pagination_01 a{display: inline-block;background: #fff;border: 1px solid #F5F5F5;height: 40px;line-height: 40px;padding: 0px 12px;min-width: 120px;font-size: 13px;color: #5E8242}
 .work_informationdetail_02 a:hover,.ui_pagination_01 a:hover{background:#5E8242;color: #fff}
+.work_informationdetail_02-nav a.work_informationdetail_02-nav-pre--null,.work_informationdetail_02-nav a.work_informationdetail_02-nav-pre--null:hover{color: #c0c4cc;background: #fff}
 .ui_pagination_01 {width: 900px;margin: 20px auto;}
 a.ui_pic_list_22-to_more{width: 88px;height: 32px;line-height: 32px;margin: 0 auto;font-size: 12px;border: 1px solid #5E8242;color: #5E8242;display: block;text-align: center}
 
@@ -293,6 +294,9 @@ a.work_login_04-login{border-right: 1px solid #949494;
 .work_contestants_01_main .el-card__header label{font-size: 16px;color: #949494}
 .work_contestants_01_main .el-card__header{font-size: 16px;color: #4a4a4a}
 
+.work_activitydetail_08-content{width: 770px;display: inline-block}
+.work_activitydetail_08-tab_content-notice .work_activitydetail_02,.work_activitydetail_08-tab_content-notice .work_activitydetail_02-content{width: auto}
+
 .work_activityrace_tab-content-instructions,.work_activitydetail_02,.work_activitydetail_08-content-instructions,.work_activitydetail_02-content{width: 960px;margin: 0 auto}
 
 .ui_list_pic_28_resourcelists_li_imgcontainter img{width: 160px!important;height: 120px!important}
@@ -308,6 +312,8 @@ a.work_login_04-login{border-right: 1px solid #949494;
 .work_activitydetail_09-prizewinner_list h3{font-size: 24px;margin: 30px 0px}
 .work_activitydetail_09-prizewinner_list .work_activitydetail_09-vote{display: none}
 .activityvote .el-dialog__body{padding: 15px;}
+.activityshow .work_activitydetail_08-nav .work_activitydetail_08-nav_item {width: 25%;}
+
 .work_activitydetail_09-detail section{background: #f5f5f5;padding: 10px;text-align: center;width: 25%;display: inline-block;box-sizing: border-box}
 .work_activitydetail_09-detail>span{width: 74%;box-sizing: border-box;padding:0px 10px;font-size: 14px;display: inline-block;vertical-align: top;text-indent: 2em}
 .work_activitydetail_09-pic{width: 100%;height: auto}
@@ -452,7 +458,8 @@ button.activity_notstart span{color: #fff}
 .activity-list .ui_pic_list_22-activity_title-icon{width: 32px;height: 32px;margin: 8px auto;background:url('../img/icon-activity1.png') center center;display: block}
 .el-form-item__error{left: 100px}
 .el-carousel__item{background-size: cover}
-
+.work_activityrace_tab-good_products_more_box{width: 770px!important;}
+.work_activityrace_tab-good_products_more_box .work_activitydetail_05-list_title{text-align: left;font-size: 24px}
 
 /* #uploadproduction
 ================================================== */
@@ -538,7 +545,11 @@ span.el-cascader__label{width: 100%!important;text-align: left!important}
 .workbench-review_box-simple_prize label,.workbench-review_box-teacher_prize label{color: #949494;font-size: 13px;margin-right: 20px}
 .workbench-review_box-simple_prize input,.workbench-review_box-teacher_prize input{margin: 0px 10px 0px 30px}
 .workbench-review-product_abstract{font-style: italic;font-size: 13px}
-.workbench-review-product_content{font-size: 14px;line-height: 1.8}
+.workbench-review{padding: 0px 50px}
+.workbench-review-product_content{font-size: 18px;
+    line-height: 2;
+    text-align: justify;
+    padding: 0px 50px;}
 .center_cl[data-v-4d67eaee]{margin: 36px 0px}
 .workbench-commit_review{margin: 10px auto;display: inline;float: right;}
 .workbench-back_activitylist-button_box{
