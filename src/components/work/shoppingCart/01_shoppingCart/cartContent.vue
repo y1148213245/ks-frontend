@@ -1254,17 +1254,37 @@
           }
         });
         /* 一提交订单就查看一下虚拟币和人民币的比例 */
-        var coinparams = {
-          param: 1,
-          myCallbacks: function () {
-            if (this.rmbCoin) {  // 下载币兑换成功
-              _this.exchangeRate = this.rmbCoin
-            }
+        axios.get(CONFIG.BASE_URL + 'rechargeVirtualCoin/getRbm.do?virtualCoin=' + 1).then(function (response) {
+          if(response.data && response.data.result=='1') {
+            _this.exchangeRate = response.data.data;
           }
-        };
-        this.$store.dispatch("shoppingcart/" + type.GET_RMB_COIN, coinparams);
+        })
+        this.getDeliveryFee(); // 根据物流模板实时获取物流费用
         this.setRecordOrder();
         this.dealCouponStyle();
+      },
+      getDeliveryFee() { // 物流费用 根据物流公司 + 商品的重量 + 收货地区 来变化运费
+        /* console.log(this.selectedDelivery)
+        console.log(this.orderList);
+        console.log(this.curSelectedAddress); */
+        let totalWeight = 0;
+        this.orderList.map((item) => {
+          if(item.list.length>0) {
+            item.list.map((subItem) => {
+              totalWeight += Number(subItem.weight);
+            })
+          }
+        })
+        var params = {
+          expenseTemp: this.selectedDelivery && this.selectedDelivery.expenseTemp ? this.selectedDelivery.expenseTemp : '', // 物流公司下的模板Id
+          city: this.curSelectedAddress ? this.curSelectedAddress.province : '', // 收件城市 省
+          weight: totalWeight, // 选择结算的所有纸质商品（纸质书/纸质期刊）的重量
+        }
+        axios.get(CONFIG.BASE_URL + 'order/getDeliveryFee.do' + '?expenseTemp=' + params.expenseTemp + '&city=' + encodeURI(params.city) + '&weight=' + params.weight).then((response) => {
+          if(response.data && response.data.result == '1') { // 请求成功
+            this.selectedDelivery.deliveryPrice = Number(response.data.data);
+          }
+        })
       },
       dealCouponStyle: function () { // 优惠券高亮处理
         /**
@@ -1427,8 +1447,6 @@
         this.payMethod = item.payCode + "";
       },
       commitOrder: function () {        // 最终提交订单
-      // debugger
-        this.hasCommitOrder = true;
         var _this = this;
         var temp = [];
         this.selectedOrderList.forEach(function (item) {
@@ -1441,6 +1459,7 @@
           });
           return false;
         }
+        this.hasCommitOrder = true; // 防止重复提交订单
         // var payremark = $("#payremark").find("input").val();
         // 订单备注信息
         var curRealAmount = Number($(".payTotalAmount")[0].innerHTML.replace("¥ ", "")); // 应付金额
@@ -1690,6 +1709,14 @@
       }
     },
     watch: {
+      curSelectedAddress(newValue, oldValue) { // 更换收货地址 需要相应调整物流价格
+        this.curSelectedAddress = newValue;
+        this.getDeliveryFee();
+      },
+      selectedDelivery(newValue, oldValue) { // 更换物流公司 需要相应调整物流价格
+        this.selectedDelivery = newValue;
+        this.getDeliveryFee();
+      },
       couponsList: function (newValue, oldValue) { // 监听优惠券列表 处理提交订单页面刷新时优惠券不高亮显示问题
         if (window.location.hash) {
           this.dealCouponStyle();

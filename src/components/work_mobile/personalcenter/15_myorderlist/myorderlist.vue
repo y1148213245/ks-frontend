@@ -84,7 +84,7 @@
           <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>
         <ul class="work_mobile_personalcenter_15_bookDetails_mainbox_ul">
-          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_bookDetails_mainbox_li">
+          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_bookDetails_mainbox_li" @click="tobookdetails(inneritem)">
             <van-card :title="inneritem.productName" :desc="inneritem.author" :num="inneritem.productNum" :price="inneritem.memberPrice" :thumb="inneritem.bigPic">
             </van-card>
           </li>
@@ -122,7 +122,7 @@
           <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>
         <ul class="work_mobile_personalcenter_15_periodicalDetails_mainbox_ul">
-          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_periodicalDetails_mainbox_li">
+          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_periodicalDetails_mainbox_li"  @click="toperiodicalDetails(inneritem)">
             <van-card :title="inneritem.periodicalName" :price="inneritem.totalPrice" :thumb="inneritem.bigPic" :desc="inneritem.periodicalRemark">
             </van-card>
             <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox_footerinformation">
@@ -335,6 +335,18 @@ export default {
     toPayOrder(outIndex) {
       var payMethod = this.consumeLists[outIndex].orderList[0].payMethod;
       console.log(payMethod);
+    },
+    //去图书详情
+    tobookdetails(inneritem){
+      var toDetailUrl=this.CONFIG.toBookDetailUrl;
+      var url=(toDetailUrl ? toDetailUrl : './bookdetail.html')+'?pubId=' + inneritem.pubId
+      window.open(url)
+    },
+    //去期刊详情
+    toperiodicalDetails(inneritem){
+      var toDetailUrl=this.CONFIG.toperiodicalDetailsUrl;
+      var url=(toDetailUrl ? toDetailUrl : './maginfo.html')+'?pubId=' + inneritem.id
+      window.open(url)
     }
   },
   filters: {

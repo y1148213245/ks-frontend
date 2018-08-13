@@ -124,7 +124,11 @@ const prod = {
         }
       },
       toDetailUrl: '../pages/bookdetail.html',
-      toKnowledgeService: 'https://www.baidu.com/' //TODO知识服务外链，还没有地址，先这么写
+      toKnowledgeService: 'https://www.baidu.com/', //TODO知识服务外链，还没有地址，先这么写
+      toProbationParams: {
+        readType: '1',
+        siteType: '1',
+      }
     },
   }
 }

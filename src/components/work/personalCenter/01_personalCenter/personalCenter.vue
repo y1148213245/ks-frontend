@@ -26,6 +26,11 @@ import coupon from "./components/personalCenter_coupon";
 import note from "./components/personalCenter_note";
 import PROJECT_CONFIG from "projectConfig";
 import ThemePicker from './components/ThemePicker';
+import message from "./components/personalCenter_message";
+import comment from "./components/personalCenter_comment";
+import feedback from "./components/personalCenter_feedback";
+import samplebook from "./components/personalCenter_samplebook";
+
 export default {
   name: "work_personalcenter_01",
   reused: true,
@@ -106,6 +111,10 @@ export default {
     coupon,         //优惠券
     note,           //随手记
     ThemePicker,    //左侧导航
+    message,        //我的消息
+    comment,        //我的评论
+    feedback,       //反馈建议
+    samplebook,     //样书申领
   }
 };
 </script>

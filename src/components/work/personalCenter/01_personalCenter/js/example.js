@@ -146,7 +146,21 @@ const dev = {
               value: "EMS",
               label: "EMS"
             }
-          ]
+          ],
+          feedback: { // 建议反馈的提交地址及传参字段
+            submitUrl: "spc/prodb/saveItem.do", // 提交接口
+            feedbackkeys: "QUE_CONTENT", // 建议反馈提交的key值 字段需到对应库中查询
+            params: {
+              "doclibCode": "QUE_ANS", // 对应文档库
+              "metaMap": {}
+            }
+          },
+          samplebook:{  // 申领数据配置
+            getListUrl:"spc/prodb/searchNL.do", //获取数据的列表
+            doclibCode:"",              //文档库码  必须
+            pageIndex:"1",            //页码
+            pageSize:"10"               //每页显示
+          }
         }
       }
     }
@@ -211,6 +225,20 @@ const prod = {
             title: '纸质书',
             type: 91
           }]
+        },
+        feedback: { // 建议反馈的提交地址及传参字段
+          submitUrl: "spc/prodb/saveItem.do", // 提交接口
+          feedbackkeys: "QUE_CONTENT", // 建议反馈提交的key值 字段需到对应库中查询
+          params: {
+            "doclibCode": "QUE_ANS", // 对应文档库
+            "metaMap": {}
+          }
+        },
+        samplebook:{  // 申领数据配置
+          getListUrl:"spc/prodb/searchNL.do", //获取数据的列表
+          doclibCode:"",              //文档库码  必须
+          pageIndex:"1",            //页码
+          pageSize:"10"               //每页显示
         }
       }
     }

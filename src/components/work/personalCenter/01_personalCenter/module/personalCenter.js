@@ -18,6 +18,7 @@ var state = {
   orderList: [], //订单列表
   orderDetails: [], //订单详情
   bookShelfInfo: [], //书架列表
+  myMessageList:[],  //我的消息列表
   collectionInfo: [], //收藏夹列表
   myComment: [], //评论列表
   commitInfo: {}, // 提交订单信息
@@ -28,7 +29,8 @@ var state = {
   /*checkStatus: false, // 优惠码校验情况*/
   searchNoteList: [], // 个人中心随手记列表
   activityList: [], // 参与的活动列表展示
-  activityMemberList: [] // 参与的活动管理报名人列表
+  activityMemberList: [], // 参与的活动管理报名人列表
+  samplebookList:[]       //样书申领记录
 };
 var getters = {
   getMember: state => state.member,
@@ -40,6 +42,7 @@ var getters = {
   getOrderList: state => state.orderList,
   getOrderDetails: state => state.orderDetails,
   getBookShelfInfo: state => state.bookShelfInfo,
+  getMyMessageList: state => state.myMessageList,
   getCollectionInfo: state => state.collectionInfo,
   getMyComment: state => state.myComment,
   getCommitInfo: state => state.commitInfo,
@@ -50,7 +53,8 @@ var getters = {
   /*getCheckStatus: (state) => state.checkStatus,*/
   getSearchNoteList: state => state.searchNoteList,
   getActivityList: state => state.activityList,
-  getActivityMemberList: state => state.activityMemberList
+  getActivityMemberList: state => state.activityMemberList,
+  getSamplebookList: state => state.samplebookList
 };
 
 var actions = {
@@ -310,6 +314,22 @@ var actions = {
       loading.close();
     });
   },
+  /*获取我的消息*/
+  queryMyMessageList({
+    commit,
+    getters
+  }, params) {
+    // params.loginName = getters.getMember.loginName;
+    // params.type = 2;
+    let loading = Vue.prototype.$loading({
+      text: "正在加载中..."
+    });
+    api.queryMyMessageList(params).then(function (response) {
+      let myMessageList = response.data;
+      commit("setMyMessageList", myMessageList);
+      loading.close();
+    });
+  },
   /*获取收藏夹*/
   queryCollectionInfo({
     commit,
@@ -411,8 +431,8 @@ var actions = {
   }, params) {
     params.loginName = getters.getMember.loginName;
     api.getMyComment(params).then(function (response) {
-      let myComment = response.data.data;
-      let commentScore = parseFloat(response.data.data.commentScore);
+      let myComment = response.data;
+      // let commentScore = parseFloat(response.data.data.commentScore);
       commit("setMyComment", myComment);
     });
   },
@@ -459,6 +479,17 @@ var actions = {
     api.getReturnGoodsList(params).then(function (response) {
       let returnGoodsList = response.data.data;
       commit("setReturnGoodsList", returnGoodsList);
+    });
+  },
+  /*样书申领记录*/
+  getSamplebookList({
+    commit,
+    getters
+  }, params) {
+    params.loginName = getters.getMember.loginName;
+    api.getSamplebookList(params).then(function (response) {
+      let samplebookList = response.data;
+      commit("setSamplebookList", samplebookList);
     });
   },
   /*查询商品详情*/
@@ -619,8 +650,12 @@ var mutations = {
     (state.returnGoodsDetails = returnGoodsDetails),
   setBookShelfInfo: (state, bookShelfInfo) =>
     (state.bookShelfInfo = bookShelfInfo),
+  setMyMessageList: (state, myMessageList) =>
+    (state.myMessageList = myMessageList),
   setReturnGoodsList: (state, returnGoodsList) =>
     (state.returnGoodsList = returnGoodsList),
+  setSamplebookList: (state, samplebookList) =>
+    (state.samplebookList = samplebookList),
   setSearchNoteList: (state, searchNoteList) =>
     (state.searchNoteList = searchNoteList),
   setCollectionInfo: (state, datas) => {

@@ -67,7 +67,7 @@ const dev = {
       },
       'collection':{
         display: { // 组件静态文本
-          navTitle: '我的收藏夹',
+          navTitle: '收藏',
           manage:'管理',
           cancel:'取消',
           empty: '您的收藏夹是空的哦',
@@ -156,7 +156,7 @@ const prod = {
       },
       'collection':{
         display: { // 组件静态文本
-          navTitle: '我的收藏夹',
+          navTitle: '收藏',
           manage:'管理',
           cancel:'取消',
           empty: '您的收藏夹是空的哦',

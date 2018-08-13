@@ -28,7 +28,7 @@ conditions: [{ // 配置成对象 组件里面传值要转成字符串
 const dev = {
   work_videoplay: {
     "work_videoplay_01": {
-      "videoplay": {
+      "modulename": {
         "getResourceLists": {
           "url": "spc/cms/publish/list.do",
           "params": {
@@ -46,20 +46,34 @@ const dev = {
             "pageSize": "10",
             "searchText": ""
           },
-          "sysAdapter": "sykAdapter",  // 系统字段
-          "typeAdapter": "videoAdapter"  // 类型字段
+          "sysAdapter": "sykAdapter",    // 系统字段
+          "typeAdapter": "videoAdapter",    // 类型字段
+          typeAdapter1: "audioAdapter"  //类型字段1
         },
         "complicatedItem": [
           {
-            "name": "",
+            "name": "title",
             "field": "resName",
             "display": "",
-            "method": ""  // 方法名 要在下面配置
+            "method": ""   // 方法名 要在下面配置
+          },
+          {
+            "name": "img",
+            "field": "picBig",
+            "display": "",
+            "method": ""
           }
         ],
-        "playVideoUrl": "dynamicFile/stream.do?recordID=",   // 视频播放地址
+        "playVideoUrl": "dynamicFile/stream.do?recordID=",    // 视频播放地址
         "showVideoList": true,  // 是否显示下方视频轮播列表
-        "queryParamsType": "url",  //  取参数的方式 'url'表示从地址栏里面取； ''表示从配置里取
+        "queryParamsType": "url",  //  取参数的方式 'url'表示从地址栏里面取；
+        "getDetailById": {   //获取当前播放视频的详情信息
+          "url": "spc/cms/publish/detail.do",
+          "params": {
+            "pubId": "",
+            "loginName": ""
+          }
+        }
       },
     }
   }
@@ -68,11 +82,11 @@ const dev = {
 const prod = {
   work_videoplay: {
     "work_videoplay_01": {
-      "videoplay": {
+      "modulename": {
         "getResourceLists": {
           "url": "spc/cms/publish/list.do",
           "params": {
-            "conditions": [   // 配置成对象 组件里面传值要转成字符串
+            "conditions": [     // 配置成对象 组件里面传值要转成字符串
               {
                 "pub_parent_id": ""
               },
@@ -86,20 +100,34 @@ const prod = {
             "pageSize": "10",
             "searchText": ""
           },
-          "sysAdapter": "sykAdapter",  // 系统字段
-          "typeAdapter": "videoAdapter"  // 类型字段
+          "sysAdapter": "sykAdapter",    // 系统字段
+          "typeAdapter": "videoAdapter",    // 类型字段
+          typeAdapter1: "audioAdapter"
         },
         "complicatedItem": [
           {
-            "name": "",
+            "name": "title",
             "field": "resName",
             "display": "",
-            "method": ""  // 方法名 要在下面配置
+            "method": ""    // 方法名 要在下面配置
+          },
+          {
+            "name": "img",
+            "field": "picBig",
+            "display": "",
+            "method": ""
           }
         ],
-        "playVideoUrl": "dynamicFile/stream.do?recordID=",   // 视频播放地址
-        "showVideoList": true,  // 是否显示下方视频轮播列表
-        "queryParamsType": "url",  //  取参数的方式 'url'表示从地址栏里面取； ''表示从配置里取
+        "playVideoUrl": "dynamicFile/stream.do?recordID=",     // 视频播放地址
+        "showVideoList": true,   // 是否显示下方视频轮播列表
+        "queryParamsType": "url",   //  取参数的方式 'url'表示从地址栏里面取；
+        "getDetailById": {   //获取当前播放视频的详情信息
+          "url": "spc/cms/publish/detail.do",
+          "params": {
+            "pubId": "",
+            "loginName": ""
+          }
+        }
       },
     }
   }

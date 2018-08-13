@@ -276,6 +276,15 @@ var FIELD_ADAPTER = {
             lecturer: "GROUP_VIDEO_LECTURER", // 讲师
             groupVideoDesc: "GROUP_VIDEO_DESCRIPTION", // 描述
         },
+        videoGroupAdapter: { // 视频组 和 视频拆开  不要放在一起
+          courseNumber: "GROUP_VIDEO_COURSES_NUMBER",
+          courseDuration: "GROUP_VIDEO_COURSES_DURATION",
+          coursePrice: "GROUP_VIDEO_PRICE", // 原价
+          courseSalePrice: 'GROUP_VIDEO_SALE_PRICE', // 售价
+          courseTitle: "GROUP_VIDEO_SYS_TOPIC",
+          lecturer: "GROUP_VIDEO_LECTURER", // 讲师
+          description: "GROUP_VIDEO_DESCRIPTION", // 描述
+        },
         audioAdapter: { // 音频
             fileSize: "AUDIO-MEDIA_FILE_SIZE",
             coverId: "AUDIO-MEDIA_COVERID",
@@ -301,6 +310,7 @@ var FIELD_ADAPTER = {
           coursesNumber: "YINPINZU_COURSES_NUMBER",
           coverId: "YINPINZU_COVERID",
           agDescription: "YINPINZU_DESCRIPTION", // 描述信息
+          description: 'YINPINZU_DESCRIPTION', 
           agFullText: "YINPINZU_FULL_TEXT",
           lecturer: "YINPINZU_LECTURER", // 讲师
           agPicNum: "YINPINZU_PIC_NUM",
@@ -474,6 +484,48 @@ var FIELD_ADAPTER = {
             selectTopic: "SELECTED_TOPIC",  // 选题名称或方向
             otherOpinion: "OTHER_OPINIONS",  // 其他意见
             telephone: "TELEPHONE" // 联系电话
+        },
+        ziliaoku: { // 资料库
+          sysCreated: 'ZILIAOKU_SYS_CREATED',
+          sysTopic: 'ZILIAOKU_SYS_TOPIC',
+          seriesName: 'ZILIAOKU_SERIES_NAME',
+          isbn: 'ZILIAOKU_ISBN',
+          pressName: 'ZILIAOKU_PRESS_NAME',
+          bookCat: 'ZILIAOKU_BOOK_CAT',
+          clcCat: 'ZILIAOKU_CLC_CAT',
+          readerObject: 'ZILIAOKU_READER_OBJECT',
+          depart: 'ZILIAOKU_DEPART',
+          editor: 'ZLIAOKU_EDITOR',
+          designer: 'ZILIAOKU_COPY_DESIGNER',
+          sysAuthors: 'ZILIAOKU_SYS_AUTHORS',
+          coverDesinger: 'ZILIAOKU_COVER_DESIGNER',
+          majorEditor: 'ZILIAOKU_MAJOR_EDITOR',
+          printVersion: 'ZILIAOKU_PRINT_VERSION',
+          bookVersion: 'ZILIAOKU_BOOK_VERSION',
+          textNum: 'ZILIAOKU_TEXT_NUM',
+          price: 'ZILIAOKU_PRICE',
+          shelfAdvice: 'ZILIAOKU_SHELF_ADVICE',
+          format: 'ZILIAOKU_FORMAT',
+          productSize: 'ZILIAOKU_PRODUCT_SIZE',
+          flatPlate: 'ZILIAOKU_FLAT_PLATE',
+          remark: 'ZILIAOKU_REMARK',
+          coverSoft: 'ZILIAOKU_COVER_SOFT',
+          textType: 'ZILIAOKU_TEXT_TYPE',
+          textColor: 'ZILIAOKU_TEXT_COLOR',
+          textSoft: 'ZILIAOKU_TEXT_SOFT',
+          pubDate: 'ZILIAOKU_PUBDATE',
+          materialId: 'ZILIAOKU_MATERIAL_ID',
+          language: 'ZILIAOKU_LANGUAGE',
+          cascadId: 'ZILIAOKU_DEPART_CASCADID',
+          description: 'ZILIAOKU_DESCRIPTION',
+        },
+        seriesBooks:{  // 丛书
+            coverId: "GROUP_BOOK_COVERID",
+            description: "GROUP_BOOK_DESCRIPTION",
+            picNum: "GROUP_BOOK_PIC_NUM",
+            sysAuthors: "GROUP_BOOK_SYS_AUTHORS",
+            sysCreated: "GROUP_BOOK_SYS_CREATED",
+            sysTopic: "GROUP_BOOK_SYS_TOPIC"
         }
     }
 };

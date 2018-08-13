@@ -20,8 +20,8 @@
     <div class="ui_mobile_list_02_sortCon" v-if="listType == 'cascadId'"> <!-- 按分类查图书列表 -->
 
       <div class="ui_mobile_list_02_sort" id="screenBox" v-if="classifyBook && classifyBook.length > 0">
-        <span class="ui_mobile_list_02_sort_allBotton" v-if="isShowAllBotton" :class="{ui_mobile_list_02_sortitem_active:checkCascadeId==cascadId}" @click="loadBookList(cascadId, true)">{{getStaticText('all') ? getStaticText('all') : "全部"}}</span>
-        <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyBook" :key="index" v-text="item.text" :class="{ui_mobile_list_02_sortitem_active:checkCascadeId==item.cascadeId}" @click="loadBookList(item.cascadeId, true)"></span>
+        <span class="ui_mobile_list_02_sort_allBotton" v-if="isShowAllBotton" :class="{ui_mobile_list_02_sortitem_active:(checkCascadeId == cascadId ? true :false)}" @click="loadBookList(cascadId, true)">{{getStaticText('all') ? getStaticText('all') : "全部"}}</span>
+        <span class="ui_mobile_list_02_sortitem" v-for="(item, index) in classifyBook" :key="index" v-text="item.text" :class="{ui_mobile_list_02_active : checkCascadeId == item.cascadeId ? true : false}" @click="loadBookList(item.cascadeId, true)"></span>
       </div>
       <div class="ui_mobile_list_02_sort" id="screenBox" v-else>
         <span class="ui_mobile_list_02_nosub">{{getStaticText('noSecondaryClassification') ? getStaticText('noSecondaryClassification') : "暂无二级分类"}}</span>
@@ -101,10 +101,13 @@ export default {
       checkCascadeId:0,// 是否展示全部按钮
       isShowAllBotton:false,// 是否展示全部按钮
       exMoreNum:4, // 超过多少就展示更多按钮
+      query:''
     };
   },
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01[this.module];
+    this.query = URL.parse(document.URL, true).query;
+    this.cascadId = this.query.cascadId ? this.query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
     this.$bus.on('showSearchResult', (data) => {
       this.searchText = data;
       this.toBookList(this.orderParam, this.indexValue);
@@ -113,11 +116,11 @@ export default {
   mounted () {
     this.bgmUrl = require('./data/img/bg_ico.png');
     this.rankbgmUrl = require('./data/img/rank.png');
-    let query = URL.parse(document.URL, true).query;
-    this.colId = query.colId ? query.colId : "";  // 按栏目查的时候从地址栏获取colId
-    this.cascadId = query.cascadId ? query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
+    // let query = URL.parse(document.URL, true).query;
+    this.colId = this.query.colId ? this.query.colId : "";  // 按栏目查的时候从地址栏获取colId
+    // this.cascadId = query.cascadId ? query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
     // this.orderParam = query.cascadId ? "BOOK_PUBDATE desc" : "pub_read_num desc";
-    this.orderParam = query.orderBy ? query.orderBy : this.orderParam;
+    this.orderParam = this.query.orderBy ? this.query.orderBy : this.orderParam;
     //20180629 增加配置项 zong
     if(typeof(this.CONFIG.exMoreNum)!='undefined'){
       this.exMoreNum = this.CONFIG.exMoreNum;
@@ -130,10 +133,10 @@ export default {
     this.keys = this.CONFIG.keys;
     this.listType = this.CONFIG.listType;
     this.classifyArr = this.CONFIG.classifyArr;
-    this.loadBookList(this.cascadId);
     if (this.cascadId) {
       this.queryClassificationList();
     }
+    this.loadBookList(this.cascadId);
     /*检测滚动条*/
     $(window).scroll(() => {
       let clientHeight = $(window).height();   // 屏幕可视高度
@@ -202,11 +205,12 @@ export default {
       })
     },
     queryClassificationList () { // 图书分类查询
+      let _this = this;
       Get(CONFIG.BASE_URL+this.CONFIG.queryClassification.url, { params: this.CONFIG.queryClassification.params }).then(rep => {
         var datas = rep.data;
         if (datas && datas instanceof Array && datas.length > 0) {
           for (var i = 0, len = datas.length; i < len; i++) {
-            if (datas[i].cascadeId == this.cascadId) {
+            if (datas[i].cascadeId == _this.cascadId) {
               this.classifyBook = datas[i].children;
             }
           }
@@ -345,7 +349,19 @@ export default {
 .ui_mobile_list_02_saleprice {
   margin-right: 0.2rem;
 }
+.ui_mobile_list_02_sortitem_active{
+  color: #c40001;
+  float: left;
+  font-size: 0.26rem;
+  margin: 0 0.4rem 0.3rem;
+  white-space: nowrap;
+  width: 1.5rem;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
 
+}
 .ui_mobile_list_02_asc {
   top: 0;
   background-position: -1.19rem -0.95rem;
@@ -502,6 +518,7 @@ export default {
 }
 
 .ui_mobile_list_02_sort {
+  color: #717b8b;
   float: left;
   height: 0.6rem;
   margin: 0.3rem 0 0 0;
@@ -520,7 +537,7 @@ export default {
 }
 
 .ui_mobile_list_02_sortitem {
-  color: #717b8b;
+  /*color: #717b8b;*/
   float: left;
   font-size: 0.26rem;
   margin: 0 0.4rem 0.3rem;

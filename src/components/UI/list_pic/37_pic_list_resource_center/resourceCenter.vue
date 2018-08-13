@@ -11,12 +11,25 @@
     </div>
     <table class="ui_list_pic_37_table el-table el-table--border">
       <thead class="ui_list_pic_37_thead">
-        <th v-for="(item,index) in CONFIG.tHeadList" v-text="item" :key="index"></th>
+        <!-- <th v-for="(item,index) in CONFIG.tHeadAudioList" v-text="item" :key="index" v-show="tBodyList[0] && (tBodyList[0][keys.pubResType] == display.audio)"></th> -->
+        <th v-for="(item,index) in CONFIG.tHeadList" :key="index">{{item}}</th>
       </thead>
       <tbody class="ui_list_pic_37_tbody">
         <tr v-for="(item,index) in tBodyList" :key="index">
-          <td :class='"ui_list_pic_37_tbody_"+item[keys.pubResType]'>{{item[keys.pubResType] || display.noData || '暂无数据'}}</td>
-          <td class="ui_list_pic_37_tbody_contentTitle" @click="toContent(item)">{{item[keys.resName] || display.noData || '暂无数据'}}</td>
+          <!-- <td v-if="item[keys.pubResType] == display.audio">{{item[keys.id] || display.noData || '暂无数据'}}</td> -->
+          <td><i :class='"fa fa-file-"+changeIconName(item)+"-o"'></i><span>{{changeShow(item) || display.noData || '暂无数据'}}</span></td>
+          <td v-if="item[keys.pubResType] == display.audio">
+            <div><img @click="toContent(item)" :src="item[keys.picSmall || require('@static/img/defaultCover.png')] || '暂无图片'" alt=""></div>
+            <div>
+              <div @click="toContent(item)">{{item[keys.resName] || display.noData || '暂无数据'}}</div>
+              <div>
+                <span>{{display.description || display.noData || '暂无描述'}}</span>
+                <span>{{item[AUDIO-MEDIA_DESCRIPTION] || display.noData || '暂无数据'}}</span>
+              </div>
+            </div>
+          </td>
+          <td v-else class="ui_list_pic_37_tbody_contentTitle" @click="toContent(item)">{{item[keys.resName] || display.noData || '暂无数据'}}</td>
+          <!-- <td v-if="item[keys.pubResType] == display.audio">哈哈</td> -->
           <td>{{item[keys.created] | formatDateNEW}}</td>
         </tr>
       </tbody>
@@ -159,6 +172,22 @@
         toDownload(){  //通过附件的fileRecordID字段下载附件
           let url = CONFIG.BASE_URL + this.CONFIG.toDownload.url + '?recordID=' + this.zipAttachmentId;
           window.open(url,"_self");
+        },
+        changeShow(item){  //类型文字展示转换
+          switch(item[this.keys.pubResType]){
+            case this.display.book: return this.display.bookShow; break;
+            case this.display.video: return this.display.videShow; break;
+            case this.display.audio: return this.display.audioShow; break;
+            case this.display.download: return this.display.downloadShow; break;
+          }
+        },
+        changeIconName(item){
+          switch(item[this.keys.pubResType]){
+            case this.display.book: return this.display.bookIconShow; break;
+            case this.display.video: return this.display.videIconShow; break;
+            case this.display.audio: return this.display.audioIconShow; break;
+            case this.display.download: return this.display.downloadIconShow; break;
+          }
         }
       }
     }

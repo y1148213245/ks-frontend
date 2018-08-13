@@ -148,6 +148,42 @@
     </div>
     <!-- END 有声书音频附件 -->
 
+    <!-- 组合购买 -->
+    <div class="work_bookdetail_04_combinate" v-if=" combinateProductCfg.show && combinateProductLsit && combinateProductLsit.length > 0">
+      <span class="work_bookdetail_04_combinate_title">{{combinateProductCfg.title}}</span>
+      <ul class="work_bookdetail_04_combinate_main" >
+        <li v-for="(list,key) in combinateProductLsit" v-bind:key="key" :data-id="list.id">
+          <!-- 图书本身 -->
+          <div class="work_bookdetail_04_combinate_book">
+            <div class="work_bookdetail_04_combinate_image"><img :src="resourceDetail[keys['picSmall']] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
+            <h4 class="work_bookdetail_04_combinate_name" :title="resourceDetail[keys['resName']]">{{resourceDetail[keys['resName']]}}</h4>
+            <span class="work_bookdetail_04_combinate_price">价格 : {{ '￥' + Number(resourceDetail["memberPrice"]).toFixed(2)}}</span>
+          </div>
+          <div class="work_bookdetail_04_combinate_and">+</div>
+          <!-- 组合列表 -->
+          <div >
+            <button class="work_bookdetail_04_combinate_btn prev" @click="combinateList($event,key,list.list.length)" :class="{'disable': showCombinateArr[key] == 0,'normal':showCombinateArr[key]!=0 }" v-show="list.list.length > 3" :data-changeBtn="key" :data-maxLength="list.list.length">&lt;</button>
+            <ul class="work_bookdetail_04_combinate_list" >
+              <li class="work_bookdetail_04_combinate_book" v-for="(item,index) in list.list" v-bind:key="index" v-show=" index >= showCombinateArr[key] && index < showCombinateArr[key] + 3" @click="toCombinateItemDetail(combinateProductCfg['toDetail'],item['pubId'])">
+                <div class="work_bookdetail_04_combinate_image"><img :src="item['smallPic'] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
+                <h4 class="work_bookdetail_04_combinate_name" :title="item['resourceName']">{{item["resourceName"]}}</h4>
+                <span class="work_bookdetail_04_combinate_price ">价格 : {{ '￥' + Number(item["memberPrice"]).toFixed(2)}}</span>
+              </li>
+            </ul>
+            <button class="work_bookdetail_04_combinate_btn next" @click="combinateList($event,key,list.list.length)" :class="{'disable': showCombinateArr[key] == list.list.length-4}" v-show="list.list.length > 3" :data-changeBtn="key" :data-maxLength="list.list.length">&gt;</button>
+          </div>
+          <div class="work_bookdetail_04_combinate_equal">=</div>
+          <!-- 购买按钮 -->
+          <div class="work_bookdetail_04_combinate_pay">
+            <span class="work_bookdetail_04_combinate_price">套餐价 : <span>{{ '￥' + Number(list["combinationPrice"]).toFixed(2)}}</span></span>
+            <span class="work_bookdetail_04_combinate_savemoney">省{{ '￥' + Number(list["savemoney"]).toFixed(2)}}</span>
+            <span class="work_bookdetail_04_combinate_buy" @click="addcombinateProductToCart(combinateProductCfg['addCart'],list.id)">{{combinateProductCfg.lastBtn || '立即购买'}}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- END 组合购买-->
+
     <div class="work_bookdetail_04_tabBody" v-if="tabConfigList && tabConfigList.tabConfigshow">
       <!-- TAB切换 信息 -->
       <div class="work_bookdetail_04_tab" v-if="tabConfigList && tabConfigList.tabShow">
@@ -186,7 +222,7 @@
     </div>
     <!--购买按钮 当然可以不用-->
     <div class="work_bookdetail_04_bugButton" v-if="CONFIG && bugButton">
-      <div class="work_bookdetail_04_bugButton_div_buy" v-if="isBuy==0" @click="toCustomFunMethod(bugButton.method)">
+      <div class="work_bookdetail_04_bugButton_div_buy" v-if="isBuy==0" @click="toCustomFunMethod(bugButton.method)" :class="{'buyBtnOpacity':buyBtnOpacity}">
         <label class="work_bookdetail_04_btnlabel">{{bugButton.display}}</label>
       </div>
       <div class="work_bookdetail_04_bugButton_div_shelf" v-if="isBuy==1 && isAddShelf==0" @click="toCustomFunMethod(bugButton.method1)">
@@ -196,8 +232,33 @@
         <label class="work_bookdetail_04_btnlabel">{{bugButton.display2}}</label>
       </div>
     </div>
-
-
+    <!-- 购买弹出层 -->
+    <el-dialog v-if="CONFIG && CONFIG.showDialog" :title="CONFIG.display.buyCourse" :visible.sync="isdialogShow" class="work_bookdetail_04_dialog">
+      <div class="work_bookdetail_04_dialog_courseInfor">
+        <div class="work_bookdetail_04_dialog_courseInfor_img">
+          <img :src="resourceDetail.pub_picMiddle|| require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)">
+        </div>
+        <div class="work_bookdetail_04_dialog_courseInfor_content">
+          <div>{{resourceDetail[keys.courseTitle]}}</div>
+          <div>{{CONFIG.display.courseUseTime}}</div>
+          <div>2018年4月17日——2019年4月17日(暂无字段，写死)</div>
+        </div>
+        <div>{{resourceDetail[keys.courseSalePrice] | formatPriceNew}}</div>
+        <div><label>{{CONFIG.display.needPay}}</label>{{resourceDetail[keys.courseSalePrice] | formatPriceNew}}</div>
+      </div>
+      <div>
+        <div>{{CONFIG.display.payWay}}</div>
+        <!-- <el-radio-group v-model="radio2">
+          <el-radio :label="item.payCode" v-for="(item,index) in payWaysList" :key="index">{{item.payName}}</el-radio>
+        </el-radio-group> -->
+        <el-radio v-model="payWays" :label="index" v-for="(item,index) in payWaysList" :key="index" @change="changePayWays(item.payCode)">{{item.payName}}</el-radio>
+        <!-- <el-radio v-model="payWays" label="Weixin">{{CONFIG.display.weixin}}</el-radio> -->
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="commitOrder">{{CONFIG.display.sure}}</el-button>
+        <el-button @click="isdialogShow = false">{{CONFIG.display.cancel}}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -210,6 +271,7 @@ import { Get, Post, DrawImage, getFieldAdapter, toOtherPage } from "@common";
 import URL from 'url';
 import PROJECT_CONFIG from "projectConfig";
 import moment from "moment";
+import axios from "axios";
 
 export default {
   name: 'work_bookdetail_04',
@@ -217,6 +279,10 @@ export default {
   reused: true,
   data () {
     return {
+      isdialogShow: false,  //控制弹出层是否显示
+      payWays: 0,  //支付方式
+      currentPayWay: 'Alipay',  //当前的支付方式  Weixin/Alipay
+      payWaysList: [],  //支付方式列表
       CONFIG: "",
       resourceDetail: {}, // 详情信息
       resourceDetailConfig: {}, // 详情信息配置
@@ -249,13 +315,20 @@ export default {
         ebookType: '94',
       },
       pub_comment_num: '',   //评论数
-      collectLikeOn:1,   //点赞或收藏是否在提交中   // 0 代表没有 可以执行  1代表不能，不能执行
-    };
+      collectLikeOn:0,   //点赞或收藏是否在提交中   // 0 代表没有 可以执行  1代表不能，不能执行
+      combinateProductLsit:[], // 初始化组合购买数组
+      combinateProductCfg:{},  // 组合购买是否显示
+
+      resType: '', // 当前详情所属资源类型       temp: {}, //订单里的id
+      tempList: {}, //订单单元
+      Orderparams: {},  //提交订单的参数
+      payMoney: "",  //需要支付的金额
+      commitInfo: {},   //订单信息       
+    }
   },
-
   mounted () {
-    this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
-
+    var urlQuery = URL.parse(document.URL, true).query;
+    this.pubId = urlQuery.pubId; // 从地址栏接收栏目id
     this.modulename_share = this.modulename + 'share';
     this.resourceDetailConfig = this.CONFIG.getResourceDetail;
     this.publicizeInfoConfig = this.CONFIG.getPublicizeInfo;
@@ -272,11 +345,15 @@ export default {
     if (typeof (this.CONFIG.bookContentType) != "undefined") {
       this.bookContentType = this.CONFIG.bookContentType;  //书的类型  纸书：91 电子书 94
     }
+    if (typeof (this.CONFIG.combinateProductCfg) != "undefined") { // 检查变量是否设置显示组合购买
+      this.combinateProductCfg = this.CONFIG.combinateProductCfg;  // 根据配置初始化显示变量
+    }
 
     this.addCartConfig = this.CONFIG.addCart;
     this.collectOrLikeConfig = this.CONFIG.collectOrLike;
     this.audioAttachmentConfig = this.CONFIG.getAudioAttachment;
-    this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.resourceDetailConfig.sysAdapter, this.resourceDetailConfig.typeAdapter)));
+    this.resType = urlQuery.resType; // 地址栏传当前资源类型
+    this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.resType && this.resourceDetailConfig[this.resType] ? this.resourceDetailConfig[this.resType].sysAdapter : this.resourceDetailConfig.sysAdapter, this.resType && this.resourceDetailConfig[this.resType] ? this.resourceDetailConfig[this.resType].typeAdapter : this.resourceDetailConfig.typeAdapter)));
     this.showPublicizeTopic = this.publicizeInfoConfig.showPublicize.length ? this.publicizeInfoConfig.showPublicize[0] : 0;
     // this.getResourceDetail();  //获取图书详情信息
     if (this.audioAttachmentConfig && this.audioAttachmentConfig.isShowAudio) { // 获取音频列表
@@ -310,6 +387,15 @@ export default {
       DrawImage(eve.path[0], this.CONFIG.infoImgWidth, this.CONFIG.infoImgHeight);
     },
     toCustomFun (config) { // 执行自定义事件
+      if(config.method == 'toBuyLayer'){
+        this.isdialogShow = true;
+        this.getPayMethodsBySiteId();
+        return false;
+      }
+      if(config.field == 'saleUrl'){
+        window.open(this.resourceDetail[this.keys[config.field]]);
+        return false
+      }
       if (config.method == 'toProbation') { // 执行免费试读操作
         //加入书架
         if(this.CONFIG.addBookshelfBeforeProbation) {
@@ -357,7 +443,228 @@ export default {
         });
         return false;
       }
-      window.open(toOtherPage(this.resourceDetail, this.CONFIG[method], this.keys));
+      
+      (!this.buyBtnOpacity) && window.open(toOtherPage(this.resourceDetail, this.CONFIG[method], this.keys));
+    },
+    getPayMethodsBySiteId(){
+      let params = Object.assign({},this.CONFIG.getPayMethodsBySiteId.params);
+      Get(CONFIG.BASE_URL + this.CONFIG.getPayMethodsBySiteId.url + '?siteId='+CONFIG.SITE_CONFIG.siteId).then((rep) => {
+        let datas = rep.data;
+        if(datas.result == '1' && datas.data){
+          this.payWaysList = datas.data;
+        }
+      });
+    },
+    changePayWays(value){  //当前的支付方式
+      this.currentPayWay = value;
+    },
+    commitOrder() {
+      this.isdialogShow = false;
+      if(this.loginName == undefined || this.loginName == '') { // 未登录
+        return false;
+      }
+      //判断支付方式 生成不同的参数
+      //如果是余额支付那么判断余额够不够
+      this.setOrderParams();
+      let loadingTag = this.$loading({ 
+        fullscreen: true ,
+        text: this.CONFIG.display.drumpPage ? this.CONFIG.display.drumpPage : "正在跳转支付页面..." 
+      });
+      var _this = this;
+      Post(CONFIG.BASE_URL + _this.CONFIG.commitOrderUrl, _this.Orderparams).then(function(response) {
+        if(response.status == 200 && response.data) {
+          let datas = response.data;
+          if(datas.data && datas.result == 1 && datas.data.submitStatus) {
+            _this.commitInfo = datas.data;
+            _this.toPay(loadingTag);
+            
+            // location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&loginName=" + _this.loginName;
+          } else {
+            // console.log(datas.data.errMsg);
+            loading.close();
+            // alert(datas.error.errorMsg);
+            _this.$message({
+              message: datas.error.errorMsg,
+              type: error
+            });
+          }
+        }
+        //loading.close();
+      })
+    },
+    toPay(loadingTag) {
+      
+      var argus = {
+        orderId: this.commitInfo.orderId,
+        orderCode: this.commitInfo.orderCode,
+        status: this.commitInfo.status, // 订单状态
+        payMethodCode: this.commitInfo.payMethodCode,
+        paymentType: this.commitInfo.paymentType // true需要跳转 false不需要
+      };
+      if (this.commitInfo.submitStatus) {
+        // 提交成功
+        if (this.commitInfo.paymentType) {
+          // 需要跳转支付宝支付/微信扫描二维码页面
+          if (this.currentPayWay === "Alipay") {
+            // 支付宝支付
+            loadingTag.close();
+            
+            window.open(
+              CONFIG.BASE_URL +
+              "epay/getPayForm.do?orderId=" +
+              argus.orderId +
+              "&loginName=" +
+              this.member.loginName +
+              "&payMethodCode=" +
+              argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId,
+              "_self"
+            );
+          } else if (this.currentPayWay === "Weixin") {
+            // 微信支付
+            axios.get(
+              CONFIG.BASE_URL +
+              "epay/getPayForm.do?orderId=" +
+              argus.orderId +
+              "&loginName=" +
+              this.member.loginName +
+              "&payMethodCode=" +
+              argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId
+            )
+            .then(function (response) {
+              var data = response.data.substring(
+                response.data.indexOf("<a>") + 3,
+                response.data.indexOf("</a>")
+              );
+              var orderCode = response.data.substring(
+                response.data.indexOf("<div>") + 5,
+                response.data.indexOf("</div>")
+              );
+              // loadingTag.close();
+              window.location.href =
+                "../pages/qrcode.html?data=" +
+                data +
+                "&orderCode=" +
+                orderCode;
+              loadingTag.close();
+            });
+          }
+          window.history.pushState(
+            null,
+            null,
+            "../pages/errorpage.html"
+          ); // 添加历史记录
+        } else {
+          // 不需要跳转支付页面 实付金额为0
+          loadingTag.close();
+          window.location.href =
+            "../pages/commitorder.html#/commitOrder/" +
+            this.commitInfo.orderCode +
+            "/" +
+            this.commitInfo.status +
+            "/order";
+        }
+      } else {
+        // 提交失败
+        loadingTag.close();
+        var errorMsg = this.commitInfo.errMsg
+          ? this.commitInfo.errMsg
+          : "订单提交有误";
+        this.$alert(errorMsg, "系统提示", {
+          confirmButtonText: "确定"
+        });
+      }
+    },
+    setOrderParams() {
+      //设置提交订单的参数
+      this.curSelectedInvoice = {
+        invoiceType: "", // 发票类型
+					receipttypes: "",
+					receiptId: "明细", // 普通发票的明细  默认显示明细  汉字 明细
+					receiptType: "", // 1:个人  2:单位
+					receiptTitle: "", // 发票抬头：个人 / 公司名称
+					taxpayerCode: "", // 纳税人识别号
+					companyAddress: "", // 公司住址
+					companyPhone: "", // 公司联系方式
+					bankName: "", // 开户银行
+					bankAccount: "" // 开户账号
+      };
+      this.tempList = {
+        id: "", //不用填
+        productId: this.resourceDetail.productId, //
+        combinationId: "", //产品类型id  电子书 94
+        nums: 1,
+        totalPrice: this.payMoney,
+        pubId: this.pubId,
+        couponsId: "", //优惠卷id 现在为0
+        rankDiscountRatio: "", //这是优惠的汇率
+        resourceId: this.resourceDetail.pub_resource_id,
+        resourceName: this.resourceDetail.pub_resource_name,
+        resourceType: this.resourceDetail.prod_resource_type,
+        periodicalType: "", //传值空
+        periodicalYear: "", //传值空
+        periodicalMonth: "", //传值空
+        combinationId: "0",
+      };
+      this.temp = {
+        activityId: 0, //活动id  填0
+        productType: "", //产品类型id  电子书 94
+        periodicalType: "",
+        periodicalName: "",
+        periodicalYear: "",
+        periodicalMonth: "",
+        discountPrice: 0,
+        id: '',
+        code: "",
+        totalPrice: this.payMoney,
+        list: [this.tempList],
+      };
+      this.Orderparams = {
+          loginName: this.loginName,
+          balanceAmount: 0, // 如果是余额支付，那就写支付金额 不是就写0
+          bankName: this.curSelectedInvoice.bankName,
+          companyAddress: this.curSelectedInvoice.companyAddress,
+          companyPhone: this.curSelectedInvoice.companyPhone,
+        // couponsAmount: 0,
+          couponsOrder: '', // 优惠券的密码 如果有两张 以数组形式传递
+          createTime: null, //不用写
+          deliveryAddress: '', // 收货人整个地址 北京市海淀区 拼起来的地址
+        // deliveryArea: '',
+        // deliveryCity: '',
+          deliveryContact: '', // 联系方式
+          deliveryPerson: '', // 收件人
+          deliveryPrice: 0, // 运费
+        // deliveryProvince: '',
+          deliveryRemark: "", // 运费备注
+          deliveryType: '', // 运输方式  汉字 顺丰
+          discountAmount: '', //  商品各种活动优惠 不包含免运费的活动
+        // finalAmount: 0,
+        // flag: 0,
+          id: 0, //不用写
+          isReceipt: "0", //要不要发票， 0不需要 1要
+          bankAccount: this.curSelectedInvoice.bankAccount,
+          orderCode: "", //不用写
+          orderType: "book",   //期刊是这个 其他的都是book
+          oremark: "wxShop",
+          payAmount: this.payMoney, // 应付金额 = 商品总价 + 运费
+          payCode: "", //不用写
+          payMethod: this.currentPayWay, // 支付方式： Weixin 微信支付 Alipay 支付宝支付  Balance 余额支付
+          payRemark: '', // 订单备注
+          payStatus: "", //空
+          payTime: null,
+          payType: 1, // 0线下支付  1在线支付
+          payUser: "", //不用写
+          point: 0,
+          realAmount: this.payMoney, // 实付金额 = 应付金额-运费-余额支付
+          receiptId: this.curSelectedInvoice.receiptId,
+          receiptType: this.curSelectedInvoice.receiptType, //如果要发票的话  1 个人 2 单位
+          receiptTitle: this.curSelectedInvoice.receiptType == 1 ? "个人" : this.curSelectedInvoice.receiptTitle,
+          remark: "",
+          siteId: CONFIG.SITE_CONFIG.siteId,
+          splitOrderList: [this.temp], //aaa
+        // status: "",
+          taxpayerCode: this.curSelectedInvoice.taxpayerCode,
+          totalPrice: this.payMoney, // 商品总价（不含优惠运费）
+      };
     },
     selectPublicize (item) { // 切换相关信息显示tab
       this.showPublicizeTopic = item;
@@ -372,17 +679,42 @@ export default {
         let datas = rep.data;
         if (rep.status == 200 && datas.data) {
           this.resourceDetail = datas.data;
+          this.buyBtnOpacity = false;
           this.resId = this.resourceDetail[this.keys.resId];
-          this.isBuy = this.resourceDetail.isBuy;
+          this.isBuy = this.resourceDetail.isBuy?this.resourceDetail.isBuy:this.isBuy;
           this.isAddShelf = this.resourceDetail.isAddShelf;
           this.isDiscuss = this.resourceDetail.isDiscuss;
           this.isCart = this.resourceDetail.isCart;
           this.isDownload = this.resourceDetail.isDownload;
           this.isEb = this.resourceDetail.isEb;
           this.pub_comment_num = this.resourceDetail.pub_comment_num;
+          this.payMoney = Number(this.resourceDetail[this.keys.courseSalePrice]);
           if (this.publicizeInfoConfig && this.publicizeInfoConfig.isShowPublicize) {
             this.getPublicizeInfo(); // 获取图书相关信息
           }
+          //获取组合购买数据
+          this.combinateProductLsit = this.resourceDetail.combinateProductLsit;
+          // 计算省下多少钱
+          let thisBookPrice = Number(this.resourceDetail["memberPrice"]);
+          // for(let j = 0; j < this.combinateProductLsit.length ; j++){
+          //   let allPrice = 0;
+          // }
+          if(this.combinateProductLsit.length > 0){
+            this.combinateProductLsit.forEach(function(val,key,obj){
+              let allPrice = 0;
+              val.list.forEach(function(item,index,arr){
+                allPrice += Number(item['memberPrice']);
+              })
+              val['savemoney'] = allPrice + thisBookPrice;
+            });
+          }
+          // console.log(this.combinateProductLsit.length);
+          this.showCombinateArr = new Array(this.combinateProductLsit.length);
+          for(let i = 0; i < this.showCombinateArr.length ; i++){
+            // this.showCombinateArr[i] = 0;
+            this.$set(this.showCombinateArr,i,0);
+          }
+          // console.log(this.showCombinateArr);
         }
       });
     },
@@ -490,6 +822,40 @@ export default {
         }
       });
     },
+    addcombinateProductToCart(config,combinateId){ //组合商品加入购物车
+      if (this.loginName == undefined || this.loginName == '') {  // 未登录
+        window.open('../pages/login.html');
+        return false
+      }
+      if (typeof (config) == "undefined") {return;} 
+      Get(CONFIG.BASE_URL + config.url + '?loginName=' + this.loginName + '&combinateId=' + combinateId + '&siteId=' + config.params.siteId).then((rep) => {
+        var datas = rep.data;
+        if (datas.result == "1") {
+          let msg = datas.data.msg;
+          this.$message({
+            message: msg,
+            type: 'success'
+          });
+          //原有的购物车数量
+          let num = this.getCartAmount;
+          this.$store.dispatch("login/getTotalAmount", parseInt(this.quantity) + num);//头部气泡上购物车数量
+          this.$store.dispatch("bookDetail/" + type.CART_NUMS, this.loginName); //每次添加完购物车都要更新购物车数量
+        } else {
+          let errormsg = datas.error && datas.error.msg ? datas.data.error.msg : datas.data.msg;
+          this.$message({
+            message: errormsg,
+            type: 'error'
+          });
+        }
+      });
+      
+    },
+    toCombinateItemDetail(config,pubid){ // 去每一个组合购买图书的详情
+      // console.log(config);
+      // console.log(pubid);
+       if (typeof (config) == "undefined") {return;} 
+       window.open(config.url + '?pubId=' + pubid);
+    },
     collectOrLike (config) { // 点赞 或者 收藏
       if (this.loginName == undefined || this.loginName == '') {  // 未登录
         // this.$message({
@@ -583,6 +949,17 @@ export default {
     } else {
       return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥')+'0.00';
     }
+    },
+    combinateList(event,key,max){
+      var $target = $(event.target);
+      if($target.hasClass("disable")){return;}
+      if($target.hasClass("prev")){
+        // this.showCombinateArr[key] = Number(this.showCombinateArr[key]) - 1;
+        this.$set(this.showCombinateArr,key,Number(this.showCombinateArr[key]) - 1)
+      }else if($target.hasClass("next")){
+        // this.showCombinateArr[key]  = Number(this.showCombinateArr[key] ) + 1;
+        this.$set(this.showCombinateArr,key,Number(this.showCombinateArr[key]) + 1)
+      }
     }
   },
   watch: {
@@ -666,5 +1043,8 @@ input[type="number"] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.buyBtnOpacity{
+  opacity: .6;
 }
 </style>

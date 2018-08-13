@@ -163,6 +163,13 @@ export default {
       CONFIG.SITE_CONFIG.siteId;
     return Get(url);
   },
+  /*获取我的消息列表*/
+  queryMyMessageList(params) {
+    var url =
+      CONFIG.BASE_URL +
+      "spc/cms/publish/list.do"
+    return Post(url,params);
+  },
   /*获取收藏夹列表*/
   queryCollectionInfo(params) {
     var url =
@@ -294,6 +301,15 @@ export default {
       params.pageIndex +
       "&pageSize=" +
       params.pageSize + "&type=" + params.type + "&flag=" + params.flag;
+    return Get(url);
+  },
+  /*样书申领记录*/
+  getSamplebookList(params) {
+    var url =CONFIG.BASE_URL + params.getListUrl + "?doclibCode=" +
+    params.doclibCode +
+    "&pageIndex=" + 
+    params.pageIndex + 
+    "&pageSize=" + params.pageSize;
     return Get(url);
   },
   /*售后详情接口*/

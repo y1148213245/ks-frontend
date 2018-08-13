@@ -44,12 +44,13 @@ navigation: {
       // showColumnArray: [], // 过滤显示的栏目 （并不是所有的栏目都应该显示）过滤显示哪个栏目 比如：showColumnArray: [307, 308]
       directLink: { // 点击左侧导航直接跳转链接 因为点击左侧不同导航时右侧内容的内容显示不一样
         switchFlag: false, // 跳转功能开关
+        dierctWay: '_blank', // 跳转窗口的方式 _blank代表新窗口 _self代表当前窗口
         directRules: { // 跳转链接根据栏目id不同而不同
-          '1118': '../pages/newslistsnxw?colId=',
-          '1119': '../pages/newslistyjxw?colId=',
-          '1120': '../pages/newslistzcfg?colId=',
-          '1121': '../pages/newslisttpxw?colId=',
-          '1122': '../pages/newslistspjx?colId=',
+          '1118': '../pages/newslistsnxw.html?colId=',
+          '1119': '../pages/newslistyjxw.html?colId=',
+          '1120': '../pages/newslistzcfg.html?colId=',
+          '1121': '../pages/newslisttpxw.html?colId=',
+          '1122': '../pages/newslistspjx.html?colId=',
         }
       }
     }
@@ -60,7 +61,7 @@ navigation: {
 const dev = {
   navigation: {
     navigation_05: {
-      "moduleName": {
+      "modulename": {
         "colId": 510,
         "comTitle": {
           "isShow": true,
@@ -94,11 +95,11 @@ const dev = {
         "directLink": {
           "switchFlag": false,
           "directRules": {
-            "1118": "../pages/newslistsnxw?colId=",
-            "1119": "../pages/newslistyjxw?colId=",
-            "1120": "../pages/newslistzcfg?colId=",
-            "1121": "../pages/newslisttpxw?colId=",
-            "1122": "../pages/newslistspjx?colId="
+            "1118": "../pages/newslistsnxw.html?colId=",
+            "1119": "../pages/newslistyjxw.html?colId=",
+            "1120": "../pages/newslistzcfg.html?colId=",
+            "1121": "../pages/newslisttpxw.html?colId=",
+            "1122": "../pages/newslistspjx.html?colId="
           }
         },
         "reverseByColId":false //是否按照id反向排序 , 默认false或者不传值按照colId排序 , true则按照colId反向排序
@@ -110,7 +111,7 @@ const dev = {
 const prod = {
   navigation: {
     navigation_05: {
-      "moduleName": {
+      "modulename": {
         "colId": 510,
         "comTitle": {
           "isShow": true,
@@ -143,12 +144,13 @@ const prod = {
         },
         "directLink": {
           "switchFlag": false,
+          dierctWay: '_blank', // 跳转窗口的方式 _blank代表新窗口 _self代表当前窗口
           "directRules": {
-            "1118": "../pages/newslistsnxw?colId=",
-            "1119": "../pages/newslistyjxw?colId=",
-            "1120": "../pages/newslistzcfg?colId=",
-            "1121": "../pages/newslisttpxw?colId=",
-            "1122": "../pages/newslistspjx?colId="
+            "1118": "../pages/newslistsnxw.html?colId=",
+            "1119": "../pages/newslistyjxw.html?colId=",
+            "1120": "../pages/newslistzcfg.html?colId=",
+            "1121": "../pages/newslisttpxw.html?colId=",
+            "1122": "../pages/newslistspjx.html?colId="
           }
         },
         "reverseByColId":false //是否按照id反向排序 , 默认false或者不传值按照colId排序 , true则按照colId反向排序

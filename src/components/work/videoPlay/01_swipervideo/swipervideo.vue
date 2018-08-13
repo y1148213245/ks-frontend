@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-07-03 10:52:51 
  * @Last Modified by: song
- * @Last Modified time: 2018-07-13 16:07:07
+ * @Last Modified time: 2018-08-09 16:58:51
  * 视频播放组件 列表是轮播图形式的
  * TODO: 轮播的分页怎么办
  */
@@ -10,7 +10,22 @@
 <template>
   <div class="work_videoplay_01">
     <section v-for="(config, index) in CONFIG.complicatedItem" v-if="curVideoObj" v-bind="{class: 'work_videoplay_01_item_' + config.field}" :key="index">
-      <div class="work_videoplay_01_option" @click="toCustomFun(config)">
+      <!-- title -->
+      <div v-if="config.name == 'title'" class="work_videoplay_01_option" @click="toCustomFun(config)">
+        <label class="work_videoplay_01_label" v-text="config.display"></label>
+        <span v-if="config.field" v-bind="{class: 'work_videoplay_01_' + config.field}" v-text="curVideoObj[keys[config.field]]"></span>
+      </div>
+      <!-- END title -->
+
+      <!-- img 图片 -->
+      <div v-else-if="config.name == 'img'" class="work_videoplay_01_imgcontainter" @click="toCustomFun(config)" v-show="resType == 'AUDIO-MEDIA'">
+        <label class="work_videoplay_01_img_label">{{config.display}}</label>
+        <img class="work_videoplay_01_img" v-bind="{class: 'work_videoplay_01_' + config.field}" :src="curVideoObj[keys[config.field]] || require('@static/img/defaultCover.png')" />
+      </div>
+      <!-- END img 图片 -->
+
+      <!-- 其他项 -->
+      <div v-else class="work_videoplay_01_others" @click="toCustomFun(config)">
         <label class="work_videoplay_01_label" v-text="config.display"></label>
         <span v-if="config.field" v-bind="{class: 'work_videoplay_01_' + config.field}" v-text="curVideoObj[keys[config.field]]"></span>
       </div>
@@ -39,6 +54,8 @@
 <script>
 import PROJECT_CONFIG from 'projectConfig';
 import { Get, Post, getFieldAdapter, toOtherPage } from "@common";
+import { mapGetters } from 'vuex';
+import * as interfaces from "@work/login/common/interfaces.js";
 import URL from "url";
 import { Toast } from 'vant';
 
@@ -60,30 +77,37 @@ export default {
       playUrl: '', // 资源播放地址
     };
   },
-
+  computed: {
+    ...mapGetters("login", {
+      member: interfaces.GET_MEMBER
+    }),
+  },
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_videoplay.work_videoplay_01[this.modulename];
     this.playUrl = CONFIG.BASE_URL + this.CONFIG.playVideoUrl; // 资源播放地址
-    this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter);
     let queryObj = URL.parse(document.URL, true).query;
     if (this.CONFIG.queryParamsType == 'url') { // 从视频组里取数据的时候才把参数传到地址栏里
       this.curId = queryObj && queryObj.id ? queryObj.id : ''; // 当前播放的视频id
       this.parentId = queryObj && queryObj.parentId ? queryObj.parentId : '';// 视频组id
       this.mediaResId = queryObj && queryObj.mediaResId ? queryObj.mediaResId : '';//播放单个视频时需要的的VIDEO-MEDIA_RESOURCEID
+      this.resType = queryObj && queryObj.resType ? queryObj.resType : 'VIDEO-MEDIA';
     }
-    this.resType = queryObj && queryObj.resType ? queryObj.resType : 'VIDEO-MEDIA';
+    if(this.resType === "AUDIO-MEDIA" && this.CONFIG.getResourceLists.typeAdapter1){
+      this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter1);
+    }else {
+      this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter);
+    }
     this.getListOrPlayVideo(); // 查询视频列表
   },
-
-  mounted () {
-
-  },
-
   methods: {
-    getListOrPlayVideo(){
-      
-      if(!this.parentId){   //没有parentId表示非视频组，那么播放单个视频
+    getListOrPlayVideo () {
+      if (this.CONFIG.queryParamsType == '') { // 从配置里面去参数
+        this.queryResourceLists();
+        return false;
+      }
+      if (!this.parentId) {   //没有parentId表示非视频组，那么播放单个视频
         this.CONFIG.showVideoList = false;  //单个视频不显示轮播列表
+        this.getDetailById(this.curId);  //获取当前播放视频的详情信息
         this.$nextTick(() => {
           if (this.resType == 'VIDEO-MEDIA') { // 如果是视频资源才初始化视频播放器插件
             this.curDPlayer = new DPlayer({ // 播放器
@@ -95,12 +119,12 @@ export default {
             });
           }
         });
-      }else{    //有parentId表示视频组，那么去视频组播放视频
+      } else {    //有parentId表示视频组，那么去视频组播放视频
+        this.CONFIG.showVideoList = true; //视频组需要显示轮播列表
         this.queryResourceLists();
       }
     },
     queryResourceLists () {
-      this.CONFIG.showVideoList = true; //视频组需要显示轮播列表
       let QUERYCONFIG = this.CONFIG.getResourceLists;
       let paramsObj = JSON.parse(JSON.stringify(QUERYCONFIG.params));
       paramsObj.conditions.map((item) => {
@@ -111,12 +135,12 @@ export default {
           item.pub_site_id = CONFIG.SITE_CONFIG.siteId;
         }
       })
-
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);
       Post(CONFIG.BASE_URL + QUERYCONFIG.url, paramsObj).then((res) => {
         let datas = res.data;
         if (datas.success && datas.result.length > 0) {
           this.videoLists = datas.result; // 视频列表
+
           if (this.CONFIG.queryParamsType == 'url') { //  从地址栏里取数据
             this.videoLists.forEach((item, index) => {
               if (item[this.keys.id] == this.curId) {
@@ -163,6 +187,17 @@ export default {
     },
     toCustomFun (config) { // 执行自定义事件
       window.open(toOtherPage(this.curVideoObj, this.CONFIG[config.method], this.keys));
+    },
+    getDetailById (id) {  //获取当前播放视频的详情信息
+      let params = Object.assign({}, this.CONFIG.getDetailById.params);
+      params.pubId = id;
+      params.loginName = this.member.loginName;
+      Get(CONFIG.BASE_URL + this.CONFIG.getDetailById.url + '?pubId=' + params.pubId + '&loginName=' + params.loginName).then((rep) => {
+        let datas = rep.data;
+        if (datas.success && datas.data) {
+          this.curVideoObj = datas.data;
+        }
+      })
     }
   }
 }

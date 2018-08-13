@@ -62,6 +62,8 @@ const dev = {
       confirmReceipt: {
         url: "order/confirmReceipt.do",
       },
+      toBookDetailUrl:'./bookdetail.html',
+      toperiodicalDetailsUrl:'./maginfo.html',
     },
   }
 }
@@ -109,6 +111,8 @@ const prod = {
       deleteOrder: {
         url: "order/deleteParentOrder.do",
       },
+      toBookDetailUrl:'./bookdetail.html',
+      toperiodicalDetailsUrl:'./maginfo.html',
     },
   }
 }

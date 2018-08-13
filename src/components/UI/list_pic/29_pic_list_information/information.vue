@@ -87,7 +87,8 @@ import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 import ui_pagination from "../../pagination/pagination/pagination";
 import { Icon, Toast } from "vant";
-import moment from "moment"
+import moment from "moment";
+import $ from "jquery"
 
 export default {
   name: "ui_list_pic_29",
@@ -115,7 +116,8 @@ export default {
       pubId: "", //
       cascadId: "", //
       searchText: "",
-      columnName: ""  // 稿件的栏目名称
+      columnName: "",  // 稿件的栏目名称
+      seriesId:"" // 丛书的id
     };
   },
 
@@ -135,6 +137,10 @@ export default {
     // 稿件的栏目名称(适应博览,博览财富)
     if (typeof uriQuery.columnName != "undefined") {
       this.columnName = uriQuery.columnName;
+    }
+    // 丛书的id (金融书城PC)
+    if (typeof uriQuery.seriesId != "undefined") {
+      this.seriesId = uriQuery.seriesId;
     }
 
     this.CONFIG =
@@ -326,7 +332,11 @@ export default {
             : item[this.keys.colId];
         }
         if (item.hasOwnProperty("pub_parent_id")) {
-          item.pub_parent_id = this.pubId ? this.pubId : item.pub_parent_id;
+          if(this.seriesId){
+            item.pub_parent_id = this.seriesId;
+          }else{
+            item.pub_parent_id = this.pubId ? this.pubId : item.pub_parent_id;
+          }
         }
         if (item.hasOwnProperty("BOOK_BOOK_CASCADID")) {
           item.BOOK_BOOK_CASCADID = this.cascadId
@@ -336,6 +346,11 @@ export default {
 
         if (item.hasOwnProperty("PRODUCT-ARTICLE_COLUMNNAME")) {
           item["PRODUCT-ARTICLE_COLUMNNAME"] = this.columnName ? this.columnName : item["PRODUCT-ARTICLE_COLUMNNAME"];
+        }
+
+        // 读取站点ID(by zrn)
+        if(item.hasOwnProperty("pub_site_id")){
+          item.pub_site_id = CONFIG.SITE_CONFIG.siteId;
         }
       });
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);

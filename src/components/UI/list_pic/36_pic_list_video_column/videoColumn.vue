@@ -5,9 +5,12 @@
     <div class="ui_list_pic_36_column">
       <div class="ui_list_pic_36_column-title">{{display.courseName}}</div>
       <ul class="ui_list_pic_36_videoList">
-        <li v-for="(video,index) in videoList" @click="toPlayVideo(video,keys)" :key="index">
-          <div class="ui_list_pic_36_videoList_columnName" @mouseover="showIcon(index)" @mouseout="hideIcon()">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
-          <i class="ui_list_pic_36_videoList_icon" v-if="currentIndex == index"></i>
+        <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()">
+          <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
+          <div class="ui_list_pic_36_videoList_icon" v-if="currentIndex == index">
+            <span class="playvideo-tip" @click="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
+            <span class="playtest-tip"><i class="fa fa-file-text"></i>{{display.test}}</span>
+          </div>
         </li>
       </ul>
     </div>
@@ -40,7 +43,7 @@ export default {
     }
   },
   created () {
-    this.pubId = 2179;//URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
+    this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_36[this.modulename];
     this.display = this.CONFIG.display;
     this.keys = getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter);
@@ -82,18 +85,30 @@ export default {
       this.pageSize = pageSize;
       this.getVideoList();
     },
-    toPlayVideo (video, keys) {
-      window.open(toOtherPage(video, this.CONFIG.toPlayVideo, keys));
+    toPlayVideo (item) {
+      switch (item[this.keys.pubResType]) {
+        case this.display.book:   //去阅读电子书
+          let params = Object.assign({},this.CONFIG.toEbook.params) ;
+          let url = CONFIG.READ_URL + '?bookId=' + item[this.keys.resId] + '&readType=' + params.readType + '&bookName=' + item[this.keys.resName] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+          
+          window.open(url);
+          break;
+        case this.display.audio:  //去播放音频
+          let audioParams = Object.assign({},this.CONFIG.toPlayAudio.params);
+          window.open(toOtherPage(item,this.CONFIG.toPlayAudio,this.keys)+'&mediaResId='+item[audioParams.audioResId]);
+          break;
+        case this.display.video:  //去播放视频
+          //把video_resource_id传给视频播放器，因为播放单个视频时需要这个id
+          let videoParams = Object.assign({},this.CONFIG.toPlayVideo.params);
+          window.open(toOtherPage(item,this.CONFIG.toPlayVideo,this.keys)+'&mediaResId='+item[videoParams.videoResId]);
+          break;
+      }
+      // window.open(toOtherPage(video, this.CONFIG.toPlayVideo, keys));
     }
   }
 }
 </script>
 
 <style scoped>
-.ui_list_pic_36_videoList_icon {
-  float: right;
-}
-.ui_list_pic_36_videoList_icon:before {
-  content: '\f144';
-}
+
 </style>

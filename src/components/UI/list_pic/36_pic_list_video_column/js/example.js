@@ -14,7 +14,12 @@ const dev = {
         display: {
           courseContain: '课程包含内容：',
           courseName: '课程名称',
-          symbol: '、'
+          symbol: '、',
+          play: "播放",
+          test: "测试卷",
+          book: "BOOK",
+          video: "VIDEO-MEDIA",
+          audio: "AUDIO-MEDIA",
         },
         url: "spc/cms/publish/list.do",
         params: {
@@ -34,13 +39,39 @@ const dev = {
         },
         sysAdapter: "sykAdapter", // 系统字段
         typeAdapter: "videoAdapter", // 类型字段
+        toEbook: {
+          url: "",
+          params: {
+            bookId: "",
+            readType: 1,
+            bookName: "",
+            userName: "",
+            siteType: ""
+          }
+        },
+        toPlayAudio: {
+          url: "../pages/videoplay.html",
+          dataKeys: {
+            id: "id",
+            parentId: "parentId", // id是从适配器里对应的
+            resType: "pubResType"
+          },
+          fixedKeys: {},
+          params: {
+            audioResId:"AUDIO-MEDIA_RESOURCEID"
+          }
+        },
         toPlayVideo: { // 去视频详情页面
           url: "../pages/videoplay.html",
           dataKeys: {
             parentId: "parentId", // id是从适配器里对应的
             id: "id", // id是从适配器里对应的
+            resType: "pubResType"
           },
-          fixedKeys: {}
+          fixedKeys: {},
+          params: {
+            videoResId:"VIDEO-MEDIA_RESOURCEID"
+          }
         },
         maxNum: 10,
         pageSizes:[10,30,50,100],
@@ -57,7 +88,12 @@ const prod = {
         display: {
           courseContain: '课程包含内容：',
           courseName: '课程名称',
-          symbol: '、'
+          symbol: '、',
+          play: "播放",
+          test: "测试卷",
+          book: "BOOK",
+          video: "VIDEO-MEDIA",
+          audio: "AUDIO-MEDIA",
         },
         url: "spc/cms/publish/list.do",
         params: {
@@ -77,13 +113,39 @@ const prod = {
         },
         sysAdapter: "sykAdapter", // 系统字段
         typeAdapter: "videoAdapter", // 类型字段
+        toEbook: {
+          url: "",
+          params: {
+            bookId: "",
+            readType: 1,
+            bookName: "",
+            userName: "",
+            siteType: ""
+          }
+        },
+        toPlayAudio: {
+          url: "../pages/videoplay.html",
+          dataKeys: {
+            id: "id",
+            parentId: "parentId", // id是从适配器里对应的
+            resType: "pubResType"
+          },
+          fixedKeys: {},
+          params: {
+            audioResId:"AUDIO-MEDIA_RESOURCEID"
+          }
+        },
         toPlayVideo: { // 去视频详情页面
           url: "../pages/videoplay.html",
           dataKeys: {
             parentId: "parentId", // id是从适配器里对应的
             id: "id", // id是从适配器里对应的
+            resType: "pubResType"
           },
-          fixedKeys: {}
+          fixedKeys: {},
+          params: {
+            videoResId:"VIDEO-MEDIA_RESOURCEID"
+          }
         },
         maxNum: 10,
         pageSizes:[10,30,50,100],

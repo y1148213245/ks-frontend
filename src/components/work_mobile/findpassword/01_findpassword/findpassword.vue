@@ -15,7 +15,7 @@
       <div class="ui_work_findpassword_01_first_div">
         <van-cell-group class="ui_work_findpassword_01_group">
           <!-- 邮箱找回密码 -->
-          <van-field class="ui_work_findpassword_01_phone" v-model="phoneNumber" :placeholder="display.phoneNumber" icon="clear" @click-icon="phoneNumber = ''" @blur="formatPhoneNumber(false)" v-if="CONFIG.findPasswordWay && CONFIG.findPasswordWay == 'Email'" />
+          <van-field class="ui_work_findpassword_01_phone" v-model="phoneNumber" :placeholder="display.emailPlaceholder" icon="clear" @click-icon="phoneNumber = ''" @blur="formatPhoneNumber(false)" v-if="CONFIG.findPasswordWay && CONFIG.findPasswordWay == 'Email'" />
           <!-- 手机号找回密码 -->
           <van-field class="ui_work_findpassword_01_phone" v-model="phoneNumber" :placeholder="display.phoneNumber" icon="clear" @click-icon="phoneNumber = ''" @blur="formatPhoneNumber(false)" type="tel" maxlength="11" v-else/>
           <van-field class="ui_work_findpassword_01_check" v-model="checkNumber" :placeholder="display.checkNumber" center></van-field>
@@ -112,26 +112,30 @@ export default {
       let checkReg; // 校验规则: 手机号 && 邮箱
       if (this.CONFIG.findPasswordWay && this.CONFIG.findPasswordWay == 'Email') { // 邮箱找回密码
         checkReg = /^\w+@[a-zA-Z0-9]{2,10}(?:\.[a-z]{2,4}){1,3}$/;
-      } else {  // 默认手机找回密码
-        checkReg = /^[1][3,4,5,7,8][0-9]{9}$/;
-      }
-      if (this.phoneNumber == '') {  // 手机号为空
-        this.errormsg = this.display.phoneNumber; // 请输入手机号
-        this.isWrongPhone = true;
-      } else if (!checkReg.test(this.phoneNumber)) { // 手机号格式有误
-        this.errormsg = this.display.rightPhoneNumber; // 请输入正确的手机号
-        this.isWrongPhone = true;
-      } else { // 手机号格式正确 在格式正确的基础上去校验是否已经注册过
-        this.isWrongPhone = false;
-        if (this.CONFIG.findPasswordWay && this.CONFIG.findPasswordWay == 'Email') { // 邮箱找回密码
-          if (flag == true) { // 点击发送验证码的按钮
-            this.doSendCheckNumber();
-          }
-        } else {
-          this.checkExistPhoneNumber(flag);  // 默认手机找回密码
+          if (this.phoneNumber == '') {  // 邮箱为空
+          this.errormsg = this.display.EmailIsEmpty; // 请输入邮箱
+          this.isWrongPhone = true;
+        } else if (!checkReg.test(this.phoneNumber)) { // 邮箱格式有误
+          this.errormsg = this.display.rightEmail; // 请输入正确的邮箱
+          this.isWrongPhone = true;
+        } else { // 邮箱格式正确 在格式正确的基础上去校验是否已经注册过
+          this.isWrongPhone = false;
+          this.checkExistPhoneNumber(flag);  // 校验是否存在
         }
-
+      } else {  // 手机找回密码
+        checkReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+        if (this.phoneNumber == '') {  // 手机号为空
+          this.errormsg = this.display.phoneNumber; // 请输入手机号
+          this.isWrongPhone = true;
+        } else if (!checkReg.test(this.phoneNumber)) { // 手机号格式有误
+          this.errormsg = this.display.rightPhoneNumber; // 请输入正确的手机号
+          this.isWrongPhone = true;
+        } else { // 手机号格式正确 在格式正确的基础上去校验是否已经注册过
+          this.isWrongPhone = false;
+          this.checkExistPhoneNumber(flag);  // 校验是否存在
+        }
       }
+
     },
     checkExistPhoneNumber (flag) { // 校验手机号是否已经注册过
       let setConfig = this.CONFIG.checkPhoneNumeber;
@@ -157,15 +161,20 @@ export default {
     },
     doSendCheckNumber () { //  发送验证码方法
       var inter = null; // 定时器变量
-      let sendConfig = this.CONFIG.sendCheckNumber;
-      let paramsObj = Object.assign({}, sendConfig.params);
+      let sendConfig;
+      let paramsObj;
       if (this.CONFIG.findPasswordWay && this.CONFIG.findPasswordWay == 'Email') {
+        sendConfig = this.CONFIG.sendCheckEmail;
+        paramsObj = Object.assign({}, sendConfig.params);
         paramsObj.email = this.phoneNumber;
       } else {
+        sendConfig = this.CONFIG.sendCheckNumber;
+        paramsObj = Object.assign({}, sendConfig.params);
         paramsObj.mobileNum = this.phoneNumber;
       }
       let tempInfo = this.display.sendCheckNumber; // 暂存信息
       this.display.sendCheckNumber = this.display.sending; // 正在发送中...
+
       Get(CONFIG.BASE_URL + sendConfig.url, { params: paramsObj }).then((resp) => { // 发送验证码
         let res = resp.data;
         if (res.result == '1') { // 请求成功
@@ -229,14 +238,18 @@ export default {
     confirmSet () {
       this.formatPassword(); // 先校验一下密码格式
       if (!this.isWrongPassword) { // 格式正确
-        let setConfig = this.CONFIG.setPassword;
-        let paramsObj = Object.assign({}, setConfig.params);
+        let setConfig;
+        let paramsObj;
         /* 邮箱找回密码 设置密码 */
         if (this.CONFIG.findPasswordWay && this.CONFIG.findPasswordWay == 'Email') {
+          setConfig = this.CONFIG.setPasswordByEmail;
+          paramsObj = Object.assign({}, setConfig.params);
           Post(CONFIG.BASE_URL + setConfig.url + '?email=' + this.phoneNumber + '&password=' + this.password).then((resp) => { // 找回密码
             this.dealResponse(resp);
           })
         } else {/* 手机号找回密码 设置密码 */
+          setConfig = this.CONFIG.setPassword;
+          paramsObj = Object.assign({}, setConfig.params);
           paramsObj.mobileNum = this.phoneNumber;
           paramsObj.passWord = this.password;
           paramsObj.code = this.checkNumber;

@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-06-14 10:43:10 
+ * @Author: song
+ * @Date: 2018-06-14 10:43:10
  * @Last Modified by: song
  * @Last Modified time: 2018-06-25 18:09:25
  */
@@ -12,7 +12,7 @@ const name = component.name; // 组件标签名
 const title = "找回密码组件"; // 组件title
 
 const description = `找回密码组件：手机号找回密码；邮箱找回密码。findPasswordWay属性值控制：Email / Phone
-邮箱找回密码需要两个接口： 
+邮箱找回密码需要两个接口：
   sendCheckNumber: { // 发送验证码 邮箱找回密码
     url: 'user/findPassword.do',
     params: {
@@ -24,7 +24,6 @@ const description = `找回密码组件：手机号找回密码；邮箱找回�
     params: {
       email: '',
       passWord: '',
-      code: ''
     }
   }
 手机号找回密码需要三个接口：
@@ -60,7 +59,9 @@ const dev = {
       display: { // 组件静态文本
         navTitle: '密码找回',
         phoneNumber: '请输入手机号',
+        EmailIsEmpty: '请输入邮箱',
         rightPhoneNumber: '请输入正确的手机号',
+        rightEmail: '请输入正确的邮箱',
         checkNumber: '验证码',
         sendCheckNumber: '发送验证码',
         resendCheckNumber: '重新发送',
@@ -74,6 +75,7 @@ const dev = {
         successPassword: '密码设置成功',
         confirm: '确定',
         failOperation: '操作失败',
+        emailPlaceholder: "请输入注册邮箱"
       },
       directUrl: '../pages/login.html',
       checkPhoneNumeber: { // 验证用户信息 查寻手机号是否已经注册过 [手机号找回密码]
@@ -94,6 +96,19 @@ const dev = {
           mobileNum: '',
           passWord: '',
           code: ''
+        }
+      },
+      sendCheckEmail: { // 发送验证码 邮箱找回密码
+        url: 'user/findPassword.do',
+        params: {
+          email: ''
+        }
+      },
+      setPasswordByEmail: { // 重置密码 邮箱重置密码
+        url: 'user/setPassword1.do',
+        params: {
+          email: '',
+          passWord: ''
         }
       }
     }
@@ -110,7 +125,9 @@ const prod = {
       display: { // 组件静态文本
         navTitle: '密码找回',
         phoneNumber: '请输入手机号',
+        EmailIsEmpty: '请输入邮箱',
         rightPhoneNumber: '请输入正确的手机号',
+        rightEmail: '请输入正确的邮箱',
         checkNumber: '验证码',
         sendCheckNumber: '发送验证码',
         resendCheckNumber: '重新发送',
@@ -124,6 +141,7 @@ const prod = {
         successPassword: '密码设置成功',
         confirm: '确定',
         failOperation: '操作失败',
+        emailPlaceholder: "请输入注册邮箱"
       },
       directUrl: '../pages/login.html',
       checkPhoneNumeber: { // 验证用户信息 查寻手机号是否已经注册过 [手机号找回密码]
@@ -144,6 +162,19 @@ const prod = {
           mobileNum: '',
           passWord: '',
           code: ''
+        }
+      },
+      sendCheckEmail: { // 发送验证码 邮箱找回密码
+        url: 'user/findPassword.do',
+        params: {
+          email: ''
+        }
+      },
+      setPasswordByEmail: { // 重置密码 邮箱重置密码
+        url: 'user/setPassword1.do',
+        params: {
+          email: '',
+          passWord: ''
         }
       }
     }

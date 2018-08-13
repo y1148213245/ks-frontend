@@ -7,36 +7,36 @@
             <button class="work_mobile_personalcenter_14_all_cancel_btn" @click="batchCancelCollection(loginName)">{{display.allCancelCollection}}</button>
           </div>
           <div class="work_mobile_personalcenter_14_content_lists">
-
-            <van-checkbox-group v-model="result">
-              <van-checkbox v-for="(item , index) in collectionlist" :key="index" :name="item.pubId">
+            <div v-for="(item , index) in collectionlist" :key="index" :name="item.pubId">
                 <!-- 图书 -->
                 <div v-if="tabtitle.index ==0" class="work_mobile_personalcenter_14_content_lists_list">
-                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img">
-                  <span class="work_mobile_personalcenter_14_content_lists_list_title">{{item.productName}}</span>
-                  <span class="work_mobile_personalcenter_14_content_lists_list_author">{{item.author | formatAuthor }}</span>
-                  <span class="work_mobile_personalcenter_14_content_lists_list_serial_number">{{display.isbn}}{{item.isbn}}</span>
-                  <span class="work_mobile_personalcenter_14_content_lists_list_price">{{item.memberPrice | formatPriceNew }}</span>
+                    <van-checkbox v-model="item.checked" @change="selectProduct(item)"></van-checkbox>
+                    <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img" @click.self="toDetailsPage(item)">
+                    <span class="work_mobile_personalcenter_14_content_lists_list_title" @click.self="toDetailsPage(item)">{{item.productName}}</span>
+                    <span class="work_mobile_personalcenter_14_content_lists_list_author">{{item.author | formatAuthor }}</span>
+                    <span class="work_mobile_personalcenter_14_content_lists_list_serial_number">{{display.isbn}}{{item.isbn}}</span>
+                    <span class="work_mobile_personalcenter_14_content_lists_list_price">{{item.memberPrice | formatPriceNew }}</span>
                   <button class="work_mobile_personalcenter_14_content_lists_list_cancel_btn" @click="cancelCollection(loginName,item.pubId)">{{display.cancelCollection}}</button>
                 </div>
                 <!-- 期刊 -->
                 <div v-else-if="tabtitle.index ==1" class="work_mobile_personalcenter_14_content_lists_list">
-                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img">
-                  <span class="work_mobile_personalcenter_14_content_lists_list_title">{{item.productName}}</span>
+                  <van-checkbox v-model="item.checked" @change="selectProduct(item)"></van-checkbox>
+                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img" @click.self="toDetailsPage(item)">
+                  <span class="work_mobile_personalcenter_14_content_lists_list_title" @click.self="toDetailsPage(item)">{{item.productName}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_author">{{item.author | formatAuthor }}</span>
                   <button class="work_mobile_personalcenter_14_content_lists_list_cancel_btn" @click="cancelCollection(loginName,item.pubId)">{{display.cancelCollection}}</button>
                 </div>
                 <!-- 知识服务 -->
                 <div v-else class="work_mobile_personalcenter_14_content_lists_list">
-                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img">
-                  <span class="work_mobile_personalcenter_14_content_lists_list_title">{{item.productName}}</span>
+                  <van-checkbox v-model="item.checked" @change="selectProduct(item)"></van-checkbox>
+                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img" @click.self="toDetailsPage(item)">
+                  <span class="work_mobile_personalcenter_14_content_lists_list_title" @click.self="toDetailsPage(item)">{{item.productName}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_author">{{display.author}}:{{item.author | formatAuthor}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_source">{{display.source}}:{{item.resourceName}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_publication_date">{{display.publicationDate}}:{{item.pubTime | formatDateNEW }}</span>
                   <button class="work_mobile_personalcenter_14_content_lists_list_cancel_btn" @click="cancelCollection(loginName,item.pubId)">{{display.cancelCollection}}</button>
                 </div>
-              </van-checkbox>
-            </van-checkbox-group>
+              </div>
           </div>
         </div>
       </van-tab>
@@ -143,7 +143,7 @@ export default {
     },
     //取消收藏
     cancelCollection (loginName, pubId) {
-      //为空就听啦
+      //为空就停啦
       if(pubId==''){
         Toast.fail({
           duration: 1000,
@@ -180,11 +180,14 @@ export default {
         this.cancelCollection(loginName, this.result.join(","));
       }
     },
+    selectProduct(item) {
+      if(item.checked && !this.result.includes(item.pubId)) {
+        this.result.push(item.pubId);
+      }
+    },
     //去详情页
-    toDetailsPage () {
-      //TODO 暂时不知道详情页的地址以及需要传的参数
-      let url = this.CONFIG.toDetailsPage;
-      window.open(url)
+    toDetailsPage (item) {
+      window.location.href = this.CONFIG.toDetailUrl ? this.CONFIG.toDetailUrl : './bookdetail.html' + '?pubId=' + item.pubId;
     }
   },
   watch: {

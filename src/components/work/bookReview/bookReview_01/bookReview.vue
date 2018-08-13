@@ -26,7 +26,7 @@
         <div>
           <span class="username" v-text="queryComment.nickName || queryComment.loginName"></span>
           <p class="score">
-            <el-rate  v-model="queryComment.starNum - 0" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
+            <el-rate  v-model="queryComment.starNum - 0" :show-text="false" :max="5" disabled disabled-void-color="#f7ba2a" disabled-void-icon-class="el-icon-star-off"></el-rate>
           </p>
           <span class="createTime" v-text="queryComment.createTime"></span>
         </div>

@@ -84,11 +84,11 @@ export default {
             showChild: false, //子导航是否展示(鼠标单击控制展示收起)
             createChild: false //是否已经点击创建过子导航
           };
-          if(reverseByColId){ //如果反向排序 , 则反压进数组
+          if (reverseByColId) { //如果反向排序 , 则反压进数组
             tree.unshift(treeObj); //将对象按照顺序从头部添加进数组
-          }else{ //否则进行默认排序
+          } else { //否则进行默认排序
             tree.push(treeObj);
-          } 
+          }
         }
       });
       //发送默认bus
@@ -122,20 +122,24 @@ export default {
       }
     },
     navClick (item, items) {
-      if (this.CONFIG.directLink && this.CONFIG.directLink.switchFlag && this.CONFIG.directLink.directRules[item.id]) {
+      let directLink = this.CONFIG.directLink;
+      if (directLink && directLink.switchFlag && directLink.directRules[item.id]) {
         // 点击左侧导航直接跳转链接 因为点击左侧不同导航时右侧内容的内容显示不一样
-        window.open(this.CONFIG.directLink.directRules[item.id] + item.id, '_blank');
+        window.open(this.CONFIG.directLink.directRules[item.id] + item.id, directLink.dierctWay ? directLink.dierctWay : '_blank');
         return false
       }
       this.navInteract(item.id);
       //在资料中心中需要渲染三级栏目，因此通过该方法将完整数据广播给资料中心
       this.changeContentTwo(item);
       this.currentActive = item.id;
-        items.map(entry => {  // 手风琴效果
-          if (entry.id != item.id) { // 隐藏同级子栏目
-            entry.showChild = false;
-          }
-        })
+      items.map(entry => {  // 手风琴效果
+        if (entry.id != item.id) { // 隐藏同级子栏目
+          $('.ui_navigation_05_content-' + entry.id).css('display', 'none')
+          entry.showChild = false;
+        } else {
+          $('.ui_navigation_05_content-' + entry.id).css('display', 'block')
+        }
+      })
       if (item.createChild == false) {
         //判断点击的菜单是否已经点击创建过子导航，如果没有则创建子导航
         this.createTree(item.id, item.childNav, this.navData);
@@ -164,8 +168,8 @@ export default {
         childName
       ]);
     },
-    changeContentTwo(item){
-      if(this.CONFIG.transTitle){
+    changeContentTwo (item) {
+      if (this.CONFIG.transTitle) {
         this.$bus.$emit(this.CONFIG.transTitle, item);
       }
     }

@@ -18,9 +18,9 @@
           <ul class="work_mobile_personalcenter_11_book-list_ul">
             <li class="work_mobile_personalcenter_11_book-list_li_one" v-for="(book, index) in boughtBooksList" :key="index" v-if="boughtBooksList && boughtBooksList.length > 0">
               <div class="work_mobile_personalcenter_11_book-list_li_img-box">
-                <img class="work_mobile_personalcenter_11_book-list_li_img-box_img" :src="book.midPic" :alt="display.noPicture || '暂无图片'" />
+                <img class="work_mobile_personalcenter_11_book-list_li_img-box_img" :src="book.midPic" :alt="display.noPicture || '暂无图片'" @click="toBookPage(book)"/>
               </div>
-              <div class="work_mobile_personalcenter_11_book-list_li_content-box_bookName">
+              <div class="work_mobile_personalcenter_11_book-list_li_content-box_bookName" @click="toBookPage(book)">
                 {{book.productName}}
               </div>
             </li>
@@ -214,6 +214,16 @@ export default {
             this.isHasService = true;
           }
         })
+      },
+      // contentType //内容类型 91纸质书 94电子书 PORTAL_WORKS:作品
+      toBookPage(book) {
+        if(book.contentType==='91'){
+          var url= (this.CONFIG.toDetailUrl ? this.CONFIG.toDetailUrl : './bookdetail.html') + '?pubId=' + book.pubId;
+        }else if(book.contentType==='94'){
+          let params = Object.assign({},this.CONFIG.toProbationParams) ;
+          var url=CONFIG.READ_URL + '?bookId=' + book.resourceId + '&readType=' + (params.readType ? params.readType : '0') + '&bookName=' + book.resourceName + '&userName=&siteType=' + (params.siteType ? params.siteType : '1'); 
+        }
+          window.open(url, '_self');
       }
     },
     watch: {

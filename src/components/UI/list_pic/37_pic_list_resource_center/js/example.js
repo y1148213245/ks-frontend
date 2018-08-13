@@ -102,7 +102,7 @@ const dev = {
 const prod = {
   list_pic: {
     "list_pic_37": {
-      "resourceCenter": {
+      "modulename": {
         "colId": 510,
         "display": {
           "resourceTitle": "",
@@ -110,7 +110,16 @@ const prod = {
           "book": "BOOK",
           "video": "VIDEO-MEDIA",
           "audio": "AUDIO-MEDIA",
-          "download": "ZILIAOKU"
+          "download": "ZILIAOKU",
+          "bookShow": "电子书",
+          "videShow": "视频",
+          "audioShow": "音频",
+          "downloadShow": "下载",
+          "bookIconShow": "pdf",
+          "videIconShow": "video",
+          "audioIconShow": "audio",
+          "downloadIconShow": "archive",
+          "description": "描述："
         },
         "tabList": [],
         "tHeadList": [
