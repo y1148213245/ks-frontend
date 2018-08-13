@@ -2,9 +2,6 @@
 import Vue from 'vue';
 
 function initVueComponents () {
-	Vue.component("common_components_lib" , () => import("@components/library/ComponentsLib/ComponentsLib.vue"));
-	Vue.component("components_pagemanagement" , () => import("@components/library/pageManagement/pagemanage.vue"));
-	Vue.component("components_resource_lib" , () => import("@components/library/resourceLib/resourceLib.vue"));
 	Vue.component("ui_advert_01" , () => import("@components/UI/advert/01_advert/01_advert.vue"));
 	Vue.component("ui_information_02" , () => import("@components/UI/information/02_content/content.vue"));
 	Vue.component("ui_list_pic_21" , () => import("@components/UI/list_pic/21_pic_list_activity/picListActivity.vue"));

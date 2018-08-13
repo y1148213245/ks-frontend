@@ -88,7 +88,7 @@ function test (params) {
   time = new Date().getTime()
   pagePathList.forEach(pagePath => {
     let pageData = fs.readFileSync(pagePath, { flag: 'r+', encoding: 'utf8' })
-    let componentsTagNames = pageData.match(/(?!\<)(ui_|work_|components_|common_)(.*?)((?=\s)|(?=\>))/g) /* 筛选组件库标签 */
+    let componentsTagNames = pageData.match(/(?!\<)(ui_|work_)(.*?)((?=\s)|(?=\>))/g) /* 筛选组件库标签 */
     if (componentsTagNames && componentsTagNames.length > 0) {
       pageComponentsArr.push(componentsTagNames);
     }

@@ -8,7 +8,7 @@
         <el-menu-item v-if="CONFIG.showType.showChildNav.indexOf(item[keys.id]) == -1" :index="String(item[keys.id])" :key="ind">
           <a :href="item.url" :target="CONFIG.targetType">{{item[keys.name]}}</a></el-menu-item>
           <!-- 有子菜单 -->
-        <el-submenu class="ui_navigation_06-sub_nav" popper-class="ui_navigation_06-sub_nav" v-else :index="String(item[keys.id])" :key="ind">
+        <el-submenu class="ui_navigation_06-sub_nav" :class="{'is-active':item[keys.id] == showColId}" popper-class="ui_navigation_06-sub_nav" v-else :index="String(item[keys.id])" :key="ind">
           <template slot="title"><a :href="item.url" :target="CONFIG.targetType">{{item[keys.name]}}</a></template>
 
           <el-menu-item v-for="(sub_item,sub_ind) in columnHead" :index="String(sub_item[keys.id])" :key="sub_ind" v-if="sub_item[keys.parentId] == item[keys.id]">
@@ -79,6 +79,7 @@ export default {
       } else if (hasHtmlNames.length == 1) {
         this.showColId = hasHtmlNames[0].id
       }
+      console.log(this.showColId);
     },
     queryColumnHead () {  // 查询栏目
       let getCols = this.CONFIG.getCols
