@@ -105,15 +105,32 @@ exports.createNotifierCallback = () => {
 		})
 	}
 }
-
+/* 白名单操作 */
+let isProduction = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production'
 // 取得相应的页面路径，因为之前的配置，所以是src文件夹下的pages文件夹
-var PAGE_PATH = path.resolve(__dirname, '../src/projects/' + projectConfig.concurrentProject + '/pages')
+let PAGE_PATH = path.resolve(__dirname, '../src/projects/' + projectConfig.concurrentProject + '/pages'),
+		USED_PAGE_PATH,
+		usedPages;
+if (isProduction) {
+	/* 获取页面白名单路径 */ 
+	USED_PAGE_PATH = path.resolve(__dirname, '../src/projects/' + projectConfig.concurrentProject + '/main/usedPages.js')
+
+	try{
+		usedPages = require(USED_PAGE_PATH)
+	}catch(err){
+		usedPages = null
+	}
+
+	console.info('usedPages:::::',usedPages);
+}
+
 
 //多页面输出配置
 // 与上面的多页面入口配置相同，读取pages文件夹下的对应的html后缀文件，然后放入数组中
 exports.htmlPlugin = function () {
 	let entryHtml = glob.sync(PAGE_PATH + '/**/*.html');
-
+	let compileHtml = entryHtml;//白名单
+	
 	//*********添加组件库
 	entryHtml.push(path.resolve(__dirname, '../src/projects/zjk.html'));
   //*********添加资源库
@@ -124,7 +141,21 @@ exports.htmlPlugin = function () {
 	entryHtml.push(path.resolve(__dirname, '../src/projects/disablepage.html'));
 
 	let arr = [];
-	entryHtml.forEach((filePath) => {
+	/* 获取白名单 */
+	if (isProduction) {
+		if (usedPages && usedPages.pages.length>0) {
+			compileHtml = [];
+			entryHtml.forEach(item=>{
+				usedPages.pages.forEach(name=>{
+					if (name == path.basename(item)) {
+						compileHtml.push(item)
+					}
+				})
+			})
+		}
+	}
+	
+	compileHtml.forEach((filePath) => {
 		let _path = 'pages/' + path.basename(filePath);
 
 		console.info("--------", _path, "---------");
