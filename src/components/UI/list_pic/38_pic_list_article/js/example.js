@@ -5,7 +5,9 @@ const name = component.name; // 组件标签名
 
 const title = "稿件组件"; // 组件title
 
-const description = `稿件组件，获取某一期期刊下的所有稿件，并依据稿件栏目来归类`; // 组件描述信息
+const description = `稿件组件，获取某一期期刊下的所有稿件，并依据稿件栏目来归类
+使用页面: 1 金融微信书城 maginfo.html页面;
+         2 金融博览财富 magazineinfo.html页面`; // 组件描述信息
 
 const dev = {
   list_pic: {

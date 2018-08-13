@@ -323,7 +323,8 @@ export default {
       tempList: {}, //订单单元
       Orderparams: {},  //提交订单的参数
       payMoney: "",  //需要支付的金额
-      commitInfo: {},   //订单信息       
+      commitInfo: {},   //订单信息
+      buyBtnOpacity: false
     }
   },
   mounted () {
@@ -443,7 +444,7 @@ export default {
         });
         return false;
       }
-      
+
       (!this.buyBtnOpacity) && window.open(toOtherPage(this.resourceDetail, this.CONFIG[method], this.keys));
     },
     getPayMethodsBySiteId(){
@@ -466,9 +467,9 @@ export default {
       //判断支付方式 生成不同的参数
       //如果是余额支付那么判断余额够不够
       this.setOrderParams();
-      let loadingTag = this.$loading({ 
+      let loadingTag = this.$loading({
         fullscreen: true ,
-        text: this.CONFIG.display.drumpPage ? this.CONFIG.display.drumpPage : "正在跳转支付页面..." 
+        text: this.CONFIG.display.drumpPage ? this.CONFIG.display.drumpPage : "正在跳转支付页面..."
       });
       var _this = this;
       Post(CONFIG.BASE_URL + _this.CONFIG.commitOrderUrl, _this.Orderparams).then(function(response) {
@@ -477,7 +478,7 @@ export default {
           if(datas.data && datas.result == 1 && datas.data.submitStatus) {
             _this.commitInfo = datas.data;
             _this.toPay(loadingTag);
-            
+
             // location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&loginName=" + _this.loginName;
           } else {
             // console.log(datas.data.errMsg);
@@ -493,7 +494,7 @@ export default {
       })
     },
     toPay(loadingTag) {
-      
+
       var argus = {
         orderId: this.commitInfo.orderId,
         orderCode: this.commitInfo.orderCode,
@@ -508,7 +509,7 @@ export default {
           if (this.currentPayWay === "Alipay") {
             // 支付宝支付
             loadingTag.close();
-            
+
             window.open(
               CONFIG.BASE_URL +
               "epay/getPayForm.do?orderId=" +
@@ -699,7 +700,7 @@ export default {
           // for(let j = 0; j < this.combinateProductLsit.length ; j++){
           //   let allPrice = 0;
           // }
-          if(this.combinateProductLsit.length > 0){
+          if(this.combinateProductLsit && this.combinateProductLsit.length){
             this.combinateProductLsit.forEach(function(val,key,obj){
               let allPrice = 0;
               val.list.forEach(function(item,index,arr){
@@ -827,7 +828,7 @@ export default {
         window.open('../pages/login.html');
         return false
       }
-      if (typeof (config) == "undefined") {return;} 
+      if (typeof (config) == "undefined") {return;}
       Get(CONFIG.BASE_URL + config.url + '?loginName=' + this.loginName + '&combinateId=' + combinateId + '&siteId=' + config.params.siteId).then((rep) => {
         var datas = rep.data;
         if (datas.result == "1") {
@@ -848,12 +849,12 @@ export default {
           });
         }
       });
-      
+
     },
     toCombinateItemDetail(config,pubid){ // 去每一个组合购买图书的详情
       // console.log(config);
       // console.log(pubid);
-       if (typeof (config) == "undefined") {return;} 
+       if (typeof (config) == "undefined") {return;}
        window.open(config.url + '?pubId=' + pubid);
     },
     collectOrLike (config) { // 点赞 或者 收藏

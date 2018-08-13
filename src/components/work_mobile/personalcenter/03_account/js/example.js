@@ -83,6 +83,8 @@ const dev = {
         passwordSrc: '../assets/img/closeEyes.png',  //密文密码图片
         sendCodeTime: 60,  //控制验证码重新发送的时间
         timeUnit: 's',  //时间单位
+        EmailIsBound:'很抱歉，邮箱已被绑定',
+        directUrl: '../pages/subpersonalcenter.html#account',
       },
       editPersonalInfo: { // 编辑个人信息：昵称 签名
         url: "user/editMemberByName.do",
@@ -114,6 +116,13 @@ const dev = {
           loginName: '',
           oldPassword: '',
           newPassword: ''
+        }
+      },
+      checkEmailCodeInfo:{
+        url: "user/checkUserInfo.do",
+        params: {
+          checkText:'',
+          checkType:'2'
         }
       }
     },
@@ -189,6 +198,8 @@ const prod = {
         passwordSrc: '../assets/img/closeEyes.png',  //密文密码图片
         sendCodeTime: 60,  //控制验证码重新发送的时间
         timeUnit: 's',  //时间单位
+        EmailIsBound:'很抱歉，邮箱已被绑定',
+        directUrl: '../pages/subpersonalcenter.html#account',
       },
       editPersonalInfo: { // 编辑个人信息：昵称 签名
         url: "user/editMemberByName.do",
@@ -220,6 +231,13 @@ const prod = {
           loginName: '',
           oldPassword: '',
           newPassword: ''
+        }
+      },
+      checkEmailCodeInfo:{
+        url: "user/checkUserInfo.do",
+        params: {
+          checkText:'',
+          checkType:'2'
         }
       }
     },

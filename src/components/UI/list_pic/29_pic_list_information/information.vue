@@ -117,7 +117,8 @@ export default {
       cascadId: "", //
       searchText: "",
       columnName: "",  // 稿件的栏目名称
-      seriesId:"" // 丛书的id
+      seriesId:"", // 丛书的id
+      authorSysTopic: "" // 作者名字
     };
   },
 
@@ -142,6 +143,12 @@ export default {
     if (typeof uriQuery.seriesId != "undefined") {
       this.seriesId = uriQuery.seriesId;
     }
+
+    // 作者名字(金融博览财富)
+    if (typeof uriQuery.authorSysTopic != "undefined") {
+      this.authorSysTopic = uriQuery.authorSysTopic;
+    }
+
 
     this.CONFIG =
       PROJECT_CONFIG[this.namespace].list_pic.list_pic_29[this.modulename];
@@ -352,6 +359,12 @@ export default {
         if(item.hasOwnProperty("pub_site_id")){
           item.pub_site_id = CONFIG.SITE_CONFIG.siteId;
         }
+
+        // 稿件作者
+        if(item.hasOwnProperty("PRODUCT-ARTICLE_SYS_AUTHORS")){
+          item["PRODUCT-ARTICLE_SYS_AUTHORS"] = this.authorSysTopic ? this.authorSysTopic : item["PRODUCT-ARTICLE_SYS_AUTHORS"];
+        }
+
       });
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);
       this.requestParams = paramsObj;

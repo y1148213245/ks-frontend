@@ -224,6 +224,7 @@ var FIELD_ADAPTER = {
             birth: "ORGAUTHOR_BIRTH",
             research: "ORGAUTHOR_RESEARCH",
             workAddress: "ORGAUTHOR_WORK_ADDRESS",
+            intro: "ORGAUTHOR_INTRO"
         },
         activityAdapter: { // 活动
             created: "PORTAL_ACTIVITY_SYS_CREATED",
@@ -484,6 +485,27 @@ var FIELD_ADAPTER = {
             selectTopic: "SELECTED_TOPIC",  // 选题名称或方向
             otherOpinion: "OTHER_OPINIONS",  // 其他意见
             telephone: "TELEPHONE" // 联系电话
+        },
+        ziliaozu: { // 资料组
+          sysTopic: 'ZILIAOZU_SYS_TOPIC',
+          cat: 'ZILIAOZU_CAT1',
+          description: 'ZILIAOZU_DESCRIPTION',
+          keywords: 'ZILIAOZU_KEYWORDS',
+          sysAuthors: 'ZILIAOZU_SYS_AUTHORS',
+          coverId: 'ZILIAOZU_COVERID',
+          picNum: 'ZILIAOZU_PIC_NUM',
+          themeWord: 'ZILIAOZU_THEME_WORD',
+          created: 'ZILIAOZU_SYS_CREATED',
+          ontology: 'ZILIAOZU_ONTOLOGY',
+          coursesNumber: 'ZILIAOZU_COURSES_NUMBER',
+          coursesDuration: 'ZILIAOZU_COURSES_DURATION',
+          resPrice: 'ZILIAOZU_PRICE',
+          resSalePrice: 'ZILIAOZU_SALE_PRICE',
+          lecturer: 'ZILIAOZU_LECTURER',
+          courseLength: 'ZILIAOZU_COURSE_LENGTH',
+          courseNum: 'ZILIAOZU_COURSE_NUM',
+          catId: 'ZILIAOZU_CAT1_ID',
+          catCascadId: 'ZILIAOZU_CAT1_CASCADID'
         },
         ziliaoku: { // 资料库
           sysCreated: 'ZILIAOKU_SYS_CREATED',

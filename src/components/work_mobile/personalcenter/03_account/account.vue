@@ -46,18 +46,19 @@
 
     <!--修改邮箱-->
     <div class="work_mobile_personalcenter_03_editemail" v-if="showItem == 'email'">
-      <div class="work_mobile_personalcenter_03_editemail_email" >{{display.email || '邮箱'}}</div>
+      <div class="work_mobile_personalcenter_03_editemail_email">{{display.email || '邮箱'}}</div>
       <div class="work_mobile_personalcenter_03_editemail_con">
-        <el-form :rules="rules" ref="getMember" :model="getMember">
+        <el-form :rules="rules" ref="memberEmail" :model="memberEmail">
           <el-form-item prop="email">
-            <el-input clearable class="work_mobile_personalcenter_03_editemail_content"  type="text" v-model="getMember.email"></el-input>
+            <el-input clearable class="work_mobile_personalcenter_03_editemail_content" type="text" v-model="memberEmail.email"></el-input>
           </el-form-item>
         </el-form>
       </div>
       <div class="work_mobile_personalcenter_03_sendCode">
-        <input type="text" v-model="checkCode"/>
-        <van-button size="normal" @click="sendCode(getMember.email,'getMember',showItem)" v-show="!isSendEmailCode">{{display.sendCode || '发送验证码'}}</van-button>
-        <van-button size="normal" @click="reSendCode(getMember.email,showItem)" v-show="isSendEmailCode">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button>
+        <input type="text" v-model="checkCode" />
+        <van-button size="normal" @click="sendCode(memberEmail.email,'memberEmail',showItem)" v-show="!isSendEmailCode">{{display.sendCode || '发送验证码'}}</van-button>
+        <!-- <van-button size="normal" @click="reSendCode(memberEmail.email,showItem)" v-show="isSendEmailCode">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button> -->
+        <van-button size="normal" v-show="isSendEmailCode">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button>
       </div>
       <div class="work_mobile_personalcenter_03_savenn">
         <van-button size="normal" @click="editUserInfo('email')">{{display.sure || '确定'}}</van-button>
@@ -67,18 +68,20 @@
 
     <!--修改手机号-->
     <div class="work_mobile_personalcenter_03_editphone" v-if="showItem == 'mobileno'">
-      <div class="work_mobile_personalcenter_03_editphone_phone" >{{display.mobileno || '手机号'}}</div>
+      <div class="work_mobile_personalcenter_03_editphone_phone">{{display.mobileno || '手机号'}}</div>
       <div class="work_mobile_personalcenter_03_editphone_con">
-        <el-form :rules="rules" ref="getMember" :model="getMember">
+        <el-form :rules="rules" ref="memberMobile" :model="memberMobile">
           <el-form-item prop="mobileno">
-            <el-input clearable class="work_mobile_personalcenter_03_editphone_content" type="text" v-model.number="getMember.mobileno"></el-input>
+            <el-input clearable class="work_mobile_personalcenter_03_editphone_content" type="text" v-model.number="memberMobile.mobileno"></el-input>
           </el-form-item>
         </el-form>
       </div>
       <div class="work_mobile_personalcenter_03_sendCode">
-        <input type="text" v-model="checkCode"/>
-        <van-button size="normal" @click="sendCode(getMember.mobileno,'getMember',showItem)" v-show="!isSend">{{display.sendCode || '发送验证码'}}</van-button>
-        <van-button size="normal" @click="reSendCode(getMember.mobileno,showItem)" v-show="isSend">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button>
+        <input type="text" v-model="checkCode" />
+        <van-button size="normal" @click="sendCode(memberMobile.mobileno,'memberMobile',showItem)" v-show="!isSend">{{display.sendCode || '发送验证码'}}</van-button>
+        <!-- <van-button size="normal" @click="reSendCode(memberMobile.mobileno,showItem)" v-show="isSend">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button> -->
+        <van-button size="normal" v-show="isSend">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button>
+
       </div>
       <div class="work_mobile_personalcenter_03_savenn">
         <van-button size="normal" @click="editUserInfo('mobileno')">{{display.sure || '确定'}}</van-button>
@@ -117,9 +120,9 @@
     <div class="work_mobile_personalcenter_03_editintro" v-if="showItem == 'introduction'">
       <div class="work_mobile_personalcenter_03_editintro_intro">{{display.introduction || '签名'}}</div>
       <div class="work_mobile_personalcenter_03_editintro_con">
-         <form action="">
+        <form action="">
           <textarea class="work_mobile_personalcenter_03_editintro_textarea" :maxlength="display.maxNum" @change="editUserInfo('introduction')" v-model="getMember.introduction"></textarea>
-         </form>
+        </form>
         <span class="work_mobile_personalcenter_03_editintro_textarea_count">{{getMember.introduction.length}}/{{display.maxNum}}</span>
       </div>
       <div v-if="!getMember.introduction" class="work_mobile_personalcenter_03_nointro">{{CONFIG.display.noIntroduction}}</div>
@@ -135,19 +138,19 @@
  <script>
 import Vue from "vue";
 import { Get, Post } from "@common";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 import * as interfaces from "@work/login/common/interfaces.js";
-import PROJECT_CONFIG from 'projectConfig';
-import { Button, Toast } from 'vant';
+import PROJECT_CONFIG from "projectConfig";
+import { Button, Toast } from "vant";
 import { ValidateRules } from "@common";
 
 Vue.use(Button);
 
 export default {
-  name: 'work_mobile_personalcenter_03',
-  props: ['namespace'],
+  name: "work_mobile_personalcenter_03",
+  props: ["namespace"],
   reused: true,
-  data () {
+  data() {
     return {
       CONFIG: null,
       showLists: [],
@@ -158,52 +161,69 @@ export default {
       // noIntroduction: false, //签名为空
       // remainNum: '',  //剩余的可输入字数
       loading: true,
-      checkCode: '',  //用于接收验证码的
-      oldPassword: '',
+      checkCode: "", //用于接收验证码的
+      oldPassword: "",
       // newPassword: '1111',  //设置新密码
-      textSrc: '',
-      passwordSrc: '',
-      isSeen: false,  //默认为隐藏密码模式
-      isSend: false,  //默认为未发送验证码模式
-      isSendEmailCode: false,  //默认为未发送验证码模式
-      sendCodeTime: '',
-      timer: '',  //用于存放定时器的
-      codeNum: '',  //用于存放手机接收的验证码
+      textSrc: "",
+      passwordSrc: "",
+      isSeen: false, //默认为隐藏密码模式
+      isSend: false, //默认为未发送验证码模式
+      isSendEmailCode: false, //默认为未发送验证码模式
+      sendCodeTime: "",
+      timer: "", //用于存放定时器的
+      codeNum: "", //用于存放手机接收的验证码
+      memberEmail: {
+        email: ""
+      }, //修改邮箱使用
+      memberMobile: {
+        mobileno: ""
+      }, //修改手机号使用
       rules: {
-        email: [{ validator: ValidateRules.validateEmail, trigger: 'blur' }],
-        mobileno: [{ validator: ValidateRules.mobileCheck, trigger: 'blur' }],
-        newpass: [{validator: ValidateRules.validatePass2, trigger: 'blur'}],
-        oldpass: [{required: true, message: '请输入旧密码', trigger: 'blur' }]
+        email: [{ validator: ValidateRules.validateEmail, trigger: "blur" }],
+        mobileno: [{ validator: ValidateRules.mobileCheck, trigger: "blur" }],
+        newpass: [{ validator: ValidateRules.validatePass2, trigger: "blur" }],
+        oldpass: [{ required: true, message: "请输入旧密码", trigger: "blur" }]
       },
       passwordObj: {
-        newpass: '',
-        oldpass: ''
+        newpass: "",
+        oldpass: ""
       }
-
     };
   },
   computed: {
     ...mapGetters("login", {
       member: interfaces.GET_MEMBER
-    }),
+    })
   },
-  created () {
-    this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_03;
+  created() {
+    this.CONFIG =
+      PROJECT_CONFIG[
+        this.namespace
+      ].work_mobile_personalcenter.work_mobile_personalcenter_03;
     this.display = this.CONFIG.display;
     this.showLists = this.CONFIG.showLists;
     this.sendCodeTime = this.display.sendCodeTime;
   },
 
-  mounted () {
-    this.$bus.$emit(this.CONFIG.emitEvent.contextEventName, this.CONFIG.display.navTitle);
+  mounted() {
+    this.$bus.$emit(
+      this.CONFIG.emitEvent.contextEventName,
+      this.CONFIG.display.navTitle
+    );
     var _this = this;
-    $(document).ready(function () {
+    $(document).ready(function() {
       if (window.history && window.history.pushState) {
-        $(window).on('popstate', function () { // 监听浏览器页面回退
-          if (_this.showItem !== 'default') { // 在修改昵称或者修改签名页面回退
-            _this.$bus.$emit(_this.CONFIG.emitEvent.contextEventName, _this.CONFIG.display.navTitle);
-            _this.showItem = 'default';
-          } else { // 在个人资料页面回退
+        $(window).on("popstate", function() {
+          // 监听浏览器页面回退
+          if (_this.showItem !== "default") {
+            // 在修改昵称或者修改签名页面回退
+            _this.$bus.$emit(
+              _this.CONFIG.emitEvent.contextEventName,
+              _this.CONFIG.display.navTitle
+            );
+            _this.showItem = "default";
+          } else {
+            // 在个人资料页面回退
             window.history.go(-1);
             return false;
           }
@@ -226,44 +246,63 @@ export default {
     /* descInput(){
         this.remainNum = this.display.maxNum - this.getMember.introduction.length;
     }, */
-    getMemberInfo (loginName) {
-      Get(CONFIG.BASE_URL + this.CONFIG.getMemberInfo.url + '?loginName=' + loginName).then((resp) => {
+    getMemberInfo(loginName) {
+      Get(
+        CONFIG.BASE_URL +
+          this.CONFIG.getMemberInfo.url +
+          "?loginName=" +
+          loginName
+      ).then(resp => {
         let res = resp.data;
-        if (res.result == '1' && res.data) {
+        if (res.result == "1" && res.data) {
           this.getMember = res.data;
+          this.memberEmail.email = this.getMember.email;
+          this.memberMobile.mobileno = this.getMember.mobileno;
           // this.noNickname = this.getMember.nickName ? false : true; // 是否有昵称
           // this.noIntroduction = this.getMember.introduction ? false : true; // 是否有签名
           // this.descInput();
         }
         this.loading = false;
-      })
+      });
     },
-    enterEditModule (item) {
-      if (item.tag == 'picture' || item.tag == 'loginName') {
+    enterEditModule(item) {
+      if (item.tag == "picture" || item.tag == "loginName") {
         return false;
       }
-      this.$bus.$emit(this.CONFIG.emitEvent.contextEventName, this.CONFIG.display['nav' + item.tag]); // 发广播修改导航文字内容
+      this.$bus.$emit(
+        this.CONFIG.emitEvent.contextEventName,
+        this.CONFIG.display["nav" + item.tag]
+      ); // 发广播修改导航文字内容
       this.showItem = item.tag;
     },
-    removeName (item) {
-      if(item == 'newPassword'){
-        this.newPassword = '';
-      }else if(this.getMember[item]){
-        this.getMember[item] = '';
+    removeName(item) {
+      if (item == "newPassword") {
+        this.newPassword = "";
+      } else if (this.getMember[item]) {
+        this.getMember[item] = "";
       }
-
     },
-    editUserInfo (item,formName) {  // 保存昵称和个性签名的修改
+    editUserInfo(item, formName) {
+      // 保存昵称和个性签名的修改
       // TODO: 后端修改Post请求的接参数方式后优化合并以下代码
-      if (item == 'introduction') { // 更改个性签名
-        if (this.getMember.introduction == '') { // 昵称为空时不能保存
+      if (item == "introduction") {
+        // 更改个性签名
+        if (this.getMember.introduction == "") {
+          // 昵称为空时不能保存
           // this.noIntroduction = true;
           return false;
         } else {
           // this.noIntroduction = false;
-          Post(CONFIG.BASE_URL + this.CONFIG.editPersonalInfo.url + '?loginName=' + this.getMember.loginName + '&introduction=' + this.getMember.introduction).then((resp) => {
+          Post(
+            CONFIG.BASE_URL +
+              this.CONFIG.editPersonalInfo.url +
+              "?loginName=" +
+              this.getMember.loginName +
+              "&introduction=" +
+              this.getMember.introduction
+          ).then(resp => {
             let res = resp.data;
-            if (res.result == '1') {
+            if (res.result == "1") {
               let msg = res.data.msg;
               Toast.success({
                 duration: 1000,
@@ -275,11 +314,12 @@ export default {
                 message: this.display.failedOp
               });
             }
-          })
+          });
         }
-      }
-      else if (item == 'nickName') {// 更改昵称
-        if (this.getMember.nickName == '') { // 昵称为空时不能保存
+      } else if (item == "nickName") {
+        // 更改昵称
+        if (this.getMember.nickName == "") {
+          // 昵称为空时不能保存
           // this.noNickname = true;
           return false;
         } else {
@@ -287,9 +327,16 @@ export default {
            paramsObj.loginName = this.member.loginName;
           paramsObj[item] = item == 'nickName' ? this.nickName : this.introduction; */
           // this.noNickname = false;
-          Post(CONFIG.BASE_URL + this.CONFIG.editPersonalInfo.url + '?loginName=' + this.getMember.loginName + '&userNick=' + this.getMember.nickName).then((resp) => {
+          Post(
+            CONFIG.BASE_URL +
+              this.CONFIG.editPersonalInfo.url +
+              "?loginName=" +
+              this.getMember.loginName +
+              "&userNick=" +
+              this.getMember.nickName
+          ).then(resp => {
             let res = resp.data;
-            if (res.result == '1') {
+            if (res.result == "1") {
               let msg = res.data.msg;
               Toast.success({
                 duration: 1000,
@@ -301,81 +348,124 @@ export default {
                 message: this.display.failedOp
               });
             }
-          })
+          });
         }
-      }else if(item == 'email') {  //更改邮箱
+      } else if (item == "email") {
+        //更改邮箱
         //TODO：...
-        if(this.checkCode == ''){
+        if (this.checkCode == "") {
           Toast.fail({
             duration: 1000,
             message: this.display.noMobileCode
           });
-        }else if(this.codeNum != this.checkCode){
+        } else if (this.codeNum != this.checkCode) {
           Toast.fail({
             duration: 1000,
             message: this.display.errorCode
           });
-        }else if(this.codeNum == this.checkCode){
-          Post(CONFIG.BASE_URL + this.CONFIG.editPersonalInfo.url + '?loginName=' + this.getMember.loginName + '&email=' + this.getMember.email).then((resp) => {
+        } else if (this.codeNum == this.checkCode) {
+          Post(
+            CONFIG.BASE_URL +
+              this.CONFIG.editPersonalInfo.url +
+              "?loginName=" +
+              this.getMember.loginName +
+              "&email=" +
+              this.memberEmail.email
+          ).then(resp => {
             let res = resp.data;
-            if (res.result == '1') {
+            if (res.result == "1") {
               let msg = res.data.msg;
               Toast.success({
                 duration: 1000,
                 message: msg
               });
-              this.checkCode = '';
+              this.checkCode = "";
+              this.isSendEmailCode = false;
+              this.sendCodeTime = this.display.sendCodeTime;
+              this.getMemberInfo(this.getMember.loginName);
+              clearInterval(this.timer);
+              setTimeout(() => {
+                // 设置成功以后跳转登录页面
+                window.location.href = this.display.directUrl;
+              }, 1000);
             } else {
               Toast.fail({
                 duration: 1000,
                 message: this.display.failedOp
               });
             }
-          })
+          });
         }
-      }else if(item == 'mobileno') {  //更改手机号
+      } else if (item == "mobileno") {
+        //更改手机号
         //TODO：...
-        if(this.checkCode == ''){
+        if (this.checkCode == "") {
           Toast.fail({
             duration: 1000,
             message: this.display.noMobileCode
           });
-        }else if(this.codeNum != this.checkCode){
+        } else if (this.codeNum != this.checkCode) {
           Toast.fail({
             duration: 1000,
             message: this.display.errorCode
           });
-        }else if(this.codeNum == this.checkCode){
-          Post(CONFIG.BASE_URL + this.CONFIG.editPersonalInfo.url + '?loginName=' + this.getMember.loginName + '&mobileNo=' + this.getMember.mobileno).then((resp) => {
+        } else if (this.codeNum == this.checkCode) {
+          Post(
+            CONFIG.BASE_URL +
+              this.CONFIG.editPersonalInfo.url +
+              "?loginName=" +
+              this.getMember.loginName +
+              "&mobileNo=" +
+              this.memberMobile.mobileno
+          ).then(resp => {
             let res = resp.data;
-            if (res.result == '1') {
+            if (res.result == "1") {
               let msg = res.data.msg;
               Toast.success({
                 duration: 1000,
                 message: msg
               });
-              this.checkCode = '';
+              this.checkCode = "";
+              this.isSend = false;
+              this.sendCodeTime = this.display.sendCodeTime;
+              this.getMemberInfo(this.getMember.loginName);
+              clearInterval(this.timer);
+              setTimeout(() => {
+                // 设置成功以后跳转登录页面
+                window.location.href = this.display.directUrl;
+              }, 1000);
             } else {
               Toast.fail({
                 duration: 1000,
                 message: this.display.failedOp
               });
             }
-          })
+          });
         }
-      }else if(item == 'password') {  //更改密码
+      } else if (item == "password") {
+        //更改密码
         //TODO：...
-        this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate(valid => {
           if (valid) {
-            let params = Object.assign({},this.CONFIG.updatePasswordInfo.params);
+            let params = Object.assign(
+              {},
+              this.CONFIG.updatePasswordInfo.params
+            );
             params.loginName = this.getMember.loginName;
             params.newPassword = this.passwordObj.newpass;
             params.oldPassword = this.passwordObj.oldpass;
-            console.log(params.newPassword);
-            console.log(params.oldPassword);
-            Post(CONFIG.BASE_URL + this.CONFIG.updatePasswordInfo.url + '?loginName=' + params.loginName + '&oldPassword=' + params.oldPassword + '&newPassword=' + params.newPassword).then((resp) => {
+            Post(
+              CONFIG.BASE_URL +
+                this.CONFIG.updatePasswordInfo.url +
+                "?loginName=" +
+                params.loginName +
+                "&oldPassword=" +
+                params.oldPassword +
+                "&newPassword=" +
+                params.newPassword
+            ).then(resp => {
               let res = resp.data;
-              if (res.result == '1') {
+              if (res.result == "1") {
                 let msg = res.data.msg;
                 Toast.success({
                   duration: 1000,
@@ -388,7 +478,7 @@ export default {
                   message: msg
                 });
               }
-            })
+            });
           } else {
             Toast.fail({
               duration: 1000,
@@ -397,29 +487,18 @@ export default {
             return false;
           }
         });
-
       }
     },
-    sendCode(num,formName,name){
-      clearInterval(this.timer);
-      this.sendCodeTime = this.display.sendCodeTime;
-      //执行发送验证码操作
-      this.$refs[formName].validate((valid) => {
+    sendCode(num, formName, name) {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          let _self = this;
-          _self.timeInterval(_self);
-          if(name == 'mobileno'){
-            _self.isSend = true;
-            _self.getMobileCode(num);
-          }else if(name == 'email'){
-            _self.isSendEmailCode = true;
-            _self.getEmailCode(num);
-            // Toast.fail({
-            //   duration: 1000,
-            //   message: '暂时还没有给邮箱发验证码这个借口，未完待续...'
-            // });
+          clearInterval(this.timer);
+          this.sendCodeTime = this.display.sendCodeTime;
+          if (name == "mobileno") {
+            this.getMobileCode(num);
+          } else if (name == "email") {
+            this.getEmailCode(num);
           }
-
         } else {
           Toast.fail({
             duration: 1000,
@@ -428,53 +507,53 @@ export default {
           return false;
         }
       });
-
     },
-    reSendCode(num,name){
+    reSendCode(num, name) {
       let _self = this;
       _self.sendCodeTime = _self.display.sendCodeTime;
       clearInterval(_self.timer);
       _self.timeInterval(_self);
-      if(name == 'mobileno'){
+      if (name == "mobileno") {
         _self.getMobileCode(num);
-      }else if(name == 'email'){
+      } else if (name == "email") {
         _self.getEmailCode(num);
-        // Toast.fail({
-        //   duration: 1000,
-        //   message: '暂时还没有给邮箱发验证码这个借口，未完待续...'
-        // });
       }
     },
-    timeInterval(_self){
+    timeInterval(_self) {
       //setInterval不可以传参，因此用两个函数来解决这个问题，_fn是一个桥梁，用于返回一个不需要传参数的函数
       let fn = function(_self) {
-        // console.log( _self.sendCodeTime);
-        if(_self.sendCodeTime - 0 <= 0){
-          // console.log('进来了');
+        if (_self.sendCodeTime - 0 <= 0) {
           _self.isSend = false;
           _self.isSendEmailCode = false;
           _self.sendCodeTime = _self.display.sendCodeTime;
-          // console.log(_self.sendCodeTime);
           clearInterval(_self.timer);
-        }else {
+        } else {
           _self.sendCodeTime -= 1;
         }
       };
-      let _fn = function (_self) {
-        return function(){
+      let _fn = function(_self) {
+        return function() {
           fn(_self);
-        }
+        };
       };
-      _self.timer = setInterval(_fn(_self),1000);
+      _self.timer = setInterval(_fn(_self), 1000);
     },
-    getMobileCode(num){
-      if(num){
-        let params = Object.assign({},this.CONFIG.sendMobileCodeInfo.params);
+    getMobileCode(num) {
+      if (num) {
+        let params = Object.assign({}, this.CONFIG.sendMobileCodeInfo.params);
         params.mobileNum = num;
-        Get(CONFIG.BASE_URL + this.CONFIG.sendMobileCodeInfo.url + '?mobileNum=' + params.mobileNum).then((resp) => {
+        Get(
+          CONFIG.BASE_URL +
+            this.CONFIG.sendMobileCodeInfo.url +
+            "?mobileNum=" +
+            params.mobileNum
+        ).then(resp => {
           let res = resp.data;
-          if (res.result == '1') {
-            let msg = '验证码发送成功';
+          if (res.result == "1") {
+            let msg = "验证码发送成功";
+            let _self = this;
+            _self.isSend = true;
+            _self.timeInterval(_self);
             this.codeNum = res.data;
             Toast.success({
               duration: 1000,
@@ -486,25 +565,44 @@ export default {
               message: this.display.failedOp
             });
           }
-        })
+        });
       }
     },
-    getEmailCode(num){
-      if(num){
+    getEmailCode(num) {
+      if (num) {
         //首先验证邮箱是否可用
-        let params = Object.assign({},this.CONFIG.checkEmailCodeInfo.params);
+        let params = Object.assign({}, this.CONFIG.checkEmailCodeInfo.params);
         params.checkText = num;
-        Get(CONFIG.BASE_URL + this.CONFIG.checkEmailCodeInfo.url + '?checkText=' + params.checkText + '&checkType=' + params.checkType).then((resp) => {
+        Get(
+          CONFIG.BASE_URL +
+            this.CONFIG.checkEmailCodeInfo.url +
+            "?checkText=" +
+            params.checkText +
+            "&checkType=" +
+            params.checkType
+        ).then(resp => {
           let res = resp.data;
-          if (res.result == '1') {
+          if (res.result == "1") {
             //如果邮箱可用，在调修改邮箱借口
-            let params = Object.assign({},this.CONFIG.sendEmailCodeInfo.params);
+            let params = Object.assign(
+              {},
+              this.CONFIG.sendEmailCodeInfo.params
+            );
             params.email = num;
-            Get(CONFIG.BASE_URL + this.CONFIG.sendEmailCodeInfo.url + '?email=' + params.email).then((resp) => {
+            Get(
+              CONFIG.BASE_URL +
+                this.CONFIG.sendEmailCodeInfo.url +
+                "?email=" +
+                params.email
+            ).then(resp => {
               let res = resp.data;
-              if (res.result == '1') {
-                let msg = '验证码发送成功';
+              if (res.result == "1") {
+                let msg = "验证码发送成功";
                 this.codeNum = res.data;
+                //执行发送验证码操作
+                let _self = this;
+                _self.isSendEmailCode = true;
+                _self.timeInterval(_self);
                 Toast.success({
                   duration: 1000,
                   message: msg
@@ -515,30 +613,31 @@ export default {
                   message: this.display.failedOp
                 });
               }
-            })
+            });
           } else {
-            let msg = res.error.errorMsg;
             Toast.fail({
               duration: 1000,
-              message: msg
+              message: this.display.EmailIsBound
             });
           }
-        })
+        });
       }
     },
-    changeType(){
+    changeType() {
       this.isSeen = !this.isSeen;
     }
   },
   watch: {
-    member: function (newValue, oldValue) {
+    member: function(newValue, oldValue) {
       if (newValue.loginName && newValue.loginName !== oldValue.loginName) {
         this.getMemberInfo(newValue.loginName); // 根据用户名获取用户信息
-        this.getMember.nickName = this.getMember.nickName ? this.getMember.nickName : newValue.loginName;  //首次修改昵称，输入框内显示用户名
+        this.getMember.nickName = this.getMember.nickName
+          ? this.getMember.nickName
+          : newValue.loginName; //首次修改昵称，输入框内显示用户名
       }
     }
   }
-}
+};
 </script>
 <style>
 [v-cloak] {
