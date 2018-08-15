@@ -28,21 +28,8 @@ function test (params) {
     }
     let examplePath = path.resolve(componentPath, '../js/example.js')
 
-    /* 读取example.js */
-    try {
-      let data = fs.readFileSync(examplePath, { flag: 'r+', encoding: 'utf8' });
-      data.replace(/childComponents\s*\=\s*(.*?)[;\n]/, function (full, sub) {
-        if (sub) {
-          component.children = JSON.parse(sub)
-        }
-        // console.log('子组件:',component.children);
-      })
-    } catch (err) {
-
-    }
-  
-    /* 读取vue组件 */
-    try {
+     /* 读取vue组件 */
+     try {
       let data = fs.readFileSync(componentPath, { flag: 'r+', encoding: 'utf8' })
       data.replace(/name:\s*[\"\'](.*?)[\"\']\s*,/, function (full, sub) {
         if (sub) {
@@ -55,6 +42,22 @@ function test (params) {
     } catch (err) {
 
     }
+
+    /* 读取example.js */
+    try {
+      let data = fs.readFileSync(examplePath, { flag: 'r+', encoding: 'utf8' });
+      data.replace(/childComponents\s*\=\s*(.*?)[;\n]/, function (full, sub) {
+        if (sub) {
+          let str = sub.replace(/'/g,"\"")
+          component.children = JSON.parse(str)
+        }
+        // console.log('子组件:',component.children);
+      })
+    } catch (err) {
+
+    }
+  
+   
     components.push(component)
   })
   console.log(chalk.yellow(new Date().getTime() - time+'ms'));
@@ -90,10 +93,11 @@ function test (params) {
     let pageData = fs.readFileSync(pagePath, { flag: 'r+', encoding: 'utf8' })
     let componentsTagNames = pageData.match(/(?!\<)(ui_|work_)(.*?)((?=\s)|(?=\>))/g) /* 筛选组件库标签 */
     if (componentsTagNames && componentsTagNames.length > 0) {
-      pageComponentsArr.push(componentsTagNames);
+      pageComponentsArr.push([...new Set(componentsTagNames)]);
     }
 
   })
+ 
   console.log(chalk.yellow(new Date().getTime() - time+'ms'));
   /* 过滤组件库组件 得到使用的组件名及子组件名 */
   console.info('----------加载使用组件.........')
@@ -102,31 +106,39 @@ function test (params) {
     pageComponentsArr.forEach(pageComponents => {//所有页面的组件名数组
       pageComponents.forEach(componentName => {//每个页面的组件名数组
         if (component.tag == componentName) {
-          let entry = null;
-          if (component.childComponent.length <= 0) {
-            let flag = !checkComponent(component.tag)
-            if (flag) {
-              entry = component;
-              //添加组件地址
-            }
-          } else {
-            component.childComponent.forEach(item => {//添加子组件地址
-              if (!checkComponent(item.tag)) {
-                entry = item
-              }
-            })
-
+          let entry = [];
+          let flag = !checkComponent(component.tag)
+          if (flag) {
+            entry.push(component);
+            //添加组件地址
+          }
+          if (component.childComponent.length > 0) {
+            scanSubCom(component)
           }
 
-          if (entry) {
+          if (entry.length > 0) {
             /* 路径转换 */
-            let relativePath = path.relative(componentsPath, entry.path)
-            entry.path = path.join('@components', relativePath).replace(/\\/g, '/')
-
-            usedComponents.push(entry)
+            entry.forEach(com=>{
+              let relativePath = path.relative(componentsPath, com.path)
+              com.path = path.join('@components', relativePath).replace(/\\/g, '/')
+              usedComponents.push(com)
+            })
           }
 
-
+          /* 扫描子组件 */
+          function scanSubCom(com){
+            com.childComponent.forEach(item => {//添加子组件地址
+              if (com != item) {
+                if (item.childComponent && item.childComponent.length > 0) {
+                  scanSubCom(item)
+                }
+                if (!checkComponent(item.tag)) {
+                  entry.push(item)
+                }
+              }
+              
+            })
+          }
           /* 检测重复 */
           function checkComponent (name) {
             let flag = false;

@@ -13,7 +13,7 @@ import 'swiper/dist/css/swiper.css'
 import 'vant/lib/vant-css/index.css'
 
 
-// import store from "./store.js";
+import store from "./store.js";
 import VueBus from "vue-bus"; // 通过 cnpm install vue-bus安装
 import VueCodemirror from 'vue-codemirror'; // vue 在线代码编辑器
 import 'codemirror/lib/codemirror.css'; // 编辑器的主题样式
@@ -28,7 +28,7 @@ Vue.use(Vant)
 
 new Vue({
   el: '#app',
-  // store,
+  store,
   created() {
     //引入全局components
     ScanVues();

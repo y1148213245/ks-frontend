@@ -2650,13 +2650,14 @@ var $_$ = {
 		"navigation": {
 			"navigation_05": {
 				"newscol": {
-					"colId": 329,
+					"colId": 245,
 					"comTitle": {
-						"isShow": false,
+						"isShow": true,
 						"name": "华育动态新闻"
 					},
 					"showChildren": false,
 					"broadcastName": "showNavContent",
+					"transDefaultColId": "transDefaultColId",
 					"display": {},
 					"getNavLists": {
 						"url": "spc/cms/col/getAllColBySiteId.do",

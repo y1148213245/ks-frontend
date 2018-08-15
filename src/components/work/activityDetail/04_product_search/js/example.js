@@ -65,4 +65,5 @@ const prod = {
 const platform = 'PC';
 const pageType = ['list','detail'];
 const resourceType = ['book'];
-export { name, title, dev, prod, description, platform, pageType, resourceType };
+const childComponents = ['work_activitydetail_04','work_common_05'];
+export { name, title, dev, prod, description, platform, pageType, resourceType, childComponents };

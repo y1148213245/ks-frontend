@@ -13,6 +13,11 @@
       > 
       <span>作品详情</span>
     </div>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item><span>当前位置：</span></el-breadcrumb-item>
+      <el-breadcrumb-item><a :href="CONFIG.crumbs.toActivityListHref" v-text="activityDetail[CONFIG.getActivityInfo.dataKeys.topic]"></a></el-breadcrumb-item>
+      <el-breadcrumb-item><span>作品详情</span></el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="topTitle">
       <div class="title" v-text="workInfo[keys.title] || (getStaticText('notHave') ? getStaticText('notHave') : '暂无')"></div>
       <div class="work_bookdetail_03_activityname">{{workInfo[keys.activityName]}}</div>

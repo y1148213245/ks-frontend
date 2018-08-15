@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2018-02-07 10:48:04
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-06-26 16:12:20
+ * @Last Modified time: 2018-08-14 14:51:38
  */
 
 
@@ -70,4 +70,5 @@ const prod = {
 const platform = 'PC';
 const pageType = ['detail'];
 const resourceType = ['activity'];
-export { name, title, dev, prod, description, platform, pageType, resourceType };
+const childComponents = ['work_activitydetail_01','ui_swiper_06'];
+export { name, title, dev, prod, description, platform, pageType, resourceType, childComponents};

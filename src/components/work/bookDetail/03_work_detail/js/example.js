@@ -165,7 +165,7 @@ const prod = {
     }
   }
 };
-const childComponents = ["work_bookdetail_03", "work_bookreview_02"];
+const childComponents = ["work_bookdetail_03", "work_bookreview_02", "work_common_03"];
 const platform = 'PC';
 const pageType = ['detail'];
 const resourceType = ['information'];
