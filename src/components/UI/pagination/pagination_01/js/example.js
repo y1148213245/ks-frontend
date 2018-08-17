@@ -44,6 +44,12 @@ const prod = {
         pageNo:'pageNo',
         pageSize:'pageSize'
       },
+      getDetail:{
+        url:'spc/cms/publish/detail.do',
+        keys:{
+          title:'information_SYS_TOPIC'
+        }
+      },
       prevNextUrl: "./informationdetail.html?",
       pageConfig:{/* 控制请求页码与页容 */
         isGetLocationQuery:false,

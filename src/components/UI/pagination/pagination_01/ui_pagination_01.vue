@@ -1,8 +1,8 @@
 <template>
   <div class="ui_pagination_01">
-    <a class="fl pre" :href="!prev ? urls.prev:'javascript:void(0)'" :class="{clickFalse:prev}">&lt;&lt;{{getStaticText('previousChap') ? getStaticText('previousChap') : '上一篇'}}</a>
+    <a class="fl pre" :href="!prev ? urls.prev:'javascript:void(0)'" :class="{clickFalse:prev}" :title="prevDetail[CONFIG.getDetail.keys.title]">&lt;&lt;{{getStaticText('previousChap') ? getStaticText('previousChap') : '上一篇'}}</a>
     <!-- <a href="javascript:;" @click="returnList()">{{getStaticText('backToList') ? getStaticText('backToList') :"返回列表"}}</a> -->
-    <a class="fr next" :href="!next ? urls.next:'javascript:void(0)'" :class="{clickFalse:next}">{{getStaticText('nextChap') ? getStaticText('nextChap') : '下一篇'}}&gt;&gt;</a>
+    <a class="fr next" :href="!next ? urls.next:'javascript:void(0)'" :class="{clickFalse:next}" :title="nextDetail[CONFIG.getDetail.keys.title]">{{getStaticText('nextChap') ? getStaticText('nextChap') : '下一篇'}}&gt;&gt;</a>
   </div>
 </template>
 
@@ -10,7 +10,7 @@
 import URL from "url";
 import Querystring from "querystring";
 import PROJECT_CONFIG from "projectConfig";
-import { Post } from "@common";
+import { Post, Get } from "@common";
 
 export default {
   name: "ui_pagination_01",
@@ -24,6 +24,8 @@ export default {
       },
       prev: false,
       next: false,
+      prevDetail:'',
+      nextDetail:'',
       CONFIG: null
     }
   },
@@ -46,6 +48,7 @@ export default {
     },
     getPreNext: function () {
       let params = {};
+      let _this = this;
       for (const key in this.CONFIG.queryKeys) {
           const queryKey = this.CONFIG.queryKeys[key];
           params[key] = this.params[queryKey];
@@ -70,6 +73,20 @@ export default {
         delete next.id;
         this.next = rep.data.next ? false : true;
         this.urls.next = this.CONFIG.prevNextUrl + Querystring.stringify(next);
+
+        /* 上一篇详情 */
+        if (!this.prev) {
+          Get(CONFIG.BASE_URL + this.CONFIG.getDetail.url, { "params": {pubId:prev.pubId,loginName:''} }).then(function (resp) {
+            _this.prevDetail = resp.data.data;
+          })
+        }
+        /* 下一篇详情 */
+        if (!this.next) {
+          Get(CONFIG.BASE_URL + this.CONFIG.getDetail.url, { "params": {pubId:next.pubId,loginName:''} }).then(function (resp) {
+            _this.nextDetail = resp.data.data;
+          })
+        }
+        
       })
     },
     returnList: function () {

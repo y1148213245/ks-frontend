@@ -29,9 +29,10 @@
       <span>{{getStaticText('attachmentDownload') ? getStaticText('attachmentDownload') : '附件下载：'}}<a :href="attachUrl">{{attach['attachName']}}</a></span>
     </div>
     <div class="work_informationdetail_02-nav">
-      <a class="work_informationdetail_02-nav-pre" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_preId]}" @click="toPre">{{getStaticText('previousChap') ? getStaticText('previousChap') : '&lt;&lt;上一篇'}}</a>
-      <a href="javascript:;" @click="returnList()">{{getStaticText('backToList') ? getStaticText('backToList') : '返回列表'}}</a>
-      <a class="work_informationdetail_02-nav-next" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_nextId]}" @click="toNext">{{getStaticText('nextChap') ? getStaticText('nextChap') : '下一篇&gt;&gt;'}}</a>
+      <a class="work_informationdetail_02-nav-pre" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_preId]}" @click="toPre" :title="preDetail[keys.topic]">{{getStaticText('previousChap') ? getStaticText('previousChap') : '&lt;&lt;上一篇'}}</a>
+      <!-- 新增面包屑导航后去掉此处返回列表功能 18/08/16 -->
+      <!-- <a href="javascript:;" @click="returnList()">{{getStaticText('backToList') ? getStaticText('backToList') : '返回列表'}}</a> -->
+      <a class="work_informationdetail_02-nav-next" :class="{'work_informationdetail_02-nav-pre--null':!preNextData[this.keys.preNextData_nextId]}" @click="toNext" :title="nextDetail[keys.topic]">{{getStaticText('nextChap') ? getStaticText('nextChap') : '下一篇&gt;&gt;'}}</a>
     </div>
   </div>
 </template>
@@ -56,6 +57,8 @@ export default {
       newsListItemCache: null,/* 新闻列表数据缓存 */
       preNextParamCache: null,/* 上一篇下一篇请求参数缓存 */
       preNextData: '',/* 上一篇下一篇数据 */
+      preDetail:'',/* 上一篇详情 */
+      nextDetail:'',/* 下一篇详情 */
       detail: '',/* 新闻详情 */
       attach: '',/* 附件详情 */
       attachUrl: '',/* 附件链接 */
@@ -227,6 +230,31 @@ export default {
       Get(CONFIG.BASE_URL + url).then((resp) => {
         let data = resp.data.data;
         this.preNextData = data;
+
+        /* 获取上一篇详情数据 */
+        this.preDetail = ''
+        if (this.preNextData[this.keys.preNextData_preId]) {
+           Get(CONFIG.BASE_URL + this.CONFIG.getDetailUrl,{params:{
+            [this.keys.getDetailRequestParam_doclibCode]: this.newConfig.params.getDetailRequestParam_doclibCode,
+            [this.keys.getDetailRequestParam_loginName]: (this.member.loginName || ''),
+            [this.keys.getDetailRequestParam_docID]:this.preNextData[this.keys.preNextData_preId]
+          }}).then((resp) => {
+            this.preDetail = resp.data;
+          })
+        }
+       
+        /* 获取下一篇详情数据 */
+        this.nextDetail = ''
+        if (this.preNextData[this.keys.preNextData_nextId]) {
+          Get(CONFIG.BASE_URL + this.CONFIG.getDetailUrl,{params:{
+            [this.keys.getDetailRequestParam_doclibCode]: this.newConfig.params.getDetailRequestParam_doclibCode,
+            [this.keys.getDetailRequestParam_loginName]: (this.member.loginName || ''),
+            [this.keys.getDetailRequestParam_docID]:this.preNextData[this.keys.preNextData_nextId]
+          }}).then((resp) => {
+            this.nextDetail = resp.data;
+          })
+        }
+        
       })
     },
     /* 上一篇 */

@@ -25,7 +25,7 @@ module.exports = {
 		"newslist.html",
 		// "pagemanagement.html",
 		// "personalcenter.html",
-		"productiondetail.html",
+		// "productiondetail.html",
 		// "register_success.html",
 		// "register.html",
 		// "teacherdetail.html",

@@ -2589,6 +2589,7 @@ var $_$ = {
 					},
 					"showChildren": false,
 					"broadcastName": "showNavContent",
+					"transDefaultColId": "transDefaultColId",
 					"display": {},
 					"getNavLists": {
 						"url": "spc/cms/col/getAllColBySiteId.do",
@@ -2884,6 +2885,12 @@ var $_$ = {
 					"orderBy": "orderBy",
 					"pageNo": "pageNo",
 					"pageSize": "pageSize"
+				},
+				getDetail:{
+					url:'spc/cms/publish/detail.do',
+					keys:{
+						title:'information_SYS_TOPIC'
+					}
 				},
 				"prevNextUrl": "./informationdetail.html?",
 				"pageConfig": {

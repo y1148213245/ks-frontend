@@ -3191,6 +3191,12 @@ var $_$ = {
 					"pageNo": "pageNo",
 					"pageSize": "pageSize"
 				},
+				getDetail:{
+					url:'spc/cms/publish/detail.do',
+					keys:{
+						title:'information_SYS_TOPIC'
+					}
+				},
 				"prevNextUrl": "./informationdetail.html?",
 				"pageConfig": {
 					"isGetLocationQuery": false,

@@ -2,6 +2,7 @@
  * Created by codingnuts on 2017/12/7.
  */
 import Vue from 'vue';
+require('../utils/FilterFormat.js')/* 导入依赖vuefilter */
 
 function ScanVues (requireContext = require.context("../../../components", true, /\.vue$/)) {
 	var map = {};

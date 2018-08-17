@@ -9,10 +9,12 @@
     </div>
     <!-- <div class="work_activitydetail_01-text_content" v-text="detail && detail[keys.content] || ''"></div> -->
     <div class="work_activitydetail_01-upload_box" v-if="getIsShow('upload')">
-      <div v-if="activeStatus === 1" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">{{getStaticText('uploadWork') ? getStaticText('uploadWork') : '上传作品'}}</div>
+      <!-- <div v-if="activeStatus === 1" class="work_activitydetail_01-upload_box-button" @click="toUploadPage">{{getStaticText('uploadWork') ? getStaticText('uploadWork') : '上传作品'}}</div>
       <div v-if="activeStatus === -1" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('notBegin') ? getStaticText('notBegin') : '未开始'}}</div>
       <div v-if="activeStatus === 2" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('contributeClosed') ? getStaticText('contributeClosed') : '截止投稿'}}</div>
-      <div v-if="activeStatus === 0" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('haveEnded') ? getStaticText('haveEnded') : '已结束'}}</div>
+      <div v-if="activeStatus === 0" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('haveEnded') ? getStaticText('haveEnded') : '已结束'}}</div> -->
+      <div v-if="activeStatus === 1" class="work_activitydetail_01-upload_box-button2" @click="toUploadPage"></div>
+      <div v-else :class="{'work_activitydetail_01-upload_box-button1':activeStatus === -1,'work_activitydetail_01-upload_box-button3':activeStatus === 0 || activeStatus === 2}"></div>
     </div>
   </div>
 </template>

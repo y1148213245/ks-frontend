@@ -11,6 +11,7 @@ const title = "资讯详情组件";  // 组件title
 const description = `资讯详情
 分享子组件:ui_share_01
     modulename:work_informationdetail_01_share
+新增:获取上一篇下一篇详情,标题设置到按钮上显示 18/08/16
 `;  // 组件描述信息
 
 const dev = {

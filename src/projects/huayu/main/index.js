@@ -18,8 +18,8 @@ import VueBus from "vue-bus"; // 通过 cnpm install vue-bus安装
 import VueCodemirror from 'vue-codemirror'; // vue 在线代码编辑器
 import 'codemirror/lib/codemirror.css'; // 编辑器的主题样式
 import componentsApi from "@api"; // 数据组件公共api
-import ScanVues from './usedComponents';//按需引入
-// import ScanVues from "@common/scans/ScanVues";//引入全部
+// import ScanVues from './usedComponents';//按需引入
+import ScanVues from "@common/scans/ScanVues";//引入全部
 Vue.use(VueOccupy);
 Vue.use(ElementUI);
 Vue.use(VueBus); // 在一个模块化工程中使用，必须通过Vue.use()使用vue-bus
