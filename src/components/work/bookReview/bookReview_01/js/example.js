@@ -64,7 +64,9 @@ const dev = {
         noComments:"暂无评论",
         commentsEmptyInfo:"评论内容不能为空",
         pleaseGradeBeforeSubmitting:"请先评分再提交评论~",
-        commentAddFailed:"评论添加失败"
+        commentAddFailed:"评论添加失败",
+        contentBefore: "您还可以输入",
+        contentAfter: "个字"
       }
     }
   }
@@ -122,7 +124,9 @@ var prod = {
         noComments:"暂无评论",
         commentsEmptyInfo:"评论内容不能为空",
         pleaseGradeBeforeSubmitting:"请先评分再提交评论~",
-        commentAddFailed:"评论添加失败"
+        commentAddFailed:"评论添加失败",
+        contentBefore: "您还可以输入",
+        contentAfter: "个字"
       }
     }
   }

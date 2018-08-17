@@ -186,7 +186,9 @@ var FIELD_ADAPTER = {
             departCascadId: "BOOK_DEPART_CASCADID",
             pageNum: "BOOK_PAGE_NUM_BOOK",
             activityList: "activityList",
-            bookFreeDownLoadPath: "bookFreeDownLoadPath"
+            bookFreeDownLoadPath: "bookFreeDownLoadPath",
+            bookdownloadpath: "bookDownLoadPath",
+            saleUrl:"BOOK_SALE_URL"
         },
         newsAdapter: { // 资讯
             documentId: "information_SYS_DOCUMENTID",

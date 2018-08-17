@@ -113,14 +113,11 @@ export default {
       }
       Get(BASE_URL).then((resp) => {
         let res = resp.data;
-        if (res.result == '1' && res.data.length > 0) {
+        if (res.result == '1' && res.data.length >= 0) {
           this.loading = false;
           // this.noData = false;
           obj.booklist = res.data;
-        }else if(res.result == '1' && res.data.length == 0){
-          this.loading = false;
-          // this.noData = true;
-        } else if (res.result == '0') {
+        }else if (res.result == '0') {
           Toast.fail({
             duration: 1000,
             message: res.error.errorMsg

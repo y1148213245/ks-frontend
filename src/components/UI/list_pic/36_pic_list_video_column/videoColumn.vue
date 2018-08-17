@@ -4,15 +4,16 @@
     <div class="ui_list_pic_36_title">{{display.courseContain}}</div>
     <div class="ui_list_pic_36_column">
       <div class="ui_list_pic_36_column-title">{{display.courseName}}</div>
-      <ul class="ui_list_pic_36_videoList">
+      <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length">
         <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()">
           <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
-          <div class="ui_list_pic_36_videoList_icon" v-if="currentIndex == index">
+          <div class="ui_list_pic_36_videoList_icon" v-show="currentIndex == index">
             <span class="playvideo-tip" @click="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
             <span class="playtest-tip"><i class="fa fa-file-text"></i>{{display.test}}</span>
           </div>
         </li>
       </ul>
+      <div v-else>{{display.noData || '暂无数据'}}</div>
     </div>
     <ui_pagination v-if="videoList && videoList.length" :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging">
     </ui_pagination>

@@ -43,6 +43,7 @@
     <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
       <div class="work_videoplay_01_myswiperwra swiper-wrapper">
         <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-text="item[keys.resName]" @click="toPlayVideo(item)" :class="{work_videoplay_01_activevideo: curVideoObj[keys.id] == item[keys.id]}"></div>
+        <div class="work_videoplay_01_myswiper_tips swiper-slide" v-text="CONFIG.staticText && CONFIG.staticText.noelseTips ? CONFIG.staticText.noelseTips : '没有下一个视频啦'"></div>
       </div>
       <div class="swiper-button-prev swiper-button-prev-smallPic"></div>
       <div class="swiper-button-next swiper-button-next-smallPic"></div>
@@ -130,6 +131,9 @@ export default {
       paramsObj.conditions.map((item) => {
         if (item.hasOwnProperty('pub_parent_id')) {
           item.pub_parent_id = this.parentId;
+        }
+        if (item.hasOwnProperty('pub_col_id')) {
+          item.pub_col_id = item.pub_col_id;
         }
         if (item.hasOwnProperty('pub_site_id')) {
           item.pub_site_id = CONFIG.SITE_CONFIG.siteId;
@@ -225,6 +229,14 @@ export default {
   line-height: 80px;
   text-align: center;
   font-size: 14px;
+}
+
+.work_videoplay_01_myswiper_tips{
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  font-size: 14px;
+  margin-left: auto;
 }
 
 .work_videoplay_01_activevideo {

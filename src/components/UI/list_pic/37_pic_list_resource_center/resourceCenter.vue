@@ -34,7 +34,7 @@
         </tr>
       </tbody>
     </table>
-    <ui_pagination v-if="tBodyList && tBodyList.length" :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging">
+    <ui_pagination v-if="tBodyList"  :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging">
     </ui_pagination>
   </div>
 </template>
@@ -71,8 +71,6 @@
         this.keys = getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter);
         this.display = this.CONFIG.display;
         this.resourceTitle = this.display.resourceTitle;
-      },
-      mounted(){
         let _self = this;
         //将栏目树中的二级栏目传进来，在本组件中渲染三级栏目
         this.$bus.$on(_self.CONFIG.transTitle,function (item) {
@@ -82,9 +80,12 @@
         });
         //用于初次加载，默认渲染tree中的第一个栏目中的数据
         this.$bus.$on(_self.CONFIG.transDefaultColId,function (item) {
-         _self.resourceTitle = item.name;
-         _self.getListByColumnId(item);
+          _self.resourceTitle = item.name;
+          _self.getListByColumnId(item);
         });
+      },
+      mounted(){
+
       },
       computed: {
         ...mapGetters("login", {
@@ -114,6 +115,7 @@
         getListByColumnId(item){
           //先清理数据
           this.tBodyList = [];
+          this.tempItem = Object.assign({},item);
           let params = Object.assign({},this.CONFIG.getList.params);
           params.pageNo = this.pageNo ? this.pageNo : params.pageNo;
           params.pageSize = this.pageSize ? this.pageSize : params.pageSize;
@@ -135,7 +137,7 @@
             case this.display.book:   //去阅读电子书
               let params = Object.assign({},this.CONFIG.toEbook.params) ;
               let url = CONFIG.READ_URL + '?bookId=' + item[this.keys.resId] + '&readType=' + params.readType + '&bookName=' + item[this.keys.resName] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
-              
+
               window.open(url);
               break;
             case this.display.audio:  //去播放音频

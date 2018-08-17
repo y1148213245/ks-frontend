@@ -325,7 +325,7 @@ const prod = {
           },
         },
         toProbation: {
-          url: CONFIG.READ_URL,
+          url: "",
           dataKeys: {
             bookId: "resId", // key是地址请求参数名 value是从适配器里取对应的
             bookName: "resName"
@@ -475,7 +475,8 @@ const prod = {
             "url":"booldetail.html", // 跳转的详情页
             "params":{}
           }
-        }
+        },
+        "loginUrl": "../../pages/login.html"  //跳登录页
 
       },
 

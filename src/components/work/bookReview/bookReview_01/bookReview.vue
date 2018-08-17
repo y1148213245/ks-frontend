@@ -12,8 +12,12 @@
           <el-rate v-model="starValue" :show-text="true" :max="5" void-color="#c1c1c0"></el-rate>
         </p>
       </div>
-      <textarea ref="commentContent"></textarea>
-
+      <textarea ref="commentContent" maxlength="250" v-model="content"></textarea>
+      <p>
+        {{getStaticText('contentBefore') ? getStaticText('contentBefore') : "您还可以输入"}}
+        <span class="contentLength">{{250-content.length}}</span>
+        {{getStaticText('contentAfter') ? getStaticText('contentAfter') : "个字"}}
+      </p>
       <input type="button" class="reviewBtn" :value="getStaticText('comments') ? getStaticText('comments') : '评论'" @click="bookReview()"/>
     </div>
 
@@ -68,6 +72,7 @@ export default {
   props: ['namespace'],
   data () {
     return {
+      content: '',  //评论内容
       pubId: '',
       starValue: 5, // 评分默认分数
       CONFIG: "",

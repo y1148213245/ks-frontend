@@ -47,7 +47,7 @@ export default {
         if (item.cascadId){
           //发送get请求获取text字段
           this.cascadeId = item.cascadId;
-          this.getClassification()
+          this.getClassification(this.cascadeId)
         } else if (item.orderBy) {
           //按照排行榜查询时title根据url的orderBy改变
           if (item.orderBy.indexOf('BOOK_PUBDATE') != -1){
@@ -67,15 +67,15 @@ export default {
         }
       }
     },
-    getClassification () {
+    getClassification (cascadeId) {
       let _this = this;
-      let paramsObj = Object.assign({}, _this.CONFIG.queryClassification.params);
+      let paramsObj = Object.assign({}, this.CONFIG.queryClassification.params);
       paramsObj.timeStamp = new Date().getTime();
       Get(CONFIG.BASE_URL + this.CONFIG.queryClassification.url,{params: paramsObj}).then(rep=>{
         var datas = rep.data;
         if (datas && datas instanceof Array && datas.length > 0) {
           for (let i = 0; i < datas.length ; i++) {
-            if (_this.cascadeId == datas[i].cascadeId){
+            if (cascadeId == datas[i].cascadeId){
               _this.title = datas[i].text + "-" + "图书分类";
               break;
             }

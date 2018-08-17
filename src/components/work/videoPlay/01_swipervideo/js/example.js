@@ -127,6 +127,9 @@ const prod = {
             "pubId": "",
             "loginName": ""
           }
+        },
+        "staticText": {
+          "noelseTips": '没有下一个视1111频啦'
         }
       },
     }

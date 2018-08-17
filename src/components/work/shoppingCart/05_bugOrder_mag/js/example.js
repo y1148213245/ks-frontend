@@ -166,6 +166,7 @@ const prod = {
           }
         ],   //切换购买方式区域
         aboutMsg:"aboutMsgaboutMsgaboutMsgaboutMsgaboutMsgaboutMsgaboutMsg", //介绍信息
+        checkMagTypeNameDefault:"",    //默认刊种名称 获取配置中默认的刊种名称 并且获取详情  //如果配置不对 那展示会失败
         magType:{  // 期刊类型配置
           titleName:"选择期刊种类",
           buttonName:"选择",

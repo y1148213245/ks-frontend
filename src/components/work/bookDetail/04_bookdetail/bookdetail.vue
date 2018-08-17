@@ -100,14 +100,10 @@
           <!-- probation 试读 -->
           <div v-else-if="config.name == 'probation'" class="work_bookdetail_04_probationcontainter" :class="{work_bookdetail_04_noProbation: !resourceDetail[keys.bookFreeDownLoadPath]}" @click="toCustomFun(config)">
 
-            <div class="work_bookdetail_04_probationcontainter_shidu" v-if="isBuy==0">
+            <div class="work_bookdetail_04_probationcontainter_shidu">
               <i v-bind="{class: config.className}"></i>
-              <label class="work_bookdetail_04_probation_label">{{config.display}}</label>
-              <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
-            </div>
-            <div class="work_bookdetail_04_probationcontainter_add" v-if="isBuy==1">
-              <i v-bind="{class: config.className}"></i>
-              <label class="work_bookdetail_04_probation_label">{{config.display1}}</label>
+              <label class="work_bookdetail_04_probation_label" v-if="isBuy==0">{{config.display}}</label>
+              <label class="work_bookdetail_04_probation_label" v-if="isBuy==1">{{config.display1}}</label>
               <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
             </div>
           </div>
@@ -239,20 +235,16 @@
           <img :src="resourceDetail.pub_picMiddle|| require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)">
         </div>
         <div class="work_bookdetail_04_dialog_courseInfor_content">
-          <div>{{resourceDetail[keys.courseTitle]}}</div>
-          <div>{{CONFIG.display.courseUseTime}}</div>
-          <div>2018年4月17日——2019年4月17日(暂无字段，写死)</div>
+          <div class="work_bookdetail_04_dialog_courseInfor_content_title">{{resourceDetail[keys.resName]}}</div>
+          <div class="work_bookdetail_04_dialog_courseInfor_content_staticTime">{{CONFIG.display.courseUseTime}}</div>
+          <div class="work_bookdetail_04_dialog_courseInfor_content_dynamicTime">2018年4月17日——2019年4月17日(暂无字段，写死)</div>
         </div>
-        <div>{{resourceDetail[keys.courseSalePrice] | formatPriceNew}}</div>
-        <div><label>{{CONFIG.display.needPay}}</label>{{resourceDetail[keys.courseSalePrice] | formatPriceNew}}</div>
+        <div class="work_bookdetail_04_dialog_courseInfor_price">{{resourceDetail[keys.memberPrice] | formatPriceNew}}</div>
+        <div class="work_bookdetail_04_dialog_courseInfor_needPay"><label>{{CONFIG.display.needPay}}</label>{{resourceDetail[keys.memberPrice] | formatPriceNew}}</div>
       </div>
-      <div>
-        <div>{{CONFIG.display.payWay}}</div>
-        <!-- <el-radio-group v-model="radio2">
-          <el-radio :label="item.payCode" v-for="(item,index) in payWaysList" :key="index">{{item.payName}}</el-radio>
-        </el-radio-group> -->
+      <div class="work_bookdetail_04_dialog_payWays">
+        <div class="work_bookdetail_04_dialog_payWays_static">{{CONFIG.display.payWay}}</div>
         <el-radio v-model="payWays" :label="index" v-for="(item,index) in payWaysList" :key="index" @change="changePayWays(item.payCode)">{{item.payName}}</el-radio>
-        <!-- <el-radio v-model="payWays" label="Weixin">{{CONFIG.display.weixin}}</el-radio> -->
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="commitOrder">{{CONFIG.display.sure}}</el-button>
@@ -388,7 +380,20 @@ export default {
       DrawImage(eve.path[0], this.CONFIG.infoImgWidth, this.CONFIG.infoImgHeight);
     },
     toCustomFun (config) { // 执行自定义事件
+      let _this = this;
       if(config.method == 'toBuyLayer'){
+
+        if(this.loginName == undefined || this.loginName == '') { // 未登录
+          this.$message({
+            message: "请先登录",
+            type: 'error',
+            duration: 2000,
+            onClose: function(){
+              window.location = _this.CONFIG.loginUrl;
+            }
+          });
+          return false;
+        }
         this.isdialogShow = true;
         this.getPayMethodsBySiteId();
         return false;
@@ -400,25 +405,35 @@ export default {
       if (config.method == 'toProbation') { // 执行免费试读操作
         //加入书架
         if(this.CONFIG.addBookshelfBeforeProbation) {
-          Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=3' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
+          Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=2' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
             var datas = rep.data;
             if (datas.result == "1") {
-              // let msg = datas.data.msg;
-              // this.$message({
-              //   message: msg,
-              //   type: 'success'
-              // });
               this.getResourceDetail();  //获取图书详情信息
             }
           });
         }
-
-        if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 没有试读地址
-          this.$message({
-            message: "本书没有试读地址",
-            type: 'error'
-          });
-          return false;
+        if(this.isBuy == "1"){  //判断是否购买 0=>未购买  1=>购买
+          if(!this.resourceDetail[this.keys.bookdownloadpath]){  //已经购买 没有全文阅读地址
+            this.$message({
+              message: "本书没有阅读地址",
+              type: 'error'
+            });
+            return false;
+          }else {                                               //已经购买 有全文阅读地址
+            this.CONFIG.toProbation.url = CONFIG.READ_URL;
+            this.CONFIG.toProbation.fixedKeys.readType = 1;
+          }
+        }else {
+          if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 未购买  没有试读地址
+            this.$message({
+              message: "本书没有试读地址",
+              type: 'error'
+            });
+            return false;
+          }else {                                               //未购买 有试读阅读地址
+            this.CONFIG.toProbation.url = CONFIG.READ_URL;
+            this.CONFIG.toProbation.fixedKeys.readType = 0;
+          }
         }
       }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
@@ -478,19 +493,14 @@ export default {
           if(datas.data && datas.result == 1 && datas.data.submitStatus) {
             _this.commitInfo = datas.data;
             _this.toPay(loadingTag);
-
-            // location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&loginName=" + _this.loginName;
           } else {
-            // console.log(datas.data.errMsg);
             loading.close();
-            // alert(datas.error.errorMsg);
             _this.$message({
               message: datas.error.errorMsg,
               type: error
             });
           }
         }
-        //loading.close();
       })
     },
     toPay(loadingTag) {
@@ -540,7 +550,6 @@ export default {
                 response.data.indexOf("<div>") + 5,
                 response.data.indexOf("</div>")
               );
-              // loadingTag.close();
               window.location.href =
                 "../pages/qrcode.html?data=" +
                 data +
@@ -625,21 +634,15 @@ export default {
           bankName: this.curSelectedInvoice.bankName,
           companyAddress: this.curSelectedInvoice.companyAddress,
           companyPhone: this.curSelectedInvoice.companyPhone,
-        // couponsAmount: 0,
           couponsOrder: '', // 优惠券的密码 如果有两张 以数组形式传递
           createTime: null, //不用写
           deliveryAddress: '', // 收货人整个地址 北京市海淀区 拼起来的地址
-        // deliveryArea: '',
-        // deliveryCity: '',
           deliveryContact: '', // 联系方式
           deliveryPerson: '', // 收件人
           deliveryPrice: 0, // 运费
-        // deliveryProvince: '',
           deliveryRemark: "", // 运费备注
           deliveryType: '', // 运输方式  汉字 顺丰
           discountAmount: '', //  商品各种活动优惠 不包含免运费的活动
-        // finalAmount: 0,
-        // flag: 0,
           id: 0, //不用写
           isReceipt: "0", //要不要发票， 0不需要 1要
           bankAccount: this.curSelectedInvoice.bankAccount,
@@ -662,7 +665,6 @@ export default {
           remark: "",
           siteId: CONFIG.SITE_CONFIG.siteId,
           splitOrderList: [this.temp], //aaa
-        // status: "",
           taxpayerCode: this.curSelectedInvoice.taxpayerCode,
           totalPrice: this.payMoney, // 商品总价（不含优惠运费）
       };
@@ -697,9 +699,6 @@ export default {
           this.combinateProductLsit = this.resourceDetail.combinateProductLsit;
           // 计算省下多少钱
           let thisBookPrice = Number(this.resourceDetail["memberPrice"]);
-          // for(let j = 0; j < this.combinateProductLsit.length ; j++){
-          //   let allPrice = 0;
-          // }
           if(this.combinateProductLsit && this.combinateProductLsit.length){
             this.combinateProductLsit.forEach(function(val,key,obj){
               let allPrice = 0;
@@ -709,13 +708,10 @@ export default {
               val['savemoney'] = allPrice + thisBookPrice;
             });
           }
-          // console.log(this.combinateProductLsit.length);
           this.showCombinateArr = new Array(this.combinateProductLsit.length);
           for(let i = 0; i < this.showCombinateArr.length ; i++){
-            // this.showCombinateArr[i] = 0;
             this.$set(this.showCombinateArr,i,0);
           }
-          // console.log(this.showCombinateArr);
         }
       });
     },
@@ -765,11 +761,6 @@ export default {
     },
     addCart (config) { // 加入购物车
       if (this.loginName == undefined || this.loginName == '') {  // 未登录
-        // this.$message({
-        //   message: "请登录",
-        //   type: 'error'
-        // });
-
         window.open('../pages/login.html');
         return false
       }
@@ -852,17 +843,11 @@ export default {
 
     },
     toCombinateItemDetail(config,pubid){ // 去每一个组合购买图书的详情
-      // console.log(config);
-      // console.log(pubid);
        if (typeof (config) == "undefined") {return;}
        window.open(config.url + '?pubId=' + pubid);
     },
     collectOrLike (config) { // 点赞 或者 收藏
       if (this.loginName == undefined || this.loginName == '') {  // 未登录
-        // this.$message({
-        //   message: "请登录",
-        //   type: 'error'
-        // });
         window.open('../pages/login.html');
         return false
       }
@@ -955,10 +940,8 @@ export default {
       var $target = $(event.target);
       if($target.hasClass("disable")){return;}
       if($target.hasClass("prev")){
-        // this.showCombinateArr[key] = Number(this.showCombinateArr[key]) - 1;
         this.$set(this.showCombinateArr,key,Number(this.showCombinateArr[key]) - 1)
       }else if($target.hasClass("next")){
-        // this.showCombinateArr[key]  = Number(this.showCombinateArr[key] ) + 1;
         this.$set(this.showCombinateArr,key,Number(this.showCombinateArr[key]) + 1)
       }
     }

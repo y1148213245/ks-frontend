@@ -23,7 +23,6 @@
 import PROJECT_CONFIG from "projectConfig";
 import { Get } from "@common";
 import URL from 'url';
-
 export default {
   name: "ui_navigation_05",
   reused: true,
@@ -94,6 +93,8 @@ export default {
       //发送默认bus
       if (this.defaultBus) {
         this.currentActive = this.colId ? this.colId : this.tree[0].id;
+        //首次加载时，将默认的栏目id存起来
+        sessionStorage.setItem("mycolId",this.currentActive);
         this.$bus.$emit(this.CONFIG.transDefaultColId, this.tree[0]);
         this.navInteract(this.currentActive);
         let curIndex = 0;
@@ -122,6 +123,8 @@ export default {
       }
     },
     navClick (item, items) {
+      //每次点击栏目时，将栏目id存起来
+      sessionStorage.setItem("mycolId",item.id);
       let directLink = this.CONFIG.directLink;
       if (directLink && directLink.switchFlag && directLink.directRules[item.id]) {
         // 点击左侧导航直接跳转链接 因为点击左侧不同导航时右侧内容的内容显示不一样

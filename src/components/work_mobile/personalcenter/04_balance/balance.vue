@@ -14,7 +14,7 @@
     </div>
     <div class="work_mobile_personalcenter_04_balance">
       <span class="work_mobile_personalcenter_04_balance_f">{{display.balance}}</span>
-      <span class="work_mobile_personalcenter_04_balance_s">{{member.virtualCoin ? Number(member.virtualCoin).toFixed(2) : '0.00'}}</span>
+      <span class="work_mobile_personalcenter_04_balance_s">{{memberNew.virtualCoin ? Number(memberNew.virtualCoin).toFixed(2) : '0.00'}}</span>
       <span class="work_mobile_personalcenter_04_balance_m">{{display.money}}</span>
     </div>
     <div class="work_mobile_personalcenter_04_choose">
@@ -53,7 +53,8 @@ export default {
       CONFIG: null,
       display: "", //组件静态文本
       chargeLists: [],
-      currentIndex: -1
+      currentIndex: -1,
+      memberNew: {}  //存放接口返回来的数据，主要用于更新余额
     };
   },
   computed: {
@@ -73,6 +74,9 @@ export default {
   },
 
   methods: {
+    initData (loginName) {
+      this.getMember(loginName);
+    },
     getChargeLists () { // 获取充值规则列表
       Get(CONFIG.BASE_URL + this.CONFIG.getChargeLists.url).then((resp) => {
         let datas = resp.data;
@@ -127,6 +131,27 @@ export default {
           }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
         }
       );
+    },
+    //因为返回来的token中的数据不是实时的，所以在调一次用户数据接口
+    getMember(loginName){
+      Get(CONFIG.BASE_URL + this.CONFIG.getMember.url + '?loginName=' + (loginName ? loginName : this.member.loginName) ).then((resp) => {
+        let res = resp.data;
+        if (res.result == '1' && res.data) {
+          this.memberNew = res.data;
+        } else {
+          Toast.fail({
+            duration: 1000,
+            message: res.error.msg
+          });
+        }
+      })
+    }
+  },
+   watch: {
+    member: function (newValue, oldValue) {
+      if (newValue.loginName && newValue.loginName != oldValue.loginName) {
+        this.initData(newValue.loginName);
+      }
     }
   }
 

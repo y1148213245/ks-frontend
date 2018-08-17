@@ -20,6 +20,7 @@ const dev = {
           book: "BOOK",
           video: "VIDEO-MEDIA",
           audio: "AUDIO-MEDIA",
+          noData: "暂无数据"
         },
         url: "spc/cms/publish/list.do",
         params: {
@@ -94,6 +95,7 @@ const prod = {
           book: "BOOK",
           video: "VIDEO-MEDIA",
           audio: "AUDIO-MEDIA",
+          noData: "暂无数据"
         },
         url: "spc/cms/publish/list.do",
         params: {

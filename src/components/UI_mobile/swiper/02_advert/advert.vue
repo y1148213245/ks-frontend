@@ -2,8 +2,8 @@
   <div class="ui_mobile_swiper_02">
     <a class="ui_mobile_swiper_02_a">
       <!-- <span>{{advertList[keys.pic]}}</span> -->
-      <img class="ui_mobile_swiper_01-slides-img" v-for="(item, index) in advertList" v-if="(keys.hasOwnProperty('poster') && item[keys.poster] && item[keys.poster].length > 0) || (item['pub_POSTER'] && item['pub_POSTER'].length > 0)" :src="(keys.hasOwnProperty('poster') && item[keys.poster] && item[keys.poster].length > 0 && item[keys.poster][0]) || item['pub_POSTER'][0]" :key="index">
-      <img class="ui_mobile_swiper_02_img" v-else :src="item && item[keys.pic]" v-for="(item, index) in advertList" :key="index" />
+      <img class="ui_mobile_swiper_01-slides-img" v-for="(item, index) in advertList" v-if="(keys.hasOwnProperty('poster') && item[keys.poster] && item[keys.poster].length > 0) || (item['pub_POSTER'] && item['pub_POSTER'].length > 0)" :src="(keys.hasOwnProperty('poster') && item[keys.poster] && item[keys.poster].length > 0 && item[keys.poster][0]) || item['pub_POSTER'][0]" :key="index" @click="toDetail(item)">
+      <img class="ui_mobile_swiper_02_img" v-else :src="item && item[keys.pic]" v-for="(item, index) in advertList" :key="index" @click="toDetail(item)"/>
     </a>
   </div>
 </template>
@@ -61,8 +61,8 @@ export default {
         url = url.substring(0, url.length - 1)
         window.location.href = url;
       }
-    }
-  },
+    },
+  }
 }
 </script>
 

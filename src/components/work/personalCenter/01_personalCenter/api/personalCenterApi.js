@@ -307,9 +307,9 @@ export default {
   getSamplebookList(params) {
     var url =CONFIG.BASE_URL + params.getListUrl + "?doclibCode=" +
     params.doclibCode +
-    "&pageIndex=" + 
-    params.pageIndex + 
-    "&pageSize=" + params.pageSize;
+    "&page=" + 
+    (params.pageIndex-1) + 
+    "&size=" + params.pageSize;
     return Get(url);
   },
   /*售后详情接口*/

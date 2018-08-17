@@ -4,7 +4,7 @@
   <div class="ui_form_01">
     <h3 v-if="CONFIG && CONFIG.formTitle.isShow" v-html="CONFIG.formTitle.name"></h3>
     <div class="ui_form_01_upload">
-      <el-form ref="form" :model="form" :label-width="CONFIG.labelWidth" :rules="rules" >
+      <el-form ref="form" :model="form" :label-width="CONFIG.labelWidth?CONFIG.labelWidth:'600'" :rules="rules" >
           <el-form-item v-for="(item, i) in CONFIG.formItem" :key="i" v-bind:class="'ui_form_01_form_item_'+ item.type+'_'+ i" :label="item.label" :prop="item.model">
             <!-- 图片 -->
             <el-upload 
@@ -89,6 +89,7 @@ import Vue from "vue";
 import PROJECT_CONFIG from "projectConfig";
 import { Post, Get, ValidateRules, getFieldAdapter } from "@common";
 import area from "./js/area.js";
+import URL from "url";
 
 export default {
   name: "ui_form_01",
@@ -144,11 +145,18 @@ export default {
       phoneCodeModel: "", // 发送验证码的手机号model
       addressModel: "", //地址model
       detailAddressModel: "", // 详细地址model
-      address: "" // 省市区和街道信息组合字符串
+      address: "", // 省市区和街道信息组合字符串
+      sysTopic: "", // 图书名称
+      bookName:""  // 图书名称 - 沈乾
     };
   },
   computed: {},
   created() {
+    var uriQuery = URL.parse(document.URL, true).query;
+    if (typeof uriQuery.SYS_TOPIC != "undefined") {
+      this.bookName = uriQuery.SYS_TOPIC;
+    }
+
     this.CONFIG = PROJECT_CONFIG[this.namespace].form.ui_form_01;
     this.uploadUrl = CONFIG.BASE_URL + this.CONFIG.upload.url;
     this.keys = JSON.parse(
@@ -364,11 +372,18 @@ export default {
             }
           }
 
+          // 样书申领传图书名称
+          if("SYS_TOPIC" in paramsObj.metaMap){
+            paramsObj.metaMap["SYS_TOPIC"] = this.bookName ? this.bookName : paramsObj.metaMap["SYS_TOPIC"];
+          }
+          
+
           Post(CONFIG.BASE_URL + this.CONFIG.submit.url, paramsObj).then(
             res => {
               let datas = res.data;
               if (datas.status == "success" && datas.data) {
-                window.open(this.CONFIG.toUrl);
+                // window.open(this.CONFIG.toUrl);
+                window.location.href = this.CONFIG.toUrl;
               } else {
                 this.$message({
                   type: "warning",

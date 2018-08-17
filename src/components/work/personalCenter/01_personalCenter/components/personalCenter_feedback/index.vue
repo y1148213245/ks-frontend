@@ -12,7 +12,7 @@
     <div class="personalcenter-feedback-page01" v-if="this.showPage == this.showPageList[1]">
       <span  class="personalcenter-feedback-right">√</span>
       <h4 class="personalcenter-feedback-success-tip">提交成功</h4>
-      <button @click="backIndexPage()">返回</button>
+      <button class="el-button el-button--primary" @click="goPageNum(0)">返回</button>
     </div>
   </section>
 </template>
@@ -43,18 +43,25 @@ export default {
   },
   computed: {
     ...mapGetters("personalCenter/", {
+      member: "getMember",
     })
   },
   methods: {
     loadedCallBack() { },
     toSubmitFeedback() {
       let paramsObj = this.CONFIG.params;
-      paramsObj.metaMap[this.CONFIG.feedbackkeys] = $(".personalcenter-feedback-input").val();
+      let paramsChild = {
+        "REQUESTER":this.member.loginName,
+        "QUE_CONTENT":$(".personalcenter-feedback-input").val(),
+        "QUES_CONTENT":$(".personalcenter-feedback-input").val()
+      }
+      // paramsObj.metaMap[this.CONFIG.feedbackkeys] = $(".personalcenter-feedback-input").val();
+      paramsObj.metaMap = paramsChild;
       Post(CONFIG.BASE_URL + this.CONFIG.submitUrl, paramsObj).then(
         res => {
           let datas = res.data;
           if (datas.status == "success" && datas.data) {
-            console.log(success);
+            console.log("success");
             this.showPage = this.showPageList[1];
           } else {
             this.$message({
@@ -65,8 +72,8 @@ export default {
         }
       );
     },
-    backIndexPage(){
-      this.showPage = this.showPageList[0];
+    goPageNum(num){
+      this.showPage = this.showPageList[num];
     }
   }
 };
@@ -91,5 +98,18 @@ export default {
   border: 1px solid #166cc9;
   background: #166cc9;
   cursor: pointer;
+}
+.personalcenter-feedback-page01{
+  text-align: center;
+  font-size: 16px;
+  line-height: 40px;
+}
+.personalcenter-feedback-right{
+  display: inline-block;
+  height:40px;
+  width:40px;
+  color:#166cc9;
+  font-size: 22px;
+  margin-bottom:20px;
 }
 </style>

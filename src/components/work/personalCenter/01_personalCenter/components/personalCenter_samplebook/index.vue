@@ -11,8 +11,16 @@
               <span>{{formatDateNEW(scope.row['SYS_CREATED'])}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="申请教材" align="center" prop=""></el-table-column>
-          <el-table-column label="申请结果" align="center" prop=""></el-table-column>
+          <el-table-column label="申请教材" align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row['SYS_TOPIC']?scope.row['SYS_TOPIC']:"暂无"}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="申请结果" align="center" prop="">
+            <template slot-scope="scope">
+              <span>{{scope.row['STYLEBOOK_STATUS']?scope.row['STYLEBOOK_STATUS']:"暂无"}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <button class="personalcenter-samplebook-todetail" @click="toSamplebookDetail(scope.row)">查看详情</button>
@@ -21,7 +29,7 @@
         </el-table>
       </div>
       <div class="personalcenter-samplebook-page">
-        <ui_pagination :pageMessage="{totalCount: this.samplebookList.content && this.samplebookList.totalCount - 0 || 0}" :excuteFunction="toPageN" :page-sizes="[10,20]"></ui_pagination>
+        <ui_pagination :pageMessage="{totalCount: this.samplebookList.content && this.samplebookList.totalElements - 0 || 0}" :excuteFunction="toPageN" :page-sizes="[10]"></ui_pagination>
       </div>
     </div>
     <div class="personalcenter-samplebook-page01" v-if="showSamplebookPage == showSamplebookPageList[1]">
@@ -39,10 +47,10 @@
             </li>
             <li>
               <span>{{formatDateNEW(samplebookDetail['SYS_CREATED'])}}</span>
-              <span></span>
+              <span>{{samplebookDetail['SYS_TOPIC']?samplebookDetail['SYS_TOPIC']:"暂无"}}</span>
             </li>
           </ul>
-          <div class="personalcenter-samplebook-detail-state">申请成功,发货中</div>
+          <div class="personalcenter-samplebook-detail-state"><span>申请进度:</span>{{samplebookDetail['STYLEBOOK_STATUS']?samplebookDetail['STYLEBOOK_STATUS']:"暂无"}}</div>
         </div>
         <button class="personalcenter-samplebook-detail-back el-button el-button--primary" @click="toSempleboolPage(0)">返回</button>
       </div>
@@ -102,10 +110,15 @@ export default {
       this.CONFIG;
       this.$store.dispatch("personalCenter/getSamplebookList", this.CONFIG);
     },
+    toPageN:function ({ pageNo, pageSize }) {
+      this.CONFIG.pageIndex = pageNo;
+      this.CONFIG.pageSize = pageSize;
+      this.$store.dispatch("personalCenter/getSamplebookList", this.CONFIG);
+    },
     toSamplebookDetail(data){
       this.samplebookDetail = data;
       this.toSempleboolPage(1);
-      // 可以先判断快递号再显示 先改成true显示
+      // 可以先判断快递号=>TRACKING_NUMBER 再显示 先改成true显示
       this.showLogistical = true;
       kdnApi.run({
         serviceType: "B",
@@ -124,11 +137,6 @@ export default {
       } else {
         return '暂无日期';
       }
-    },
-    toPageN:function ({ pageNo, pageSize }) {
-      this.CONFIG.pageIndex = pageNo;
-      this.CONFIG.pageSize = pageSize;
-      this.$store.dispatch("personalCenter/getSamplebookList", this.CONFIG);
     }
   }
 };

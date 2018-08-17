@@ -15,8 +15,8 @@
         <!-- END 我的资料 -->
 
         <!-- 余额 -->
-        <div v-else-if="member && nav.tag == 'balance'" class="work_mobile_personalcenter_01_balancecon">
-          <span class="work_mobile_personalcenter_01_balance" v-text="member.virtualCoin ? Number(member.virtualCoin).toFixed(2) + '元': '0.00元'"></span>
+        <div v-else-if="memberNew && nav.tag == 'balance'" class="work_mobile_personalcenter_01_balancecon">
+          <span class="work_mobile_personalcenter_01_balance" v-text="memberNew.virtualCoin ? Number(memberNew.virtualCoin).toFixed(2) + '元': '0.00元'"></span>
           <van-button size="small"> {{display.recharge}} </van-button>
         </div>
         <!-- END 余额 -->
@@ -64,7 +64,8 @@ export default {
       pageIndex: "1",  // 页码 从 1 开始
       pageSize: "15",  // 每页显示个数
       boughtBooksList: [],  //已购图书列表
-      collectionlist: []  //收藏图书列表
+      collectionlist: [],  //收藏图书列表
+      memberNew: {}  //用于存放通过接口获取的用户信息(实时的数据)
     };
   },
   computed: {
@@ -144,8 +145,8 @@ export default {
     getMember(loginName){
       Get(CONFIG.BASE_URL + this.CONFIG.getMember.url + '?loginName=' + (loginName ? loginName : this.member.loginName) ).then((resp) => {
         let res = resp.data;
-        if (res.result == '1' && res.data.length > 0) {
-          this.member = res.data;
+        if (res.result == '1' && res.data) {
+          this.memberNew = res.data;
         } else {
           Toast.fail({
             duration: 1000,

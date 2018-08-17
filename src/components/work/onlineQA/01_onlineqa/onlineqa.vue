@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-07-04 15:50:20 
+ * @Author: song
+ * @Date: 2018-07-04 15:50:20
  * @Last Modified by: song
  * @Last Modified time: 2018-07-05 11:30:28
  * 在线问答组件
@@ -134,7 +134,7 @@ export default {
     paging: function ({ pageNo, pageSize }) { // 翻页
       this.loading = true;
       var pagingParams = {
-        pageNo: pageNo,
+        pageNo: pageNo-1,
         pageSize: pageSize,
       };
       this.queryQA(pagingParams);

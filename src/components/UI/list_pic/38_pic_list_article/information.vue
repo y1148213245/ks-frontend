@@ -5,6 +5,7 @@
       <template>
         <div class="ui_list_pic_38_resourcelists_item" v-for="(column, columnIndex) in articleData" v-if="articleData && articleData.length > 0" :key="columnIndex">
             <h1 class="ui_list_pic_38_resourcelists_columnname">{{column.name}}</h1>
+            <span class="ui_list_pic_38_resourcelists_columnname__subtitle"></span>
             <ul class="ui_list_pic_38_resourcelists_ul" >
               <li class="ui_list_pic_38_resourcelists_li" v-for="(item, index) in column.data" :key="index" @click="(columnIndex === 0 && index < resourceListsConfig.freeNum || isBuy === 1) ? toCustomFun(item,1) : toCustomFun(item,2)">
                 <template v-for="(config, config_i) in resourceListsConfig.complicatedItem">

@@ -95,12 +95,12 @@ export default {
 </script>
 <style scoped>
 
-.personalcenter-message-nodata {
+.personalcenter-comment-nodata {
   text-align: center;
   font-size: 16px;
   color: #999;
 }
-.personalcenter-message-nodata img {
+.personalcenter-comment-nodata img {
   width: 150px;
   margin-bottom: 20px;
 }
@@ -134,7 +134,6 @@ export default {
   max-width: 90%;
   margin: 0 auto;
 }
-
 
 
 

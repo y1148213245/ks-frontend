@@ -101,7 +101,7 @@
 				temp: {}, //订单里的id
 				tempList: {}, //订单单元
 				orderSuccessUrl: '', //
-        noLoginUrl:'../pages/login.html', //没有登陆就跳转到登录页
+        		noLoginUrl:'../pages/login.html', //没有登陆就跳转到登录页
 			};
 		},
 
@@ -112,10 +112,9 @@
 			this.orderSuccessUrl = this.CONFIG.orderSuccessUrl;
 			this.payType = this.CONFIG.payType;
 			this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.resourceDetailConfig.sysAdapter, this.resourceDetailConfig.typeAdapter)));
-      if(typeof(this.CONFIG.noLoginUrl)!='undefined'){
-        this.noLoginUrl = this.CONFIG.noLoginUrl;
-      }
-
+			if(typeof(this.CONFIG.noLoginUrl)!='undefined'){
+				this.noLoginUrl = this.CONFIG.noLoginUrl;
+			}
 		},
 
 		created: function() {
@@ -159,8 +158,8 @@
 			getMenberDetail() {
 				this.loginName = this.member.loginName;
 				if(this.loginName == undefined || this.loginName == '') { // 未登录
-          // 未登录就要跳转到登录页面哦
-          location.href = this.noLoginUrl;
+          			// 未登录就要跳转到登录页面哦
+          			location.href = this.noLoginUrl;
 					return false;
 				}
 				Get(CONFIG.BASE_URL + 'user/getMemberByName.do', {
@@ -196,24 +195,40 @@
 				//判断支付方式 生成不同的参数
 				//如果是余额支付那么判断余额够不够
 				this.setOrderParams();
-				let loading = Vue.prototype.$loading({
-					text: "数据加载中..."
-				});
+				
 				// http://172.19.36.97:9092/spc-portal-web/order/submitSplitOrder.do
-      var _this = this;
-				Post(CONFIG.BASE_URL + 'order/submitSplitOrder.do', this.Orderparams).then(function(response) {
-					// Post("http://172.19.36.97:9092/spc-portal-web/order/submitSplitOrder.do", this.Orderparams).then(function (response) {
-					if(response.status == 200 && response.data) {
-						let datas = response.data;
-						if(datas.data && datas.result == 1 && datas.data.submitStatus) {
-						  // alert("购买完成！")
-							location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
-						} else {
-							console.log(datas.data.errMsg);
+				var _this = this;
+				if(this.resourceDetail.isBuy=='1'){
+					this.$message({
+						type: "error",
+						message: "请不要重复购买",
+						duration: 2000
+					})
+				}else
+				{
+					let loading = Vue.prototype.$loading({
+						text: "数据加载中..."
+					});
+					Post(CONFIG.BASE_URL + 'order/submitSplitOrder.do', this.Orderparams).then(function(response) {
+						// Post("http://172.19.36.97:9092/spc-portal-web/order/submitSplitOrder.do", this.Orderparams).then(function (response) {
+						if(response.status == 200 && response.data) {
+							let datas = response.data;
+							if(datas.data && datas.result == 1 && datas.data.submitStatus) {
+							// alert("购买完成！")
+								location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
+							} else {
+								loading.close();
+								this.$message({
+									type: "error",
+									message: datas.data.errMsg
+								})
+							}
+							
 						}
-					}
-					loading.close();
-				})
+					})
+					
+				}  
+				
 			},
 			setOrderParams() {
 
@@ -261,7 +276,7 @@
 				};
 				this.Orderparams = {
 					oremark: "wxShop",
-          orderType: "book",   //期刊是这个 其他的都是book
+        			orderType: "book",   //期刊是这个 其他的都是book
 					orderCode: "", //不用写
 					balanceAmount: this.bookMoney, // 如果是余额支付，那就写支付金额 不是就写0
 					createTime: null, //不用写

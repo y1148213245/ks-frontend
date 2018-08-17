@@ -454,11 +454,16 @@
       this.otherDiv = this.CONFIG.otherDiv;
       this.billInfo = this.CONFIG.billInfo;
       this.descDiv = this.CONFIG.descDiv;
-
-
-
+      
       this.getIdMagTypeList(); // 获取刊种列表
       // this.getDeliveryWay(); //获取配送方式
+      
+      //获取配置中默认的刊种名称 并且获取详情  //如果配置不对 那展示会失败
+      if(typeof(this.CONFIG.checkMagTypeNameDefault)!='undefined' && this.CONFIG.checkMagTypeNameDefault  && this.CONFIG.checkMagTypeNameDefault.length>0){
+        this.checkMagTypeName = this.CONFIG.checkMagTypeNameDefault;
+        this.getIdMagDo(this.checkMagTypeName);
+      }
+      
 
       this.orderSuccessUrl = this.CONFIG.orderSuccessUrl;
       this.payType = this.CONFIG.payType;

@@ -43,7 +43,7 @@
                   <span>{{item.activityName}}</span>
                 </span>
                 </div>
-                <li v-for="product in item.list" v-if="item.productType == bookTypeTag" class="bookWrapper"
+                <li v-for="product in item.list" v-if="item.productType == bookTypeTag || item.productType == seriesTypeTag" class="bookWrapper"
                     v-bind:class="{checkedLi: product.checked}">
                   <div class="cart-tab-1">
                     <div class="cart-item-check">
@@ -514,6 +514,7 @@
         bookTypeTag: "91", // 纸书类型代号
         ebookTypeTag: "94", // 电子书类型代号
         ejournalTypeTag: '149', // 电子期刊类型代号
+        seriesTypeTag: '177', // 丛书类型代号
         showCancelCoupons: false,
         elementTop: 0,  // 底部结算栏距离顶部的高度
         curSelectedAddress: {}, // 当前选择的地址 从地址选择子组件中接收到的
@@ -942,7 +943,7 @@
         this.selectedProductListArray.forEach(function (item) {
           saveMoneyArray.push(item.saveValue);
           sendPointsArray.push(item.sendPoints); // 积分
-          if (item.productType === _this.bookTypeTag) {
+          if (item.productType === _this.bookTypeTag || item.productType == _this.seriesTypeTag) {
             // book
             bookTotalMoneyArray.push(item.totalPrice);
             bookSaveMoneyArray.push(item.saveValue);
@@ -1235,7 +1236,7 @@
         }
         this.orderList.forEach(function (item) {
           if (item.list.length > 0) {
-            if (item.productType === _this.bookTypeTag) {
+            if (item.productType === _this.bookTypeTag || item.productType === _this.seriesTypeTag) {
               // 纸质书
               _this.allEbook = false;
             }
@@ -1462,7 +1463,7 @@
         this.hasCommitOrder = true; // 防止重复提交订单
         // var payremark = $("#payremark").find("input").val();
         // 订单备注信息
-        var curRealAmount = Number($(".payTotalAmount")[0].innerHTML.replace("¥ ", "")); // 应付金额
+        var curRealAmount = Number($(".payTotalAmount")[0].innerHTML.match(/[0-9]\d*\.?[0-9]\d*/)[0]); // 应付金额
         if (this.needInvoice === "0") {
           this.curSelectedInvoice = {
             invoiceType: "",  // 发票类型

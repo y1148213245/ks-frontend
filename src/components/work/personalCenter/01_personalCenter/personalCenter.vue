@@ -25,7 +25,7 @@ import afterservice from "./components/personalCenter_afterservice";
 import coupon from "./components/personalCenter_coupon";
 import note from "./components/personalCenter_note";
 import PROJECT_CONFIG from "projectConfig";
-import ThemePicker from './components/ThemePicker';
+import ThemePicker from "./components/ThemePicker";
 import message from "./components/personalCenter_message";
 import comment from "./components/personalCenter_comment";
 import feedback from "./components/personalCenter_feedback";
@@ -35,7 +35,7 @@ export default {
   name: "work_personalcenter_01",
   reused: true,
   props: {
-    namespace:String,
+    namespace: String,
     show_star: {
       type: Boolean,
       default: true
@@ -45,7 +45,7 @@ export default {
       default: "../book/bookdetail.html"
     }
   },
-  created () {
+  created() {
     this.initConfig();
   },
   mounted() {
@@ -59,10 +59,10 @@ export default {
   },
   data: function() {
     return {
-      CONFIG:null,
+      CONFIG: null,
       currentShowIndex: "0",
-      navs:null,
-    }
+      navs: null
+    };
   },
   computed: {
     ...mapGetters({
@@ -70,8 +70,9 @@ export default {
     })
   },
   methods: {
-    initConfig () {
-      this.CONFIG = PROJECT_CONFIG[this.namespace].personalcenter.personalcenter_01;
+    initConfig() {
+      this.CONFIG =
+        PROJECT_CONFIG[this.namespace].personalcenter.personalcenter_01;
       this.navs = this.CONFIG.navList;
     },
     initCurrentShow() {
@@ -85,10 +86,7 @@ export default {
             return false;
           }
         })[0];
-        this.$store.dispatch(
-          "personalCenter/updateCurrentShow",
-          currentShow
-        );
+        this.$store.dispatch("personalCenter/updateCurrentShow", currentShow);
       }
     },
     getHtmlParams() {
@@ -101,16 +99,16 @@ export default {
     }
   },
   components: {
-    vnav,           //左侧导航
-    account,        //我的账号
-    list,           //我的订单
-    book,           //我的书架
-    collecting,     //收藏夹
-    point,          //我的积分
-    afterservice,   //售后
-    coupon,         //优惠券
-    note,           //随手记
-    ThemePicker,    //左侧导航
+    vnav, //左侧导航
+    account, //我的账号
+    list, //我的订单
+    book, //我的书架
+    collecting, //收藏夹
+    point, //我的积分
+    afterservice, //售后
+    coupon, //优惠券
+    note, //随手记
+    // ThemePicker //主题色更换
     message,        //我的消息
     comment,        //我的评论
     feedback,       //反馈建议
@@ -143,22 +141,22 @@ table {
   width: 1200px;
   margin: 20px auto;
 }
-.personalcenter_nav{
+.personalcenter_nav {
   float: left;
- width: 18%;
+  width: 18%;
 }
-.personalcenter_section{
+.personalcenter_section {
   float: right;
   width: 78%;
   padding: 20px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   background: #fff;
-  border: 1px solid #DDDDDD;
+  border: 1px solid #dddddd;
 }
 .center_container {
   overflow: hidden;
 }
-.center_container-title{
+.center_container-title {
   float: right;
   width: 78%;
   margin: 20px 0;
@@ -180,7 +178,7 @@ table {
 .el-dialog__title{font-size: 18px;font-weight: bold;}
 .el-table td, .el-table th.is-leaf{background: #fff}
 .el-table .el-table__header thead th.is-leaf{background: #f5f5f5}
-.el-table tr.current-row{background: #ccc!important;color: #fff} 
+.el-table tr.current-row{background: #ccc!important;color: #fff}
 .el-table--enable-row-hover .el-table__body tr:hover > td {background: #5E8242;color: #fff}
 .el-step__head.is-finish,.el-step.is-simple .el-step__main{color: #c0c4cc} */
 </style>

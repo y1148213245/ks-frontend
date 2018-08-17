@@ -35,6 +35,12 @@ const dev = {
           siteId: '66',
           flag: 'wxShop', //标识flag=wxShop微信商城
         }
+      },
+      getMember: {   //获取用户信息
+        url: "user/getMemberByName.do",
+        params: {
+          loginName: ''
+        }
       }
     },
   }
@@ -67,6 +73,12 @@ const prod = {
           loginName: 'cmm123',
           siteId: '66',
           flag: 'wxShop', //标识flag=wxShop微信商城
+        }
+      },
+      getMember: {   //获取用户信息
+        url: "user/getMemberByName.do",
+        params: {
+          loginName: ''
         }
       }
     },
