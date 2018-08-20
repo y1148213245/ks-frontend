@@ -69,6 +69,11 @@ export default {
       /* 多个符合项判断来源 */
       if (hasHtmlNames.length > 1) {
         let refferPathName = this.getFileName(document.referrer)
+        if (refferPathName != this.fileName) {
+          sessionStorage.setItem('navCache_fileName',refferPathName)
+        }else{
+          refferPathName = sessionStorage.getItem('navCache_fileName')
+        }
         hasHtmlNames.map((item) => {
           item.htmls.map((html) => {
             if (html == refferPathName) {
