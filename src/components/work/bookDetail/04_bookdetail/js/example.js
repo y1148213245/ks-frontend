@@ -100,6 +100,10 @@ const dev = {
             loginName: "",
             attachTypes: 'video'  //获取视频时需要传的参数
           },
+          "ZILIAOZU": {
+            "sysAdapter": "sykAdapter",
+            "typeAdapter": "ziliaozu"
+          },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "bookAdapter", // 类型字段
           complicatedItem: {
@@ -302,6 +306,10 @@ const prod = {
             pubId: "",
             loginName: "",
             attachTypes: 'video'  //获取视频时需要传的参数
+          },
+          "ZILIAOZU": {
+            "sysAdapter": "sykAdapter",
+            "typeAdapter": "ziliaozu"
           },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "bookAdapter", // 类型字段

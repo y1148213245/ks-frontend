@@ -131,7 +131,8 @@ var FIELD_ADAPTER = {
             salePrice: "prod_sale_price",
             memberPrice: "prod_member_price",
             parentId: 'pub_parent_id',
-            fileRecordID: 'fileRecordID'
+            fileRecordID: 'fileRecordID',
+            isbuy: "isBuy"
         },
         bookAdapter: { // 图书
             sysTopic: "BOOK_SYS_TOPIC",
@@ -506,6 +507,9 @@ var FIELD_ADAPTER = {
           lecturer: 'ZILIAOZU_LECTURER',
           courseLength: 'ZILIAOZU_COURSE_LENGTH',
           courseNum: 'ZILIAOZU_COURSE_NUM',
+          courseDuration: 'ZILIAOZU_COURSE_LENGTH',
+          courseNumber: 'ZILIAOZU_COURSE_NUM',
+          courseSalePrice: 'ZILIAOZU_SALE_PRICE',
           catId: 'ZILIAOZU_CAT1_ID',
           catCascadId: 'ZILIAOZU_CAT1_CASCADID'
         },

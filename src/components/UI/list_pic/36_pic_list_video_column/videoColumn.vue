@@ -4,24 +4,57 @@
     <div class="ui_list_pic_36_title">{{display.courseContain}}</div>
     <div class="ui_list_pic_36_column">
       <div class="ui_list_pic_36_column-title">{{display.courseName}}</div>
-      <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length">
-        <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()" @click="toPlayVideo(video)">
-          <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
-          <div class="ui_list_pic_36_videoList_icon" v-show="currentIndex == index">
-            <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
-            <span v-if="CONFIG && CONFIG.showTest" class="playtest-tip" @click.stop="toReadTest(video)"><i class="fa fa-file-text"></i>{{display.test}}</span>
-          </div>
-        </li>
-      </ul>
-      <div v-else>{{display.noData || '暂无数据'}}</div>
+      <!-- 需要通过配置来判断是否购买的课程 -->
+      <div v-if="CONFIG && CONFIG.needtobuy" class="ui_list_pic_36_videoList_out">
+        <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length && isBuy == '1'">
+          <!-- 已经购买 课程列表全部展示-->
+          <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()" @click="toPlayVideo(video)">
+            <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
+            <div class="ui_list_pic_36_videoList_icon" v-show="currentIndex == index">
+              <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
+            </div>
+          </li>
+        </ul>
+        <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length && isBuy == '0'">
+          <!-- 还未购买 只给第一条课程添加事件-->
+          <li v-for="(video,index) in videoList" :key="index" @click="toPlayVideo(video)" v-if="index == 0" class="ui_list_pic_36_videoList_first">
+            <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
+            <div class="ui_list_pic_36_videoList_icon">
+              <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
+            </div>
+          </li>
+          <li v-for="(video,index) in videoList" :key="index" v-if="index != 0" class="ui_list_pic_36_videoList_others">
+            <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
+          </li>
+        </ul>
+        <div v-else>{{display.noData || '暂无数据'}}</div>
+      </div>
+      <!-- 不需要判断是否购买的课程，直接展示 -->
+      <div v-else class="ui_list_pic_36_videoList_out">
+        <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length">
+          <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()" @click="toPlayVideo(video)">
+            <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
+            <div class="ui_list_pic_36_videoList_icon" v-show="currentIndex == index">
+              <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
+              <span style="display:none" class="playtest-tip" @click.stop="toReadTest(video)"><i class="fa fa-file-text"></i>{{display.test}}</span>
+            </div>
+          </li>
+        </ul>
+        <div v-else>{{display.noData || '暂无数据'}}</div>
+      </div>
     </div>
     <ui_pagination v-if="videoList && videoList.length" :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging">
     </ui_pagination>
+    <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" :close-on-click-modal="modal">
+      <el-button type="info" round @click="istest = !istest">{{istest?display.anwser:display.testWord}}</el-button>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { Post, getFieldAdapter, toOtherPage } from "@common";
+import { mapGetters } from 'vuex';
+import * as interfaces from "@work/login/common/interfaces.js";
+import { Post, Get, getFieldAdapter, toOtherPage } from "@common";
 import PROJECT_CONFIG from "projectConfig";
 import URL from 'url';
 export default {
@@ -40,8 +73,19 @@ export default {
       pageSize: '',
       params: {},
       pubId: '',
-      pub_parent_id: ''
+      pub_parent_id: '',
+      isBuy: "0",   //判断课程是否购买
+      resourceDetail: {},  //存在课程详情信息
+      isDialogShow: false,  //是否显示测试卷弹窗
+      dialogTitle: '',  //弹窗标题
+      istest: true,  //按钮文字默认显示答案
+      modal: false
     }
+  },
+  computed: {
+    ...mapGetters("login", {
+      member: interfaces.GET_MEMBER
+    }),
   },
   created () {
     this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
@@ -49,6 +93,9 @@ export default {
     this.display = this.CONFIG.display;
     this.keys = getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter);
     this.getVideoList();
+    if(this.CONFIG && this.CONFIG.getResourceDetail){
+      this.getResourceDetail();
+    }
   },
   methods: {
     getVideoList: function () {
@@ -75,6 +122,23 @@ export default {
         }
       });
     },
+    // 获取课程详情信息
+    getResourceDetail(){
+      let paramsObj = Object.assign({},this.CONFIG.getResourceDetail.params);
+      paramsObj.pubId = this.pubId;
+      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName).then((rep)=>{
+        let datas = rep.data;
+        if (rep.status == 200 && datas.data) {
+          this.resourceDetail = datas.data;
+          this.isBuy = this.resourceDetail[this.keys.isbuy];
+        }else {
+          this.$message({
+            type: "error",
+            message: "数据获取失败"
+          })
+        }
+      })
+    },
     showIcon (index) {
       this.currentIndex = index;
     },
@@ -98,7 +162,8 @@ export default {
           let audioParams = Object.assign({},this.CONFIG.toPlayAudio.params);
           window.open(toOtherPage(item,this.CONFIG.toPlayAudio,this.keys)+'&mediaResId='+item[audioParams.audioResId]);
           break;
-        case this.display.video:  //去播放视频
+        case this.display.video:
+        case this.display.ziliao:   //去播放视频
           //把video_resource_id传给视频播放器，因为播放单个视频时需要这个id
           let videoParams = Object.assign({},this.CONFIG.toPlayVideo.params);
           window.open(toOtherPage(item,this.CONFIG.toPlayVideo,this.keys)+'&mediaResId='+item[videoParams.videoResId]);
@@ -107,10 +172,21 @@ export default {
       // window.open(toOtherPage(video, this.CONFIG.toPlayVideo, keys));
     },
     toReadTest(item){
-      this.$message({
-        type: "error",
-        message: "测试卷功能暂未开放...敬请期待！！！"
-      })
+      this.dialogTitle = item[this.keys.resName];
+      this.isDialogShow = true;
+      // this.$message({
+      //   type: "error",
+      //   message: "测试卷功能暂未开放...敬请期待！！！"
+      // })
+    }
+  },
+  watch: {
+    member: function (newValue, oldValue) {
+      console.log(newValue);
+      console.log(oldValue);
+      if (newValue.loginName && newValue.loginName != oldValue.loginName) {
+        this.loginName = newValue.loginName;
+      }
     }
   }
 }

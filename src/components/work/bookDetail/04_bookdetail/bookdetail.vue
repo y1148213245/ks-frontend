@@ -217,8 +217,8 @@
       <!-- END 评论信息 -->
     </div>
     <!--购买按钮 当然可以不用-->
-    <div class="work_bookdetail_04_bugButton" v-if="CONFIG && bugButton">
-      <div class="work_bookdetail_04_bugButton_div_buy" v-if="isBuy==0" @click="toCustomFunMethod(bugButton.method)" :class="{'buyBtnOpacity':buyBtnOpacity}">
+    <div class="work_bookdetail_04_bugButton" v-if="CONFIG && bugButton"  :class="{'buyBtnOpacity':buyBtnOpacity}">
+      <div class="work_bookdetail_04_bugButton_div_buy" v-if="isBuy==0" @click="toCustomFunMethod(bugButton.method)">
         <label class="work_bookdetail_04_btnlabel">{{bugButton.display}}</label>
       </div>
       <div class="work_bookdetail_04_bugButton_div_shelf" v-if="isBuy==1 && isAddShelf==0" @click="toCustomFunMethod(bugButton.method1)">
@@ -316,7 +316,7 @@ export default {
       Orderparams: {},  //提交订单的参数
       payMoney: "",  //需要支付的金额
       commitInfo: {},   //订单信息
-      buyBtnOpacity: false
+      buyBtnOpacity: true  //初次加载页面时按钮透明
     }
   },
   mounted () {
@@ -439,6 +439,7 @@ export default {
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
     },
     toCustomFunMethod (method) { // 执行自定义事件
+      if(this.buyBtnOpacity){return}// 按钮透明时方法不可用 ， 数据加载完毕按钮不透明时方法可用
       if (method == 'toProbation') { // 执行免费试读操作
         if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 没有试读地址
           return false;
@@ -460,7 +461,7 @@ export default {
         return false;
       }
 
-      (!this.buyBtnOpacity) && window.open(toOtherPage(this.resourceDetail, this.CONFIG[method], this.keys));
+      window.open(toOtherPage(this.resourceDetail, this.CONFIG[method], this.keys));
     },
     getPayMethodsBySiteId(){
       let params = Object.assign({},this.CONFIG.getPayMethodsBySiteId.params);
@@ -494,7 +495,7 @@ export default {
             _this.commitInfo = datas.data;
             _this.toPay(loadingTag);
           } else {
-            loading.close();
+            loadingTag.close();
             _this.$message({
               message: datas.error.errorMsg,
               type: error
@@ -517,9 +518,6 @@ export default {
         if (this.commitInfo.paymentType) {
           // 需要跳转支付宝支付/微信扫描二维码页面
           if (this.currentPayWay === "Alipay") {
-            // 支付宝支付
-            loadingTag.close();
-
             window.open(
               CONFIG.BASE_URL +
               "epay/getPayForm.do?orderId=" +
@@ -555,7 +553,6 @@ export default {
                 data +
                 "&orderCode=" +
                 orderCode;
-              loadingTag.close();
             });
           }
           window.history.pushState(
@@ -1028,7 +1025,7 @@ input[type="number"] {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.buyBtnOpacity{
+.buyBtnOpacity div{
   opacity: .6;
 }
 </style>

@@ -31,7 +31,7 @@
       </div>
     </section>
     <!-- 视频播放器 -->
-    <div class="work_videoplay_01_mydplayer" id="myDPlayer" v-if="resType == 'VIDEO-MEDIA'"></div>
+    <div class="work_videoplay_01_mydplayer" id="myDPlayer" v-if="resType == 'VIDEO-MEDIA' || resType == 'ZILIAOKU'"></div>
     <!-- END 视频播放器 -->
 
     <!-- 音频播放器 -->
@@ -95,6 +95,8 @@ export default {
     }
     if(this.resType === "AUDIO-MEDIA" && this.CONFIG.getResourceLists.typeAdapter1){
       this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter1);
+    }else if(this.resType === "ZILIAOKU" && this.CONFIG.getResourceLists.typeAdapter2){
+      this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter2);
     }else {
       this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter);
     }
@@ -157,7 +159,7 @@ export default {
           }
 
           this.$nextTick(() => {
-            if (this.resType == 'VIDEO-MEDIA') { // 如果是视频资源才初始化视频播放器插件
+            if (this.resType == 'VIDEO-MEDIA' || this.resType == 'ZILIAOKU') { // 如果是视频资源才初始化视频播放器插件
               this.initDPlayer();
             }
             this.initSwiper();
@@ -167,7 +169,7 @@ export default {
     },
     toPlayVideo (item) { // 点击播放视频列表里的某一个
       this.curVideoObj = item;
-      if (this.resType == 'VIDEO-MEDIA') { // 如果是视频资源才初始化视频播放器插件
+      if (this.resType == 'VIDEO-MEDIA' || this.resType == 'ZILIAOKU') { // 如果是视频资源才初始化视频播放器插件
         this.initDPlayer();
       }
     },

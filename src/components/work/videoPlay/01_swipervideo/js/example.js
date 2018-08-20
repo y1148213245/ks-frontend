@@ -48,7 +48,8 @@ const dev = {
           },
           "sysAdapter": "sykAdapter",    // 系统字段
           "typeAdapter": "videoAdapter",    // 类型字段
-          typeAdapter1: "audioAdapter"  //类型字段1
+          "typeAdapter1": "audioAdapter",  //类型字段1
+          "typeAdapter2": "ziliaoku"
         },
         "complicatedItem": [
           {
@@ -102,7 +103,8 @@ const prod = {
           },
           "sysAdapter": "sykAdapter",    // 系统字段
           "typeAdapter": "videoAdapter",    // 类型字段
-          typeAdapter1: "audioAdapter"
+          "typeAdapter1": "audioAdapter",
+          "typeAdapter2": "ziliaoku"
         },
         "complicatedItem": [
           {

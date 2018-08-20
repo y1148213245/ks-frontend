@@ -12,6 +12,14 @@ const dev = {
     list_pic_36: {
       'modulename': {
         showTest: false,  //是否有测试卷功能，默认没有
+        needtobuy: false,   //需要判断是否购买课程，来展示课程列表，如果课程是免费的，则不需要配置该项，或者设置为false
+        getResourceDetail: { // 是否需要获取课程的详情信息，如果不需要则不必配置该项
+          url: "resource/detail.do",
+          params: {
+            pubId: "",
+            loginName: ""
+          }
+        },
         display: {
           courseContain: '课程包含内容：',
           courseName: '课程名称',
@@ -21,7 +29,10 @@ const dev = {
           book: "BOOK",
           video: "VIDEO-MEDIA",
           audio: "AUDIO-MEDIA",
-          noData: "暂无数据"
+          ziliao: "ZILIAOKU",
+          noData: "暂无数据",
+          anwser: "答案",
+          testWord: "测试"
         },
         url: "spc/cms/publish/list.do",
         params: {
@@ -88,6 +99,14 @@ const prod = {
     list_pic_36: {
       'modulename': {
         showTest: false,  //是否有测试卷功能，默认没有
+        needtobuy: false,   //需要判断是否购买课程，来展示课程列表，如果课程是免费的，则不需要配置该项，或者设置为false
+        getResourceDetail: { // 是否需要获取课程的详情信息，如果不需要则不必配置该项
+          url: "resource/detail.do",
+          params: {
+            pubId: "",
+            loginName: ""
+          }
+        },
         display: {
           courseContain: '课程包含内容：',
           courseName: '课程名称',
@@ -97,7 +116,10 @@ const prod = {
           book: "BOOK",
           video: "VIDEO-MEDIA",
           audio: "AUDIO-MEDIA",
-          noData: "暂无数据"
+          ziliao: "ZILIAOKU",
+          noData: "暂无数据",
+          anwser: "答案",
+          testWord: "测试"
         },
         url: "spc/cms/publish/list.do",
         params: {
