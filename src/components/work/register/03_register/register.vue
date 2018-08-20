@@ -903,7 +903,7 @@ export default {
   font-size: 14px;
 }
 .register_02_bind_content_mobile_input-box_mobile-input {
-  width: 135px;
+  width: 155px;
   height: 35px;
 }
 .register_02_bind_content_mobile_input-box_mobile-button {
@@ -927,7 +927,7 @@ export default {
   font-size: 14px;
 }
 .register_02_bind_content_mobile_input-box_validate-input {
-  width: 115px;
+  width: 155px;
   height: 35px;
 }
 .register_02_bind_content_mobile_input-box_button {

@@ -3,10 +3,15 @@
  <!--新闻中心-->
   <div class="work_informationdetail_02">
     <div class="work_informationdetail_02-crumbs">
-      <span>所在位置：</span>
+      <!-- <span>当前位置：</span>
       <span><a :href="toActivityDetailUrl+'#activityNews'" v-text="activityDetail[activityDetailKeys.resName]"></a></span>
       > 
-      <span>详情</span>
+      <span>详情</span> -->
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item><span>当前位置：</span></el-breadcrumb-item>
+        <el-breadcrumb-item><a :href="toActivityDetailUrl+'#activityNews'" v-text="activityDetail[activityDetailKeys.resName]"></a></el-breadcrumb-item>
+        <el-breadcrumb-item><span>详情</span></el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <h3 style="text-align: center;" v-if="keys.topic"
         v-text="detail[keys.topic]"></h3>
