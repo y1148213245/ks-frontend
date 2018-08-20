@@ -30,7 +30,9 @@
 
       <!-- 获奖作品 -->
       <work_activitydetail_05 v-show="currentShow.tag == 'activityProductWinning'"  :namespace="namespace" module="classification" viewType="classification"></work_activitydetail_05>
-
+      
+      <!-- 获奖作品(辅文) -->
+      <work_activitydetail_02 v-show="currentShow.tag == 'activityProductWinning_fuwen'" :namespace="namespace" module="activityProductWinning_fuwen"></work_activitydetail_02>
 
       <!-- 名师指导 -->
       <div class="work_activityrace_tab-teacher_list" v-show="currentShow.tag == 'activityTeather'">

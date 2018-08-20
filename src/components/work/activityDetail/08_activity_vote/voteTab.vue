@@ -87,7 +87,7 @@ export default {
         if (this.activityDetail[this.detailKeys.endTimeStamp] > new Date().getTime()) {
           this.$message({
             type: 'warning',
-            message: '请等待评审结果'
+            message: '还没有获奖结果'
           })
           return false
         }

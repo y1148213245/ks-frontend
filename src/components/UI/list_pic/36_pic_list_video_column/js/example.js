@@ -11,6 +11,7 @@ const dev = {
   list_pic: {
     list_pic_36: {
       'modulename': {
+        showTest: false,  //是否有测试卷功能，默认没有
         display: {
           courseContain: '课程包含内容：',
           courseName: '课程名称',
@@ -86,6 +87,7 @@ const prod = {
   list_pic: {
     list_pic_36: {
       'modulename': {
+        showTest: false,  //是否有测试卷功能，默认没有
         display: {
           courseContain: '课程包含内容：',
           courseName: '课程名称',

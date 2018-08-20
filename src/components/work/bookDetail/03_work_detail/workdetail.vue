@@ -2,17 +2,17 @@
  * @Author: song
  * @Date: 2018-02-06 10:34:24
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-07-20 18:05:34
+ * @Last Modified time: 2018-08-20 09:09:54
  */
 <!-- 作品详情 有两种显示方式：附件和表单 附件是显示作品简介+下载文章操作 表单是显示简介+全文-->
 <template>
   <div class="work_bookdetail_03">
-    <div class="work_bookdetail_03-crumbs">
+    <!-- <div class="work_bookdetail_03-crumbs">
       <span>所在位置：</span>
       <span><a :href="CONFIG.crumbs.toActivityListHref" v-text="activityDetail[CONFIG.getActivityInfo.dataKeys.topic]"></a></span>
       > 
       <span>作品详情</span>
-    </div>
+    </div> -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item><span>当前位置：</span></el-breadcrumb-item>
       <el-breadcrumb-item><a :href="CONFIG.crumbs.toActivityListHref" v-text="activityDetail[CONFIG.getActivityInfo.dataKeys.topic]"></a></el-breadcrumb-item>

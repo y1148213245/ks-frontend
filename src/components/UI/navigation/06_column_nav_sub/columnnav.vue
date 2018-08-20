@@ -54,7 +54,7 @@ export default {
     },
     getLocationFileName () {
       this.fileName = this.getFileName(window.location.href)
-
+    
       let fileNames = this.CONFIG.currentSelect;
       let hasHtmlNames = [];
       /* 过滤符合项 */
