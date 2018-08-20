@@ -5,11 +5,11 @@
     <div class="ui_list_pic_36_column">
       <div class="ui_list_pic_36_column-title">{{display.courseName}}</div>
       <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length">
-        <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()">
+        <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()" @click="toPlayVideo(video)">
           <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
           <div class="ui_list_pic_36_videoList_icon" v-show="currentIndex == index">
-            <span class="playvideo-tip" @click="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
-            <span class="playtest-tip"><i class="fa fa-file-text"></i>{{display.test}}</span>
+            <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
+            <span v-if="CONFIG && CONFIG.showTest" class="playtest-tip" @click.stop="toReadTest(video)"><i class="fa fa-file-text"></i>{{display.test}}</span>
           </div>
         </li>
       </ul>
@@ -105,6 +105,12 @@ export default {
           break;
       }
       // window.open(toOtherPage(video, this.CONFIG.toPlayVideo, keys));
+    },
+    toReadTest(item){
+      this.$message({
+        type: "error",
+        message: "测试卷功能暂未开放...敬请期待！！！"
+      })
     }
   }
 }
