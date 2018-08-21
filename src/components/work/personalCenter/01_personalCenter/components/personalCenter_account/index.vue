@@ -577,6 +577,7 @@ import { mapGetters, mapActions } from "vuex";
 import { Get, Token } from "@common";
 import api from "../../api/personalCenterApi";
 import $ from "jquery";
+import CityInfo from "../../assets/js/city-data.js";
 
 Vue.use(Vuex);
 Vue.prototype.$ajax = axios;

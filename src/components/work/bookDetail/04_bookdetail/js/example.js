@@ -55,6 +55,13 @@ const description = `图书详情组件
     afterDisplay: '',//固定显示内容是什么 后
     method: 'toBuyLayer', // 方法名 要在下面配置
     className: "",
+  },{   //免费的资源，这样配置
+    name: 'free',
+    field: 'free',  //待定
+    display: '费用：',
+    afterDisplay: '免费',//固定显示内容是什么 后
+    method: '', // 方法名 要在下面配置
+    className: "",
   }
 [新增]
 取地址栏参数从索引库中取资源pubId

@@ -260,7 +260,7 @@ export default {
           let msg = data.error
           this.$message({
             type: 'warning',
-            message: msg
+            message: '每人每天只能给每个参选人投票一次'
           })
         }
       })

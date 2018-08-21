@@ -40,6 +40,9 @@ const prod = {
               colName:'pub_col_name'
             }
           }
+        },
+        staticText: {
+          currentPosition:"当前位置"
         }
       }
     }

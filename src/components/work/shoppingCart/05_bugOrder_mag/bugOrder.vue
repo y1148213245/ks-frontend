@@ -454,16 +454,16 @@
       this.otherDiv = this.CONFIG.otherDiv;
       this.billInfo = this.CONFIG.billInfo;
       this.descDiv = this.CONFIG.descDiv;
-      
+
       this.getIdMagTypeList(); // 获取刊种列表
       // this.getDeliveryWay(); //获取配送方式
-      
+
       //获取配置中默认的刊种名称 并且获取详情  //如果配置不对 那展示会失败
       if(typeof(this.CONFIG.checkMagTypeNameDefault)!='undefined' && this.CONFIG.checkMagTypeNameDefault  && this.CONFIG.checkMagTypeNameDefault.length>0){
         this.checkMagTypeName = this.CONFIG.checkMagTypeNameDefault;
         this.getIdMagDo(this.checkMagTypeName);
       }
-      
+
 
       this.orderSuccessUrl = this.CONFIG.orderSuccessUrl;
       this.payType = this.CONFIG.payType;
@@ -758,7 +758,7 @@
                   datas.data.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId,
                   "_self"
                 );
-              } else if (_this.payMethod === "Weixin") {
+              } else if (datas.data.payMethodCode === "Weixin") {
                 // 微信支付
                 axios.get(
                   CONFIG.BASE_URL +
@@ -785,7 +785,7 @@
                       orderCode;
                     loadingTag.close();
                   });
-              } else if (_this.payMethod === "Balance") {
+              } else if (datas.data.payMethodCode === "Balance") {
                 //  余额支付
                 // alert("购买完成！")
                 location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;

@@ -121,7 +121,8 @@
           <div v-else class="work_bookdetail_04_other">
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_label">{{config.display}}</label>
-            <span v-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] ||(getStaticText('noResource') ? getStaticText('noResource') : '暂无')"></span>
+            <span v-if="config.name == 'free' && config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-text="config.afterDisplay"></span>
+            <span v-else-if="config.field" v-bind="{class: 'work_bookdetail_04_' + config.field}" v-html="resourceDetail[keys[config.field]] ||(getStaticText('noResource') ? getStaticText('noResource') : '暂无')"></span>
             <label class="work_bookdetail_04_afterlabel" v-if="resourceDetail[keys[config.field]] && config.afterDisplay">{{config.afterDisplay}}</label>
           </div>
         </template>

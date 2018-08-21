@@ -13,7 +13,7 @@
       <div v-if="activeStatus === -1" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('notBegin') ? getStaticText('notBegin') : '未开始'}}</div>
       <div v-if="activeStatus === 2" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('contributeClosed') ? getStaticText('contributeClosed') : '截止投稿'}}</div>
       <div v-if="activeStatus === 0" class="work_activitydetail_01-upload_box-button work_activitydetail_01-upload_box-button--failed">{{getStaticText('haveEnded') ? getStaticText('haveEnded') : '已结束'}}</div> -->
-      <div v-if="activeStatus === 1" class="work_activitydetail_01-upload_box-button2" @click="toUploadPage"></div>
+      <div v-if="activeStatus === 1 || activeStatus === null" class="work_activitydetail_01-upload_box-button2" @click="toUploadPage"></div>
       <div v-else :class="{'work_activitydetail_01-upload_box-button1':activeStatus === -1,'work_activitydetail_01-upload_box-button3':activeStatus === 0 || activeStatus === 2}"></div>
     </div>
   </div>
@@ -88,18 +88,21 @@ export default {
 
           //判断活动过期
           let thisTimestamp = new Date().getTime();
-          if (thisTimestamp < data[this.keys.endDate] && thisTimestamp < data[this.keys.reviewDate] && thisTimestamp > data[this.keys.startDate]) {
-            this.activeStatus = 1;
+          if (data[this.keys.endDate]) {
+            if (thisTimestamp < data[this.keys.endDate] && thisTimestamp < data[this.keys.reviewDate] && thisTimestamp > data[this.keys.startDate]) {
+              this.activeStatus = 1;
+            }
+            else if (thisTimestamp < data[this.keys.endDate] && thisTimestamp > data[this.keys.reviewDate]) {
+              this.activeStatus = 2;
+            }
+            else if (thisTimestamp < data[this.keys.startDate]) {
+              this.activeStatus = -1;
+            }
+            else {
+              this.activeStatus = 0;
+            }
           }
-          else if (thisTimestamp < data[this.keys.endDate] && thisTimestamp > data[this.keys.reviewDate]) {
-            this.activeStatus = 2;
-          }
-          else if (thisTimestamp < data[this.keys.startDate]) {
-            this.activeStatus = -1;
-          }
-          else {
-            this.activeStatus = 0;
-          }
+          
         }
 
         /* 组装轮播图 */

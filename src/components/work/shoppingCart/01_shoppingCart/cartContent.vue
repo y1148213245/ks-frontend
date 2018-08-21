@@ -58,7 +58,7 @@
                     <div class="cart-item-title">
                       <div class="item-name">
                         <a
-                          v-bind:href="'./bookdetail.html?pubId=' + product.pubId+'&columnId='+product.colId" class="scoped_text" :title="product.productName">{{product.productName}}</a>
+                          v-bind:href="(CONFIG && CONFIG.directUrl && CONFIG.directUrl[product.productType] ? CONFIG.directUrl[product.productType] : './bookdetail.html') + '?pubId=' + product.pubId+'&columnId='+product.colId" class="scoped_text" :title="product.productName">{{product.productName}}</a>
                       </div>
                       <div class="author">
                         <span class="scoped_text">{{getStaticText('author') ? getStaticText('author') : '作者：'}}</span>
@@ -123,7 +123,7 @@
                     </div>
                     <div class="cart-item-title">
                       <div class="item-name">
-                        <a v-bind:href="'./bookdetail.html?pubId=' + product.pubId" class="scoped_text" :title="product.productName">{{product.productName}}</a>
+                        <a v-bind:href="(CONFIG && CONFIG.directUrl && CONFIG.directUrl[product.productType] ? CONFIG.directUrl[product.productType] : './bookdetail.html') +'pubId=' + product.pubId" class="scoped_text" :title="product.productName">{{product.productName}}</a>
                         <span class="scoped_text" v-if="item.productType == ebookTypeTag"> {{getStaticText('ebook') ? getStaticText('ebook') : '(电子书)'}}</span>
                         <span class="scoped_text" v-if="item.productType == ejournalTypeTag"> {{getStaticText('ejournal') ? getStaticText('ejournal') : '(电子期刊)'}}</span>
                       </div>

@@ -112,7 +112,7 @@ export default {
         this.CONFIG.showVideoList = false;  //单个视频不显示轮播列表
         this.getDetailById(this.curId);  //获取当前播放视频的详情信息
         this.$nextTick(() => {
-          if (this.resType == 'VIDEO-MEDIA') { // 如果是视频资源才初始化视频播放器插件
+          if (this.resType == 'VIDEO-MEDIA' || this.resType == 'ZILIAOKU') { // 如果是视频资源才初始化视频播放器插件
             this.curDPlayer = new DPlayer({ // 播放器
               container: document.getElementById('myDPlayer'), // 挂载容器
               screenshot: true, // 截屏功能

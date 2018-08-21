@@ -11,19 +11,19 @@
           <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()" @click="toPlayVideo(video)">
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
             <div class="ui_list_pic_36_videoList_icon" v-show="currentIndex == index">
-              <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
+              <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa" :class="[resourceDetail[keys.pubResType] == 'ZILIAOZU' ? 'fa-file-text' : 'fa-play-circle']"></i>{{resourceDetail[keys.pubResType] == 'ZILIAOZU' ? display.read : display.play}}</span>              
             </div>
           </li>
         </ul>
         <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length && isBuy == '0'">
           <!-- 还未购买 只给第一条课程添加事件-->
-          <li v-for="(video,index) in videoList" :key="index" @click="toPlayVideo(video)" v-if="index == 0" class="ui_list_pic_36_videoList_first">
+          <li v-for="(video,index) in videoList" :key="index" @click="toPlayVideo(video)" v-if="index < (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 1)" class="ui_list_pic_36_videoList_first">
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
             <div class="ui_list_pic_36_videoList_icon">
-              <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
+              <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa" :class="[resourceDetail[keys.pubResType] == 'ZILIAOZU' ? 'fa-file-text' : 'fa-play-circle']"></i>{{resourceDetail[keys.pubResType] == 'ZILIAOZU' ? display.read : display.play}}</span>
             </div>
           </li>
-          <li v-for="(video,index) in videoList" :key="index" v-if="index != 0" class="ui_list_pic_36_videoList_others">
+          <li v-for="(video,index) in videoList" :key="index" v-if="index >= (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 1)" class="ui_list_pic_36_videoList_others">
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
           </li>
         </ul>
@@ -36,7 +36,7 @@
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
             <div class="ui_list_pic_36_videoList_icon" v-show="currentIndex == index">
               <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa fa-play-circle"></i>{{display.play}}</span>
-              <span style="display:none" class="playtest-tip" @click.stop="toReadTest(video)"><i class="fa fa-file-text"></i>{{display.test}}</span>
+              <span style="display: none" class="playtest-tip" @click.stop="toReadTest(video)"><i class="fa fa-file-text"></i>{{display.test}}</span>
             </div>
           </li>
         </ul>
@@ -46,7 +46,8 @@
     <ui_pagination v-if="videoList && videoList.length" :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging">
     </ui_pagination>
     <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" :close-on-click-modal="modal">
-      <el-button type="info" round @click="istest = !istest">{{istest?display.anwser:display.testWord}}</el-button>
+      <el-button type="info" round @click="changeBtn()">{{istest?display.anwser:display.testWord}}</el-button>
+      <img :src="attachSrc">
     </el-dialog>
   </div>
 </template>
@@ -79,7 +80,10 @@ export default {
       isDialogShow: false,  //是否显示测试卷弹窗
       dialogTitle: '',  //弹窗标题
       istest: true,  //按钮文字默认显示答案
-      modal: false
+      modal: false,
+      attachList: [],  //用于存放附件数据的
+      attachSrc: "",   //用于存放附件图片src的
+      attachPicture: {},  //用于存放答案和测试卷的recordId的
     }
   },
   computed: {
@@ -123,14 +127,36 @@ export default {
       });
     },
     // 获取课程详情信息
-    getResourceDetail(){
+    getResourceDetail(item,attach){   //附件类型参数可传可不传，
       let paramsObj = Object.assign({},this.CONFIG.getResourceDetail.params);
-      paramsObj.pubId = this.pubId;
-      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName).then((rep)=>{
+      paramsObj.pubId = attach ? item.id : this.pubId;
+      paramsObj.attachTypes = attach ? attach : '';
+      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName+ '&attachTypes=' + paramsObj.attachTypes).then((rep)=>{
         let datas = rep.data;
         if (rep.status == 200 && datas.data) {
           this.resourceDetail = datas.data;
           this.isBuy = this.resourceDetail[this.keys.isbuy];
+          // 如果有附件，执行以下操作
+          if(this.resourceDetail[attach]){
+            if(attach == 'video'){
+              // 如果附件是视频，那么直接去第一个去播放
+              this.attachList = this.resourceDetail[attach][0];
+              window.open(toOtherPage(item,this.CONFIG.toPlayZLKVideo,this.keys)+'&mediaResId='+this.attachList['fileRecordID']);
+            }else if(attach == 'orgicpic'){
+              // 如果附件是图片，遍历图片，把相应图片的fileRecordID存起来
+              this.attachList = this.resourceDetail[attach];
+              for(let attach of this.attachList){
+                if(attach.attachName.includes('答案')){
+                  this.attachPicture['answerRecordId'] = attach.fileRecordID;
+                }else {
+                  this.attachPicture['testRecordId'] = attach.fileRecordID;
+                }
+              }
+              // 默认展示测试卷图片
+              this.attachSrc = CONFIG.BASE_URL + this.CONFIG.getAttachPictureUrl + this.attachPicture['testRecordId'];
+              
+            }
+          }
         }else {
           this.$message({
             type: "error",
@@ -162,22 +188,29 @@ export default {
           let audioParams = Object.assign({},this.CONFIG.toPlayAudio.params);
           window.open(toOtherPage(item,this.CONFIG.toPlayAudio,this.keys)+'&mediaResId='+item[audioParams.audioResId]);
           break;
-        case this.display.video:
-        case this.display.ziliao:   //去播放视频
+        case this.display.video:  //去播放视频
           //把video_resource_id传给视频播放器，因为播放单个视频时需要这个id
           let videoParams = Object.assign({},this.CONFIG.toPlayVideo.params);
           window.open(toOtherPage(item,this.CONFIG.toPlayVideo,this.keys)+'&mediaResId='+item[videoParams.videoResId]);
+          break;
+        case this.display.ziliao:
+          this.getResourceDetail(item,'video');
           break;
       }
       // window.open(toOtherPage(video, this.CONFIG.toPlayVideo, keys));
     },
     toReadTest(item){
       this.dialogTitle = item[this.keys.resName];
+      this.attachSrc = '';
+      this.istest = true;
+      this.getResourceDetail(item,'orgicpic');
       this.isDialogShow = true;
-      // this.$message({
-      //   type: "error",
-      //   message: "测试卷功能暂未开放...敬请期待！！！"
-      // })
+    },
+    changeBtn(){
+      this.istest = !this.istest;
+      // 展示测试卷图片或者是答案图片
+      this.attachSrc = this.istest ? (CONFIG.BASE_URL + this.CONFIG.getAttachPictureUrl + this.attachPicture['testRecordId'])
+                                   : (CONFIG.BASE_URL + this.CONFIG.getAttachPictureUrl + this.attachPicture['answerRecordId']);
     }
   },
   watch: {
