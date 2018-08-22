@@ -36,7 +36,20 @@ const prod = {
 	}
 };
 
-export {name, title, dev, prod, description};
+const platform = 'PC';
+const pageType = ['list'];
+const resourceType = ['information'];
+
+export {
+  name,
+  title,
+  dev,
+  prod,
+  description,
+  platform,
+  pageType,
+  resourceType
+};
 
 
 

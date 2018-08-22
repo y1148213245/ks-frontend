@@ -17,13 +17,13 @@
         </ul>
         <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length && isBuy == '0'">
           <!-- 还未购买 只给第一条课程添加事件-->
-          <li v-for="(video,index) in videoList" :key="index" @click="toPlayVideo(video)" v-if="index < (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 1)" class="ui_list_pic_36_videoList_first">
+          <li v-for="(video,index) in videoList" :key="index" @click="toPlayVideo(video)" v-if="index < (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 0)" class="ui_list_pic_36_videoList_first">
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
             <div class="ui_list_pic_36_videoList_icon">
               <span class="playvideo-tip" @click.stop="toPlayVideo(video)"><i class="fa" :class="[resourceDetail[keys.pubResType] == 'ZILIAOZU' ? 'fa-file-text' : 'fa-play-circle']"></i>{{resourceDetail[keys.pubResType] == 'ZILIAOZU' ? display.read : display.play}}</span>
             </div>
           </li>
-          <li v-for="(video,index) in videoList" :key="index" v-if="index >= (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 1)" class="ui_list_pic_36_videoList_others">
+          <li v-for="(video,index) in videoList" :key="index" v-if="index >= (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 0)" class="ui_list_pic_36_videoList_others">
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
           </li>
         </ul>
@@ -155,6 +155,14 @@ export default {
               // 默认展示测试卷图片
               this.attachSrc = CONFIG.BASE_URL + this.CONFIG.getAttachPictureUrl + this.attachPicture['testRecordId'];
               
+            }else if(attach == 'lowqualitypdf'){
+              // 如果附件是PDF，那么直接取第一个，去阅读器阅读
+              this.attachList = this.resourceDetail[attach][0];
+              let params = Object.assign({},this.CONFIG.toEbook.params) ;
+              let url = CONFIG.READ_URL + '?bookId=' + this.attachList['fileRecordID'] + '&readType=' + params.readType + '&bookName=' + this.attachList['attachName'] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+              
+              window.open(url);
+
             }
           }
         }else {
@@ -194,7 +202,7 @@ export default {
           window.open(toOtherPage(item,this.CONFIG.toPlayVideo,this.keys)+'&mediaResId='+item[videoParams.videoResId]);
           break;
         case this.display.ziliao:
-          this.getResourceDetail(item,'video');
+          this.getResourceDetail(item,this.CONFIG.ziliaozuAttachType);
           break;
       }
       // window.open(toOtherPage(video, this.CONFIG.toPlayVideo, keys));

@@ -80,10 +80,14 @@
                 <ui_share_01 :namespace="namespace" :modulename="modulename_share"></ui_share_01>
               </div>
 
-              <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰 -->
-              <section v-else-if="config.name == 'addcart'" :class="{work_bookdetail_04_forbid_addcart: resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook}">
+              <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰  || （如果当前这本书是纸质书 && （配置了判断库存 && 当前库存小于最小库存）） 购买纸书按钮置灰--> 
+              <section v-else-if="config.name == 'addcart'" 
+                :class="{work_bookdetail_04_forbid_addcart: (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook) || ((resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')) && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && resourceDetail[keys.inventory] < resourceDetail[keys.lowInventory]))}">
                 <label class="work_bookdetail_04_op_label">
-                  <i v-bind="{class: config.className}"></i>{{config.display}}</label>
+                  <i v-bind="{class: config.className}"></i>{{config.display}}
+                </label>
+                <span v-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook)">{{CONFIG.judgeInventory.noPaperBook ? CONFIG.judgeInventory.noPaperBook : '没有对应的纸质书'}}</span>
+                <span v-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail[keys.inventory] < resourceDetail[keys.lowInventory])">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
                 <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
               </section>
 
@@ -767,13 +771,31 @@ export default {
         if (this.resourceDetail[this.keys.contentType] == this.bookContentType.ebookType) { // 判断这本书是不是电子书
           let relativeEBook = this.resourceDetail.relBook;
           if (relativeEBook) { // 这本书有对应纸质书
-            this.pubId = relativeEBook[this.keys.id];
+            if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory){  //配置了需要根据库存量来展示纸质书
+              if(relativeEBook[this.keys.inventory] > relativeEBook[this.keys.lowInventory]){  //纸质书库存量大于最小库存量，可以购买
+                this.pubId = relativeEBook[this.keys.id];
+              }else {
+                return false;
+              }
+            }else {    //没有配置需要根据库存量来展示纸质书
+              this.pubId = relativeEBook[this.keys.id];
+            }
           } else { // 没有对于纸质书
             return false
             this.$message({
               message: this.getStaticText('noPaperBookInfo') ? this.getStaticText('noPaperBookInfo') : "该书没有对应纸质书，无法加入购物车",
               type: 'error'
             });
+          }
+        } else if(this.resourceDetail[this.keys.contentType] == this.bookContentType.bookType){  //如果是纸质书
+          if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory){  //配置了需要根据库存量来展示纸质书
+            if(this.resourceDetail[this.keys.inventory] > this.resourceDetail[this.keys.lowInventory]){  //纸质书库存量大于最小库存量，可以购买
+              this.pubId = this.resourceDetail[this.keys.id];
+            }else {  //配置了根据库存量来判断，但库存量不满足条件或不存在库存，返回false
+              return false;
+            }
+          }else {    //没有配置需要根据库存量来展示纸质书
+            this.pubId = this.resourceDetail[this.keys.id];
           }
         }
       } else if (config.name == 'addebcart') { // 执行电子书加入购物车操作

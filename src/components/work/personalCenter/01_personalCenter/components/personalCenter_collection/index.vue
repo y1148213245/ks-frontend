@@ -45,7 +45,7 @@
       <img src="../../assets/img/empty.png" alt="">
       <div>收藏夹是空的</div>
     </div>
-    <ui_pagination :pageMessage="{totalCount: this.collectionInfo.data && this.collectionInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
+    <ui_pagination v-if="initPagination" :pageMessage="{totalCount: this.collectionInfo.data && this.collectionInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
   </section>
 </template>
 <script type="text/ecmascript-6">
@@ -70,7 +70,8 @@ export default {
       autofocus: true,
       radio: null,
       CONFIG: null, // 当前组件配置
-      contentType: ""
+      contentType: "",
+      initPagination: true, // 初始化分页组件
     };
   },
   computed: {
@@ -112,6 +113,8 @@ export default {
       this.$store.dispatch("personalCenter/queryCollectionInfo", params);
     },
     bookList(val) {
+      var _this = this;
+      this.initPagination = false;
       this.contentType = val;
       var params = {
         param: {
@@ -119,7 +122,9 @@ export default {
           pageSize: 8,
           contentType: val
         },
-        myCallBack: function() {}
+        myCallBack: function() {
+          _this.initPagination = true;
+        }
       };
       this.$store.dispatch("personalCenter/queryCollectionInfo", params);
     },

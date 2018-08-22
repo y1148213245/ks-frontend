@@ -65,7 +65,7 @@ export default {
       this.detailshow = !this.detailshow;
     },
     toBookList (id) {  // 去图书列表
-      window.location.href = this.CONFIG.bookListUrl + '?cascadeId=' + id;
+      window.location.href = this.CONFIG.bookListUrl + '?cascadeId=' + id + '&cascadId=' + id;
     },
     getStaticText (text) {
       if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {

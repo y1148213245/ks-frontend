@@ -2,8 +2,9 @@
 	<div class="common_components_lib">
 		<div class="titleHead">
 			<div class="searchContent">
-				<el-input class="searchCom" v-model="searchText" placeholder="搜索组件"></el-input>
-				<el-button @click.enter="filterDatas()">搜索</el-button>
+				<input class="searchCom" v-model="searchText" placeholder="搜索组件" @keyup.enter="filterDatas()"/>
+        <!-- <el-input class="searchCom" v-model="searchText" placeholder="搜索组件" @focus.enter="filterDatas()"></el-input> -->
+				<el-button @click="filterDatas()">搜索</el-button>
 			</div>
 			<div class="checkBtn">
 				<div class="title">资源类别</div>
@@ -160,7 +161,8 @@ export default {
 						}
 					}
 
-					if (component.title.indexOf(this.searchText) !== -1) {
+          /* 组件库搜索 可以检索组件的名称 也可以 按组件的标签名来搜索 */
+					if (component.title.indexOf(this.searchText) !== -1 || component.name.indexOf(this.searchText) !== -1) {
 						isResultArr[2] = true;
 					}
 
@@ -186,8 +188,6 @@ export default {
 			this.loadComponent(this.examples);
 		},
 
-	},
-	watch: {
 	}
 };  
 </script>
@@ -217,6 +217,14 @@ export default {
   width: 300px;
   top: 50%;
   transform: translateY(-50%);
+  position: relative;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  outline: none;
+  font-size: 14px;
+  box-sizing: border-box;
+  padding: 0 15px;
 }
 
 .common_components_lib .titleHead button {

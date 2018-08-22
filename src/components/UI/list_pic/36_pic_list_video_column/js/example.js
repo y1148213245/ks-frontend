@@ -24,6 +24,7 @@ const dev = {
             attachTypes: ""    //附件类型
           }
         },
+        "ziliaozuAttachType": "lowqualitypdf",  //低精度PDF=>lowqualitypdf,  视频=>video
         getAttachPictureUrl: "dynamicFile/stream.do?recordID=",  //展示附件接口
         display: {
           courseContain: '课程包含内容：',
@@ -124,6 +125,7 @@ const prod = {
             attachTypes: ""    //附件类型
           }
         },
+        ziliaozuAttachType: "lowqualitypdf",  //低精度PDF=>lowqualitypdf,  视频=>video
         getAttachPictureUrl: "dynamicFile/stream.do?recordID=",  //展示附件接口
         display: {
           courseContain: '课程包含内容：',

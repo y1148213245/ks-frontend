@@ -241,6 +241,7 @@ export default {
           });
           //重新获取判断条件
           if(this.orReGetMenberName){
+            this.isDiscuss =1;
             this.getResourceDetail();
           }
           this.$refs.commentContent.value = ''; //评论完置空评分和内容

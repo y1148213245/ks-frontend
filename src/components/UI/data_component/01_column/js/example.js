@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-07-18 10:56:27 
  * @Last Modified by: song
- * @Last Modified time: 2018-07-18 14:06:31
+ * @Last Modified time: 2018-08-21 14:28:02
  */
 
 // import component from "../resourceList.vue";
@@ -93,7 +93,7 @@ const prod = {
 
 const platform = 'PC';
 const pageType = ['index', 'channel'];
-const resourceType = ['book', 'information', 'radio', 'vedio'];
+const resourceType = ['book', 'information'];
 
 export {
   name,

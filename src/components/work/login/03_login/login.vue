@@ -3,7 +3,7 @@
   <div class="login_03_content">
     <div class="login_03_titlebox">{{getStaticText('loginSys') ? getStaticText('loginSys') : '登录'}}</div>
     <div class="el-input el-input--prefix">
-      <input type="text" v-if="isPC == 'true'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" />
+      <input type="text" v-if="isPC == 'true'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" @blur="checkUsername"/>
       <input type="text" v-if="isPC == 'false'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" @blur="checkUsername"/>
       <span class="el-input__prefix">
         <i class="fa fa-user" aria-hidden="true"></i>
@@ -117,7 +117,7 @@ export default {
       }
     },
     login: function () {
-      // this.loginValid(); // 先校验是否为空
+      //this.loginValid(); // 先校验是否为空
       /* 这样分开写是为了 当用户名填写不正确密码未填写时 提示为空 应该首先提示用户名不正确 */
 
 
@@ -191,17 +191,24 @@ export default {
       let params = Object.assign({},this.CONFIG.checkUsername.params);
       params.checkText = this.member.loginName;
       Get(CONFIG.BASE_URL+this.CONFIG.checkUsername.url +'?checkText=' +params.checkText + '&checkType=' + params.checkType).then((rep) => {
-        console.log(rep.data.result);
         if(rep.data.result == '1'){
           this.$message({
             type: "error",
             message: this.getStaticText('unRegisterName') ? this.getStaticText('unRegisterName') : '账号未注册'
           });
         }
-
+        var mameReg=/^[1][0-9]{10}$/;
+        var emallReg=/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+        if(!mameReg.test(params.checkText)&&!emallReg.test(params.checkText)){
+          debugger
+          this.$message({
+            type: "error",
+            message: this.getStaticText('unRegisterName') ? this.getStaticText('unRegisterName') : '请输入正确的手机号或邮箱'
+          });
+        }
       })
     },
-    /*loginValid: function () {
+    /*  loginValid: function () {
       if (this.member.loginName.trim() == '' || this.member.password.trim() == '') { // 先校验是否为空
         this.$message({
           type: 'warning',

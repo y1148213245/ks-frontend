@@ -147,7 +147,10 @@ export default {
       detailAddressModel: "", // 详细地址model
       address: "", // 省市区和街道信息组合字符串
       sysTopic: "", // 图书名称
-      bookName:""  // 图书名称 - 沈乾
+      bookName:"",  // 图书名称 - 沈乾
+      pubId: "", // 活动id
+      activityName: "", // 活动名称
+      activityLibId: "" //活动库id
     };
   },
   computed: {},
@@ -155,6 +158,21 @@ export default {
     var uriQuery = URL.parse(document.URL, true).query;
     if (typeof uriQuery.SYS_TOPIC != "undefined") {
       this.bookName = uriQuery.SYS_TOPIC;
+    }
+
+    // 活动id
+    if (typeof uriQuery.pubId != "undefined") {
+      this.pubId = uriQuery.pubId;
+    }
+
+    // 活动名称
+    if (typeof uriQuery.activityName != "undefined") {
+      this.activityName = uriQuery.activityName;
+    }
+
+    // 活动库id
+    if (typeof uriQuery.activityLibId != "undefined") {
+      this.activityLibId = uriQuery.activityLibId;
     }
 
     this.CONFIG = PROJECT_CONFIG[this.namespace].form.ui_form_01;
@@ -375,6 +393,19 @@ export default {
           // 样书申领传图书名称
           if("SYS_TOPIC" in paramsObj.metaMap){
             paramsObj.metaMap["SYS_TOPIC"] = this.bookName ? this.bookName : paramsObj.metaMap["SYS_TOPIC"];
+          }
+
+           // (金融博览财富)活动报名传活动id,活动名称,活动库id
+          if("ACTIVITYID" in paramsObj.metaMap){
+            paramsObj.metaMap["ACTIVITYID"] = this.pubId ? this.pubId : paramsObj.metaMap["ACTIVITYID"];
+          }
+
+          if("ACTIVITIES" in paramsObj.metaMap){
+            paramsObj.metaMap["ACTIVITIES"] = this.activityName ? this.activityName : paramsObj.metaMap["ACTIVITIES"];
+          }
+
+          if("ACTIVITYLIBID" in paramsObj.metaMap){
+            paramsObj.metaMap["ACTIVITYLIBID"] = this.activityLibId ? this.activityLibId : paramsObj.metaMap["ACTIVITYLIBID"];
           }
           
 

@@ -37,5 +37,17 @@ const prod = {
     showPrice: true,
   }
 };
+const platform = 'PC';
+const pageType = ['index', 'list'];
+const resourceType = ['book'];
 
-export {name, title, dev, prod, description};
+export {
+  name,
+  title,
+  dev,
+  prod,
+  description,
+  platform,
+  pageType,
+  resourceType
+};

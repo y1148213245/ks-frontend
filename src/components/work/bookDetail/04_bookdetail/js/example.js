@@ -283,7 +283,13 @@ const dev = {
             "url":"booldetail.html", // 跳转的详情页
             "params":{}
           }
-        }
+        },
+        "loginUrl": "../../pages/login.html",  //跳登录页
+        judgeInventory: {  //库存量配置
+          showInventory: true,
+          noPaperBook: "没有对应的纸质书",
+          lessInventory: "纸质书库存不足"
+        },
 
       },
 
@@ -491,7 +497,12 @@ const prod = {
             "params":{}
           }
         },
-        "loginUrl": "../../pages/login.html"  //跳登录页
+        "loginUrl": "../../pages/login.html",  //跳登录页
+        judgeInventory: {  //库存量配置
+          showInventory: true,
+          noPaperBook: "没有对应的纸质书",
+          lessInventory: "纸质书库存不足"
+        },
 
       },
 

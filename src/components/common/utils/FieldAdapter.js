@@ -132,7 +132,10 @@ var FIELD_ADAPTER = {
             memberPrice: "prod_member_price",
             parentId: 'pub_parent_id',
             fileRecordID: 'fileRecordID',
-            isbuy: "isBuy"
+            isbuy: "isBuy",
+            lowInventory: "lowInventory",
+            inventory: "inventory"
+
         },
         bookAdapter: { // 图书
             sysTopic: "BOOK_SYS_TOPIC",
@@ -554,6 +557,27 @@ var FIELD_ADAPTER = {
             sysAuthors: "GROUP_BOOK_SYS_AUTHORS",
             sysCreated: "GROUP_BOOK_SYS_CREATED",
             sysTopic: "GROUP_BOOK_SYS_TOPIC"
+        },
+        jinrongActivityAdapter:{  //金融活动
+            jrcoverId: "JINRONGHUODONGKU_COVERID",
+            description: "JINRONGHUODONGKU_DESCRIPTION",
+            created: "JINRONGHUODONGKU_SYS_CREATED",
+            sysCurrentStatus: "JINRONGHUODONGKU_SYS_CURRENTSTATUS",
+            lastModified: "JINRONGHUODONGKU_SYS_LASTMODIFIED",
+            sysTopic: "JINRONGHUODONGKU_SYS_TOPIC",
+            workType: "JINRONGHUODONGKU_WORKTYPE"
+        },
+        signNameAdapter:{ // 报名库
+            phone: "PHONE",  // 电话
+            sysTopic: "SYS_TOPIC",  // 作者
+            address: "WORK_ADDRESS",  // 工作单位
+            activityId: "ACTIVITYID",  // 活动id
+            activities: "ACTIVITIES",   // 活动名称
+            activityLibId: "ACTIVITYLIBID"  // 活动库id
+        },
+        askAnswerAdapter:{ // 问答库
+            queContent: "QUE_CONTENT",
+            quesContent: "QUES_CONTENT"
         }
     }
 };
