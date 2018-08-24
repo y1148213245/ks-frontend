@@ -81,8 +81,8 @@
                     <div class="quantity">
                       <a href="javascript:void(0)" v-on:click="changeQuantity(product,-1)">-</a>
                       <input class="productNums" type="number" v-model="product.nums"
-                             v-on:input="changeQuantity(product)"
-                             @keypress="checkNumber($event)" @blur="checkProductNums(product)">
+                             @keyup="changeQuantity(product, 0, $event.currentTarget.value)"
+                             @keypress="checkNumber($event, product)" @blur="checkProductNums(product)">
                       <a href="javascript:void(0)" v-on:click="changeQuantity(product,1)">+</a>
                     </div>
                   </div>
@@ -1013,14 +1013,18 @@
           );
         });
       },
+      maxQuantity(nums) {
+        if (nums > 200) { // 防止加过200
+          this.$alert(this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') ? this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') :"商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
+            confirmButtonText: this.getStaticText('confirm') ? this.getStaticText('confirm') : "确定",
+          });
+        }
+      },
       changeQuantity: function (product, val, fixedVal) { // 改变纸质书商品数量
         if (val > 0) {
           ++product.nums;
           if (product.nums > 200) { // 防止加过200
-            product.nums = 200;
-            this.$alert(this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') ? this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') :"商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
-              confirmButtonText: this.getStaticText('confirm') ? this.getStaticText('confirm') : "确定",
-            });
+            this.maxQuantity(product.nums)
           }
         } else if (val < 0) {
           product.nums--;
@@ -1029,7 +1033,14 @@
           }
         }
         if (fixedVal) { // 手动输入固定值
-          product.nums = fixedVal;
+          if (fixedVal > 200) { // 防止加过200
+            this.maxQuantity(fixedVal);
+            product.nums = 200;
+          } else if (fixedVal < 1) { // 防止减到0
+            product.nums = 1;
+          } else {
+            product.nums = fixedVal;
+          }
         }
         this.calcTotalMoney();
         var changeCountParams = {
@@ -1044,10 +1055,10 @@
         var tempLength = 0;
         for (var i = 0; i < this.productList.length; i++) {
           for (var j = 0; j < this.productList[i].list.length; j++) {
-            tempLength += this.productList[i].list[j].nums;
+            tempLength += Number(this.productList[i].list[j].nums);
           }
         }
-        this.$store.dispatch("login/getTotalAmount", tempLength);
+        this.$store.dispatch("login/getTotalAmount", tempLength); // 购物车角标商品总数
       },
       addFavorite: function (product) {  // 添加收藏
         var _this = this;
@@ -1159,7 +1170,7 @@
           }, 50);
         }
       },
-      checkNumber: function (event) { // 购买数量格式校验
+      checkNumber: function (event, product) { // 购买数量格式校验
         if (!String.fromCharCode(event.keyCode).match(/\d/)) {
           event.preventDefault();
         }
@@ -1167,8 +1178,8 @@
           event.preventDefault();
         }
       },
-      checkProductNums: function (product) {
-        var _this = this;
+      checkProductNums: function (product) { // @keyup的时候一并判断就可以 失去焦点不用重复判断
+        /* var _this = this;
         if (Number($(".productNums").val()) <= 0) {
           this.$alert(_this.getStaticText('numberOfProductsMustBeMoreThanZero') ? _this.getStaticText('numberOfProductsMustBeMoreThanZero') : "商品数量必须大于0", _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
             confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定",
@@ -1185,7 +1196,7 @@
               _this.changeQuantity(product, 0, 200);
             }
           });
-        }
+        } */
       },
       clearing: function () { // 结算：即为初次进入提交订单页面 要将电子书状态、商品列表信息和结算详细信息存在本地
         var _this = this;

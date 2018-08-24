@@ -40,14 +40,20 @@
     <!-- END 音频播放器 -->
 
     <!-- 系列课程列表 -->
-    <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
-      <div class="work_videoplay_01_myswiperwra swiper-wrapper">
-        <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-text="item[keys.resName]" @click="toPlayVideo(item)" :class="{work_videoplay_01_activevideo: curVideoObj[keys.id] == item[keys.id]}"></div>
-        <div class="work_videoplay_01_myswiper_tips swiper-slide" v-text="CONFIG.staticText && CONFIG.staticText.noelseTips ? CONFIG.staticText.noelseTips : '没有下一个视频啦'"></div>
+    <div class="work_videoplay_01_myswipercon_container">
+      <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
+        <div class="work_videoplay_01_myswiperwra swiper-wrapper">
+          <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-text="item[keys.resName]" @click="toPlayVideo(item,index)" :class="{work_videoplay_01_activevideo: curShowIndex == index}"></div>
+          <div class="work_videoplay_01_myswiper_tips swiper-slide" v-text="CONFIG.staticText && CONFIG.staticText.noelseTips ? CONFIG.staticText.noelseTips : '没有下一个视频啦'"></div>
+        </div>
       </div>
-      <div class="swiper-button-prev swiper-button-prev-smallPic"></div>
-      <div class="swiper-button-next swiper-button-next-smallPic"></div>
+      <div class="work_videoplay_01_myswipercon_btns">
+        <div class="swiper-button-prev swiper-button-prev-smallPic"></div>
+        <div class="swiper-button-next swiper-button-next-smallPic"></div>
+      </div>
+      
     </div>
+    
     <!-- END 系列课程列表 -->
   </div>
 </template>
@@ -72,7 +78,8 @@ export default {
       mediaResId: '',//播放单个视频时需要的VIDEO-MEDIA_RESOURCEID
       myDPlayerdp: '', // 视频播放器插件
       videoLists: null, // 视频课程列表
-      curVideoObj: null, // 当前播放视频 / 音频 对象
+      curVideoObj: null, // 当前播放视频 / 音频 对象  
+      curAttachObj: {},  //当前附件对象  
       curShowIndex: 0, // 当前选中列表中的视频
       resType: 'VIDEO-MEDIA', // 资源类型：音频 AUDIO-MEDIA / 视频 VIDEO-MEDIA 默认视频
       playUrl: '', // 资源播放地址
@@ -145,7 +152,13 @@ export default {
       Post(CONFIG.BASE_URL + QUERYCONFIG.url, paramsObj).then((res) => {
         let datas = res.data;
         if (datas.success && datas.result.length > 0) {
+          
           this.videoLists = datas.result; // 视频列表
+
+
+          if(this.resType == 'ZILIAOKU'){  //如果是资料库，获取视频附件，
+            this.getAttachDetail(this.curId);
+          }
 
           if (this.CONFIG.queryParamsType == 'url') { //  从地址栏里取数据
             this.videoLists.forEach((item, index) => {
@@ -159,7 +172,7 @@ export default {
           }
 
           this.$nextTick(() => {
-            if (this.resType == 'VIDEO-MEDIA' || this.resType == 'ZILIAOKU') { // 如果是视频资源才初始化视频播放器插件
+            if (this.resType == 'VIDEO-MEDIA') { // 如果是视频资源才初始化视频播放器插件
               this.initDPlayer();
             }
             this.initSwiper();
@@ -167,9 +180,13 @@ export default {
         }
       })
     },
-    toPlayVideo (item) { // 点击播放视频列表里的某一个
-      this.curVideoObj = item;
-      if (this.resType == 'VIDEO-MEDIA' || this.resType == 'ZILIAOKU') { // 如果是视频资源才初始化视频播放器插件
+    toPlayVideo (item,index) { // 点击播放视频列表里的某一个
+      this.curShowIndex = index;   //当前播放视频的索引
+      if(this.resType == 'ZILIAOKU'){  //资料库需要通过附件数据来初始化视频
+        this.getAttachDetail(item.id);
+        //this.curAttachObj = item;
+      }else if(this.resType == 'VIDEO-MEDIA'){
+        this.curVideoObj = item;
         this.initDPlayer();
       }
     },
@@ -178,7 +195,7 @@ export default {
         container: document.getElementById('myDPlayer'), // 挂载容器
         screenshot: true, // 截屏功能
         video: {
-          url: this.playUrl + this.curVideoObj[this.keys.resourceId], // 视频地址
+          url: this.playUrl + (this.resType == 'ZILIAOKU' ? this.curAttachObj[this.keys.fileRecordID] : this.curVideoObj[this.keys.resourceId]), // 视频地址
         },
       });
     },
@@ -202,6 +219,20 @@ export default {
         let datas = rep.data;
         if (datas.success && datas.data) {
           this.curVideoObj = datas.data;
+        }
+      })
+    },
+    getAttachDetail(id){  //获取资料库视频附件的
+      let paramsObj = Object.assign({},this.CONFIG.getResourceDetail.params);
+      paramsObj.pubId = id;
+      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName+ '&attachTypes=' + paramsObj.attachTypes).then((rep)=>{
+        let datas = rep.data;
+        if (rep.status == 200 && datas.data) {
+          let attachDetail = datas.data;
+          if(attachDetail['video']){
+            this.curAttachObj = attachDetail['video'][0];   //初始化视频播放器需要的附件对象
+            this.initDPlayer();
+          }
         }
       })
     }

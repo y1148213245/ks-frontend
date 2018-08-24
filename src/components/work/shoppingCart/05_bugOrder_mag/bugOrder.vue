@@ -737,10 +737,11 @@
               // alert("购买完成！")
               // location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
               // 添加历史记录
+              let historyPath = _this.CONFIG.commited_history ? _this.CONFIG.commited_history : "../pages/subscribe.html?pubId=3510"
               window.history.pushState(
                 null,
                 null,
-                "../pages/subscribe.html?pubId=3510"
+                historyPath
               );
               // 提交成功
               //判断支付方式回调

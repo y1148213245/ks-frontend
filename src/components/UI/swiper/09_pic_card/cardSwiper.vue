@@ -14,7 +14,7 @@
       <span class="ui_swiper_09_card_tomore_name"> {{CONFIG.toMoreBtn.name}}</span>
       <i class="ui_swiper_09_card_tomore_icon" v-bind="{class: CONFIG.toMoreBtn.iconClass}"></i>
     </div>
-	  <div class="swiper-container">
+	  <div class="swiper-container" v-if="picList && picList.length > 0">
 		  <div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="(item, index) in picList" :key="index" v-if="index >= CONFIG.startNum">
             <template v-for="(config, config_i) in CONFIG.complicatedItem">
@@ -123,6 +123,7 @@ export default {
       window.open(item[this.keys.sourceUrl] ? item[this.keys.sourceUrl]: toOtherPage(item, this.CONFIG[config.method],this.keys));
     },
     queryData: function() {
+      this.picList = [];
       let paramsObj = Object.assign({}, this.CONFIG.params);
       paramsObj.conditions.map(item => {
         if (item.hasOwnProperty(this.keys.colId)) {
@@ -177,20 +178,20 @@ export default {
       this.initObj["onClick"] = function(swiper,event){
         // 解决loop:true时复制的元素不能跳转的问题,但是只能跳转到一个链接地址
         //TODO: 更好的解决loop:true时复制的元素不能跳转的问题(给可能被点击的元素加属性.属性值为当前配置,这样就可以知道当前元素的对应配置在complicatedItem中的索引)
-        var index;
-        event.path.forEach(element => {
-          //console.dir(element);
-          // "in"遍历对象属性,可检测自身属性和原型链上的属性,但是hasOwnProperty只能检测自身属性,无法检测原型链上的属性
-          if("dataset" in element){
-            if("swiperSlideIndex" in element.dataset){
-                index = Number(element.dataset["swiperSlideIndex"]);
-                if(!isNaN(index)){
-                  index = index;
-                  return;
-                }
-            }
+        var index,
+             event = event || window.event,
+             tar = event.target || event.srcElement,
+             attr = tar.getAttribute("data-swiper-slide-index");
+        if(attr){
+          index = Number(attr);
+        }else{
+          var parent = tar.parentNode;
+          while(!parent.getAttribute("data-swiper-slide-index")){
+            parent = parent.parentNode;
           }
-        });
+          index = Number(parent.getAttribute("data-swiper-slide-index"));
+        }
+        
         // + obj.CONFIG.startNum是因为起始索引会因为需求改变
         obj.CONFIG.startNum  = obj.CONFIG.startNum ? obj.CONFIG.startNum : 0;
         obj.toCustomFun(obj.picList[index + obj.CONFIG.startNum], obj.CONFIG.complicatedItem.length > 0 ? obj.CONFIG.complicatedItem[0] : {});

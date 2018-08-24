@@ -62,7 +62,8 @@
 		<!-- END 支付方式 信息 -->
 
 		<div class="work_shoppingcart_03_commitOrder">
-			<el-button class="work_shoppingcart_03_commitOrder_button" @click="commitOrder()">购 买</el-button>
+      <el-button class="work_shoppingcart_03_commitOrder_button" v-if="isDisabled==0" :disabled="isDisabled === 4">购 买</el-button>
+      <el-button class="work_shoppingcart_03_commitOrder_button" v-if="isDisabled==1" @click="commitOrder()">购 买</el-button>
 		</div>
 
 	</div>
@@ -101,7 +102,8 @@
 				temp: {}, //订单里的id
 				tempList: {}, //订单单元
 				orderSuccessUrl: '', //
-        		noLoginUrl:'../pages/login.html', //没有登陆就跳转到登录页
+        		noLoginUrl:'../pages/login.html', //没有登陆就跳转到登录页 ,
+        isDisabled:0
 			};
 		},
 
@@ -152,6 +154,7 @@
 						console.log(this.resourceDetail);
 						this.resId = this.resourceDetail[this.keys.resId];
 						this.bookMoney = Number(this.resourceDetail[this.keys.memberPrice]);
+						this.isDisabled = 1;
 					}
 				});
 			},
@@ -195,7 +198,7 @@
 				//判断支付方式 生成不同的参数
 				//如果是余额支付那么判断余额够不够
 				this.setOrderParams();
-				
+
 				// http://172.19.36.97:9092/spc-portal-web/order/submitSplitOrder.do
 				var _this = this;
 				if(this.resourceDetail.isBuy=='1'){
@@ -223,12 +226,12 @@
 									message: datas.data.errMsg
 								})
 							}
-							
+
 						}
 					})
-					
-				}  
-				
+
+				}
+
 			},
 			setOrderParams() {
 

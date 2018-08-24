@@ -153,7 +153,7 @@
     <div class="work_bookdetail_04_combinate" v-if=" combinateProductCfg.show && combinateProductLsit && combinateProductLsit.length > 0">
       <span class="work_bookdetail_04_combinate_title">{{combinateProductCfg.title}}</span>
       <ul class="work_bookdetail_04_combinate_main" >
-        <li v-for="(list,key) in combinateProductLsit" v-bind:key="key" :data-id="list.id">
+        <li v-for="(list,key) in combinateProductLsit" v-if="key == 0" v-bind:key="key" :data-id="list.id">
           <!-- 图书本身 -->
           <div class="work_bookdetail_04_combinate_book">
             <div class="work_bookdetail_04_combinate_image"><img :src="resourceDetail[keys['picSmall']] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
@@ -163,15 +163,15 @@
           <div class="work_bookdetail_04_combinate_and">+</div>
           <!-- 组合列表 -->
           <div >
-            <button class="work_bookdetail_04_combinate_btn prev" @click="combinateList($event,key,list.list.length)" :class="{'disable': showCombinateArr[key] == 0,'normal':showCombinateArr[key]!=0 }" v-show="list.list.length > 3" :data-changeBtn="key" :data-maxLength="list.list.length">&lt;</button>
+            <button class="work_bookdetail_04_combinate_btn prev" @click="combinateList($event)" :class="{'disable': showCombinateNum == 0,'normal':showCombinateNum!=0 }" v-show="list.list.length > 3">&lt;</button>
             <ul class="work_bookdetail_04_combinate_list" >
-              <li class="work_bookdetail_04_combinate_book" v-for="(item,index) in list.list" v-bind:key="index" v-show=" index >= showCombinateArr[key] && index < showCombinateArr[key] + 3" @click="toCombinateItemDetail(combinateProductCfg['toDetail'],item['pubId'])">
+              <li class="work_bookdetail_04_combinate_book" v-for="(item,index) in list.list" v-bind:key="index" v-show=" index >= showCombinateNum && index < showCombinateNum + showCombinateItem" @click="toCombinateItemDetail(combinateProductCfg['toDetail'],item['pubId'])">
                 <div class="work_bookdetail_04_combinate_image"><img :src="item['smallPic'] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
                 <h4 class="work_bookdetail_04_combinate_name" :title="item['resourceName']">{{item["resourceName"]}}</h4>
                 <span class="work_bookdetail_04_combinate_price ">价格 : {{ '￥' + Number(item["memberPrice"]).toFixed(2)}}</span>
               </li>
             </ul>
-            <button class="work_bookdetail_04_combinate_btn next" @click="combinateList($event,key,list.list.length)" :class="{'disable': showCombinateArr[key] == list.list.length-4}" v-show="list.list.length > 3" :data-changeBtn="key" :data-maxLength="list.list.length">&gt;</button>
+            <button class="work_bookdetail_04_combinate_btn next" @click="combinateList($event)" :class="{'disable': showCombinateNum > showCombinateMaxNum - showCombinateItem }" v-show="list.list.length > 3">&gt;</button>
           </div>
           <div class="work_bookdetail_04_combinate_equal">=</div>
           <!-- 购买按钮 -->
@@ -313,6 +313,9 @@ export default {
       },
       pub_comment_num: '',   //评论数
       collectLikeOn:0,   //点赞或收藏是否在提交中   // 0 代表没有 可以执行  1代表不能，不能执行
+      showCombinateNum:0,  //初始化显示的下标
+      showCombinateMaxNum:3,  // 组合购买数组的length
+      showCombinateItem:3 ,     // 组合购买显示个数 , 后续可升级为可配置
       combinateProductLsit:[], // 初始化组合购买数组
       combinateProductCfg:{},  // 组合购买是否显示
 
@@ -710,10 +713,12 @@ export default {
               val['savemoney'] = allPrice + thisBookPrice;
             });
           }
-          this.showCombinateArr = new Array(this.combinateProductLsit.length);
-          for(let i = 0; i < this.showCombinateArr.length ; i++){
-            this.$set(this.showCombinateArr,i,0);
-          }
+          // this.showCombinateArr = new Array(this.combinateProductLsit.length);
+          // for(let i = 0; i < this.showCombinateArr.length ; i++){
+          //   this.$set(this.showCombinateArr,i,0);
+          // }
+          this.showCombinateMaxNum = this.combinateProductLsit[0].list.length - 1; // 取第一条组合购买的length
+
         }
       });
     },
@@ -956,14 +961,21 @@ export default {
       return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥')+'0.00';
     }
     },
-    combinateList(event,key,max){
+    combinateList(event){
       var $target = $(event.target);
       if($target.hasClass("disable")){return;}
       if($target.hasClass("prev")){
-        this.$set(this.showCombinateArr,key,Number(this.showCombinateArr[key]) - 1)
+        if(this.showCombinateNum > 0){
+          this.showCombinateNum = this.showCombinateNum - 1;
+        }
+        // this.$set(this.showCombinateArr,key,Number(this.showCombinateArr[key]) - 1)
       }else if($target.hasClass("next")){
-        this.$set(this.showCombinateArr,key,Number(this.showCombinateArr[key]) + 1)
+        // this.$set(this.showCombinateArr,key,Number(this.showCombinateArr[key]) + 1)
+        if(this.showCombinateNum + this.showCombinateItem <= this.showCombinateMaxNum){
+          this.showCombinateNum = this.showCombinateNum + 1;
+        }
       }
+      console.log(this.showCombinateNum)
     }
   },
   watch: {

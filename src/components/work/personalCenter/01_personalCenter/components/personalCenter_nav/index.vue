@@ -1,7 +1,7 @@
 <template>
   <div class="tac personal_center_nav">
     <slot name='header'>
-      <div class="personal_center_nav_header el-button--primary"><p class="personal_center_nav_header_title">个人中心</p>
+      <div class="personal_center_nav_header el-button--primary"><p class="personal_center_nav_header_title">{{getStaticText('personalCenter') ? getStaticText('personalCenter') : '个人中心'}}</p>
       </div>
     </slot>
     <el-menu :default-active="currentShowIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
@@ -21,6 +21,7 @@ export default {
   reused: true,
   props: ["namespace"],
   props: {
+    parentConfig: Object,
     navs: {
       default() {
         return [
@@ -69,8 +70,12 @@ export default {
   },
   data: function() {
     return {
-      siteId: ""
+      siteId: "",
+      CONFIG:''
     };
+  },
+  created(){
+    this.CONFIG = this.parentConfig.nav;
   },
   methods: {
     ...mapActions("personalCenter/", {
@@ -85,6 +90,13 @@ export default {
     showComponent(index) {
       this.updateCurrentShow(this.navs[index]);
       window.location.hash = this.navs[index].tag;
+    },
+    getStaticText(text){
+      if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
     }
   },
   // components: {},

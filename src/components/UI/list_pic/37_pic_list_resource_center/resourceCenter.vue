@@ -76,7 +76,7 @@
         this.$bus.$on(_self.CONFIG.transTitle,function (item) {
           _self.resourceTitle = item.name;
           //渲染三级栏目
-          _self.showThreeColumn(item);
+          _self.showThreeColumn(item, true);
         });
         //用于初次加载，默认渲染tree中的第一个栏目中的数据
         this.$bus.$on(_self.CONFIG.transDefaultColId,function (item) {
@@ -100,7 +100,7 @@
           this.tempItem = Object.assign({},item);
           this.getListByColumnId(item);
         },
-        showThreeColumn(item){
+        showThreeColumn(item, initPagination){
           //点击栏目时，先清空tab和数据列表
           this.tabList = [];
           this.tBodyList = [];
@@ -109,15 +109,17 @@
             this.tabList = item.childNav;
           }
           //通过栏目id获取栏目下的数据
-          this.getListByColumnId(item);
+          this.getListByColumnId(item, initPagination);
         },
         //通过栏目id获取栏目下的数据
-        getListByColumnId(item){
+        getListByColumnId(item, initPagination){
           //先清理数据
           this.tBodyList = [];
           this.tempItem = Object.assign({},item);
           let params = Object.assign({},this.CONFIG.getList.params);
-          params.pageNo = this.pageNo ? this.pageNo : params.pageNo;
+          if(!initPagination) { // 每次切换左侧菜单接受广播的时候都要把pageNo改成1
+            params.pageNo = this.pageNo ? this.pageNo : params.pageNo;
+          }
           params.pageSize = this.pageSize ? this.pageSize : params.pageSize;
           params.conditions="[{pub_col_id:"+item.id+"}]";
           Post(CONFIG.BASE_URL + this.CONFIG.getList.url, params).then((rep) => {

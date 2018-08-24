@@ -15,7 +15,7 @@
               <div class="readBox" @click="toRead(item.resourceId,1,item.productName)" style="cursor:pointer">
              <!--    <a target="_blank" v-bind:href="readConfig.baseURL + '/ebook/read.jsp?bookId=' + item.resourceId + '&readType=1&bookName=' + item.productName">
                   阅读</a> -->
-                <a target="_blank" >阅读</a>
+                <a target="_blank" >{{getStaticText('read') ? getStaticText('read') : '阅读'}}</a>
               </div>
             </div>
           </div>
@@ -24,7 +24,7 @@
     </div>
     <div class="emptyColl" v-else>
       <img src="../../assets/img/empty.png" alt="">
-      <div>我的书架是空的</div>
+      <div>{{getStaticText('myBookshelfIsEmpty') ? getStaticText('myBookshelfIsEmpty') : '我的书架是空的' }}</div>
     </div>
     <ui_pagination :pageMessage="{totalCount: this.bookShelfInfo.data && this.bookShelfInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
   </section>
@@ -34,11 +34,15 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "book",
   reused: true,
-  props: ["namespace"],
+  props: ["namespace","parentConfig"],
   data () {
     return {
+      CONFIG:''
       // readConfig: READ_CONFIG
     };
+  },
+  created (){
+    this.CONFIG = this.parentConfig.bookshelf;
   },
   mounted: function () {
     this.$store.dispatch("personalCenter/queryUser", {
@@ -74,10 +78,17 @@ export default {
         bookId +
         "&readType=" +
         readType +
-        '&bookName=' + 
+        '&bookName=' +
         bookName +
         "&userName=&siteType=" + CONFIG.READ_CONFIG.siteType;
       window.open(url);
+    },
+    getStaticText(text){
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
     }
   }
 };

@@ -97,9 +97,9 @@ export default {
       }
       this.loading = true;
       let paramsObj = Object.assign({}, this.CONFIG.commitQuestion.params);
-      paramsObj.dataMap.SYS_TOPIC = new Date().getTime() + ''; // 问题名称 随机字符串
-      paramsObj.dataMap.REQUESTER = this.member.loginName;
-      paramsObj.dataMap.QUES_CONTENT = this.question;
+      paramsObj.metaMap.SYS_TOPIC = new Date().getTime() + ''; // 问题名称 随机字符串
+      paramsObj.metaMap.REQUESTER = this.member.loginName;
+      paramsObj.metaMap.QUES_CONTENT = this.question;
       Post(CONFIG.BASE_URL + this.CONFIG.commitQuestion.url, paramsObj).then((res) => {
         if (res.data && res.data.status == 'success') {
           this.$message({

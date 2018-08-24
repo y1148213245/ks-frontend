@@ -3,9 +3,9 @@
   <div class="work_bookreview_01 work_bookreview_01_skin">
     <div class="title">
       <span>{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
-      <span v-if="this.CONFIG && this.CONFIG.toAddReview && this.CONFIG.toAddReview.toAddReviewShow && this.isDiscuss==0" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{this.CONFIG.toAddReview.toAddReviewName}}</span>
+      <span v-if="CONFIG && CONFIG.toAddReview && CONFIG.toAddReview.toAddReviewShow && isDiscuss== '是'" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{CONFIG.toAddReview.toAddReviewName}}</span>
     </div>
-    <div class="reviewCon" v-if="this.isDiscuss==0">
+    <div class="reviewCon" v-if="isDiscuss=='是'">
       <div class="review">
         <span class="reviewSpan">{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
         <p class="star">
@@ -34,7 +34,7 @@
           </p>
           <span class="createTime" v-text="queryComment.createTime"></span>
         </div>
-        <div class="reviewContent" v-text="queryComment.content"></div>
+        <div class="reviewContent" v-text="queryComment.content"  @click="toReviewInfo(queryComment)"></div>
 
         <!--点赞-->
         <div class="reviewLists_oper" v-if="operList">
@@ -42,7 +42,7 @@
             <i class="fa fa-review"></i>
             <span class="reviewLists_oper_review_num">{{queryComment.replyNum}}</span>
           </span>
-          <span class="reviewLists_oper_like" v-if="operList && operList.like && operList.like.likeShow"  @click="getLike(queryComment.commentId)">
+          <span class="reviewLists_oper_like" v-if="operList && operList.like && operList.like.likeShow"  @click="getLike(queryComment.commentId,index)" :class="{'active':nowUserLikeObj[queryComment.commentId]}" :data-id="nowUserLikeObj[queryComment.commentId]">
             <i class="fa fa-like"></i>
             <span class="reviewLists_oper_like_num">{{queryComment.likeNum}}</span>
           </span>
@@ -83,13 +83,15 @@ export default {
       operList:{},//两个按钮配置项
       orReGetMenberName:false,
       loginName:'',
+      pagingParams:{},
       colId:'',
       resourceId:'',
       resourceName:'',
       resourseType:'',
       resourceDetail:{},
-      isDiscuss:0,  //是否能评论 0可以 1不行
+      isDiscuss:'否',  //是否能评论 (图书详情中数据)
       queryConfigAddReview:0, //是否能评论完了 0可以 1不行
+      nowUserLikeObj:{}
     }
   },
   mounted () {
@@ -135,7 +137,7 @@ export default {
           let datas = rep.data;
           if (rep.status == 200 && datas.data) {
             this.resourceDetail = datas.data;
-            this.isDiscuss = this.resourceDetail.isDiscuss;
+            this.isDiscuss = this.resourceDetail.BOOK_IS_COMMENT;
             this.queryComment();   //获取回复列表
           }
         });
@@ -241,7 +243,7 @@ export default {
           });
           //重新获取判断条件
           if(this.orReGetMenberName){
-            this.isDiscuss =1;
+            // this.isDiscuss =1;
             this.getResourceDetail();
           }
           this.$refs.commentContent.value = ''; //评论完置空评分和内容
@@ -260,39 +262,79 @@ export default {
         }
       })
     },
-    getLike(reviewId){
-
+    getLike(reviewId,ind){
       var loginName = this.member.loginName;
       var obj = { loginName: loginName };
-      let paramsObj = Object.assign({}, obj);
-      if (loginName == undefined || loginName == '') {
-        if(this.loginName){
-          paramsObj.loginName = this.loginName;
+        let paramsObj = Object.assign({}, obj);
+        if (loginName == undefined || loginName == '') {
+          if(this.loginName){
+            paramsObj.loginName = this.loginName;
+          }else{
+            // this.$message({
+            //   message: '请登录',
+            //   type: 'error'
+            // })
+            window.open( '../pages/login.html');
+            return false;
+          }
         }else{
-          // this.$message({
-          //   message: '请登录',
-          //   type: 'error'
-          // })
-          window.open( '../pages/login.html');
-          return false;
+          this.loginName = loginName;
         }
-      }else{
-        this.loginName = loginName;
-      }
-      paramsObj.id = reviewId;
-      paramsObj.siteId = CONFIG.SITE_CONFIG.siteId;
-      Get(CONFIG.BASE_URL + "comment/addOrCancelLike.do", { params: paramsObj }).then((rep) => {
-        console.log(rep);
-        let datas = rep.data;
-        if (datas && datas.data && datas.result==1) {
-          // this.commentList = datas.data.msg;
-          this.$message({
-            message: datas.data.msg,
-            type: 'success'
-          })
 
-          this.queryComment();
-          return false;
+      var nowLike = this.nowUserLikeObj[reviewId]; // 布尔值 => 当前用户是否喜欢
+      var nowLikesNum = this.commentList[ind].likeNum;
+      this.getUserLike(reviewId,function(reviewId){
+        paramsObj.id = reviewId;
+        paramsObj.siteId = CONFIG.SITE_CONFIG.siteId;
+        Get(CONFIG.BASE_URL + "comment/addOrCancelLike.do", { params: paramsObj }).then((rep) => {
+          // console.log(rep);
+          let datas = rep.data;
+          if (datas && datas.data && datas.result==1) {
+            // this.commentList = datas.data.msg;
+            this.$message({
+              message: datas.data.msg,
+              type: 'success'
+            })
+            if(nowLike){
+              this.commentList[ind].likeNum = nowLikesNum - 1;
+              this.nowUserLikeObj[reviewId] = false;
+            }else{
+              this.commentList[ind].likeNum = nowLikesNum + 1;
+              this.nowUserLikeObj[reviewId] = true;
+            }
+            console.log(this.commentList[ind].likeNum);
+            // this.queryComment(this.pagingParams);
+            return false;
+          }
+        })
+      }.bind(this))
+      
+    },
+    getUserLike(id,callback){
+      if(!this.member.loginName || !this.CONFIG.queryComments.params["siteId"]){
+        return;
+      }
+      var params = {
+        "loginName":this.member.loginName,
+        "id":id,
+        "siteId":this.CONFIG.queryComments.params["siteId"]
+      }
+      // var requestUrl = "/comment/isCommentLike.do" + this.loginName + "&id=" + this.commentList[i]["commentId"] + "";
+      Get(CONFIG.BASE_URL + "/comment/isCommentLike.do",{params:params}).then((req) => {
+        // console.log(req);
+        var datas = req.data;
+        if (datas && datas.data && datas.result==1) {
+          if(datas.data.code == 1){
+            this.nowUserLikeObj[id] = true;
+            callback && callback(id);
+          }else{
+            // this.commentList[len]["nowUserLike"] = false;
+            this.nowUserLikeObj[id] = false;
+            callback && callback(id);
+          }
+        }else{
+          // this.commentList[len]["nowUserLike"] = false;
+          this.nowUserLikeObj[id] = false;
         }
       })
     },
@@ -315,9 +357,19 @@ export default {
           this.commentList = data;
             for (var i=0;i<this.commentList.length;i++)
             {
-              this.commentListLike[i] = false;
+              // this.commentList[i][] = false;
+              this.$set(this.nowUserLikeObj,String(this.commentList[i]["commentId"]),false)
+
+              this.getUserLike(this.commentList[i]["commentId"]);
             }
+            // console.log(this.commentList);
           this.totalCount = rep.data.totalCount;
+          // 拿每条评论去调接口看用户是否点赞
+
+          for(var a = 0 ; a < this.commentList.length ; a++ ){
+
+          }
+          // 拿每条评论去调接口看用户是否点赞 -END
         }
       })
     },
@@ -326,6 +378,7 @@ export default {
         pageNo: pageNo,
         pageSize: pageSize,
       };
+      this.pagingParams = pagingParams;
       this.queryComment(pagingParams);
     },
     getStaticText (text) {

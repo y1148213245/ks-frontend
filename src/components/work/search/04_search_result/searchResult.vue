@@ -185,7 +185,7 @@ export default {
       Post(CONFIG.BASE_URL + config.url, param).then((req) => {
         let data = req.data.result;
         // if (data && data instanceof Array && data.length >= 0) {
-        if (this.isMobileLoading) {
+        if (this.isMobileLoading  && req.data.pageNo !=1) {
           if (data && data instanceof Array && data.length >= 0) {
             this.list = this.list.concat(data);
             this.pageNo = req.data.pageNo;

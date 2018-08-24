@@ -10,8 +10,8 @@
     <div class="myColList" v-if="collectionInfo.data && collectionInfo.data.length > 0">
       <div class="deleteColls">
         <el-checkbox v-model="selectedAll" @change="selectAll()"></el-checkbox>
-        <span>全选</span>
-        <a href="javascript: void(0);" @click="deleteLots()">批量取消收藏</a>
+        <span>{{getStaticText('totalSelection') ? getStaticText('totalSelection') : '全选'}}</span>
+        <a href="javascript: void(0);" @click="deleteLots()">{{getStaticText('batchCancelCollection') ? getStaticText('batchCancelCollection') : '批量取消收藏'}}</a>
       </div>
       <ul>
         <li v-for="item in collectionInfo.data" class="bookColl collContent">
@@ -22,12 +22,12 @@
               </div>
               <div class="namePrice">
                 <div v-text="item.productName" :title="item.productName"></div>
-                <div>价格：
+                <div>{{getStaticText('price') ? getStaticText('price') : '价格'}}：
                   <span>{{item.memberPrice | formatPriceNew}}</span>
                 </div>
               </div>
               <div class="readBox">
-                <a target="_blank" v-bind:href="'../pages/bookdetail.html?pubId=' + item.pubId">购买</a>
+                <a target="_blank" v-bind:href="'../pages/bookdetail.html?pubId=' + item.pubId">{{getStaticText('buy') ? getStaticText('buy') :'购买'}}</a>
               </div>
               <div class="deleteCllo" @click="deleteCollProduct(item)">
                 <img src="../../assets/img/deleteCllo.png" alt="">
@@ -43,7 +43,7 @@
 
     <div class="emptyColl" v-else>
       <img src="../../assets/img/empty.png" alt="">
-      <div>收藏夹是空的</div>
+      <div>{{getStaticText('theFavoritesAreEmpty') ? getStaticText('theFavoritesAreEmpty') : '收藏夹是空的'}}</div>
     </div>
     <ui_pagination v-if="initPagination" :pageMessage="{totalCount: this.collectionInfo.data && this.collectionInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
   </section>
@@ -131,9 +131,9 @@ export default {
     deleteCollProduct: function(item) {
       // 删除收藏商品
       var _this = this;
-      this.$confirm("您确定要将商品移除收藏夹吗?", "系统提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$confirm(_this.getStaticText('areYouSureYouWantToRemoveTheFavoritesFromTheMerchandise') ? _this.getStaticText('areYouSureYouWantToRemoveTheFavoritesFromTheMerchandise') : "您确定要将商品移除收藏夹吗?", _this.getStaticText('systemHints') ? _this.getStaticText('systemHints') : "系统提示", {
+        confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定",
+        cancelButtonText: _this.getStaticText('cancel') ? _this.getStaticText('cancel') : "取消",
         type: "warning"
       }).then(function() {
         var params = {
@@ -147,7 +147,7 @@ export default {
       var _this = this;
       if (delCollStatus == 1) {
         this.$message({
-          message: "移除成功",
+          message: _this.getStaticText('removeSuccess') ? _this.getStaticText('removeSuccess') : "移除成功",
           type: "success"
         });
         var params = {
@@ -160,7 +160,7 @@ export default {
         this.$store.dispatch("personalCenter/queryCollectionInfo", params);
       } else {
         this.$message({
-          message: "移除失败",
+          message: _this.getStaticText('removeFailed') ? _this.getStaticText('removeFailed') : "移除失败",
           type: "error"
         });
       }
@@ -169,6 +169,7 @@ export default {
       this.isSelectAll();
     },
     deleteLots: function() {
+      let _this = this;
       var tempList = this.collectionInfo.data;
       var len = tempList.length;
       var pubidList = [];
@@ -179,7 +180,7 @@ export default {
       }
       if (pubidList.length <= 0) {
         this.$message({
-          message: "请选择至少一件商品~",
+          message: _this.getStaticText('pleasePickAtLeastOneItem') ? _this.getStaticText('pleasePickAtLeastOneItem') : "请选择至少一件商品~",
           type: "error"
         });
         return false;
@@ -212,6 +213,13 @@ export default {
         this.selectedAll = true;
       } else {
         this.selectedAll = false;
+      }
+    },
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text];
+      } else {
+        return false;
       }
     }
   }

@@ -68,6 +68,7 @@ export default {
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
+  position: relative;
   font-size: 0.36rem;
   -webkit-justify-content: space-around;
   -ms-flex-pack: distribute;
@@ -92,6 +93,9 @@ export default {
   background-repeat: no-repeat;
   background-position: 0rem 0rem;
   display: inline-block;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); 
   vertical-align: middle;
   -webkit-background-size: 5rem 5rem;
   -moz-background-size: 5rem 5rem;
@@ -104,6 +108,10 @@ export default {
   background-repeat: no-repeat;
   background-position: -0.48rem 0rem;
   display: inline-block;
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
   vertical-align: middle;
   -webkit-background-size: 5rem 5rem;
   -moz-background-size: 5rem 5rem;

@@ -14,8 +14,8 @@ const dev = {
         commitQuestion: { //  提交问题
           url: 'spc/prodb/saveItem.do',
           params: {
-            doclibCode: "QUE_ANS", // 在线问答
-            dataMap: {
+            doclibCode: "PORTAL_QUE_ANS", // 在线问答
+            metaMap: {
               SYS_TOPIC: '', // 问题名称 随机字符串
               REQUESTER: '', // 提问者
               QUES_CONTENT: '', // 问题内容
@@ -25,8 +25,9 @@ const dev = {
         queryQA: { // 查询问答列表
           url: "spc/prodb/searchNL.do",
           params: {
-            doclibCode: 'QUE_ANS', // 在线问答
-            status: 0,
+            doclibCode: 'PORTAL_QUE_ANS', // 在线问答
+            "orderCondition": " BY_SPC_SYS_LASTMODIFIED_SPC_DESC",
+            status: "1",  //审核通过的为1
             page: 0,
             size: 2,
             pageable: 1,
@@ -56,8 +57,8 @@ const prod = {
         commitQuestion: { //  提交问题
           url: 'spc/prodb/saveItem.do',
           params: {
-            doclibCode: "QUE_ANS", // 在线问答
-            dataMap: {
+            doclibCode: "PORTAL_QUE_ANS", // 在线问答
+            metaMap: {
               SYS_TOPIC: '', // 问题名称 随机字符串
               REQUESTER: '', // 提问者
               QUES_CONTENT: '', // 问题内容
@@ -67,8 +68,9 @@ const prod = {
         queryQA: { // 查询问答列表
           url: "spc/prodb/searchNL.do",
           params: {
-            doclibCode: 'QUE_ANS', // 在线问答
-            status: 0,
+            doclibCode: 'PORTAL_QUE_ANS', // 在线问答
+            "orderCondition": " BY_SPC_SYS_LASTMODIFIED_SPC_DESC",
+            status: "1",  //审核通过的为1
             page: 0,
             size: 2,
             pageable: 1,

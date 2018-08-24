@@ -74,7 +74,15 @@ const dev = {
             "pubId": "",
             "loginName": ""
           }
-        }
+        },
+        getResourceDetail: { // 
+          url: "resource/detail.do",
+          params: {
+            pubId: "",
+            loginName: "",
+            attachTypes: "video"    //附件类型
+          }
+        },
       },
     }
   }
@@ -128,6 +136,14 @@ const prod = {
           "params": {
             "pubId": "",
             "loginName": ""
+          }
+        },
+        getResourceDetail: { // 
+          url: "resource/detail.do",
+          params: {
+            pubId: "",
+            loginName: "",
+            attachTypes: "video"    //附件类型
           }
         },
         "staticText": {

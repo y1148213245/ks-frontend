@@ -81,9 +81,9 @@ export default {
       dialogTitle: '',  //弹窗标题
       istest: true,  //按钮文字默认显示答案
       modal: false,
-      attachList: [],  //用于存放附件数据的
       attachSrc: "",   //用于存放附件图片src的
       attachPicture: {},  //用于存放答案和测试卷的recordId的
+      
     }
   },
   computed: {
@@ -126,26 +126,43 @@ export default {
         }
       });
     },
-    // 获取课程详情信息
-    getResourceDetail(item,attach){   //附件类型参数可传可不传，
+    //获取课程详情信息
+    getResourceDetail(){
       let paramsObj = Object.assign({},this.CONFIG.getResourceDetail.params);
-      paramsObj.pubId = attach ? item.id : this.pubId;
-      paramsObj.attachTypes = attach ? attach : '';
-      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName+ '&attachTypes=' + paramsObj.attachTypes).then((rep)=>{
+      paramsObj.pubId = this.pubId;
+      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName).then((rep)=>{
         let datas = rep.data;
         if (rep.status == 200 && datas.data) {
           this.resourceDetail = datas.data;
           this.isBuy = this.resourceDetail[this.keys.isbuy];
+        }else {
+          this.$message({
+            type: "error",
+            message: "数据获取失败"
+          })
+        }
+      })
+    },
+    // 获取附件详情信息
+    getAttachDetail(item,attach){   //附件类型参数可传可不传，
+      let paramsObj = Object.assign({},this.CONFIG.getResourceDetail.params);
+      paramsObj.pubId = item.id;
+      paramsObj.attachTypes = attach;
+      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName+ '&attachTypes=' + paramsObj.attachTypes).then((rep)=>{
+        let datas = rep.data;
+        if (rep.status == 200 && datas.data) {
+          let attachDetail = datas.data;
+          let attachList = [];
           // 如果有附件，执行以下操作
-          if(this.resourceDetail[attach]){
+          if(attachDetail[attach]){
             if(attach == 'video'){
-              // 如果附件是视频，那么直接去第一个去播放
-              this.attachList = this.resourceDetail[attach][0];
-              window.open(toOtherPage(item,this.CONFIG.toPlayZLKVideo,this.keys)+'&mediaResId='+this.attachList['fileRecordID']);
+              // 如果附件是视频，那么把该资料库的pub_parentId和pub_id以及当前附件视频的fileRecordID传到视频播放器，在视频播放器中处理资料库的视频附件
+              attachList = attachDetail[attach][0];
+              window.open(toOtherPage(item,this.CONFIG.toPlayZLKVideo,this.keys)+'&mediaResId='+ attachList['fileRecordID']);
             }else if(attach == 'orgicpic'){
               // 如果附件是图片，遍历图片，把相应图片的fileRecordID存起来
-              this.attachList = this.resourceDetail[attach];
-              for(let attach of this.attachList){
+              attachList  = attachDetail[attach];
+              for(let attach of attachList){
                 if(attach.attachName.includes('答案')){
                   this.attachPicture['answerRecordId'] = attach.fileRecordID;
                 }else {
@@ -157,9 +174,9 @@ export default {
               
             }else if(attach == 'lowqualitypdf'){
               // 如果附件是PDF，那么直接取第一个，去阅读器阅读
-              this.attachList = this.resourceDetail[attach][0];
+              attachList = attachDetail[attach][0];
               let params = Object.assign({},this.CONFIG.toEbook.params) ;
-              let url = CONFIG.READ_URL + '?bookId=' + this.attachList['fileRecordID'] + '&readType=' + params.readType + '&bookName=' + this.attachList['attachName'] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+              let url = CONFIG.READ_URL + '?bookId=' + attachList['fileRecordID'] + '&readType=' + params.readType + '&bookName=' + attachList['attachName'] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
               
               window.open(url);
 
@@ -202,7 +219,7 @@ export default {
           window.open(toOtherPage(item,this.CONFIG.toPlayVideo,this.keys)+'&mediaResId='+item[videoParams.videoResId]);
           break;
         case this.display.ziliao:
-          this.getResourceDetail(item,this.CONFIG.ziliaozuAttachType);
+          this.getAttachDetail(item,this.CONFIG.ziliaozuAttachType);
           break;
       }
       // window.open(toOtherPage(video, this.CONFIG.toPlayVideo, keys));
@@ -211,7 +228,7 @@ export default {
       this.dialogTitle = item[this.keys.resName];
       this.attachSrc = '';
       this.istest = true;
-      this.getResourceDetail(item,'orgicpic');
+      this.getAttachDetail(item,'orgicpic');
       this.isDialogShow = true;
     },
     changeBtn(){
