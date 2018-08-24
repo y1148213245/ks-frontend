@@ -320,7 +320,8 @@ const prod = {
         submitFailed:"提交失败",
         onlyOneEntryCanBeUploaded:"只能上传一个参赛作品附件",
         accessory:"附件"
-      }
+      },
+      inputShow:['place','group','class','school','otherSchool','schoolAddress','email','zipCode','guideTeacName','guideTeacNum','organizeTeacName','organizeTeacNum']//控制上传信息的输入项
 
     }
   }

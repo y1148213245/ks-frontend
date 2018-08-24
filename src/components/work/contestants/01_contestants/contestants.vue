@@ -82,11 +82,11 @@
           <label>{{getStaticText('mobilePhoneNum') ? getStaticText('mobilePhoneNum') : '手机号'}}:</label>
           <span class="work_contestants_01-people_phone">{{currentRow && currentRow.mobileNum}}</span>
         </div>
-        <div class="work_contestants_01-supplement is-required">
+        <div class="work_contestants_01-supplement is-required" v-if="getInputShow('place')">
           <label class="el-form-item__label">{{getStaticText('region') ? getStaticText('region') : '地区'}}：</label>
           <work_common_05 :namespace="namespace" modulename="contestants_area" :currentarea.sync="addressInformaitionValue" :areastr="addressInformaition" ref="cascader" :config="CONFIG.cascaderConfig"></work_common_05>
         </div>
-        <div class="work_contestants_01-supplement is-required">
+        <div class="work_contestants_01-supplement is-required" v-if="getInputShow('group')">
           <label class="el-form-item__label">{{getStaticText('group') ? getStaticText('group') : "组别"}}：</label>
           <el-select v-model="classInformaitionValue" :placeholder="getStaticText('pleaseSelectTheEntryGroup') ? getStaticText('pleaseSelectTheEntryGroup') : '请选择参赛组别'" filterable @change="updateSchool">
             <el-option v-for="item in classInformaition" :key="item" :label="item.label" :value="item">
@@ -94,7 +94,7 @@
           </el-select>
         </div>
 
-        <div class="work_contestants_01-supplement is-required">
+        <div class="work_contestants_01-supplement is-required" v-if="getInputShow('school')">
           <label class="el-form-item__label">{{getStaticText('school') ? getStaticText('school') : "学校"}}：</label>
           <el-select v-model="schoolInformaitionValue" :placeholder="getStaticText('pleaseSelectSchool') ? getStaticText('pleaseSelectSchool') : '请选择学校'" :disabled="!isSelectSchool" filterable>
             <el-option v-for="(item,index) in schoolArr" :label="item.label" :value="item.SYS_TOPIC" :key="index"></el-option>
@@ -102,7 +102,7 @@
           </el-select>
         </div>
 
-        <div class="work_contestants_01-supplement">
+        <div class="work_contestants_01-supplement" v-if="getInputShow('class')">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style=" display:inline-block" >
             <div class="ac_linetext">
               <div class="ac_input">
@@ -114,7 +114,7 @@
           </el-form>
         </div>
 
-        <div class="work_contestants_01-supplement isLongInput" v-show="isShowCustomeSchool">
+        <div class="work_contestants_01-supplement isLongInput" v-if="getInputShow('otherSchool')" v-show="isShowCustomeSchool">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
@@ -126,7 +126,7 @@
           </el-form>
         </div>
 
-        <div class="work_contestants_01-supplement isLongInput">
+        <div class="work_contestants_01-supplement isLongInput" v-if="getInputShow('schoolAddress')">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
@@ -138,7 +138,7 @@
           </el-form>
         </div>
 
-        <div class="work_contestants_01-supplement isLongInput">
+        <div class="work_contestants_01-supplement isLongInput" v-if="getInputShow('email')">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display: inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
@@ -150,7 +150,7 @@
           </el-form>
         </div>
 
-        <div class="work_contestants_01-supplement isLongInput">
+        <div class="work_contestants_01-supplement isLongInput" v-if="getInputShow('zipCode')">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
@@ -162,7 +162,7 @@
           </el-form>
         </div>
 
-        <div class="work_contestants_01-supplement isLongInput">
+        <div class="work_contestants_01-supplement isLongInput" v-if="getInputShow('guideTeacName')">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
@@ -174,7 +174,7 @@
           </el-form>
         </div>
 
-        <div class="work_contestants_01-supplement isLongInput">
+        <div class="work_contestants_01-supplement isLongInput" v-if="getInputShow('guideTeacNum')">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
@@ -186,7 +186,7 @@
           </el-form>
         </div>
 
-        <div class="work_contestants_01-supplement isLongInput">
+        <div class="work_contestants_01-supplement isLongInput" v-if="getInputShow('organizeTeacName')">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display:inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
@@ -198,7 +198,7 @@
           </el-form>
         </div>
 
-        <div class="work_contestants_01-supplement isLongInput">
+        <div class="work_contestants_01-supplement isLongInput" v-if="getInputShow('organizeTeacNum')">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
@@ -295,51 +295,51 @@
           <section class="work_contestants_01-section2_preview">
             <h3>{{getStaticText('additionalInformation') ? getStaticText('additionalInformation') : "补充信息"}}：</h3>
             <ul>
-              <li>
+              <li v-if="getInputShow('place')">
                 <label>{{getStaticText('region') ? getStaticText('region') : '地区'}}:</label>
                 <span v-text="addressInformaitionValue"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('group')">
                 <label>{{getStaticText('group') ? getStaticText('group') : "组别"}}:</label>
                 <span v-text="classInformaitionValue"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('class')">
                 <label>{{getStaticText('gradeAndClass') ? getStaticText('gradeAndClass') : "年级班级"}}:</label>
                 <span v-text="addSupplementForm.class"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('school')">
                 <label>{{getStaticText('school') ? getStaticText('school') : "学校"}}:</label>
                 <span v-text="schoolInformaitionValue"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('otherSchool')">
                 <label>{{getStaticText('otherSchools') ? getStaticText('otherSchools') : "其他学校"}}:</label>
                 <span v-text="addSupplementForm.customSchool"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('schoolAddress')">
                 <label>{{getStaticText('schoolAddress') ? getStaticText('schoolAddress') : "学校地址"}}:</label>
                 <span v-text="addSupplementForm.schoolAddress"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('email')">
                 <label>{{getStaticText('email') ? getStaticText('email') : "邮箱"}}:</label>
                 <span v-text="addSupplementForm.email"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('zipCode')">
                 <label>{{getStaticText('postcode') ? getStaticText('postcode') : '邮编'}}:</label>
                 <span v-text="addSupplementForm.zipCode"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('guideTeacName')">
                 <label>{{getStaticText('guidanceTeacher') ? getStaticText('guidanceTeacher') : "指导教师"}}:</label>
                 <span v-text="addSupplementForm.teacher"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('guideTeacNum')">
                 <label>{{getStaticText('guidanceTeacherPhoneNum') ? getStaticText('guidanceTeacherPhoneNum') : "指导教师电话"}}:</label>
                 <span v-text="addSupplementForm.teacherPhone"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('organizeTeacName')">
                 <label>{{getStaticText('organizationTeacher') ? getStaticText('organizationTeacher') : "组织教师"}}:</label>
                 <span v-text="addSupplementForm.organizationTeacher"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('organizeTeacNum')">
                 <label>{{getStaticText('organizationTeacherPhoneNum') ? getStaticText('organizationTeacherPhoneNum') : '组织教师电话'}}:</label>
                 <span v-text="addSupplementForm.organizationTeacherPhone"></span>
               </li>
@@ -783,49 +783,49 @@ export default {
           message: this.getStaticText('pleaseSelectTheParticipantInTheList') ? this.getStaticText('pleaseSelectTheParticipantInTheList') : "请在列表里选择参赛人"
         });
         return false;
-      } else if (this.addressInformaitionValue == "") {
+      } else if (this.addressInformaitionValue == "" && this.getInputShow('place')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseSelectRegion') ? this.getStaticText('pleaseSelectRegion') : "请选择地区"
         });
         return false;
-      } else if (this.classInformaitionValue == "") {
+      } else if (this.classInformaitionValue == ""  && this.getInputShow('group')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseSelectGroup') ? this.getStaticText('pleaseSelectGroup') : "请选择组别"
         });
         return false;
-      } else if (this.schoolInformaitionValue == "") {
+      } else if (this.schoolInformaitionValue == "" && this.getInputShow('school')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseSelectSchool') ? this.getStaticText('pleaseSelectSchool') : "请选择学校"
         });
         return false;
-      } else if (this.schoolInformaitionValue === (this.getStaticText('others') ? this.getStaticText('others') : '其他') && this.addSupplementForm.customSchool == '') {
+      } else if (this.schoolInformaitionValue === (this.getStaticText('others') ? this.getStaticText('others') : '其他') && this.addSupplementForm.customSchool == '' && this.getInputShow('otherSchool')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseSelectAndInputSchool') ? this.getStaticText('pleaseSelectAndInputSchool') : "请选择填写学校"
         });
         return false;
-      } else if (this.addSupplementForm.schoolAddress == "") {
+      } else if (this.addSupplementForm.schoolAddress == "" && this.getInputShow('schoolAddress')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseSelectAndInputSchoolAddress') ? this.getStaticText('pleaseSelectAndInputSchoolAddress') : "请选择填写学校地址"
         });
         return false;
-      } else if (this.addSupplementForm.class == "") {
+      } else if (this.addSupplementForm.class == "" && this.getInputShow('class')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseSelectAndInputClass') ? this.getStaticText('pleaseSelectAndInputClass') : "请选择填写班级"
         });
         return false;
-      } else if (this.addSupplementForm.teacherPhone != "" && !/\b\d{7,12}\b/.test(this.addSupplementForm.teacherPhone)) {
+      } else if (this.addSupplementForm.teacherPhone != "" && !/\b\d{7,12}\b/.test(this.addSupplementForm.teacherPhone) && this.getInputShow('guideTeacNum')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseSelectAndInputCorrectGuidanceTeacherPhoneNum') ? this.getStaticText('pleaseSelectAndInputCorrectGuidanceTeacherPhoneNum') : "请选择填写正确指导教师手机号"
         });
         return false;
-      } else if (this.addSupplementForm.organizationTeacherPhone != "" && !/\b\d{7,12}\b/.test(this.addSupplementForm.organizationTeacherPhone)) {
+      } else if (this.addSupplementForm.organizationTeacherPhone != "" && !/\b\d{7,12}\b/.test(this.addSupplementForm.organizationTeacherPhone) && this.getInputShow('organizeTeacNum')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseSelectAndInputCorrectOrganizationTeacherPhoneNum') ? this.getStaticText('pleaseSelectAndInputCorrectOrganizationTeacherPhoneNum') : "请选择填写正确组织教师手机号"
@@ -833,13 +833,13 @@ export default {
         return false;
       } else if (this.addSupplementForm.email == "" ||
         (this.addSupplementForm.email != "" &&
-          this.addSupplementForm.email != this.addSupplementForm.email.match(/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/))) {
+          this.addSupplementForm.email != this.addSupplementForm.email.match(/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/)) && this.getInputShow('email')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseEnterEmail') ? this.getStaticText('pleaseEnterEmail') : "请填写邮箱"
         });
         return false;
-      } else if (this.addSupplementForm.zipCode != '' && !/^[1-9][0-9]{5}$/.test(this.addSupplementForm.zipCode)) {
+      } else if (this.addSupplementForm.zipCode != '' && !/^[1-9][0-9]{5}$/.test(this.addSupplementForm.zipCode) && this.getInputShow('zipCode')) {
         this.$message({
           type: "error",
           message: this.getStaticText('pleaseEnterCorrectPostcode') ? this.getStaticText('pleaseEnterCorrectPostcode') : "请填写正确邮编"
@@ -1111,6 +1111,13 @@ export default {
         return this.getStaticText('male') ? this.getStaticText('male') : "男";
       } else {
         return this.getStaticText('female') ? this.getStaticText('female') :"女";
+      }
+    },
+    getInputShow(name){
+      if (!this.CONFIG.inputShow) {
+        return true
+      }else{
+        return this.CONFIG.inputShow.indexOf(name) > -1
       }
     }
 
