@@ -155,7 +155,7 @@
       <ul class="work_bookdetail_04_combinate_main" >
         <li v-for="(list,key) in combinateProductLsit" v-if="key == 0" v-bind:key="key" :data-id="list.id">
           <!-- 图书本身 -->
-          <div class="work_bookdetail_04_combinate_book">
+          <div class="work_bookdetail_04_combinate_book" v-if="combinateProductCfg.showThisBook">
             <div class="work_bookdetail_04_combinate_image"><img :src="resourceDetail[keys['picSmall']] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
             <h4 class="work_bookdetail_04_combinate_name" :title="resourceDetail[keys['resName']]">{{resourceDetail[keys['resName']]}}</h4>
             <span class="work_bookdetail_04_combinate_price">价格 : {{ '￥' + Number(resourceDetail["memberPrice"]).toFixed(2)}}</span>
@@ -237,15 +237,15 @@
     <el-dialog v-if="CONFIG && CONFIG.showDialog" :title="CONFIG.display.buyCourse" :visible.sync="isdialogShow" class="work_bookdetail_04_dialog">
       <div class="work_bookdetail_04_dialog_courseInfor">
         <div class="work_bookdetail_04_dialog_courseInfor_img">
-          <img :src="resourceDetail.pub_picMiddle|| require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)">
+          <img :src="resourceDetail[keys.picMiddle]|| require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)">
         </div>
         <div class="work_bookdetail_04_dialog_courseInfor_content">
           <div class="work_bookdetail_04_dialog_courseInfor_content_title">{{resourceDetail[keys.resName]}}</div>
           <div class="work_bookdetail_04_dialog_courseInfor_content_staticTime">{{CONFIG.display.courseUseTime}}</div>
-          <div class="work_bookdetail_04_dialog_courseInfor_content_dynamicTime">2018年4月17日——2019年4月17日(暂无字段，写死)</div>
+          <div class="work_bookdetail_04_dialog_courseInfor_content_dynamicTime">{{resourceDetail[keys.startTime]}}——{{resourceDetail[keys.endTime]}}</div>
         </div>
-        <div class="work_bookdetail_04_dialog_courseInfor_price">{{resourceDetail[keys.memberPrice] | formatPriceNew}}</div>
-        <div class="work_bookdetail_04_dialog_courseInfor_needPay"><label>{{CONFIG.display.needPay}}</label>{{resourceDetail[keys.memberPrice] | formatPriceNew}}</div>
+        <div class="work_bookdetail_04_dialog_courseInfor_price">{{resourceDetail[keys.courseSalePrice] | formatPriceNew}}</div>
+        <div class="work_bookdetail_04_dialog_courseInfor_needPay"><label>{{CONFIG.display.needPay}}</label>{{resourceDetail[keys.courseSalePrice] | formatPriceNew}}</div>
       </div>
       <div class="work_bookdetail_04_dialog_payWays">
         <div class="work_bookdetail_04_dialog_payWays_static">{{CONFIG.display.payWay}}</div>
@@ -324,7 +324,8 @@ export default {
       Orderparams: {},  //提交订单的参数
       payMoney: "",  //需要支付的金额
       commitInfo: {},   //订单信息
-      buyBtnOpacity: true  //初次加载页面时按钮透明
+      buyBtnOpacity: true,  //初次加载页面时按钮透明
+      defaultSaleUrl:'' //纸书默认购买链接，天猫首页
     }
   },
   mounted () {
@@ -348,12 +349,14 @@ export default {
     }
     if (typeof (this.CONFIG.combinateProductCfg) != "undefined") { // 检查变量是否设置显示组合购买
       this.combinateProductCfg = this.CONFIG.combinateProductCfg;  // 根据配置初始化显示变量
+      this.showCombinateItem = this.combinateProductCfg && this.combinateProductCfg.showCombinateItem ? this.combinateProductCfg.showCombinateItem : 3; // 展示图书的配置值
     }
 
     this.addCartConfig = this.CONFIG.addCart;
     this.collectOrLikeConfig = this.CONFIG.collectOrLike;
     this.audioAttachmentConfig = this.CONFIG.getAudioAttachment;
     this.resType = urlQuery.resType; // 地址栏传当前资源类型
+    this.defaultSaleUrl=this.resourceDetailConfig.defaultSaleUrl;
     this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.resType && this.resourceDetailConfig[this.resType] ? this.resourceDetailConfig[this.resType].sysAdapter : this.resourceDetailConfig.sysAdapter, this.resType && this.resourceDetailConfig[this.resType] ? this.resourceDetailConfig[this.resType].typeAdapter : this.resourceDetailConfig.typeAdapter)));
     this.showPublicizeTopic = this.publicizeInfoConfig.showPublicize.length ? this.publicizeInfoConfig.showPublicize[0] : 0;
     // this.getResourceDetail();  //获取图书详情信息
@@ -407,7 +410,7 @@ export default {
         return false;
       }
       if(config.field == 'saleUrl'){
-        window.open(this.resourceDetail[this.keys[config.field]]);
+        window.open(this.resourceDetail[this.keys[config.field]] ? this.resourceDetail[this.keys[config.field]] : (this.defaultSaleUrl ? this.defaultSaleUrl : 'https://www.tmall.com/'));
         return false
       }
       if (config.method == 'toProbation') { // 执行免费试读操作
@@ -615,9 +618,9 @@ export default {
         resourceId: this.resourceDetail.pub_resource_id,
         resourceName: this.resourceDetail.pub_resource_name,
         resourceType: this.resourceDetail.prod_resource_type,
-        periodicalType: "", //传值空
+        periodicalType: this.CONFIG.zhentiContentType ? this.CONFIG.zhentiContentType : '', 
         periodicalYear: "", //传值空
-        periodicalMonth: "", //传值空
+        periodicalMonth: this.payMoney, //传值空。先写成售价，为了调延大直接购买课程，后期可能需要完善
         combinationId: "0",
       };
       this.temp = {
@@ -697,6 +700,7 @@ export default {
           this.isEb = this.resourceDetail.isEb;
           this.pub_comment_num = this.resourceDetail.pub_comment_num;
           this.payMoney = Number(this.resourceDetail[this.keys.courseSalePrice]);
+          
           if (this.publicizeInfoConfig && this.publicizeInfoConfig.isShowPublicize) {
             this.getPublicizeInfo(); // 获取图书相关信息
           }

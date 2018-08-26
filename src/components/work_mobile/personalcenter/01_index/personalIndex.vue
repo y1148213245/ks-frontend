@@ -8,7 +8,7 @@
         <!-- 我的资料 -->
         <div v-if="member && nav.tag == 'account'" class="work_mobile_personalcenter_01_account">
           <div class="work_mobile_personalcenter_01_account_img">
-            <img :src="member.picture" :onerror="'../assets/img/people.jpg'" alt="暂无头像">
+            <img :src="member.picture || require('@static/img/people.jpg')" alt="暂无头像">
           </div>
           <span class="work_mobile_personalcenter_01_account_name">{{member.nickName?member.nickName:member.loginName}}</span>
         </div>
@@ -23,7 +23,7 @@
 
         <!-- 已购 -->
         <div v-else-if="member && nav.tag == 'purchasedtwo'" class="work_mobile_personalcenter_01_purchasedtwocon">
-          <span class="work_mobile_personalcenter_01_purchasedtwo">({{boughtBooksList ? boughtBooksList.length : '0'}})</span>
+          <span class="work_mobile_personalcenter_01_purchasedtwo">({{totalPurchased}})</span>
         </div>
         <!-- END 已购 -->
 
@@ -64,6 +64,7 @@ export default {
       pageIndex: "1",  // 页码 从 1 开始
       pageSize: "15",  // 每页显示个数
       boughtBooksList: [],  //已购图书列表
+      totalPurchased: 0, // 已购商品总数
       collectionlist: [],  //收藏图书列表
       memberNew: {}  //用于存放通过接口获取的用户信息(实时的数据)
     };
@@ -121,6 +122,7 @@ export default {
       Get(CONFIG.BASE_URL + this.CONFIG.getBoughtBooks.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + params.pageIndex + '&pageSize=' + params.pageSize + '&type=' + params.type + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&productType=' + params.productType + '&status=' + params.status).then((resp) => {
         let res = resp.data;
         if (res.result == '1' && res.data.length > 0) {
+          this.totalPurchased = res.totalCount; // 已购商品总数
           this.boughtBooksList = this.boughtBooksList.concat(res.data);
         } else {
           this.boughtBooksList = [];

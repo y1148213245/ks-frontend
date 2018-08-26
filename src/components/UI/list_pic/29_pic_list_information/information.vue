@@ -304,7 +304,23 @@ export default {
     getResourceLists (pagingParams) {
       // 获取资源列表
       let paramsObj = Object.assign({}, this.resourceListsConfig.params);
-      paramsObj.searchText = this.searchText; //检索
+      let self = this;
+
+      if(this.CONFIG && this.CONFIG.search && this.CONFIG.search.isLikeSearch){
+        if(this.CONFIG.search.searchField && this.CONFIG.search.searchField.length > 0){
+          let arr = [];
+          this.CONFIG.search.searchField.forEach(function(item,index){
+            var obj = item +":*" + self.searchText + "*";
+            arr.push(obj);
+          });
+          paramsObj.searchText = arr.join("OR");
+        }else{
+          paramsObj.searchText = this.searchText;
+        }
+      }else{
+        paramsObj.searchText = this.searchText; //检索
+      }
+      
       paramsObj.pageSize = this.resourceListsConfig.maxNum
         ? this.resourceListsConfig.maxNum + ""
         : "15";
@@ -357,7 +373,7 @@ export default {
 
         // 读取站点ID(by zrn)
         if(item.hasOwnProperty("pub_site_id")){
-          item.pub_site_id = CONFIG.SITE_CONFIG.siteId;
+          item.pub_site_id = item.pub_site_id ? item.pub_site_id: CONFIG.SITE_CONFIG.siteId;
         }
 
         // 稿件作者

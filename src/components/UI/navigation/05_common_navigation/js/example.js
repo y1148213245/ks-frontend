@@ -44,7 +44,7 @@ navigation: {
       // showColumnArray: [], // 过滤显示的栏目 （并不是所有的栏目都应该显示）过滤显示哪个栏目 比如：showColumnArray: [307, 308]
       directLink: { // 点击左侧导航直接跳转链接 因为点击左侧不同导航时右侧内容的内容显示不一样
         switchFlag: false, // 跳转功能开关
-        dierctWay: '_blank', // 跳转窗口的方式 _blank代表新窗口 _self代表当前窗口
+        dierctWay: '_self', // 跳转窗口的方式 _blank代表新窗口 _self代表当前窗口
         directRules: { // 跳转链接根据栏目id不同而不同
           '1118': '../pages/newslistsnxw.html?colId=',
           '1119': '../pages/newslistyjxw.html?colId=',
@@ -94,6 +94,7 @@ const dev = {
         },
         "directLink": {
           "switchFlag": false,
+          "dierctWay": '_self', 
           "directRules": {
             "1118": "../pages/newslistsnxw.html?colId=",
             "1119": "../pages/newslistyjxw.html?colId=",
@@ -144,7 +145,7 @@ const prod = {
         },
         "directLink": {
           "switchFlag": false,
-          dierctWay: '_blank', // 跳转窗口的方式 _blank代表新窗口 _self代表当前窗口
+          dierctWay: '_self', // 跳转窗口的方式 _blank代表新窗口 _self代表当前窗口
           "directRules": {
             "1118": "../pages/newslistsnxw.html?colId=",
             "1119": "../pages/newslistyjxw.html?colId=",

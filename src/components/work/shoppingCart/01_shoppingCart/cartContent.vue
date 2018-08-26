@@ -390,6 +390,7 @@
           </div>
           <div class="payAmount">
             <span>{{getStaticText('actuallyPaid') ? getStaticText('actuallyPaid') : '实付金额：'}}</span>
+            <!-- 全部都是电子书并且不需要发票 这个时候不要配送费 -->
             <span class="payTotalAmount"
                   v-if="allEbook === true && needInvoice === '0'">{{formatMoney(orderDetail.bookTotalMoney - orderDetail.bookSaveMoney + orderDetail.ebookTotalMoney - rmbCoin - orderDetail.ebookSaveMoney)}}</span>
             <span class="payTotalAmount"
@@ -1295,6 +1296,12 @@
         axios.get(CONFIG.BASE_URL + 'order/getDeliveryFee.do' + '?expenseTemp=' + params.expenseTemp + '&city=' + encodeURI(params.city) + '&weight=' + params.weight).then((response) => {
           if(response.data && response.data.result == '1') { // 请求成功
             this.selectedDelivery.deliveryPrice = Number(response.data.data);
+            /* 运费随物流模板实时变化 那每次重新计算的时候都要重新计算订单实付总额 防止支付负数 */
+            var bookPrice = this.orderDetail.bookTotalMoney - this.orderDetail.bookSaveMoney + this.orderDetail.ebookTotalMoney - this.orderDetail.ebookSaveMoney;// 商品实付总价
+            if (Number(bookPrice + this.selectedDelivery.deliveryPrice - this.rmbCoin) < 0) { // 商品实付总价 + 运费 - 虚拟币抵扣 < 0
+              this.downloadCoin = bookPrice + this.selectedDelivery.deliveryPrice; // 前端页面显示的下载币数值
+              this.$store.state.shoppingcart.rmbCoin = bookPrice + this.selectedDelivery.deliveryPrice;
+            }
           }
         })
       },

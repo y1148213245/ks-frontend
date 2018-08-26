@@ -63,6 +63,11 @@
           </div>
 
         </div>
+        <div class="ui_information_01-news_faceImg" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('faceimg') !== -1 ? true : false">
+          <div class="ui_information_01-news_faceImg_container">
+            <img :src="information[keys.img] || require('@static/img/defaultCover.png')"/>
+          </div>
+        </div>
         <div class="ui_information_01-news_nr" v-html="information[keys.content]"></div>
         <!-- <div class="ui_information_01-news_infoImg">
           <img :src="information[keys.picture]" onload="DrawImage(this,940,455)">

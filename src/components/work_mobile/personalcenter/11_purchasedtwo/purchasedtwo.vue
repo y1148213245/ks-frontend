@@ -9,9 +9,12 @@
       </div>
       <div class="work_mobile_personalcenter_11_book" v-if="0 == currentIndex">
         <div class="work_mobile_personalcenter_11_select">
-          <select v-model="selected">
+          <!-- <select v-model="selected">
             <option v-for="option in options" :value="option.value">{{option.text}}</option>
-          </select>
+          </select> -->
+          <span v-for="(option, index) in options" :key="index" v-bind="{class: 'work_mobile_personalcenter_11_select' +  index }" @click="selected = option.value">
+            {{option.text}}
+          </span>
         </div>
         <div v-if="selected == '1'" class="work_mobile_personalcenter_11_book-list">
           <van-loading color="black" v-if="isLoading"/>

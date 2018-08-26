@@ -89,6 +89,7 @@ const dev = {
     work_bookdetail_04: {
       modulename: {
         showDialog: false,  //控制购买按钮是否显示
+        zhentiContentType: '123',  //真题页面需要的配置
         display: {
           courseUseTime: "使用期限：",
           buyCourse: "课程购买",
@@ -113,6 +114,7 @@ const dev = {
           },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "bookAdapter", // 类型字段
+          defaultSaleUrl:"https://www.tmall.com/",
           complicatedItem: {
             "one": [{
               name: '',
@@ -271,6 +273,8 @@ const dev = {
           "show":true,  // 是否显示组合购买
           "title":"组合购买",   // 组合购买数据的标题名称
           "lastBtn":"加入购物车",  // 最后一个按钮显示内容
+          "showThisBook":true,  //是否展示本图书
+          "showCombinateItem":3,  //展示图书个数
           "addCart":{
             "url":"cart/addCombinateProductToCart.do",
             "params":{
@@ -302,6 +306,7 @@ const prod = {
     work_bookdetail_04: {
       modulename: {
         showDialog: false,  //控制购买按钮是否显示
+        zhentiContentType: '123',  //真题页面需要的配置
         display: {
           courseUseTime: "使用期限：",
           buyCourse: "课程购买",
@@ -326,6 +331,7 @@ const prod = {
           },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "bookAdapter", // 类型字段
+          defaultSaleUrl:"https://www.tmall.com/",
           complicatedItem: {
             "one": [{
               name: '',
@@ -484,6 +490,8 @@ const prod = {
           "show":true,  // 是否显示组合购买
           "title":"组合购买",   // 组合购买数据的标题名称
           "lastBtn":"加入购物车",  // 最后一个按钮显示内容
+          "showThisBook":true,  //是否展示本图书
+          "showCombinateItem":3,  //展示图书个数
           "addCart":{
             "url":"cart/addCombinateProductToCart.do",
             "params":{

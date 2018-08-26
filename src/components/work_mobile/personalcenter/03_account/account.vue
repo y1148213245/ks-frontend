@@ -14,7 +14,7 @@
         <van-cell class="work_mobile_personalcenter_03_cell" :class="'work_mobile_personalcenter_03_' + nav.tag" v-for="(nav, index) in showLists" :key="index" :title="nav.title" :is-link="nav.hasLink" @click="enterEditModule(nav)">
           <!-- 头像在微信端不可更改，未设置头像用户显示默认头像，用第三方账号登录直接显示第三方账号头像 -->
           <div class="work_mobile_personalcenter_03_picturecon" v-if="nav.tag == 'picture'">
-            <img :src="getMember[nav.tag]" :onerror="'../assets/img/people.jpg'" :alt="display.noPic || '暂无头像'" />
+            <img :src="getMember[nav.tag]||require('@static/img/people.jpg')"  :alt="display.noPic || '暂无头像'" />
           </div>
           <div class="work_mobile_personalcenter_03_other" v-else>
             <span v-if="nav.tag == 'password'"></span>

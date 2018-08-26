@@ -161,6 +161,63 @@ const dev = {
             pageIndex:"1",            //页码
             pageSize:"10"               //每页显示
           }
+        },
+        'learning': {
+          tabListShow: [{
+            label: '音频',
+            name: 'audio',
+            productType: '183'
+          }, {
+            label: '视频',
+            name: 'video',
+            productType: ''
+          }, {
+            label: '课件',
+            name: 'courseware',
+            productType: ''
+          }, {
+            label: '试题',
+            name: 'test',
+            productType: ''
+          }],
+          staticText: {
+            noData: "暂无数据"
+          },
+          sysAdapter: "sykAdapter", // 系统字段
+          typeAdapter: "", // 类型字段
+          getResourceLists: {
+            url: "/user/getBookShelfList.do",
+            params: {
+              loginName:'', //用户名
+              pageIndex:'1', //页码
+              pageNo: "1",
+              pageSize:'10', //每页显示的页数
+              type:'2',    //类型2：购买
+              siteId:'', // 站点id
+              productType:'', //商品类型电子期刊:periodical
+              status:'1'  // 状态1:加入书架0：未加入书架
+            },
+            complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
+              name: 'img', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
+              field: 'productMidPic', // 取什么字段
+              display: '', // 固定显示内容是什么
+              method: 'toDetail', // 方法名 要在下面配置
+            }, {
+              name: 'button',
+              field: 'productName',
+              display: '',
+              method: 'toDetail', // 方法名 要在下面配置
+            }]
+          },
+          "toDetail": {
+            "url": "../pages/videoDetail.html",
+            "dataKeys": {
+              "pubId": "pubId",
+              "resType": "productResType"
+            },
+            "fixedKeys": {}
+          },
+          pageSizes: [10,20,50,100],
         }
       }
     }
@@ -239,6 +296,63 @@ const prod = {
           doclibCode:"",              //文档库码  必须
           pageIndex:"1",            //页码
           pageSize:"10"               //每页显示
+        },
+        'learning': {
+          tabListShow: [{
+            label: '音频',
+            name: 'audio',
+            productType: '183'
+          }, {
+            label: '视频',
+            name: 'video',
+            productType: ''
+          }, {
+            label: '课件',
+            name: 'courseware',
+            productType: ''
+          }, {
+            label: '试题',
+            name: 'test',
+            productType: ''
+          }],
+          staticText: {
+            noData: "暂无数据"
+          },
+          sysAdapter: "sykAdapter", // 系统字段
+          typeAdapter: "", // 类型字段
+          getResourceLists: {
+            url: "/user/getBookShelfList.do",
+            params: {
+              loginName:'', //用户名
+              pageIndex:'1', //页码
+              pageNo: "1",
+              pageSize:'10', //每页显示的页数
+              type:'2',    //类型2：购买
+              siteId:'', // 站点id
+              productType:'', //商品类型电子期刊:periodical
+              status:'1'  // 状态1:加入书架0：未加入书架
+            },
+            complicatedItem: [{ // 需要有固定显示内容的复杂项 && 单纯显示字段值的简单项
+              name: 'img', // 名称 用来区分是简单项还是复杂项 （【新增的button包括了title在内】 button 自定义、 price 价格、 time 时间、 img 图片都属于复杂项，需要填写name的值）
+              field: 'productMidPic', // 取什么字段
+              display: '', // 固定显示内容是什么
+              method: 'toDetail', // 方法名 要在下面配置
+            }, {
+              name: 'button',
+              field: 'productName',
+              display: '',
+              method: 'toDetail', // 方法名 要在下面配置
+            }]
+          },
+          "toDetail": {
+            "url": "../pages/videoDetail.html",
+            "dataKeys": {
+              "pubId": "pubId",
+              "resType": "productResType"
+            },
+            "fixedKeys": {}
+          },
+          pageSizes: [10,20,50,100],
         }
       }
     }

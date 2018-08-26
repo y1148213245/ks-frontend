@@ -30,6 +30,7 @@ import message from "./components/personalCenter_message";
 import comment from "./components/personalCenter_comment";
 import feedback from "./components/personalCenter_feedback";
 import samplebook from "./components/personalCenter_samplebook";
+import learning from "./components/personalCenter_learning"
 
 export default {
   name: "work_personalcenter_01",
@@ -113,6 +114,7 @@ export default {
     comment,        //我的评论
     feedback,       //反馈建议
     samplebook,     //样书申领
+    learning       //学习中心
   }
 };
 </script>

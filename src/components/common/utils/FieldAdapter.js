@@ -103,9 +103,15 @@ var FIELD_ADAPTER = {
     sykAdapter: { // 索引库字段
         systemAdapter: { // 系统字段/顶层字段
             id: "id",
+            pubId: "pubId",
             isCollect: "isCollect",
             isLike: "isLike",
             productId: "productId",
+            productName: "productName",
+            productSmallPic: "smallPic",
+            productMidPic: "midPic",
+            productBigPic: "bigPic",
+            productResType: "resourseType",
             colId: "pub_col_id",
             colName: "pub_col_name",
             resId: "pub_resource_id",
@@ -134,7 +140,9 @@ var FIELD_ADAPTER = {
             fileRecordID: 'fileRecordID',
             isbuy: "isBuy",
             lowInventory: "lowInventory",
-            inventory: "inventory"
+            inventory: "inventory",
+            startTime: "startTime",
+            endTime: "endTime"
 
         },
         bookAdapter: { // 图书
@@ -325,10 +333,13 @@ var FIELD_ADAPTER = {
           lecturer: "YINPINZU_LECTURER", // 讲师
           agPicNum: "YINPINZU_PIC_NUM",
           agPrice: "YINPINZU_PRICE", // 原价
+          coursePrice: "YINPINZU_PRICE", // 原价
           agSalePrice: "YINPINZU_SALE_PRICE", // 售价
+          courseSalePrice: "YINPINZU_SALE_PRICE", // 售价，视频组，音频组，资料组等的salePrice命名要相同，又不能与系统中的名称冲突。
           agAuthor: "YINPINZU_SYS_AUTHORS",
           agCreated: "YINPINZU_SYS_CREATED",
-          agSysTopic: "YINPINZU_SYS_TOPIC"
+          agSysTopic: "YINPINZU_SYS_TOPIC",
+          courseTitle: "YINPINZU_SYS_TOPIC"
         },
         columnAdapter: { // 栏目
             colId: "id", // 兼容宗教
@@ -358,6 +369,7 @@ var FIELD_ADAPTER = {
             magCycle: "MAGAZINE_MAG_CYCLE",
             pageNum: "MAGAZINE_PAGE_NUM",
             price: "MAGAZINE_PRICE",
+            ebPrice: "MAGAZINE_EBPRICE",
             format: "MAGAZINE_FORMAT",
             textPaper: "MAGAZINE_TEXT_PAPER",
             color: "MAGAZINE_COLOR",
@@ -499,6 +511,7 @@ var FIELD_ADAPTER = {
         },
         ziliaozu: { // 资料组
           sysTopic: 'ZILIAOZU_SYS_TOPIC',
+          courseTitle: "ZILIAOZU_SYS_TOPIC",
           cat: 'ZILIAOZU_CAT1',
           description: 'ZILIAOZU_DESCRIPTION',
           keywords: 'ZILIAOZU_KEYWORDS',
@@ -511,6 +524,7 @@ var FIELD_ADAPTER = {
           coursesNumber: 'ZILIAOZU_COURSES_NUMBER',
           coursesDuration: 'ZILIAOZU_COURSES_DURATION',
           resPrice: 'ZILIAOZU_PRICE',
+          coursePrice: 'ZILIAOZU_PRICE',
           resSalePrice: 'ZILIAOZU_SALE_PRICE',
           lecturer: 'ZILIAOZU_LECTURER',
           courseLength: 'ZILIAOZU_COURSE_LENGTH',
@@ -574,11 +588,14 @@ var FIELD_ADAPTER = {
         },
         signNameAdapter:{ // 报名库
             phone: "PHONE",  // 电话
-            sysTopic: "SYS_TOPIC",  // 作者
+            email:"EMAIL",  //邮箱
+            sysTopic: "SYS_TOPIC",  // 作者 //报名人
+            sex:"SEX",    // 性别
+            birth:"BIRTH",   // 出生年月
             address: "WORK_ADDRESS",  // 工作单位
             activityId: "ACTIVITYID",  // 活动id
             activities: "ACTIVITIES",   // 活动名称
-            activityLibId: "ACTIVITYLIBID"  // 活动库id
+            activityLibId: "ACTIVITYLIBID",  // 活动库id
         },
         askAnswerAdapter:{ // 问答库
             queContent: "QUE_CONTENT",
