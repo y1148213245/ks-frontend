@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-07-03 10:55:04 
- * @Last Modified by: song
- * @Last Modified time: 2018-07-04 09:46:46
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-08-24 15:47:54
  * 视频播放组件 列表是轮播图形式的
  */
 
@@ -148,6 +148,9 @@ const prod = {
         },
         "staticText": {
           "noelseTips": '没有下一个视1111频啦'
+        },
+        event:{
+          emitDetail_name:'resourceDetailLoaded'
         }
       },
     }

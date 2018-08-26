@@ -118,6 +118,10 @@ var prod = {
         toAddReviewName:"评论",
         toAddReviewUrl:'../pages/reviewPublish.html'
       },
+      resourceDetail:{
+        sysAdapter:'sykAdapter',
+        typeAdapter:'bookAdapter'
+      },
       staticText:{
         comments:"评论",
         noHeadPicture:"暂无头像",

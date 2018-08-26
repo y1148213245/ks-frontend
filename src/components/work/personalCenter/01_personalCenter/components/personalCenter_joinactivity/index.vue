@@ -1,7 +1,7 @@
 <template>
   <section class="personalcenter_join_activity">
     <div v-show="!enrolman">
-      <el-dropdown @command="handleCommand" style="float:right;margin-right:30px;">
+      <el-dropdown @command="handleCommand"  v-if="activityList.length > 0 && activityList[0].SYS_CURRENTSTATUS" style="float:right;margin-right:30px;">
         <span class="el-dropdown-link">
           审核状态筛选
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -19,11 +19,11 @@
 
       <el-button type="primary" style="margin:0px 0 20px 0;" @click="enrolman = true">管理报名人</el-button>
       <el-table :data="activityList" style="width: 100%">
-        <el-table-column align="center" prop="ACTIVITY_DETAIL.SYS_TOPIC" label="参加活动" width="180">
+        <el-table-column v-if="activityList.length > 0 && activityList[0].ACTIVITY_DETAIL && activityList[0].ACTIVITY_DETAIL.SYS_TOPIC" align="center" prop="ACTIVITY_DETAIL.SYS_TOPIC" label="参加活动" width="180">
         </el-table-column>
-        <el-table-column align="center" prop="ACTIVITY_DETAIL.END_TIMESTAMPNEW" label="活动状态" :formatter="activityState" width="100">
+        <el-table-column v-if="activityList.length > 0 && activityList[0].ACTIVITY_DETAIL && activityList[0].ACTIVITY_DETAIL.END_TIMESTAMPNEW" align="center" prop="ACTIVITY_DETAIL.END_TIMESTAMPNEW" label="活动状态" :formatter="activityState" width="100">
         </el-table-column>
-        <el-table-column align="center" prop="SYS_CURRENTSTATUS" label="审核状态" :formatter="formateReviewStatus" width="100">
+        <el-table-column v-if="activityList.length > 0 && activityList[0].SYS_CURRENTSTATUS" align="center" prop="SYS_CURRENTSTATUS" label="审核状态" :formatter="formateReviewStatus" width="100">
         </el-table-column>
         <el-table-column align="center" prop="SYS_TOPIC" label="作品标题" width="180">
         </el-table-column>
@@ -37,7 +37,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="190" fixed="right">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.$index, scope.row)" :disabled="scope.row.SYS_CURRENTSTATUS=='未审核'||scope.row.SYS_CURRENTSTATUS=='未通过审核'" size="small">查看作品</el-button>
+            <el-button v-if="scope.row.SYS_CURRENTSTATUS" @click="handleEdit(scope.$index, scope.row)" :disabled="scope.row.SYS_CURRENTSTATUS=='未审核'|| scope.row.SYS_CURRENTSTATUS=='未通过审核'" size="small">查看作品</el-button>
             <!-- <el-switch
               v-model="isHide"
               active-text="按月付费"
@@ -465,6 +465,9 @@ export default {
       if (date == null) {
         return "评分中";
       }
+    },
+    colShowFilter(property){
+
     }
   }
 };

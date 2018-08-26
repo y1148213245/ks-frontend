@@ -5,7 +5,9 @@ const name = component.name; // 组件标签名
 
 const title = "图片详情组件"; // 组件title
 
-const description = `图片详情组件`; // 组件描述信息
+const description = `图片详情组件
+18/08/24 新增详情加载完成事件,默认事件名为'resourceDetailLoaded'
+`; // 组件描述信息
 
 const dev = {
     information: {
@@ -174,7 +176,8 @@ const prod = {
                         display: '图片说明：',
                         method: '',
                         className: ""
-                    }]
+                    }],
+                    event_loadedName:'resourceDetailLoaded'//详情加载完触发的事件名
                 }
             }
         }

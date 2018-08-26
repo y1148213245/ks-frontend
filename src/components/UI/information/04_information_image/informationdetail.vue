@@ -124,6 +124,9 @@ export default {
         let datas = rep.data;
         if (rep.status == 200 && datas.data) {
           this.resourceDetail = datas.data;
+          /* 新增详情加载完成事件 */
+          let eventName = this.CONFIG.getResourceDetail.event_loadedName ? this.CONFIG.getResourceDetail.event_loadedName : 'resourceDetailLoaded'
+          this.$bus.emit(eventName,this.resourceDetail)
         }
       });
     }

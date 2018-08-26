@@ -192,7 +192,8 @@ var FIELD_ADAPTER = {
             activityList: "activityList",
             bookFreeDownLoadPath: "bookFreeDownLoadPath",
             bookdownloadpath: "bookDownLoadPath",
-            saleUrl:"BOOK_SALE_URL"
+            saleUrl:"BOOK_SALE_URL",
+            isComment:"BOOK_IS_COMMENT"//是否可评论
         },
         newsAdapter: { // 资讯
             documentId: "information_SYS_DOCUMENTID",
@@ -275,6 +276,7 @@ var FIELD_ADAPTER = {
             price: "VIDEO-MEDIA_PRICE",
             resourceId: "VIDEO-MEDIA_RESOURCEID",
             video: "video",
+            isComment:"VIDEO-MEDIA_IS_COMMENT",
             courseNumber: "GROUP_VIDEO_COURSES_NUMBER",
             courseDuration: "GROUP_VIDEO_COURSES_DURATION",
             coursePrice: "GROUP_VIDEO_PRICE", // 原价
@@ -291,6 +293,7 @@ var FIELD_ADAPTER = {
           courseTitle: "GROUP_VIDEO_SYS_TOPIC",
           lecturer: "GROUP_VIDEO_LECTURER", // 讲师
           description: "GROUP_VIDEO_DESCRIPTION", // 描述
+          isComment:"GROUP_VIDEO_IS_COMMENT",
         },
         audioAdapter: { // 音频
             fileSize: "AUDIO-MEDIA_FILE_SIZE",
@@ -383,7 +386,8 @@ var FIELD_ADAPTER = {
             magCascadId: "MAGAZINE_MAG_CASCADID",
             departId: "MAGAZINE_DEPARTID",
             departCascadId: "MAGAZINE_DEPART_CASCADID",
-            magZg: "MAGAZINE_MAG_ZG"  //主管主办
+            magZg: "MAGAZINE_MAG_ZG",  //主管主办
+            isComment: "MAGAZINE_IS_COMMENT"
         },
         productArticleAdapter: { // 稿件
             sysTopic: "PRODUCT-ARTICLE_SYS_TOPIC",
@@ -430,7 +434,8 @@ var FIELD_ADAPTER = {
             picCat: "MATERIAL-PIC_PIC_CAT",
             pubTime: "pub_created",
             actTime: "MATERIAL-PIC_ACT_TIME",
-            actSpot: "MATERIAL-PIC_ACT_SPOT"
+            actSpot: "MATERIAL-PIC_ACT_SPOT",
+            isComment:"MATERIAL-PIC_IS_COMMENT"//是否可以评论
         },
         talentAdapter: { // 人才招聘
             coverId: "COVERID",

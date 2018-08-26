@@ -1,8 +1,8 @@
 /*
  * @Author: song 
  * @Date: 2018-07-03 10:52:51 
- * @Last Modified by: song
- * @Last Modified time: 2018-08-09 16:58:51
+ * @Last Modified by: yan.chaoming
+ * @Last Modified time: 2018-08-25 10:35:00
  * 视频播放组件 列表是轮播图形式的
  * TODO: 轮播的分页怎么办
  */
@@ -40,7 +40,7 @@
     <!-- END 音频播放器 -->
 
     <!-- 系列课程列表 -->
-    <div class="work_videoplay_01_myswipercon_container">
+    <div class="work_videoplay_01_myswipercon_container" v-show="videoLists && videoLists.length>0">
       <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
         <div class="work_videoplay_01_myswiperwra swiper-wrapper">
           <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-text="item[keys.resName]" @click="toPlayVideo(item,index)" :class="{work_videoplay_01_activevideo: curShowIndex == index}"></div>
@@ -189,6 +189,7 @@ export default {
         this.curVideoObj = item;
         this.initDPlayer();
       }
+      this.emitDetailEvent(item)
     },
     initDPlayer () { // 初始化视频播放器
       this.curDPlayer = new DPlayer({ // 播放器
@@ -219,6 +220,7 @@ export default {
         let datas = rep.data;
         if (datas.success && datas.data) {
           this.curVideoObj = datas.data;
+          this.emitDetailEvent(this.curVideoObj)
         }
       })
     },
@@ -232,10 +234,16 @@ export default {
           if(attachDetail['video']){
             this.curAttachObj = attachDetail['video'][0];   //初始化视频播放器需要的附件对象
             this.initDPlayer();
+            this.emitDetailEvent(this.curAttachObj)
           }
         }
       })
+    },
+    emitDetailEvent(detail){
+      let eventName = this.CONFIG.event ? this.CONFIG.event.emitDetail_name : 'resourceDetailLoaded'
+      this.$bus.emit(eventName,detail)
     }
+  
   }
 }
 </script>

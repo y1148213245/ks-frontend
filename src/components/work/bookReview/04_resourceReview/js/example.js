@@ -12,13 +12,20 @@ const dev = {
 const prod = {
   bookreview: {
     work_bookreview_04: {
-      event:{
-        listenDetailLoadedName:'detailLoaded',
-
+      event: {
+        listenDetailLoadedName: 'resourceDetailLoaded',
+        detailAdapter: {
+          sysAdapter: 'sykAdapter',
+          typeAdapter: 'bookAdapter'
+        }
       },
-      url: 'spc/cms/publish/list.do',
-      keys: {},
-      eventName_loadDate: 'loadSearchResult',
+      addComment: {
+        url: 'comment/addComment.do',
+        params: {
+          parentId: "0",
+          type: "1"
+        }
+      }
     }
   }
 };

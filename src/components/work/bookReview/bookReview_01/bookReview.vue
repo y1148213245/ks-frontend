@@ -89,6 +89,7 @@ export default {
       resourceName:'',
       resourseType:'',
       resourceDetail:{},
+      resourceDetailKeys:'',
       isDiscuss:'否',  //是否能评论 (图书详情中数据)
       queryConfigAddReview:0, //是否能评论完了 0可以 1不行
       nowUserLikeObj:{}
@@ -114,6 +115,14 @@ export default {
   },
   created: function () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].bookreview.bookreview_01;
+    let resourceDetailConfig = this.CONFIG.resourceDetail ? this.CONFIG.resourceDetail : {
+        sysAdapter:'sykAdapter',
+        typeAdapter:'bookAdapter'
+      }
+    this.resourceDetailKeys = getFieldAdapter(
+        resourceDetailConfig.sysAdapter,
+        resourceDetailConfig.typeAdapter
+      );
   },
   computed: {
     ...mapGetters({
@@ -137,7 +146,7 @@ export default {
           let datas = rep.data;
           if (rep.status == 200 && datas.data) {
             this.resourceDetail = datas.data;
-            this.isDiscuss = this.resourceDetail.BOOK_IS_COMMENT;
+            this.isDiscuss = (this.resourceDetailKeys.isComment && this.resourceDetail.hasOwnProperty(this.resourceDetailKeys.isComment)) ? this.resourceDetail[this.resourceDetailKeys.isComment] : '是' ;
             this.queryComment();   //获取回复列表
           }
         });
