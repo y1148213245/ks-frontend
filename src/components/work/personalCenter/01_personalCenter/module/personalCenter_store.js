@@ -61,6 +61,7 @@ var actions = {
   updateCurrentShow({
     commit
   }, param) {
+    commit("setCurrentShow", '');
     commit("setCurrentShow", param);
   },
   /*查询账户信息*/

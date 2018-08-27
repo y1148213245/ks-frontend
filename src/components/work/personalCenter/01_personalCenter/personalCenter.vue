@@ -6,7 +6,7 @@
     <div class="center_container">
       <vnav :navs="navs" :current-show-index="currentShowIndex" class="personalcenter_nav"></vnav>
       <h1 class="center_container-title">{{currentShow.title}}</h1>
-      <component :is="currentShow.tag" :detail-url="detailUrl" :show_star="show_star" :parent-config="CONFIG.subConfig" class="personalcenter_section"></component>
+      <component ref="currentComponent" v-if="updateContrl" :is="currentShow.tag" :detail-url="detailUrl" :show_star="show_star" :parent-config="CONFIG.subConfig" class="personalcenter_section"></component>
     </div>
   </div>
 </template>
@@ -62,7 +62,8 @@ export default {
     return {
       CONFIG: null,
       currentShowIndex: "0",
-      navs: null
+      navs: null,
+      updateContrl:true
     };
   },
   computed: {
@@ -97,6 +98,14 @@ export default {
         params = {};
       }
       return params;
+    }
+  },
+  watch:{
+    currentShow(nv,ov){
+      this.updateContrl = false
+      this.$nextTick(()=>{
+       this.updateContrl = true
+      })
     }
   },
   components: {
