@@ -75,7 +75,9 @@ export default {
     };
   },
   created(){
-    this.CONFIG = this.parentConfig.nav;
+    if (this.parentConfig.nav) {
+      this.CONFIG = this.parentConfig.nav;
+    }
   },
   methods: {
     ...mapActions("personalCenter/", {

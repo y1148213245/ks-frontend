@@ -4,7 +4,7 @@
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
     </el-tooltip> -->
     <div class="center_container">
-      <vnav :navs="navs" :current-show-index="currentShowIndex" class="personalcenter_nav"></vnav>
+      <vnav :navs="navs" :parent-config="CONFIG.subConfig" :current-show-index="currentShowIndex" class="personalcenter_nav"></vnav>
       <h1 class="center_container-title">{{currentShow.title}}</h1>
       <component ref="currentComponent" v-if="updateContrl" :is="currentShow.tag" :detail-url="detailUrl" :show_star="show_star" :parent-config="CONFIG.subConfig" class="personalcenter_section"></component>
     </div>
