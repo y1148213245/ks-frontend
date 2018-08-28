@@ -76,7 +76,7 @@
               <span v-if="isCountDown">{{time}}s</span>
             </el-button>
             <!-- 提交按钮 -->
-            <el-button v-if="item.type=== 'button'" type="primary" @click="submitForm()">{{item.name}}</el-button>
+            <el-button v-if="item.type=== 'button'" type="primary" @click="submitForm()" :disabled="disabled">{{item.name}}</el-button>
             
           </el-form-item>
       </el-form>
@@ -134,6 +134,7 @@ export default {
           { validator: ValidateRules.validateEmail, trigger: "blur" }
         ]
       },
+      disabled: false,  // 避免提交按钮重复点击
       options: [], //所有下拉框的选项数组
       sendTxt: "", //发送验证码按钮的显示文字
       imgObj: null, // 图片上传配置,
@@ -407,14 +408,22 @@ export default {
           if("ACTIVITYLIBID" in paramsObj.metaMap){
             paramsObj.metaMap["ACTIVITYLIBID"] = this.activityLibId ? this.activityLibId : paramsObj.metaMap["ACTIVITYLIBID"];
           }
-          
+
+          let self = this;
 
           Post(CONFIG.BASE_URL + this.CONFIG.submit.url, paramsObj).then(
             res => {
               let datas = res.data;
               if (datas.status == "success" && datas.data) {
-                // window.open(this.CONFIG.toUrl);
-                window.location.href = this.CONFIG.toUrl;
+                this.disabled = true;  // 提交成功后按钮不可点击
+                let msg = this.$message({
+                  type: "success",
+                  message: "提交成功",
+                  showClose: true,
+                  onClose: function(){
+                    window.location.href = self.CONFIG.toUrl ? self.CONFIG.toUrl : "../pages/index.html";
+                  }
+                });
               } else {
                 this.$message({
                   type: "warning",

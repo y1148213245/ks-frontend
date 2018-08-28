@@ -1284,7 +1284,7 @@
         this.orderList.map((item) => {
           if(item.list.length>0) {
             item.list.map((subItem) => {
-              totalWeight += Number(subItem.weight);
+              totalWeight += Number(subItem.weight) * subItem.nums;
             })
           }
         })
@@ -1596,6 +1596,9 @@
                         orderCode;
                       loadingTag.close();
                     });
+                } else {
+                  _this.$alert("请选择支付方式");
+                  return false
                 }
                 window.history.pushState(
                   null,

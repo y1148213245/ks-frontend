@@ -18,6 +18,7 @@
           </div>
           <div class="work_mobile_personalcenter_03_other" v-else>
             <span v-if="nav.tag == 'password'"></span>
+            <span v-else-if="nav.tag == 'loginName'">{{getMember.nickName || getMember.loginName || display.noData || '暂无数据'}} </span>
             <span v-else-if="nav.tag == 'nickName'">{{getMember[nav.tag] || getMember.loginName || display.noData || '暂无数据'}} </span>
             <span v-else> {{getMember[nav.tag] || display.noData || '暂无数据'}} </span>
           </div>
@@ -540,29 +541,50 @@ export default {
     },
     getMobileCode(num) {
       if (num) {
-        let params = Object.assign({}, this.CONFIG.sendMobileCodeInfo.params);
-        params.mobileNum = num;
+        //首先验证手机号是否可用
+        let params = Object.assign({}, this.CONFIG.checkMobileCodeInfo.params);
+        params.checkText = num;
         Get(
           CONFIG.BASE_URL +
-            this.CONFIG.sendMobileCodeInfo.url +
-            "?mobileNum=" +
-            params.mobileNum
+            this.CONFIG.checkMobileCodeInfo.url +
+            "?checkText=" +
+            params.checkText +
+            "&checkType=" +
+            params.checkType
         ).then(resp => {
           let res = resp.data;
-          if (res.result == "1") {
-            let msg = "验证码发送成功";
-            let _self = this;
-            _self.isSend = true;
-            _self.timeInterval(_self);
-            this.codeNum = res.data;
-            Toast.success({
-              duration: 1000,
-              message: msg
+          if (res.result == "1"){
+            //如果手机号可用，再调修改手机号接口
+            let params = Object.assign({}, this.CONFIG.sendMobileCodeInfo.params);
+            params.mobileNum = num;
+            Get(
+              CONFIG.BASE_URL +
+                this.CONFIG.sendMobileCodeInfo.url +
+                "?mobileNum=" +
+                params.mobileNum
+            ).then(resp => {
+              let res = resp.data;
+              if (res.result == "1") {
+                let msg = "验证码发送成功";
+                let _self = this;
+                _self.isSend = true;
+                _self.timeInterval(_self);
+                this.codeNum = res.data;
+                Toast.success({
+                  duration: 1000,
+                  message: msg
+                });
+              } else {
+                Toast.fail({
+                  duration: 1000,
+                  message: this.display.failedOp
+                });
+              }
             });
           } else {
             Toast.fail({
               duration: 1000,
-              message: this.display.failedOp
+              message: (this.display.MobileIsBound ? this.display.MobileIsBound : "很抱歉，手机号已被绑定")
             });
           }
         });
@@ -583,7 +605,7 @@ export default {
         ).then(resp => {
           let res = resp.data;
           if (res.result == "1") {
-            //如果邮箱可用，在调修改邮箱借口
+            //如果邮箱可用，再调修改邮箱接口
             let params = Object.assign(
               {},
               this.CONFIG.sendEmailCodeInfo.params

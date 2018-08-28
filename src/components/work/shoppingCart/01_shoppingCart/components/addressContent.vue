@@ -2,7 +2,7 @@
 <template>
   <div class="work_shoppingcart_01_address">
     <div class="address">
-      <div class="infoHead">收货地址</div>
+      <div class="infoHead">{{getStaticText('receiverAddress') ? getStaticText('receiverAddress') : '收货地址'}}</div>
       <div class="orderContent" :class="{oneline: showAddress === null}">
         <div class="addressInfo" v-if="showAddress && showAddress !== null">
           <!--没有默认地址 就证明一条地址都没有-->
@@ -10,13 +10,13 @@
           <span>{{showAddress.province + showAddress.city + showAddress.county + showAddress.address}}</span>
           <span>{{showAddress.phone}}</span>
         </div>
-        <span v-else>暂无可选地址，您需要新增地址。</span>
-        <a href="javascript:void(0)" v-if="addressList && addressList.length > 0" @click="selectOtherAddress()">选择其他收货地址</a>
-        <a href="javascript:void(0)" @click="addNewAddress()">新增地址</a>
+        <span v-else>{{getStaticText('pleaseAddNewAddress') ? getStaticText('pleaseAddNewAddress') :'暂无可选地址，您需要新增地址。'}}</span>
+        <a href="javascript:void(0)" v-if="addressList && addressList.length > 0" @click="selectOtherAddress()">{{getStaticText('selectOtherAddress') ? getStaticText('selectOtherAddress') : '选择其他收货地址'}}</a>
+        <a href="javascript:void(0)" @click="addNewAddress()">{{getStaticText('addNewAddress') ? getStaticText('addNewAddress') : '新增地址'}}</a>
       </div>
     </div>
     <!--选择收货地址模态弹框-->
-    <el-dialog title="选择收货地址" :visible.sync="addressDialog" :close-on-press-escape="false" :close-on-click-modal="false">
+    <el-dialog :title="getStaticText('selectReceiverAddress') ? getStaticText('selectReceiverAddress') : '选择收货地址'" :visible.sync="addressDialog" :close-on-press-escape="false" :close-on-click-modal="false">
       <ul class="addressUlCon">
         <el-radio-group v-model="selectedAddress">
           <li v-for="(address, index) in addressList" type="none">
@@ -31,41 +31,41 @@
         </el-radio-group>
       </ul>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="confirmAdd(false)">取 消</el-button>
-        <el-button type="primary" @click="confirmAdd(true)">确 定</el-button>
+        <el-button @click="confirmAdd(false)">{{getStaticText('cancel') ? getStaticText('cancel') : '取 消'}}</el-button>
+        <el-button type="primary" @click="confirmAdd(true)">{{getStaticText('yes') ? getStaticText('yes') : '确 定'}}</el-button>
       </div>
     </el-dialog>
     <!--END 选择收货地址模态弹框-->
     <!--新增收货地址弹框-->
-    <el-dialog title="新增收货地址" :visible.sync="addAddressDialog" class="newAddAddress" :close-on-press-escape="false" :close-on-click-modal="false" @close="newAddAddressClose">
+    <el-dialog :title="getStaticText('addNewReceiverAddress') ? getStaticText('addNewReceiverAddress') : '新增收货地址'" :visible.sync="addAddressDialog" class="newAddAddress" :close-on-press-escape="false" :close-on-click-modal="false" @close="newAddAddressClose">
       <div class="newWrapper">
-      <div><label></label>收货人：</div>
+      <div><label></label>{{getStaticText('receiver') ? getStaticText('receiver') : '收货人'}}：</div>
       <input id="s_contactor" type="text" maxlength="40" @blur="checkContactor()">
       <span class="warningInfo" v-if="emptyContactor">{{this.contactorError}}</span>
       </div>
       <div class="newWrapper">
-      <div><label></label>收货地区：</div>
+      <div><label></label>{{getStaticText('receivingArea') ? getStaticText('receivingArea') : '收货地区'}}：</div>
       <div class="selectPCC">
       <select id="s_province" name="s_province" @blur="checkArea()"></select>
       <select id="s_city" name="s_city" @blur="checkArea()"></select>
       <select id="s_county" name="s_county" @blur="checkArea()"></select>
       </div>
-      <span class="warningInfo" v-if="emptyPCC">请完整的省市信息</span>
+      <span class="warningInfo" v-if="emptyPCC">{{getStaticText('pleaseCompleteInformationOfProvincesAndCities') ? getStaticText('pleaseCompleteInformationOfProvincesAndCities') : '请完整的省市信息'}}</span>
       </div>
       <div class="newWrapper">
-      <div><label></label>详细地址：</div>
+      <div><label></label>{{getStaticText('detailedAddress') ? getStaticText('detailedAddress') : '详细地址'}}：</div>
       <input id="s_address" type="text" @blur="checkDetail()">
-      <span class="warningInfo" v-if="emptyDetail">请填写详细地址</span>
+      <span class="warningInfo" v-if="emptyDetail">{{getStaticText('pleaseFillInTheDetailedAddress') ? getStaticText('pleaseFillInTheDetailedAddress') : '请填写详细地址'}}</span>
       </div>
       <div class="newWrapper">
-      <div><label></label>联系电话：</div>
+      <div><label></label>{{getStaticText('phone') ? getStaticText('phone') : '联系电话'}}：</div>
         <!--@keypress="checkNumberType($event)"-->
         <input id="s_phone" @blur="checkPhone()" maxlength="11">
       <span class="warningInfo" v-if="emptyPhone">{{phoneError}}</span>
       </div>
       <div slot="footer" class="dialog-footer">
-      <el-button @click="confirmNewAdd(false)">取 消</el-button>
-      <el-button type="primary" @click="confirmNewAdd(true)" id="testUseAddressLocation">确 定</el-button>
+      <el-button @click="confirmNewAdd(false)">{{getStaticText('cancel') ? getStaticText('cancel') : '取 消'}}</el-button>
+      <el-button type="primary" @click="confirmNewAdd(true)" id="testUseAddressLocation">{{getStaticText('yes') ? getStaticText('yes') : '确 定'}}</el-button>
       </div>
     </el-dialog>
     <!--END 新增收货地址弹框-->
@@ -79,12 +79,13 @@
   export default {
     name: "work_shoppingcart_01_components_address",
     reused: true,
-    props: ["namespace"],
+    props: ["namespace","parentConfig"],
     created: function () {
       this.getMemberInfo().then((member) => {
         this.member.loginName = member.loginName;
         this.loadCallBack();
       });
+      this.CONFIG = this.parentConfig.addressContent;
     },
     data () {
       return {
@@ -103,7 +104,8 @@
         emptyPCC: false, // 收货地区 省市区是否为空 默认不为空
         phoneError:'',//新建收货地址--联系电话验证信息
         contactorError:'',//新建收货地址--收货人验证信息
-        goodsInfo:[]//新建收货地址--验证信息
+        goodsInfo:[],//新建收货地址--验证信息,
+        CONFIG:''
       };
     },
     computed: {
@@ -204,7 +206,7 @@
                 if (this.addStatus) {
                   _this.$message({
                     type: "success",
-                    message: "新增地址成功"
+                    message: _this.getStaticText('newAddressSuccessfullyAdded') ? _this.getStaticText('newAddressSuccessfullyAdded') : "新增地址成功"
                   });
                   _this.$store.dispatch(
                     "shoppingcart/" + type.QUERY_DEFAULT_ADDRESS,
@@ -217,7 +219,7 @@
                 } else {
                   _this.$message({
                     type: "error",
-                    message: "新增地址失败"
+                    message: _this.getStaticText('newAddressFailed') ? _this.getStaticText('newAddressFailed') : "新增地址失败"
                   });
                 }
               }
@@ -245,10 +247,10 @@
         let contactorVal=$("#s_contactor").val();
         this.emptyContactor=false;
         if(contactorVal === ""){
-          this.contactorError="请填写收货人";
+          this.contactorError= this.getStaticText('pleaseFillInTheConsignee') ? this.getStaticText('pleaseFillInTheConsignee') : "请填写收货人";
         }
         if(contactorVal.length>40){
-          this.contactorError="收货人不能超过40个字符";
+          this.contactorError= this.getStaticText('consigneeMustNotExceed40Characters') ? this.getStaticText('consigneeMustNotExceed40Characters') : "收货人不能超过40个字符";
         }
         if(contactorVal === "" || contactorVal.length>40){
           this.emptyContactor=true;
@@ -272,15 +274,16 @@
         this.emptyPhone=false;
         let phoneVal=$("#s_phone").val();
         if (!phoneVal) {
-          this.phoneError="请填写联系电话";
+          this.phoneError= this.getStaticText('pleaseFillInTheContactNumber') ? this.getStaticText('pleaseFillInTheContactNumber') : "请填写联系电话";
         }
         // if (!String.fromCharCode(event.keyCode).match(/\d/)) {
-        if(!phoneVal.match(/^[0-9]*$/)){
-          // 控制只能输入数字
-          this.phoneError="请输入数字";
+        let phoneReg=/^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if(!(phoneReg.test(phoneVal))){
+          this.emptyPhone=true;
+          this.phoneError="请输入正确的手机号码 "
         }
         if (phoneVal.length > 11) {
-          this.phoneError="电话长度过长";
+          this.phoneError=this.getStaticText('theTelephoneIsLong') ? this.getStaticText('theTelephoneIsLong') : "电话长度过长";
         }
         if(!phoneVal || !phoneVal.match(/^[0-9]*$/) || phoneVal.length > 11){
           this.emptyPhone=true;
@@ -290,7 +293,7 @@
         }
       },
       checkArea:function(){
-        this.emptyPCC = false;
+        this.emptyPCC = false
         if (
           $("#s_province").val() === "省份" ||
           $("#s_city").val() === "地级市" ||
@@ -301,6 +304,13 @@
           this.goodsInfo.push("false");
         }else{
           this.goodsInfo.push("true");
+        }
+      },
+      getStaticText(text){
+        if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+          return this.CONFIG.staticText[text]
+        } else {
+          return false
         }
       }
     },

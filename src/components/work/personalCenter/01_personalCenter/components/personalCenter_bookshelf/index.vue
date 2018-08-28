@@ -1,6 +1,11 @@
 // 文联我的书架  只有电子书 试读用
 <template>
   <section class="personalcenter_shelflWrapper">
+    <!-- <nav>
+      <template>
+        <el-button type="primary">button</el-button>
+      </template>
+    </nav> -->
     <div class="myShelf" v-if="bookShelfInfo.data && bookShelfInfo.data.length > 0">
       <ul>
         <li v-for="item in bookShelfInfo.data" class="shelfContent">

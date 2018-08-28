@@ -82,8 +82,8 @@ const dev = {
         middle:"中",
         small:"小",
         noDate: "暂无日期"
-      }
-
+      },
+      timeFormat: 0 //0 默认YYYY-MM-DD HH:mm,-1 YYYY-MM-DD,1 YYYY年MM月DD日 hh:mm
     }
   }
 };
@@ -159,7 +159,8 @@ const prod = {  // 详情组件内含评论组件 评论组件作为子组件 �
         middle:"中",
         small:"小",
         noDate:"暂无日期"
-      }
+      },
+      timeFormat: 0 //0 默认YYYY-MM-DD HH:mm,-1 YYYY-MM-DD,1 YYYY年MM月DD日 hh:mm
     }
   }
 

@@ -152,7 +152,12 @@ import $ from "jquery";
 export default {
   name: "joinactivity",
   reused: true,
-  props: ["namespace"],
+  props: ["namespace","parentConfig"],
+  created () {
+    if (this.parentConfig.joinactivity) {
+      this.CONFIG = this.parentConfig.joinactivity
+    }
+  },
   mounted () {
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
@@ -175,6 +180,7 @@ export default {
       }
     }
     return {
+      CONFIG:null,
       rules: {
         name: [
           { required: true, message: "请输入参赛人姓名", trigger: "blur" },

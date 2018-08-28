@@ -224,6 +224,63 @@ const dev = {
           downloadCoinDiscountCanNotBeLessThanZero: "下载币优惠数额不能小于0噢~",
           downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid: "下载币优惠数额不得大于实付金额噢~",
           confirm: "确定"
+        },
+        addressContent: {
+          staticText:{
+            receiverAddress:"收货地址",
+            pleaseAddNewAddress:"暂无可选地址，您需要新增地址。",
+            selectOtherAddress:"选择其他收货地址",
+            addNewAddress:"新增地址",
+            selectReceiverAddress:"选择收货地址",
+            cancel:"取 消",
+            yes:"确 定",
+            addNewReceiverAddress:"新增收货地址",
+            receiver:"收货人",
+            receivingArea:"收货地区",
+            pleaseCompleteInformationOfProvincesAndCities:"请完整的省市信息",
+            detailedAddress:"详细地址",
+            pleaseFillInTheDetailedAddress:"请填写详细地址",
+            phone:"联系电话",
+            newAddressSuccessfullyAdded:"新增地址成功",
+            newAddressFailed:"新增地址失败",
+            pleaseFillInTheConsignee:"请填写收货人",
+            consigneeMustNotExceed40Characters:"收货人不能超过40个字符",
+            pleaseFillInTheContactNumber:"请填写联系电话",
+            pleaseEnterTheNumber:"请输入数字",
+            theTelephoneIsLong:"电话长度过长",
+            province:"省份",
+            prefectureLevelCity:"地级市",
+            cityCountyLevelCity:"市、县级市"
+
+          }
+        },
+        invoiceContent: {
+          staticText: {
+            regularInvoice:"普通发票",
+            valueAddedTaxInvoice: "增值税发票",
+            invoiceTitle: "发票抬头",
+            invoiceContent: "发票内容",
+            detail: "明细",
+            stationery: "办公用品",
+            computerAccessories: "电脑配件",
+            consumableItems: "耗材",
+            companyName: "单位名称",
+            taxpayerIdentificationCode: "纳税人识别码",
+            registeredAddress: "注册地址",
+            registeredTelephone: "注册电话",
+            depositBank: "开户银行",
+            bankAccount: "银行账户",
+            alter: "修改",
+            pleaseFillInTheCompanyName: "请填写单位名称",
+            pleaseFillInTheTaxpayerIdentificationNumber: "请填写纳税人识别号",
+            theTaxpayerIdentificationNumberShallNotExceed20Characters: "纳税人识别号不能超过20个字符",
+            pleaseFillInTheRegisteredAddress: "请填写注册地址",
+            pleaseFillInTheRegistrationNumber: "请填写注册电话",
+            pleaseFillOutTheOpeningBank: "请填写开户银行",
+            theOpeningBankCannotExceed21Characters: "开户银行不能超过21个字符",
+            pleaseFillOutYourBankAccount: "请填写银行账户",
+            personage: "个人"
+          }
         }
       },
       commitContent: {
@@ -346,6 +403,65 @@ const prod = {
           downloadCoinDiscountCanNotBeLessThanZero: "下载币优惠数额不能小于0噢~",
           downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid: "下载币优惠数额不得大于实付金额噢~",
           confirm: "确定"
+        },
+        addressContent: {
+          staticText:{
+            receiverAddress:"收货地址",
+            pleaseAddNewAddress:"暂无可选地址，您需要新增地址。",
+            selectOtherAddress:"选择其他收货地址",
+            addNewAddress:"新增地址",
+            selectReceiverAddress:"选择收货地址",
+            cancel:"取 消",
+            yes:"确 定",
+            addNewReceiverAddress:"新增收货地址",
+            receiver:"收货人",
+            receivingArea:"收货地区",
+            pleaseCompleteInformationOfProvincesAndCities:"请完整的省市信息",
+            detailedAddress:"详细地址",
+            pleaseFillInTheDetailedAddress:"请填写详细地址",
+            phone:"联系电话",
+            newAddressSuccessfullyAdded:"新增地址成功",
+            newAddressFailed:"新增地址失败",
+            pleaseFillInTheConsignee:"请填写收货人",
+            consigneeMustNotExceed40Characters:"收货人不能超过40个字符",
+            pleaseFillInTheContactNumber:"请填写联系电话",
+            pleaseEnterTheNumber:"请输入数字",
+            theTelephoneIsLong:"电话长度过长",
+            province:"省份",
+            prefectureLevelCity:"地级市",
+            cityCountyLevelCity:"市、县级市"
+
+          }
+        },
+        invoiceContent: {
+          staticText: {
+            chooseInvoiceType: "选择发票类型",
+            regularInvoice:"普通发票",
+            valueAddedTaxInvoice: "增值税发票",
+            invoiceTitle: "发票抬头",
+            invoiceContent: "发票内容",
+            detail: "明细",
+            stationery: "办公用品",
+            computerAccessories: "电脑配件",
+            consumableItems: "耗材",
+            companyName: "单位名称",
+            taxpayerIdentificationCode: "纳税人识别码",
+            registeredAddress: "注册地址",
+            registeredTelephone: "注册电话",
+            depositBank: "开户银行",
+            bankAccount: "银行账户",
+            alter: "修改",
+            confirm:"确 定",
+            pleaseFillInTheCompanyName: "请填写单位名称",
+            pleaseFillInTheTaxpayerIdentificationNumber: "请填写纳税人识别号",
+            theTaxpayerIdentificationNumberShallNotExceed20Characters: "纳税人识别号不能超过20个字符",
+            pleaseFillInTheRegisteredAddress: "请填写注册地址",
+            pleaseFillInTheRegistrationNumber: "请填写注册电话",
+            pleaseFillOutTheOpeningBank: "请填写开户银行",
+            theOpeningBankCannotExceed21Characters: "开户银行不能超过21个字符",
+            pleaseFillOutYourBankAccount: "请填写银行账户",
+            personage: "个人"
+          }
         }
       },
       commitContent: {
@@ -367,7 +483,8 @@ const prod = {
           payWithWeChatScan: "请使用微信扫一扫支付",
           downloadCoinCharge: "下载币充值"
         }
-      }
+      },
+
     },
   }
 };

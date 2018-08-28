@@ -2,7 +2,7 @@
 <template>
   <section class="personal_center_learning">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane v-for="(tab,index) in tabList" :key="index" :label="tab.label" :name="tab.name">
+        <el-tab-pane v-for="(tab,index) in tabList" :key="index" :label="tab.label" :name="tab.productType">
             <ul class="personal_center_learning_resourcelists_ul" v-if="resourceLists && resourceLists.length > 0">
                 <li class="personal_center_learning_resourcelists_li" v-for="(item, index) in resourceLists" :key="index">
                     <template v-for="(config, config_i) in resourceListsConfig.complicatedItem">
@@ -69,7 +69,7 @@ export default {
   data () {
     return {
       CONFIG:'',
-      activeName: 'audio',  //默认展示音频
+      activeName: '',  //默认展示音频
       tabList: [],          //tab列表
       resourceLists: [],     //资源列表
       resourceListsConfig: {},
@@ -93,29 +93,14 @@ export default {
     this.keys = getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter);
     this.tabList = this.CONFIG.tabListShow ? this.CONFIG.tabListShow : [];
     this.pageSizes  = this.CONFIG.pageSizes;
+    this.activeName = this.CONFIG.defaultActive;
   },
   mounted(){
       this.queryBookList();
   },
   methods: {
     handleClick(tab) {
-      
-      console.log(tab);
-      
-        switch(tab.name){
-            case 'audio':
-                this.queryBookList('183');
-                break;
-            case 'video':
-                this.queryBookList('172');
-                break;
-            case 'courseware':
-                this.queryBookList('185');
-                break;
-            case 'test':
-               this.queryBookList('123');
-                break;
-        }
+      this.queryBookList(tab.name);
     },
     getStaticText(text){
       if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
@@ -124,7 +109,7 @@ export default {
         return false
       }
     },
-    queryBookList (productType = '183') {
+    queryBookList (productType = this.CONFIG.defaultActive) {  //如果不穿参数，则调取默认的
       let loading = this.$loading({ 
         fullscreen: true,
         text: "正在加载中..."

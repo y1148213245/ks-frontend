@@ -96,6 +96,7 @@ function test (params) {
       pageComponentsArr.push([...new Set(componentsTagNames)]);
     }
 
+    /* 自动插入头尾 */
   })
  
   console.log(chalk.yellow(new Date().getTime() - time+'ms'));

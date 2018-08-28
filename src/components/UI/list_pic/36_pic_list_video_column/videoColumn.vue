@@ -175,8 +175,11 @@ export default {
             }else if(attach == 'lowqualitypdf'){
               // 如果附件是PDF，那么直接取第一个，去阅读器阅读
               attachList = attachDetail[attach][0];
+              console.log(attachList);
+              
               let params = Object.assign({},this.CONFIG.toEbook.params) ;
-              let url = CONFIG.READ_URL + '?bookId=' + attachList['fileRecordID'] + '&readType=' + params.readType + '&bookName=' + attachList['attachName'] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+              let url = CONFIG.READ_URL + '?bookId=' + attachList['attachID'] + '&readType=' + params.readType + '&bookName=' + attachList['attachName'] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType + '&doclibCode=ZILIAOKU';
+              console.log(url);
               
               window.open(url);
 

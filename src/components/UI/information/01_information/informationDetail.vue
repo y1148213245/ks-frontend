@@ -18,7 +18,9 @@
         <div class="ui_information_01-news_tit" v-html="information[keys.title]"></div>
         <div class="ui_information_01-news_other">
           <span class="ui_information_01-news_author" v-if="CONFIG && CONFIG.displayItem">{{information[keys.author] || displayItem.noAuthor}}</span>
-          <span class="ui_information_01-news_pubTime">{{formatDateHH(information[keys.pubTime])}}</span>
+          <span class="ui_information_01-news_pubTime" v-if="CONFIG && CONFIG.timeFormat && CONFIG.timeFormat === -1">{{formatDateNEW(information[keys.pubTime])}}</span>
+          <span class="ui_information_01-news_pubTime" v-else-if="CONFIG && CONFIG.timeFormat && CONFIG.timeFormat === 1">{{formatTimeNEW(information[keys.pubTime])}}</span>
+          <span class="ui_information_01-news_pubTime" v-else>{{formatDateHH(information[keys.pubTime])}}</span>
 
           <span class="ui_information_01-news_share" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('share') !== -1 ? true : false">
             <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis ui_information_01-news_share_a" target="_blank">
@@ -86,6 +88,7 @@ import * as interfaces from "@work/login/common/interfaces.js";
 import { Get, Post } from "@common";
 import URL from 'url';
 import PROJECT_CONFIG from "projectConfig";
+import moment from "moment";
 
 export default {
   name: 'ui_information_01',
@@ -203,6 +206,43 @@ export default {
       } else {
         return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期';
       }
+    },
+    formatDateNEW(value) {
+      if (value) {
+          return moment(Number(value)).format("YYYY-MM-DD"); // 只接收Number类型
+      } else {
+          return this.getStaticText('noDate') ? this.getStaticText('noDate') : '暂无日期';
+      }
+    },
+    formatTimeNEW(time) {
+        if (time !== undefined && time !== '' && time !== null) {
+            let date = new Date(parseInt(time));
+            return formatDate(date, 'yyyy年MM月dd日 hh:mm')
+        }
+
+        function formatDate(date, fmt) {
+            if (/(y+)/.test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+            }
+            let o = {
+                'M+': date.getMonth() + 1,
+                'd+': date.getDate(),
+                'h+': date.getHours(),
+                'm+': date.getMinutes(),
+                's+': date.getSeconds()
+            }
+            for (let k in o) {
+                if (new RegExp(`(${k})`).test(fmt)) {
+                    let str = o[k] + ''
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str))
+                }
+            }
+            return fmt
+        }
+
+        function padLeftZero(str) {
+            return ('00' + str).substr(str.length)
+        }
     }
   }
 }

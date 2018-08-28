@@ -206,9 +206,17 @@ export default {
         this.changeColId(data.id);
         this.getResourceFun();
       })
+    } else if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.onPubIdInfo) {   //接受pubid 广播修改
+      this.$bus.$on(this.CONFIG.onEvent.onPubIdInfo, data => {
+        this.resourceLists = [];
+        this.totalCount = 0;
+        this.pubId = data.id;
+        this.getResourceFun();
+      });
     } else {
       this.getResourceFun();
     }
+
     // this.getColumnSubTitle(); // $on方法回调是异步的
   },
 
@@ -320,7 +328,7 @@ export default {
       }else{
         paramsObj.searchText = this.searchText; //检索
       }
-      
+
       paramsObj.pageSize = this.resourceListsConfig.maxNum
         ? this.resourceListsConfig.maxNum + ""
         : "15";
@@ -404,6 +412,12 @@ export default {
               }
             } else {
               this.resourceLists = datas.result;
+              //默认发出第一条数据的pubId
+              if(this.resourceLists && this.resourceLists.length > 0){
+                if(typeof(this.CONFIG.emitEvent)!== 'undefined'  && this.CONFIG.emitEvent.contextEventName){
+                  this.$bus.$emit(this.CONFIG.emitEvent.contextEventName,  { id: this.resourceLists[0].id });
+                }
+              }
             }
           }
         }

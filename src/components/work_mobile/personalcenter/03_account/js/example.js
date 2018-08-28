@@ -84,6 +84,7 @@ const dev = {
         sendCodeTime: 60,  //控制验证码重新发送的时间
         timeUnit: 's',  //时间单位
         EmailIsBound:'很抱歉，邮箱已被绑定',
+        MobileIsBound:"很抱歉，手机号已被绑定",
         directUrl: '../pages/subpersonalcenter.html#account',
       },
       editPersonalInfo: { // 编辑个人信息：昵称 签名
@@ -116,6 +117,13 @@ const dev = {
           loginName: '',
           oldPassword: '',
           newPassword: ''
+        }
+      },
+      checkMobileCodeInfo: {
+        url: "user/checkUserInfo.do",
+        params: {
+            checkText: "",
+            checkType: "3"
         }
       },
       checkEmailCodeInfo:{

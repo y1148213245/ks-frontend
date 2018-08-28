@@ -21,8 +21,8 @@
                 <!-- 期刊 -->
                 <div v-else-if="tabtitle.index ==1" class="work_mobile_personalcenter_14_content_lists_list">
                   <van-checkbox v-model="item.checked" @change="selectProduct(item)"></van-checkbox>
-                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img" @click.self="toDetailsPage(item)">
-                  <span class="work_mobile_personalcenter_14_content_lists_list_title" @click.self="toDetailsPage(item)">{{item.productName}}</span>
+                  <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img" @click.self="toPeriodicalDetailsPage(item)">
+                  <span class="work_mobile_personalcenter_14_content_lists_list_title" @click.self="toPeriodicalDetailsPage(item)">{{item.productName}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_author">{{item.author | formatAuthor }}</span>
                   <button class="work_mobile_personalcenter_14_content_lists_list_cancel_btn" @click="cancelCollection(loginName,item.pubId)">{{display.cancelCollection}}</button>
                 </div>
@@ -184,6 +184,10 @@ export default {
       if(item.checked && !this.result.includes(item.pubId)) {
         this.result.push(item.pubId);
       }
+    },
+    //去期刊详情页
+    toPeriodicalDetailsPage (item) {
+      window.location.href = this.CONFIG.toPeriodicalDetailsPageUrl ? this.CONFIG.toPeriodicalDetailsPageUrl : './maginfo.html' + '?pubId=' + item.pubId;
     },
     //去详情页
     toDetailsPage (item) {

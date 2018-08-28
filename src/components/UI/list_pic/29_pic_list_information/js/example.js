@@ -85,7 +85,9 @@ const dev = {
         infoImgWidth: 200, // 资讯图片的宽 要和图片外层容器 .ui_list_pic_28_resourcelists_li_imgcontainter 宽一样
         infoImgHeight: 160, // 资讯图片的高 要和图片外层容器 .ui_list_pic_28_resourcelists_li_imgcontainter 高一样
         onEvent: { // 接收的事件名称
-          eventName: 'showNavContent'
+          eventName: 'showNavContent',
+          onColumnInfo: 'columnInfo',
+          onPubIdInfo:"onPubIdInfo",
         },
         pagination: { // 分页信息
           showPagination: true, // 是否显示分页
@@ -114,6 +116,10 @@ const dev = {
           noData: "暂无数据",
           noDate:"暂无日期",
           yuan:"￥"
+        },
+        showSearchBtn: true, // 检索框,
+        emitEvent: {
+          contextEventName: ""
         }
       },
 
@@ -204,6 +210,7 @@ const prod = {
         onEvent: { // 接收的事件名称
           eventName: 'showNavContent',
           onColumnInfo: 'columnInfo',
+          onPubIdInfo:"onPubIdInfo",
         },
         pagination: { // 分页信息
           showPagination: true, // 是否显示分页
@@ -233,7 +240,10 @@ const prod = {
           noDate:"暂无日期",
           yuan:"￥"
         },
-        showSearchBtn: true, // 检索框
+        showSearchBtn: true, // 检索框,
+        emitEvent: {
+          contextEventName: ""
+        }
       },
 
     }

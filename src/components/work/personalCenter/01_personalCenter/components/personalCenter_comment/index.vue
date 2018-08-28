@@ -117,8 +117,9 @@ export default {
 }
 .personalcenter-comment-firstcol-img{
   height:150px;
+  width: 150px;
+  margin: 10px auto;
   position: relative;
-  margin:10px;
   overflow: hidden;
 }
 .personalcenter-comment-firstcol-img img{

@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="personalcenter-feedback-page01" v-if="this.showPage == this.showPageList[1]">
-      <span  class="personalcenter-feedback-right">√</span>
+      <span  class="personalcenter-feedback-right"></span>
       <h4 class="personalcenter-feedback-success-tip">提交成功</h4>
       <button class="el-button el-button--primary" @click="goPageNum(0)">返回</button>
     </div>
@@ -104,12 +104,11 @@ export default {
   font-size: 16px;
   line-height: 40px;
 }
+.personalcenter-feedback-success-tip{
+  margin-bottom:50px;
+}
 .personalcenter-feedback-right{
   display: inline-block;
-  height:40px;
-  width:40px;
-  color:#166cc9;
-  font-size: 22px;
-  margin-bottom:20px;
+  margin:40px 0;
 }
 </style>

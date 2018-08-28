@@ -26,7 +26,7 @@
 
       <a class="work_login_04-exit" @click="exit">
         <slot name="exit">
-          {{getStaticText('exitSys') ? getStaticText('exitSys') : '退出'}}
+          {{getStaticText('exit') ? getStaticText('exit') : '退出'}}
         </slot>
       </a>
     </template>

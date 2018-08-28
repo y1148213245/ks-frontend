@@ -23,6 +23,8 @@
 import PROJECT_CONFIG from "projectConfig";
 import { Get } from "@common";
 import URL from 'url';
+import $ from 'jquery';
+
 export default {
   name: "ui_navigation_05",
   reused: true,

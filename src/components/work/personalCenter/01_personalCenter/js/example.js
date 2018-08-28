@@ -151,7 +151,7 @@ const dev = {
             submitUrl: "spc/prodb/saveItem.do", // 提交接口
             feedbackkeys: "QUE_CONTENT", // 建议反馈提交的key值 字段需到对应库中查询
             params: {
-              "doclibCode": "QUE_ANS", // 对应文档库
+              "doclibCode": "PORTAL_QUE_ANS", // 对应文档库
               "metaMap": {}
             }
           },
@@ -165,21 +165,18 @@ const dev = {
         'learning': {
           tabListShow: [{
             label: '音频',
-            name: 'audio',
             productType: '183'
           }, {
             label: '视频',
-            name: 'video',
-            productType: ''
+            productType: '172'
           }, {
             label: '课件',
-            name: 'courseware',
-            productType: ''
+            productType: '185'
           }, {
             label: '试题',
-            name: 'test',
-            productType: ''
+            productType: '123'
           }],
+          defaultActive: '183',  //默认激活的tab
           staticText: {
             noData: "暂无数据"
           },
@@ -283,6 +280,9 @@ const prod = {
             type: 91
           }]
         },
+        'joinactivity':{
+        
+        },
         feedback: { // 建议反馈的提交地址及传参字段
           submitUrl: "spc/prodb/saveItem.do", // 提交接口
           feedbackkeys: "QUE_CONTENT", // 建议反馈提交的key值 字段需到对应库中查询
@@ -300,21 +300,18 @@ const prod = {
         'learning': {
           tabListShow: [{
             label: '音频',
-            name: 'audio',
             productType: '183'
           }, {
             label: '视频',
-            name: 'video',
-            productType: ''
+            productType: '172'
           }, {
             label: '课件',
-            name: 'courseware',
-            productType: ''
+            productType: '185'
           }, {
             label: '试题',
-            name: 'test',
-            productType: ''
+            productType: '123'
           }],
+          defaultActive: '183',  //默认激活的tab
           staticText: {
             noData: "暂无数据"
           },

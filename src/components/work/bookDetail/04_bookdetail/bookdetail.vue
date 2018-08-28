@@ -159,8 +159,8 @@
             <div class="work_bookdetail_04_combinate_image"><img :src="resourceDetail[keys['picSmall']] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
             <h4 class="work_bookdetail_04_combinate_name" :title="resourceDetail[keys['resName']]">{{resourceDetail[keys['resName']]}}</h4>
             <span class="work_bookdetail_04_combinate_price">价格 : {{ '￥' + Number(resourceDetail["memberPrice"]).toFixed(2)}}</span>
+            <div class="work_bookdetail_04_combinate_and">+</div>
           </div>
-          <div class="work_bookdetail_04_combinate_and">+</div>
           <!-- 组合列表 -->
           <div >
             <button class="work_bookdetail_04_combinate_btn prev" @click="combinateList($event)" :class="{'disable': showCombinateNum == 0,'normal':showCombinateNum!=0 }" v-show="list.list.length > 3">&lt;</button>
@@ -177,7 +177,7 @@
           <!-- 购买按钮 -->
           <div class="work_bookdetail_04_combinate_pay">
             <span class="work_bookdetail_04_combinate_price">套餐价 : <span>{{ '￥' + Number(list["combinationPrice"]).toFixed(2)}}</span></span>
-            <span class="work_bookdetail_04_combinate_savemoney">省{{ '￥' + Number(list["savemoney"]).toFixed(2)}}</span>
+            <span class="work_bookdetail_04_combinate_savemoney" v-if="list['savemoney'] > 0">省{{ '￥' + Number(list["savemoney"]).toFixed(2)}}</span>
             <span class="work_bookdetail_04_combinate_buy" @click="addcombinateProductToCart(combinateProductCfg['addCart'],list.id)">{{combinateProductCfg.lastBtn || '立即购买'}}</span>
           </div>
         </li>
@@ -709,19 +709,18 @@ export default {
           // 计算省下多少钱
           let thisBookPrice = Number(this.resourceDetail["memberPrice"]);
           if(this.combinateProductLsit && this.combinateProductLsit.length){
+            var self = this;
             this.combinateProductLsit.forEach(function(val,key,obj){
               let allPrice = 0;
               val.list.forEach(function(item,index,arr){
                 allPrice += Number(item['memberPrice']);
               })
-              val['savemoney'] = allPrice + thisBookPrice;
+              var savemoney = allPrice + thisBookPrice - val.combinationPrice;
+              self.$set(val,"savemoney",savemoney)
             });
           }
-          // this.showCombinateArr = new Array(this.combinateProductLsit.length);
-          // for(let i = 0; i < this.showCombinateArr.length ; i++){
-          //   this.$set(this.showCombinateArr,i,0);
-          // }
-          this.showCombinateMaxNum = this.combinateProductLsit[0].list.length - 1; // 取第一条组合购买的length
+          
+          this.showCombinateMaxNum = this.combinateProductLsit[0] ? this.combinateProductLsit[0].list.length - 1 : this.showCombinateItem; // 取第一条组合购买的length
 
         }
       });

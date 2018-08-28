@@ -449,47 +449,63 @@ var FIELD_ADAPTER = {
             actSpot: "MATERIAL-PIC_ACT_SPOT",
             isComment:"MATERIAL-PIC_IS_COMMENT"//是否可以评论
         },
-        talentAdapter: { // 人才招聘
-            coverId: "COVERID",
-            resourceId: "RESOURCEID",
-            sysTopic: "SYS_TOPIC",
-            type: "TYPE",
-            sex: "SEX",
-            address: "ADDRESS",
-            birth: "BIRTH",
-            place: "PLACE",
-            cardId: "CARD_ID",
-            specialty: "SPECIALTY",
-            politicalStatus: "POLITICAL_STATUS",
-            cat1: "CAT_1",
-            race: "RACE",
-            workAddress: "WORK_ADDRESS",
-            graduateInstitutions: "GRADUATE_INSTITUTIONS",
-            education: "EDUCATION",
-            degree: "DEGREE",
-            specialty1: "SPECIALTY",
-            wysp: "WYSP",
-            jsjsp: "JSJSP",
-            org: "ORG",
-            firstOrg: "FIRST_ORG",
-            qualification: "QUALIFICATION",
-            activities: "ACTIVITIES",
-            specialties: "SPECIALTIES",
-            maritalStatus: "MARITAL_STATUS",
-            health: "HEALTH",
-            height: "HEIGHT",
-            phone: "PHONE",
-            mailCode: "MAIL_CODE",
-            email: "EMAIL",
-            mailAddress: "MAIL_ADDRESS",
-            experience: "EXPERIENCE",
-            achievements: "ACHIEVEMENTS",
-            awardRecords: "AWARD_RECORDS",
-            internshipExperience: "INTERNSHIP_EXPERIENCE",
-            wordExperience: "WORK_EXPERIENCE",
-            familySituation: "FAMILY_SITUATION",
-            otherSituation: "OTHER_SITUATION",
-            description: "DESCRIPTION"
+        talentAdapter: { // 人才招聘  库码:[BASIC_INFO]
+            sysTopic: "SYS_TOPIC",  // 姓名  [SYS_TOPIC]
+            nation:"NATION",    // 国别  [NATION]
+            sex: "SEX",     // 性别  [SEX]
+            specialty: "SPECIALTY",     // 报考专业  [SPECIALTY]
+            race: "RACE",   // 民族  [RACE]
+            email: "EMAIL",     // 电子邮箱  [EMAIL]
+            qq:"QQ",// QQ  [QQ]
+            mailAddress: "MAIL_ADDRESS",    // 通讯地址  [MAIL_ADDRESS]
+            phone: "PHONE", // 联系电话  [PHONE]
+            jobTitle:"JOB_TITLE",   // 职称  [JOB_TITLE]
+            birth: "BIRTH", // 出生年月  [BIRTH]
+            research:"RESEARCH",    // 研究方向  [RESEARCH]
+            workAddress: "WORK_ADDRESS",    // 报考单位  [WORK_ADDRESS]
+            resourceId: "RESOURCEID",   // 资源ID  [RESOURCEID]
+            intro:"INTRO",  // 作者简介  [INTRO]
+            sysAutors:"SYS_AUTHORS",    // 创建人  [SYS_AUTHORS]
+            post:"POST",    // 职务  [POST]
+            orgType:"ORG_TYPE",   // 机构作者机构类型  [ORG_TYPE]
+            ThemeWord:"THEME_WORD", // 主题词  [THEME_WORD]
+            ontology:"ONTOLOGY",   // 领域本体  [ONTOLOGY]
+            description: "DESCRIPTION", // 补充资料说明  [DESCRIPTION]
+            awardRecords: "AWARD_RECORDS",  // 奖惩成果  [AWARD_RECORDS]
+            resourceName:"RESOURCE_NAME",  // 头像名称  [RESOURCE_NAME]
+            sysCreated:"SYS_CREATED",    // 创建时间  [SYS_CREATED]
+            authorCatid:"AUTHOR_CATID",   // 作者分类ID  [AUTHOR_CATID]
+            authorCat:"AUTHOR_CAT", // 作者分类  [AUTHOR_CAT]
+            authorCascadid:"AUTHOR_CASCADID",    // 作者分类级联ID  [AUTHOR_CASCADID]
+            jsjsp: "JSJSP",     // 计算机水平  [JSJSP]
+            adress:"ADRESS", // 生源地  [ADRESS]
+            place: "PLACE",     // 考试地点  [PLACE]
+            cat1: "CAT_1",  // 专业类别  [CAT_1]
+            maritalStatus: "MARITAL_STATUS",    // 婚姻状况  [MARITAL_STATUS]
+            health: "HEALTH",   // 健康状况  [HEALTH]
+            height: "HEIGHT",      // 身高  [HEIGHT]
+            qualification: "QUALIFICATION",     // 资格证书  [QUALIFICATION]
+            activities: "ACTIVITIES",   // 社团活动  [ACTIVITIES]
+            specialties: "SPECIALTIES",     // 专长  [SPECIALTIES]
+            experience: "EXPERIENCE",   // 教育经历  [EXPERIENCE]
+            achievements: "ACHIEVEMENTS",   // 学术成果  [ACHIEVEMENTS]
+            internshipExperience: "INTERNSHIP_EXPERIENCE",  // 实习经历  [INTERNSHIP_EXPERIENCE]
+            wordExperience: "WORK_EXPERIENCE",  // 工作经历  [WORK_EXPERIENCE]
+            familySituation: "FAMILY_SITUATION",    // 家庭情况  [FAMILY_SITUATION]
+            otherSituation: "OTHER_SITUATION",  // 其他情况  [OTHER_SITUATION]
+            org: "ORG",     // 工作单位  [ORG]
+            firstOrg: "FIRST_ORG",  // 单位性质  [FIRST_ORG]
+            mailCode: "MAIL_CODE",  // 邮编  [MAIL_CODE]
+            type: "TYPE",   // 考生身份  [TYPE]
+            cardId: "CARD_ID",  // 身份证号  [CARD_ID]
+            politicalStatus: "POLITICAL_STATUS",    // 政治面貌  [POLITICAL_STATUS]
+            graduateInstitutions: "GRADUATE_INSTITUTIONS",  // 毕业院校  [GRADUATE_INSTITUTIONS]
+            education: "EDUCATION", // 学历  [EDUCATION]
+            degree: "DEGREE",   // 学位  [DEGREE]
+            wysp: "WYSP",   // 外语水平  [WYSP]
+            activiyid:"ACTIVITYID", // 活动ID  [ACTIVITYID]
+            activiylibid:"ACTIVITYLIBID",// 活动库ID  [ACTIVITYLIBID]
+            coverId: "COVERID"            
         },
         sampleBookAdapter:{  // 样书
             name: "NAME",  // 姓名

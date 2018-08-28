@@ -2,48 +2,48 @@
 <template>
   <div class="work_shoppingcart_01_invoice">
         <!-- 选择发票类型弹框 -->
-        <el-dialog title="选择发票类型" :visible.sync="invoiceDialog" class="invoiceWrapper" :close-on-press-escape="false"
+        <el-dialog :title="getStaticText('chooseInvoiceType') ? getStaticText('chooseInvoiceType') : '选择发票类型'" :visible.sync="invoiceDialog" class="invoiceWrapper" :close-on-press-escape="false"
                    :close-on-click-modal="false" @close="invoiceWrapperClose">
           <div class="invoiceHead">
-            <span @click="selectInvoiceType('普通发票')" :class="{selectedInVoice: curInvoice.invoiceType == '普通发票'}">普通发票</span>
-            <span @click="selectInvoiceType('增值税发票')" :class="{selectedInVoice: curInvoice.invoiceType == '增值税发票'}">增值税发票</span>
+            <span @click="selectInvoiceType('普通发票')" :class="{selectedInVoice: curInvoice.invoiceType == '普通发票'}">{{getStaticText('regularInvoice') ? getStaticText('regularInvoice') : '普通发票'}}</span>
+            <span @click="selectInvoiceType('增值税发票')" :class="{selectedInVoice: curInvoice.invoiceType == '增值税发票'}">{{getStaticText('valueAddedTaxInvoice') ? getStaticText('valueAddedTaxInvoice') : '增值税发票'}}</span>
           </div>
           <!--发票有三种： 普通纸质发票/电子发票/增值税发票 目前支持前两种-->
           <div class="commonInvoice invoiceCon" v-if="curInvoice.invoiceType == '普通发票'">
-            <div>发票抬头：</div>
+            <div>{{getStaticText('invoiceTitle') ? getStaticText('invoiceTitle') : '发票抬头'}}：</div>
             <input type="text" value="个人" disabled="disabled">
-            <div class="invoiceDetail">发票内容：</div>
-            <span @click="selectInvoiceDetail('明细')" :class="{invoice: curInvoice.receiptId == '明细'}">明细</span>
-            <span @click="selectInvoiceDetail('办公用品')" :class="{invoice: curInvoice.receiptId == '办公用品'}">办公用品</span>
+            <div class="invoiceDetail">{{getStaticText('invoiceContent') ? getStaticText('invoiceContent') : '发票内容'}}：</div>
+            <span @click="selectInvoiceDetail('明细')" :class="{invoice: curInvoice.receiptId == '明细'}">{{getStaticText('detail') ? getStaticText('detail') : '明细'}}</span>
+            <span @click="selectInvoiceDetail('办公用品')" :class="{invoice: curInvoice.receiptId == '办公用品'}">{{getStaticText('stationery') ? getStaticText('stationery') : '办公用品'}}</span>
             <span @click="selectInvoiceDetail('电脑配件')"
-                  :class="{invoice: curInvoice.receiptId == '电脑配件'}">电脑配件</span>
-            <span @click="selectInvoiceDetail('耗材')" :class="{invoice: curInvoice.receiptId == '耗材'}">耗材</span>
+                  :class="{invoice: curInvoice.receiptId == '电脑配件'}">{{getStaticText('computerAccessories') ? getStaticText('computerAccessories') : '电脑配件'}}</span>
+            <span @click="selectInvoiceDetail('耗材')" :class="{invoice: curInvoice.receiptId == '耗材'}">{{getStaticText('consumableItems') ? getStaticText('consumableItems') : '耗材'}}</span>
           </div>
           <div class="taxInvoice invoiceCon" v-if="curInvoice.invoiceType == '增值税发票'">
             <el-form :model="curInvoice" :rules="rules" ref="curInvoice" label-width="120px" class="demo-ruleForm">
-              <el-form-item label="单位名称" prop="receiptTitle">
+              <el-form-item :label="getStaticText('companyName') ? getStaticText('companyName') : '单位名称'" prop="receiptTitle">
                 <el-input v-model="curInvoice.receiptTitle" id="receiptTitle"></el-input>
               </el-form-item>
-              <el-form-item label="纳税人识别码" prop="taxpayerCode">
+              <el-form-item :label="getStaticText('taxpayerIdentificationCode') ? getStaticText('taxpayerIdentificationCode') : '纳税人识别码'" prop="taxpayerCode">
                 <el-input v-model="curInvoice.taxpayerCode" id="taxpayerCode"></el-input>
               </el-form-item>
-              <el-form-item label="注册地址" prop="companyAddress">
+              <el-form-item :label="getStaticText('registeredAddress') ? getStaticText('registeredAddress') : '注册地址'" prop="companyAddress">
                 <el-input v-model="curInvoice.companyAddress" id="companyAddress"></el-input>
               </el-form-item>
-              <el-form-item label="注册电话" prop="companyPhone">
+              <el-form-item :label="getStaticText('registeredTelephone') ? getStaticText('registeredTelephone') : '注册电话'" prop="companyPhone">
                 <el-input v-model="curInvoice.companyPhone" id="companyPhone"></el-input>
               </el-form-item>
-              <el-form-item label="开户银行" prop="bankName">
+              <el-form-item :label="getStaticText('depositBank') ? getStaticText('depositBank') : '开户银行'" prop="bankName">
                 <el-input v-model="curInvoice.bankName" id="bankName"></el-input>
               </el-form-item>
-              <el-form-item label="银行账户" prop="bankAccount">
+              <el-form-item :label="getStaticText('bankAccount') ? getStaticText('bankAccount') : '银行账户'" prop="bankAccount">
                 <el-input v-model="curInvoice.bankAccount" id="bankAccount"></el-input>
               </el-form-item>
             </el-form>
           </div>
 
           <div class="invoiceConSureDiv">
-            <el-button type="primary" @click="confirmAddInvoice('curInvoice')" id="invoiceConSure">确 定</el-button>
+            <el-button type="primary" @click="confirmAddInvoice('curInvoice')" id="invoiceConSure">{{getStaticText('confirm') ? getStaticText('confirm') : '确 定'}}</el-button>
           </div>
         </el-dialog>
         <!-- END 选择发票类型弹框 -->
@@ -57,42 +57,42 @@
                 <span v-text="tempInvoice.receiptTitle"></span>
                 <span v-text="tempInvoice.taxpayerCode"></span>
             </span>
-            <a href="javascript:void(0)" @click="selectInvoice()">修改</a>
+            <a href="javascript:void(0)" @click="selectInvoice()">{{getStaticText('alter') ? getStaticText('alter') : '修改'}}</a>
         </div>
   </div>
 </template>
 
 <script>
 import $ from "jquery";
-
 export default {
   name: "work_shoppingcart_01_components_invoice",
   reused: true,
-  props: ["namespace"],
+  props: ["namespace","parentConfig"],
   data () {
     return {
-      rules: {
-        receiptTitle: [
-          { required: true, message: '请填写单位名称', trigger: 'blur' },
-        ],
-        taxpayerCode: [
-          { required: true, message: '请填写纳税人识别号', trigger: 'blur' },
-          { max: 20, message: '纳税人识别号不能超过20个字符', trigger: 'blur' }
-        ],
-        companyAddress: [
-          { required: true, message: '请填写注册地址', trigger: 'blur' }
-        ],
-        companyPhone: [
-          { required: true, message: '请填写注册电话', trigger: 'blur' }
-        ],
-        bankName: [
-          { required: true, message: '请填写开户银行', trigger: 'blur' },
-          { max: 21, message: '开户银行不能超过21个字符', trigger: 'blur' }
-        ],
-        bankAccount: [
-          { required: true, message: '请填写银行账户', trigger: 'blur' }
-        ]
-      },
+      // rules: {
+      //   receiptTitle: [
+      //     { required: true, message: '请填写单位名称', trigger: 'blur' },
+      //   ],
+      //   taxpayerCode: [
+      //     { required: true, message: '请填写纳税人识别号', trigger: 'blur' },
+      //     { max: 20, message: '纳税人识别号不能超过20个字符', trigger: 'blur' }
+      //   ],
+      //   companyAddress: [
+      //     { required: true, message: '请填写注册地址', trigger: 'blur' }
+      //   ],
+      //   companyPhone: [
+      //     { required: true, message: '请填写注册电话', trigger: 'blur' }
+      //   ],
+      //   bankName: [
+      //     { required: true, message: '请填写开户银行', trigger: 'blur' },
+      //     { max: 21, message: '开户银行不能超过21个字符', trigger: 'blur' }
+      //   ],
+      //   bankAccount: [
+      //     { required: true, message: '请填写银行账户', trigger: 'blur' }
+      //   ]
+      // },
+      rules:{},
       invoiceDialog: false,   // 选择发票类型弹框 默认关闭
       receiptTitle: false,    // 单位名称提示信息 为空时才显示
       taxpayerCode: false,    // 纳税人识别号提示信息 为空时才显示
@@ -101,10 +101,13 @@ export default {
       bankName: false,        // 开户银行提示信息
       bankAccount: false,     // 开户账号提示信息
       curInvoice: {           // 模态弹窗中填写的发票信息
-        invoiceType: "普通发票", // 发票类型 默认显示普通发票
-        receipttypes: "个人",
+        // invoiceType: "普通发票", // 发票类型 默认显示普通发票
+        invoiceType: "", // 发票类型 默认显示普通发票
+        // receipttypes: "个人",
+        receipttypes: "",
         receiptType: "1",       // 1:个人  2:单位
-        receiptId: "明细",      // 普通发票的明细  默认显示明细
+        // receiptId: "明细",      // 普通发票的明细  默认显示明细
+        receiptId: "",      // 普通发票的明细  默认显示明细
         receiptTitle: "",       // 单位名称
         taxpayerCode: "",       // 纳税人识别号
         companyAddress: "",     // 公司住址 即注册地址
@@ -113,10 +116,13 @@ export default {
         bankAccount: ""         //开户账号
       },
       tempInvoice: {        // 显示出来的信息
-        invoiceType: "普通发票", // 发票类型 默认显示普通发票
-        receipttypes: "个人",
+        // invoiceType: "普通发票", // 发票类型 默认显示普通发票
+        invoiceType: "", // 发票类型 默认显示普通发票
+        // receipttypes: "个人",
+        receipttypes: "",
         receiptType: "1",       // 1:个人  2:单位
-        receiptId: "明细",      // 普通发票的明细  默认显示明细
+        // receiptId: "明细",      // 普通发票的明细  默认显示明细
+        receiptId: "",      // 普通发票的明细  默认显示明细
         receiptTitle: "",       // 公司名称
         taxpayerCode: "",       // 纳税人识别号
         companyAddress: "",     // 公司住址 即注册地址
@@ -124,7 +130,42 @@ export default {
         bankName: "",           // 开户银行
         bankAccount: ""         // 开户账号
       },
+      CONFIG:""
     };
+  },
+  created(){
+    this.CONFIG = this.parentConfig.invoiceContent;
+    this.rules = {
+      receiptTitle: [
+        { required: true, message: this.getStaticText('pleaseFillInTheCompanyName') ? this.getStaticText('pleaseFillInTheCompanyName') : '请填写单位名称', trigger: 'blur' },
+      ],
+        taxpayerCode: [
+        { required: true, message: this.getStaticText('pleaseFillInTheTaxpayerIdentificationNumber') ? this.getStaticText('pleaseFillInTheTaxpayerIdentificationNumber') : '请填写纳税人识别号', trigger: 'blur' },
+        { max: 20, message: this.getStaticText('theTaxpayerIdentificationNumberShallNotExceed20Characters') ? this.getStaticText('theTaxpayerIdentificationNumberShallNotExceed20Characters') : '纳税人识别号不能超过20个字符', trigger: 'blur' }
+      ],
+        companyAddress: [
+        { required: true, message: this.getStaticText('pleaseFillInTheRegisteredAddress') ? this.getStaticText('pleaseFillInTheRegisteredAddress') : '请填写注册地址', trigger: 'blur' }
+      ],
+        companyPhone: [
+        { required: true, message: this.getStaticText('pleaseFillInTheRegistrationNumber') ? this.getStaticText('pleaseFillInTheRegistrationNumber') : '请填写注册电话', trigger: 'blur' }
+      ],
+        bankName: [
+        { required: true, message: this.getStaticText('pleaseFillOutTheOpeningBank') ? this.getStaticText('pleaseFillOutTheOpeningBank') : '请填写开户银行', trigger: 'blur' },
+        { max: 21, message: this.getStaticText('theOpeningBankCannotExceed21Characters') ? this.getStaticText('theOpeningBankCannotExceed21Characters') : '开户银行不能超过21个字符', trigger: 'blur' }
+      ],
+        bankAccount: [
+        { required: true, message: this.getStaticText('pleaseFillOutYourBankAccount') ? this.getStaticText('pleaseFillOutYourBankAccount') : '请填写银行账户', trigger: 'blur' }
+      ]
+    };
+    this.tempInvoice.invoiceType = this.getStaticText('regularInvoice') ? this.getStaticText('regularInvoice') : '普通发票';
+    this.tempInvoice.receipttypes = this.getStaticText('personage') ? this.getStaticText('personage') : '个人';
+    this.tempInvoice.receiptId = this.getStaticText('detail') ? this.getStaticText('detail') : '明细';
+
+    this.curInvoice.invoiceType = this.getStaticText('regularInvoice') ? this.getStaticText('regularInvoice') : '普通发票';
+    this.curInvoice.receipttypes = this.getStaticText('personage') ? this.getStaticText('personage') : '个人';
+    this.curInvoice.receiptId = this.getStaticText('detail') ? this.getStaticText('detail') : '明细';
+
+
   },
   computed: {},
   mounted () { },
@@ -132,10 +173,10 @@ export default {
     invoiceWrapperClose: function () {
       this.invoiceDialog = false;
       this.curInvoice = {  // // 点击取消/确定/右上角x号的时候都会触发 要初始化数据 因为 elementUI 弹窗会记录上一次写入的值
-        invoiceType: "普通发票", // 发票类型 默认显示普通发票
-        receipttypes: "个人",
+        invoiceType: this.getStaticText('regularInvoice') ? this.getStaticText('regularInvoice') : "普通发票", // 发票类型 默认显示普通发票
+        receipttypes: this.getStaticText('personage') ? this.getStaticText('personage') : "个人",
         receiptType: "1",      // 1:个人  2:单位
-        receiptId: "明细",     // 普通发票的明细  默认显示明细
+        receiptId: this.getStaticText('detail') ? this.getStaticText('detail') : "明细",     // 普通发票的明细  默认显示明细
         receiptTitle: "",      // 公司名称
         taxpayerCode: "",      // 纳税人识别号
         companyAddress: "",    // 公司住址
@@ -192,6 +233,13 @@ export default {
       this.tempInvoice = JSON.parse(JSON.stringify(this.curInvoice));
       this.tempInvoice.receiptType = this.curInvoice.invoiceType === "普通发票" ? 1 : 2;
       this.$emit('invoiceInfo', this.tempInvoice);
+    },
+    getStaticText(text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
     }
   }
 }

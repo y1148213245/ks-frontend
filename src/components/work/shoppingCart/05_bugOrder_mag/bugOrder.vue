@@ -454,19 +454,20 @@
       this.otherDiv = this.CONFIG.otherDiv;
       this.billInfo = this.CONFIG.billInfo;
       this.descDiv = this.CONFIG.descDiv;
-
       this.getIdMagTypeList(); // 获取刊种列表
       // this.getDeliveryWay(); //获取配送方式
 
       //获取配置中默认的刊种名称 并且获取详情  //如果配置不对 那展示会失败
       if(typeof(this.CONFIG.checkMagTypeNameDefault)!='undefined' && this.CONFIG.checkMagTypeNameDefault  && this.CONFIG.checkMagTypeNameDefault.length>0){
         this.checkMagTypeName = this.CONFIG.checkMagTypeNameDefault;
-        this.getIdMagDo(this.checkMagTypeName);
+        // this.getIdMagDo(this.checkMagTypeName);
+        this.clickFunTakeNameChange("明年全年订阅");
       }
 
 
       this.orderSuccessUrl = this.CONFIG.orderSuccessUrl;
       this.payType = this.CONFIG.payType;
+      this.defaultPay = this.CONFIG.payType.defaultPay;
       this.resourceDetailConfig = this.CONFIG.getResourceDetail;
       this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.resourceDetailConfig.sysAdapter, this.resourceDetailConfig.typeAdapter)));
       if(typeof(this.CONFIG.noLoginUrl)!='undefined'){
@@ -502,9 +503,6 @@
         this.showPageName = idPage;
         //算出总价
         this.bookMoney = (this.pricedan)*(this.TakeNameChangeListLength);
-        //console.log(this.bookMoney);
-        //console.log(this.pricedan);
-        //console.log(this.TakeNameChangeListLength);
       },
       getAllprice(){
         this.bookMoney = (this.pricedan)*(this.TakeNameChangeListLength);
@@ -514,10 +512,13 @@
         if(item=='明年全年订阅'){
           this.TakeNameChangeList = this.nextYearTakeNameChangeList_next;
           this.TakeNameChangeyear = (new Date().getFullYear())+1;
+          // this.getAllprice();
+          this.getIdMagDo(this.checkMagTypeName);
         }else{
           this.TakeNameChangeyear = (new Date().getFullYear());
+          this.selectVal_open();
         }
-        this.getAllprice();
+        // this.getAllprice();
       },
       getIdMagTypeList () { // 获取刊种列表
         Get(CONFIG.BASE_URL + 'spc/prodb/getMagList.do').then((rep) => {
@@ -525,8 +526,8 @@
           if (datas.result && datas.data && datas.data.length > 0) {
             if(datas.result==1){
               this.idMagTypeList = datas.data;
-              this.checkMagTypeName = datas.data[0].magName;
-              this.getIdMagDo(this.checkMagTypeName)
+              //this.checkMagTypeName = datas.data[0].magName;
+              //this.getIdMagDo(this.checkMagTypeName);
             }
           }
         });
@@ -535,24 +536,16 @@
         this.checkMagTypeName = this.idMagTypeCheckTime;
         this.cutPage('buyMain');
         //获取刊物详细信息
-        this.getIdMagDo(this.checkMagTypeName);
+        this.clickFunTakeNameChange("明年全年订阅");
       },
       submitTakeFrom(){   //选择订阅方式 时间 提交表单
         this.cutPage('buyMain');
       },
       getIdMagDo(checkMagTypeName){  //选择期刊类型 获取期刊详细信息
 
-          //
-        // 'http://172.19.36.97:9092/spc-portal-web/'
         Get(CONFIG.BASE_URL + 'spc/prodb/getMag.do?magName=' + checkMagTypeName).then(rep => {
           if (rep.data && rep.data.result) {
             this.checkMagTypeNameInfo = rep.data.data;
-            // "noPublishNum":3,
-            //   "magDesc":"测试刊物简介",
-            //   "totalNum":24,
-            //   "price":"12",
-            //   "nextYearPrice":"",
-            //   "magName":"测试刊物"
 //制作需要的几个参数
 //             TakeNameOpenList = this.checkMagTypeNameInfo.noPublishNum
             // TakeNameOpenList = this.checkMagTypeNameInfo.totalNum
@@ -592,7 +585,6 @@
             this.TakeNameEndValue = this.checkMagTypeNameInfo.totalNum;
             this.TakeNameChangeListLength_newYear = this.checkMagTypeNameInfo.totalNum;
             this.pricedan = this.checkMagTypeNameInfo.price;
-            this.clickFunTakeNameChange("明年全年订阅");
             this.getAllprice();
           }
         });
