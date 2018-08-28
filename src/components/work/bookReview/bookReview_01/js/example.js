@@ -120,7 +120,8 @@ var prod = {
       },
       resourceDetail:{
         sysAdapter:'sykAdapter',
-        typeAdapter:'bookAdapter'
+        typeAdapter:'bookAdapter',
+        isDiscussLimit:true //评论限制 (评论逻辑控制)  例:获取后台控制评论1次之后不可再评论的状态
       },
       staticText:{
         comments:"评论",
