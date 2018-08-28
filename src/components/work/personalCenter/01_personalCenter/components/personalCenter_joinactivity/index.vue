@@ -1,7 +1,7 @@
 <template>
   <section class="personalcenter_join_activity">
     <div v-show="!enrolman">
-      <el-dropdown @command="handleCommand"  v-if="activityList.length > 0 && activityList[0].SYS_CURRENTSTATUS" style="float:right;margin-right:30px;">
+      <el-dropdown @command="handleCommand" v-if="activityList.length > 0 && activityList[0].SYS_CURRENTSTATUS" style="float:right;margin-right:30px;">
         <span class="el-dropdown-link">
           审核状态筛选
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -33,9 +33,9 @@
         </el-table-column>
         <el-table-column align="center" prop="POTHUNTER_IDNUMBER" label="参赛人身份证号" width="180">
         </el-table-column>
-        <el-table-column align="center" prop="AWARD" label="获奖情况" width="100" :formatter="worksScore">
+        <el-table-column v-if="activityList.length > 0 && activityList[0].AWARD" align="center" prop="AWARD" label="获奖情况" width="100" :formatter="worksScore">
         </el-table-column>
-        <el-table-column label="操作" align="center" width="190" fixed="right">
+        <el-table-column label="操作" align="center" width="190" fixed="right" v-if="getIsShow('operate')">
           <template slot-scope="scope">
             <el-button v-if="scope.row.SYS_CURRENTSTATUS" @click="handleEdit(scope.$index, scope.row)" :disabled="scope.row.SYS_CURRENTSTATUS=='未审核'|| scope.row.SYS_CURRENTSTATUS=='未通过审核'" size="small">查看作品</el-button>
             <!-- <el-switch
@@ -152,7 +152,7 @@ import $ from "jquery";
 export default {
   name: "joinactivity",
   reused: true,
-  props: ["namespace","parentConfig"],
+  props: ["namespace", "parentConfig"],
   created () {
     if (this.parentConfig.joinactivity) {
       this.CONFIG = this.parentConfig.joinactivity
@@ -180,7 +180,7 @@ export default {
       }
     }
     return {
-      CONFIG:null,
+      CONFIG: null,
       rules: {
         name: [
           { required: true, message: "请输入参赛人姓名", trigger: "blur" },
@@ -472,8 +472,19 @@ export default {
         return "评分中";
       }
     },
-    colShowFilter(property){
+    colShowFilter (property) {
 
+    },
+    getIsShow (text) {
+      if (this.CONFIG && this.CONFIG.showItem) {
+        if (this.CONFIG.showItem.indexOf(text) > -1) {
+          return true
+        } else {
+          return false 
+        }
+      } else {
+        return true
+      }
     }
   }
 };

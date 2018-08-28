@@ -210,7 +210,7 @@
           </el-form>
         </div>
 
-        <div class="work_contestants_01-supplement isLongInput">
+        <div class="work_contestants_01-supplement isLongInput" v-if="getInputShow('hide')">
           <el-form :model="addSupplementForm" :rules="rules" ref="addSupplementForm" style="display : inline-block">
             <div class="ac_linetext">
               <div class="ac_input">
@@ -343,7 +343,7 @@
                 <label>{{getStaticText('organizationTeacherPhoneNum') ? getStaticText('organizationTeacherPhoneNum') : '组织教师电话'}}:</label>
                 <span v-text="addSupplementForm.organizationTeacherPhone"></span>
               </li>
-              <li>
+              <li v-if="getInputShow('hide')">
                 <label>{{getStaticText('whetherPrivacy') ? getStaticText('whetherPrivacy') : "是否隐私"}}:</label>
                 <span v-text="addSupplementForm.isHide"></span>
               </li>
@@ -1037,7 +1037,7 @@ export default {
             paramsObj.metaMap.GUIDETEACHER_PHONENUMBER = this.addSupplementForm.teacherPhone;//指导教师电话
             paramsObj.metaMap.ORGANIZE_TEACHER = this.addSupplementForm.organizationTeacher;//组织教师
             paramsObj.metaMap.ORGANIZETEACHER_PHONENUMBER = this.addSupplementForm.organizationTeacherPhone;//组织教师电话
-            paramsObj.metaMap.IS_HIDE = this.addSupplementForm.isHide;//是否是隐私
+            paramsObj.metaMap.IS_HIDE = this.getInputShow('hide') ?  this.addSupplementForm.isHide : '';//是否是隐私
 
             paramsObj.metaMap.SYS_TOPIC = this.addAnnexWorksForm.title; //	参赛作品标题
             paramsObj.metaMap.DESCRIPTION = this.addAnnexWorksForm.synopsis; //	参赛作品简介
