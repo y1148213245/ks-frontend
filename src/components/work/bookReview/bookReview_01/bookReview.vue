@@ -3,9 +3,9 @@
   <div class="work_bookreview_01 work_bookreview_01_skin">
     <div class="title">
       <span>{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
-      <span v-if="CONFIG && CONFIG.toAddReview && CONFIG.toAddReview.toAddReviewShow && isDiscuss== '是'" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{CONFIG.toAddReview.toAddReviewName}}</span>
+      <span v-if="(CONFIG && CONFIG.toAddReview && CONFIG.toAddReview.toAddReviewShow) && (isComment== '是' && (isDiscussLimit && isDiscuss == '0'))" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{CONFIG.toAddReview.toAddReviewName}}</span>
     </div>
-    <div class="reviewCon" v-if="isDiscuss=='是'">
+    <div class="reviewCon" v-if="isComment=='是' && (isDiscussLimit && isDiscuss == '0')">
       <div class="review">
         <span class="reviewSpan">{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
         <p class="star">
@@ -90,7 +90,8 @@ export default {
       resourseType:'',
       resourceDetail:{},
       resourceDetailKeys:'',
-      isDiscuss:'否',  //是否能评论 (图书详情中数据)
+      isComment:'否',  //是否能评论 (图书详情中数据)(后台新建图书开关控制)))
+      isDiscuss:'1', //评论限制 (评论逻辑控制) 0 可以 1不可以
       queryConfigAddReview:0, //是否能评论完了 0可以 1不行
       nowUserLikeObj:{}
     }
@@ -117,12 +118,14 @@ export default {
     this.CONFIG = PROJECT_CONFIG[this.namespace].bookreview.bookreview_01;
     let resourceDetailConfig = this.CONFIG.resourceDetail ? this.CONFIG.resourceDetail : {
         sysAdapter:'sykAdapter',
-        typeAdapter:'bookAdapter'
+        typeAdapter:'bookAdapter',
+        isDiscussLimit:true
       }
     this.resourceDetailKeys = getFieldAdapter(
         resourceDetailConfig.sysAdapter,
         resourceDetailConfig.typeAdapter
       );
+    this.isDiscussLimit = resourceDetailConfig.isDiscussLimit
   },
   computed: {
     ...mapGetters({
@@ -146,7 +149,8 @@ export default {
           let datas = rep.data;
           if (rep.status == 200 && datas.data) {
             this.resourceDetail = datas.data;
-            this.isDiscuss = (this.resourceDetailKeys.isComment && this.resourceDetail.hasOwnProperty(this.resourceDetailKeys.isComment)) ? this.resourceDetail[this.resourceDetailKeys.isComment] : '是' ;
+            this.isDiscuss = this.resourceDetail.isDiscuss
+            this.isComment = (this.resourceDetailKeys.isComment && this.resourceDetail.hasOwnProperty(this.resourceDetailKeys.isComment)) ? this.resourceDetail[this.resourceDetailKeys.isComment] : '是' ;
             this.queryComment();   //获取回复列表
           }
         });
@@ -252,7 +256,7 @@ export default {
           });
           //重新获取判断条件
           if(this.orReGetMenberName){
-            // this.isDiscuss =1;
+            this.isDiscuss =1;
             this.getResourceDetail();
           }
           this.$refs.commentContent.value = ''; //评论完置空评分和内容
