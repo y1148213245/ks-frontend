@@ -5,8 +5,12 @@
       <div class="work_activitydetail_05-totalcount" v-if="getIsShow('totalCount')">作品数量:
         <span v-text="totalCount" class="work_activitydetail_05-totalcount_text"></span>
       </div>
-      <span class="work_activitydetail_05-list_title_icon"></span>
-      <h3 class="work_activitydetail_05-list_title" v-if="CONFIG.listTitle">{{CONFIG.listTitle}}</h3>
+
+      <div class="work_activitydetail_05-list_title" v-if="CONFIG.listTitle">
+        <span class="work_activitydetail_05-list_title_icon"></span>
+        <h3>{{CONFIG.listTitle}}</h3>
+      </div>
+      
       <template v-for="(item,index) in list">
         <div class="work_activitydetail_05-item" :key="index">
           <h2 class="work_activitydetail_05-title">
