@@ -79,7 +79,7 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="additions = false">取 消</el-button>
-          <el-button type="primary" @click="submitAddParticipantsForm('addParticipantsForm')">确 定</el-button>
+          <el-button type="primary" :disabled="isAddingParticipants" @click="submitAddParticipantsForm('addParticipantsForm')">确 定</el-button>
         </span>
       </el-dialog>
 
@@ -198,6 +198,7 @@ export default {
       isHide: false, //作品是否公开
       enrolman: false, //管理报名人页面
       additions: false, //新增人员弹窗
+      isAddingParticipants:false,//是否正在添加人员
       editorsDialog: false, //编辑人员弹窗
       identityInformation: "", //编辑人员内容初始化
       emptyName: false,
@@ -308,10 +309,11 @@ export default {
             userId: this.account.id,
             userName: this.addParticipantsForm.name
           };
+          this.isAddingParticipants = true
           api
             .addActivityMember(param)
             .then(response => {
-              console.log(response);
+              this.isAddingParticipants = false
               if (response.data.data.errorCode) {
                 this.$message({
                   type: "error",
@@ -335,6 +337,7 @@ export default {
               this.$refs[addParticipantsForm].resetFields(); //清空表单
             })
             .catch(err => {
+              this.isAddingParticipants = false
               console.log(err);
             });
         } else {
