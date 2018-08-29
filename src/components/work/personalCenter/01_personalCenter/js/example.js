@@ -281,7 +281,57 @@ const prod = {
           }]
         },
         'joinactivity':{
-        
+          showItem:['operate']
+        },
+        'book':{
+          navList:[
+            {
+              name:'图书',
+              type:'2',
+              productType:'',
+              keyType:'book'//字段适配器名,对应productKeys配置中的key,字段适配器名
+            },
+            {
+              name:'期刊',
+              type:'3',
+              productType:'periodical',
+              keyType:'periodical'
+            },
+            // {
+            //   name:'知识服务',
+            //   type:'3',
+            //   productType:'knowledge'
+            // },
+            // {
+            //   name:'音频组',
+            //   type:'3',
+            //   productType:'183'
+            // },
+            // {
+            //   name:'视频组',
+            //   type:'3',
+            //   productType:'172'
+            // },
+            // {
+            //   name:'资料组',
+            //   type:'3',
+            //   productType:'185'
+            // }
+          ],
+          productKeys:{
+            book:{
+              name:'productName',
+              pic:'bigPic',
+              resourceId:'resourceId',
+              resourceType:'resourseType'
+            },
+            periodical:{
+              name:'pub_resource_name',
+              pic:'pub_picBig',
+              resourceId:'pub_resource_id',
+              resourceType:'pub_resource_type'
+            }
+          }
         },
         feedback: { // 建议反馈的提交地址及传参字段
           submitUrl: "spc/prodb/saveItem.do", // 提交接口

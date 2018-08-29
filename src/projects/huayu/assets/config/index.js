@@ -1823,13 +1823,47 @@ var $_$ = {
 					"title": "我的工作台",
 					"icon": "el-icon-edit",
 					"tag": "workbench"
-				}],
+				},{
+          title: "已购",
+          icon: "el-icon-tickets",
+          tag: "book" 
+        }
+			],
 				"subConfig": {
 					"account": {
 						"getMobileCode": {
 							"url": "user/sendMobileMessage.do"
 						}
-					}
+					},
+					// 'book':{
+					// 	navList:[
+					// 		{
+					// 			name:'图书',
+					// 			type:'2',
+					// 			productType:'',
+					// 			keyType:'book'
+					// 		},
+					// 		{
+					// 			name:'期刊',
+					// 			type:'3',
+					// 			productType:'periodical',
+					// 			keyType:'periodical'
+					// 		}],
+					// 	productKeys:{
+					// 		book:{
+					// 			name:'productName',
+					// 			pic:'bigPic',
+					// 			resourceId:'resourceId',
+					// 			resourceType:'resourseType'
+					// 		},
+					// 		periodical:{
+					// 			name:'pub_resource_name',
+					// 			pic:'pub_picBig',
+					// 			resourceId:'pub_resource_id',
+					// 			resourceType:'pub_resource_type'
+					// 		}
+					// 	}
+					// }
 				}
 			}
 		}

@@ -1,26 +1,27 @@
 // 文联我的书架  只有电子书 试读用
 <template>
   <section class="personalcenter_shelflWrapper">
-    <!-- <nav>
-      <template>
-        <el-button type="primary">button</el-button>
+    <nav v-if="CONFIG && CONFIG.navList">
+      <template v-for="(item,index) in CONFIG.navList">
+        <el-button type="primary" @click="changType(item)" v-text="item.name" :key="index"></el-button>
       </template>
-    </nav> -->
+    </nav>
     <div class="myShelf" v-if="bookShelfInfo.data && bookShelfInfo.data.length > 0">
       <ul>
-        <li v-for="item in bookShelfInfo.data" class="shelfContent">
+        <li v-for="(item,index) in bookShelfInfo.data" class="shelfContent" :key="index">
           <div style="width:180px;height: 210px; text-align: center;">
             <div class="picBox">
               <div style="width: 180px; height: 180px; vertical-align: middle; display: table-cell; position: relative;">
-                <img v-bind:src="item.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,150,150)"/>
+                <img v-bind:src="item[productKeys.pic] || '../assets/img/zwfm.png'" onload="DrawImage(this,150,150)" />
               </div>
               <div class="namePrice">
-                <div v-text="item.productName" :title="item.productName"></div>
+                <div v-text="item[productKeys.name]" :title="item[productKeys.name]"></div>
               </div>
-              <div class="readBox" @click="toRead(item.resourceId,1,item.productName)" style="cursor:pointer">
-             <!--    <a target="_blank" v-bind:href="readConfig.baseURL + '/ebook/read.jsp?bookId=' + item.resourceId + '&readType=1&bookName=' + item.productName">
+              <!-- 只有图书类型会显示阅读 -->
+              <div class="readBox" v-if="item[productKeys.resourceType] && item[productKeys.resourceType] == 'BOOK'" @click="toRead(item[productKeys.resourceId],1,item[productKeys.name])" style="cursor:pointer">
+                <!--    <a target="_blank" v-bind:href="readConfig.baseURL + '/ebook/read.jsp?bookId=' + item.resourceId + '&readType=1&bookName=' + item.productName">
                   阅读</a> -->
-                <a target="_blank" >{{getStaticText('read') ? getStaticText('read') : '阅读'}}</a>
+                <a target="_blank">{{getStaticText('read') ? getStaticText('read') : '阅读'}}</a>
               </div>
             </div>
           </div>
@@ -39,19 +40,48 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "book",
   reused: true,
-  props: ["namespace","parentConfig"],
+  props: ["namespace", "parentConfig"],
   data () {
     return {
-      CONFIG:''
+      CONFIG: '',
+      currentProductType: '',
+      pageNo: '1',
+      pageSize: '8',
+      productKeys: ''
       // readConfig: READ_CONFIG
     };
   },
-  created (){
-    this.CONFIG = this.parentConfig.bookshelf;
+  created () {
+    this.productKeys = {//默认字段适配
+      name: 'productName',
+      pic: 'bigPic',
+      resourceId: 'resourceId',
+      resourceType: 'resourseType'
+    }
+    if (this.parentConfig.book) {
+      let keysList, currentType;
+
+      this.CONFIG = this.parentConfig.book;
+
+      this.currentProductType = this.CONFIG.navList[0];
+
+      keysList = this.CONFIG.productKeys;
+      currentType = this.currentProductType.keyType
+      if (keysList[currentType]) {
+        this.productKeys = keysList[currentType]
+      }
+    } else {
+      this.currentProductType = {
+        name: '图书',
+        type: '2',
+        productType: '',
+        keyType: 'book'
+      }
+    }
   },
   mounted: function () {
     this.$store.dispatch("personalCenter/queryUser", {
-      loadedCallBack: this.loadedCallBack
+      loadedCallBack: this.loadData
     });
   },
   computed: {
@@ -60,21 +90,27 @@ export default {
     })
   },
   methods: {
-    loadedCallBack () {
+    loadData () {
       var param = {
-        pageIndex: 1,
-        pageSize: 8,
-        type: 2
+        pageIndex: this.pageNo,
+        pageSize: this.pageSize,
+        type: this.currentProductType.type
       };
+      if (this.currentProductType.productType) {
+        param.productType = this.currentProductType.productType
+      }
       this.$store.dispatch("personalCenter/querybookShelfInfo", param);
     },
+    changType (item) {
+      this.currentProductType = item;
+      this.productKeys = this.CONFIG.productKeys[this.currentProductType.keyType]
+      this.loadData();
+    },
     pagingF: function ({ pageNo, pageSize }) {
-      var param = {
-        pageIndex: pageNo,
-        pageSize: pageSize,
-        type: 2
-      };
-      this.$store.dispatch("personalCenter/querybookShelfInfo", param);
+      this.pageNo = pageNo;
+      this.pageSize = pageSize;
+
+      this.loadData();
     },
     toRead (bookId, readType, bookName) {
       var url =
@@ -88,10 +124,10 @@ export default {
         "&userName=&siteType=" + CONFIG.READ_CONFIG.siteType;
       window.open(url);
     },
-    getStaticText(text){
-      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+    getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
         return this.CONFIG.staticText[text]
-      }else {
+      } else {
         return false
       }
     }

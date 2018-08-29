@@ -305,7 +305,6 @@ var actions = {
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
-    params.type = 2;
     let loading = Vue.prototype.$loading({
       text: "正在加载中..."
     });

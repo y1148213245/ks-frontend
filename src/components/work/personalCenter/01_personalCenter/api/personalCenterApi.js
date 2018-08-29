@@ -151,17 +151,8 @@ export default {
   querybookShelfInfo(params) {
     var url =
       CONFIG.BASE_URL +
-      "user/getBookShelfList.do?loginName=" +
-      params.loginName +
-      "&pageIndex=" +
-      (params.pageIndex || 1) +
-      "&pageSize=" +
-      (params.pageSize || 8) +
-      "&type=" +
-      params.type +
-      "&siteId=" +
-      CONFIG.SITE_CONFIG.siteId;
-    return Get(url);
+      "user/getBookShelfList.do";
+    return Get(url,{params});
   },
   /*获取我的消息列表*/
   queryMyMessageList(params) {
