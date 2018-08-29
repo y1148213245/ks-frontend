@@ -15,7 +15,19 @@ const prod = {
       url:'spc/cms/publish/list.do',
       keys: {},
       eventName_loadDate: 'loadSearchResult',
-      // showItem:['dontBind']/* dontBind:不绑定直接登陆功能 */
+      // showItem:['dontBind']/* dontBind:不绑定直接登陆功能 */,
+      toIndexHref:'./index.html',
+      staticText:{
+        userName: '用户名',
+        password:'密码',
+        bind:'绑定',
+        notBind:'不绑定直接登录',
+        autoLogin:'s后自动登陆',
+        userNotExist:'用户不存在',
+        pleaseInputUserName:'请输入用户名',
+        pleaseInputPass:'请输入密码'
+      }
+
     }
   }
 };
@@ -23,3 +35,5 @@ const platform = 'PC';
 const pageType = ['list'];
 const resourceType = ['book'];
 export { name, title, dev, prod, description, platform, pageType, resourceType };
+
+

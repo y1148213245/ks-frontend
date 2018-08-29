@@ -285,7 +285,7 @@
         if (phoneVal.length > 11) {
           this.phoneError=this.getStaticText('theTelephoneIsLong') ? this.getStaticText('theTelephoneIsLong') : "电话长度过长";
         }
-        if(!phoneVal || !phoneVal.match(/^[0-9]*$/) || phoneVal.length > 11){
+        if(!phoneVal || !(phoneReg.test(phoneVal)) || phoneVal.length > 11){
           this.emptyPhone=true;
           this.goodsInfo.push("false");
         }else{

@@ -5,23 +5,24 @@
 
       <div class="title_wrapper">
         <div class="title">
-          <a href="../pages/index.html" class="index">首页</a>>>
-          <a href="../pages/ebook.html" class="ebook">电子书城</a>>>
-          <span class="current">更多图书列表</span>
+          <a :href="CONFIG.toIndexHref" class="index">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</a>>>
+          <!-- <a href="../pages/ebook.html" class="ebook">电子书城</a>>> -->
+          <a :href="CONFIG.secondCrumbsUrl ||(CONFIG.toEBookHref)" class="ebook">{{CONFIG.secondCrumbsName ||(getStaticText('ebay') ? getStaticText('ebay') : '电子书城')}}</a>>>
+          <span class="current">{{getStaticText('moreBookList') ? getStaticText('moreBookList') : '更多图书列表'}}</span>
         </div>
       </div>
 
       <div class="book_list_sort_wrapper">
-        <span class="sort_default" :class="{on:orderType==0}" @click="setOrderParam('pub_a_order asc pub_lastmodified desc id asc',0,false)">默认排序</span>
-        <span class="sort_other" :class="{on:orderType==1}" @click="setOrderParam('BOOK_PUBDATE',1,true)">发布时间
+        <span class="sort_default" :class="{on:orderType==0}" @click="setOrderParam('pub_a_order asc pub_lastmodified desc id asc',0,false)">{{getStaticText('defaultSort') ? getStaticText('defaultSort') : '默认排序'}}</span>
+        <span class="sort_other" :class="{on:orderType==1}" @click="setOrderParam('BOOK_PUBDATE',1,true)">{{getStaticText('pubTime') ? getStaticText('pubTime') : '发布时间'}}
           <a href="javascript: void(0)" class="order_wrapper bookrank_asc"><i class="el-icon-caret-top" @click="setOrderParam('BOOK_PUBDATE asc',1,false)"></i></a>
           <a href="javascript: void(0)" class="order_wrapper bookrank_desc"><i class="el-icon-caret-bottom" @click="setOrderParam('BOOK_PUBDATE desc',1,false)"></i></a>
         </span>
-        <span class="sort_other" :class="{on:orderType==2}" @click="setOrderParam('pub_sales_num',2,true)">销量
+        <span class="sort_other" :class="{on:orderType==2}" @click="setOrderParam('pub_sales_num',2,true)">{{getStaticText('salesVolume') ? getStaticText('salesVolume') : '销量'}}
           <a href="javascript: void(0)" class="order_wrapper bookrank_asc"><i class="el-icon-caret-top" @click="setOrderParam('pub_sales_num asc',2,false)"></i></a>
           <a href="javascript: void(0)" class="order_wrapper bookrank_desc"><i class="el-icon-caret-bottom" @click="setOrderParam('pub_sales_num desc',2,false)"></i></a>
         </span>
-        <span class="sort_other" :class="{on:orderType==3}" @click="setOrderParam('pub_comment_num',3,true)">评论
+        <span class="sort_other" :class="{on:orderType==3}" @click="setOrderParam('pub_comment_num',3,true)">{{getStaticText('comment') ? getStaticText('comment') : '评论'}}
           <a href="javascript: void(0)" class="order_wrapper bookrank_asc"><i class="el-icon-caret-top" @click="setOrderParam('pub_comment_num asc',3,false)"></i></a>
           <a href="javascript: void(0)" class="order_wrapper bookrank_desc"><i class="el-icon-caret-bottom" @click="setOrderParam('pub_comment_num desc',3,false)"></i></a>
         </span>
@@ -30,7 +31,7 @@
       <div class="book_list_content_wrapper">
         <dl class="book_content_wrapper" v-for="(getEb,index) in resultList">
           <dt class="book_img_wrapper">
-            <img class="book_img" onload="DrawImage(this,113,152)" :src="getEb.pub_picBig" alt="暂无图片" @click="toBookDetail(getEb.id)"/>
+            <img class="book_img" onload="DrawImage(this,113,152)" :src="getEb.pub_picBig" :alt="getStaticText('noPic') ? getStaticText('noPic') : '暂无图片'" @click="toBookDetail(getEb.id)"/>
           </dt>
           <dd class="book_attr_wrapper">
             <p class="book_title">
@@ -39,15 +40,15 @@
             <p class="book_star">
               <el-rate v-model="getEb.pub_star_num" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
             </p>
-            <p class="book_author">作者：{{getEb.BOOK_SYS_AUTHORS}}</p>
+            <p class="book_author">{{getStaticText('author') ? getStaticText('author') : '作者'}}：{{getEb.BOOK_SYS_AUTHORS}}</p>
             <p class="book_synopsis" v-text="getEb.BOOK_SYNOPSIS"></p>
-            <section v-if="CONFIG && CONFIG.showPrice"> 
-              <p class="ui_list_pic_17_saleprice">原价：{{getEb.prod_sale_price | formatPriceNew}}</p>
-              <p class="ui_list_pic_17_memberprice">现价：{{getEb.prod_member_price | formatPriceNew}}</p>
+            <section v-if="CONFIG && CONFIG.showPrice">
+              <p class="ui_list_pic_17_saleprice">{{getStaticText('originalPrice') ? getStaticText('originalPrice') : '原价'}}：{{formatPriceNew(getEb.prod_sale_price)}}</p>
+              <p class="ui_list_pic_17_memberprice">{{getStaticText('currentPrice') ? getStaticText('currentPrice') : '现价'}}：{{formatPriceNew(getEb.prod_member_price)}}</p>
             </section>
             <p class="book_operate">
-              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="book_buy">购买</a>
-              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="book_view">查看</a>
+              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="book_buy">{{getStaticText('buy') ? getStaticText('buy') : '购买'}}</a>
+              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="book_view">{{getStaticText('check') ? getStaticText('check') : '查看'}}</a>
             </p>
           </dd>
         </dl>
@@ -176,7 +177,21 @@
         return URL.format(urlInfo);
       },
       toBookDetail: function (pubId) {
-        window.location.href = this.parseUrlAndParamsToStr('../pages/bookdetail.html', {pubId: pubId});
+        window.location.href = this.parseUrlAndParamsToStr(this.CONFIG.toBookDetailHref, {pubId: pubId});
+      },
+      getStaticText(text) {
+        if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+          return this.CONFIG.staticText[text]
+        }else {
+          return false
+        }
+      },
+      formatPriceNew (value) {
+        if (value) {
+          return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥') + Number(value).toFixed(2);
+        } else {
+          return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥')+'0.00';
+        }
       }
     }
   }
@@ -212,30 +227,30 @@
     position: relative;
   }
 
-/*   .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_sort_wrapper .sort_other .order_wrapper .asc {
-    background: url(./assets/img/bg_10.png) no-repeat -48px -412px;
-    vertical-align: middle;
-    display: inline-block;
-    text-indent: -99999px;
-    width: 10px;
-    height: 8px;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-  }
+  /*   .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_sort_wrapper .sort_other .order_wrapper .asc {
+      background: url(./assets/img/bg_10.png) no-repeat -48px -412px;
+      vertical-align: middle;
+      display: inline-block;
+      text-indent: -99999px;
+      width: 10px;
+      height: 8px;
+      position: absolute;
+      top: 10px;
+      right: 15px;
+    }
 
-  .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_sort_wrapper .sort_other .order_wrapper .desc {
-    background: url(./assets/img/bg_10.png) no-repeat -48px -428px;
-    vertical-align: middle;
-    display: inline-block;
-    text-indent: -99999px;
-    width: 10px;
-    height: 8px;
-    position: absolute;
-    top: 18px;
-    right: 15px;
-  }
- */
+    .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_sort_wrapper .sort_other .order_wrapper .desc {
+      background: url(./assets/img/bg_10.png) no-repeat -48px -428px;
+      vertical-align: middle;
+      display: inline-block;
+      text-indent: -99999px;
+      width: 10px;
+      height: 8px;
+      position: absolute;
+      top: 18px;
+      right: 15px;
+    }
+   */
   .book_list_sort_wrapper .order_wrapper  .el-icon-caret-top {
     position: absolute;
     top: 7px;
@@ -253,7 +268,7 @@
     height: 12px;
     z-index: 999;
   }
- 
+
   .ui_list_pic_17_3_cols_with_sort .list_wrapper .book_list_content_wrapper {
     padding-top: 30px;
   }

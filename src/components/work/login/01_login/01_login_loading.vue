@@ -2,19 +2,19 @@
 <template>
  <div class="work_login_01">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="work_login_01-ruleForm" v-if="status == 1 ">
-      <el-form-item label="用户名" prop="username">
+      <el-form-item :label="getStaticText('userName') ? getStaticText('userName') : '用户名'" prop="username">
         <el-input v-model="ruleForm.username"></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="password">  
+      <el-form-item :label="getStaticText('password') ? getStaticText('password') : '密码'" prop="password">
         <el-input type="password" v-model="ruleForm.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">绑定</el-button>
-        <el-button v-if="getItemIsShow('dontBind')" type="warning" @click="bind('0')">不绑定直接登陆</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">{{getStaticText('bind') ? getStaticText('bind') : '绑定'}}</el-button>
+        <el-button v-if="getItemIsShow('dontBind')" type="warning" @click="bind('0')">{{getStaticText('notBind') ? getStaticText('notBind') : '不绑定直接登陆'}}</el-button>
       </el-form-item>
     </el-form>
     <div class="work_login_01-result" v-if="status == 2 ">
-        <span v-text="second"></span>s后自动登录
+        <span v-text="second"></span>{{getStaticText('autoLogin') ? getStaticText('autoLogin') : 's后自动登录'}}
     </div>
  </div>
 </template>
@@ -32,22 +32,8 @@ export default {
     namespace: String,
   },
   data () {
+    let validateloginName;
 
-    let validateloginName = (rule, value, callback, regStatus) => {
-      var params = {
-        text: this.ruleForm.username,
-        type: "1",
-      };
-      this.action_checkUserInfo(params).then((resp) => {
-        let checkStatus = resp.data.result;
-
-        if (checkStatus == 1) {
-          callback(new Error('用户不存在'));
-        } else {
-          callback();
-        }
-      }); /* 检查用户信息 */
-    }
     return {
       CONFIG: null,
       status: '',/* 第三方账号状态 1待绑定 2已注册 */
@@ -58,13 +44,13 @@ export default {
         password: ''
       },
       rules: {
-        username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { validator: validateloginName, trigger: "blur" }
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-        ],
+        // username: [
+        //   { required: true, message: '请输入用户名', trigger: 'blur' },
+        //   { validator: validateloginName, trigger: "blur" }
+        // ],
+        // password: [
+        //   { required: true, message: '请输入密码', trigger: 'blur' },
+        // ],
       }
     };
   },
@@ -74,15 +60,39 @@ export default {
   created () {
     this.initConfig();
     this.query = URL.parse(document.URL, true).query;
-    this.status = this.query.status
-    
+    this.status = this.query.status;
+    this.validateloginName = (rule, value, callback, regStatus) => {
+      var params = {
+        text: this.ruleForm.username,
+        type: "1",
+      };
+      this.action_checkUserInfo(params).then((resp) => {
+        let checkStatus = resp.data.result;
+        if (checkStatus == 1) {
+          callback(new Error(this.getStaticText('userNotExist') ? this.getStaticText('userNotExist') : '用户不存在'));
+        } else {
+          callback();
+        }
+      }); /* 检查用户信息 */
+    }
+
+    this.rules = [
+      username = [
+      { required: true, message: this.getStaticText('pleaseInputUserName') ? this.getStaticText('pleaseInputUserName') : '请输入用户名', trigger: 'blur' },
+      { validator: this.validateloginName, trigger: "blur" }
+    ],
+      password = [
+      { required: true, message: this.getStaticText('pleaseInputPass') ? this.getStaticText('pleaseInputPass') :'请输入密码', trigger: 'blur' },
+    ],
+    ]
+
   },
 
-  mounted () { 
+  mounted () {
     let token = this.query.t;
     if (token && this.status==2) {
        this.toLogin(token)
-    } 
+    }
   },
 
   methods: {
@@ -114,7 +124,7 @@ export default {
         loginType: this.query.loginType/* 登录类型QQ,WeiXin,WeiBo */
       }
       this.action_bindThirdparty(params).then(resp => {
-        
+
         let result = resp.data.result;
         let error = resp.data.error;
         let token = resp.data.token;
@@ -139,11 +149,11 @@ export default {
       let interval = setInterval(() => {
         _this.second--;
         if (_this.second < 1) {
-          
+
           clearInterval(interval)
           let reffer = window.localStorage.getItem('loginReferr')
           window.localStorage.setItem('loginReferr','')
-          window.location.href = reffer || './index.html';
+          window.location.href = reffer || _this.CONFIG.toIndexHref;
         }
       }, 1000);
     },
@@ -158,7 +168,14 @@ export default {
       }else{
         return true
       }
-    }
+    },
+    getStaticText(text) {
+      if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
+    },
   }
 }
 </script>

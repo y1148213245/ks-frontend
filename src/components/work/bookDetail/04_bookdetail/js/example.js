@@ -273,7 +273,6 @@ const dev = {
           "show":true,  // 是否显示组合购买
           "title":"组合购买",   // 组合购买数据的标题名称
           "lastBtn":"加入购物车",  // 最后一个按钮显示内容
-          "showThisBook":false,  //是否展示本图书
           "showCombinateItem":3,  //展示图书个数
           "addCart":{
             "url":"cart/addCombinateProductToCart.do",
@@ -490,7 +489,6 @@ const prod = {
           "show":true,  // 是否显示组合购买
           "title":"组合购买",   // 组合购买数据的标题名称
           "lastBtn":"加入购物车",  // 最后一个按钮显示内容
-          "showThisBook":true,  //是否展示本图书
           "showCombinateItem":3,  //展示图书个数
           "addCart":{
             "url":"cart/addCombinateProductToCart.do",

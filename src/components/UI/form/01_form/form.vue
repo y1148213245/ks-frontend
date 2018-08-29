@@ -381,6 +381,9 @@ export default {
         // 验证通过
         if (this.flag && valid && this.codeFlag) {
           for (let key in this.form) {
+            // if("number" == typeof this.form[key]){
+            //   this.form[key] = String(this.form[key]);
+            // }
             if (this.keys[key]) {
               if(key === this.addressModel){
                 paramsObj.metaMap[this.keys[key]] = this.address + this.form[this.detailAddressModel];

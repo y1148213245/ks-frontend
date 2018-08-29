@@ -3,8 +3,10 @@
   <div class="login_03_content">
     <div class="login_03_titlebox">{{getStaticText('loginSys') ? getStaticText('loginSys') : '登录'}}</div>
     <div class="el-input el-input--prefix">
-      <input type="text" v-if="isPC == 'true'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" @change="checkUsername"/>
-      <input type="text" v-if="isPC == 'false'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" @blur="checkUsername"/>
+      <!-- 登录不需要单独校验用户名 -->
+      <!-- <input type="text" v-if="isPC == 'true'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" @change="checkUsername"/> -->
+      <!-- <input type="text" v-if="isPC == 'false'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" @blur="checkUsername"/> -->
+      <input type="text" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login"/>
       <span class="el-input__prefix">
         <i class="fa fa-user" aria-hidden="true"></i>
       </span>
@@ -187,27 +189,29 @@ export default {
         return false;
       });
     },
-    checkUsername(){  //单独验证用户名
-      let params = Object.assign({},this.CONFIG.checkUsername.params);
-      params.checkText = this.member.loginName;
-      var mameReg=/^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-      var emallReg= /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
-      if(!mameReg.test(params.checkText)&&!emallReg.test(params.checkText)){
-        this.$message({
-          type: "error",
-          message: this.getStaticText('unRegisterName') ? this.getStaticText('unRegisterName') : '请输入正确的手机号或邮箱'
-        });
-        return;
-      };
-      Get(CONFIG.BASE_URL+this.CONFIG.checkUsername.url +'?checkText=' +params.checkText + '&checkType=' + params.checkType).then((rep) => {
-        if(rep.data.result == '1'){
-          this.$message({
-            type: "error",
-            message: this.getStaticText('unRegisterName') ? this.getStaticText('unRegisterName') : '账号未注册'
-          });
-        }
-      })
-    },
+    // 登录不需要单独校验用户名,先注释掉
+    
+    // checkUsername(){  //单独验证用户名
+    //   let params = Object.assign({},this.CONFIG.checkUsername.params);
+    //   params.checkText = this.member.loginName;
+    //   var mameReg=/^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+    //   var emallReg= /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
+    //   if(!mameReg.test(params.checkText)&&!emallReg.test(params.checkText)){
+    //     this.$message({
+    //       type: "error",
+    //       message: this.getStaticText('unRegisterName') ? this.getStaticText('unRegisterName') : '请输入正确的手机号或邮箱'
+    //     });
+    //     return;
+    //   };
+    //   Get(CONFIG.BASE_URL+this.CONFIG.checkUsername.url +'?checkText=' +params.checkText + '&checkType=' + params.checkType).then((rep) => {
+    //     if(rep.data.result == '1'){
+    //       this.$message({
+    //         type: "error",
+    //         message: this.getStaticText('unRegisterName') ? this.getStaticText('unRegisterName') : '账号未注册'
+    //       });
+    //     }
+    //   })
+    // },
     /*  loginValid: function () {
       if (this.member.loginName.trim() == '' || this.member.password.trim() == '') { // 先校验是否为空
         this.$message({

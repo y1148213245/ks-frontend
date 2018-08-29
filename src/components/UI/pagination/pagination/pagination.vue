@@ -61,6 +61,7 @@ export default {
         this.handleCurrentChange(1);
       }
       this.currentPage = this.propsCurrentPage ? this.propsCurrentPage : 1;/*为其他页时改变currentPage，自动触发handleCurrentChange方法*/
+      this.handleCurrentChange(this.currentPage);
     },
     handleCurrentChange (val) {
       if (this.excuteFunction && this.excuteFunction instanceof Function) {

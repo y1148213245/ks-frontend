@@ -15,7 +15,7 @@
           <!-- 自定义事件按钮 包括（title 标题） -->
           <div v-else-if="config.name == 'button'" v-bind="{class: 'work_bookdetail_04_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(config)">
             <i v-bind="{class: config.className}"></i>
-            <label class="work_bookdetail_04_btnlabel">{{config.display}}</label>
+            <label class="work_bookdetail_04_btnlabel">{{isBuy == 1 ? config.afterDisplay : config.display}}</label>
             <span v-bind="{class: 'work_bookdetail_04__btncontainer_' + config.field}" v-if="keys[config.field]">{{ resourceDetail[keys[config.field]] }}</span>
           </div>
 
@@ -150,34 +150,34 @@
     <!-- END 有声书音频附件 -->
 
     <!-- 组合购买 -->
-    <div class="work_bookdetail_04_combinate" v-if=" combinateProductCfg.show && combinateProductLsit && combinateProductLsit.length > 0">
+    <div class="work_bookdetail_04_combinate" v-if=" combinateProductCfg.show && combinateProductLsit.length > 0">
       <span class="work_bookdetail_04_combinate_title">{{combinateProductCfg.title}}</span>
       <ul class="work_bookdetail_04_combinate_main" >
-        <li v-for="(list,key) in combinateProductLsit" v-if="key == 0" v-bind:key="key" :data-id="list.id">
+        <li>
           <!-- 图书本身 -->
-          <div class="work_bookdetail_04_combinate_book" v-if="combinateProductCfg.showThisBook">
+          <div class="work_bookdetail_04_combinate_book">
             <div class="work_bookdetail_04_combinate_image"><img :src="resourceDetail[keys['picSmall']] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
             <h4 class="work_bookdetail_04_combinate_name" :title="resourceDetail[keys['resName']]">{{resourceDetail[keys['resName']]}}</h4>
             <span class="work_bookdetail_04_combinate_price">价格 : {{ '￥' + Number(resourceDetail["memberPrice"]).toFixed(2)}}</span>
-            <div class="work_bookdetail_04_combinate_and">+</div>
           </div>
+          <div class="work_bookdetail_04_combinate_and">+</div>
           <!-- 组合列表 -->
           <div >
-            <button class="work_bookdetail_04_combinate_btn prev" @click="combinateList($event)" :class="{'disable': showCombinateNum == 0,'normal':showCombinateNum!=0 }" v-show="list.list.length > 3">&lt;</button>
+            <button class="work_bookdetail_04_combinate_btn prev" @click="combinateList($event)" :class="{'disable': showCombinateNum == 0,'normal':showCombinateNum!=0 }" v-show="combinateProductLsit.length > 3">&lt;</button>
             <ul class="work_bookdetail_04_combinate_list" >
-              <li class="work_bookdetail_04_combinate_book" v-for="(item,index) in list.list" v-bind:key="index" v-show=" index >= showCombinateNum && index < showCombinateNum + showCombinateItem" @click="toCombinateItemDetail(combinateProductCfg['toDetail'],item['pubId'])">
+              <li class="work_bookdetail_04_combinate_book" v-for="(item,index) in combinateProductLsit" v-bind:key="index" v-show=" index >= showCombinateNum && index < showCombinateNum + showCombinateItem" @click="toCombinateItemDetail(combinateProductCfg['toDetail'],item['pubId'])">
                 <div class="work_bookdetail_04_combinate_image"><img :src="item['smallPic'] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
                 <h4 class="work_bookdetail_04_combinate_name" :title="item['resourceName']">{{item["resourceName"]}}</h4>
                 <span class="work_bookdetail_04_combinate_price ">价格 : {{ '￥' + Number(item["memberPrice"]).toFixed(2)}}</span>
               </li>
             </ul>
-            <button class="work_bookdetail_04_combinate_btn next" @click="combinateList($event)" :class="{'disable': showCombinateNum > showCombinateMaxNum - showCombinateItem }" v-show="list.list.length > 3">&gt;</button>
+            <button class="work_bookdetail_04_combinate_btn next" @click="combinateList($event)" :class="{'disable': showCombinateNum > showCombinateMaxNum - showCombinateItem }" v-show="combinateProductLsit.length > 3">&gt;</button>
           </div>
           <div class="work_bookdetail_04_combinate_equal">=</div>
           <!-- 购买按钮 -->
           <div class="work_bookdetail_04_combinate_pay">
-            <span class="work_bookdetail_04_combinate_price">套餐价 : <span>{{ '￥' + Number(list["combinationPrice"]).toFixed(2)}}</span></span>
-            <span class="work_bookdetail_04_combinate_savemoney" v-if="list['savemoney'] > 0">省{{ '￥' + Number(list["savemoney"]).toFixed(2)}}</span>
+            <span class="work_bookdetail_04_combinate_price">套餐价 : <span>{{ '￥' + Number(combinateProduct["combinationPrice"]).toFixed(2)}}</span></span>
+            <span class="work_bookdetail_04_combinate_savemoney" v-if="combinateProduct['allPrice'] > combinateProduct['combinationPrice']">省{{ '￥' + Number(combinateProduct['allPrice'] - combinateProduct['combinationPrice']).toFixed(2)}}</span>
             <span class="work_bookdetail_04_combinate_buy" @click="addcombinateProductToCart(combinateProductCfg['addCart'],list.id)">{{combinateProductCfg.lastBtn || '立即购买'}}</span>
           </div>
         </li>
@@ -316,7 +316,9 @@ export default {
       showCombinateNum:0,  //初始化显示的下标
       showCombinateMaxNum:3,  // 组合购买数组的length
       showCombinateItem:3 ,     // 组合购买显示个数 , 后续可升级为可配置
-      combinateProductLsit:[], // 初始化组合购买数组
+      // oldCombinateProductLsit:[],// 初始化组合购买数组
+      combinateProduct:{},    // 初始化组合购买对象 - 取第一个
+      combinateProductLsit:[],  //组合购买的数组
       combinateProductCfg:{},  // 组合购买是否显示
 
       resType: '', // 当前详情所属资源类型       temp: {}, //订单里的id
@@ -405,6 +407,9 @@ export default {
           });
           return false;
         }
+        if(this.isBuy == 1){  //已购买过，就不让再买了
+          return false;
+        }
         this.isdialogShow = true;
         this.getPayMethodsBySiteId();
         return false;
@@ -447,7 +452,86 @@ export default {
           }
         }
       }
+      // 样书申领事件
+      if(config.method == 'toApply'){
+        this.toApply(config);
+        return false;
+      }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
+    },
+    toApply : function(config){ //样书申领事件 , 将所有参数拼接到url中
+      var _this = this;
+      if(this.loginName == undefined || this.loginName == '') { // 未登录
+          this.$message({
+            message: "请先登录",
+            type: 'error',
+            duration: 2000,
+            onClose: function(){
+              window.location = _this.CONFIG.loginUrl;
+            }
+          });
+          return false;
+        }
+        var params = {
+          "keysStr":"", // 到form组件只解析keysStr里的字段 , 其他字段不解析
+          "LOGIN_NAME":this.loginName,
+          "SYS_TOPIC":this.resourceDetail["BOOK_SYS_TOPIC"],
+          "SERIES_NAME":this.resourceDetail["BOOK_SERIES_NAME"],
+          "ISBN":this.resourceDetail["BOOK_ISBN"],
+          "PRESS_NAME":this.resourceDetail["BOOK_PRESS_NAME"],
+          "CLC_CAT":this.resourceDetail["BOOK_CLC_CAT"],
+          "READER_OBJECT":this.resourceDetail["BOOK_READER_OBJECT"],
+          "EDITOR":this.resourceDetail["BOOK_EDITOR"],
+          "COPY_DESIGNER":this.resourceDetail["BOOK_COPY_DESIGNER"],
+          "SYS_AUTHORS":this.resourceDetail["BOOK_SYS_AUTHORS"],
+          "COVER_DESIGNER":this.resourceDetail["BOOK_COVER_DESIGNER"],
+          "MAJOR_EDITOR":this.resourceDetail["BOOK_MAJOR_EDITOR"],
+          "PRINT_VERSION":this.resourceDetail["BOOK_PRINT_VERSION"],
+          "BOOK_VERSION":this.resourceDetail["BOOK_BOOK_VERSION"],
+          "TEXT_NUM":this.resourceDetail["BOOK_TEXT_NUM"],
+          "PRICE":this.resourceDetail["BOOK_PRICE"],
+          "SHELF_ADVICE":this.resourceDetail["BOOK_SHELF_ADVICE"],
+          "FORMAT":this.resourceDetail["BOOK_FORMAT"],
+          "PRODUCT_SIZE":this.resourceDetail["BOOK_PRODUCT_SIZE"],
+          "REMARK":this.resourceDetail["BOOK_REMARK"],
+          "COVER_SOFT":this.resourceDetail["BOOK_COVER_SOFT"],
+          "TEXT_TYPE":this.resourceDetail["BOOK_TEXT_TYPE"],
+          "TEXT_COLOR":this.resourceDetail["BOOK_TEXT_COLOR"],"TEXT_SOFT":this.resourceDetail["BOOK_TEXT_SOFT"],
+          "PUBDATE":this.resourceDetail["BOOK_PUBDATE"],
+          "MATERIAL_ID":this.resourceDetail["BOOK_MATERIAL_ID"],
+          "LANGUAGE":this.resourceDetail["BOOK_LANGUAGE"],
+          "DEPART_CASCADID":this.resourceDetail["BOOK_DEPART_CASCADID"],
+          "DEPARTID":this.resourceDetail["BOOK_DEPARTID"],
+          "LEGALNOTICE":this.resourceDetail["BOOK_LEGALNOTICE"],
+          "SUBTITLE":this.resourceDetail["BOOK_SUBTITLE"],
+          "FITMENT":this.resourceDetail["BOOK_FITMENT"],
+          "PRINT_COMPANY":this.resourceDetail["BOOK_PRINT_COMPANY"],
+          "PRINTED_SHEETS":this.resourceDetail["BOOK_PRINTED_SHEETS"],
+          "PROOF_EDITOR":this.resourceDetail["BOOK_PROOF_EDITOR"],
+          // "COPYRIGHT_MSG":this.resourceDetail["COPYRIGHT_MSG"],
+          "KEYWORDS":this.resourceDetail["BOOK_KEYWORDS"],
+          // "EBOOK_CAT":this.resourceDetail["EBOOK_CAT"],
+          "WORDS":this.resourceDetail["BOOK_WORDS"],
+          "IS_COMMENT":this.resourceDetail["BOOK_IS_COMMENT"],
+          "SYNOPSIS":this.resourceDetail["BOOK_SYNOPSIS"],
+          "PAGE_NUM_BOOK":this.resourceDetail["BOOK_PAGE_NUM_BOOK"],
+          // "CIPINFO":this.resourceDetail["CIPINFO"],
+          "THEME_WORD":this.resourceDetail["BOOK_THEME_WORD"],
+          "EB_PRICE":this.resourceDetail["BOOK_EB_PRICE"],
+          "ONTOLOGY":this.resourceDetail["BOOK_ONTOLOGY"],
+          "BSN":this.resourceDetail["BOOK_BSN"],
+          "SALE_URL":this.resourceDetail["BOOK_SALE_URL"]
+        };
+        var str = "?";
+        var keysStr = "";
+        for(var key in params){
+          if(undefined != params[key] || "" != params[key]){
+            str += (key + "=" + params[key] + "&");
+            keysStr += (key + ".")
+          }
+        }
+        params["keysStr"] = keysStr;
+        window.open(config.url + str);
     },
     toCustomFunMethod (method) { // 执行自定义事件
       if(this.buyBtnOpacity){return}// 按钮透明时方法不可用 ， 数据加载完毕按钮不透明时方法可用
@@ -705,23 +789,27 @@ export default {
             this.getPublicizeInfo(); // 获取图书相关信息
           }
           //获取组合购买数据
-          this.combinateProductLsit = this.resourceDetail.combinateProductLsit;
-          // 计算省下多少钱
-          let thisBookPrice = Number(this.resourceDetail["memberPrice"]);
-          if(this.combinateProductLsit && this.combinateProductLsit.length){
-            var self = this;
-            this.combinateProductLsit.forEach(function(val,key,obj){
-              let allPrice = 0;
-              val.list.forEach(function(item,index,arr){
-                allPrice += Number(item['memberPrice']);
-              })
-              var savemoney = allPrice + thisBookPrice - val.combinationPrice;
-              self.$set(val,"savemoney",savemoney)
-            });
+          this.combinateProduct = this.resourceDetail.combinateProductLsit[0];
+          if(this.combinateProduct){
+            this.combinateProductLsit = this.combinateProduct && this.combinateProduct.list;
+            // 计算图书的总价并添加到对象属性
+            var combinateProductAllPrice = 0;
+            for(var i= 0;i< this.combinateProductLsit.length ; i++){
+              combinateProductAllPrice += Number(this.combinateProductLsit[i]["memberPrice"]);
+            }
+            console.log(combinateProductAllPrice);
+            this.$set(this.combinateProduct,"allPrice",combinateProductAllPrice);
+
+            // 精简组合购买数组 -除去图书本身
+            for(var a = 0;a < this.combinateProductLsit.length ; a++){
+              if(this.resourceDetail["pubId"] == this.combinateProductLsit[a]["pubId"]){
+                this.combinateProductLsit.splice(a,1);
+                break;
+              }
+            }
+            this.showCombinateMaxNum = this.combinateProductLsit ? this.combinateProductLsit.length - 1 : this.showCombinateItem; // 取第一条组合购买的length
           }
           
-          this.showCombinateMaxNum = this.combinateProductLsit[0] ? this.combinateProductLsit[0].list.length - 1 : this.showCombinateItem; // 取第一条组合购买的length
-
         }
       });
     },

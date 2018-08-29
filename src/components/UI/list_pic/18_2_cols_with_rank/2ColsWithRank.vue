@@ -5,16 +5,16 @@
 
       <div class="breadcrumbs_wrapper">
         <div class="breadcrumbs">
-          <a href="./index.html" class="index">首页</a>>>
-          <a href="./ebook.html" class="ebook">电子书城</a>>>
-          <span class="current">更多图书列表</span>
+          <a href="./index.html" class="index">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</a>>>
+          <a href="./ebook.html" class="ebook">{{getStaticText('ebay') ? getStaticText('ebay') : '电子书城'}}</a>>>
+          <span class="current">{{getStaticText('moreBookList') ? getStaticText('moreBookList') : '更多图书列表'}}</span>
         </div>
       </div>
 
       <div class="list_wrapper">
         <dl class="content" v-for="(getEb,index) in resultList">
           <dt class="img_wrapper">
-            <img onload="DrawImage(this,143,193)" :src="getEb.pub_picBig" alt="暂无图片" @click="toBookDetail(getEb.id)"/>
+            <img onload="DrawImage(this,143,193)" :src="getEb.pub_picBig" :alt="getStaticText('noPic') ? getStaticText('noPic') : '暂无图片'" @click="toBookDetail(getEb.id)"/>
           </dt>
           <dd class="attr_wrapper">
             <p class="title_wrapper">
@@ -23,13 +23,13 @@
             <p class="_star">
               <el-rate v-model="getEb.pub_star_num" :show-text="false" :max="5" disabled disabled-void-color="#c1c1c0"></el-rate>
             </p>
-            <p class="author">作者：<span v-text="getEb.BOOK_SYS_AUTHORS || '暂无作者'"></span></p>
+            <p class="author">{{getStaticText('author') ? getStaticText('author') : '作者'}}：<span v-text="getEb.BOOK_SYS_AUTHORS || (getStaticText('noAuthor') ? getStaticText('noAuthor') : '暂无作者')"></span></p>
             <p class="synopsis"><span v-text="getEb.BOOK_SYNOPSIS"></span></p>
             <p class="operate">
               <a href="http://www.jiathis.com/share" style="border: 1px solid #d2d2d2"
-                 class="_share jiathis jiathis_txt jtico jtico_jiathis share" target="_blank">分享</a>
-              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="_buy">购买</a>
-              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="_view">查看</a>
+                 class="_share jiathis jiathis_txt jtico jtico_jiathis share" target="_blank">{{getStaticText('share') ? getStaticText('share') : '分享'}}</a>
+              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="_buy">{{getStaticText('buy') ? getStaticText('buy') : '购买'}}</a>
+              <a href="javascript:void(0)" @click="toBookDetail(getEb.id)" class="_view">{{getStaticText('check') ? getStaticText('check') : '查看'}}</a>
             </p>
             <span class="index" v-text="index+1"></span>
           </dd>
@@ -99,8 +99,16 @@ export default {
       return URL.format(urlInfo);
     },
     toBookDetail: function (pubId) {
-      window.location.href = this.parseUrlAndParamsToStr('bookdetail.html', { pubId: pubId });
-    }
+      window.location.href = this.parseUrlAndParamsToStr(this.CONFIG.toBookDetailHref,{ pubId: pubId });
+    },
+    getStaticText(text) {
+      if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      }else {
+        return false
+      }
+    },
+
   }
 }
 </script>

@@ -106,6 +106,7 @@ export default {
             message: this.staticText.answerSuccess || '您已提问成功，待审核通过后显示。',
             type: 'success'
           });
+          this.question="";
         } else {
           this.$message({
             message: this.staticText.opFailed || '操作失败',

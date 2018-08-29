@@ -44,7 +44,7 @@
       <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
         <div class="work_videoplay_01_myswiperwra swiper-wrapper">
           <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-text="item[keys.resName]" @click="toPlayVideo(item,index)" :class="{work_videoplay_01_activevideo: curShowIndex == index}"></div>
-          <div class="work_videoplay_01_myswiper_tips swiper-slide" v-text="CONFIG.staticText && CONFIG.staticText.noelseTips ? CONFIG.staticText.noelseTips : '没有下一个视频啦'"></div>
+          <div class="work_videoplay_01_myswiper_tips swiper-slide" v-text="resType == 'VIDEO-MEDIA' ? (CONFIG.staticText && CONFIG.staticText.noNextVideo ? CONFIG.staticText.noNextVideo : '没有下一个视频啦') : (CONFIG.staticText && CONFIG.staticText.noNextAudio ? CONFIG.staticText.noNextAudio : '没有下一个音频啦')"></div>
         </div>
       </div>
       <div class="work_videoplay_01_myswipercon_btns">

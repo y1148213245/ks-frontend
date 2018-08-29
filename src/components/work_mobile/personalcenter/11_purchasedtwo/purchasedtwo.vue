@@ -224,7 +224,7 @@ export default {
           var url= (this.CONFIG.toDetailUrl ? this.CONFIG.toDetailUrl : './bookdetail.html') + '?pubId=' + book.pubId;
         }else if(book.contentType==='94'){
           let params = Object.assign({},this.CONFIG.toProbationParams) ;
-          var url=CONFIG.READ_URL + '?bookId=' + book.resourceId + '&readType=' + (params.readType ? params.readType : '0') + '&bookName=' + book.resourceName + '&userName=&siteType=' + (params.siteType ? params.siteType : '1'); 
+          var url=CONFIG.READ_URL + '?bookId=' + book.resourceId + '&readType=' + (params.readType ? params.readType : '0') + '&bookName=' + book.resourceName + '&userName=&siteType=' + (params.siteType ? params.siteType : '0');
         }
           window.open(url, '_self');
       }

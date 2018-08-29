@@ -8,7 +8,7 @@
                     <template v-for="(config, config_i) in resourceListsConfig.complicatedItem">
                         <!-- 需要特殊处理的复杂项 -->
                         <!-- img 图片 -->
-                        <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_29_resourcelists_li_imgcontainter" @click="toCustomFun(item, config)">
+                        <div :key="config_i" v-if="config.name == 'img'" v-show="tabObj.name != '123'" class="ui_list_pic_29_resourcelists_li_imgcontainter" @click="toCustomFun(item, config)">
                         <label class="ui_list_pic_29_resourcelists_img_label">{{config.display}}</label>
                         <img class="ui_list_pic_29_resourcelists_li_img" v-bind="{class: 'ui_list_pic_29_resourcelists_' + config.field}" :src=" item[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)" />
                         </div>
@@ -79,6 +79,7 @@ export default {
       pageSizes: [],
       pageNo: "",
       pageSize: "",
+      tabObj: {},  //将当前tab对象存起来
       
     };
   },
@@ -100,6 +101,7 @@ export default {
   },
   methods: {
     handleClick(tab) {
+      this.tabObj = tab;
       this.queryBookList(tab.name);
     },
     getStaticText(text){
@@ -140,17 +142,14 @@ export default {
       })
     },
     toCustomFun(item, config){
-      if (config.method == "toDetail") {
         window.open(
           toOtherPage(item, this.CONFIG[config.method], this.keys)
         );
-      }
-      
     },
     paging: function ({ pageNo, pageSize }) {
       this.pageNo = pageNo;
       this.pageSize = pageSize;
-      this.queryBookList();
+      this.queryBookList(this.tabObj.name);
     }
   },
   watch: {

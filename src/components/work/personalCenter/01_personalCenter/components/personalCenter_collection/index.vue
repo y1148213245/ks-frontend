@@ -71,7 +71,7 @@ export default {
       radio: null,
       CONFIG: null, // 当前组件配置
       contentType: "",
-      initPagination: true, // 初始化分页组件
+      initPagination: true // 初始化分页组件
     };
   },
   computed: {
@@ -131,11 +131,27 @@ export default {
     deleteCollProduct: function(item) {
       // 删除收藏商品
       var _this = this;
-      this.$confirm(_this.getStaticText('areYouSureYouWantToRemoveTheFavoritesFromTheMerchandise') ? _this.getStaticText('areYouSureYouWantToRemoveTheFavoritesFromTheMerchandise') : "您确定要将商品移除收藏夹吗?", _this.getStaticText('systemHints') ? _this.getStaticText('systemHints') : "系统提示", {
-        confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定",
-        cancelButtonText: _this.getStaticText('cancel') ? _this.getStaticText('cancel') : "取消",
-        type: "warning"
-      }).then(function() {
+      this.$confirm(
+        _this.getStaticText(
+          "areYouSureYouWantToRemoveTheFavoritesFromTheMerchandise"
+        )
+          ? _this.getStaticText(
+              "areYouSureYouWantToRemoveTheFavoritesFromTheMerchandise"
+            )
+          : "您确定要将商品移除收藏夹吗?",
+        _this.getStaticText("systemHints")
+          ? _this.getStaticText("systemHints")
+          : "系统提示",
+        {
+          confirmButtonText: _this.getStaticText("confirm")
+            ? _this.getStaticText("confirm")
+            : "确定",
+          cancelButtonText: _this.getStaticText("cancel")
+            ? _this.getStaticText("cancel")
+            : "取消",
+          type: "warning"
+        }
+      ).then(function() {
         var params = {
           id: item.pubId,
           cb: _this.deleteCollProductcb
@@ -147,11 +163,17 @@ export default {
       var _this = this;
       if (delCollStatus == 1) {
         this.$message({
-          message: _this.getStaticText('removeSuccess') ? _this.getStaticText('removeSuccess') : "移除成功",
+          message: _this.getStaticText("removeSuccess")
+            ? _this.getStaticText("removeSuccess")
+            : "移除成功",
           type: "success"
         });
         var params = {
-          param: {},
+          param: {
+            pageIndex: 1,
+            pageSize: 8,
+            contentType: _this.contentType
+          },
           myCallBack: function() {
             _this.isSelectAll();
           }
@@ -160,7 +182,9 @@ export default {
         this.$store.dispatch("personalCenter/queryCollectionInfo", params);
       } else {
         this.$message({
-          message: _this.getStaticText('removeFailed') ? _this.getStaticText('removeFailed') : "移除失败",
+          message: _this.getStaticText("removeFailed")
+            ? _this.getStaticText("removeFailed")
+            : "移除失败",
           type: "error"
         });
       }
@@ -180,7 +204,9 @@ export default {
       }
       if (pubidList.length <= 0) {
         this.$message({
-          message: _this.getStaticText('pleasePickAtLeastOneItem') ? _this.getStaticText('pleasePickAtLeastOneItem') : "请选择至少一件商品~",
+          message: _this.getStaticText("pleasePickAtLeastOneItem")
+            ? _this.getStaticText("pleasePickAtLeastOneItem")
+            : "请选择至少一件商品~",
           type: "error"
         });
         return false;
@@ -215,8 +241,12 @@ export default {
         this.selectedAll = false;
       }
     },
-    getStaticText (text) {
-      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+    getStaticText(text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
         return this.CONFIG.staticText[text];
       } else {
         return false;

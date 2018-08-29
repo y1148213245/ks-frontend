@@ -11,13 +11,13 @@
                 <template v-for="(config, config_i) in resourceListsConfig.complicatedItem">
                   <!-- 需要特殊处理的复杂项 -->
                   <!-- img 图片 -->
-                  <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_38_resourcelists_li_imgcontainter" @click="toCustomFun(item, config, keys)">
+                  <div :key="config_i" v-if="config.name == 'img'" class="ui_list_pic_38_resourcelists_li_imgcontainter">
                     <label class="ui_list_pic_38_resourcelists_img_label">{{config.display}}</label>
                     <img class="ui_list_pic_38_resourcelists_li_img" v-bind="{class: 'ui_list_pic_38_resourcelists_' + config.field}" :src=" item[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" />
                   </div>
 
                   <!-- 自定义事件按钮 包括（title 标题） -->
-                  <span :key="config_i" v-else-if="config.name == 'button'" v-bind="{class: 'ui_list_pic_38_resourcelists_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(item, config, keys)">
+                  <span :key="config_i" v-else-if="config.name == 'button'" v-bind="{class: 'ui_list_pic_38_resourcelists_btncontainer_' + config.field + '_' + config_i}">
                     <label class="ui_list_pic_38_resourcelists_btnlabel">{{config.display}}</label>
                     <span v-bind="{class: 'ui_list_pic_38_resourcelists__btncontainer_' + config.field}" v-if="keys[config.field]" v-html="item[keys[config.field]]"></span>
                   </span>
@@ -160,7 +160,7 @@ export default {
           let datas = rep.data;
           if (datas.success && datas.result && datas.result.length > 0) {
             let obj = {}, self = this;
-            console.log(datas.result);
+            //console.log(datas.result);
             datas.result.forEach((element,index) => {
               if(!obj[element["PRODUCT-ARTICLE_COLUMNNAME"]]){
                   self.articleData.push({
@@ -177,7 +177,7 @@ export default {
                 });
               }
             });
-            console.log(self.articleData);
+            //console.log(self.articleData);
             // let arr = [];
             // self.articleData.forEach((item, index)=>{
             //     if(item.name === item1.name){
@@ -213,7 +213,7 @@ export default {
       if(type === 1){  //免费
         window.location.href = this.CONFIG.toFree + "?pubId=" + item.id + detailParams;
       }else if(type === 2){
-        window.location.href = this.CONFIG.toFee + "?pubId=" + item.id + detailParams;
+        window.location.href = this.CONFIG.toFee + "?docId=" + item.pub_resource_id + detailParams;
       }
     },
   }

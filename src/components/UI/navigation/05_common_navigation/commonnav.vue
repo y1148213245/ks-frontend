@@ -97,7 +97,9 @@ export default {
         this.currentActive = this.colId ? this.colId : this.tree[0].id;
         //首次加载时，将默认的栏目id存起来
         sessionStorage.setItem("mycolId",this.currentActive);
-        this.$bus.$emit(this.CONFIG.transDefaultColId, this.tree[0]);
+        if(this.CONFIG && this.CONFIG.transDefaultColId){
+          this.$bus.$emit(this.CONFIG.transDefaultColId, this.tree[0]);
+        }
         this.navInteract(this.currentActive);
         let curIndex = 0;
         this.tree.map((item, index) => {

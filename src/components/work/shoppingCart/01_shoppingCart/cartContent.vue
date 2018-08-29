@@ -370,7 +370,7 @@
           <div class="coinremark">
             <span>{{getStaticText('oneCoinEqualsOneYuan') ? getStaticText('oneCoinEqualsOneYuan') : '1下载币='}}</span>
             <span v-text="exchangeRate"></span>
-            <span>{{getStaticText('money') ? getStaticText('money') : '元'}}</span> 
+            <span>{{getStaticText('money') ? getStaticText('money') : '元'}}</span>
           </div>
           <div class="orderDetail" :class="{hideTrans:allEbook === true && needInvoice === '0'}">
             <div class="disc">{{getStaticText('reducePrice') ? getStaticText('reducePrice') : '优惠：-'}} {{formatMoney(orderDetail.bookSaveMoney + orderDetail.ebookSaveMoney)}}</div>
@@ -742,6 +742,7 @@
                   type: "success",
                   message: _this.getStaticText('deleteSuccess') ? _this.getStaticText('deleteSuccess') : "删除成功!"
                 });
+                _this.selectedAll=false//删除商品成功后重置全选状态
                 _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName } });
               } else {
                 _this.$message({

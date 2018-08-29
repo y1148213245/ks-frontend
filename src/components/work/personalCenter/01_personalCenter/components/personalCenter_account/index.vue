@@ -130,7 +130,7 @@
         </div>
         <div class="newWrapper">
           <div>收货地区：</div>
-          <div class="selectPCC" >
+          <div class="selectPCC">
             <select id="s_province" name="s_province" @blur="checkArea()"></select>
             <select id="s_city" name="s_city" @blur="checkArea()"></select>
             <select id="s_county" name="s_county" @blur="checkArea()"></select>
@@ -230,7 +230,7 @@
 
       <div class="main_right fl">
         <div class="wzdh_xgxx f14 color_6f6" style="padding:20px 120px 100px 220px">
-          <div class="wzdh_xgxx_tx" v-if="siteId === 2 || siteId === 4 || siteId ===8">
+          <div class="wzdh_xgxx_tx">
             <!--头像上传-->
             <el-upload class="avatar-uploader" :action="uploadUrl()" name="headPicUrl" :show-file-list="false" :on-progress="avatarLoading" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :headers="uploadHeader">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -577,7 +577,7 @@ import { mapGetters, mapActions } from "vuex";
 import { Get, Token } from "@common";
 import api from "../../api/personalCenterApi";
 import $ from "jquery";
-import CityInfo from "../../assets/js/city-data.js";
+import { CityInfo } from "../../assets/js/city-data.js";
 
 Vue.use(Vuex);
 Vue.prototype.$ajax = axios;
@@ -1047,6 +1047,7 @@ export default {
     },
     /*地址管理模块*/
     editClick(index, row) {
+      this.newAddAddress.isDefault = row.isDefault;
       var _this = this;
       this.updateAddressDialog = true;
       initDom();
@@ -1067,8 +1068,7 @@ export default {
               _init_area(document);
               _this.modalState = false; // 初始化第二遍会出错
             }
-          }
-          else {
+          } else {
             initDom();
           }
         }, 150);
@@ -1190,7 +1190,10 @@ export default {
         this.checkPhone();
         this.checkDetail();
         this.checkArea();
-        if (this.goodsInfo.find(function(item) {return item == "false";}) === undefined
+        if (
+          this.goodsInfo.find(function(item) {
+            return item == "false";
+          }) === undefined
         ) {
           // 都不为空
           this.emptyPCC = false;
@@ -1210,18 +1213,18 @@ export default {
             cb: this.addAddressCallback
           };
           this.$store.dispatch("personalCenter/addAddress", param);
+          this.newAddAddress.contactor = ""; // 点击取消的时候初始化数据
+          this.newAddAddress.phone = "";
+          this.newAddAddress.province = "";
+          this.newAddAddress.city = "";
+          this.newAddAddress.county = "";
+          this.newAddAddress.address = "";
           this.addAddressDialog = false;
           // this.$refs[form].resetFields();
         }
       } else {
         this.addAddressDialog = false;
       }
-      this.newAddAddress.contactor = ""; // 点击取消的时候初始化数据
-      this.newAddAddress.phone = "";
-      this.newAddAddress.province = "";
-      this.newAddAddress.city = "";
-      this.newAddAddress.county = "";
-      this.newAddAddress.address = "";
     },
     addAddressCallback(addStatus) {
       if (addStatus == 1) {
@@ -1568,7 +1571,7 @@ export default {
       };
       this.$store.dispatch("personalCenter/sendToMobile", params);
       this.butt_phone = true;
-      this.times(120,"phone");
+      this.times(120, "phone");
     },
     oldMobileCallback(sendStatus, oldSendNum) {
       if (sendStatus == 1) {
@@ -1670,7 +1673,6 @@ export default {
                   params.siteId
               )
               .then(function(response) {
-                console.log(response.data);
                 var data = response.data.substring(
                   response.data.indexOf("<a>") + 3,
                   response.data.indexOf("</a>")
@@ -1769,7 +1771,7 @@ export default {
           type: "success",
           message: "已发送验证码至您邮箱,请在2分钟内输入验证"
         });
-        this.times(40,"email");
+        this.times(40, "email");
       } else {
         this.$message({
           type: "info",
@@ -1800,10 +1802,10 @@ export default {
       this.modifyType = 2;
     },
     // 邮箱验证码倒计时
-    times(num,type) {
+    times(num, type) {
       var self = this;
       var countTime = num;
-      if(type=="email"){
+      if (type == "email") {
         var t1 = setInterval(function() {
           self.emailTime = countTime;
           Vue.set([self.emailTime], "emailTime", countTime);
@@ -1816,7 +1818,7 @@ export default {
             clearInterval(t1);
           }
         }, 1000);
-      }else if(type=="phone"){
+      } else if (type == "phone") {
         var t2 = setInterval(function() {
           self.phoneTime = countTime;
           Vue.set([self.phoneTime], "phoneTime", countTime);
@@ -2118,7 +2120,7 @@ export default {
   font-size: 12px;
   color: red !important;
   text-align: left !important;
-  display:block;
+  display: block;
 }
 
 input::-webkit-outer-spin-button,

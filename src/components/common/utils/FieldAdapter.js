@@ -507,23 +507,84 @@ var FIELD_ADAPTER = {
             activiylibid:"ACTIVITYLIBID",// 活动库ID  [ACTIVITYLIBID]
             coverId: "COVERID"            
         },
-        sampleBookAdapter:{  // 样书
-            name: "NAME",  // 姓名
-            school: "SCHOOL",  // 执教学校
-            college: "COLLEGE",  // 所属院系
-            profession: "PROFESSIONAL_TITLE",  // 职称
-            duty: "ADMINISTRATIVE_DUTIES",   // 行政职务
-            teachLevel: "TEACHING_LEVEL",   // 教学层次
-            email: "EMAIL",
-            presentWay: "PRESENTED_WAY",  // 赠书方式
-            address: "ADDRESS", // 地址
-            course: "COURSE",  // 所授课程
-            scale: "SCALE", // 授课学生规模
-            teachMaterial: "TEACHING_MATERIAL", // 现用教材
-            cooPurpose: "COOPERATIVE_PURPOSE", // 是否有与我社的合作出版意向
-            selectTopic: "SELECTED_TOPIC",  // 选题名称或方向
-            otherOpinion: "OTHER_OPINIONS",  // 其他意见
-            telephone: "TELEPHONE" // 联系电话
+        sampleBookAdapter:{  // 样书库  [PORTAL_YANGSHUKU]
+            sysCreated:"SYS_CREATED",        // 入库日期  [SYS_CREATED]
+            sysTopic:"SYS_TOPIC",      // 书名  [SYS_TOPIC]
+            seriesName:"SERIES_NAME",    // 丛书名  [SERIES_NAME]
+            isbn:"ISBN",   // ISBN  [ISBN]
+            pressName:"PRESS_NAME",     // 出版社  [PRESS_NAME]
+            clcCat:"CLC_CAT",    // 中图法分类  [CLC_CAT]
+            readerObject:"READER_OBJECT",  // 读者对象  [READER_OBJECT]
+            editor:"EDITOR",     // 责任编辑  [EDITOR]
+            copyDesigner:"COPY_DESIGNER",  // 版式设计  [COPY_DESIGNER]
+            sysAuthors:"SYS_AUTHORS",   // 作者  [SYS_AUTHORS]
+            coverDesigner:"COVER_DESIGNER",   // 封面设计  [COVER_DESIGNER]
+            majorEditor:"MAJOR_EDITOR",   // 主编  [MAJOR_EDITOR]
+            printVersion:"PRINT_VERSION",   // 印次  [PRINT_VERSION]
+            bookVersion:"BOOK_VERSION",    // 版次  [BOOK_VERSION]
+            textNum:"TEXT_NUM",   // 页数  [TEXT_NUM]
+            price:"PRICE",   // 定价  [PRICE]
+            shelfAdvice:"SHELF_ADVICE",   // 上架建议  [SHELF_ADVICE]
+            format:"FORMAT",   // 开本  [FORMAT]
+            productSize:"PRODUCT_SIZE",   // 成品尺寸  [PRODUCT_SIZE]
+            flatPlate:"FLAT_PLATE",   // 排版公司  [FLAT_PLATE]
+            remark:"REMARK",   // 备注  [REMARK]
+            coverSoft:"COVER_SOFT",   // 封面排版软件  [COVER_SOFT]
+            textType:"TEXT_TYPE",   // 纸张  [TEXT_TYPE]
+            textColor:"TEXT_COLOR",   // 正文色数  [TEXT_COLOR]
+            textSoft:"TEXT_SOFT",   // 正文排版软件  [TEXT_SOFT]
+            pubdate:"PUBDATE",   // 出版日期  [PUBDATE]
+            materialId:"MATERIAL_ID",    // 物料号  [MATERIAL_ID]
+            language:"LANGUAGE",    // 语种  [LANGUAGE]
+            departCascadid:"DEPART_CASCADID",   // 部门分类级联ID  [DEPART_CASCADID]
+            departid:"DEPARTID",     // 部门分类ID  [DEPARTID]
+            legalnotice:"LEGALNOTICE",    // 法律声明  [LEGALNOTICE]
+            subtitle:"SUBTITLE",      // 副标题  [SUBTITLE]
+            fitment:"FITMENT",     // 装帧  [FITMENT]
+            printCompany:"PRINT_COMPANY",      // 印制单位  [PRINT_COMPANY]
+            printedSheets:"PRINTED_SHEETS",     // 印张  [PRINTED_SHEETS]
+            proofEditor:"PROOF_EDITOR",   // 责任校对  [PROOF_EDITOR]
+            copyrightMsg:"COPYRIGHT_MSG",  // 版权信息  [COPYRIGHT_MSG]
+            keywords:"KEYWORDS",   // 关键词  [KEYWORDS]
+            ebookCat:"EBOOK_CAT",  // 电子书分类  [EBOOK_CAT]
+            words:"WORDS",  // 字数  [WORDS]
+            isComment:"IS_COMMENT",     // 是否能评论  [IS_COMMENT]
+            synopsis:"SYNOPSIS",   // 摘要  [SYNOPSIS]
+            pageNumBook:"PAGE_NUM_BOOK",  // 页数  [PAGE_NUM_BOOK]
+            cipinfo:"CIPINFO",    // 发行信息  [CIPINFO]
+            themeWord:"THEME_WORD", // 主题词  [THEME_WORD]
+            ebPrice:"EB_PRICE",   // 电子书价格  [EB_PRICE]
+            ontology:"ONTOLOGY",     // 领域本体  [ONTOLOGY]
+            bsn:"BSN",      // 社内书号  [BSN]
+            name: "NAME",                         // 姓名  [NAME]
+            school: "SCHOOL",                     // 执教学校  [SCHOOL]
+            college: "COLLEGE",                   // 所属院系  [COLLEGE]
+            profession: "PROFESSIONAL_TITLE",     // 职称  [PROFESSIONAL_TITLE]
+            duty: "ADMINISTRATIVE_DUTIES",      // 行政职务  [ADMINISTRATIVE_DUTIES]
+            teachLevel: "TEACHING_LEVEL",       // 教学层次  [TEACHING_LEVEL]
+            email: "EMAIL",             // 邮箱地址  [EMAIL]
+            presentWay: "PRESENTED_WAY",        // 赠书方式  [PRESENTED_WAY]
+            address: "ADDRESS",     // 地址  [ADDRESS]
+            course: "COURSE",       // 教授课程  [COURSE]
+            scale: "SCALE",     // 授课学生规模  [SCALE]
+            teachMaterial: "TEACHING_MATERIAL",     // 现用教材  [TEACHING_MATERIAL]
+            cooPurpose: "COOPERATIVE_PURPOSE",      // 是否有与我社合作出版意向  [COOPERATIVE_PURPOSE]
+            selectTopic: "SELECTED_TOPIC",      // 选题名称或方向  [SELECTED_TOPIC]
+            otherOpinion: "OTHER_OPINIONS",     // 其他意见  [OTHER_OPINIONS]
+            telephone: "TELEPHONE",      // 联系电话  [TELEPHONE]
+            textbookTitle:"TEXTBOOK_TITLE",     // 教材名称  [TEXTBOOK_TITLE]
+            stylebookStatus:"STYLEBOOK_STATUS",       // 状态  [STYLEBOOK_STATUS]
+            trackingNumber:"TRACKING_NUMBER",    // 快递单号  [TRACKING_NUMBER]
+            auditOpinion:"AUDIT_OPINION",      // 审核意见  [AUDIT_OPINION]
+            expressCompany:"EXPRESS_COMPANY",    // 快递公司  [EXPRESS_COMPANY]
+            weight:"WEIGHT",     // 重量(克)  [WEIGHT]
+            inventory:"INVENTORY",  // 库存  [INVENTORY]
+            saleUrl:"SALE_URL",   // 第三方销售URL  [SALE_URL]
+            description:"DESCRIPTION",    // 简介  [DESCRIPTION]
+            courseTime:"COURSE_TIME",    // 课时  [COURSE_TIME]
+            courseNum:"COURSE_NUM",     // 课程数  [COURSE_NUM]
+            loginName:"LOGIN_NAME"      // 登录名  [LOGIN_NAME]
+            
         },
         ziliaozu: { // 资料组
           sysTopic: 'ZILIAOZU_SYS_TOPIC',

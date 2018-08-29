@@ -99,14 +99,14 @@
             <div class="work_mobile_personalcenter_03_editpassword_currentPwd">{{display.currentPwd || '当前密码'}}</div>
           </el-form-item>
           <el-form-item prop="oldpass">
-            <input clearable class="work_mobile_personalcenter_03_editpassword_content" type="text" v-model="passwordObj.oldpass">
+            <input clearable class="work_mobile_personalcenter_03_editpassword_content" type="text" readonly onfocus="this.removeAttribute('readonly');" v-model="passwordObj.oldpass">
           </el-form-item>
           <el-form-item>
             <div class="work_mobile_personalcenter_03_editpassword_newPwd">{{display.newPwd || '新密码'}}</div>
           </el-form-item>
           <el-form-item prop="newpass">
-            <el-input clearable class="work_mobile_personalcenter_03_editpassword_content_newpwd" type="text" v-model="passwordObj.newpass" v-if="isSeen"></el-input>
-            <el-input clearable class="work_mobile_personalcenter_03_editpassword_content_newpwd" type="password" v-model="passwordObj.newpass" v-else></el-input>
+            <el-input clearable class="work_mobile_personalcenter_03_editpassword_content_newpwd" type="text" readonly onfocus="this.removeAttribute('readonly');" v-model="passwordObj.newpass" v-if="isSeen"></el-input>
+            <el-input clearable class="work_mobile_personalcenter_03_editpassword_content_newpwd" type="password" readonly onfocus="this.removeAttribute('readonly');" v-model="passwordObj.newpass" v-else></el-input>
           </el-form-item>
         </el-form>
         <img :src="isSeen?CONFIG.display.textSrc:CONFIG.display.passwordSrc" @click="changeType()">
@@ -269,6 +269,12 @@ export default {
     enterEditModule(item) {
       if (item.tag == "picture" || item.tag == "loginName") {
         return false;
+      }else if(item.tag == "mobileno" || item.tag == "email"){
+        this.memberEmail.email = this.getMember.email;
+        this.memberMobile.mobileno = this.getMember.mobileno;
+      }else if(item.tag == "password"){
+        this.passwordObj.newpass="";
+        this.passwordObj.oldpass="";
       }
       this.$bus.$emit(
         this.CONFIG.emitEvent.contextEventName,

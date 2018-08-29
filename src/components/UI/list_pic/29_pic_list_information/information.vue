@@ -395,7 +395,7 @@ export default {
       Post(CONFIG.BASE_URL + this.resourceListsConfig.url, paramsObj).then(
         rep => {
           let datas = rep.data;
-          if (datas.success && datas.result && datas.result.length > 0) {
+          if (datas.success) {
             this.totalCount = datas.totalCount;
             if (this.isMobileLoading) {
               if (datas.success && datas.result.length > 0) {

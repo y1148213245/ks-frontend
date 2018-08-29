@@ -147,7 +147,8 @@ const prod = {
           }
         },
         "staticText": {
-          "noelseTips": '没有下一个视1111频啦'
+          "noNextVideo": "没有下一个视频啦",
+          "noNextAudio": "没有下一个音频啦"
         },
         event:{
           emitDetail_name:'resourceDetailLoaded'

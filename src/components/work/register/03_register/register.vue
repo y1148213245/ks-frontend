@@ -26,8 +26,8 @@
 
             <el-form-item prop="checkPass" class="register_02_register_form_box_confirm-password-box">
               <i class="register_02_register_form_box_confirm-password-box_icon"></i>
-              <span class="register_02_register_form_box_confirm-password-box_label">{{getStaticText('staticText.confirmPwd') ? getStaticText('staticText.confirmPwd') : '确认密码:'}}</span>
-              <el-input type="password" v-model="ruleForm.checkPass" :placeholder="getStaticText('enterPwdAgain') ? getStaticText('enterPwdAgain') : '请再次输入密码'" class="register_02_register_form_box_confirm-password-box_input"></el-input>
+              <span class="register_02_register_form_box_confirm-password-box_label">{{getStaticText('confirmPwd') ? getStaticText('confirmPwd') : '确认密码:'}}</span>
+              <el-input type="password" v-model="ruleForm.checkPass" :placeholder="getStaticText('inputPwdAgain') ? getStaticText('inputPwdAgain') : '请再次输入密码'" class="register_02_register_form_box_confirm-password-box_input"></el-input>
             </el-form-item>
 
             <el-form-item prop="captcha">
