@@ -1,8 +1,6 @@
 
 import Vue from 'vue';
-import he from "@components/work/activityDetail/07_activity_race/tab.vue"
-import xiang from "@components/work/activityDetail/01_detail/activityDetail.vue"
-import so from "@components/work/activityDetail/04_product_search/searchCondition.vue"
+
 function initVueComponents () {
 	Vue.component("ui_advert_01" , () => import("@components/UI/advert/01_advert/01_advert.vue"));
 	Vue.component("ui_information_02" , () => import("@components/UI/information/02_content/content.vue"));
@@ -21,13 +19,13 @@ function initVueComponents () {
 	Vue.component("ui_swiper_01_pic" , () => import("@components/UI/swiper/01_pic/Pic_Swiper.vue"));
 	Vue.component("ui_swiper_07" , () => import("@components/UI/swiper/07_pic_activity/activityswiper.vue"));
 	Vue.component("ui_swiper_08" , () => import("@components/UI/swiper/08_pic_adv/advertisementList.vue"));
-	Vue.component("work_activitydetail_01" , xiang);
+	Vue.component("work_activitydetail_01" , () => import("@components/work/activityDetail/01_detail/activityDetail.vue"));
 	Vue.component("ui_swiper_06" , () => import("@components/UI/swiper/06_detail_swiper/detailSwiper.vue"));
-	Vue.component("work_acitivityrace_07" , he);
+	Vue.component("work_acitivityrace_07" , () => import("@components/work/activityDetail/07_activity_race/tab.vue"));
 	Vue.component("work_activitydetail_02" , () => import("@components/work/activityDetail/02_fuwen/fuwen.vue"));
 	Vue.component("work_activitydetail_03" , () => import("@components/work/activityDetail/03_news_list/newsList.vue"));
 	Vue.component("work_common_05" , () => import("@components/work/common/05_cascader/cascader.vue"));
-	Vue.component("work_activitydetail_04" , so);
+	Vue.component("work_activitydetail_04" , () => import("@components/work/activityDetail/04_product_search/searchCondition.vue"));
 	Vue.component("work_activitydetail_05" , () => import("@components/work/activityDetail/05_product_list/productList.vue"));
 	Vue.component("work_activitydetail_06" , () => import("@components/work/activityDetail/06_teacher_list/teacherList.vue"));
 	Vue.component("work_bookreview_02" , () => import("@components/work/bookReview/activityReview_02/activityReview.vue"));

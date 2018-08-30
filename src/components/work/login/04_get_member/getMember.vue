@@ -127,4 +127,7 @@ export default {
 .work_login_04-info {
   float: left;
 }
+.work_login_04-exit,.work_login_04-login{
+  cursor: pointer;
+}
 </style>

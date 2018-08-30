@@ -1835,35 +1835,35 @@ var $_$ = {
 							"url": "user/sendMobileMessage.do"
 						}
 					},
-					// 'book':{
-					// 	navList:[
-					// 		{
-					// 			name:'图书',
-					// 			type:'2',
-					// 			productType:'',
-					// 			keyType:'book'
-					// 		},
-					// 		{
-					// 			name:'期刊',
-					// 			type:'3',
-					// 			productType:'periodical',
-					// 			keyType:'periodical'
-					// 		}],
-					// 	productKeys:{
-					// 		book:{
-					// 			name:'productName',
-					// 			pic:'bigPic',
-					// 			resourceId:'resourceId',
-					// 			resourceType:'resourseType'
-					// 		},
-					// 		periodical:{
-					// 			name:'pub_resource_name',
-					// 			pic:'pub_picBig',
-					// 			resourceId:'pub_resource_id',
-					// 			resourceType:'pub_resource_type'
-					// 		}
-					// 	}
-					// }
+					'book':{
+						navList:[
+							{
+								name:'图书',
+								type:'2',
+								productType:'',
+								keyType:'book'
+							},
+							{
+								name:'期刊',
+								type:'3',
+								productType:'periodical',
+								keyType:'periodical'
+							}],
+						productKeys:{
+							book:{
+								name:'productName',
+								pic:'bigPic',
+								resourceId:'resourceId',
+								resourceType:'resourseType'
+							},
+							periodical:{
+								name:'pub_resource_name',
+								pic:'pub_picBig',
+								resourceId:'pub_resource_id',
+								resourceType:'pub_resource_type'
+							}
+						}
+					}
 				}
 			}
 		}

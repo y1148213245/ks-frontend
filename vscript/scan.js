@@ -1,3 +1,8 @@
+/*
+ * 更新:
+ * 18/08/29 新增自动插入头尾
+ */
+
 
 const path = require('path')
 // glob是webpack安装时依赖的一个第三方模块，还模块允许你使用 *等符号, 例如lib/*.js就是获取lib文件夹下的所有js后缀名的文件
@@ -86,6 +91,14 @@ function test (params) {
   let pagePathList = glob.sync(pagePath + '/*.html');// 页面路径数组
   let pageComponentsArr = [];//所有页面的组件名数组
   let usedComponents = [];
+  let commonPages = {}//公共页面数据缓存
+  /* 
+  commonPages example:
+  {
+    'header.html':........
+  }
+  */
+
   /* 获取页面使用组件的标签 */
   console.info('----------获取使用组件标签.........')
   time = new Date().getTime()
@@ -97,7 +110,31 @@ function test (params) {
     }
 
     /* 自动插入头尾 */
+    let redata = pageData.replace(/\<!--#include\s*virtual=\"(.*)\"\s*--\>/g, function(full, sub) {
+      if (sub) {//sub = 'header.html'(例))
+        return '\n<!--insert='+sub+'-->\n' + getCommonPage(pagePathList,sub) + '\n<!--insert_end='+sub+'-->\n'
+      } else {
+        return full
+      }
+    })
+    fs.writeFileSync(pagePath,redata)
   })
+  /* 获取模版页面数据 */
+  function getCommonPage(pagePathList,pageName){
+    if(commonPages.hasOwnProperty(pageName)){
+      return commonPages[pageName]
+    } else {
+      let data;
+      pagePathList.forEach(pagePath =>{
+      if (pagePath.substr(pagePath.lastIndexOf("\/")+1) == pageName) {
+          let pageData = fs.readFileSync(pagePath, { flag: 'r+', encoding: 'utf8' })
+          commonPages[pageName] = pageData;
+          data = pageData
+        }
+      })
+      return data;
+    }
+  }
  
   console.log(chalk.yellow(new Date().getTime() - time+'ms'));
   /* 过滤组件库组件 得到使用的组件名及子组件名 */

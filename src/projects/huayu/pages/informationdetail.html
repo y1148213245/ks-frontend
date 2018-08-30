@@ -1,48 +1,221 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="renderer" content="webkit">
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<![endif]-->
+  <script type="text/javascript" src="../assets/config/index.js"></script>
+  <style>
+    .fl{
+      float: left;
+    }
+    .fr{
+      float: right;
+    }
+    a{
+      text-decoration: none;
+      color: #000;
+    }
+  </style>
+	<!-- Document Title
+		============================================= -->
+	<title>资讯详情</title>
+<link href="../core/css/project.css" rel="stylesheet"><link href="../core/css/app.css" rel="stylesheet">
+<link href="../assets/theme/css/custom.css" rel="stylesheet">
+</head>
+<body class="stretched" id="home">
+<div id="app" style="display: none;">
+
 
-<head>
+<!--insert=header.html-->
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<header class="global-header">
+<div class="header-top">
+	<div class="header-top-left">
+	  <span>欢迎来到新华教育平台！</span><!--span>关注我们：<i class="icon-wechat"></i></span-->
+	</div>
+	<div class="header-top-right">
+	  <span>
+        <i class="icon-phone">
+        </i>咨询电话：<b>（024）22509111</b><b>（024）81349433</b><b>（024）81349465</b>
+  
+      </span>
+	  <!--span><a href="#">我的订单</a></span>
+	  <span><a href="#">我的收藏</a></span-->
+	  <!--<span><a href="#">登 录</a></span>-->
+      <work_login_04 namespace="header">
+        登 录
+  	  </work_login_04>
+	</div>
+</div>
+<div class="header-mid">
+<div class="container_inner">
+  <div class="logo_wrapper"><a href="#"><img src="../assets/theme/img/logo.png" alt="logo"/></a></div>
+  <div class="search-box">
+	<div class="column_left">
+	<span class="wpcf7-form-control-wrap email"><input type="text" name="search" value="" size="40" class="searchbox" placeholder="请输入关键字"></span>
+	</div>
+	<div class="column_right">
+	<input type="submit" value="搜 索" class="">
+	</div>
+  </div>
+  <div class="btn-box">
+     <div class="el-badge item"><button type="button" class="el-button el-button--default el-button--small"><span>我的购物车</span></button><sup class="el-badge__content is-fixed">3</sup></div>
+  </div>
+</div>
+</div>
+<div class="header_menu">
+  <!-- <nav class="global-menu">
+  <ul>
+	   <li class="activemenu"><a href="activity.html">首 页</a></li>
+	   <li><a href="#">新华教育</a></li>
+	   <li><a href="#">在线商城</a></li>
+	   <li><a href="#">华育动态</a></li>
+	   <li><a href="#">教育资源</a></li>
+	   <li><a href="activity.html">华育活动</a></li>   
+  </ul>
+  </nav> -->
+  <ui_navigation_06 namespace="header"></ui_navigation_06>
+</div>
+</header>
 
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="renderer" content="webkit">
-  <!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<![endif]-->
-  <script type="text/javascript" src="../assets/config/index.js"></script>
-  <style>
-    .fl {
-      float: left;
-    }
+<!--insert_end=header.html-->
+
+
+	<work_crumbs_02 namespace="informationdetail"  modulename="detail"></work_crumbs_02>
+  <work_informationdetail_01 namespace="informationdetail"></work_informationdetail_01>
+  <ui_pagination_01 namespace="informationdetail"></ui_pagination_01>
+
+  
+<!--insert=footer.html-->
+<!--在线资讯浮动层开始-->
+    <div class="service_box">
+      <div class="tab_header">
+        <i class="el-icon-service"></i>
+        <span>在线客服</span>
+      </div>
+        <div class="tab_content">
+            <div class="tab_plan">
+                <h5> 服务时间: </h5>
+                <time>8:30-16:30(工作日)</time>
+                    <script>
+                        var online = new Array(); //全局变量，  
+                    </script>  
+                    <script src="http://webpresence.qq.com/getonline?Type=1&2260664497:"></script>
+                    <p class="fs14 mt10">
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2260664497&amp;site=qq&amp;menu=yes" class="qq_link">
+                            <img border="0" src="../assets/theme/img/icon-qq1.png" alt="点击这里给我发消息" title="点击这里给我发消息">
+                        </a>
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2260664497&amp;site=qq&amp;menu=yes" class="qq_link">
+                            <script>
+                                if (online[0] == 0)
+                                    document.write("离线留言");
+                                else
+                                    document.write("在线资讯");
+                            </script>
+                        </a>
+                    </p>
+                
+                    <script>
+                        var online = new Array(); //全局变量，  
+                    </script>  
+                    <script src="http://webpresence.qq.com/getonline?Type=1&3134386922:"></script>
+                    <p class="fs14 mt10">
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=3134386922&amp;site=qq&amp;menu=yes" class="qq_link">
+                            <img border="0" src="../assets/theme/img/icon-qq1.png" alt="点击这里给我发消息" title="点击这里给我发消息">
+                        </a>
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=3134386922&amp;site=qq&amp;menu=yes" class="qq_link">
+                            <script>
+                                if (online[0] == 0)
+                                    document.write("离线留言");
+                                else
+                                    document.write("在线资讯");
+                            </script>
+                        </a>
+                    </p>
+                
+                    <script>
+                        var online = new Array(); //全局变量，  
+                    </script>  
+                    <script src="http://webpresence.qq.com/getonline?Type=1&2383931502:"></script>
+                    <p class="fs14 mt10">
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2383931502&amp;site=qq&amp;menu=yes" class="qq_link">
+                            <img border="0" src="../assets/theme/img/icon-qq2.png" alt="点击这里给我发消息" title="点击这里给我发消息">
+                        </a>
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2383931502&amp;site=qq&amp;menu=yes" class="qq_link">
+                            <script>
+                                if (online[0] == 0)
+                                    document.write("离线留言");
+                                else
+                                    document.write("在线资讯");
+                            </script>
+                        </a>
+                    </p>
+                
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $(".service_box").mouseover(function () {
+                    $(this).stop();
+                    $(this).animate({ right: 0 }, 400);
+                })
+
+                $(".service_box").mouseout(function () {
+                    $(this).stop();
+                    $(this).animate({ right: -126 }, 400);
+                });
+            });
+    </script>
+    
+    <!--在线资讯浮动层结束-->
+
+     	<ui_navigation_04 namespace="common" modulename="totop"></ui_navigation_04>
+      <!-- END 侧边导航组件组件 -->
+<footer class="global-footer">
+<div class="el-row">
+  
+<nav class="nav-foot">
+  <ul>
+  <li><a href="index.html">首 页</a></li>
+  <li><a href="xhjy.html">新华教育</a></li>
+  <li><a href="newslist.html">华育动态</a></li>
+  <li><a href="zxsc.html">在线商城</a></li>
+  <li><a href="jyzy.html">教育资源</a></li>
+  <li><a href="activity.html">华育活动</a></li>
+  </ul>
+</nav>
+  
+<!--nav class="nav-foot">
+  <ui_navigation_03 namespace="footer"></ui_navigation_03>
+</nav--> 
+  
+  
+  
+  <div class="el-col el-col-18">
+    <p>备案/许可证编号为：辽ICP备18001356号</p>
+    <p><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21010202000469" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="../assets/theme/img/icon-bei.png" style="float:left;margin-right:6px"/> 辽公网安备 21010202000469号</a>
+	</p>
+    <p>版权所有，未经书面授权禁止下载使用</p>
+    <p>Copyright@2010-2020 www.lnhy.com All Rights Reserved.</p>
+  </div>
+  <div class="el-col el-col-6">
+    <span>关注我们：</span>
+    <img src="../assets/theme/img/qcode.jpg"/>
+  </div>
+</div>  
+</footer>
+
 
-    .fr {
-      float: right;
-    }
-
-    a {
-      text-decoration: none;
-      color: #000;
-    }
-  </style>
-  <!-- Document Title
-		============================================= -->
-  <title>资讯详情</title>
-  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-  <link href="../assets/theme/css/custom.css" rel="stylesheet">
-</head>
-
-<body class="stretched" id="home">
-  <div id="app" style="display: none;">
-
-    <!--#include virtual="header.html" -->
-
-    <work_crumbs_02 namespace="informationdetail" modulename="detail"></work_crumbs_02>
-    <work_informationdetail_01 namespace="informationdetail"></work_informationdetail_01>
-    <ui_pagination_01 namespace="informationdetail"></ui_pagination_01>
-
-    <!--#include virtual="footer.html" -->
-  </div>
-</body>
-
-</html>
+<!--insert_end=footer.html-->
+
+</div>
+<script type="text/javascript" src="../core/js/manifest.js"></script><script type="text/javascript" src="../core/js/vendor.js"></script><script type="text/javascript" src="../core/js/project.js"></script><script type="text/javascript" src="../core/js/app.js"></script></body>
+</html>
