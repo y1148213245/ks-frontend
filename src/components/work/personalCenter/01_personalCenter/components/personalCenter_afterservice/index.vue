@@ -1,17 +1,30 @@
 <template>
   <section class="personalcenter_afterservice">
     <div v-show="currentShow=='afterserviceDetails'">
-      <div class="mb20">
-        订单类型：
-        <el-radio-group v-model="typeRadio" @change="changeTabType">
-          <el-radio :label="item.type" v-for="(item, index) in defaultType" :key="index">{{item.title}}</el-radio>
-        </el-radio-group>
+      <div class="mb20 selectBox">
+        <label>订单类型：</label>
+        <el-select v-model="typeRadio" @change="changeTabType">
+          <el-option
+            v-for="(item, index) in defaultType"
+            :key="index"
+            :label="item.title"
+            :value="item.type">
+          </el-option>
+        </el-select>
       </div>
-      <div class="mb20">
-        订单状态：
-        <el-radio-group v-model="stateRadio" @change="changeTabState">
-          <el-radio :label="item.type" v-for="(item, index) in defaultState" :key="index">{{item.title}}</el-radio>
-        </el-radio-group>
+      <div class="mb20 selectBox" style="padding-left: 50px;">
+      <label>订单状态：</label>
+        <el-select v-model="stateRadio" @change="changeTabState" >
+          <el-option
+            v-for="(item, index) in defaultState"
+            :key="index"
+            :label="item.title"
+            :value="item.type">
+          </el-option>
+        </el-select>
+
+
+
       </div>
       <el-table :data="returnGoodsList" border style="width: 100%">
         <el-table-column align="center" prop="id" label="退换货编号" width="120">
@@ -603,6 +616,9 @@ export default {
 <style scoped>
 .mb20 {
   margin-bottom: 20px;
+}
+.selectBox{
+  float: left;
 }
 .mtb15 {
   margin: 15px 0;

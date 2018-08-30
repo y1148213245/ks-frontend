@@ -19,7 +19,23 @@
             <span v-bind="{class: 'work_bookdetail_04__btncontainer_' + config.field}" v-if="keys[config.field]">{{ resourceDetail[keys[config.field]] }}</span>
           </div>
 
-          <!-- price 价格 *** 特别注意： 价格要区分电子书和纸质书价格 *** -->
+          <!-- 样书申领按钮 , 因为有单独的显示逻辑和事件逻辑 , 需单独处理  -->
+          <div v-else-if="(config.name == 'apply')" v-bind="{class: 'work_bookdetail_04_btncontainer_' + config.field + '_' + config_i}" @click="toApply(config)">
+            <!-- 查询栏目id是否配置在可显示的栏目id -->
+            <div v-if="CONFIG.toApply && (CONFIG.toApply.showColId.indexOf(resourceDetail['colId']) != -1)">
+              <i v-bind="{class: config.className}"></i>
+              <label class="work_bookdetail_04_btnlabel">{{isBuy == 1 ? config.afterDisplay : config.display}}</label>
+              <span v-bind="{class: 'work_bookdetail_04__btncontainer_' + config.field}" v-if="keys[config.field]">{{ resourceDetail[keys[config.field]] }}</span>
+            </div>
+          </div>          
+          <!-- 库存状态status 因为有单独的显示逻辑 需单独处理-->           
+          <div v-else-if="config.name == 'status'" v-show="CONFIG.judgeInventory" v-bind="{class: 'work_bookdetail_04_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(config)">
+            <i v-bind="{class: config.className}"></i>
+            <label class="work_bookdetail_04_btnlabel">{{config.display}}</label>
+            <span class="work_bookdetail_04_status" v-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook)">{{CONFIG.judgeInventory.noPaperBook ? CONFIG.judgeInventory.noPaperBook : '没有对应的纸质书'}}</span>
+            <span class="work_bookdetail_04_status" v-else-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail[keys.inventory] < resourceDetail[keys.lowInventory])">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
+            <span class="work_bookdetail_04_status" v-else>{{CONFIG.judgeInventory.enoughInventory ? CONFIG.judgeInventory.enoughInventory : "纸质书库存充足"}}</span>
+          </div>          <!-- price 价格 *** 特别注意： 价格要区分电子书和纸质书价格 *** -->
 
           <div v-else-if="config.name == 'price'" class="work_bookdetail_04_pricecontainter">
             <label class="work_bookdetail_04_price_label">{{config.display}}</label>
@@ -86,8 +102,6 @@
                 <label class="work_bookdetail_04_op_label">
                   <i v-bind="{class: config.className}"></i>{{config.display}}
                 </label>
-                <span v-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook)">{{CONFIG.judgeInventory.noPaperBook ? CONFIG.judgeInventory.noPaperBook : '没有对应的纸质书'}}</span>
-                <span v-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail[keys.inventory] < resourceDetail[keys.lowInventory])">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
                 <span v-bind="{class: 'work_bookdetail_04_' + config.field}">{{ resourceDetail[keys[config.field]]}}</span>
               </section>
 
@@ -119,7 +133,7 @@
             <section v-for="(activity, index) in resourceDetail[keys[config.field]]" :key="index" v-bind="{class: 'work_bookdetail_04_' + config.field}">
               <span>{{activity.discountName}}</span>
             </section>
-            <span v-if="!resourceDetail[keys[config.field]] || resourceDetail[keys[config.field]].length == 0">{{getStaticText('noDiscount') ? getStaticText('noDiscount') : '暂无活动'}}</span>
+            <span class="work_bookdetail_04_activitycontainter_noactivity" v-if="!resourceDetail[keys[config.field]] || resourceDetail[keys[config.field]].length == 0">{{getStaticText('noDiscount') ? getStaticText('noDiscount') : '暂无活动'}}</span>
           </div>
 
           <!-- 其他不需要特殊处理的简单项 -->
@@ -179,7 +193,7 @@
           <div class="work_bookdetail_04_combinate_pay">
             <span class="work_bookdetail_04_combinate_price">套餐价 : <span>{{ '￥' + Number(combinateProduct["combinationPrice"]).toFixed(2)}}</span></span>
             <span class="work_bookdetail_04_combinate_savemoney" v-if="combinateProduct['allPrice'] > combinateProduct['combinationPrice']">省{{ '￥' + Number(combinateProduct['allPrice'] - combinateProduct['combinationPrice']).toFixed(2)}}</span>
-            <span class="work_bookdetail_04_combinate_buy" @click="addcombinateProductToCart(combinateProductCfg['addCart'],list.id)">{{combinateProductCfg.lastBtn || '立即购买'}}</span>
+            <span class="work_bookdetail_04_combinate_buy" @click="addcombinateProductToCart(combinateProductCfg['addCart'],combinateProduct.id)">{{combinateProductCfg.lastBtn || '立即购买'}}</span>
           </div>
         </li>
       </ul>
@@ -455,14 +469,15 @@ export default {
         }
       }
       // 样书申领事件
-      if(config.method == 'toApply'){
-        this.toApply(this.CONFIG[config.method]);
-        return false;
-      }
+      // if(config.method == 'toApply'){
+      //   this.toApply(this.CONFIG[config.method]);
+      //   return false;
+      // }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
     },
     toApply : function(config){ //样书申领事件 , 将所有参数拼接到url中
       var _this = this;
+      config = this.CONFIG[config.method];
       if(this.loginName == undefined || this.loginName == '') { // 未登录
           this.$message({
             message: "请先登录",
@@ -937,7 +952,8 @@ export default {
         window.open('../pages/login.html');
         return false
       }
-      if (typeof (config) == "undefined") {return;}
+      if (typeof (config) == undefined) {return;}
+      if(typeof combinateId == undefined) {return;}
       Get(CONFIG.BASE_URL + config.url + '?loginName=' + this.loginName + '&combinateId=' + combinateId + '&siteId=' + config.params.siteId).then((rep) => {
         var datas = rep.data;
         if (datas.result == "1") {

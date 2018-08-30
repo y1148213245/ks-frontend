@@ -292,7 +292,8 @@ const dev = {
         judgeInventory: {  //库存量配置
           showInventory: true,
           noPaperBook: "没有对应的纸质书",
-          lessInventory: "纸质书库存不足"
+          lessInventory: "纸质书库存不足",
+          "enoughInventory": "纸质书库存充足"
         },
 
       },
@@ -509,7 +510,8 @@ const prod = {
         judgeInventory: {  //库存量配置
           showInventory: true,
           noPaperBook: "没有对应的纸质书",
-          lessInventory: "纸质书库存不足"
+          lessInventory: "纸质书库存不足",
+          "enoughInventory": "纸质书库存充足"
         },
 
       },

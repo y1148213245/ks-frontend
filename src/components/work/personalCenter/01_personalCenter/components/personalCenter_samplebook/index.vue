@@ -183,7 +183,7 @@ export default {
   width:50%;
 }
 .personalcenter-samplebook-detail-list li.personalcenter-samplebook-detail-firstitem{
-  background:#c7c7c7;
+  background:#f6f8f9;
 }
 .personalcenter-samplebook-detail-state{
   font-size: 20px;

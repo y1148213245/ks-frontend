@@ -46,13 +46,7 @@
             <el-input v-model="form[item.model]" v-if="item.type === 'textarea'" type="textarea" :rows="item.rows || 5" :placeholder="item.placeholder || ''"></el-input>
 
             <!--日期选择器-->
-            <el-date-picker 
-            v-if="item.type === 'date'" 
-            type="date" 
-            v-model="form[item.model]"
-            :placeholder="item.placeholder || ''" 
-            :format="item.format" 
-            :value-format="item.valueFormat">
+            <el-date-picker v-if="item.type === 'date'" type="date" v-model="form[item.model]" :placeholder="item.placeholder || ''" :format="item.format" :value-format="item.valueFormat">
             </el-date-picker>
 
             <!-- 下拉框 -->

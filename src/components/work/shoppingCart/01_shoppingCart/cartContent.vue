@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-08-29 16:57:53 
+ * @Author: song
+ * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
  * @Last Modified time: 2018-08-29 19:01:43
  * 购物车组件
@@ -87,7 +87,7 @@
                           <span>{{getStaticText('delete') ? getStaticText('delete') : '删除'}}</span>
                         </div>
                       </div>
-                      
+
                     </div>
                   </li>
                   <li v-for="(product, index) in item.list" class="combinateProductList bookWrapper" v-bind:class="{checkedLi: product.checked}" :key="index">
@@ -493,7 +493,7 @@
                   </div>
                 </li>
               </template>
-              
+
             </ul>
           </div>
         </div>
@@ -709,7 +709,7 @@ export default {
       };
     },
     recordOrderDetail: function () {// 将订单详细信息从本地存储中取出来（刷新的时候）
-      var tempDetails = JSON.parse(window.sessionStorage.getItem("recordOrderDetail")); 
+      var tempDetails = JSON.parse(window.sessionStorage.getItem("recordOrderDetail"));
       return this.orderDetail.totalNum !== 0 ? JSON.parse(JSON.stringify(this.orderDetail)) : JSON.parse(JSON.stringify(this.tempDetails))
     }
   },
@@ -790,9 +790,9 @@ export default {
           this.selectedOrderList.push(items);
         }
       });
-      // 从浏览器本地存储取订单细节信息 
-      // 包括 totalMoney totalNum saveAmount  freeFreight sendPoints bookTotalMoney bookSaveMoney ebookTotalMoney ebookSaveMoney 
-      var tempDetail = JSON.parse(window.sessionStorage.getItem("recordOrderDetail")); 
+      // 从浏览器本地存储取订单细节信息
+      // 包括 totalMoney totalNum saveAmount  freeFreight sendPoints bookTotalMoney bookSaveMoney ebookTotalMoney ebookSaveMoney
+      var tempDetail = JSON.parse(window.sessionStorage.getItem("recordOrderDetail"));
       Object.assign(this.orderDetail, tempDetail);
     },
     commonMessageFun(obj, status, configText, defaultText) {
@@ -813,6 +813,7 @@ export default {
           axios.post(CONFIG.BASE_URL + 'cart/deleteCombinationProductFromCart.do' + '?loginName=' + _this.member.loginName + '&combinateId=' + id.combinateId + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((res)=> {
             if (res.data.result === "1") { // 删除成功
               _this.commonMessageFun(_this, 'success', 'deleteSuccess', '删除成功!');
+              _this.selectedAll=false;
               _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName }});
             } else { // 删除失败
               _this.commonMessageFun(_this, 'error', 'deleteFailed', '删除失败!');
@@ -825,6 +826,7 @@ export default {
             cb: function () {
               if (this.deleteStatus) {
                 _this.commonMessageFun(_this, 'success', 'deleteSuccess', '删除成功!');
+                _this.selectedAll=false;
                 _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName }});
               } else {
                 _this.commonMessageFun(_this, 'error', 'deleteFailed', '删除失败!');
@@ -834,8 +836,8 @@ export default {
           };
           _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
         }
-        
-        
+
+
       });
     },
     selectAll: function () {       // 商品全选操作
@@ -888,7 +890,7 @@ export default {
       for (var i = 0; i < data.length; i++) {
         if (data[i].isCombinateProduct === "yes" && data[i].checked) { // 组合购买商品 独立的模块 不涉及商品活动和优惠券
           totalMoney += data[i].combinatePrice * data[i].nums; // 商品总价
-          this.selectedProductList["activity" + data[i].activityId + data[i].productType + data[i].combinateId].list = data[i].list; 
+          this.selectedProductList["activity" + data[i].activityId + data[i].productType + data[i].combinateId].list = data[i].list;
           this.selectedProductList["activity" + data[i].activityId + data[i].productType + data[i].combinateId].totalPrice = data[i].combinatePrice * data[i].nums;
           totalNum += Number(data[i].nums) * data[i].list.length; // 勾选商品总数
         } else { // 非组合购买商品 有多种活动 并且可以 参与优惠券活动

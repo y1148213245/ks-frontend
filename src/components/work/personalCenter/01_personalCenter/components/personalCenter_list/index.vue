@@ -44,7 +44,7 @@
               <el-row class="personalcenter_list_main_listBox_card" v-for="(item1,innerindex) in item.itemList" :key="innerindex">
                 <el-col :span="15">
                   <div class="personalcenter_list_main_listBox_card_left">
-                    <img v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
+                    <img v-bind:src="item1.bigPic || require('@static/img/defaultCover.png')" onload="DrawImage(this,120,100)" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
                     <div class="personalcenter_list_main_listBox_card_left_text">
                       <span class="mt5" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
                       <span v-if="orderType=='book'" class="personalcenter_list_main_listBox_card_left_author">作者：{{item1.author||"暂无作者"}}</span>
@@ -59,10 +59,10 @@
                   </div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="personalcenter_list_main_listBox_card_right">x{{item1. productNum}}</div>
+                  <div class="personalcenter_list_main_listBox_card_right">x{{item1.productNum}}</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="personalcenter_list_main_listBox_card_right">¥{{item1. productPrice * item1. productNum }}</div>
+                  <div class="personalcenter_list_main_listBox_card_right">¥{{Number(item1.memberPrice) * item1.productNum }}</div>
                 </el-col>
               </el-row>
             </div>
@@ -199,7 +199,7 @@
                 <span class="mt5" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
                 <span class="personalcenter_list_main_listBox_card_left_author">作者：{{item1.author||"暂无作者"}}</span>
               </div>
-              <div v-if="item.itemList[0].productType == 91 && exchangeState" class="personalcenter_list_main_listBox_card_left_returnBtn">
+              <div v-if="item.itemList[0].productType == 91 && exchangeState" class="OperationDoubleBtn   personalcenter_list_main_listBox_card_left_returnBtn">
                 <el-button type="text" @click="showReturn(item,item1,1)">退货</el-button>
                 <el-button type="text" @click="showReturn(item,item1,2)">换货</el-button>
               </div>
@@ -870,6 +870,13 @@ export default {
 <style scoped>
 .fr {
   float: right;
+}
+.el-row .personalcenter_list_main_listBox_card_left .OperationDoubleBtn{
+  float: right;
+  width: 15%;
+}
+.personalcenter_list_main_listBox_card_left .personalcenter_list_main_listBox_card_left_text span{
+  width: 370px;
 }
 .mt5 {
   margin-top: 5px;

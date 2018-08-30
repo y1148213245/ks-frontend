@@ -18,7 +18,7 @@
           <div style="width:180px;height: 240px; text-align: center;">
             <div class="picBox">
               <div style="width: 180px; height: 180px; vertical-align: middle; display: table-cell; position: relative;">
-                <img v-bind:src="item.bigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,150,150)" />
+                <img v-bind:src="item.bigPic || require('@static/img/defaultCover.png')" onload="DrawImage(this,150,150)" />
               </div>
               <div class="namePrice">
                 <div v-text="item.productName" :title="item.productName"></div>

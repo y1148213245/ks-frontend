@@ -18,6 +18,8 @@ const dev = {
       bookType: '91', // 纸质书
       ebookType: '94', // 电子书
       toDetailUrl: '../pages/bookdetail.html',
+      toIndexUrl: '../pages/index.html',
+      toShoppingCartUrl: '../pages/shoppingcart.html',
       staticText: {
         addCartSuccess: "商品已成功加入购物车！",
         author: "作者:",
@@ -42,6 +44,8 @@ const prod = {
       bookType: '91', // 纸质书
       ebookType: '94', // 电子书
       toDetailUrl: '../pages/bookdetail.html',
+      toIndexHref: '../pages/index.html',
+      toShoppingCartHref: '../pages/shoppingcart.html',
       staticText: {
         addCartSuccess: "商品已成功加入购物车！",
         author: "作者:",

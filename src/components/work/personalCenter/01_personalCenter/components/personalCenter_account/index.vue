@@ -292,10 +292,11 @@
           </div>
         </el-dialog>
         <!-- 设置手机号弹窗-->
-        <el-dialog title="绑定手机号" :visible.sync="setMobileDialog">
+        <!---->
+        <el-dialog title="绑定手机号" :visible.sync="setMobileDialog" >
           <div style="margin:20px 170px 0 200px">
             <el-form ref="setMobileDialogForm" :model="setMobileDialogForm" :rules="setMobileDialogRules" style="margin-top: 15px;">
-              <el-form-item prop="number">
+              <el-form-item prop="number" class="bindPhone">
                 <div class="bangding_con_1_sj mt30">
                   <i class="sj_01 mr05"></i>
                   <span class="sj_02 f14 color_727 mr15">手机号:</span>
@@ -303,7 +304,7 @@
                   <el-button @click="getCode(setMobileDialogForm.number)" class="yzm_04 color_7e7">发送验证码</el-button>
                 </div>
               </el-form-item>
-              <el-form-item prop="sendNum">
+              <el-form-item prop="sendNum" class="bindPhone">
                 <i class="yzm_01 mr05"></i>
                 <span class="yzm_02 f14 color_727 mr15">验证码:</span>
                 <el-input type="text" v-model="setMobileDialogForm.sendNum" placeholder="请输入手机验证码" style="width:200px;height:35px;"></el-input>
@@ -461,13 +462,14 @@
       <el-button type="primary" @click="back" class="butt_back">返回</el-button>
     </div>
     <!-- 通过验证身份修改手机号 -->
+    <!---->
     <div v-show="currentShow=='modifyMobile'">
-      <div class="main_right fl">
+      <div class="main_right fl" >
         <div class="wzdh_yzsjh f14 color_6f6">
           <div class="wzdh_yzsjh_ico account_modify-icon"></div>
           <div class="account_modify-form" style="width:505px;">
             <el-form ref="setMobileDialogForm" :model="setMobileDialogForm" :rules="setMobileDialogRules" style="margin-top: 15px;">
-              <el-form-item prop="number">
+              <el-form-item prop="number" class="newPhoneNum">
                 <div class="bangding_con_1_sj mt30">
                   <i class="sj_01 mr05"></i>
                   <span class="sj_02 f14 color_727 mr15">新手机号:</span>
@@ -475,7 +477,7 @@
                   <el-button @click="getCode(setMobileDialogForm.number)" class="yzm_04 color_7e7">发送验证码</el-button>
                 </div>
               </el-form-item>
-              <el-form-item prop="sendNum" style="text-align:left;">
+              <el-form-item prop="sendNum" class="newPhoneNum" >
                 <i class="yzm_01 mr05"></i>
                 <span class="yzm_02 f14 color_727 mr15" style="margin-right:15px;">验证码:</span>
                 <el-input type="text" v-model="setMobileDialogForm.sendNum" placeholder="请输入手机验证码" style="width:200px;height:35px;"></el-input>
@@ -804,7 +806,7 @@ export default {
       // 修改密保问题弹窗状态
       cryptoguar: false,
       // 修改密保问题弹窗状态
-      setMobileDialog: false,
+      setMobileDialog:false,
 
       activeName: "first",
       formLabelWidth: "120px",
@@ -1943,6 +1945,12 @@ export default {
 };
 </script>
 <style>
+ .newPhoneNum .el-form-item__error {
+    padding-left: 80px;
+  }
+ .bindPhone .el-form-item__error{
+   padding-left: 60px;
+ }
 .center_account-input-email {
   width: 300px;
 }
@@ -2752,5 +2760,8 @@ input.bdhm {
   margin-top: 20px;
   width: 234px;
 }
+  .newPhoneNum{
+   text-align: left;
+  }
 </style>
 

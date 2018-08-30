@@ -8,9 +8,9 @@
           <el-table-column label="商品信息" align="center" width="250">
             <template slot-scope="scope">
               <div @click="toDetail(scope.row)" class="personalcenter-comment-firstcol">
-                <div class="personalcenter-comment-firstcol-img"><img :src="scope.row.smallPic"></div>
+                <div class="personalcenter-comment-firstcol-img"><img :src="scope.row.smallPic || require('@static/img/defaultCover.png')"></div>
                 <h4 class="personalcenter-comment-firstcol-name">{{scope.row.productName}}</h4>
-              </div> 
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="评论详情" prop="" align="center">
@@ -20,11 +20,11 @@
               <span>{{formatDateNEW(Number(scope.row.pubTime))}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="删除" prop="createTime" align="center" width="150">
+          <!-- <el-table-column label="删除" prop="createTime" align="center" width="150">
             <template slot-scope="scope">
               <button class="personalcenter-comment-delete" @click="deleteComment(scope.row)">删除</button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </div>
       <div class="personalcenter-comment-page">
@@ -35,7 +35,7 @@
         <img src="../../assets/img/empty.png" alt="">
         <div>暂无评论</div>
       </div>
-    
+
   </section>
 </template>
 <script type="text/ecmascript-6">
@@ -90,9 +90,9 @@ export default {
       }
     },
     // 删除评论
-    deleteComment(data){
-      console.log(data);
-    },
+    // deleteComment(data){
+    //   console.log(data);
+    // },
     // 转换时间类型
     formatDateNEW(value) {
       if (value) {

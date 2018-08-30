@@ -12,7 +12,7 @@
           <div style="width:180px;height: 210px; text-align: center;">
             <div class="picBox">
               <div style="width: 180px; height: 180px; vertical-align: middle; display: table-cell; position: relative;">
-                <img v-bind:src="item[productKeys.pic] || '../assets/img/zwfm.png'" onload="DrawImage(this,150,150)" />
+                <img v-bind:src="item[productKeys.pic] || require('@static/img/defaultCover.png')" onload="DrawImage(this,150,150)" />
               </div>
               <div class="namePrice">
                 <div v-text="item[productKeys.name]" :title="item[productKeys.name]"></div>
