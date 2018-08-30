@@ -100,7 +100,7 @@ function test (params) {
   */
 
   /* 获取页面使用组件的标签 */
-  console.info('----------获取使用组件标签.........')
+  console.info('----------获取使用组件标签与插入公共页面.........')
   time = new Date().getTime()
   pagePathList.forEach(pagePath => {
     let pageData = fs.readFileSync(pagePath, { flag: 'r+', encoding: 'utf8' })
@@ -109,18 +109,23 @@ function test (params) {
       pageComponentsArr.push([...new Set(componentsTagNames)]);
     }
 
-    /* 自动插入头尾 */
-    let insert
+    /* 插入公共页面 */
+    pageData = pageData.replace(/(\<link\shref=\"..\/core\/(.*?)\>)|\<script\stype=\"text\/javascript\"\ssrc=\"..\/core\/(.*?)\<\/script\>/g,'')//删除项目build后的引用
     let redata = pageData.replace(/\<!--#include\s*virtual=\"(.*)\"\s*--\>/g, function(full, sub) {
       if (sub) {//sub = 'header.html'(例))
+        isInsert = true;
         return '\n<!--insert='+sub+'-->\n' + getCommonPage(pagePathList,sub) + '\n<!--insert_end='+sub+'-->\n'
       } else {
         return full
       }
     })
+    
     fs.writeFileSync(pagePath,redata)
+  
   })
-  /* 获取模版页面数据 */
+  /* 
+   *获取模版页面数据 
+   */
   function getCommonPage(pagePathList,pageName){
     if(commonPages.hasOwnProperty(pageName)){
       return commonPages[pageName]

@@ -1,6 +1,6 @@
 var CONFIG = {
-	// "BASE_URL": "http://172.19.57.67:8080/portal/api/",http://172.19.57.68:8080/portal/api/
-	"BASE_URL": "http://172.19.57.68:8080/portal/api/",
+	"BASE_URL": "http://172.19.57.67:8080/portal/api/",//http://172.19.57.68:8080/portal/api/
+	// "BASE_URL": "http://172.19.57.68:8080/portal/api/",
 	"READ_URL": "http://172.19.57.153/portal/reader/yuezhi/read.jsp?",
 	"PAGE_MANAGEMENT_URL": "../../../frontend-api/api/",
 	"SITE_CONFIG": {
