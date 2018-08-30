@@ -437,6 +437,7 @@
         tempList: {}, //订单单元
         orderSuccessUrl: '', //
         noLoginUrl:'../pages/login.html', //没有登陆就跳转到登录页
+        magNameListsConfig:""
       };
     },
 
@@ -469,6 +470,9 @@
       this.payType = this.CONFIG.payType;
       this.defaultPay = this.CONFIG.payType.defaultPay;
       this.resourceDetailConfig = this.CONFIG.getResourceDetail;
+      if(typeof (this.CONFIG.magNameListsConfig != "undefined" )){
+        this.magNameListsConfig = this.CONFIG.magNameListsConfig;
+      }
       this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.resourceDetailConfig.sysAdapter, this.resourceDetailConfig.typeAdapter)));
       if(typeof(this.CONFIG.noLoginUrl)!='undefined'){
         this.noLoginUrl = this.CONFIG.noLoginUrl;
@@ -526,11 +530,32 @@
           if (datas.result && datas.data && datas.data.length > 0) {
             if(datas.result==1){
               this.idMagTypeList = datas.data;
+
+              this.getImgForMagName();
               //this.checkMagTypeName = datas.data[0].magName;
               //this.getIdMagDo(this.checkMagTypeName);
             }
           }
         });
+      },
+      //通过list.do 获取期刊第一个子集的图片展示到这里
+      getImgForMagName(){
+        for (let i=0;i<this.idMagTypeList.length;i++)
+        {
+          let paramsObj = Object.assign({}, this.magNameListsConfig.params);
+          paramsObj.conditions.map((item) => {
+            if (item.hasOwnProperty('MAGAZINE_SYS_TOPIC')) {
+              item['MAGAZINE_SYS_TOPIC'] = this.idMagTypeList[i].magName ? this.idMagTypeList[i].magName : item['MAGAZINE_SYS_TOPIC'];
+            }
+          })
+          paramsObj.conditions = JSON.stringify(paramsObj.conditions);
+          Post(CONFIG.BASE_URL + this.magNameListsConfig.url, paramsObj).then((rep) => {
+            let datas = rep.data;
+            if (datas.success && datas.result && datas.result.length > 0) {
+              Vue.set(this.idMagTypeList[i],"magIsrc",datas.result[0].pub_picBig);
+            }
+          });
+        }
       },
       selectMagType(){  //选择期刊类型 提交表单
         this.checkMagTypeName = this.idMagTypeCheckTime;

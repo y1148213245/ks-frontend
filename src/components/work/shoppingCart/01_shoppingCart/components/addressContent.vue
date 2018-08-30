@@ -19,7 +19,7 @@
     <el-dialog :title="getStaticText('selectReceiverAddress') ? getStaticText('selectReceiverAddress') : '选择收货地址'" :visible.sync="addressDialog" :close-on-press-escape="false" :close-on-click-modal="false">
       <ul class="addressUlCon">
         <el-radio-group v-model="selectedAddress">
-          <li v-for="(address, index) in addressList" type="none">
+          <li v-for="(address, index) in addressList" type="none" :key="index">
             <el-radio :label="index" @change="selectAddress(address)">
               <span v-text="address.contactor"></span>
               <span>，</span>
@@ -79,13 +79,13 @@
   export default {
     name: "work_shoppingcart_01_components_address",
     reused: true,
-    props: ["namespace","parentConfig"],
+    props: ["namespace","parentconfig"],
     created: function () {
       this.getMemberInfo().then((member) => {
         this.member.loginName = member.loginName;
         this.loadCallBack();
       });
-      this.CONFIG = this.parentConfig.addressContent;
+      this.CONFIG = this.parentconfig && this.parentconfig.addressContent ? this.parentconfig.addressContent : null;
     },
     data () {
       return {
@@ -105,21 +105,14 @@
         phoneError:'',//新建收货地址--联系电话验证信息
         contactorError:'',//新建收货地址--收货人验证信息
         goodsInfo:[],//新建收货地址--验证信息,
-        CONFIG:''
+        CONFIG: null, // 当前组件的配置 需要从父级组件里面取
       };
     },
     computed: {
       ...mapGetters({
-        // member: "shoppingcart/getMember", // 在vuex里面获取用户信息
         addressList: "shoppingcart/getAddressList", // 获取用户地址列表
         defaultAddress: "shoppingcart/getDefaultAddress" // 获取用户默认地址
       })
-    },
-    mounted () {
-      /* this.$store.dispatch("shoppingcart/queryUser", {
-        // 先去vuex获取一下用户信息
-        loadCallBack: this.loadCallBack
-      }); */
     },
     methods: {
       ...mapActions("login", {
@@ -168,8 +161,7 @@
       confirmAdd: function (flag) {
         // 确认/取消添加收货地址
         this.addressDialog = false;
-        if (flag) {
-          // 选择确定才更改所选地址 否则不改变所选地址
+        if (flag) { // 选择确定才更改所选地址 否则不改变所选地址
           this.showAddress = JSON.parse(JSON.stringify(this.tempAddress));
           this.$emit("deliveryAddress", this.showAddress);
         }
@@ -183,10 +175,7 @@
           this.checkPhone();
           this.checkDetail();
           this.checkArea();
-          if(this.goodsInfo.find(function(item){
-              return item=="false";
-            })===undefined){
-            // 都不为空
+          if(this.goodsInfo.find(function(item){return item=="false";})===undefined){ // 都不为空
             var requestParams = {
               param: {
                 loginName: this.member.loginName,
@@ -203,15 +192,13 @@
                 isDefault: "0"
               },
               myCallback: function () {
-                if (this.addStatus) {
+                if (this.addStatus) { // 新增地址成功
+                  Object.assign(_this.showAddress, requestParams.param); // 对象的浅拷贝 新增的地址立马显示在已选地址上
+                  _this.$emit("deliveryAddress", _this.showAddress); // 告知父组件 地址更改
                   _this.$message({
                     type: "success",
                     message: _this.getStaticText('newAddressSuccessfullyAdded') ? _this.getStaticText('newAddressSuccessfullyAdded') : "新增地址成功"
                   });
-                  _this.$store.dispatch(
-                    "shoppingcart/" + type.QUERY_DEFAULT_ADDRESS,
-                    _this.member.loginName
-                  );
                   _this.$store.dispatch(
                     "shoppingcart/" + type.QUERY_ORDER_ADDRESS,
                     _this.member.loginName
@@ -314,8 +301,7 @@
         }
       }
     },
-    watch: {
-      // 监控当前选中的地址 要将地址信息传给父组件
+    watch: { // 刚进页面时 将默认地址发广播形式给父组件
       defaultAddress () {
         this.showAddress = this.defaultAddress;
         this.$emit("deliveryAddress", this.showAddress);
@@ -324,23 +310,23 @@
   };
 </script>
 <style>
-work_shoppingcart_01_address  .el-form-item:last-child{
+.work_shoppingcart_01_address  .el-form-item:last-child{
     text-align: center;
   }
-work_shoppingcart_01_address  .el-input__inner{
+.work_shoppingcart_01_address  .el-input__inner{
     height: 32px;
     line-height: 32px;
   }
-work_shoppingcart_01_address  .el-form--label-top .el-form-item__label{
+.work_shoppingcart_01_address  .el-form--label-top .el-form-item__label{
     padding: 0;
   }
-work_shoppingcart_01_address  .el-form-item__label{
+.work_shoppingcart_01_address  .el-form-item__label{
     line-height: 20px;
   }
-work_shoppingcart_01_address  .el-form-item__label{
+.work_shoppingcart_01_address  .el-form-item__label{
     font-weight: unset;
   }
-work_shoppingcart_01_address  .selectPCC select{
+.work_shoppingcart_01_address  .selectPCC select{
     height: 32px;
     line-height: 32px;
     border-radius: 4px;

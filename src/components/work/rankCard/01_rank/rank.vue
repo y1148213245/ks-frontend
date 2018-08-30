@@ -37,7 +37,7 @@ export default {
     },
     changeOrderParam (orderBy, index) {
       this.currentShow = index;
-      this.$bus.emit(this.CONFIG.eventName, { orderBy });
+      this.$bus.emit(this.CONFIG.eventName, { orderBy, pageNo: "1", currentPage: "1" });
     }
   }
 }

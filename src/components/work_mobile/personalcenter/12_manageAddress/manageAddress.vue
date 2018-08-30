@@ -29,6 +29,7 @@
           :address-info="addressInfo"
           :show-postal="isShowPostal"
           :show-set-default="isShowDefault"
+          :tel-validator ="telValidator"
           @save="onSave"
           @delete="onDelete">
         </van-address-edit>
@@ -237,6 +238,16 @@
             Toast(res.error.errorMsg);
           }
         });
+      },
+      //手机号验证
+	    telValidator(tel){
+      	let reg1 = /^1\d{10}$/;
+      	let reg2 =  /^0\d{2,3}-?\d{7,8}$/;
+      	if(reg1.test(tel) || reg2.test(tel)){
+      		return true;
+        }else{
+      		return false
+        }
       }
     },
     watch: {

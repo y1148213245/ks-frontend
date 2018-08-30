@@ -368,14 +368,25 @@ export default {
         var data = rep.data.data;
         if (data && data instanceof Array && data.length > 0) {
           this.commentList = data;
-            for (var i=0;i<this.commentList.length;i++)
-            {
-              // this.commentList[i][] = false;
-              this.$set(this.nowUserLikeObj,String(this.commentList[i]["commentId"]),false)
-
-              this.getUserLike(this.commentList[i]["commentId"]);
+          //将评论列表按时间排序
+          var laterComment;
+          for(var i=0; i<this.commentList.length; i++){
+            for(var j=i; j<this.commentList.length; j++){
+              if((new Date((this.commentList[i].createTime).replace(/-/g,"\/")))<(new Date((this.commentList[j].createTime).replace(/-/g,"\/")))){
+                laterComment=this.commentList[j];
+                this.commentList[j]=this.commentList[i];
+                this.commentList[i]=laterComment;
+              }
             }
-            // console.log(this.commentList);
+          }
+          for (var i=0;i<this.commentList.length;i++)
+          {
+            // this.commentList[i][] = false;
+            this.$set(this.nowUserLikeObj,String(this.commentList[i]["commentId"]),false)
+
+            this.getUserLike(this.commentList[i]["commentId"]);
+          }
+          // console.log(this.commentList);
           this.totalCount = rep.data.totalCount;
           // 拿每条评论去调接口看用户是否点赞
 

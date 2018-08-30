@@ -56,7 +56,7 @@
         </transition-group>
       </div>
       <div class="search_04-content-paging">
-        <ui_pagination :pageMessage="{totalCount}" :excuteFunction="toPage" :page-sizes="pageSizes" :props-current-page="currentPage"></ui_pagination>
+        <ui_pagination :pageMessage="{totalCount}" :excuteFunction="toPage" :page-sizes="pageSizes" :props-current-page="currentPage" ref="pagination"></ui_pagination>
       </div>
     </div>
   </div>
@@ -158,7 +158,10 @@ export default {
       let config = this.CONFIG;
       let param = config.param;
 
-      this.currentPage = currentPage ? currentPage : this.currentPage;//改变分页组件当前页
+      if(currentPage ==1){
+        this.$refs.pagination.toPageOne();
+      }
+      // this.currentPage = currentPage ? currentPage : this.currentPage;//改变分页组件当前页
       param.pageNo = pageNo ? pageNo : param.pageNo;
       param.pageSize = pageSize ? pageSize : param.pageSize;
       param.conditions = conditions ? conditions : param.conditions;

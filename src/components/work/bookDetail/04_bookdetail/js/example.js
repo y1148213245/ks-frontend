@@ -260,7 +260,8 @@ const dev = {
           noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
           noEBookInfo: "该书没有对应电子书，无法加入购物车",
           noDate:"暂无日期",
-          yuan:"￥"
+          yuan:"￥",
+          "noDiscount":"暂无活动",
         },
         getPayMethodsBySiteId: {  //获取站点的支付方式
           url: "cart/getPayMethod.do",
@@ -476,7 +477,8 @@ const prod = {
           noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
           noEBookInfo: "该书没有对应电子书，无法加入购物车",
           noDate:"暂无日期",
-          yuan:"￥"
+          yuan:"￥",
+          "noDiscount":"暂无活动",
         },
         getPayMethodsBySiteId: {  //获取站点的支付方式
           url: "cart/getPayMethod.do",

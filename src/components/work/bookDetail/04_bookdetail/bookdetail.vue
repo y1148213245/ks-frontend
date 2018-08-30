@@ -119,6 +119,7 @@
             <section v-for="(activity, index) in resourceDetail[keys[config.field]]" :key="index" v-bind="{class: 'work_bookdetail_04_' + config.field}">
               <span>{{activity.discountName}}</span>
             </section>
+            <span v-if="!resourceDetail[keys[config.field]] || resourceDetail[keys[config.field]].length == 0">{{getStaticText('noDiscount') ? getStaticText('noDiscount') : '暂无活动'}}</span>
           </div>
 
           <!-- 其他不需要特殊处理的简单项 -->
@@ -402,7 +403,8 @@ export default {
             type: 'error',
             duration: 2000,
             onClose: function(){
-              window.location = _this.CONFIG.loginUrl;
+              
+              window.location = _this.CONFIG.loginUrl ? _this.CONFIG.loginUrl : "login.html";
             }
           });
           return false;
@@ -454,7 +456,7 @@ export default {
       }
       // 样书申领事件
       if(config.method == 'toApply'){
-        this.toApply(config);
+        this.toApply(this.CONFIG[config.method]);
         return false;
       }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
@@ -467,13 +469,12 @@ export default {
             type: 'error',
             duration: 2000,
             onClose: function(){
-              window.location = _this.CONFIG.loginUrl;
+              window.location = _this.CONFIG.loginUrl ? _this.CONFIG.loginUrl : "login.html";
             }
           });
           return false;
         }
-        var params = {
-          "keysStr":"", // 到form组件只解析keysStr里的字段 , 其他字段不解析
+        var params = { // keysStr 到form组件只解析keysStr里的字段 , 其他字段不解析
           "LOGIN_NAME":this.loginName,
           "SYS_TOPIC":this.resourceDetail["BOOK_SYS_TOPIC"],
           "SERIES_NAME":this.resourceDetail["BOOK_SERIES_NAME"],
@@ -522,16 +523,17 @@ export default {
           "BSN":this.resourceDetail["BOOK_BSN"],
           "SALE_URL":this.resourceDetail["BOOK_SALE_URL"]
         };
-        var str = "?";
+        var paramsStr = "?";
         var keysStr = "";
         for(var key in params){
-          if(undefined != params[key] || "" != params[key]){
-            str += (key + "=" + params[key] + "&");
-            keysStr += (key + ".")
+          if(undefined != params[key] && "" != params[key]){
+            paramsStr += (key + "=" + params[key] + "&");
+            keysStr += (key + ",")
           }
         }
-        params["keysStr"] = keysStr;
-        window.open(config.url + str);
+        console.log(keysStr);
+        paramsStr += ("keysStr=" + keysStr);
+        config.url && window.open(config.url + paramsStr);
     },
     toCustomFunMethod (method) { // 执行自定义事件
       if(this.buyBtnOpacity){return}// 按钮透明时方法不可用 ， 数据加载完毕按钮不透明时方法可用

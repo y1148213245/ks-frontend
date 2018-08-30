@@ -39,7 +39,7 @@ shoppingCart: {
         moveToCollection: "移入收藏",
         noImg: "暂无图片",
         yuan: "￥",
-        selectAtLeastOne: "请选择至少一件商品噢~",
+        selectAtLeastOne: "请选择至少一件商品",
         settleAccounts: "结算",
         totalPrice: "总价：",
         haveSaved: "已节省：",
@@ -98,11 +98,11 @@ shoppingCart: {
         moveIntoCollectionFolderSuccess: "成功移入收藏夹",
         moveIntoCollectionFolderFailed: "移入收藏夹失败",
         numberOfProductsMustBeMoreThanZero: "商品数量必须大于0",
-        shippingAddressMustNotBeEmpty: "收货地址不得为空噢~",
+        shippingAddressMustNotBeEmpty: "收货地址不得为空",
         orderSubmissionError: "订单提交有误",
         downloadCoinNotEnough: "下载币不足~",
-        downloadCoinDiscountCanNotBeLessThanZero: "下载币优惠数额不能小于0噢~",
-        downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid: "下载币优惠数额不得大于实付金额噢~",
+        downloadCoinDiscountCanNotBeLessThanZero: "下载币优惠数额不能小于0",
+        downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid: "下载币优惠数额不得大于实付金额",
         confirm: "确定"
       }
     },
@@ -159,7 +159,7 @@ const dev = {
           moveToCollection: "移入收藏",
           noImg: "暂无图片",
           yuan: "￥",
-          selectAtLeastOne: "请选择至少一件商品噢~",
+          selectAtLeastOne: "请选择至少一件商品",
           settleAccounts: "结算",
           totalPrice: "总价：",
           haveSaved: "已节省：",
@@ -218,45 +218,48 @@ const dev = {
           moveIntoCollectionFolderSuccess: "成功移入收藏夹",
           moveIntoCollectionFolderFailed: "移入收藏夹失败",
           numberOfProductsMustBeMoreThanZero: "商品数量必须大于0",
-          shippingAddressMustNotBeEmpty: "收货地址不得为空噢~",
+          shippingAddressMustNotBeEmpty: "收货地址不得为空",
           orderSubmissionError: "订单提交有误",
           downloadCoinNotEnough: "下载币不足~",
-          downloadCoinDiscountCanNotBeLessThanZero: "下载币优惠数额不能小于0噢~",
-          downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid: "下载币优惠数额不得大于实付金额噢~",
-          confirm: "确定"
+          downloadCoinDiscountCanNotBeLessThanZero: "下载币优惠数额不能小于0",
+          downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid: "下载币优惠数额不得大于实付金额",
+          confirm: "确定",
+          operateError: '操作失败',
+          selectCorrectPayWay: '请选择有效的支付方式',
         },
         addressContent: {
-          staticText:{
-            receiverAddress:"收货地址",
-            pleaseAddNewAddress:"暂无可选地址，您需要新增地址。",
-            selectOtherAddress:"选择其他收货地址",
-            addNewAddress:"新增地址",
-            selectReceiverAddress:"选择收货地址",
-            cancel:"取 消",
-            yes:"确 定",
-            addNewReceiverAddress:"新增收货地址",
-            receiver:"收货人",
-            receivingArea:"收货地区",
-            pleaseCompleteInformationOfProvincesAndCities:"请完整的省市信息",
-            detailedAddress:"详细地址",
-            pleaseFillInTheDetailedAddress:"请填写详细地址",
-            phone:"联系电话",
-            newAddressSuccessfullyAdded:"新增地址成功",
-            newAddressFailed:"新增地址失败",
-            pleaseFillInTheConsignee:"请填写收货人",
-            consigneeMustNotExceed40Characters:"收货人不能超过40个字符",
-            pleaseFillInTheContactNumber:"请填写联系电话",
-            pleaseEnterTheNumber:"请输入数字",
-            theTelephoneIsLong:"电话长度过长",
-            province:"省份",
-            prefectureLevelCity:"地级市",
-            cityCountyLevelCity:"市、县级市"
+          staticText: {
+            receiverAddress: "收货地址",
+            pleaseAddNewAddress: "暂无可选地址，您需要新增地址。",
+            selectOtherAddress: "选择其他收货地址",
+            addNewAddress: "新增地址",
+            selectReceiverAddress: "选择收货地址",
+            cancel: "取 消",
+            yes: "确 定",
+            addNewReceiverAddress: "新增收货地址",
+            receiver: "收货人",
+            receivingArea: "收货地区",
+            pleaseCompleteInformationOfProvincesAndCities: "请完整的省市信息",
+            detailedAddress: "详细地址",
+            pleaseFillInTheDetailedAddress: "请填写详细地址",
+            phone: "联系电话",
+            newAddressSuccessfullyAdded: "新增地址成功",
+            newAddressFailed: "新增地址失败",
+            pleaseFillInTheConsignee: "请填写收货人",
+            consigneeMustNotExceed40Characters: "收货人不能超过40个字符",
+            pleaseFillInTheContactNumber: "请填写联系电话",
+            pleaseEnterTheNumber: "请输入数字",
+            theTelephoneIsLong: "电话长度过长",
+            province: "省份",
+            prefectureLevelCity: "地级市",
+            cityCountyLevelCity: "市、县级市"
 
           }
         },
         invoiceContent: {
           staticText: {
-            regularInvoice:"普通发票",
+            chooseInvoiceType: "选择发票类型",
+            regularInvoice: "普通发票",
             valueAddedTaxInvoice: "增值税发票",
             invoiceTitle: "发票抬头",
             invoiceContent: "发票内容",
@@ -271,6 +274,7 @@ const dev = {
             depositBank: "开户银行",
             bankAccount: "银行账户",
             alter: "修改",
+            confirm: "确 定",
             pleaseFillInTheCompanyName: "请填写单位名称",
             pleaseFillInTheTaxpayerIdentificationNumber: "请填写纳税人识别号",
             theTaxpayerIdentificationNumberShallNotExceed20Characters: "纳税人识别号不能超过20个字符",
@@ -302,10 +306,10 @@ const dev = {
           payWithWeChatScan: "请使用微信扫一扫支付",
           downloadCoinCharge: "下载币充值"
         }
-      }
+      },
+
     },
   }
-
 };
 
 const prod = {
@@ -338,7 +342,7 @@ const prod = {
           moveToCollection: "移入收藏",
           noImg: "暂无图片",
           yuan: "￥",
-          selectAtLeastOne: "请选择至少一件商品噢~",
+          selectAtLeastOne: "请选择至少一件商品",
           settleAccounts: "结算",
           totalPrice: "总价：",
           haveSaved: "已节省：",
@@ -397,12 +401,14 @@ const prod = {
           moveIntoCollectionFolderSuccess: "成功移入收藏夹",
           moveIntoCollectionFolderFailed: "移入收藏夹失败",
           numberOfProductsMustBeMoreThanZero: "商品数量必须大于0",
-          shippingAddressMustNotBeEmpty: "收货地址不得为空噢~",
+          shippingAddressMustNotBeEmpty: "收货地址不得为空",
           orderSubmissionError: "订单提交有误",
           downloadCoinNotEnough: "下载币不足~",
-          downloadCoinDiscountCanNotBeLessThanZero: "下载币优惠数额不能小于0噢~",
-          downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid: "下载币优惠数额不得大于实付金额噢~",
-          confirm: "确定"
+          downloadCoinDiscountCanNotBeLessThanZero: "下载币优惠数额不能小于0",
+          downloadCoinDiscountCanNotBeMoreThanAmountActuallyPaid: "下载币优惠数额不得大于实付金额",
+          confirm: "确定",
+          operateError: '操作失败',
+          selectCorrectPayWay: '请选择有效的支付方式',
         },
         addressContent: {
           staticText:{
@@ -484,7 +490,6 @@ const prod = {
           downloadCoinCharge: "下载币充值"
         }
       },
-
     },
   }
 };

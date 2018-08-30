@@ -33,6 +33,14 @@ export default {
 
   mounted () {
     $(document).ready(() => {
+      window._bd_share_config = {
+        common : {
+          bdUrl : window.location.href.split('&')[0],
+        },
+        share : {
+          "bdSize" : 16,
+        }
+      }
       let len = document.getElementsByClassName("bdsharebuttonbox").length;
       if(len != 0 ){
         document.getElementsByClassName("bdsharebuttonbox")[len - 1].appendChild(document.createElement('script')).src =

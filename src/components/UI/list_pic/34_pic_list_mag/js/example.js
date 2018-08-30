@@ -32,6 +32,27 @@ const dev = {
             method: 'toDetail', // 方法名 要在下面配置
           }],
         },
+        magNameListsConfig: { // 获取某一栏目下的数据列表
+          url: "spc/cms/publish/list.do",
+          params: {
+            conditions: [
+              {
+                MAGAZINE_SYS_TOPIC: '测试刊物'
+              }
+            ],
+            groupBy: "pub_resource_id",
+            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+            pageNo: "1",
+            pageSize: "1",
+            searchText: "",
+          },
+          startNum: 0, // 从第几条开始取
+          maxNum: 1, // 取到第几条
+          sysAdapter: "sykAdapter", // 系统字段
+          typeAdapter: "newsAdapter", // 类型字段
+          // showItem: ['img', 'button'], // 控制显示项 ！！！只需要控制复杂项的显示
+          complicatedItem: [],
+        },
         toDetail: { // 去详情页面
           url: "../pages/magInfo.html",
           dataKeys: {
@@ -86,6 +107,27 @@ const prod = {
             display: '',
             method: 'toDetail', // 方法名 要在下面配置
           }],
+        },
+        magNameListsConfig: { // 获取某一栏目下的数据列表
+          url: "spc/cms/publish/list.do",
+          params: {
+            conditions: [
+              {
+                MAGAZINE_SYS_TOPIC: '测试刊物'
+              }
+            ],
+            groupBy: "pub_resource_id",
+            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+            pageNo: "1",
+            pageSize: "1",
+            searchText: "",
+          },
+          startNum: 0, // 从第几条开始取
+          maxNum: 1, // 取到第几条
+          sysAdapter: "sykAdapter", // 系统字段
+          typeAdapter: "newsAdapter", // 类型字段
+          // showItem: ['img', 'button'], // 控制显示项 ！！！只需要控制复杂项的显示
+          complicatedItem: [],
         },
         toDetail: { // 去详情页面
           url: "../pages/magInfo.html",

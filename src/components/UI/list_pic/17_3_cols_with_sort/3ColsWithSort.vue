@@ -55,7 +55,7 @@
       </div>
     </div>
     <div class="page_wrapper">
-      <ui_pagination :pageMessage='resultPage' :excuteFunction='searchPage'></ui_pagination>
+      <ui_pagination :pageMessage='resultPage' :excuteFunction='searchPage' ref="pagination"></ui_pagination>
     </div>
   </div>
 </template>
@@ -107,6 +107,9 @@
         this.searchPage({});
       },
       setOrderParam: function (order, index, toggle) {
+        if(toggle){
+          this.$refs.pagination.toPageOne();
+        }
         switch (index) {
           case 0:
             this.searchParams.orderBy = order;

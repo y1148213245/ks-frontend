@@ -71,6 +71,9 @@ export default {
     changeCurrentPage(page,size){
       page ? this.currentPage = page : "";
       size ? this.pageSize = size : "";
+    },
+    toPageOne(){
+      this.currentPage = 1;
     }
   },
   computed: {

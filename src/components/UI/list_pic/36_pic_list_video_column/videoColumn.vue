@@ -83,6 +83,7 @@ export default {
       modal: false,
       attachSrc: "",   //用于存放附件图片src的
       attachPicture: {},  //用于存放答案和测试卷的recordId的
+      attachTypes: {},  
       
     }
   },
@@ -95,6 +96,7 @@ export default {
     this.pubId = URL.parse(document.URL, true).query.pubId; // 从地址栏接收栏目id
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_36[this.modulename];
     this.display = this.CONFIG.display;
+    this.attachTypes = this.CONFIG.attachTypes ? this.CONFIG.attachTypes : this.attachTypes;
     this.keys = getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter);
     this.getVideoList();
     if(this.CONFIG && this.CONFIG.getResourceDetail){
@@ -155,11 +157,11 @@ export default {
           let attachList = [];
           // 如果有附件，执行以下操作
           if(attachDetail[attach]){
-            if(attach == 'video'){
+            if(attach == (this.attachTypes.video ? this.attachTypes.video : 'video')){
               // 如果附件是视频，那么把该资料库的pub_parentId和pub_id以及当前附件视频的fileRecordID传到视频播放器，在视频播放器中处理资料库的视频附件
               attachList = attachDetail[attach][0];
               window.open(toOtherPage(item,this.CONFIG.toPlayZLKVideo,this.keys)+'&mediaResId='+ attachList['fileRecordID']);
-            }else if(attach == 'orgicpic'){
+            }else if(attach == (this.attachTypes.orgicpic ? this.attachTypes.orgicpic : 'orgicpic')){
               // 如果附件是图片，遍历图片，把相应图片的fileRecordID存起来
               attachList  = attachDetail[attach];
               for(let attach of attachList){
@@ -172,13 +174,13 @@ export default {
               // 默认展示测试卷图片
               this.attachSrc = CONFIG.BASE_URL + this.CONFIG.getAttachPictureUrl + this.attachPicture['testRecordId'];
               
-            }else if(attach == 'lowqualitypdf'){
+            }else if(attach ==  (this.attachTypes.txtlpdf ? this.attachTypes.txtlpdf : 'txtlpdf')){
               // 如果附件是PDF，那么直接取第一个，去阅读器阅读
               attachList = attachDetail[attach][0];
               console.log(attachList);
               
               let params = Object.assign({},this.CONFIG.toEbook.params) ;
-              let url = CONFIG.READ_URL + '?bookId=' + attachList['attachID'] + '&readType=' + params.readType + '&bookName=' + attachList['attachName'] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType + '&doclibCode=ZILIAOKU';
+              let url = CONFIG.READ_URL + '?bookId=' + attachList['docID'] + '&readType=' + params.readType + '&bookName=' + attachList['attachName'] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType + '&doclibCode=ZILIAOKU';
               console.log(url);
               
               window.open(url);

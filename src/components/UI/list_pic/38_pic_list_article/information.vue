@@ -83,13 +83,18 @@ export default {
       pubId: "", // 资源id
       columnName: "",   // 稿件栏目名称
       loginName:'',
-      isBuy: 0  //判断期刊是否被购买了
+      isBuy: 0,  //判断期刊是否被购买了
+      pub_resource_id: ""  // 期刊的pub_resource_id
     };
   },
   created() {
     var uriQuery = URL.parse(document.URL, true).query;
     if (typeof uriQuery.pubId != "undefined") {
       this.pubId = uriQuery.pubId;
+    }
+
+    if (typeof uriQuery.pub_resource_id != "undefined") {
+      this.pub_resource_id = uriQuery.pub_resource_id;
     }
 
      // 稿件的栏目名称(适应博览,博览财富)
@@ -213,7 +218,7 @@ export default {
       if(type === 1){  //免费
         window.location.href = this.CONFIG.toFree + "?pubId=" + item.id + detailParams;
       }else if(type === 2){
-        window.location.href = this.CONFIG.toFee + "?docId=" + item.pub_resource_id + detailParams;
+        window.location.href = this.CONFIG.toFee + "?docId=" + item.pub_resource_id + "&docLibId=" + item["PRODUCT-ARTICLE_SYS_DOCLIBID"] + "&title=期刊稿件" + "&parentId=" + this.pub_resource_id;
       }
     },
   }

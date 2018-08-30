@@ -151,12 +151,26 @@ export default {
       bookName:"",  // 图书名称 - 沈乾
       pubId: "", // 活动id
       activityName: "", // 活动名称
-      activityLibId: "" //活动库id
+      activityLibId: "", //活动库id
+      urlParams:{}    // 地址栏带的参数
     };
   },
   computed: {},
   created() {
     var uriQuery = URL.parse(document.URL, true).query;
+    console.log(uriQuery);
+    if(undefined != uriQuery["keysStr"] && "" != uriQuery["keysStr"]){
+      // 地址栏如果有keysStr字段 , 将其安"."拆分取出字段 , 然后去uriQuery里取对应的值
+      var paramsStr = uriQuery["keysStr"];
+      var paramsArr = uriQuery["keysStr"].split(",");
+      for(var i = 0 ; i < paramsArr.length ; i++){
+        var key = paramsArr[i];
+        if(uriQuery.hasOwnProperty(key)){
+          this.urlParams[key] = uriQuery[key];
+        }
+      }
+      console.log(this.urlParams);
+    }
     if (typeof uriQuery.SYS_TOPIC != "undefined") {
       this.bookName = uriQuery.SYS_TOPIC;
     }
@@ -393,7 +407,13 @@ export default {
              
             }
           }
-
+          // 查看地址栏传参对象this.urlParams , 将值放入参数中
+          for(var key2 in this.urlParams){
+            if(!this.form.hasOwnProperty(key2)){
+              paramsObj.metaMap[key2] = this.urlParams[key2];
+            }
+          }
+          
           // 样书申领传图书名称
           if("SYS_TOPIC" in paramsObj.metaMap){
             paramsObj.metaMap["SYS_TOPIC"] = this.bookName ? this.bookName : paramsObj.metaMap["SYS_TOPIC"];
@@ -413,7 +433,7 @@ export default {
           }
 
           let self = this;
-
+          console.log(paramsObj);
           Post(CONFIG.BASE_URL + this.CONFIG.submit.url, paramsObj).then(
             res => {
               let datas = res.data;

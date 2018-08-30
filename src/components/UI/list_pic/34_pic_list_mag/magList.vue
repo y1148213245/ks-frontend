@@ -65,12 +65,16 @@ export default {
       keys: {}, // 接口字段容器
       totalCount: 0,
       requestParams: "", // 去详情页需要传查询list.do的所有参数
+      magNameListsConfig:""
     };
   },
 
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.list_pic_34[this.modulename];
     this.resourceListsConfig = this.CONFIG.getResourceLists;
+    if(typeof (this.CONFIG.magNameListsConfig != "undefined" )){
+      this.magNameListsConfig = this.CONFIG.magNameListsConfig;
+    }
     this.keys = JSON.parse(JSON.stringify(getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter)));
 
     this.getResourceLists();
@@ -82,6 +86,25 @@ export default {
   },
 
   methods: {
+    //通过list.do 获取期刊第一个子集的图片展示到这里
+    getImgForMagName(){
+      for (let i=0;i<this.resourceLists.length;i++)
+      {
+        let paramsObj = Object.assign({}, this.magNameListsConfig.params);
+        paramsObj.conditions.map((item) => {
+          if (item.hasOwnProperty('MAGAZINE_SYS_TOPIC')) {
+            item['MAGAZINE_SYS_TOPIC'] = this.resourceLists[i].magName ? this.resourceLists[i].magName : item['MAGAZINE_SYS_TOPIC'];
+          }
+        })
+        paramsObj.conditions = JSON.stringify(paramsObj.conditions);
+        Post(CONFIG.BASE_URL + this.magNameListsConfig.url, paramsObj).then((rep) => {
+          let datas = rep.data;
+          if (datas.success && datas.result && datas.result.length > 0) {
+            Vue.set(this.resourceLists[i],"magIsrc",datas.result[0].pub_picBig);
+          }
+        });
+      }
+    },
     toCustomFun (item, config, keys) { // 执行自定义事件
       let detailParams = "";
       if (config.method == 'toDetail') { // 去详情页需要增加list.do请求的所有参数
@@ -97,7 +120,11 @@ export default {
         if (datas.result && datas.data && datas.data.length > 0) {
           if(datas.result==1){
             this.resourceLists = datas.data;
+            if(this.magNameListsConfig){
+              this.getImgForMagName();
+            }
             this.totalCount = datas.totalCount;
+
           }
         }
       });

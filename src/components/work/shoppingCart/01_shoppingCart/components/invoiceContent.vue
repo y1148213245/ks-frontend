@@ -67,31 +67,9 @@ import $ from "jquery";
 export default {
   name: "work_shoppingcart_01_components_invoice",
   reused: true,
-  props: ["namespace","parentConfig"],
+  props: ["namespace","parentconfig"],
   data () {
     return {
-      // rules: {
-      //   receiptTitle: [
-      //     { required: true, message: '请填写单位名称', trigger: 'blur' },
-      //   ],
-      //   taxpayerCode: [
-      //     { required: true, message: '请填写纳税人识别号', trigger: 'blur' },
-      //     { max: 20, message: '纳税人识别号不能超过20个字符', trigger: 'blur' }
-      //   ],
-      //   companyAddress: [
-      //     { required: true, message: '请填写注册地址', trigger: 'blur' }
-      //   ],
-      //   companyPhone: [
-      //     { required: true, message: '请填写注册电话', trigger: 'blur' }
-      //   ],
-      //   bankName: [
-      //     { required: true, message: '请填写开户银行', trigger: 'blur' },
-      //     { max: 21, message: '开户银行不能超过21个字符', trigger: 'blur' }
-      //   ],
-      //   bankAccount: [
-      //     { required: true, message: '请填写银行账户', trigger: 'blur' }
-      //   ]
-      // },
       rules:{},
       invoiceDialog: false,   // 选择发票类型弹框 默认关闭
       receiptTitle: false,    // 单位名称提示信息 为空时才显示
@@ -130,11 +108,11 @@ export default {
         bankName: "",           // 开户银行
         bankAccount: ""         // 开户账号
       },
-      CONFIG:""
+      CONFIG: null, // 当前组件的配置 需要从父级组件里面取
     };
   },
   created(){
-    this.CONFIG = this.parentConfig.invoiceContent;
+    this.CONFIG = this.parentconfig.invoiceContent;
     this.rules = {
       receiptTitle: [
         { required: true, message: this.getStaticText('pleaseFillInTheCompanyName') ? this.getStaticText('pleaseFillInTheCompanyName') : '请填写单位名称', trigger: 'blur' },

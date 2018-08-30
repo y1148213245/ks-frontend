@@ -1,16 +1,16 @@
 <template>
   <section class="personalcenter_afterservice">
     <div v-show="currentShow=='afterserviceDetails'">
-      <div v-if="CONFIG && CONFIG.tabTypeShow.length > 0" class="mb20">
+      <div class="mb20">
         订单类型：
         <el-radio-group v-model="typeRadio" @change="changeTabType">
-          <el-radio :label="item.type" v-for="(item, index) in CONFIG.tabTypeShow" :key="index">{{item.title}}</el-radio>
+          <el-radio :label="item.type" v-for="(item, index) in defaultType" :key="index">{{item.title}}</el-radio>
         </el-radio-group>
       </div>
-      <div v-if="CONFIG && CONFIG.tabStateShow.length > 0" class="mb20">
+      <div class="mb20">
         订单状态：
         <el-radio-group v-model="stateRadio" @change="changeTabState">
-          <el-radio :label="item.type" v-for="(item, index) in CONFIG.tabStateShow" :key="index">{{item.title}}</el-radio>
+          <el-radio :label="item.type" v-for="(item, index) in defaultState" :key="index">{{item.title}}</el-radio>
         </el-radio-group>
       </div>
       <el-table :data="returnGoodsList" border style="width: 100%">
@@ -112,7 +112,7 @@
         <div class="afterservice_textcenter" v-if="returnDetailsActive==1 && returnDetailsErr==false">
           <hr>
           <div>退货申请审核中...</div>
-          <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消退货申请</el-button>
+          <el-button type="primary" @click="returnGoodsDialog = true">取消退货申请</el-button>
         </div>
         <!--不同意申请-->
         <div v-if="returnDetailsActive==1 && returnDetailsErr==true">
@@ -134,7 +134,7 @@
           <div class="mtb15">
             <span>快递公司：</span>
             <el-select v-model="courierCompany" placeholder="请选择快递公司" @change="handleChange">
-              <el-option v-for="item in courierOptions" :key="item.value" :label="item.label" :value="item.value">
+              <el-option v-for="item in defaultCourier" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
             </el-cascader>
@@ -145,14 +145,23 @@
           </div>
           <div class="afterservice_textcenter">
             <el-button type="primary" @click="subInformation">提交</el-button>
-            <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消退货申请</el-button>
+            <el-button type="primary" @click="returnGoodsDialog = true" style="padding: 12px">取消退货申请</el-button>
           </div>
         </div>
+        <!--取消退货申请的二次提示框-->
+        <el-dialog title="退货" :visible.sync="returnGoodsDialog" width="600px">
+          <span>是否确定要取消退货申请？</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="returnGoodsDialog = false">取 消</el-button>
+            <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">确 定</el-button>
+          </span>
+        </el-dialog>
+
         <!-- 处理中 -->
         <div class="afterservice_textcenter" v-if="returnDetailsActive==3">
           <hr>
           <div>商家收货中...</div>
-          <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消退货申请</el-button>
+          <el-button type="primary" @click="returnGoodsDialog = true">取消退货申请</el-button>
         </div>
         <!--等待退款-->
         <div v-if="returnDetailsActive==4">
@@ -246,7 +255,7 @@
         <div class="afterservice_textcenter" v-if="exchangeDetailsActive==1 && exchangeDetailsErr==false">
           <hr>
           <div>换货申请审核中...</div>
-          <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消换货申请</el-button>
+          <el-button type="primary" @click="exchangeGoodsDialog = true">取消换货申请</el-button>
         </div>
         <!-- 不同意换货 -->
         <div v-if="exchangeDetailsActive==1 && exchangeDetailsErr==true">
@@ -275,14 +284,22 @@
           </div>
           <div class="afterservice_textcenter">
             <el-button type="primary" @click="subInformation">提交</el-button>
-            <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消换货申请</el-button>
+            <el-button type="primary" @click="exchangeGoodsDialog = true">取消换货申请</el-button>
           </div>
         </div>
+        <!--取消换货申请二次提示框-->
+        <el-dialog title="换货" :visible.sync="exchangeGoodsDialog" width="600px">
+          <span>是否确定要取消换货申请？</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="exchangeGoodsDialog = false">取 消</el-button>
+            <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">确 定</el-button>
+          </span>
+        </el-dialog>
         <!-- 处理中 -->
         <div class="afterservice_textcenter" v-if="exchangeDetailsActive==3">
           <hr>
           <div>商家收货中...</div>
-          <el-button type="primary" @click="withdraw(returnGoodsDetails.id)">取消换货申请</el-button>
+          <el-button type="primary" @click="exchangeGoodsDialog = true">取消换货申请</el-button>
         </div>
         <!-- 已完成 -->
         <div class="afterservice_textcenter" v-if="exchangeDetailsActive==4">
@@ -310,18 +327,18 @@ export default {
   props: ["namespace", "parentConfig"],
   created() {
     this.CONFIG = this.parentConfig.afterservice;
-    this.typeRadio =
+    this.defaultType =
       this.CONFIG && this.CONFIG.tabTypeShow.length > 0
-        ? this.CONFIG.tabTypeShow[0].type
-        : "";
-    this.stateRadio =
+        ? this.CONFIG.tabTypeShow
+        : this.defaultType;
+    this.defaultState =
       this.CONFIG && this.CONFIG.tabStateShow.length > 0
-        ? this.CONFIG.tabStateShow[0].type
-        : "";
-    this.courierOptions =
+        ? this.CONFIG.tabStateShow
+        : this.defaultState;
+    this.defaultCourier =
       this.CONFIG && this.CONFIG.courierOptions.length > 0
         ? this.CONFIG.courierOptions
-        : [];
+        : this.defaultCourier;
   },
   mounted() {
     this.$store.dispatch("personalCenter/queryUser", {
@@ -336,6 +353,74 @@ export default {
   },
   data() {
     return {
+      defaultType: [
+        {
+          title: "全部订单",
+          type: ""
+        },
+        {
+          title: "退货订单",
+          type: "1"
+        },
+        {
+          title: "换货订单",
+          type: "2"
+        }
+      ],
+      defaultState: [
+        {
+          title: "全部状态",
+          type: ""
+        },
+        {
+          title: "处理中",
+          type: "1"
+        },
+        {
+          title: "待您邮寄",
+          type: "2"
+        },
+        {
+          title: "退款中",
+          type: "3"
+        },
+        {
+          title: "已完成",
+          type: "4"
+        },
+        {
+          title: "不同意退货",
+          type: "5"
+        },
+        {
+          title: "不同意退款",
+          type: "6"
+        },
+        {
+          title: "已取消",
+          type: "7"
+        }
+      ],
+      defaultCourier: [
+        {
+          value: "中通",
+          label: "中通"
+        },
+        {
+          value: "圆通",
+          label: "圆通"
+        },
+        {
+          value: "顺丰",
+          label: "顺丰"
+        },
+        {
+          value: "EMS",
+          label: "EMS"
+        }
+      ],
+      exchangeGoodsDialog: false, //取消换货申请添加二次确认弹窗
+      returnGoodsDialog: false, //取消退货申请添加二次确认弹窗
       typeRadio: "", //订单类型
       stateRadio: "", //订单状态
       currentShow: "afterserviceDetails", //展示切换
@@ -346,7 +431,6 @@ export default {
       returnDetailsErr: false, //退货申请未通过
       returnCancel: false, //取消退货
       exchangeCancel: false, //取消换货
-      courierOptions: [],
       courierNumber: "", //快递单号
       logisticsCompany: "", //快递公司
       courierCompany: []
@@ -491,17 +575,18 @@ export default {
       }
     },
     withdraw(idNum) {
+      let vm = this;
       var id = idNum;
       api.cancleReturnGoods(id).then(function(response) {
-        if (response.result == 1) {
-          this.$message({
+        if (response.data.result == 1) {
+          vm.$message({
             message: "取消成功",
             type: "success"
           });
         } else {
-          this.$message.error("抱歉，取消失败");
+          vm.$message.error("抱歉，取消失败");
         }
-        this.currentShow = "afterserviceDetails";
+        vm.currentShow = "afterserviceDetails";
       });
     }
   }

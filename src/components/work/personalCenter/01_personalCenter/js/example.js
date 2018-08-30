@@ -146,21 +146,7 @@ const dev = {
               value: "EMS",
               label: "EMS"
             }
-          ],
-          feedback: { // 建议反馈的提交地址及传参字段
-            submitUrl: "spc/prodb/saveItem.do", // 提交接口
-            feedbackkeys: "QUE_CONTENT", // 建议反馈提交的key值 字段需到对应库中查询
-            params: {
-              "doclibCode": "PORTAL_QUE_ANS", // 对应文档库
-              "metaMap": {}
-            }
-          },
-          samplebook:{  // 申领数据配置
-            getListUrl:"spc/prodb/searchNL.do", //获取数据的列表
-            doclibCode:"",              //文档库码  必须
-            pageIndex:"1",            //页码
-            pageSize:"10"               //每页显示
-          }
+          ]
         },
         'learning': {
           tabListShow: [{
@@ -215,6 +201,26 @@ const dev = {
             "fixedKeys": {}
           },
           pageSizes: [10,20,50,100],
+        },
+        feedback: { // 建议反馈的提交地址及传参字段
+          submitUrl: "spc/prodb/saveItem.do", // 提交接口
+          feedbackkeys: "QUE_CONTENT", // 建议反馈提交的key值 字段需到对应库中查询
+          params: {
+            "doclibCode": "PORTAL_QUE_ANS", // 对应文档库
+            "metaMap": {}
+          }
+        },
+        samplebook:{  // 申领数据配置
+          pageIndex:"1",            //页码
+          pageSize:"10",               //每页显示
+        },
+        comment:{ // 我的评论配置
+          detailUrl:{
+            '91': './bookdetail.html', // 纸质书
+            '94': './bookdetail.html', // 电子书
+            '149': './journaldetail.html', // 电子期刊
+            '177': './seriesdetail.html' // 丛书
+          }
         }
       }
     }
@@ -342,10 +348,8 @@ const prod = {
           }
         },
         samplebook:{  // 申领数据配置
-          getListUrl:"spc/prodb/searchNL.do", //获取数据的列表
-          doclibCode:"",              //文档库码  必须
           pageIndex:"1",            //页码
-          pageSize:"10"               //每页显示
+          pageSize:"10",               //每页显示
         },
         'learning': {
           tabListShow: [{
@@ -400,6 +404,14 @@ const prod = {
             "fixedKeys": {}
           },
           pageSizes: [10,20,50,100],
+        },
+        comment:{ // 我的评论配置
+          detailUrl:{
+            '91': './bookdetail.html', // 纸质书
+            '94': './bookdetail.html', // 电子书
+            '149': './journaldetail.html', // 电子期刊
+            '177': './seriesdetail.html' // 丛书
+          }
         }
       }
     }

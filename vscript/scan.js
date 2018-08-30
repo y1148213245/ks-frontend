@@ -110,6 +110,7 @@ function test (params) {
     }
 
     /* 自动插入头尾 */
+    let insert
     let redata = pageData.replace(/\<!--#include\s*virtual=\"(.*)\"\s*--\>/g, function(full, sub) {
       if (sub) {//sub = 'header.html'(例))
         return '\n<!--insert='+sub+'-->\n' + getCommonPage(pagePathList,sub) + '\n<!--insert_end='+sub+'-->\n'

@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       // readConfig: READ_CONFIG
+      CONFIG:{},  
       showPage: "index",     // 展示的页面
       showPageList:[
         "index",

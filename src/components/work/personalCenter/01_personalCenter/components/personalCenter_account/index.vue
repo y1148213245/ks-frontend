@@ -246,7 +246,7 @@
             <div v-if="account && account.email">
               <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
               <span v-text="account && account.email"></span>
-              <el-button type="primary" @click="emailDialog = true" class="butt">修改邮箱</el-button>
+              <el-button type="primary" @click="modifyInformation(3)" class="butt">修改邮箱</el-button>
             </div>
             <div v-if="!account.email">
               <i class="wzdh_xgxx_bdyx mr08"></i>绑定邮箱:
@@ -259,7 +259,7 @@
             <div v-if="account && account.mobileno">
               <i class="wzdh_xgxx_bdhm mr08"></i>手机号码:
               <span v-text="account && account.mobileno"></span>
-              <el-button type="primary" class="butt" @click="modifyMobile">修改手机号</el-button>
+              <el-button type="primary" class="butt" @click="modifyInformation(2)">修改手机号</el-button>
             </div>
 
             <div v-if="account.mobileno ==''">
@@ -268,7 +268,7 @@
           </div>
 
           <div class="wzdh_xgxx_tj">
-            <el-button type="primary" @click="modifyPass" class="f14">修改密码</el-button>
+            <el-button type="primary" @click="modifyInformation(1)" class="f14">修改密码</el-button>
           </div>
 
         </div>
@@ -340,22 +340,17 @@
     <!-- 邮箱弹出框  -->
     <el-dialog title="邮箱" :visible.sync="emailDialog" width="600px">
       <el-form :model="emailForm" :rules="emailRules" ref="emailForm">
-        <!-- 邮箱 -->
         <el-form-item v-if="!getShowEmailPostfix()" :label="'邮箱'" prop="email">
-          <el-input id="center_account-input-email" class="center_account-input-email" type="text" v-model="emailForm.email" auto-complete="off" :placeholder="'请输入邮箱'"></el-input>
+          <el-input id="center_account-input-email" class="center_account-input-email" type="text" v-model="emailForm.email" auto-complete="off" :placeholder="' 请输入邮箱'"></el-input>
         </el-form-item>
-        <!-- 带选择后缀的邮箱 -->
         <el-form-item v-if="getShowEmailPostfix()" :label="'邮箱'" prop="emailSubfix">
-
           <el-input class="center_account_subfix-email_input" type="text" v-model="emailForm.emailSubfix" :placeholder="'请输入邮箱'"></el-input>
           @
           <el-select class="center_account-postfix_email_select" v-model="emailForm.emailPostfix" :placeholder="'邮箱'">
             <el-option v-for="(item,index) in GLOBLE_CONFIG.EMAIL_CONFIG.postfix" :key="index" :label="item" :value="item">
             </el-option>
           </el-select>
-
         </el-form-item>
-
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="emailDialog = false">取 消</el-button>
@@ -471,7 +466,6 @@
         <div class="wzdh_yzsjh f14 color_6f6">
           <div class="wzdh_yzsjh_ico account_modify-icon"></div>
           <div class="account_modify-form" style="width:505px;">
-
             <el-form ref="setMobileDialogForm" :model="setMobileDialogForm" :rules="setMobileDialogRules" style="margin-top: 15px;">
               <el-form-item prop="number">
                 <div class="bangding_con_1_sj mt30">
@@ -488,7 +482,33 @@
               </el-form-item>
               <el-button type="primary" @click="submitChangeMobile('setMobileDialogForm')">绑 定</el-button>
             </el-form>
-
+          </div>
+        </div>
+      </div>
+      <el-button type="primary" @click="back" class="butt_back">返回</el-button>
+    </div>
+    <!-- 通过验证身份修改邮箱 -->
+    <div v-show="currentShow == 'modifyEmail'">
+      <div class="main_right fl">
+        <div class="wzdh_xgyx f14 color_6f6">
+          <div class="wzdh_xgyx_ico account_modify-icon"></div>
+          <div class="account_modify-form" style="width:505px;">
+            <el-form :model="emailForm" :rules="emailRules" ref="emailForm">
+              <el-form-item v-if="!getShowEmailPostfix()" :label="'请输入新邮箱：'" prop="email">
+                <el-input id="center_account-input-email" class="center_account-input-email" type="text" v-model="emailForm.email" auto-complete="off" :placeholder="'请输入邮箱'"></el-input>
+              </el-form-item>
+              <el-form-item v-if="getShowEmailPostfix()" :label="'请输入新邮箱：'" prop="emailSubfix">
+                <el-input class="center_account_subfix-email_input" type="text" v-model="emailForm.emailSubfix" :placeholder="'请输入邮箱'"></el-input>
+                @
+                <el-select class="center_account-postfix_email_select" v-model="emailForm.emailPostfix" :placeholder="'邮箱'">
+                  <el-option v-for="(item,index) in GLOBLE_CONFIG.EMAIL_CONFIG.postfix" :key="index" :label="item" :value="item">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+              <el-button type="primary" @click="changeEmail">确 定</el-button>
+            </span>
           </div>
         </div>
       </div>
@@ -766,7 +786,8 @@ export default {
         "virtualPay",
         "Verification",
         "modifyPassword",
-        "modifyMobile"
+        "modifyMobile",
+        "modifyEmail"
       ],
       // 计时器
       emailTime: "",
@@ -774,7 +795,7 @@ export default {
       // 验证码发送状态
       vcodeType: 0,
       vcodeButt: true,
-      // 修改类型 1密码 2手机
+      // 修改类型 1密码 2手机 3邮箱
       modifyType: "",
       butt: true,
       butt_phone: true,
@@ -1045,8 +1066,19 @@ export default {
       this.form.erae = this.form.selectedOptions[1];
       this.form.minerae = this.form.selectedOptions[2];
     },
+    /*重置校验表单*/
+    initRules() {
+      this.emptyContactor = false;
+      this.emptyDetail = false;
+      this.emptyPhone = false;
+      this.emptyPCC = false;
+      this.newAddAddress.phone = "";
+      this.newAddAddress.address = "";
+      this.newAddAddress.contactor = "";
+    },
     /*地址管理模块*/
     editClick(index, row) {
+      this.initRules();
       this.newAddAddress.isDefault = row.isDefault;
       var _this = this;
       this.updateAddressDialog = true;
@@ -1074,6 +1106,7 @@ export default {
         }, 150);
       }
     },
+
     /*编辑收货地址*/
     confirmUpdateAddress: function(flag) {
       // 点击确定/取消添加地址按钮
@@ -1319,6 +1352,7 @@ export default {
       }
     },
     addNewAddress: function() {
+      this.initRules();
       this.addAddressDialog = true;
       initDom();
       function initDom() {
@@ -1408,6 +1442,11 @@ export default {
           message: "已发送至您的邮箱，请点击链接绑定邮箱"
         });
         this.emailDialog = false;
+        if (this.modifyType == 3) {
+          window.setTimeout(function() {
+            window.location.reload();
+          }, 2000);
+        }
       } else {
         this.$message({
           type: "error",
@@ -1584,8 +1623,10 @@ export default {
         if (valid) {
           if (this.modifyType == 1) {
             this.showCurrent(7);
-          } else {
+          } else if (this.modifyType == 2) {
             this.showCurrent(8);
+          } else {
+            this.showCurrent(9);
           }
         } else {
           return false;
@@ -1785,21 +1826,19 @@ export default {
         if (valid) {
           if (this.modifyType == 1) {
             this.showCurrent(7);
-          } else {
+          } else if (this.modifyType == 2) {
             this.showCurrent(8);
+          } else {
+            this.showCurrent(9);
           }
         } else {
           return false;
         }
       });
     },
-    modifyPass() {
+    modifyInformation(type) {
       this.showCurrent(6);
-      this.modifyType = 1;
-    },
-    modifyMobile() {
-      this.showCurrent(6);
-      this.modifyType = 2;
+      this.modifyType = type;
     },
     // 邮箱验证码倒计时
     times(num, type) {
@@ -1850,8 +1889,10 @@ export default {
       if (idata == 201) {
         if (this.modifyType == 1) {
           this.showCurrent(7);
-        } else {
+        } else if (this.modifyType == 2) {
           this.showCurrent(8);
+        } else {
+          this.showCurrent(9);
         }
       } else {
         this.$message({

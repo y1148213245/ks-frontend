@@ -652,7 +652,12 @@ var FIELD_ADAPTER = {
             picNum: "GROUP_BOOK_PIC_NUM",
             sysAuthors: "GROUP_BOOK_SYS_AUTHORS",
             sysCreated: "GROUP_BOOK_SYS_CREATED",
-            sysTopic: "GROUP_BOOK_SYS_TOPIC"
+            sysTopic: "GROUP_BOOK_SYS_TOPIC",
+            type:"prod_product_type",        // type值 177
+            picBig:"pub_picBig",        //  大图
+            picMiddle:"pub_picMiddle",  // 中图
+            picSmall:"pub_picSmall" ,    // 小图
+            readnum:"pub_read_num"      // 阅读量
         },
         jinrongActivityAdapter:{  //金融活动
             jrcoverId: "JINRONGHUODONGKU_COVERID",

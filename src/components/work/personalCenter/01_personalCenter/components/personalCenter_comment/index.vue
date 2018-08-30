@@ -44,11 +44,15 @@ import moment from "moment"
 export default {
   name: "comment",
   reused: true,
-  props: ["namespace"],
+  props: ["namespace", "parentConfig"],
   data () {
     return {
       // readConfig: READ_CONFIG
+      CONFIG:{}   //获取父元素配置
     };
+  },
+  created() {
+    this.CONFIG = this.parentConfig.comment;
   },
   mounted: function () {
     this.$store.dispatch("personalCenter/queryUser", {
@@ -69,6 +73,7 @@ export default {
       };
       this.$store.dispatch("personalCenter/getMyComment", param);
     },
+    // 获取每页数据
     pagingF: function ({ pageNo, pageSize }) {
       var param = {
         pageIndex: pageNo,
@@ -77,12 +82,18 @@ export default {
       };
       this.$store.dispatch("personalCenter/getMyComment", param);
     },
+    // 去详情页
     toDetail(data){
-      console.log(data);
+      console.log(data);//productType pubId  colId
+      if(data.productType && this.CONFIG.detailUrl && this.CONFIG.detailUrl[data.productType]){
+        window.open(this.CONFIG.detailUrl[data.productType] + "?pubId=" + data.pubId);
+      }
     },
+    // 删除评论
     deleteComment(data){
       console.log(data);
     },
+    // 转换时间类型
     formatDateNEW(value) {
       if (value) {
         return moment(Number(value)).format("YYYY-MM-DD HH:mm:ss"); // 只接收Number类型

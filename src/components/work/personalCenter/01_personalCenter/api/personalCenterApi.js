@@ -296,11 +296,17 @@ export default {
   },
   /*样书申领记录*/
   getSamplebookList(params) {
-    var url =CONFIG.BASE_URL + params.getListUrl + "?doclibCode=" +
-    params.doclibCode +
-    "&page=" + 
-    (params.pageIndex-1) + 
-    "&size=" + params.pageSize;
+    var cols = ['LOGIN_NAME'];
+    var vals = [params.loginName];
+    var url =CONFIG.BASE_URL + "spc/prodb/searchNL.do" +
+    "?doclibCode=PORTAL_YANGSHUKU" +
+    "&page=" + (params.pageIndex-1) +
+    "&size=" + params.pageSize +
+    "&cols=" + "LOGIN_NAME" +
+    "&vals=" + params.loginName +
+    "&relations=1" +
+    "&symbols=2";
+    // var url = CONFIG.BASE_URL + "spc/prodb/searchNL.do";
     return Get(url);
   },
   /*售后详情接口*/

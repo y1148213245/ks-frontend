@@ -29,7 +29,7 @@
         </el-table>
       </div>
       <div class="personalcenter-samplebook-page">
-        <ui_pagination :pageMessage="{totalCount: this.samplebookList.content && this.samplebookList.totalElements - 0 || 0}" :excuteFunction="toPageN" :page-sizes="[10]"></ui_pagination>
+        <ui_pagination :pageMessage="{totalCount: this.samplebookList.content && this.samplebookList.totalElements - 0 || 0}" :excuteFunction="toPageN" :page-sizes="[CONFIG['pageSize']]"></ui_pagination>
       </div>
     </div>
     <div class="personalcenter-samplebook-page01" v-if="showSamplebookPage == showSamplebookPageList[1]">
@@ -86,7 +86,8 @@ export default {
   },
   computed: {
     ...mapGetters("personalCenter/", {
-      samplebookList: "getSamplebookList"
+      samplebookList: "getSamplebookList",
+      member: "getMember",  // this.member.loginName
     })
     // ...mapGetters({
     //   samplebookList: "personalCenter/getSamplebookList", // 获取申请列表

@@ -24,6 +24,11 @@ const dev = {
             attachTypes: ""    //附件类型
           }
         },
+        "attachTypes": {
+          "video": "video",
+          "orgicpic": "orgicpic",
+          "txtlpdf": "txtlpdf"
+        },
         "ziliaozuAttachType": "lowqualitypdf",  //低精度PDF=>lowqualitypdf,  视频=>video
         getAttachPictureUrl: "dynamicFile/stream.do?recordID=",  //展示附件接口
         display: {
@@ -124,6 +129,11 @@ const prod = {
             loginName: "",
             attachTypes: ""    //附件类型
           }
+        },
+        "attachTypes": {
+          "video": "video",
+          "orgicpic": "orgicpic",
+          "txtlpdf": "txtlpdf"
         },
         ziliaozuAttachType: "lowqualitypdf",  //低精度PDF=>lowqualitypdf,  视频=>video
         getAttachPictureUrl: "dynamicFile/stream.do?recordID=",  //展示附件接口
