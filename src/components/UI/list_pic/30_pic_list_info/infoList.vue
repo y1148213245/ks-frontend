@@ -9,8 +9,8 @@
         <h3 class="ui_list_pic_30_title" v-if="CONFIG && CONFIG.comTitle && CONFIG.comTitle.isShow">{{titleName ? titleName : CONFIG.comTitle.name}}</h3>
         <div class="ui_list_pic_30_content">
             <ul class="ui_list_pic_30_content_btns">
-                <li v-if="busMessage && busMessage.length > 0" class="ui_list_pic_30_content_btns_all" :class="{'ui_list_pic_30-col--active':colId == busMessage[0] || currentColActive == -1}" @click="searchList(-1)">全部</li>
-                <li class="ui_list_pic_30_content_btns_li"  v-for="(item,index) in childName" :class="{'ui_list_pic_30-col--active':colId == childId[index]}"  v-if="childName" @click="searchList(index)" :key=index>{{item}}</li>
+                <li v-if="busMessage && busMessage.length > 0" class="ui_list_pic_30_content_btns_all" :class="{'ui_list_pic_30-col--active':currentColActive == -1}" @click="searchList(-1)">全部</li>
+                <li class="ui_list_pic_30_content_btns_li"  v-for="(item,index) in childName" :class="{'ui_list_pic_30-col--active':currentColActive == index}"  v-if="childName" @click="searchList(index)" :key=index>{{item}}</li>
             </ul>
             <p class="ui_list_pic_30_content_lists_sort" v-if="resourceListsConfig && resourceListsConfig.display && resourceListsConfig.showItem">
                 <span class="ui_list_pic_30_content_lists_sort_item" v-for="(item, index) in resourceListsConfig.showItem" :key=index >{{resourceListsConfig.display[item]}}</span>
@@ -77,7 +77,7 @@ export default {
       colId: null, //要查询的列表所在分类的colId
       childId: null, //当前分类的子分类id
       childName: null, //当前分类的子分类name
-      currentColActive: '',/* 当前选中栏目 */
+      currentColActive: '-1',/* 当前选中栏目 */
       requestParams: "", // 去详情页需要传查询list.do的所有参数
     };
   },
@@ -116,6 +116,7 @@ export default {
       paramsObj.conditions.map((item) => {
         if (item.hasOwnProperty(this.keys.colId)) {
           item[this.keys.colId] = colId ? colId : queryChildId;
+          this.colId = item[this.keys.colId];
         }
       })
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);
