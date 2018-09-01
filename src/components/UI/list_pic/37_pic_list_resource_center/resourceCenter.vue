@@ -64,6 +64,7 @@
           tempItem: '', //临时保存数据
           zipAttachment: {},  //存储附件
           zipAttachmentId: '',  //存储附件Id
+          allCols:''//站点栏目树
         };
       },
       created(){
@@ -115,19 +116,66 @@
         getListByColumnId(item, initPagination){
           //先清理数据
           this.tBodyList = [];
+          let colId = item.id;
+          let paramCols = '';
+          if (this.CONDIG.getList.isGetSubColsData) {
+            if (this.allCols) {//判断是否缓存栏目树数据
+              let alls = [colId];
+              paramCols = this.getSubCol([],alls)
+            } else {
+              /* 获取栏目树后再重新调用当前方法 */
+              this.getAllCols().then(resp => {
+                this.allCols = resp.data.data;
+                this.getListByColumnId(item,initPagination)
+              })
+              return
+            }
+          } else {
+            paramCols = colId
+          }
+          
+
           this.tempItem = Object.assign({},item);
           let params = Object.assign({},this.CONFIG.getList.params);
           if(!initPagination) { // 每次切换左侧菜单接受广播的时候都要把pageNo改成1
             params.pageNo = this.pageNo ? this.pageNo : params.pageNo;
           }
           params.pageSize = this.pageSize ? this.pageSize : params.pageSize;
-          params.conditions="[{pub_col_id:"+item.id+"}]";
+          params.conditions="[{pub_col_id:"+paramCols+",op:'in'}]";
           Post(CONFIG.BASE_URL + this.CONFIG.getList.url, params).then((rep) => {
             this.totalCount = rep.data.totalCount;
             if(rep.data.success && rep.data.result && rep.data.result.length > 0){
               this.tBodyList = rep.data.result;
             }
           });
+
+          
+        },
+        /* 获取站点栏目树 */
+        getAllCols(){
+          let url = this.CONFIG.getAllCols ?  this.CONFIG.getAllCols.url : 'spc/cms/col/getAllColBySiteId.do';
+          let configParams = this.CONFIG.getAllCols ?  this.CONFIG.getAllCols.params : {}
+          let params =  Object.assign({
+            siteId:CONFIG.SITE_CONFIG.siteId,
+            chId:0
+          },configParams);
+          return Get(CONFIG.BASE_URL + url,{ params })
+        },
+        /* 查找栏目的所有子栏目  递归 */
+        getSubCol(container,subs,cols = this.allCols){
+          let _this = this;
+          subs.forEach(element => {
+              let subCols = cols.filter(item=>{
+                if (element == item.parentId) {
+                  return item.id
+                }
+              })
+              if (subCols.length > 0) {
+                container.concat(subCols);
+                _this.getSubCol(container,subCols)
+              }
+          });
+          return container
         },
         paging ({ pageNo, pageSize }) {
           this.pageNo = pageNo;

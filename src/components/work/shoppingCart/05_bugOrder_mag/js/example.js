@@ -5,7 +5,11 @@ const name = component.name; // 组件标签名
 
 const title = "期刊订阅提交订单组件"; // 组件title
 
-const description = `期刊订阅提交订单组件,可配置`; // 组件描述信息
+const description = `期刊订阅提交订单组件,可配置
+新增
+新增期刊类型配置 18/08/31
+新增余额支付 18/08/31
+`; // 组件描述信息
 
 const dev = {
   shoppingCart: {
@@ -312,7 +316,8 @@ const prod = {
         orderSuccessUrl: '../pages/orderSuccess.html', // 方法名 要在下面配置
         noLoginUrl:"../pages/login.html", //没登陆的话跳转到哪
         commited_history:'../pages/subscribe.html?pubId=3510',//提交订单成功后的添加浏览器的历史记录
-        platform: "wxShop"  // wxShop:微信商城   pc:pc端
+        platform: "wxShop",  // wxShop:微信商城   pc:pc端
+        periodicalType:'0'//提交订单时的期刊类型(暂时由前端控制) 0电子期刊 1纸质期刊
       },
     }
   }

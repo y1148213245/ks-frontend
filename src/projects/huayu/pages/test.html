@@ -1,2 +1,46 @@
-dwadwadwa
-低洼地挖
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <input id="takepicture" type="file" accept="image/*" capture="camera">
+  <div id=app></div>
+  <script>
+    var takePicture = document.getElementById('takepicture');
+    takePicture.onchange = function (event) {
+      var files = event.target.files, file;
+      if (files && files.length > 0) {
+        file = files[0];
+        try {
+          var URL = window.URL || window.webkitURL;
+          var blob = URL.createObjectURL(file);　　// 获取照片的文件流
+          // compressPicture(blob);　　// 压缩照片
+          alert(blob)
+        }
+        catch (e) {
+          try {
+            var fileReader = new FileReader();
+            fileReader.onload = function (event) {　　　　// 获取照片的base64编码
+              // compressPicture(event.target.result);　　// 压缩照片
+              alert(event.target.result)
+            };
+            fileReader.readAsDataURL(file);
+          }
+          catch (e) {
+            alert(common.MESSAGE.title.error, '拍照失败,请联系客服或尝试更换手机再试!');
+          }
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

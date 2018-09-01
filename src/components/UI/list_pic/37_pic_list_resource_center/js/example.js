@@ -189,6 +189,13 @@ const prod = {
             "pageNo": "1",
             "pageSize": "10",
             "searchText": ""
+          },
+          isGetSubColsData:false //是否获取栏目子栏目下(递归)所有数据
+        },
+        "getAllCols":{
+          url:'spc/cms/col/getAllColBySiteId.do',
+          params:{
+            chId:0
           }
         },
         "pageSizes": [
