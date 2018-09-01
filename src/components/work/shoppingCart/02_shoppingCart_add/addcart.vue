@@ -15,8 +15,8 @@
           <p class="author">{{getStaticText('author') ? getStaticText('author') : '作者:'}}{{bookInfo.author}}</p>
           <p class="ebook" v-if="CONFIG && CONFIG.ebookType && bookInfo.contentType === CONFIG.ebookType">{{getStaticText('eProduct') ? getStaticText('eProduct'): '数字商品'}}</p>
           <p class="redirect">
-            <a :href="CONFIG.toIndexHref" class="toIndex">{{getStaticText('backShopping') ? getStaticText('backShopping') : '返回商城'}}</a>
-            <a :href="CONFIG.toShoppingCartHref" class="toCart">{{getStaticText('settleAccountInShoppingCart') ? getStaticText('settleAccountInShoppingCart') : '去购物车结算'}}</a>
+            <a :href="CONFIG.toIndexHref ? CONFIG.toIndexHref : '../pages/index.html'" class="toIndex">{{getStaticText('backShopping') ? getStaticText('backShopping') : '返回商城'}}</a>
+            <a :href="CONFIG.toShoppingCartHref ? CONFIG.toShoppingCartHref : '../pages/shoppingcart.html'" class="toCart">{{getStaticText('settleAccountInShoppingCart') ? getStaticText('settleAccountInShoppingCart') : '去购物车结算'}}</a>
           </p>
         </dd>
       </dl>
@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     toDetail(pubId) { // 去图书详情页
-      window.location.href = this.CONFIG.toDetailUrl + '?pubId=' + pubId;
+      window.location.href = (this.CONFIG.toDetailUrl ? this.CONFIG.toDetailUrl : '../pages/bookdetail.html')+ '?pubId=' + pubId;
     },
     getStaticText (text) {
       if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {

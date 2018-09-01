@@ -3,48 +3,48 @@
     <div v-show="!enrolman">
       <el-dropdown @command="handleCommand" v-if="activityList.length > 0 && activityList[0].SYS_CURRENTSTATUS" style="float:right;margin-right:30px;">
         <span class="el-dropdown-link">
-          审核状态筛选
+          {{getStaticText('auditStatusScreening') ? getStaticText('auditStatusScreening') : '审核状态筛选'}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
 
-          <el-dropdown-item command="未审核">未审核</el-dropdown-item>
-          <el-dropdown-item command="未通过审核">未通过审核</el-dropdown-item>
-          <el-dropdown-item command="已审核">已审核</el-dropdown-item>
-          <el-dropdown-item command="评奖中">评奖中</el-dropdown-item>
-          <el-dropdown-item command="已评奖">已评奖</el-dropdown-item>
-          <el-dropdown-item command="" divided>全部</el-dropdown-item>
+          <el-dropdown-item command="未审核">{{getStaticText('unaudited') ? getStaticText('unaudited') : '未审核'}}</el-dropdown-item>
+          <el-dropdown-item command="未通过审核">{{getStaticText('failureToPassAudit') ? getStaticText('failureToPassAudit') : '未通过审核'}}</el-dropdown-item>
+          <el-dropdown-item command="已审核">{{getStaticText('audited') ? getStaticText('audited') : '已审核'}}</el-dropdown-item>
+          <el-dropdown-item command="评奖中">{{getStaticText('inTheAward') ? getStaticText('inTheAward') : '评奖中'}}</el-dropdown-item>
+          <el-dropdown-item command="已评奖">{{getStaticText('haveBeenAwardedPrize') ? getStaticText('haveBeenAwardedPrize') : '已评奖'}}</el-dropdown-item>
+          <el-dropdown-item command="" divided>{{getStaticText('all') ? getStaticText('all') : '全部'}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 
-      <el-button type="primary" style="margin:0px 0 20px 0;" @click="enrolman = true">管理报名人</el-button>
+      <el-button type="primary" style="margin:0px 0 20px 0;" @click="enrolman = true">{{getStaticText('managementEnrolment') ? getStaticText('managementEnrolment') : '管理报名人'}}</el-button>
       <el-table :data="activityList" style="width: 100%">
-        <el-table-column v-if="activityList.length > 0 && activityList[0].ACTIVITY_DETAIL && activityList[0].ACTIVITY_DETAIL.SYS_TOPIC" align="center" prop="ACTIVITY_DETAIL.SYS_TOPIC" label="参加活动" width="180">
+        <el-table-column v-if="activityList.length > 0 && activityList[0].ACTIVITY_DETAIL && activityList[0].ACTIVITY_DETAIL.SYS_TOPIC" align="center" prop="ACTIVITY_DETAIL.SYS_TOPIC" :label="getStaticText('participateInActivities') ? getStaticText('participateInActivities') : '参加活动'" width="180">
         </el-table-column>
-        <el-table-column v-if="activityList.length > 0 && activityList[0].ACTIVITY_DETAIL && activityList[0].ACTIVITY_DETAIL.END_TIMESTAMPNEW" align="center" prop="ACTIVITY_DETAIL.END_TIMESTAMPNEW" label="活动状态" :formatter="activityState" width="100">
+        <el-table-column v-if="activityList.length > 0 && activityList[0].ACTIVITY_DETAIL && activityList[0].ACTIVITY_DETAIL.END_TIMESTAMPNEW" align="center" prop="ACTIVITY_DETAIL.END_TIMESTAMPNEW" :label="getStaticText('activeState') ? getStaticText('activeState') : '活动状态'" :formatter="activityState" width="100">
         </el-table-column>
-        <el-table-column v-if="activityList.length > 0 && activityList[0].SYS_CURRENTSTATUS" align="center" prop="SYS_CURRENTSTATUS" label="审核状态" :formatter="formateReviewStatus" width="100">
+        <el-table-column v-if="activityList.length > 0 && activityList[0].SYS_CURRENTSTATUS" align="center" prop="SYS_CURRENTSTATUS" :label="getStaticText('auditStatus') ? getStaticText('auditStatus') : '审核状态'" :formatter="formateReviewStatus" width="100">
         </el-table-column>
-        <el-table-column align="center" prop="SYS_TOPIC" label="作品标题" width="180">
+        <el-table-column align="center" prop="SYS_TOPIC" :label="getStaticText('titleOfWork') ? getStaticText('titleOfWork') : '作品标题'" width="180">
         </el-table-column>
-        <el-table-column align="center" prop="POTHUNTER_NAME" label="参赛人" width="150">
+        <el-table-column align="center" prop="POTHUNTER_NAME" :label="getStaticText('contestant') ? getStaticText('contestant') : '参赛人'" width="150">
         </el-table-column>
-        <el-table-column align="center" prop="SYS_CREATED" label="参赛时间" :formatter="dateFormat" sortable width="180">
+        <el-table-column align="center" prop="SYS_CREATED" :label="getStaticText('timeOfCompetition') ? getStaticText('timeOfCompetition') : '参赛时间'" :formatter="dateFormat" sortable width="180">
         </el-table-column>
-        <el-table-column align="center" prop="POTHUNTER_IDNUMBER" label="参赛人身份证号" width="180">
+        <el-table-column align="center" prop="POTHUNTER_IDNUMBER" :label="getStaticText('identityCardNumberOfContestant') ? getStaticText('identityCardNumberOfContestant') : '参赛人身份证号'" width="180">
         </el-table-column>
-        <el-table-column v-if="activityList.length > 0 && activityList[0].AWARD" align="center" prop="AWARD" label="获奖情况" width="100" :formatter="worksScore">
+        <el-table-column v-if="activityList.length > 0 && activityList[0].AWARD" align="center" prop="AWARD" :label="getStaticText('awardSituation') ? getStaticText('awardSituation') : '获奖情况'" width="100" :formatter="worksScore">
         </el-table-column>
-        <el-table-column label="操作" align="center" width="190" fixed="right" v-if="getIsShow('operate')">
+        <el-table-column :label="getStaticText('operation') ? getStaticText('operation') : '操作'" align="center" width="190" fixed="right" v-if="getIsShow('operate')">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.SYS_CURRENTSTATUS" @click="handleEdit(scope.$index, scope.row)" :disabled="scope.row.SYS_CURRENTSTATUS=='未审核'|| scope.row.SYS_CURRENTSTATUS=='未通过审核'" size="small">查看作品</el-button>
+            <el-button v-if="scope.row.SYS_CURRENTSTATUS" @click="handleEdit(scope.$index, scope.row)" :disabled="scope.row.SYS_CURRENTSTATUS=='未审核'|| scope.row.SYS_CURRENTSTATUS=='未通过审核'" size="small">{{getStaticText('viewTheWork') ? getStaticText('viewTheWork') : '查看作品'}}</el-button>
             <!-- <el-switch
               v-model="isHide"
               active-text="按月付费"
               inactive-text="按年付费">
             </el-switch> -->
-            <el-button @click="setIsHide(scope.row.SYS_DOCUMENTID,scope.row.IS_HIDE)" v-show="scope.row.IS_HIDE != '是'" type="error" size="small">隐藏作品</el-button>
-            <el-button @click="setIsHide(scope.row.SYS_DOCUMENTID,scope.row.IS_HIDE)" v-show="scope.row.IS_HIDE == '是'" type="error" size="small">公开作品</el-button>
+            <el-button @click="setIsHide(scope.row.SYS_DOCUMENTID,scope.row.IS_HIDE)" v-show="scope.row.IS_HIDE != '是'" type="error" size="small">{{getStaticText('hiddenWorks') ? getStaticText('hiddenWorks') : '隐藏作品'}}</el-button>
+            <el-button @click="setIsHide(scope.row.SYS_DOCUMENTID,scope.row.IS_HIDE)" v-show="scope.row.IS_HIDE == '是'" type="error" size="small">{{getStaticText('openWork') ? getStaticText('openWork') : '公开作品'}}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -52,86 +52,86 @@
 
     <!-- 管理报名人 -->
     <div v-show="enrolman">
-      <el-button type="primary" @click="additions=true">新增人员</el-button>
-      <el-dialog title="新增参赛人信息" :visible.sync="additions">
+      <el-button type="primary" @click="additions=true">{{getStaticText('newPersonnel') ? getStaticText('newPersonnel') : '新增人员'}}</el-button>
+      <el-dialog :title="getStaticText('newCompetitorInformation') ? getStaticText('newCompetitorInformation') : '新增参赛人信息'" :visible.sync="additions">
         <div>
           <el-form :model="addParticipantsForm" :rules="rules" ref="addParticipantsForm" label-width="100px" class="demo-ruleForm">
 
-            <el-form-item label="姓名：" prop="name">
+            <el-form-item :label="getStaticText('name') ? getStaticText('name') : '姓名'+'：'" prop="name">
               <el-input v-model="addParticipantsForm.name"></el-input>
             </el-form-item>
 
-            <el-form-item label="性别：" prop="sex">
+            <el-form-item :label="getStaticText('gender') ? getStaticText('gender') : '性别'+'：'" prop="sex">
               <el-radio-group v-model="addParticipantsForm.sex">
-                <el-radio label="1">男</el-radio>
-                <el-radio label="0">女</el-radio>
+                <el-radio label="1">{{getStaticText('male') ? getStaticText('male') : '男'}}</el-radio>
+                <el-radio label="0">{{getStaticText('female') ? getStaticText('female') : '女'}}</el-radio>
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item label="身份证：" prop="identity">
+            <el-form-item :label="getStaticText('identityCard') ? getStaticText('identityCard') : '身份证'+'：'" prop="identity">
               <el-input v-model="addParticipantsForm.identity"></el-input>
             </el-form-item>
 
-            <el-form-item label="电话：" prop="telNumber">
+            <el-form-item :label="getStaticText('telephone') ? getStaticText('telephone') : '电话'+'：'" prop="telNumber">
               <el-input v-model="addParticipantsForm.telNumber"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="additions = false">取 消</el-button>
-          <el-button type="primary" :disabled="isAddingParticipants" @click="submitAddParticipantsForm('addParticipantsForm')">确 定</el-button>
+          <el-button @click="additions = false">{{getStaticText('cancel') ? getStaticText('cancel') : '取 消'}}</el-button>
+          <el-button type="primary" @click="submitAddParticipantsForm('addParticipantsForm')">{{getStaticText('confirm') ? getStaticText('confirm') : '确 定'}}</el-button>
         </span>
       </el-dialog>
 
       <el-table border :data="activityMemberList" style="width: 100%" max-height="500">
-        <el-table-column prop="userName" label="姓名">
+        <el-table-column prop="userName" :label="getStaticText('name') ? getStaticText('name') : '姓名'">
         </el-table-column>
-        <el-table-column prop="gender" label="性别" :formatter="sexFormat">
+        <el-table-column prop="gender" :label="getStaticText('gender') ? getStaticText('gender') : '性别'" :formatter="sexFormat">
         </el-table-column>
-        <el-table-column prop="mobileNum" label="联系方式">
+        <el-table-column prop="mobileNum" :label="getStaticText('contactInformation') ? getStaticText('contactInformation') : '联系方式'">
         </el-table-column>
-        <el-table-column prop="identifyId" label="身份证号码">
+        <el-table-column prop="identifyId" :label="getStaticText('identityCardNumber') ? getStaticText('identityCardNumber') : '身份证号码'">
         </el-table-column>
-        <el-table-column label="操作" prop="action" width="200px">
+        <el-table-column :label="getStaticText('operation') ? getStaticText('operation') : '操作'" prop="action" width="200px">
           <template slot-scope="scope">
-            <el-button @click="editClick(scope.$index, scope.row,scope.row.id)" type="success" size="small">编辑</el-button>
-            <el-button @click="deleteContestant(scope.row.id)" type="danger" size="small">删除
+            <el-button @click="editClick(scope.$index, scope.row,scope.row.id)" type="success" size="small">{{getStaticText('edit') ? getStaticText('edit') : '编辑'}}</el-button>
+            <el-button @click="deleteContestant(scope.row.id)" type="danger" size="small">{{getStaticText('delete') ? getStaticText('delete') : '删除'}}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="join-back_main">
-        <el-button type="primary" @click="enrolman = false">返回</el-button>
+        <el-button type="primary" @click="enrolman = false">{{getStaticText('return') ? getStaticText('return') : '返回'}}</el-button>
       </div>
-      <el-dialog title="编辑参赛人信息" :visible.sync="editorsDialog">
+      <el-dialog :title="getStaticText('editCompetitorInformation') ? getStaticText('editCompetitorInformation') : '编辑参赛人信息'" :visible.sync="editorsDialog">
         <div class="addressContent">
           <div class="newWrapper">
-            <div>姓名：</div>
+            <div>{{getStaticText('name') ? getStaticText('name') : '姓名'}}：</div>
             <input id="ac_name" type="text" maxlength="40" v-model="identityInformation.userName" @blur="checkName()">
-            <span class="warningInfo" v-if="emptyName">请填写参赛人</span>
+            <span class="warningInfo" v-if="emptyName">{{getStaticText('pleaseFillInTheContestants') ? getStaticText('pleaseFillInTheContestants') : '请填写参赛人'}}</span>
           </div>
           <div class="newWrapper">
-            <div>性别：</div>
+            <div>{{getStaticText('gender') ? getStaticText('gender') : '性别'}}：</div>
             <el-radio-group v-model="identityInformation.gender">
-              <el-radio :label="1">男</el-radio>
-              <el-radio :label="0">女</el-radio>
+              <el-radio :label="1">{{getStaticText('male') ? getStaticText('male') : '男'}}</el-radio>
+              <el-radio :label="0">{{getStaticText('female') ? getStaticText('female') : '女'}}</el-radio>
             </el-radio-group>
           </div>
           <div class="newWrapper">
-            <div>身份证号：</div>
+            <div>{{getStaticText('identityCardNumber') ? getStaticText('identityCardNumber') : '身份证号'}}：</div>
             <input id="ac_ID" type="text" maxlength="18" v-model="identityInformation.identifyId" @blur="checkID()">
-            <span class="warningInfo" v-if="emptyID">请填写正确身份证号</span>
+            <span class="warningInfo" v-if="emptyID">{{getStaticText('pleaseFillInTheCorrectIdentityCardNumber') ? getStaticText('pleaseFillInTheCorrectIdentityCardNumber') : '请填写正确身份证号'}}</span>
           </div>
           <div class="newWrapper">
-            <div>联系电话：</div>
+            <div>{{getStaticText('contactNumber') ? getStaticText('contactNumber') : '联系电话'}}：</div>
             <input id="ac_phone" type="number" v-model="identityInformation.mobileNum" @blur="checkPhone()" maxlength="11">
-            <span class="warningInfo" v-if="emptyPhone">请填写联系电话</span>
+            <span class="warningInfo" v-if="emptyPhone">{{getStaticText('pleaseFillInTheContactNumber') ? getStaticText('pleaseFillInTheContactNumber') : '请填写联系电话'}}</span>
           </div>
         </div>
 
         <div slot="footer" class="dialog-footer">
-          <el-button @click="editorsDialog=false">取 消</el-button>
-          <el-button type="primary" @click="submitEditorsContestant">确 定</el-button>
+          <el-button @click="editorsDialog=false">{{getStaticText('cancel') ? getStaticText('cancel') : '取 消'}}</el-button>
+          <el-button type="primary" @click="submitEditorsContestant">{{getStaticText('confirm') ? getStaticText('confirm') : '确 定'}}</el-button>
         </div>
       </el-dialog>
     </div>
@@ -174,7 +174,7 @@ export default {
     /* 简单电话校验 */
     var mobileCheck = (rule, value, callback) => {
       if (value != '' && !/^[\d()\-\s]*$/.test(value)) {
-        callback(new Error("请输入正确电话号"));
+        callback(new Error(this.getStaticText('pleaseInputTheCorrectPhoneNumber') ? this.getStaticText('pleaseInputTheCorrectPhoneNumber') : "请输入正确电话号"));
       } else {
         callback();
       }
@@ -226,7 +226,7 @@ export default {
       let status = row[column.property];
       let isEndActivity = row['ACTIVITY_DETAIL']['IS_ENDACTIVITY']/* 是:已发布评奖结果 */
 
-      status == '已评奖' && isEndActivity == '是' ? status = '已评奖' : '评奖中';
+      status == '已评奖' && isEndActivity == '是' ? status = (this.getStaticText('haveBeenAwardedPrize') ? this.getStaticText('haveBeenAwardedPrize') : '已评奖') : (this.getStaticText('inTheAward') ? this.getStaticText('inTheAward') : '评奖中');
       return status
     },
     //时间格式化
@@ -241,9 +241,9 @@ export default {
     setIsHide (id, state) {
       var setState;
       if (state != "是") {
-        this.setState = "是";
+        this.setState = this.getStaticText('yes') ? this.getStaticText('yes') : '是';
       } else {
-        this.setState = "否";
+        this.setState = this.getStaticText('no') ? this.getStaticText('no') : '否';
       }
       var params = {
         doclibCode: "PORTAL_WORKS",
@@ -253,16 +253,17 @@ export default {
         }
       };
       api.setHide(params).then(response => {
+        var _this = this;
         if (response.data.status == "success") {
           this.$store.dispatch("personalCenter/activityList", {});
           this.$message({
             type: "success",
-            message: "设置成功!"
+            message: _this.getStaticText('setSuccess') ? _this.getStaticText('setSuccess') : '设置成功'
           });
         } else {
           this.$message({
             type: "error",
-            message: "设置失败!"
+            message: _this.getStaticText('setFailed') ? _this.getStaticText('setFailed') : "设置失败!"
           });
         }
       });
@@ -298,6 +299,7 @@ export default {
 
     // 增加参赛人信息
     submitAddParticipantsForm (addParticipantsForm) {
+      var _this = this;
       this.$refs[addParticipantsForm].validate(valid => {
         if (valid) {
           var param = {
@@ -322,7 +324,7 @@ export default {
               } else {
                 this.$message({
                   type: "success",
-                  message: "参赛人添加成功!"
+                  message: _this.getStaticText('participantsAddSuccess') ? _this.getStaticText('participantsAddSuccess') : "参赛人添加成功!"
                 });
                 var params = {
                   pageNo: 1,
@@ -349,9 +351,9 @@ export default {
     /*删除参赛人信息*/
     deleteContestant: function (id) {
       var _this = this;
-      this.$confirm("您确定要删除该参赛人信息吗?", "系统提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$confirm(_this.getStaticText('areYouSureYouWantToDeleteTheCompetitorInformation') ? _this.getStaticText('areYouSureYouWantToDeleteTheCompetitorInformation') : '您确定要删除该参赛人信息吗?', _this.getStaticText('systemHints') ? _this.getStaticText('systemHints') : "系统提示", {
+        confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定",
+        cancelButtonText: _this.getStaticText('cancel') ? _this.getStaticText('cancel') : "取消",
         type: "warning"
       }).then(function () {
         var param = {
@@ -368,7 +370,7 @@ export default {
           } else {
             _this.$message({
               type: "success",
-              message: "信息删除成功!"
+              message: _this.getStaticText('informationDeletedSuccessfully') ? _this.getStaticText('informationDeletedSuccessfully') : "信息删除成功!"
             });
             var params = {
               pageNo: 1,
@@ -385,6 +387,7 @@ export default {
     /*删除参赛人信息完毕*/
     /*编辑参赛人信息*/
     submitEditorsContestant: function () {
+      var _this = this;
       if ($("#ac_name").val() === "") {
         // 姓名为空
         this.emptyName = true;
@@ -419,7 +422,7 @@ export default {
           } else {
             this.$message({
               type: "success",
-              message: "信息修改成功!"
+              message: _this.getStaticText('informationModifiedSuccessfully') ? _this.getStaticText('informationModifiedSuccessfully') : "信息修改成功!"
             });
             var params = {
               pageNo: 1,
@@ -447,9 +450,9 @@ export default {
     sexFormat: function (row, column) {
       var date = row[column.property];
       if (date == 1) {
-        return "男";
+        return this.getStaticText('male') ? this.getStaticText('male') : "男";
       } else {
-        return "女";
+        return this.getStaticText('female') ? this.getStaticText('female') : "女";
       }
     },
     editClick (index, row, studentId) {
@@ -464,15 +467,15 @@ export default {
       var date = row[column.property];
       let currentTime = new Date().getTime();
       if (date - currentTime <= 0) {
-        return "已结束";
+        return this.getStaticText('finished') ? this.getStaticText('finished') : "已结束";
       } else {
-        return "进行中";
+        return this.getStaticText('haveInHand') ? this.getStaticText('haveInHand') : "进行中";
       }
     },
     worksScore (row, column) {
       var date = row[column.property];
       if (date == null) {
-        return "评分中";
+        return this.getStaticText('scoring') ? this.getStaticText('scoring') : "评分中";
       }
     },
     colShowFilter (property) {
@@ -483,12 +486,19 @@ export default {
         if (this.CONFIG.showItem.indexOf(text) > -1) {
           return true
         } else {
-          return false 
+          return false
         }
       } else {
         return true
       }
+    },
+    getStaticText(text) {
+      if(this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){
+        return this.CONFIG.staticText[text]
+      }else {
+        return false;
     }
+  }
   }
 };
 </script>

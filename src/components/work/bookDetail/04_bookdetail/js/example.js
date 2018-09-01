@@ -88,6 +88,9 @@ const dev = {
   work_bookdetail: {
     work_bookdetail_04: {
       modulename: {
+        qrcodeHref:"../pages/qrcode.html?data=",
+        errorpageHref:"../pages/errorpage.html",
+        commitorderHref:"../pages/commitorder.html#/commitOrder/",
         showDialog: false,  //控制购买按钮是否显示
         zhentiContentType: '123',  //真题页面需要的配置
         display: {
@@ -133,6 +136,26 @@ const dev = {
               className: "",
             }],
           },
+        },
+        isbnConfig: { // 获取某一栏目下的数据列表
+          url: "spc/cms/publish/list.do",
+          params: {
+            conditions: [{
+                pub_site_id: '37'
+              },
+              {
+                pub_status: '1'
+              },
+              {
+                BOOK_ISBN: '1'
+              }
+            ],
+            groupBy: "pub_resource_id",
+            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+            pageNo: "1",
+            pageSize: "15",
+            searchText: "",
+          }
         },
         toProbation: {
           url: CONFIG.READ_URL,
@@ -261,7 +284,10 @@ const dev = {
           noEBookInfo: "该书没有对应电子书，无法加入购物车",
           noDate:"暂无日期",
           yuan:"￥",
-          "noDiscount":"暂无活动",
+          noDiscount:"暂无活动",
+          price:"价格",
+          combinatePrice:"套餐价",
+          save:"省",
         },
         getPayMethodsBySiteId: {  //获取站点的支付方式
           url: "cart/getPayMethod.do",
@@ -306,6 +332,9 @@ const prod = {
   work_bookdetail: {
     work_bookdetail_04: {
       modulename: {
+        qrcodeHref:"../pages/qrcode.html?data=",
+        errorpageHref:"../pages/errorpage.html",
+        commitorderHref:"../pages/commitorder.html#/commitOrder/",
         showDialog: false,  //控制购买按钮是否显示
         zhentiContentType: '123',  //真题页面需要的配置
         display: {
@@ -351,6 +380,26 @@ const prod = {
               className: "",
             }],
           },
+        },
+        isbnConfig: { // 获取某一栏目下的数据列表
+          url: "spc/cms/publish/list.do",
+          params: {
+            conditions: [{
+                pub_site_id: '37'
+              },
+              {
+                pub_status: '1'
+              },
+              {
+                BOOK_ISBN: '1'
+              }
+            ],
+            groupBy: "pub_resource_id",
+            orderBy: "pub_a_order asc pub_lastmodified desc id asc",
+            pageNo: "1",
+            pageSize: "15",
+            searchText: "",
+          }
         },
         toProbation: {
           url: "",
@@ -479,7 +528,10 @@ const prod = {
           noEBookInfo: "该书没有对应电子书，无法加入购物车",
           noDate:"暂无日期",
           yuan:"￥",
-          "noDiscount":"暂无活动",
+          noDiscount:"暂无活动",
+          price:"价格",
+          combinatePrice:"套餐价",
+          save:"省",
         },
         getPayMethodsBySiteId: {  //获取站点的支付方式
           url: "cart/getPayMethod.do",

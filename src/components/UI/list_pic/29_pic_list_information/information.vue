@@ -6,7 +6,7 @@
     <!-- 组件标题 取配置的name 或者 父栏目名称 -->
     <div class="ui_list_pic_29_comtitle_con" v-if="CONFIG && CONFIG.comTitle && CONFIG.comTitle.isShow && columnDetailInfo && columnKeys">
       <div :key="config_i" v-if="typeof(CONFIG.comTitle.isShowImg!='undefined') && CONFIG.comTitle.isShowImg" class="ui_list_pic_29_comtitle_imgdiv">
-        <img class="ui_list_pic_29_comtitle_imgdiv_img" :src=" columnDetailInfo[columnKeys.bigPic]" :alt="getStaticText('noImg') ? getStaticText('noImg') : 暂无图片" />
+        <img class="ui_list_pic_29_comtitle_imgdiv_img" :src=" columnDetailInfo[columnKeys.bigPic]" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" />
       </div>
       <h4 class="ui_list_pic_29_comtitle"> {{CONFIG.comTitle.name ? CONFIG.comTitle.name : columnDetailInfo[columnKeys.name]}} </h4>
       <span class="ui_list_pic_29_comtitle_columnDetailInfo">{{columnDetailInfo[columnKeys.code]}}</span>

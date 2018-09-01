@@ -268,7 +268,7 @@ export default {
           message: this.display.successPassword
         });
         setTimeout(() => { // 设置成功以后跳转登录页面
-          window.location.href = this.CONFIG.directUrl;
+          window.location.href = this.CONFIG.directUrl ? this.CONFIG.directUrl : '../pages/login.html';
         }, 1000);
       } else { // 找回失败
         let errorMsg = res.error && res.error.errorMsg ? res.error.errorMsg : this.display.failOperation;

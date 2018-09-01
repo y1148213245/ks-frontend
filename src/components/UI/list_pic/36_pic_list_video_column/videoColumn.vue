@@ -6,7 +6,7 @@
       <div class="ui_list_pic_36_column-title">{{display.courseName}}</div>
       <!-- 需要通过配置来判断是否购买的课程 -->
       <div v-if="CONFIG && CONFIG.needtobuy" class="ui_list_pic_36_videoList_out">
-        <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length && isBuy == '1'">
+        <ul class="ui_list_pic_36_videoList ui_list_pic_36_videoList_buy" v-if="videoList && videoList.length && isBuy == '1'">
           <!-- 已经购买 课程列表全部展示-->
           <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()" @click="toPlayVideo(video)">
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
@@ -15,7 +15,7 @@
             </div>
           </li>
         </ul>
-        <ul class="ui_list_pic_36_videoList" v-if="videoList && videoList.length && isBuy == '0'">
+        <ul class="ui_list_pic_36_videoList ui_list_pic_36_videoList_nobuy" v-if="videoList && videoList.length && isBuy == '0'">
           <!-- 还未购买 只给第一条课程添加事件-->
           <li v-for="(video,index) in videoList" :key="index" @click="toPlayVideo(video)" v-if="index < (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 0)" class="ui_list_pic_36_videoList_first">
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
@@ -27,7 +27,7 @@
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
           </li>
         </ul>
-        <div v-else>{{display.noData || '暂无数据'}}</div>
+        <div v-show="!videoList || videoList.length == 0">{{display.noData || '暂无数据'}}</div>
       </div>
       <!-- 不需要判断是否购买的课程，直接展示 -->
       <div v-else class="ui_list_pic_36_videoList_out">
@@ -83,8 +83,7 @@ export default {
       modal: false,
       attachSrc: "",   //用于存放附件图片src的
       attachPicture: {},  //用于存放答案和测试卷的recordId的
-      attachTypes: {},  
-      
+      attachTypes: {},
     }
   },
   computed: {
@@ -99,9 +98,7 @@ export default {
     this.attachTypes = this.CONFIG.attachTypes ? this.CONFIG.attachTypes : this.attachTypes;
     this.keys = getFieldAdapter(this.CONFIG.sysAdapter, this.CONFIG.typeAdapter);
     this.getVideoList();
-    if(this.CONFIG && this.CONFIG.getResourceDetail){
-      this.getResourceDetail();
-    }
+    
   },
   methods: {
     getVideoList: function () {
@@ -132,7 +129,7 @@ export default {
     getResourceDetail(){
       let paramsObj = Object.assign({},this.CONFIG.getResourceDetail.params);
       paramsObj.pubId = this.pubId;
-      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName).then((rep)=>{
+      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' +this.member.loginName).then((rep)=>{
         let datas = rep.data;
         if (rep.status == 200 && datas.data) {
           this.resourceDetail = datas.data;
@@ -245,10 +242,8 @@ export default {
   },
   watch: {
     member: function (newValue, oldValue) {
-      console.log(newValue);
-      console.log(oldValue);
-      if (newValue.loginName && newValue.loginName != oldValue.loginName) {
-        this.loginName = newValue.loginName;
+      if(this.CONFIG && this.CONFIG.getResourceDetail){
+        this.getResourceDetail();
       }
     }
   }

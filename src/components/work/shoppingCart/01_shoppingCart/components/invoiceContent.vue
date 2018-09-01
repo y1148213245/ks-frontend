@@ -79,12 +79,9 @@ export default {
       bankName: false,        // 开户银行提示信息
       bankAccount: false,     // 开户账号提示信息
       curInvoice: {           // 模态弹窗中填写的发票信息
-        // invoiceType: "普通发票", // 发票类型 默认显示普通发票
         invoiceType: "", // 发票类型 默认显示普通发票
-        // receipttypes: "个人",
         receipttypes: "",
         receiptType: "1",       // 1:个人  2:单位
-        // receiptId: "明细",      // 普通发票的明细  默认显示明细
         receiptId: "",      // 普通发票的明细  默认显示明细
         receiptTitle: "",       // 单位名称
         taxpayerCode: "",       // 纳税人识别号
@@ -94,12 +91,9 @@ export default {
         bankAccount: ""         //开户账号
       },
       tempInvoice: {        // 显示出来的信息
-        // invoiceType: "普通发票", // 发票类型 默认显示普通发票
         invoiceType: "", // 发票类型 默认显示普通发票
-        // receipttypes: "个人",
         receipttypes: "",
         receiptType: "1",       // 1:个人  2:单位
-        // receiptId: "明细",      // 普通发票的明细  默认显示明细
         receiptId: "",      // 普通发票的明细  默认显示明细
         receiptTitle: "",       // 公司名称
         taxpayerCode: "",       // 纳税人识别号
@@ -145,8 +139,6 @@ export default {
 
 
   },
-  computed: {},
-  mounted () { },
   methods: {
     invoiceWrapperClose: function () {
       this.invoiceDialog = false;
@@ -184,7 +176,8 @@ export default {
         event.preventDefault();
       }
     },
-    selectInvoice: function () {
+    selectInvoice: function () { // 修改操作
+      this.curInvoice = JSON.parse(JSON.stringify(this.tempInvoice)); // 点击“修改”打开的模态弹框要取当前显示的值
       this.invoiceDialog = true;
     },
     selectInvoiceType: function (item) {      // 选择发票类型：普通发票 增值税发票

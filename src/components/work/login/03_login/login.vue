@@ -28,11 +28,11 @@
 
     <div class="login_03_box_01">
       <!-- <input type="checkbox" value="" class="login_03_box_01_checkbox" />自动登录 （暂未开发）-->
-      <a href="./forgetPassword.html" class="login_03_box_01_forgetpassword">{{getStaticText('forgetPwd') ? getStaticText('forgetPwd') : '忘记密码'}}</a>
+      <a :href="CONFIG.toForgetPasswordHref ? CONFIG.toForgetPasswordHref : './forgetPassword.html'" class="login_03_box_01_forgetpassword">{{getStaticText('forgetPwd') ? getStaticText('forgetPwd') : '忘记密码'}}</a>
     </div>
     <div class="login_03_box_02"><input type="button" id="login-form-submit" :value="getStaticText('loginSys') ? getStaticText('loginSys') : '登录'" class="login_03_box_02_button" @click="login" /></div>
     <div class="login_03_box_03">{{getStaticText('noAccount') ? getStaticText('noAccount') : '还没有账号？'}}
-      <a href="./register.html" class="login_03_box_03_register">{{getStaticText('signUpNow') ? getStaticText('signUpNow') : '立即注册'}}</a>
+      <a :href="CONFIG.toRegisterHref ? CONFIG.toRegisterHref : './register.html'" class="login_03_box_03_register">{{getStaticText('signUpNow') ? getStaticText('signUpNow') : '立即注册'}}</a>
     </div>
 
     <div class="login_03_content-more_sign" v-if="CONFIG.thirdParty && CONFIG.thirdParty.showItem">
@@ -190,7 +190,7 @@ export default {
       });
     },
     // 登录不需要单独校验用户名,先注释掉
-    
+
     // checkUsername(){  //单独验证用户名
     //   let params = Object.assign({},this.CONFIG.checkUsername.params);
     //   params.checkText = this.member.loginName;

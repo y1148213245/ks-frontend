@@ -2,29 +2,29 @@
   <section class="personalcenter_list">
     <!-- 订单列表 -->
     <div v-show="currentShow=='list'" class="personalcenter_list_main">
-      <div v-if="CONFIG && CONFIG.tabListShow.length > 0" class="personalcenter_list_main_tab">
+      <div v-if="CONFIG && CONFIG.tabListShow.length>0" class="personalcenter_list_main_tab">
         <el-radio-group v-model="radio" @change="changeOrderList">
           <el-radio-button :label="item.type" v-for="(item, index) in CONFIG.tabListShow" :key="index">{{item.title}}</el-radio-button>
         </el-radio-group>
       </div>
       <div>
-        <el-button type="primary" @click="allOrder()">全部订单</el-button>
-        <el-button type="primary" @click="waitPayOrder()">等待付款</el-button>
+        <el-button type="primary" @click="allOrder()">{{getStaticText('fullOrder')? getStaticText('fullOrder') : '全部订单'}}</el-button>
+        <el-button type="primary" @click="waitPayOrder()">{{getStaticText('waitForPayment') ? getStaticText('waitForPayment') : '等待付款'}}</el-button>
       </div>
       <div class="personalcenter_list_main_title">
         <el-row :gutter="1">
           <el-col :span="10">
-            <el-date-picker class="personalcenter_list_main_title_picker" v-model="timeValue" type="datetimerange" range-separator="  ~  " start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2" placeholder="选择时间范围" align="left" value-format="yyyy-MM-dd HH:mm:ss" @change="changeDateValue">
+            <el-date-picker class="personalcenter_list_main_title_picker" v-model="timeValue" type="datetimerange" range-separator="  ~  " :start-placeholder="getStaticText('startDate') ? getStaticText('startDate') : '开始日期'" :end-placeholder="getStaticText('endDate') ? getStaticText('endDate') : '结束日期'" :picker-options="pickerOptions2" :placeholder="getStaticText('selectTimeRange') ? getStaticText('selectTimeRange') : '选择时间范围'" align="left" value-format="yyyy-MM-dd HH:mm:ss" @change="changeDateValue">
             </el-date-picker>
           </el-col>
           <el-col :span="8">
-            <div class="bg-purple-light">订单详情</div>
+            <div class="bg-purple-light">{{getStaticText('orderDetail') ? getStaticText('orderDetail') :'订单详情'}}</div>
           </el-col>
           <el-col :span="3">
-            <div class="bg-purple-light">数量</div>
+            <div class="bg-purple-light">{{getStaticText('number') ? getStaticText('number') : '数量'}}</div>
           </el-col>
           <el-col :span="3">
-            <div class="bg-purple-light">金额</div>
+            <div class="bg-purple-light">{{getStaticText('amountOfMoney') ? getStaticText('amountOfMoney') : '金额'}}</div>
           </el-col>
         </el-row>
       </div>
@@ -34,35 +34,35 @@
             <div class="personalcenter_list_title_common bg-purple-light">
               <span>
                 <i class="el-icon-time"></i> {{Aitem.createTime.split('.')[0]}}</span>
-              <span>订单号：{{Aitem.parentOrderCode}}</span>
+              <span>{{getStaticText('orderNumber') ? getStaticText('orderNumber') : '订单号'}}：{{Aitem.parentOrderCode}}</span>
             </div>
             <div v-for="(item,index) in Aitem.orderList" :key="index">
               <div class="personalcenter_list_title_common">
-                <span>子单号：{{item.orderCode}}</span>
-                <el-button class="personalcenter_list_title_common_detailesbtn" type="text" @click="showDetails(outIndex,index)">订单详情</el-button>
+                <span>{{getStaticText('subSingleNumber') ? getStaticText('subSingleNumber') : '子单号'}}：{{item.orderCode}}</span>
+                <el-button class="personalcenter_list_title_common_detailesbtn" type="text" @click="showDetails(outIndex,index)">{{getStaticText('orderDetail') ? getStaticText('orderDetail') : '订单详情'}}</el-button>
               </div>
               <el-row class="personalcenter_list_main_listBox_card" v-for="(item1,innerindex) in item.itemList" :key="innerindex">
                 <el-col :span="15">
                   <div class="personalcenter_list_main_listBox_card_left">
-                    <img v-bind:src="item1.bigPic || require('@static/img/defaultCover.png')" onload="DrawImage(this,120,100)" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
+                    <img v-bind:src="item1.bigPic || require('@static/img/defaultCover.png')" onload="DrawImage(this,120,100)" class="personalcenter_list_main_listBox_card_left_img" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'">
                     <div class="personalcenter_list_main_listBox_card_left_text">
-                      <span class="mt5" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
-                      <span v-if="orderType=='book'" class="personalcenter_list_main_listBox_card_left_author">作者：{{item1.author||"暂无作者"}}</span>
+                      <span class="mt5" :title="item1.productName">{{item1.productName||(getStaticText('noBookTitleForTheTimeBeing') ? getStaticText('noBookTitleForTheTimeBeing') : "暂无书名")}}</span>
+                      <span v-if="orderType=='book'" class="personalcenter_list_main_listBox_card_left_author">{{getStaticText('author') ? getStaticText('author') : '作者'}}：{{item1.author||(getStaticText('noAuthor') ? getStaticText('noAuthor') : "暂无作者")}}</span>
                       <span v-else class="personalcenter_list_main_listBox_card_left_author">{{item1.periodicalRemark}}</span>
                     </div>
                   </div>
                 </el-col>
                 <el-col :span="3">
                   <div class="personalcenter_list_main_listBox_card_right">
-                    <span v-if="item.itemList[0].productType== 94">电子书订单</span>
-                    <span v-if="item.itemList[0].productType== 91">纸书订单</span>
+                    <span v-if="item.itemList[0].productType== 94">{{getStaticText('ebookOrder') ? getStaticText('ebookOrder') : '电子书订单'}}</span>
+                    <span v-if="item.itemList[0].productType== 91">{{getStaticText('paperBookOrder') ? getStaticText('paperBookOrder') : '纸书订单'}}</span>
                   </div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="personalcenter_list_main_listBox_card_right">x{{item1.productNum}}</div>
+                  <div class="personalcenter_list_main_listBox_card_right">x{{item1. productNum}}</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="personalcenter_list_main_listBox_card_right">¥{{Number(item1.memberPrice) * item1.productNum }}</div>
+                  <div class="personalcenter_list_main_listBox_card_right">{{getStaticText('money') ? getStaticText('money') : '¥'}}{{(item1.memberPrice == "null" ? 0 : Number(item1.memberPrice)) * item1.productNum }}</div>
                 </el-col>
               </el-row>
             </div>
@@ -70,43 +70,46 @@
             <div class="mt5">
               <div v-if="Aitem.payStatus==0 && Aitem.status==1" class="fr">
                 <el-button type="text" @click="cancelOrder(outIndex)" id="testUseCancelLocation">
-                  取消订单
+                  {{getStaticText('cancellationOfOrder') ? getStaticText('cancellationOfOrder') : '取消订单'}}
                 </el-button>
                 <el-button type="primary" @click="myCallBack(outIndex)">
-                  付款
+                  {{getStaticText('payment') ? getStaticText('payment') : '付款'}}
                   <i class="el-icon-check el-icon--right"></i>
                 </el-button>
               </div>
               <div v-if="Aitem.payStatus==1" class="fr">
                 <el-button type="primary" @click="deleteOrder(outIndex)">
-                  删除订单
+                  {{getStaticText('deleteOrder') ? getStaticText('deleteOrder') : '删除订单'}}
                   <i class="el-icon-check el-icon-close"></i>
                 </el-button>
               </div>
             </div>
             <div class="personalcenter_list_main_listBox_footer">
-              <div v-if="Aitem.payStatus==1">已付款：
-                <span>￥{{Aitem.realAmount || 0 }}</span>
+              <div v-if="Aitem.payStatus==1">{{getStaticText('alreadyPaid') ? getStaticText('alreadyPaid') : '已付款'}}：
+                <span>{{getStaticText('money') ? getStaticText('money') : '¥'}}{{Aitem.realAmount || 0 }}</span>
               </div>
-              <div v-if="Aitem.payStatus==0 && Aitem.status==1">待支付：
-                <span>￥{{Aitem.realAmount}}</span>
+              <div v-if="Aitem.payStatus==0 && Aitem.status==1">{{getStaticText('toBePaid') ? getStaticText('toBePaid') : '待支付'}}：
+                <span>{{getStaticText('money') ? getStaticText('money') : '¥'}}{{Aitem.realAmount}}</span>
               </div>
             </div>
-            <div class="personalcenter_list_main_listBox_footer" v-show="Aitem.balanceAmount!='0.00'">下载币抵扣：
-              <span>￥{{Aitem.balanceAmount || 0 }}</span>
+            <div class="personalcenter_list_main_listBox_footer" v-show="Aitem.balanceAmount!='0.00'">{{getStaticText('downloadCurrencyDeduction') ? getStaticText('downloadCurrencyDeduction') : '下载币抵扣'}}：
+              <span>{{getStaticText('money') ? getStaticText('money') : '¥'}}{{Aitem.balanceAmount || 0 }}</span>
             </div>
-            <div class="personalcenter_list_main_listBox_footer" v-show="Aitem.couposAmount!='null' && Aitem.couposAmount!='0.00'">优惠券减免：
-              <span>￥{{Aitem.couposAmount || 0 }}</span>
-            </div>
-            <div class="personalcenter_list_main_listBox_footer" v-show="Aitem.orderList[0] && Aitem.orderList[0].activityRemark && Aitem.orderList[0].activityRemark!='0.00'">活动减免：
-              <span>￥{{Aitem.orderList[0] && Aitem.orderList[0] && Aitem.orderList[0].activityRemark || 0 }}</span>
+            <!--<div class="personalcenter_list_main_listBox_footer" v-show="Aitem.couposAmount!='null' && Aitem.couposAmount!='0.00'">{{getStaticText('couponRelief') ? getStaticText('couponRelief') : '优惠券减免'}}：-->
+              <!--<span>{{getStaticText('money') ? getStaticText('money') : '¥'}}{{Aitem.couposAmount || 0 }}</span>-->
+            <!--</div>-->
+            <!--<div class="personalcenter_list_main_listBox_footer" v-show="Aitem.orderList[0] && Aitem.orderList[0].activityRemark && Aitem.orderList[0].activityRemark!='0.00'">{{getStaticText('activityRemission') ? getStaticText('activityRemission') : '活动减免'}}：-->
+              <!--<span>{{getStaticText('money') ? getStaticText('money') : '¥'}}{{Aitem.orderList[0] && Aitem.orderList[0] && Aitem.orderList[0].activityRemark || 0 }}</span>-->
+            <!--</div>-->
+            <div class="personalcenter_list_main_listBox_footer" v-show="Aitem.activityRemarkAll && Aitem.activityRemarkAll != 0">{{getStaticText('activityRemission') ? getStaticText('activityRemission') : '活动减免'}}：
+              <span>{{getStaticText('money') ? getStaticText('money') : '¥'}}{{Aitem.activityRemarkAll || 0 }}</span>
             </div>
           </div>
         </div>
       </div>
       <div class="personalcenter_list_main_emptyColl" v-else>
         <img src="../../assets/img/empty.png" alt="">
-        <div>订单是空的~快去购买吧</div>
+        <div>{{getStaticText('orderIsEmpty') ? getStaticText('orderIsEmpty') : '订单是空的~快去购买吧'}}</div>
       </div>
       <ui_pagination :pageMessage="{totalCount: this.myOrderList.data && this.myOrderList.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
     </div>
@@ -118,16 +121,16 @@
           <el-card class="personalcenter_list_bookDetails_boxCard" v-if="item.itemList[0].productType == 91">
             <div slot="header" class="personalcenter_list_bookDetails_boxCard_clearfix">
               <i class="el-icon-location"></i>
-              <span>收货信息</span>
+              <span>{{getStaticText('receiptInformation') ? getStaticText('receiptInformation') : '收货信息'}}</span>
             </div>
             <div class="personalcenter_list_bookDetails_boxCard_text">
-              <p>收货人：
+              <p>{{getStaticText('consignee') ? getStaticText('consignee') : '收货人'}}：
                 <span>{{item.deliveryPerson}}</span>
               </p>
-              <p>电话：
+              <p>{{getStaticText('phone') ? getStaticText('phone') : '电话'}}：
                 <span>{{item.deliveryContact}}</span>
               </p>
-              <p>收货地址：
+              <p>{{getStaticText('receivingAddress') ? getStaticText('receivingAddress') : '收货地址'}}：
                 <span>{{item.deliveryAddress}}</span>
               </p>
             </div>
@@ -136,17 +139,17 @@
           <el-card class="personalcenter_list_bookDetails_boxCard" v-if="item.receiptType != ''">
             <div slot="header" class="personalcenter_list_bookDetails_boxCard_clearfix">
               <i class="el-icon-printer"></i>
-              <span>发票信息</span>
+              <span>{{getStaticText('invoiceInformation') ? getStaticText('invoiceInformation') : '发票信息'}}</span>
             </div>
             <div class="personalcenter_list_bookDetails_boxCard_text">
-              <p>发票类型：
-                <span v-if="item.receiptType==1">个人</span>
-                <span v-if="item.receiptType==2">增值税发票</span>
+              <p>{{getStaticText('invoiceType') ? getStaticText('invoiceType') : '发票类型'}}：
+                <span v-if="item.receiptType==1">{{getStaticText('personal') ? getStaticText('personal') : '个人'}}</span>
+                <span v-if="item.receiptType==2">{{getStaticText('valueAddedTaxInvoice') ? getStaticText('valueAddedTaxInvoice') : '增值税发票'}}</span>
               </p>
-              <p>发票抬头：
+              <p>{{getStaticText('invoicesTitle') ? getStaticText('invoicesTitle') : '发票抬头'}}：
                 <span>{{item.receiptTitle}}</span>
               </p>
-              <p v-if="item.receiptType==1">发票内容：
+              <p v-if="item.receiptType==1">{{getStaticText('invoiceContent') ? getStaticText('invoiceContent') : '发票内容'}}：
                 <span>{{item.receiptId}}</span>
               </p>
             </div>
@@ -155,26 +158,26 @@
           <el-card class="personalcenter_list_bookDetails_boxCard">
             <div slot="header" class="personalcenter_list_bookDetails_boxCard_clearfix">
               <i class="el-icon-goods"></i>
-              <span>支付详情</span>
+              <span>{{getStaticText('detailsOfPayment') ? getStaticText('detailsOfPayment') : '支付详情'}}</span>
             </div>
             <div class="personalcenter_list_bookDetails_boxCard_text">
-              <p>支付方式：
-                <span v-if="item.payMethod=='Weixin'">微信支付</span>
-                <span v-if="item.payMethod=='Alipay'">支付宝</span>
-                <span v-if="item.payMethod=='Balance'">下载币</span>
+              <p>{{getStaticText('paymentMethod') ? getStaticText('paymentMethod') : '支付方式'}}：
+                <span v-if="item.payMethod=='Weixin'">{{getStaticText('weChatPayment') ? getStaticText('weChatPayment') : '微信支付'}}</span>
+                <span v-if="item.payMethod=='Alipay'">{{getStaticText('alipay') ? getStaticText('alipay') : '支付宝'}}</span>
+                <span v-if="item.payMethod=='Balance'">{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</span>
               </p>
-              <p>商品总计：
+              <p>{{getStaticText('commodityTotal') ? getStaticText('commodityTotal') : '商品总计'}}：
                 <span>{{item.orderTotalPrice }}</span>
               </p>
-              <p>运费总计：
-                <span>{{item.deliveryPrice}}元</span>
+              <p>{{getStaticText('freightTotal') ? getStaticText('freightTotal') : '运费总计'}}：
+                <span>{{item.deliveryPrice}}{{getStaticText('yuan') ? getStaticText('yuan') : '元'}}</span>
               </p>
             </div>
           </el-card>
           <el-card class="personalcenter_list_bookDetails_boxCard">
             <div slot="header" class="personalcenter_list_bookDetails_boxCard_clearfix">
               <i class="el-icon-edit"></i>
-              <span>备注信息</span>
+              <span>{{getStaticText('noteInformation') ? getStaticText('noteInformation') : '备注信息'}}</span>
             </div>
             <div class="personalcenter_list_bookDetails_boxCard_text_payRemark">
               <p v-text="item.payRemark"></p>
@@ -182,26 +185,26 @@
           </el-card>
         </div>
         <div class="personalcenter_list_bookDetails_status">
-          <span v-if="item.payStatus==0 && item.status==1">订单状态：待付款</span>
-          <span v-if="item.payStatus==1">订单状态：已完成</span>
-          <span v-if="item.payStatus==0 && item.status==2">订单状态：已取消</span>
+          <span v-if="item.payStatus==0 && item.status==1">{{getStaticText('pendingPayment') ? getStaticText('pendingPayment') : '订单状态：待付款'}}</span>
+          <span v-if="item.payStatus==1">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
+          <span v-if="item.payStatus==0 && item.status==2">{{getStaticText('cancelled') ? getStaticText('cancelled') : '订单状态：已取消'}}</span>
         </div>
         <div class="personalcenter_list_title_common bg-purple-light">
           <span>
             <i class="el-icon-time"></i> {{item.createTime}}</span>
-          <span>订单号：{{item.orderCode}}</span>
+          <span>{{getStaticText('orderNumber') ? getStaticText('orderNumber') : '订单号'}}：{{item.orderCode}}</span>
         </div>
         <el-row class="personalcenter_list_main_listBox_card" v-for="item1 in item.itemList" :key="item1.id">
           <el-col :span="15">
             <div class="personalcenter_list_main_listBox_card_left">
-              <img onload="DrawImage(this,120,100)" v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
+              <img onload="DrawImage(this,120,100)" v-bind:src="item1.bigPic || require('@static/img/defaultCover.png')" class="personalcenter_list_main_listBox_card_left_img" :alt="getStaticText('noCover') ? getStaticText('noCover') :'暂无封面'">
               <div class="personalcenter_list_main_listBox_card_left_text">
-                <span class="mt5" :title="item1.productName">{{item1.productName||"暂无书名"}}</span>
-                <span class="personalcenter_list_main_listBox_card_left_author">作者：{{item1.author||"暂无作者"}}</span>
+                <span class="mt5" :title="item1.productName">{{item1.productName||(getStaticText('noBookTitleForTheTimeBeing') ? getStaticText('noBookTitleForTheTimeBeing') : "暂无书名")}}</span>
+                <span class="personalcenter_list_main_listBox_card_left_author">{{getStaticText('author') ? getStaticText('author') : '作者'}}：{{item1.author||(getStaticText('noAuthor') ? getStaticText('noAuthor') : '暂无作者')}}</span>
               </div>
-              <div v-if="item.itemList[0].productType == 91 && exchangeState" class="OperationDoubleBtn   personalcenter_list_main_listBox_card_left_returnBtn">
-                <el-button type="text" @click="showReturn(item,item1,1)">退货</el-button>
-                <el-button type="text" @click="showReturn(item,item1,2)">换货</el-button>
+              <div v-if="item.itemList[0].productType == 91 && exchangeState" class="OperationDoubleBtn personalcenter_list_main_listBox_card_left_returnBtn">
+                <el-button type="text" @click="showReturn(item,item1,1)">{{getStaticText('returnGoods') ? getStaticText('returnGoods') :'退货'}}</el-button>
+                <el-button type="text" @click="showReturn(item,item1,2)">{{getStaticText('exchangeGoods') ? getStaticText('exchangeGoods') :'换货'}}</el-button>
               </div>
             </div>
           </el-col>
@@ -209,18 +212,18 @@
             <div class="personalcenter_list_main_listBox_card_right">x{{item1. productNum}}</div>
           </el-col>
           <el-col :span="3">
-            <div class="personalcenter_list_main_listBox_card_right">¥ {{item1. memberPrice * item1. productNum }}</div>
+            <div class="personalcenter_list_main_listBox_card_right">{{getStaticText('money') ? getStaticText('money') : '¥'}} {{item1. memberPrice * item1. productNum }}</div>
           </el-col>
           <el-col :span="3">
-            <div class="personalcenter_list_main_listBox_card_right personalcenter_list_bookDetails_textDecoration">¥ {{item1. productPrice * item1. productNum }}</div>
+            <div class="personalcenter_list_main_listBox_card_right personalcenter_list_bookDetails_textDecoration">{{getStaticText('money') ? getStaticText('money') : '¥'}} {{item1.productPrice * item1. productNum }}</div>
           </el-col>
         </el-row>
         <div class="personalcenter_list_bookDetails_goBackBtn">
-          <el-button type="primary" @click="goBack()">返回</el-button>
+          <el-button type="primary" @click="goBack()">{{getStaticText('return') ? getStaticText('return') : '返回'}}</el-button>
         </div>
         <div class="personalcenter_list_bookDetails_footerPrice">
-          <span>订单总额：¥ {{item.orderTotalPrice + item.deliveryPrice }}</span>
-          </br>
+          <span>{{getStaticText('totalOrder') ? getStaticText('totalOrder') : '订单总额：¥'}} {{item.orderTotalPrice + item.deliveryPrice }}</span>
+          <br>
         </div>
       </div>
     </div>
@@ -230,24 +233,24 @@
         <div class="personalcenter_list_title_common bg-purple-light">
           <span>
             <i class="el-icon-time"></i> {{item.createTime}}</span>
-          <span>订单号：{{item.orderCode}}</span>
+          <span>{{getStaticText('orderNumber') ? getStaticText('orderNumber') : '订单号'}}：{{item.orderCode}}</span>
         </div>
         <el-row class="personalcenter_list_main_listBox_card" v-for="item1 in item.itemList" :key="item1.id">
           <el-col :span="21">
             <div class="personalcenter_list_main_listBox_card_left">
-              <img onload="DrawImage(this,120,100)" v-bind:src="item1.bigPic || '../assets/img/zwfm.png'" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
+              <img onload="DrawImage(this,120,100)" v-bind:src="item1.bigPic || require('@static/img/defaultCover.png')" class="personalcenter_list_main_listBox_card_left_img" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'">
               <div class="personalcenter_list_main_listBox_card_left_text">
-                <span class="mt5" :title="item1.productName">{{item1.periodicalName||"暂无刊名"}}</span>
+                <span class="mt5" :title="item1.productName">{{item1.periodicalName|| (getStaticText('noPublication') ? getStaticText('noPublication') : '暂无刊名')}}</span>
                 <span class="personalcenter_list_main_listBox_card_left_author">{{item1.periodicalRemark}}</span>
               </div>
             </div>
           </el-col>
           <el-col :span="3">
-            <div class="personalcenter_list_main_listBox_card_right">¥ {{item1.realPrice}}</div>
+            <div class="personalcenter_list_main_listBox_card_right">{{getStaticText('money') ? getStaticText('money') : '¥'}}{{item1.realPrice}}</div>
           </el-col>
         </el-row>
         <div class="personalcenter_list_bookDetails_goBackBtn">
-          <el-button type="primary" @click="goBack()">返回</el-button>
+          <el-button type="primary" @click="goBack()">{{getStaticText('return') ? getStaticText('return') : '返回'}}</el-button>
         </div>
         <!-- <div class="personalcenter_list_bookDetails_footerPrice">
           <span>订单总额：{{item1.realPrice}}</span>
@@ -255,38 +258,49 @@
         </div> -->
       </div>
     </div>
-    </div>
-    <!-- 退货 -->
+    <!--</div>-->
+    <!-- 退货||换货 -->
     <div v-show="currentShow=='return'">
-      <div>
+      <!--退货step-->
+      <div v-if="goodsType == 1">
         <el-steps :active="0" simple>
-          <el-step title="提交申请" icon="el-icon-edit"></el-step>
-          <el-step title="商家审核" icon="el-icon-document"></el-step>
-          <el-step title="用户发货" icon="el-icon-upload2"></el-step>
-          <el-step title="审核退款" icon="el-icon-setting"></el-step>
-          <el-step title="完成退货" icon="el-icon-check"></el-step>
+          <el-step :title="getStaticText('submission') ? getStaticText('submission') : '提交申请'" icon="el-icon-edit"></el-step>
+          <el-step :title="getStaticText('businessAudit') ? getStaticText('businessAudit') : '商家审核'" icon="el-icon-document"></el-step>
+          <el-step :title="getStaticText('userDelivery') ? getStaticText('userDelivery') : '用户发货'" icon="el-icon-upload2"></el-step>
+          <el-step :title="getStaticText('reviewOfRefunds') ? getStaticText('reviewOfRefunds') : '审核退款'" icon="el-icon-setting"></el-step>
+          <el-step :title="getStaticText('completeTheReturnOfTheGoods') ? getStaticText('completeTheReturnOfTheGoods') : '完成退货'" icon="el-icon-check"></el-step>
+        </el-steps>
+      </div>
+      <!--换货step-->
+      <div v-if="goodsType == 2">
+        <el-steps :active="0" simple>
+          <el-step :title="getStaticText('submission') ? getStaticText('submission') : '提交申请'" icon="el-icon-edit"></el-step>
+          <el-step :title="getStaticText('businessAudit') ? getStaticText('businessAudit') : '商家审核'" icon="el-icon-document"></el-step>
+          <el-step :title="getStaticText('userDelivery') ? getStaticText('userDelivery') : '用户发货'" icon="el-icon-upload2"></el-step>
+          <el-step :title="getStaticText('reviewOfRefunds') ? getStaticText('reviewOfRefunds') : '审核退款'" icon="el-icon-setting"></el-step>
+          <el-step :title="getStaticText('completeTheReturnTransOfTheGoods') ? getStaticText('completeTheReturnTransOfTheGoods') : '完成换货'" icon="el-icon-check"></el-step>
         </el-steps>
       </div>
       <div class="personalcenter_list_main_title">
         <el-row :gutter="1">
           <el-col :span="14">
-            <div class="personalcenter_list_title_common bg-purple-light">商品名称</div>
+            <div class="personalcenter_list_title_common bg-purple-light">{{getStaticText('commodityName') ? getStaticText('commodityName') : '商品名称'}}</div>
           </el-col>
           <el-col :span="4">
-            <div class="personalcenter_list_title_common bg-purple-light">购买数量</div>
+            <div class="personalcenter_list_title_common bg-purple-light">{{getStaticText('purchaseQuantity') ? getStaticText('purchaseQuantity') : '购买数量'}}</div>
           </el-col>
           <el-col :span="6">
-            <div class="personalcenter_list_title_common bg-purple-light">下单时间</div>
+            <div class="personalcenter_list_title_common bg-purple-light">{{getStaticText('orderTime') ? getStaticText('orderTime') : '下单时间'}}</div>
           </el-col>
         </el-row>
       </div>
       <el-row class="personalcenter_list_main_listBox_card">
         <el-col :span="14">
           <div class="personalcenter_list_main_listBox_card_left">
-            <img v-bind:src="returnBigPic || '../assets/img/zwfm.png'" onload="DrawImage(this,120,100)" class="personalcenter_list_main_listBox_card_left_img" alt="暂无封面">
+            <img v-bind:src="returnBigPic || require('@static/img/defaultCover.png')" onload="DrawImage(this,120,100)" class="personalcenter_list_main_listBox_card_left_img" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'">
             <div class="personalcenter_list_main_listBox_card_left_text">
               <span class="mt5">{{returnProductName}}</span>
-              <span class="personalcenter_list_main_listBox_card_left_author">作者：{{returnAuthor}}</span>
+              <span class="personalcenter_list_main_listBox_card_left_author">{{getStaticText('author') ? getStaticText('author') : '作者'}}：{{returnAuthor}}</span>
             </div>
           </div>
         </el-col>
@@ -301,18 +315,19 @@
       <div class="personalcenter_list_returnForm">
         <!-- 计数器 -->
         <div class="mb20">
-          <span class="mr20">退货数量:</span>
+          <span v-if="goodsType==1" class="mr20">{{getStaticText('returnQuantity') ? getStaticText('returnQuantity') : '退货数量'}}:</span>
+          <span v-if="goodsType==2" class="mr20">{{getStaticText('returnTransQuantity') ? getStaticText('returnTransQuantity') : '换货数量'}}:</span>
           <el-input-number v-model="num" @change="handleChange" :min="1" :max="max" size="small"></el-input-number>
         </div>
         <!-- 文本框 -->
         <div class="mb20">
-          <div class="mr20 disinlblo">问题描述:</div>
-          <el-input @change="textChange" @blur="textBlur" class="textarea" type="textarea" min="10" max="500" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请描述问题" v-model="textarea" style="width:700px;vertical-align:text-top;float：left;">
+          <div class="mr20 disinlblo">{{getStaticText('problemDescription') ? getStaticText('problemDescription') : '问题描述'}}:</div>
+          <el-input @change="textChange" @blur="textBlur" class="textarea" type="textarea" min="10" max="500" :autosize="{ minRows: 4, maxRows: 8}" :placeholder="getStaticText('pleaseDescribeTheProblem') ? getStaticText('pleaseDescribeTheProblem') : '请描述问题'" v-model="textarea" style="width:700px;vertical-align:text-top;float:left;">
           </el-input>
         </div>
         <!-- 图片上传 -->
         <div>
-          <span class="mr20">上传图片:</span>
+          <span class="mr20">{{getStaticText('uploadPicture') ? getStaticText('uploadPicture') : '上传图片'}}:</span>
           <el-upload class="disinlblo" :action="uploadUrl()" list-type="picture-card" name="headPicUrl" :headers="setToken" :limit="5" :before-upload="beforeHandleUpload" :on-preview="handlePictureCardPreview" :on-exceed="handleExceed" :on-remove="handleSuccess" :on-success="handleSuccess">
             <i class="el-icon-plus personalcenter_list_returnForm_plus"></i>
           </el-upload>
@@ -325,7 +340,8 @@
         <work_shoppingcart_01_components_address namespace="address" @deliveryAddress="getDeliveryAddress"></work_shoppingcart_01_components_address>
       </div>
       <div class="personalcenter_list_returnForm_btn">
-        <el-button type="primary" size="large" @click="applyReturnGoods()">申请退货</el-button>
+        <el-button v-if="goodsType == 1" type="primary" size="large" @click="applyReturnGoods()">{{getStaticText('applicationForReturn') ? getStaticText('applicationForReturn') : '申请退货'}}</el-button>
+        <el-button v-if="goodsType == 2" type="primary" size="large" @click="applyReturnGoods()">{{getStaticText('applicationForReturnTrans') ? getStaticText('applicationForReturnTrans') : '申请换货'}}</el-button>
       </div>
     </div>
   </section>
@@ -341,7 +357,7 @@ export default {
   created() {
     this.CONFIG = this.parentConfig.list;
     this.radio =
-      this.CONFIG && this.CONFIG.tabListShow.length > 0
+      this.CONFIG.tabListShow && this.CONFIG.tabListShow.length > 0
         ? this.CONFIG.tabListShow[0].type
         : "book";
     this.exchangeState =
@@ -350,6 +366,44 @@ export default {
         : false;
     this.KDNConfig =
       this.CONFIG && this.CONFIG.KDNConfig ? this.CONFIG.KDNConfig : false;
+
+    this.pickerOptions2 = {
+      shortcuts: [
+        {
+          text: this.getStaticText("lastWeek")
+            ? this.getStaticText("lastWeek")
+            : "最近一周",
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit("pick", [start, end]);
+          }
+        },
+        {
+          text: this.getStaticText("lastMonth")
+            ? this.getStaticText("lastMonth")
+            : "最近一个月",
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit("pick", [start, end]);
+          }
+        },
+        {
+          text: this.getStaticText("lastThreeMonths")
+            ? this.getStaticText("lastThreeMonths")
+            : "最近三个月",
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+            picker.$emit("pick", [start, end]);
+          }
+        }
+      ]
+    };
   },
   mounted() {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
@@ -414,7 +468,7 @@ export default {
       goodsProductName: "", //商品名称
       goodsOriginalNum: "", //购买总数
       goodsPubId: "",
-      goodsReasons: "", //退货原因
+      goodsReasons: "", //退货/换货原因
       goodsRefund: "", //值传空
       goodsReturnGoodsStatus: 0, //值传0
       goodsReturnMoneyStatus: 0, //值传0
@@ -426,49 +480,50 @@ export default {
       goodsVerifyReason: "", //值传空
       //退换货参数结束
 
-      pickerOptions2: {
-        shortcuts: [
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      },
+      // pickerOptions2: {
+      //   shortcuts: [
+      //     {
+      //       text: "最近一周",
+      //       onClick(picker) {
+      //         const end = new Date();
+      //         const start = new Date();
+      //         start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+      //         picker.$emit("pick", [start, end]);
+      //       }
+      //     },
+      //     {
+      //       text: "最近一个月",
+      //       onClick(picker) {
+      //         const end = new Date();
+      //         const start = new Date();
+      //         start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+      //         picker.$emit("pick", [start, end]);
+      //       }
+      //     },
+      //     {
+      //       text: "最近三个月",
+      //       onClick(picker) {
+      //         const end = new Date();
+      //         const start = new Date();
+      //         start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+      //         picker.$emit("pick", [start, end]);
+      //       }
+      //     }
+      //   ]
+      // },
+      pickerOptions2: {},
       timeValue: ""
     };
   },
-  filters: {
-    filterFun: function(value) {
-      if (typeof value == "string") {
-        return "¥ " + parseInt(value).toFixed(2) + "元";
-      } else {
-        return "¥ " + value.toFixed(2) + "元";
-      }
-    }
-  },
+  // filters: {
+  //   filterFun: function(value) {
+  //     if (typeof value == "string") {
+  //       return "¥ " + parseInt(value).toFixed(2) + "元";
+  //     } else {
+  //       return "¥ " + value.toFixed(2) + "元";
+  //     }
+  //   }
+  // },
   methods: {
     // 展示退换货
     showReturn(item, item1, type) {
@@ -507,7 +562,11 @@ export default {
       this.dialogVisible = true;
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`抱歉，最多上传5张图片`);
+      this.$message.warning(
+        this.getStaticText("upload5PicturesAtMost")
+          ? this.getStaticText("upload5PicturesAtMost")
+          : "`抱歉，最多上传5张图片`"
+      );
     },
     beforeHandleUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -516,10 +575,18 @@ export default {
       const isLt5M = file.size / 1024 / 1024 < 5;
 
       if (!isJPG && !isPNG && isBMP) {
-        this.$message.error("请上传PNG、JPG或BMP类型图片");
+        this.$message.error(
+          this.getStaticText("pleaseUploadPngJpgOrBmpTypePictures")
+            ? this.getStaticText("pleaseUploadPngJpgOrBmpTypePictures")
+            : "请上传PNG、JPG或BMP类型图片"
+        );
       }
       if (!isLt5M) {
-        this.$message.error("上传头像图片大小不能超过 5MB!");
+        this.$message.error(
+          this.getStaticText("uploadHeadImageSizeCanNotExceed5MB")
+            ? this.getStaticText("uploadHeadImageSizeCanNotExceed5MB")
+            : "上传头像图片大小不能超过 5MB!"
+        );
       }
       return isBMP || isJPG || (isPNG && isLt5M);
     },
@@ -548,9 +615,11 @@ export default {
     applyReturnGoods() {
       if (this.curSelectedAddress === null && this.goodsType == 2) {
         // 没有填写地址情况
-        _this.$message({
+        this.$message({
           type: "error",
-          message: "收货地址不得为空噢~"
+          message: this.getStaticText("receiptAddressMustNotBeEmpty")
+            ? this.getStaticText("receiptAddressMustNotBeEmpty")
+            : "收货地址不得为空噢~"
         });
         return false;
       }
@@ -604,7 +673,11 @@ export default {
           type: "success"
         });
       } else {
-        this.$message.error("抱歉，申请提交失败");
+        this.$message.error(
+          this.getStaticText("failureToSubmitApplication")
+            ? this.getStaticText("failureToSubmitApplication")
+            : "抱歉，申请提交失败"
+        );
       }
       this.goodsPictureList = [];
       this.textarea = "";
@@ -647,7 +720,8 @@ export default {
         pageSize: 8,
         payStatus: "",
         status: "",
-        orderType: this.orderType
+        orderType: this.orderType,
+        orderListCallBack:this.activityRemarkAll
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
@@ -733,10 +807,20 @@ export default {
             loading.close();
             var errorMsg = this.commitInfo.errMsg
               ? this.commitInfo.errMsg
-              : "订单提交有误";
-            _this.$alert(errorMsg, "系统提示", {
-              confirmButtonText: "确定"
-            });
+              : this.getStaticText("incorrectSubmissionOfOrders")
+                ? this.getStaticText("incorrectSubmissionOfOrders")
+                : "订单提交有误";
+            _this.$alert(
+              errorMsg,
+              _this.getStaticText("systemHints")
+                ? _this.getStaticText("systemHints")
+                : "系统提示",
+              {
+                confirmButtonText: _this.getStaticText("confirm")
+                  ? _this.getStaticText("confirm")
+                  : "确定"
+              }
+            );
           }
         }
       };
@@ -762,7 +846,8 @@ export default {
         pageSize: 8,
         payStatus: "",
         status: "",
-        orderType: this.orderType
+        orderType: this.orderType,
+        orderListCallBack:this.activityRemarkAll
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
@@ -775,7 +860,8 @@ export default {
         pageSize: 8,
         payStatus: 0,
         status: 1,
-        orderType: this.orderType
+        orderType: this.orderType,
+        orderListCallBack:this.activityRemarkAll
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
@@ -785,17 +871,25 @@ export default {
         pageSize: pageSize,
         payStatus: this.payStatusNum,
         status: this.displayCancel,
-        orderType: this.orderType
+        orderType: this.orderType,
+        orderListCallBack:this.activityRemarkAll
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
     cancelOrder(outIndex) {
-      var id = this.myOrderList.data[outIndex].id;
-      var param = {
-        id: id,
-        cb: this.cancelOrderCallb
-      };
-      this.$store.dispatch("personalCenter/cancelOrder", param);
+      //文本待抽离
+      this.$confirm("确定取消此订单？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        var id = this.myOrderList.data[outIndex].id;
+        var param = {
+          id: id,
+          cb: this.cancelOrderCallb
+        };
+        this.$store.dispatch("personalCenter/cancelOrder", param);
+      });
     },
     cancelOrderCallb(idata, rep) {
       if (idata == 1) {
@@ -804,27 +898,39 @@ export default {
           pageSize: 8,
           payStatus: this.payStatusNum,
           status: this.displayCancel,
-          orderType: this.orderType
+          orderType: this.orderType,
+          orderListCallBack:this.activityRemarkAll
         };
         this.$store.dispatch("personalCenter/queryOrderList", param);
         this.$message({
           type: "success",
-          message: "取消成功"
+          message: this.getStaticText("abolishSuccess")
+            ? this.getStaticText("abolishSuccess")
+            : "取消成功"
         });
       } else {
         this.$message({
           type: "info",
-          message: "取消失败，请重试"
+          message: this.getStaticText("abolishFailed")
+            ? this.getStaticText("abolishFailed")
+            : "取消失败，请重试"
         });
       }
     },
     deleteOrder(outIndex) {
-      var id = this.myOrderList.data[outIndex].id;
-      var param = {
-        id: id,
-        cb: this.deleteOrderCallb
-      };
-      this.$store.dispatch("personalCenter/deleteOrder", param);
+      //文本待抽离
+      this.$confirm("确定删除此订单？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        var id = this.myOrderList.data[outIndex].id;
+        var param = {
+          id: id,
+          cb: this.deleteOrderCallb
+        };
+        this.$store.dispatch("personalCenter/deleteOrder", param);
+      });
     },
     deleteOrderCallb(idata, rep) {
       if (idata == 1) {
@@ -833,17 +939,22 @@ export default {
           pageSize: 8,
           payStatus: this.payStatusNum,
           status: this.displayCancel,
-          orderType: this.orderType
+          orderType: this.orderType,
+          orderListCallBack:this.activityRemarkAll
         };
         this.$store.dispatch("personalCenter/queryOrderList", param);
         this.$message({
           type: "success",
-          message: "删除成功"
+          message: this.getStaticText("deleteSuccess")
+            ? this.getStaticText("deleteSuccess")
+            : "删除成功"
         });
       } else {
         this.$message({
           type: "info",
-          message: "删除失败，请重试"
+          message: this.getStaticText("deleteFailed")
+            ? this.getStaticText("deleteFailed")
+            : "删除失败，请重试"
         });
       }
     },
@@ -860,9 +971,51 @@ export default {
         pageSize: 8,
         payStatus: "",
         status: "",
-        orderType: this.orderType
+        orderType: this.orderType,
+        orderListCallBack:this.activityRemarkAll
       };
       this.$store.dispatch("personalCenter/queryOrderList", param);
+    },
+    getStaticText(text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
+      } else {
+        return false;
+      }
+    },
+    filterFun: function(value) {
+      if (typeof value == "string") {
+        return (
+          (this.getStaticText("money") ? this.getStaticText("money") : "¥ ") +
+          parseInt(value).toFixed(2) +
+          (this.getStaticText("yuan") ? this.getStaticText("yuan") : "元")
+        );
+      } else {
+        return (
+          (this.getStaticText("money") ? this.getStaticText("money") : "¥ ") +
+          value.toFixed(2) +
+          (this.getStaticText("yuan") ? this.getStaticText("yuan") : "元")
+        );
+      }
+    },
+    //计算活动减免额
+    activityRemarkAll() {
+      $.each(this.myOrderList.data,function (index, item) {
+        var activityRemarkAll = 0;
+        if(item.couposAmount != null && item.couposAmount != ''){
+          activityRemarkAll += Number(item.couposAmount);
+        }
+        $.each(item.orderList,function (index, innerItem) {
+          if(innerItem.activityRemark != '' && innerItem.activityRemark != null){
+            activityRemarkAll += Number(innerItem.activityRemark);
+          }
+        });
+        item.activityRemarkAll = activityRemarkAll.toFixed(2)
+      })
     }
   }
 };
@@ -871,15 +1024,17 @@ export default {
 .fr {
   float: right;
 }
-.el-row .personalcenter_list_main_listBox_card_left .OperationDoubleBtn{
+.mt5 {
+  margin-top: 5px;
+}
+.el-row .personalcenter_list_main_listBox_card_left .OperationDoubleBtn {
   float: right;
   width: 15%;
 }
-.personalcenter_list_main_listBox_card_left .personalcenter_list_main_listBox_card_left_text span{
+.personalcenter_list_main_listBox_card_left
+  .personalcenter_list_main_listBox_card_left_text
+  span {
   width: 370px;
-}
-.mt5 {
-  margin-top: 5px;
 }
 .mb10 {
   margin-bottom: 10px;

@@ -6,12 +6,12 @@
     <!-- 登录前 -->
 
     <template v-if="!member.loginName">
-      <a :href="CONFIG.toLoginHref" class="work_login_04-login">
+      <a :href="CONFIG.toLoginHref ? CONFIG.toLoginHref : '../pages/login.html'" class="work_login_04-login">
         <slot>
           {{getStaticText('loginSys') ? getStaticText('loginSys') : '[登录]'}}
         </slot>
       </a>
-      <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
+      <a v-if="member.loginName" :href="CONFIG.toPersonalCenterHref ? CONFIG.toPersonalCenterHref : '../pages/personalcenter.html'" class="work_login_04-member" v-text="member.loginName"></a>
       <span v-if="getIsShow('register')">
         <a :href="CONFIG.toRegisterHref">{{getStaticText('register') ? getStaticText('register') : "注 册"}}</a>
       </span>
@@ -20,7 +20,7 @@
 
     <template v-if="member.loginName">
 
-      <a :href="CONFIG.toPersonalCenterHref" class="work_login_04-member" v-text="member.loginName"></a>
+      <a :href="CONFIG.toPersonalCenterHref ? CONFIG.toPersonalCenterHref : '../pages/personalcenter.html'" class="work_login_04-member" v-text="member.loginName"></a>
 
       <span class="work_login_04-info">{{getStaticText('welcomeBack') ? getStaticText('welcomeBack') : '欢迎回来！' }}</span>
 

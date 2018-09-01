@@ -5,14 +5,14 @@
       <div class="" name="data_column_block">
         <dl class="listCon" v-for="(entry, index) in list" v-if="index<(number || 4)" :key="index">
           <dt class="listDt">
-            <a :href="(CONFIG && CONFIG.href)+entry.id">
+            <a :href="((CONFIG && CONFIG.href )? CONFIG.href : './bookdetail.html?pubId=')+entry.id">
               <img :src="entry && entry.pub_picBig" onload="DrawImage(this,70,84)" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'" />
             </a>
           </dt>
           <dd class="jiaobiao" v-text="index+1" v-if="modulename === 'hotsalebank'"></dd>
           <dd class="listDd">
             <p class="title">
-              <a :href="(CONFIG && CONFIG.href)+entry.id" class="hot_sell_text" v-text="entry.pub_resource_name" :title="entry.pub_resource_name"></a>
+              <a :href="((CONFIG && CONFIG.href )? CONFIG.href : './bookdetail.html?pubId=')+entry.id" class="hot_sell_text" v-text="entry.pub_resource_name" :title="entry.pub_resource_name"></a>
             </p>
 
             <p class="hitcount" v-if="modulename === 'hotsalebank'">{{getStaticText('hits') ? getStaticText('hits') : '点击量：'}}{{entry.pub_read_num || 0}}</p>

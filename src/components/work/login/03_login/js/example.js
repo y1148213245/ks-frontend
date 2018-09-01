@@ -93,7 +93,9 @@ const prod = {
         inputCode:'请输入验证码',
         codeFailed:'验证码输入错误',
         unRegisterName: '账号未注册'
-      }
+      },
+      toForgetPasswordHref:"./forgetPassword.html",
+      toRegisterHref:"./register.html"
     }
   }
 };

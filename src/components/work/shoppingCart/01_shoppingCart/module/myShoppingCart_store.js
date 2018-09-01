@@ -91,8 +91,11 @@ var actions = {
     commit(type.QUERY_ORDER_DETAIL, datas);
   },
 
-  [type.QUERY_ORDER_ADDRESS]({commit}, loginName) {
-    api.queryOrderAddress(loginName, ({addressList}) => commit(type.QUERY_ORDER_ADDRESS, addressList));
+  [type.QUERY_ORDER_ADDRESS]({commit}, datas) {
+    api.queryOrderAddress(datas, ({addressList}) => commit(type.QUERY_ORDER_ADDRESS, {
+      addressList: addressList,
+      myCallback: datas.myCallback
+    }));
   },
 
   [type.ADD_ORDER_ADDRESS]({commit}, datas) {
@@ -191,7 +194,10 @@ var mutations = {
     state.orderDetail.ebookTotalMoney = datas.ebookTotalMoney;
     state.orderDetail.ebookSaveMoney = datas.ebookSaveMoney;
   },
-  [type.QUERY_ORDER_ADDRESS]: (state, addressList) => state.addressList = addressList,
+  [type.QUERY_ORDER_ADDRESS]: (state, datas) => {
+    state.addressList = datas.addressList;
+    datas.myCallback(datas.addressList);
+  },
   [type.ADD_ORDER_ADDRESS]: (state, datas) => {
     state.addStatus = datas.addStatus;
     datas.myCallback();

@@ -11,7 +11,7 @@
           </dt>
           <dd class="listDd">
             <p class="resourceName">
-              <a class="resourceLink" :href="'../pages/bookdetail.html?pubId=' + entry.pubId" v-text="entry.resourceName || (getStaticText('noBookName') ? getStaticText('noBookName') : '暂无书名')" :title="entry.resourceName"></a>
+              <a class="resourceLink" :href="((CONFIG&&CONFIG.detailHref) ? CONFIG.detailHref : '../pages/bookdetail.html?pubId=') + entry.pubId" v-text="entry.resourceName || (getStaticText('noBookName') ? getStaticText('noBookName') : '暂无书名')" :title="entry.resourceName"></a>
             </p>
             <p class="author" :title="entry.author">
               {{getStaticText('author') ? getStaticText('author') : '作者:'}}{{entry.author || getStaticText('noAuthor') ? getStaticText('noAuthor') : '暂无作者'}}</p>

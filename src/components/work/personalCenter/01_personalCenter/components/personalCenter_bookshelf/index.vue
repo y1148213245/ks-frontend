@@ -41,45 +41,53 @@ export default {
   name: "book",
   reused: true,
   props: ["namespace", "parentConfig"],
-  data () {
+  data() {
     return {
-      CONFIG: '',
-      currentProductType: '',
-      pageNo: '1',
-      pageSize: '8',
-      productKeys: ''
-      // readConfig: READ_CONFIG
+      CONFIG: "",
+      currentProductType: "",
+      pageNo: "1",
+      pageSize: "8",
+      productKeys: "",
+      // readConfig: READ_CONFIG,
+      defaultObj: {
+        name: "图书",
+        type: "2",
+        productType: "",
+        keyType: "book" //字段适配器名,对应productKeys配置中的key,字段适配器名
+      }
     };
   },
-  created () {
-    this.productKeys = {//默认字段适配
-      name: 'productName',
-      pic: 'bigPic',
-      resourceId: 'resourceId',
-      resourceType: 'resourseType'
-    }
+  created() {
+    this.productKeys = {
+      //默认字段适配
+      name: "productName",
+      pic: "bigPic",
+      resourceId: "resourceId",
+      resourceType: "resourseType"
+    };
     if (this.parentConfig.book) {
       let keysList, currentType;
 
       this.CONFIG = this.parentConfig.book;
 
-      this.currentProductType = this.CONFIG.navList[0];
-
+      this.currentProductType = this.CONFIG.navList[0]
+        ? this.CONFIG.navList[0]
+        : this.defaultObj;
       keysList = this.CONFIG.productKeys;
-      currentType = this.currentProductType.keyType
+      currentType = this.currentProductType.keyType;
       if (keysList[currentType]) {
-        this.productKeys = keysList[currentType]
+        this.productKeys = keysList[currentType];
       }
     } else {
       this.currentProductType = {
-        name: '图书',
-        type: '2',
-        productType: '',
-        keyType: 'book'
-      }
+        name: this.getStaticText("book") ? this.getStaticText("book") : "图书",
+        type: "2",
+        productType: "",
+        keyType: "book"
+      };
     }
   },
-  mounted: function () {
+  mounted: function() {
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadData
     });
@@ -90,45 +98,52 @@ export default {
     })
   },
   methods: {
-    loadData () {
+    loadData() {
       var param = {
         pageIndex: this.pageNo,
         pageSize: this.pageSize,
         type: this.currentProductType.type
       };
       if (this.currentProductType.productType) {
-        param.productType = this.currentProductType.productType
+        param.productType = this.currentProductType.productType;
       }
       this.$store.dispatch("personalCenter/querybookShelfInfo", param);
     },
-    changType (item) {
+    changType(item) {
       this.currentProductType = item;
-      this.productKeys = this.CONFIG.productKeys[this.currentProductType.keyType]
+      this.productKeys = this.CONFIG.productKeys[
+        this.currentProductType.keyType
+      ];
       this.loadData();
     },
-    pagingF: function ({ pageNo, pageSize }) {
+    pagingF: function({ pageNo, pageSize }) {
       this.pageNo = pageNo;
       this.pageSize = pageSize;
 
       this.loadData();
     },
-    toRead (bookId, readType, bookName) {
+    toRead(bookId, readType, bookName) {
       var url =
         CONFIG.READ_URL +
         "?bookId=" +
         bookId +
         "&readType=" +
         readType +
-        '&bookName=' +
+        "&bookName=" +
         bookName +
-        "&userName=&siteType=" + CONFIG.READ_CONFIG.siteType;
+        "&userName=&siteType=" +
+        CONFIG.READ_CONFIG.siteType;
       window.open(url);
     },
-    getStaticText (text) {
-      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
-        return this.CONFIG.staticText[text]
+    getStaticText(text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
       } else {
-        return false
+        return false;
       }
     }
   }

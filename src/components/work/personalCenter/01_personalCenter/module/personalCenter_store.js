@@ -187,6 +187,9 @@ var actions = {
     api.queryOrderList(params).then(function (response) {
       let orderList = response.data;
       commit("setOrderList", orderList);
+      if('function' == typeof params.orderListCallBack){
+        params.orderListCallBack();
+      }
       loading.close();
     });
   },

@@ -18,12 +18,12 @@
           <div style="width:180px;height: 240px; text-align: center;">
             <div class="picBox">
               <div style="width: 180px; height: 180px; vertical-align: middle; display: table-cell; position: relative;">
-                <img v-bind:src="item.bigPic || require('@static/img/defaultCover.png')" onload="DrawImage(this,150,150)" />
+                <img v-bind:src="item.bigPic || require('@static/img/defaultCover.png')" onload="DrawImage(this,150,150)" @click="toDetails(item.pubId)"/>
               </div>
               <div class="namePrice">
-                <div v-text="item.productName" :title="item.productName"></div>
+                <div v-text="item.productName" :title="item.productName" @click="toDetails(item.pubId)"></div>
                 <div>{{getStaticText('price') ? getStaticText('price') : '价格'}}：
-                  <span>{{item.memberPrice | formatPriceNew}}</span>
+                  <span>{{formatPriceNew(item.memberPrice)}}</span>
                 </div>
               </div>
               <div class="readBox">
@@ -45,7 +45,7 @@
       <img src="../../assets/img/empty.png" alt="">
       <div>{{getStaticText('theFavoritesAreEmpty') ? getStaticText('theFavoritesAreEmpty') : '收藏夹是空的'}}</div>
     </div>
-    <ui_pagination v-if="initPagination" :pageMessage="{totalCount: this.collectionInfo.data && this.collectionInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
+    <ui_pagination v-if="initPagination" :pageMessage="{totalCount: this.collectionInfo.data && this.collectionInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" ref="collpag" :page-sizes="[8,16,32,64]"></ui_pagination>
   </section>
 </template>
 <script type="text/ecmascript-6">
@@ -178,6 +178,7 @@ export default {
             _this.isSelectAll();
           }
         };
+        this.$refs.collpag.toPageOne();
         this.$forceUpdate();
         this.$store.dispatch("personalCenter/queryCollectionInfo", params);
       } else {
@@ -251,6 +252,24 @@ export default {
       } else {
         return false;
       }
+    },
+    //格式化价格
+    formatPriceNew(value) {
+      if (value) {
+        return (
+          (this.getStaticText("yuan") ? this.getStaticText("yuan") : "￥") +
+          Number(value).toFixed(2)
+        );
+      } else {
+        return (
+          (this.getStaticText("yuan") ? this.getStaticText("yuan") : "￥") +
+          "0.00"
+        );
+      }
+    },
+    //新增收藏去详情页
+    toDetails(pubId){
+    	window.location.href = "../pages/bookdetail.html?pubId=" + pubId;
     }
   }
 };

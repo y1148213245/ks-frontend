@@ -36,7 +36,7 @@
 
     <!-- 音频播放器 -->
     <!-- 如果地址栏中有parentId存在，则是音频组，否则是单个音频 -->
-    <audio :src="playUrl + (parentId ? curVideoObj[keys.rescource] : mediaResId)" controls v-if="resType == 'AUDIO-MEDIA'"></audio>
+    <audio :src="playUrl + (parentId ? (curVideoObj ? curVideoObj[keys.rescource] : '') : mediaResId)" controls v-if="resType == 'AUDIO-MEDIA'"></audio>
     <!-- END 音频播放器 -->
 
     <!-- 系列课程列表 -->
@@ -188,6 +188,8 @@ export default {
       }else if(this.resType == 'VIDEO-MEDIA'){
         this.curVideoObj = item;
         this.initDPlayer();
+      }else if(this.resType == 'AUDIO-MEDIA'){
+        this.curVideoObj = item;
       }
       this.emitDetailEvent(item)
     },

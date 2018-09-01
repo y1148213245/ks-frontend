@@ -46,10 +46,15 @@ export default {
       }
     }).catch(function (error) { });
   },
-  queryOrderAddress (name, cb) {
-    axios.get(CONFIG.BASE_URL + 'user/addresses.do?loginName=' + name).then(function (response) {
+  queryOrderAddress (params, cb) {
+    axios.get(CONFIG.BASE_URL + 'user/addresses.do?loginName=' + params.loginName).then(function (response) {
       if (cb && cb instanceof Function) {
-        cb({ addressList: response.data.data });
+        var res = response.data && response.data.result ? response.data.result : '0';
+        if (res === '1') {
+          cb({ addressList: response.data.data });
+        } else {
+          cb({ addressList: [] });
+        }
       }
     })
   },

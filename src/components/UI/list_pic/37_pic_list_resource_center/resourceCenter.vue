@@ -207,14 +207,22 @@
         getZipAttachment (item) { // 获取附件
           let paramsObj = Object.assign({}, this.CONFIG.getZipAttachment.params);
           paramsObj.pubId = item.id;
+          
           Get(CONFIG.BASE_URL + this.CONFIG.getZipAttachment.url + '?pubId=' + paramsObj.pubId + '&loginName=' + (this.member.loginName?this.member.loginName:'') + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&attachTypes=' + paramsObj.attachTypes).then((rep) => {
             let datas = rep.data;
+            
+            
             if (datas.result == '1' && datas.data) {
               this.zipAttachment = datas.data;
+              
+              
               if(this.zipAttachment[paramsObj.attachTypes]){
                 //获取到需要下载的资源的ID
                 this.zipAttachmentId = this.zipAttachment[paramsObj.attachTypes][0][this.keys.fileRecordID];
+                
+                
                 if(this.zipAttachmentId){
+                  
                   this.toDownload();
                 }
               }

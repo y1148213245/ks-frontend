@@ -47,10 +47,10 @@ export default {
       this.showCondition = item;
     },
     goToSearchResult () {
-      window.location.href = this.CONFIG.searchUrl + '?searchText=' + this.searchText + '&catagory=' + (this.showCondition ? this.showCondition.tag : "");
+      window.location.href = (this.CONFIG.searchUrl ? this.CONFIG.searchUrl : "../pages/search.html") + '?searchText=' + this.searchText + '&catagory=' + (this.showCondition ? this.showCondition.tag : "");
     },
     goToAdvSearch () {
-        window.location.href = this.CONFIG.advSearchUrl;
+        window.location.href = this.CONFIG.advSearchUrl ? this.CONFIG.advSearchUrl : "../pages/searchadvanced.html";
     },
     getStaticText(text){
       if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){

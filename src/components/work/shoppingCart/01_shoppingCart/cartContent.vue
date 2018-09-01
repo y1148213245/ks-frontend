@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-08-29 19:01:43
+ * @Last Modified time: 2018-08-31 15:55:18
  * 购物车组件
  */
 
@@ -826,7 +826,7 @@ export default {
             cb: function () {
               if (this.deleteStatus) {
                 _this.commonMessageFun(_this, 'success', 'deleteSuccess', '删除成功!');
-                _this.selectedAll=false;
+                _this.selectedAll = false; // 删除商品成功后重置全选按钮
                 _this.$store.dispatch("shoppingcart/" + type.QUERY_SHOPPING_CART, { param: { loginName: _this.member.loginName }});
               } else {
                 _this.commonMessageFun(_this, 'error', 'deleteFailed', '删除失败!');
@@ -935,7 +935,7 @@ export default {
                       // 一级活动分类：固定折扣 打折
                       this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType + dataList[j].combinateId].saveValue = curTotalMoney - curTotalMoney * (discountRatio / 100);
                     }
-                    this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType ].totalPrice = curTotalMoney;
+                    this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType + dataList[j].combinateId].totalPrice = curTotalMoney;
                     break;
                   case "freeFare": // 满多少减运费
                     list.forEach(function (item) {
@@ -953,7 +953,7 @@ export default {
                       // 一级活动分类：固定折扣 免运费
                       this.freeFreight = true;
                     }
-                    this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType ].totalPrice = curTotalMoney;
+                    this.selectedProductList["activity" + dataList[j].activityId + dataList[j].productType + dataList[j].combinateId].totalPrice = curTotalMoney;
                     break;
                   case "sendPoints": //满多少送积分  待定
                     var points = list[0].points;
@@ -1300,6 +1300,9 @@ export default {
       /* console.log(this.selectedDelivery)
       console.log(this.orderList);
       console.log(this.curSelectedAddress); */
+      if (this.freeFreight) { // 如果这单免运费的话 就不需要再根据物流模板计算运费
+        return false;
+      }
       let totalWeight = 0;
       this.orderList.map((item) => {
         if (item.list.length > 0) {
@@ -1563,80 +1566,37 @@ export default {
             paymentType: _this.commitInfo.paymentType // true需要跳转 false不需要
           };
 
-          if (this.commitInfo.submitStatus) {
-            // 提交成功
-            if (_this.commitInfo.paymentType) {
-              // 需要跳转支付宝支付/微信扫描二维码页面
-              if (_this.payMethod === "Alipay") {
-                // 支付宝支付
+          if (this.commitInfo.submitStatus) { // 提交成功
+            if (_this.commitInfo.paymentType) { // 需要跳转支付宝支付/微信扫描二维码页面
+              if (_this.payMethod === "Alipay") { // 支付宝支付
                 loadingTag.close();
-                window.open(
-                  CONFIG.BASE_URL +
-                  "epay/getPayForm.do?orderId=" +
-                  argus.orderId +
-                  "&loginName=" +
-                  _this.member.loginName +
-                  "&payMethodCode=" +
-                  argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId,
-                  "_self"
-                );
-              } else if (_this.payMethod === "Weixin") {
-                // 微信支付
-                axios.get(
-                  CONFIG.BASE_URL +
-                  "epay/getPayForm.do?orderId=" +
-                  argus.orderId +
-                  "&loginName=" +
-                  _this.member.loginName +
-                  "&payMethodCode=" +
-                  argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId
-                )
+                window.open(CONFIG.BASE_URL + "epay/getPayForm.do?orderId=" + argus.orderId + "&loginName=" + _this.member.loginName + "&payMethodCode=" + argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId, "_self");
+              } else if (_this.payMethod === "Weixin") { // 微信支付
+                axios.get(CONFIG.BASE_URL + "epay/getPayForm.do?orderId=" + argus.orderId + "&loginName=" + _this.member.loginName + "&payMethodCode=" + argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId)
                   .then(function (response) {
-                    var data = response.data.substring(
-                      response.data.indexOf("<a>") + 3,
-                      response.data.indexOf("</a>")
-                    );
-                    var orderCode = response.data.substring(
-                      response.data.indexOf("<div>") + 5,
-                      response.data.indexOf("</div>")
-                    );
-                    window.location.href =
-                      "../pages/qrcode.html?data=" +
-                      data +
-                      "&orderCode=" +
-                      orderCode;
                     loadingTag.close();
+                    var data = response.data.substring(response.data.indexOf("<a>") + 3,  response.data.indexOf("</a>"));
+                    var orderCode = response.data.substring(response.data.indexOf("<div>") + 5,  response.data.indexOf("</div>"));
+                    var wxpayUrl = "../pages/qrcode.html?data=" + data + "&orderCode=" + orderCode;
+                    window.open(wxpayUrl, '_self');
                   });
               } else {
+                loadingTag.close();
                 _this.$alert( _this.getStaticText('selectCorrectPayWay') ? _this.getStaticText('selectCorrectPayWay') : "请选择有效的支付方式");
                 return false
               }
-              window.history.pushState(
-                null,
-                null,
-                "../pages/errorpage.html"
-              ); // 添加历史记录
-            } else {
-              // 不需要跳转支付页面 实付金额为0
+              window.history.pushState(null, null, "../pages/errorpage.html"); // 添加历史记录
+            } else { // 不需要跳转支付页面 实付金额为0
               loadingTag.close();
-              window.location.href =
-                "../pages/commitorder.html#/commitOrder/" +
-                _this.commitInfo.orderCode +
-                "/" +
-                _this.commitInfo.status +
-                "/order";
+              var elseHref = "../pages/commitorder.html#/commitOrder/" + _this.commitInfo.orderCode + "/" + _this.commitInfo.status + "/order";
+              window.open(elseHref, '_self');
             }
-          } else {
-            // 提交失败
+          } else { // 提交失败
             loadingTag.close();
-            var errorMsg = this.commitInfo.errMsg
-              ? this.commitInfo.errMsg
-              : (this.getStaticText('orderSubmissionError') ? this.getStaticText('orderSubmissionError') : "订单提交有误");
-            _this.$alert(errorMsg, _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
-              confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定"
-            });
+            var errorMsg = this.commitInfo.errMsg ? this.commitInfo.errMsg : (this.getStaticText('orderSubmissionError') ? this.getStaticText('orderSubmissionError') : "订单提交有误");
+            _this.$alert(errorMsg, _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定"});
           }
-          this.hasCommitOrder = false; // 防止重复提交订单
+          _this.hasCommitOrder = false; // 防止重复提交订单
         }
       };
       // console.log(params);
@@ -1644,19 +1604,20 @@ export default {
       let loadingTag = _this.$loading({ fullscreen: true });
     },
     getRmbCoin: function () {         // 实时兑换下载币为人民币
-      var _this = this;
-      if (_this.downloadCoin == "") { // 清空输入框
-        _this.$store.state.shoppingcart.rmbCoin = 0;
+      if (this.downloadCoin == "") { // 清空输入框
+        this.$store.state.shoppingcart.rmbCoin = 0;
         return false;
       }
-      var virtual = Number(_this.downloadCoin);
-      if (virtual > _this.virtualCoin) {
-        _this.$alert(_this.getStaticText('downloadCoinNotEnough') ? _this.getStaticText('downloadCoinNotEnough') : "下载币不足~", _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
-          confirmButtonText: _this.getStaticText('confirm') ? _this.getStaticText('confirm') : "确定"
+      var virtual = Number(this.downloadCoin);
+      if (virtual > this.virtualCoin) { // 输入的值大于用户虚拟币总数 提示虚拟币不足
+        this.$alert(this.getStaticText('downloadCoinNotEnough') ? this.getStaticText('downloadCoinNotEnough') : "下载币不足~", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
+          confirmButtonText: this.getStaticText('confirm') ? this.getStaticText('confirm') : "确定"
         });
-        _this.$store.state.shoppingcart.rmbCoin = _this.virtualCoin;
-        _this.downloadCoin = _this.virtualCoin;
+        this.$store.state.shoppingcart.rmbCoin = this.virtualCoin;// 下载币抵扣数
+        this.downloadCoin = this.virtualCoin;// 与 使用了xxx虚拟币 双向数据绑定
+        virtual = this.virtualCoin;// 获取到的输入框内输入的虚拟币数
       }
+      var _this = this;
       var params = {
         param: virtual,
         myCallbacks: function () {
@@ -1742,6 +1703,7 @@ export default {
     },
     selectedDelivery (newValue, oldValue) { // 更换物流公司 需要相应调整物流价格
       this.selectedDelivery = newValue;
+      this.selectedDelivery.deliveryPrice = this.freeFreight ? 0 : newValue.deliveryPrice; // 免运费
       this.getDeliveryFee();
     },
     couponsList: function (newValue, oldValue) { // 监听优惠券列表 处理提交订单页面刷新时优惠券不高亮显示问题
@@ -1773,10 +1735,8 @@ export default {
         );
         if (tempDetail && tempDetail.freeFreight && this.needInvoice === "0") {
           this.selectedDelivery.deliveryPrice = 0;
-          // console.log("%c注意：当前订单要免运费", "color:red");
-        }/*  else {
-          console.log("%c注意：当前订单不免运费", "color:red");
-        } */
+          console.log("%c注意：当前订单要免运费", "color:red");
+        }
       }
     },
     paymentList: function () {

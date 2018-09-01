@@ -7,28 +7,28 @@
         <template v-for="(config, innerConfig_i) in outerConfig">
           <!-- 需要特殊处理的复杂项 -->
           <!-- img 图片 -->
-          <div v-if="config.name == 'img'" class="work_bookdetail_04_imgcontainter" @click="toCustomFun(config)">
+          <div v-if="config.name == 'img'" class="work_bookdetail_04_imgcontainter" @click="toCustomFun(config)" :key="innerConfig_i">
             <label class="work_bookdetail_04_img_label">{{config.display}}</label>
             <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src="resourceDetail[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)" />
           </div>
 
           <!-- 自定义事件按钮 包括（title 标题） -->
-          <div v-else-if="config.name == 'button'" v-bind="{class: 'work_bookdetail_04_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(config)">
+          <div v-else-if="config.name == 'button'" v-bind="{class: 'work_bookdetail_04_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(config)" >
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_btnlabel">{{isBuy == 1 ? config.afterDisplay : config.display}}</label>
             <span v-bind="{class: 'work_bookdetail_04__btncontainer_' + config.field}" v-if="keys[config.field]">{{ resourceDetail[keys[config.field]] }}</span>
           </div>
 
           <!-- 样书申领按钮 , 因为有单独的显示逻辑和事件逻辑 , 需单独处理  -->
-          <div v-else-if="(config.name == 'apply')" v-bind="{class: 'work_bookdetail_04_btncontainer_' + config.field + '_' + config_i}" @click="toApply(config)">
+          <div v-else-if="(config.name == 'apply')" v-bind="{class: 'work_bookdetail_04_btncontainer_' + config.field + '_' + config_i}" @click="toApply(config)" :key="innerConfig_i">
             <!-- 查询栏目id是否配置在可显示的栏目id -->
             <div v-if="CONFIG.toApply && (CONFIG.toApply.showColId.indexOf(resourceDetail['colId']) != -1)">
               <i v-bind="{class: config.className}"></i>
               <label class="work_bookdetail_04_btnlabel">{{isBuy == 1 ? config.afterDisplay : config.display}}</label>
               <span v-bind="{class: 'work_bookdetail_04__btncontainer_' + config.field}" v-if="keys[config.field]">{{ resourceDetail[keys[config.field]] }}</span>
             </div>
-          </div>          
-          <!-- 库存状态status 因为有单独的显示逻辑 需单独处理-->           
+          </div>
+          <!-- 库存状态status 因为有单独的显示逻辑 需单独处理-->
           <div v-else-if="config.name == 'status'" v-show="CONFIG.judgeInventory" v-bind="{class: 'work_bookdetail_04_btncontainer_' + config.field + '_' + config_i}" @click="toCustomFun(config)">
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_btnlabel">{{config.display}}</label>
@@ -96,8 +96,8 @@
                 <ui_share_01 :namespace="namespace" :modulename="modulename_share"></ui_share_01>
               </div>
 
-              <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰  || （如果当前这本书是纸质书 && （配置了判断库存 && 当前库存小于最小库存）） 购买纸书按钮置灰--> 
-              <section v-else-if="config.name == 'addcart'" 
+              <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰  || （如果当前这本书是纸质书 && （配置了判断库存 && 当前库存小于最小库存）） 购买纸书按钮置灰-->
+              <section v-else-if="config.name == 'addcart'"
                 :class="{work_bookdetail_04_forbid_addcart: (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook) || ((resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')) && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && resourceDetail[keys.inventory] < resourceDetail[keys.lowInventory]))}">
                 <label class="work_bookdetail_04_op_label">
                   <i v-bind="{class: config.className}"></i>{{config.display}}
@@ -173,7 +173,7 @@
           <div class="work_bookdetail_04_combinate_book">
             <div class="work_bookdetail_04_combinate_image"><img :src="resourceDetail[keys['picSmall']] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
             <h4 class="work_bookdetail_04_combinate_name" :title="resourceDetail[keys['resName']]">{{resourceDetail[keys['resName']]}}</h4>
-            <span class="work_bookdetail_04_combinate_price">价格 : {{ '￥' + Number(resourceDetail["memberPrice"]).toFixed(2)}}</span>
+            <span class="work_bookdetail_04_combinate_price">{{getStaticText('price') ? getStaticText('price') : '价格'}} : {{ '￥' + Number(resourceDetail["memberPrice"]).toFixed(2)}}</span>
           </div>
           <div class="work_bookdetail_04_combinate_and">+</div>
           <!-- 组合列表 -->
@@ -183,7 +183,7 @@
               <li class="work_bookdetail_04_combinate_book" v-for="(item,index) in combinateProductLsit" v-bind:key="index" v-show=" index >= showCombinateNum && index < showCombinateNum + showCombinateItem" @click="toCombinateItemDetail(combinateProductCfg['toDetail'],item['pubId'])">
                 <div class="work_bookdetail_04_combinate_image"><img :src="item['smallPic'] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)"></div>
                 <h4 class="work_bookdetail_04_combinate_name" :title="item['resourceName']">{{item["resourceName"]}}</h4>
-                <span class="work_bookdetail_04_combinate_price ">价格 : {{ '￥' + Number(item["memberPrice"]).toFixed(2)}}</span>
+                <span class="work_bookdetail_04_combinate_price ">{{getStaticText('price') ? getStaticText('price') : '价格'}} : {{ '￥' + Number(item["memberPrice"]).toFixed(2)}}</span>
               </li>
             </ul>
             <button class="work_bookdetail_04_combinate_btn next" @click="combinateList($event)" :class="{'disable': showCombinateNum > showCombinateMaxNum - showCombinateItem }" v-show="combinateProductLsit.length > 3">&gt;</button>
@@ -191,8 +191,8 @@
           <div class="work_bookdetail_04_combinate_equal">=</div>
           <!-- 购买按钮 -->
           <div class="work_bookdetail_04_combinate_pay">
-            <span class="work_bookdetail_04_combinate_price">套餐价 : <span>{{ '￥' + Number(combinateProduct["combinationPrice"]).toFixed(2)}}</span></span>
-            <span class="work_bookdetail_04_combinate_savemoney" v-if="combinateProduct['allPrice'] > combinateProduct['combinationPrice']">省{{ '￥' + Number(combinateProduct['allPrice'] - combinateProduct['combinationPrice']).toFixed(2)}}</span>
+            <span class="work_bookdetail_04_combinate_price">{{getStaticText('combinatePrice') ? getStaticText('combinatePrice') : '套餐价'}} : <span>{{ '￥' + Number(combinateProduct["combinationPrice"]).toFixed(2)}}</span></span>
+            <span class="work_bookdetail_04_combinate_savemoney" v-if="combinateProduct['allPrice'] > combinateProduct['combinationPrice']">{{getStaticText('save') ? getStaticText('save') : '省'}}{{ '￥' + Number(combinateProduct['allPrice'] - combinateProduct['combinationPrice']).toFixed(2)}}</span>
             <span class="work_bookdetail_04_combinate_buy" @click="addcombinateProductToCart(combinateProductCfg['addCart'],combinateProduct.id)">{{combinateProductCfg.lastBtn || '立即购买'}}</span>
           </div>
         </li>
@@ -342,12 +342,16 @@ export default {
       payMoney: "",  //需要支付的金额
       commitInfo: {},   //订单信息
       buyBtnOpacity: true,  //初次加载页面时按钮透明
-      defaultSaleUrl:'' //纸书默认购买链接，天猫首页
+      defaultSaleUrl:'', //纸书默认购买链接，天猫首页
+
+      isbn:"",  //图书的ISBN号
+      isbnConfig:{} // 都去获取isbn号的配置
     }
   },
   mounted () {
     var urlQuery = URL.parse(document.URL, true).query;
     this.pubId = urlQuery.pubId; // 从地址栏接收栏目id
+    this.isbn = urlQuery.ISBN || urlQuery.isbn;  // 接收地址栏isbn号
     this.modulename_share = this.modulename + 'share';
     this.resourceDetailConfig = this.CONFIG.getResourceDetail;
     this.publicizeInfoConfig = this.CONFIG.getPublicizeInfo;
@@ -380,6 +384,16 @@ export default {
     if (this.audioAttachmentConfig && this.audioAttachmentConfig.isShowAudio) { // 获取音频列表
       this.getAudioDetail();
     }
+    // 无pubid的 , 有isbn书号的情况下 , 通过list.do接口传isbn书号
+    this.isbnConfig = this.CONFIG.isbnConfig;
+    console.log(this.pubId);
+    console.log(this.isbn);
+    console.log(this.isbnConfig);
+    if((this.pubId == "" || this.pubId == undefined) && this.isbn != "" && this.isbnConfig){
+      this.getPubIdByIsbn();
+    }else{
+      console.log("no_this.getPubIdByIsbn()");
+    }
   },
 
   created: function () {
@@ -407,6 +421,25 @@ export default {
     dealResourceImg (eve) {  // 处理图片尺寸
       DrawImage(eve.path[0], this.CONFIG.infoImgWidth, this.CONFIG.infoImgHeight);
     },
+    // 无pubid的 , 有isbn书号的情况下 , 通过list.do接口传isbn书号
+    getPubIdByIsbn(){
+      let paramsObj = Object.assign({}, this.isbnConfig.params);
+      paramsObj.conditions.map((item) => {
+        if (item.hasOwnProperty('BOOK_ISBN')) {
+          item['BOOK_ISBN'] = this.isbn;
+        }
+      })
+      paramsObj.conditions = JSON.stringify(paramsObj.conditions);
+      console.log(paramsObj);
+      Post(CONFIG.BASE_URL + "spc/cms/publish/list.do", paramsObj).then(
+        rep => {
+          let datas = rep.data;
+          if (datas.success) {
+            console.log(datas);
+          }
+        }
+      );
+    },
     toCustomFun (config) { // 执行自定义事件
       let _this = this;
       if(config.method == 'toBuyLayer'){
@@ -417,7 +450,7 @@ export default {
             type: 'error',
             duration: 2000,
             onClose: function(){
-              
+
               window.location = _this.CONFIG.loginUrl ? _this.CONFIG.loginUrl : "login.html";
             }
           });
@@ -552,10 +585,19 @@ export default {
     },
     toCustomFunMethod (method) { // 执行自定义事件
       if(this.buyBtnOpacity){return}// 按钮透明时方法不可用 ， 数据加载完毕按钮不透明时方法可用
-      if (method == 'toProbation') { // 执行免费试读操作
-        if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 没有试读地址
+      if (method == 'toProbation') { // 执行已经购买后阅读操作
+        if(!this.resourceDetail[this.keys.bookdownloadpath]){  //已经购买 没有全文阅读地址
+          this.$message({
+            message: "本书没有阅读地址",
+            type: 'error'
+          });
           return false;
+        }else {                                               //已经购买 有全文阅读地址
+          this.CONFIG.toProbation.url = CONFIG.READ_URL;
+          this.CONFIG.toProbation.fixedKeys.readType = 1;
         }
+      }else{
+        return false;
       }
 
       if (method == 'addBookShelf') { //加入书架
@@ -642,12 +684,13 @@ export default {
             );
           } else if (this.currentPayWay === "Weixin") {
             // 微信支付
+            var _this=this;
             axios.get(
               CONFIG.BASE_URL +
               "epay/getPayForm.do?orderId=" +
               argus.orderId +
               "&loginName=" +
-              this.member.loginName +
+              _this.member.loginName +
               "&payMethodCode=" +
               argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId
             )
@@ -661,7 +704,7 @@ export default {
                 response.data.indexOf("</div>")
               );
               window.location.href =
-                "../pages/qrcode.html?data=" +
+                (_this.CONFIG.qrcodeHref ? _this.CONFIG.qrcodeHref : "../pages/qrcode.html?data=") +
                 data +
                 "&orderCode=" +
                 orderCode;
@@ -670,13 +713,13 @@ export default {
           window.history.pushState(
             null,
             null,
-            "../pages/errorpage.html"
+            (this.CONFIG.errorpageHref ? this.CONFIG.errorpageHref : "../pages/errorpage.html")
           ); // 添加历史记录
         } else {
           // 不需要跳转支付页面 实付金额为0
           loadingTag.close();
           window.location.href =
-            "../pages/commitorder.html#/commitOrder/" +
+            (this.CONFIG.commitorderHref ? this.CONFIG.commitorderHref : "../pages/commitorder.html#/commitOrder/") +
             this.commitInfo.orderCode +
             "/" +
             this.commitInfo.status +
@@ -719,7 +762,7 @@ export default {
         resourceId: this.resourceDetail.pub_resource_id,
         resourceName: this.resourceDetail.pub_resource_name,
         resourceType: this.resourceDetail.prod_resource_type,
-        periodicalType: this.CONFIG.zhentiContentType ? this.CONFIG.zhentiContentType : '', 
+        periodicalType: this.CONFIG.zhentiContentType ? this.CONFIG.zhentiContentType : '',
         periodicalYear: "", //传值空
         periodicalMonth: this.payMoney, //传值空。先写成售价，为了调延大直接购买课程，后期可能需要完善
         combinationId: "0",
@@ -801,7 +844,7 @@ export default {
           this.isEb = this.resourceDetail.isEb;
           this.pub_comment_num = this.resourceDetail.pub_comment_num;
           this.payMoney = Number(this.resourceDetail[this.keys.courseSalePrice]);
-          
+
           if (this.publicizeInfoConfig && this.publicizeInfoConfig.isShowPublicize) {
             this.getPublicizeInfo(); // 获取图书相关信息
           }
@@ -826,7 +869,7 @@ export default {
             }
             this.showCombinateMaxNum = this.combinateProductLsit ? this.combinateProductLsit.length - 1 : this.showCombinateItem; // 取第一条组合购买的length
           }
-          
+
         }
       });
     },
@@ -1005,7 +1048,7 @@ export default {
     },
     /* 通过检索资源名获取pubId */
     getPubidByLocationQueryFromSyk () {
-      if (!this.pubId) {
+      if (!this.pubId && !this.isbn) {
         let config = this.CONFIG.getPubidByLocationQueryFromSyk ? this.CONFIG.getPubidByLocationQueryFromSyk : {
           url:'spc/cms/publish/list.do',
           params:{

@@ -164,7 +164,7 @@ export default {
       expNo: "889645294678455192", //快递单号
       kdnOptionsBaseUrl: "http://www.kdniao.com", //快递鸟地址
       loading: true,
-      deliveryStatus: "" //订单发货状态
+      deliveryStatus: "", //订单发货状态
     };
   },
 
@@ -290,6 +290,15 @@ export default {
           this.member.loginName
       ).then(resp => {
         console.log(resp);
+        let res = resp.data;
+        if(res.result == "1"){
+	        this.initData();  //确认收货后再次请求列表
+        }else{
+	        Toast.fail({
+		        duration: 1000,
+		        message: "确认收货失败"
+	        });
+        }
       });
     },
     //取消订单

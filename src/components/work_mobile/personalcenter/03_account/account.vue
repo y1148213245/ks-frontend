@@ -478,6 +478,7 @@ export default {
                   duration: 1000,
                   message: msg
                 });
+                window.history.go(-1);
               } else {
                 let msg = res.error.errorMsg;
                 Toast.fail({

@@ -14,6 +14,7 @@ const description = `资讯详情组件，通过点击首页资讯进入，显�
 const dev = {
   information: {
     information_01: {
+      indexHref:'../pages/index.html',
       showItem: ['like', 'collect', 'share', 'review'], // 控制显示哪些项： like（点赞）  collect （收藏）  share （分享）
       queryDetail: { // 查询资讯详情
         url: '/data/ui_information_information_01_query_detail.json',
@@ -91,6 +92,7 @@ const dev = {
 const prod = {  // 详情组件内含评论组件 评论组件作为子组件 配置不要提到父组件里面
   information: {
     information_01: {
+      indexHref:'../pages/index.html',
       showItem: ['like', 'collect', 'share', 'review'], // 控制显示哪些项： like（点赞）  collect （收藏）  share （分享）
       queryDetail: { // 查询资讯详情
         url:  'spc/cms/publish/detail.do',

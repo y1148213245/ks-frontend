@@ -5,7 +5,7 @@
     <div aria-label="Breadcrumb" role="navigation" class="el-breadcrumb">
       <span class="el-breadcrumb__item">{{getStaticText('yourPosition') ? getStaticText('yourPosition')  : '您的位置：'}}</span>
       <span class="el-breadcrumb__item">
-        <span role="link" class="el-breadcrumb__inner is-link"><a href="../pages/index.html">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</a></span>
+        <span role="link" class="el-breadcrumb__inner is-link"><a href="CONFIG.indexHref ? CONFIG.indexHref : '../pages/index.html'">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</a></span>
         <i class="el-breadcrumb__separator el-icon-arrow-right"></i>
       </span>
       <span class="el-breadcrumb__item" aria-current="page">
@@ -21,13 +21,6 @@
           <span class="ui_information_01-news_pubTime" v-if="CONFIG && CONFIG.timeFormat && CONFIG.timeFormat === -1">{{formatDateNEW(information[keys.pubTime])}}</span>
           <span class="ui_information_01-news_pubTime" v-else-if="CONFIG && CONFIG.timeFormat && CONFIG.timeFormat === 1">{{formatTimeNEW(information[keys.pubTime])}}</span>
           <span class="ui_information_01-news_pubTime" v-else>{{formatDateHH(information[keys.pubTime])}}</span>
-
-          <span class="ui_information_01-news_share" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('share') !== -1 ? true : false">
-            <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis ui_information_01-news_share_a" target="_blank">
-              <i class="ui_information_01-news_other_03"></i>
-              <span v-if="CONFIG && displayItem" v-text="CONFIG.displayItem"></span>
-            </a>
-          </span>
 
           <span class="ui_information_01-news_sc" @click="collectOrLike('0',information.pub_content_type,information.id)" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('collect') !== -1 ? true : false">
             <i class="ui_information_01-news_other_02_cg fa fa-heart" v-if="information.isCollect == '1'"></i>

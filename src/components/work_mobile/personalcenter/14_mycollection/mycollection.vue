@@ -67,6 +67,7 @@ export default {
       display: '',
       pageIndex: "1",  // 页码 从 1 开始
       pageSize: "15",  // 每页显示个数
+      totalPages: "0", // 订单总页数
       loginName: '',   //登录名
       result: [],  //批量取消存放的pubid
       active: 0,
@@ -113,7 +114,8 @@ export default {
     },
 
     //获取我的书架(我的收藏)的数据
-    queryCollectionList (loginName, index) {
+    queryCollectionList (loginName, ind) {
+      let index = ind ? ind : this.active; // 兼容下拉的时候没有传ind值
       let obj = this;
       let params = Object.assign({}, obj.COLLECTIONCONFIG.params);
       //三个tab三个不同的index，三个不同的contentType
@@ -132,6 +134,7 @@ export default {
         let res = resp.data;
         if (res.result == '1' && res.data.length > 0) {
           obj.collectionlist = obj.collectionlist.concat(res.data);
+          obj.totalPages = res.totalPages;
         } else if (res.result == '0') {
           Toast.fail({
             duration: 1000,

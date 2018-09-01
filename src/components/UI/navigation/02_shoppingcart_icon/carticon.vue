@@ -63,12 +63,12 @@ export default {
     }),
     toShoppingCart: function () {
       if (this.isLogin) {
-        window.location.href = this.CONFIG.toCartUrl;
+        window.location.href = this.CONFIG.toCartUrl ? this.CONFIG.toCartUrl : '../pages/shoppingcart.html';
       } else {
         this.$alert(this.getStaticText('pleaseLoginFirst') ? this.getStaticText('pleaseLoginFirst') : "请您先登录", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
           confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定",
           callback: action => {
-            window.location.href = this.CONFIG.toLoginUrl;
+            window.location.href = this.CONFIG.toLoginUrl ? this.CONFIG.toLoginUrl : '../pages/login.html';
           }
         });
       }

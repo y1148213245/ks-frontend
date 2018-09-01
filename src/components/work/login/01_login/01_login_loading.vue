@@ -153,7 +153,7 @@ export default {
           clearInterval(interval)
           let reffer = window.localStorage.getItem('loginReferr')
           window.localStorage.setItem('loginReferr','')
-          window.location.href = reffer || _this.CONFIG.toIndexHref;
+          window.location.href = reffer || (_this.CONFIG.toIndexHref ? _this.CONFIG.toIndexHref :'./index.html');
         }
       }, 1000);
     },
