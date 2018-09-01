@@ -737,7 +737,10 @@
         // }
         //判断支付方式 生成不同的参数
         //如果是余额支付那么判断余额够不够
-        this.setOrderParams();
+        let status = this.setOrderParams();
+        if (status === false) {
+          return false
+        }
         let loading = Vue.prototype.$loading({
           text: "数据加载中..."
         });
@@ -821,7 +824,24 @@
         })
       },
       setOrderParams() {
-
+        /**新增余额支付 18/08/31 */
+        let balanceAmount = 0;//默认为0
+        let realAmount = this.bookMoney;
+        if(this.defaultPay == 'Balance'){
+          /* 虚拟币不够不允许支付 */
+          if (this.menberMoney - this.bookMoney < 0) {
+            let errMsg = this.CONFIG.payType.Balance.balanceHint
+            this.$message({
+              type:'warning',
+              message:errMsg
+            })
+            return false
+          } else {
+            balanceAmount = this.bookMoney;
+            realAmount = 0;
+          }
+        }
+        /**END 新增余额支付 */
         this.curSelectedInvoice = {
           invoiceType: "", // 发票类型
           receipttypes: "",
@@ -834,6 +854,13 @@
           bankName: "", // 开户银行
           bankAccount: "" // 开户账号
         };
+        /**新增期刊类型配置 18/08/31 */
+        let periodicalType =  0; // 0 电子期刊(默认值)
+        if (this.CONFIG.periodicalType) {
+          periodicalType = this.CONFIG.periodicalType
+        }
+        /**END新增期刊类型配置 18/08/31 */
+        
         this.tempList = {
           id: "", //不用填
           productId: this.resourceDetail.productId, //
@@ -846,7 +873,7 @@
           resourceId: this.resourceDetail.pub_resource_id,
           resourceName: this.resourceDetail.pub_resource_name,
           resourceType: "",
-          periodicalType: "0", //传值空   一毛一样的
+          periodicalType: periodicalType, //传值空   一毛一样的
           periodicalYear: this.TakeNameChangeyear,   //哪年的
           periodicalMonth: this.TakeNameChangeList, //传值空
           combinationId: "0",
@@ -854,7 +881,7 @@
         this.temp = {
           activityId: 0, //活动id  填0
           productType: "", //产品类型id  电子书 94
-          periodicalType: "0",  //电子期刊是0
+          periodicalType: periodicalType,  //电子期刊是0
           periodicalName: this.checkMagTypeName,  //期刊名称
           periodicalYear: this.TakeNameChangeyear,   //哪年的
           periodicalMonth: this.TakeNameChangeList,  //6，7，8，9
@@ -868,7 +895,7 @@
           oremark: this.CONFIG.platform,
           orderType: "periodical",   //期刊是这个 其他的都是book
           orderCode: "", //不用写
-          balanceAmount: 0, // 如果是余额支付，那就写支付金额 不是就写0
+          balanceAmount: balanceAmount, // 如果是余额支付，那就写支付金额 不是就写0
           createTime: null, //不用写
           deliveryAddress: '', // 收货人整个地址 北京市海淀区 拼起来的地址
           deliveryContact: '', // 联系方式
@@ -888,7 +915,7 @@
           payTime: null,
           payType: 1, // 0线下支付  1在线支付
           payUser: "", //不用写
-          realAmount: this.bookMoney, // 实付金额 = 应付金额-运费-余额支付
+          realAmount: realAmount, // 实付金额 = 应付金额-运费-余额支付
           receiptId: this.curSelectedInvoice.receiptId,
           receiptType: this.curSelectedInvoice.receiptType, //如果要发票的话  1 个人 2 单位
           receiptTitle: this.curSelectedInvoice.receiptType == 1 ? "个人" : this.curSelectedInvoice.receiptTitle,
