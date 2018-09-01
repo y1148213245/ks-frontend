@@ -77,7 +77,7 @@ export default {
       colId: null, //要查询的列表所在分类的colId
       childId: null, //当前分类的子分类id
       childName: null, //当前分类的子分类name
-      currentColActive: '-1',/* 当前选中栏目 */
+      currentColActive: -1,/* 当前选中栏目 */
       requestParams: "", // 去详情页需要传查询list.do的所有参数
     };
   },
@@ -98,6 +98,7 @@ export default {
   },
   methods: {
     getMessage (message) {
+      this.currentColActive = -1
       // console.log(message);
       // 接收并处理广播数据
       this.colId = message[0];
