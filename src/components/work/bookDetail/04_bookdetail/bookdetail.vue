@@ -389,7 +389,7 @@ export default {
     console.log(this.pubId);
     console.log(this.isbn);
     console.log(this.isbnConfig);
-    if((this.pubId == "" || this.pubId == undefined) && this.isbn != "" && this.isbnConfig){
+    if((this.isbnConfig && this.pubId == "" || this.pubId == undefined) && this.isbn != "" ){
       this.getPubIdByIsbn();
     }else{
       console.log("no_this.getPubIdByIsbn()");
@@ -421,8 +421,9 @@ export default {
     dealResourceImg (eve) {  // 处理图片尺寸
       DrawImage(eve.path[0], this.CONFIG.infoImgWidth, this.CONFIG.infoImgHeight);
     },
-    // 无pubid的 , 有isbn书号的情况下 , 通过list.do接口传isbn书号
+    // 无pubId的 , 有isbn书号的情况下 , 通过list.do接口传isbn书号
     getPubIdByIsbn(){
+      let _this = this;
       let paramsObj = Object.assign({}, this.isbnConfig.params);
       paramsObj.conditions.map((item) => {
         if (item.hasOwnProperty('BOOK_ISBN')) {
@@ -434,8 +435,10 @@ export default {
       Post(CONFIG.BASE_URL + "spc/cms/publish/list.do", paramsObj).then(
         rep => {
           let datas = rep.data;
-          if (datas.success) {
-            console.log(datas);
+          console.log(datas);
+          if (datas.success && datas.result && datas.result.length > 0) {
+            _this.pubId = datas.result[0]["id"]; // 获取第一本书的id既是pubId
+            _this.getResourceDetail();  //获取图书详情信息
           }
         }
       );

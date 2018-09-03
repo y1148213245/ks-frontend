@@ -54,7 +54,7 @@
           tabList: [],    //存放tab的数组
           tHeadList: [],  //存放table头部信息的数组
           tBodyList: [],  //存放table内容信息的数组
-          currentIndex: 0,  //控制tab样式切换的  默认显示全部（0）
+          currentIndex: -1,  //控制tab样式切换的  默认显示全部（-1）
           CONFIG: null,  //获取配置
           display: {},  //展示静态文本的
           keys: {},  //字段配置
@@ -76,6 +76,7 @@
         //将栏目树中的二级栏目传进来，在本组件中渲染三级栏目
         this.$bus.$on(_self.CONFIG.transTitle,function (item) {
           _self.resourceTitle = item.name;
+          _self.currentIndex = -1
           //渲染三级栏目
           _self.showThreeColumn(item, true);
         });
@@ -118,10 +119,10 @@
           this.tBodyList = [];
           let colId = item.id;
           let paramCols = '';
-          if (this.CONDIG.getList.isGetSubColsData) {
+          if (this.CONFIG.getList.isGetSubColsData) {
             if (this.allCols) {//判断是否缓存栏目树数据
               let alls = [colId];
-              paramCols = this.getSubCol([],alls)
+              paramCols = this.getSubCol([colId],alls).join(' ')
             } else {
               /* 获取栏目树后再重新调用当前方法 */
               this.getAllCols().then(resp => {
@@ -165,13 +166,14 @@
         getSubCol(container,subs,cols = this.allCols){
           let _this = this;
           subs.forEach(element => {
-              let subCols = cols.filter(item=>{
+              let subCols = []
+              cols.forEach(item=>{
                 if (element == item.parentId) {
-                  return item.id
+                  subCols.push(item.id);
+                  container.push(item.id);
                 }
               })
               if (subCols.length > 0) {
-                container.concat(subCols);
                 _this.getSubCol(container,subCols)
               }
           });

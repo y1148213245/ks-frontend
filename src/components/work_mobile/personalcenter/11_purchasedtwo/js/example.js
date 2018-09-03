@@ -100,7 +100,8 @@ const prod = {
           {
             title: '期刊',
             type: '2',
-            status: '1' //已加入书架
+            status: '1', //已加入书架
+            productType:'periodical'
           },
           {
             title: '知识服务',
@@ -119,7 +120,6 @@ const prod = {
           pageSize: '10', // 每页的数量
           type: '2', //类型： 试读(1)、购买(2)、全部(3)
           siteId: '', // 站点id
-          productType: '', //商品类型
           status: '3' //状态：未加入书架(0)、加入书架(1)、全部(3)
         }
       },

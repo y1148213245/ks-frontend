@@ -182,7 +182,7 @@ export default {
         //获取数据
         switch (index) {
           case 0: this.queryMyBoughtBooks(this.loginName, this.tab); break;  //去调图书接口
-          case 1: console.log('去调期刊接口'); break;  //去调期刊接口
+          case 1: this.queryMyBoughtBooks(this.loginName, this.tab); break;  //去调期刊接口
           case 2: window.open(this.CONFIG.toKnowledgeService); break;  //去知识服务外链
         }
 
@@ -204,7 +204,7 @@ export default {
       this.isHasPeriodical = false;
       this.isHasService = false;
       let params = Object.assign({}, this.CONFIG.getBoughtBooks.params);
-      Get(CONFIG.BASE_URL + this.CONFIG.getBoughtBooks.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&type=' + (tab ? tab.type : this.tab.type) + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&productType=' + params.productType + '&status=' + (tab ? tab.status : this.tab.status)).then((resp) => {
+      Get(CONFIG.BASE_URL + this.CONFIG.getBoughtBooks.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&type=' + (tab ? tab.type : this.tab.type) + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&productType=' + (this.tab.productType ? this.tab.productType : '') + '&status=' + (tab ? tab.status : this.tab.status)).then((resp) => {
           let res = resp.data;
           this.isLoading = false;
           if (res.result == '1' && res.data.length > 0) {

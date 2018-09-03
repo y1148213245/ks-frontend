@@ -131,9 +131,14 @@
         <div class="newWrapper">
           <div>{{getStaticText('receivingArea') ? getStaticText('receivingArea') : '收货地区'}}：</div>
           <div class="selectPCC">
-            <select id="s_province" name="s_province" @blur="checkArea()"></select>
+            <!--<select id="s_province" name="s_province" @blur="checkArea()"></select>
             <select id="s_city" name="s_city" @blur="checkArea()"></select>
-            <select id="s_county" name="s_county" @blur="checkArea()"></select>
+            <select id="s_county" name="s_county" @blur="checkArea()"></select>-->
+            <!--edit by ma.jw-->
+            <span id="s_province">{{form.city | myAddressCity}}</span>
+            <span id="s_city">{{form.erae | myAddressErae}}</span>
+            <span id="s_county">{{form.minerae | myAddressMinerae}}</span>
+            <personalCenter_address v-if="addAddressDialog"></personalCenter_address>
           </div>
           <span class="warningInfo" v-if="emptyPCC">{{getStaticText('pleaseImproveProvincialAndMunicipalInformation') ? getStaticText('pleaseImproveProvincialAndMunicipalInformation') : '请完善省市信息'}}</span>
         </div>
@@ -199,8 +204,9 @@
                   <span id="t_city">{{form.city | myAddressCity}}</span>
                   <span id="t_erae">{{form.erae | myAddressErae}}</span>
                   <span id="t_minerae">{{form.minerae | myAddressMinerae}}</span>
-                  <el-cascader :options="CityInfo" v-model="form.selectedOptions" :change-on-select="true" :clearable="true" :filterable="true" @change="handleChange">
-                  </el-cascader>
+                  <!--<el-cascader :options="CityInfo" v-model="form.selectedOptions" :change-on-select="true" :clearable="true" :filterable="true" @change="handleChange">
+                  </el-cascader>-->
+                  <personalCenter_address v-if="updateAddressDialog"></personalCenter_address>
                 </div>
               </el-form-item>
             </el-form>
@@ -267,10 +273,14 @@
             </div>
           </div>
 
-          <div class="wzdh_xgxx_tj">
-            <el-button type="primary" @click="modifyInformation(1)" class="f14">{{getStaticText('changePassword') ? getStaticText('changePassword') : '修改密码'}}</el-button>
+          <div class="wzdh_xgxx_tj modifyInfo">
+            <el-button type="primary " @click="modifyInformation(1)" class="f14">修改密码</el-button>
           </div>
-
+          <div class="wzdh_xgxx_tj">
+            <!--<el-button type="primary" @click="modifyInformation(1)" class="f14">修改密码</el-button>-->
+            <!--<el-button type="primary" @click="modifyInformation(1)" class="f14">{{getStaticText('changePassword') ? getStaticText('changePassword') : '修改密码'}}</el-button>-->
+            <el-button type="primary" @click="modifyInfor(10)" class="f14">编辑信息</el-button>
+          </div>
         </div>
         <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('return') ? getStaticText('return') :'返回'}}</el-button>
         <!-- 设置密保问题弹窗 -->
@@ -378,7 +388,7 @@
                   </el-form-item>
                   <el-form-item :label="(getStaticText('mailboxVerificationCode') ? getStaticText('mailboxVerificationCode') : '邮箱验证码')+':'" prop="emailnum" v-if="butt">
                     <el-input type="text" v-model="emailValidateNum.emailnum" auto-complete="off" :placeholder="getStaticText('pleaseEnterTheMailboxVerificationCode') ? getStaticText('pleaseEnterTheMailboxVerificationCode') : '请输入邮箱验证码'" style="display:inline-block;width:220px;"></el-input>
-                    <span style="margin-left:10px;color:red">{{emailTime}}</span>
+                    <span style="margin-left:10px;color:red">{{emailTime}}{{getStaticText('seconds') ? getStaticText('seconds') : 's'}}</span>
                   </el-form-item>
                   <div>
                     <el-button type="primary" @click="submitEmailValidateNum('emailValidateNum')" v-if="butt">{{getStaticText('next') ? getStaticText('next') : '下一步'}}</el-button>
@@ -402,7 +412,7 @@
                   </el-form-item>
                   <el-form-item :label="getStaticText('mobileVerificationCode') ? getStaticText('mobileVerificationCode') : '手机验证码'+':'" prop="oldSendNum">
                     <el-input type="text" v-model="oldMobileValidateForm.oldSendNum" auto-complete="off" :placeholder="getStaticText('pleaseEnterYourPhoneVerificationCode') ? getStaticText('pleaseEnterYourPhoneVerificationCode') : '请输入手机验证码'" style="display:inline-block;width:220px;"></el-input>
-                    <span style="margin-left:10px;color:red" v-if="butt_phone">{{phoneTime}}</span>
+                    <span style="margin-left:10px;color:red" v-if="butt_phone">{{phoneTime}}{{getStaticText('seconds') ? getStaticText('seconds') : 's'}}</span>
                   </el-form-item>
                   <div>
                     <el-button type="primary" @click="submitMobileValidateNum('oldMobileValidateForm')" v-if="butt">{{getStaticText('next') ? getStaticText('next') : '下一步'}}</el-button>
@@ -577,7 +587,7 @@
         </div>
         <div v-else>
           <el-radio-group v-model="payWay" size="small" fill="#f6163c">
-            <span v-for="(pay, index) in paymentList" @click="selectPayWay(pay.payCode)">
+            <span v-for="(pay, index) in paymentList" :key="index" @click="selectPayWay(pay.payCode)">
               <el-radio :label="index">{{pay.payName}}</el-radio>
             </span>
           </el-radio-group>
@@ -586,6 +596,83 @@
             <el-button type="primary" class="butt_back" @click="RechargeVirtual">{{getStaticText('placeOrder') ? getStaticText('placeOrder') : '提交订单'}}</el-button>
           </div>
         </div>
+      </div>
+    </div>
+    <!--修改个人信息-->
+    <div v-show="currentShow=='modifyInfo'">
+      <el-radio v-model="userMode" label="1">普通用户</el-radio>
+      <el-radio v-model="userMode" label="2">教师用户</el-radio>
+      <div>
+        <el-form  ref="form" :model="modifyUserNav" label-width="80px">
+          <el-form-item label="姓名" v-if="userMode==1||userMode==2" >
+            <el-input v-model="modifyUserNav.loginName"></el-input>
+          </el-form-item>
+          <el-form-item label="职务" v-if="userMode==2" >
+            <el-input v-model="modifyUserNav.job"></el-input>
+          </el-form-item>
+          <el-form-item label="职称" v-if="userMode==2" >
+            <el-select v-model="modifyUserNav.positio" placeholder="职称">
+              <el-option v-for="(item,index) in modifyUser.positio"  :key="index" :label="item" :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="电话" v-if="userMode==2" >
+            <el-input v-model="modifyUserNav.mobileNo"></el-input>
+          </el-form-item>
+          <el-form-item label="行业" v-if="userMode==1">
+            <el-select v-model="modifyUserNav.industry" placeholder="请选择行业">
+              <el-option v-for="(item,index) in modifyUser.industry"  :key="index" :label="item" :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="教育程度" v-if="userMode==1">
+            <el-select v-model="modifyUserNav.educated" placeholder="请选择教育程度" >
+              <el-option v-for="(item,index) in modifyUser.educated"  :key="index" :label="item" :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所在省份" v-if="userMode==1||userMode==2">
+            <el-select v-model="modifyUserNav.areainfo" placeholder="请选择所在省份" >
+              <el-option v-for="(item,index) in modifyUser.areainfo"  :key="index" :label="item" :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="具体地址" v-if="userMode==1||userMode==2">
+            <el-input type="textarea" v-model="modifyUserNav.address" ></el-input>
+          </el-form-item>
+          <el-form-item label="执教学校" v-if="userMode==2">
+            <el-input  v-model="modifyUserNav.company"></el-input>
+          </el-form-item>
+          <el-form-item label="所属院系" v-if="userMode==2">
+            <el-input  v-model="modifyUserNav.faculty"></el-input>
+          </el-form-item>
+          <el-form-item label="教研室" v-if="userMode==2">
+            <el-input  v-model="modifyUserNav.staffRoom"></el-input>
+          </el-form-item>
+          <el-form-item label="教学层次" v-if="userMode==2">
+            <el-select v-model="modifyUserNav.teachLevel" placeholder="请选择所在省份" >
+              <el-option v-for="(item,index) in modifyUser.teachLevel"  :key="index" :label="item" :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="教学专业" v-if="userMode==2">
+            <el-input  v-model="modifyUserNav.subject"></el-input>
+          </el-form-item>
+          <el-form-item label="教学课程" v-if="userMode==2">
+            <el-input type="textarea" v-model="modifyUserNav.teachCourse" ></el-input>
+          </el-form-item>
+          <el-form-item label="邮政编码" v-if="userMode==2||userMode==1">
+            <el-input type="textarea" v-model="modifyUserNav.postcode" ></el-input>
+          </el-form-item>
+          <el-form-item label="关注图书分类" prop="type" v-if="userMode==1||userMode==2">
+            <el-checkbox-group v-model="modifyUserNav.bookClassifyConcerned">
+              <el-checkbox v-for="(item,index) in modifyUser.bookClassifyConcerned" :key="index" :label="item" name="type"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+
+          <el-button type="primary"  class="butt_back" @click="ordinaryUserSave(modifyUserNav)">保存</el-button>
+          <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
+        </el-form>
       </div>
     </div>
   </section>
@@ -938,8 +1025,28 @@ export default {
     };
     let token = Token();
     return {
+      modifyUserNav:{
+        bookClassifyConcerned:[],//关注图书分类
+        loginName:"",//用户名
+        industry:"",//
+        educated:"",//
+        areainfo:"",//
+        address:"",//
+        job:"",//职务
+        positio:"",
+        mobileNo:"",
+        staffRoom:"",
+        teachLevel:"",
+        subject:"",
+        faculty:"",
+        company:"",
+        teachCourse:"",
+        postcode:""
+      },
+      userMode:"1",//判断是普通用户还是教师用户
       CONFIG: null,
       GLOBLE_CONFIG: null,
+      modifyUser:null,//完善个人信息
       defaultPic: "",
       emailDialog: false /* 邮箱弹窗 */,
       uploadHeader: {
@@ -955,7 +1062,8 @@ export default {
         "Verification",
         "modifyPassword",
         "modifyMobile",
-        "modifyEmail"
+        "modifyEmail",
+        "modifyInfo",
       ],
       // 计时器
       emailTime: "",
@@ -1102,12 +1210,14 @@ export default {
       phoneError: "", //新建收货地址--联系电话验证信息
       contactorError: "", //新建收货地址--收货人验证信息
       goodsInfo: [], //新建收货地址--验证信息
-      paymentList: [] //支付方式
+      paymentList: [], //支付方式
     };
   },
   created() {
+	  this.$bus.$on("handleChange",this.handleChange);
     this.defaultPic = require("../../assets/img/timg.jpg"); // webpack静态资源打包问题
     this.CONFIG = this.parentConfig.account;
+    this.modifyUser=this.parentConfig.modifyUser;
     this.GLOBLE_CONFIG = CONFIG;
     this.getShowEmailPostfix()
       ? (this.emailForm.emailPostfix = CONFIG.EMAIL_CONFIG.postfix[0])
@@ -1115,6 +1225,27 @@ export default {
     this.completeAddress = this.getStaticText("thisIsACompleteAddress")
       ? this.getStaticText("thisIsACompleteAddress")
       : "这是一条完整的地址";
+
+  },
+  watch:{
+    account(nv,ov){
+      if(nv.loginName){
+        var modifyarr=this.modifyUserNav
+        for(var y in modifyarr){
+          for(var x in nv){
+            if(y==x&&y!="bookClassifyConcerned"&&nv[x]!="undefined"){
+              modifyarr[y]=nv[x];
+            }else if(y==x&&y=="bookClassifyConcerned"&&nv[x]!="undefined"){
+              nv[x].split(",");
+              modifyarr[y]=nv[x];
+            }
+
+          }
+        }
+
+        }
+
+    }
   },
   mounted() {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
@@ -1190,6 +1321,32 @@ export default {
     }
   },
   methods: {
+    ordinaryUserSave(msg){
+     let data=JSON.parse(JSON.stringify(msg));
+     data.bookClassifyConcerned=data.bookClassifyConcerned.join();
+
+      axios.post(
+          CONFIG.BASE_URL +
+          "user/editMemberByName.do?",data)
+        .then(function(response) {
+          console.log("成功")
+//          var data = response.data.substring(
+//            response.data.indexOf("<a>") + 3,
+//            response.data.indexOf("</a>")
+//          );
+//          var orderCode = response.data.substring(
+//            response.data.indexOf("<div>") + 5,
+//            response.data.indexOf("</div>")
+//          );
+//          window.location.href =
+//            "./qrcode.html?data=" + data + "&orderCode=" + orderCode;
+        });
+
+    },
+    //个人信息编辑信息
+    modifyInfor(type){
+      this.showCurrent(type);
+    },
     /*帐号信息加载完毕回调*/
     loadedCallBack() {
       this.$store.dispatch("personalCenter/queryPointRecord", {});
@@ -1232,10 +1389,20 @@ export default {
       this.$store.dispatch("personalCenter/queryVirtualMoney", param);
     },
     /*修改地址*/
-    handleChange(value) {
-      this.form.city = this.form.selectedOptions[0];
+	  handleChange(value) {
+      /*this.form.city = this.form.selectedOptions[0];
       this.form.erae = this.form.selectedOptions[1];
-      this.form.minerae = this.form.selectedOptions[2];
+      this.form.minerae = this.form.selectedOptions[2];*/
+      if(value.length == 1){
+	      this.form.city = value[0];
+      }else if(value.length==2){
+	      this.form.city = value[0];
+	      this.form.erae = value[1];
+      }else{
+	      this.form.city = value[0];
+	      this.form.erae = value[1];
+	      this.form.minerae = value[2];
+      };
     },
     /*重置校验表单*/
     initRules() {
@@ -1427,9 +1594,13 @@ export default {
             loginName: this.account.loginName,
             contactor: $("#s_contactor").val(),
             phone: $("#s_phone").val(),
-            province: $("#s_province").val(),
+            /*province: $("#s_province").val(),
             city: $("#s_city").val(),
-            county: $("#s_county").val(),
+            county: $("#s_county").val(),*/
+            //edit by ma.jw
+	          province: $("#s_province").text(),
+	          city: $("#s_city").text(),
+	          county: $("#s_county").text(),
             address: $("#s_address").val(),
             post: this.newAddAddress.post,
             createTime: this.newAddAddress.createTime,
@@ -1446,6 +1617,9 @@ export default {
           this.newAddAddress.county = "";
           this.newAddAddress.address = "";
           this.addAddressDialog = false;
+/*	        $("#s_province").text("");
+	        $("#s_city").text("");
+	        $("#s_county").text("");*/
           // this.$refs[form].resetFields();
         }
       } else {
@@ -1564,6 +1738,9 @@ export default {
     addNewAddress: function() {
       this.initRules();
       this.addAddressDialog = true;
+      this.form.city = "";
+      this.form.erae = "";
+      this.form.minerae = "";
       initDom();
       function initDom() {
         setTimeout(function() {
@@ -2098,7 +2275,7 @@ export default {
             ? _this.getStaticText("theVerificationCodeHasBeenSentToYourMailbox")
             : "已发送验证码至您邮箱,请在2分钟内输入验证"
         });
-        this.times(40, "email");
+        this.times(120, "email");
       } else {
         this.$message({
           type: "info",

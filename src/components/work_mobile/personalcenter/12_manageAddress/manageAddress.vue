@@ -70,7 +70,7 @@
         areaList: areaList,  //地区列表
         isEditDialog: '',  //判断是编辑弹窗还是新建地址弹窗 编辑（0），新建（1）
         showDelete: false,
-        areaCode: '111111'
+        areaCode: ''
       }
     },
     computed: {
@@ -97,9 +97,15 @@
         this.addressInfo.province = item.province;
         this.addressInfo.city = item.city;
         this.addressInfo.county = item.county;
+        for (var i in areaList.county_list){
+          console.log(item.county);
+          if(item.county&&areaList.county_list[i]==item.county){  //通过item.county获取areaCode值
+            this.areaCode=i;
+          }
+        }
         this.addressInfo.address_detail = item.address;
         this.addressInfo.postal_code = item.post;
-        this.addressInfo.area_code = this.areaCode;  //暂时这么写死，因为后台并没有这个字段，而表单验证时这个不能为空
+        this.addressInfo.area_code = this.areaCode;  
         this.addressInfo.is_default = item.isDefault == '1' ? true : false;
 
         this.show = true;

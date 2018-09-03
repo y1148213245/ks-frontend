@@ -31,7 +31,7 @@ const platform = 'mobile';
 const pageType = ['others'];
 const resourceType = ['others'];
 
-const childComponents = ['work_mobile_personalcenter_02', 'work_mobile_personalcenter_03', 'work_mobile_personalcenter_04', 'work_mobile_personalcenter_05', 'work_mobile_personalcenter_06', 'work_mobile_personalcenter_07', 'work_mobile_personalcenter_08', 'work_mobile_personalcenter_09', 'work_mobile_personalcenter_10', 'work_mobile_personalcenter_14','work_mobile_personalcenter_15'];
+const childComponents = ['work_mobile_personalcenter_02', 'work_mobile_personalcenter_03', 'work_mobile_personalcenter_04', 'work_mobile_personalcenter_05', 'work_mobile_personalcenter_06', 'work_mobile_personalcenter_07', 'work_mobile_personalcenter_08', 'work_mobile_personalcenter_09', 'work_mobile_personalcenter_10', 'work_mobile_personalcenter_11','work_mobile_personalcenter_14','work_mobile_personalcenter_15'];
 
 export {
   name,

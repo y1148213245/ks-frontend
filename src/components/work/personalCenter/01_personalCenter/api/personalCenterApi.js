@@ -299,7 +299,7 @@ export default {
     var cols = ['LOGIN_NAME'];
     var vals = [params.loginName];
     var url =CONFIG.BASE_URL + "spc/prodb/searchNL.do" +
-    "?doclibCode=PORTAL_YANGSHUKU" +
+    "?doclibCode=PORTAL_YANGSHUKU" +"&orderCondition= BY_SPC_SYS_CREATED_SPC_DESC"
     "&page=" + (params.pageIndex-1) +
     "&size=" + params.pageSize +
     "&cols=" + "LOGIN_NAME" +

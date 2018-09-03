@@ -155,31 +155,39 @@ export default {
     checkMemberInfo () {
       this.action_login({ member: this.member }).then((rep) => {
         if (rep.data.result && rep.data.result == '1') {
-          if (rep.data.data.checkStatus == 0 || rep.data.data.checkStatus == "0") {
-            this.$message({
-              type: "error",
-              message: this.getStaticText('accountFrozenInfo') ? this.getStaticText('accountFrozenInfo') : "账号已被冻结，请联系管理员"
-            });
-          } else {
+          if(rep.data.data){
+            if (rep.data.data.checkStatus == 0 || rep.data.data.checkStatus == "0") {
+              this.$message({
+                type: "error",
+                message: this.getStaticText('accountFrozenInfo') ? this.getStaticText('accountFrozenInfo') : "账号已被冻结，请联系管理员"
+              });
+            } else {
 
-            if (!document.referrer) {
-              window.location.href = this.CONFIG.indexPath ? this.CONFIG.indexPath : './index.html'
-              return false
-            }
-            let referrName = this.getFileName(document.referrer)
-            let len = this.CONFIG.disBacks.length;
-
-            for (let i = 0; i < len; i++) {
-              let item = this.CONFIG.disBacks[i];
-              if (referrName == item) {
+              if (!document.referrer) {
                 window.location.href = this.CONFIG.indexPath ? this.CONFIG.indexPath : './index.html'
                 return false
               }
+              let referrName = this.getFileName(document.referrer)
+              let len = this.CONFIG.disBacks.length;
+
+              for (let i = 0; i < len; i++) {
+                let item = this.CONFIG.disBacks[i];
+                if (referrName == item) {
+                  window.location.href = this.CONFIG.indexPath ? this.CONFIG.indexPath : './index.html'
+                  return false
+                }
+              }
+
+              window.location.href = document.referrer;
+
             }
-
-            window.location.href = document.referrer;
-
+          }else {
+            this.$message({
+              type: "error",
+              message: rep.data.error && rep.data.error.errorMsg ? rep.data.error.errorMsg : (this.getStaticText('onlyUsername') ? this.getStaticText('onlyUsername') : '仅支持用户名登录')
+            });
           }
+          
         } else if (rep.data.result && rep.data.result == '0') {
           this.$message({
             type: "error",

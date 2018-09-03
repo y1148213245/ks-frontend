@@ -439,7 +439,7 @@ export default {
       currentShow: "afterserviceDetails", //展示切换
       imgArr: [], //图片数组
       exchangeDetailsActive: 0, //换货active
-      returnDetailsActive: 0, //退货active
+      returnDetailsActive: 2, //退货active
       exchangeDetailsErr: false, //换货申请未通过
       returnDetailsErr: false, //退货申请未通过
       returnCancel: false, //取消退货

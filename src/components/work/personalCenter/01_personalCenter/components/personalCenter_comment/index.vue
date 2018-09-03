@@ -83,12 +83,17 @@ export default {
       this.$store.dispatch("personalCenter/getMyComment", param);
     },
     // 去详情页
-    toDetail(data){
+    /*toDetail(data){
+    	debugger;
       console.log(data);//productType pubId  colId
       if(data.productType && this.CONFIG.detailUrl && this.CONFIG.detailUrl[data.productType]){
         window.open(this.CONFIG.detailUrl[data.productType] + "?pubId=" + data.pubId);
       }
-    },
+    },*/
+	  //新增去详情页
+	  toDetail(data){
+		  window.location.href = "../pages/bookdetail.html?pubId=" + data.pubId;
+	  },
     // 删除评论
     // deleteComment(data){
     //   console.log(data);

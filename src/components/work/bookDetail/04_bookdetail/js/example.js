@@ -144,10 +144,10 @@ const dev = {
                 pub_site_id: '37'
               },
               {
-                pub_status: '1'
+                prod_product_type: '94'
               },
               {
-                BOOK_ISBN: '1'
+                BOOK_ISBN: ''
               }
             ],
             groupBy: "pub_resource_id",
@@ -388,7 +388,7 @@ const prod = {
                 pub_site_id: '37'
               },
               {
-                pub_status: '1'
+                prod_product_type: '94'
               },
               {
                 BOOK_ISBN: '1'

@@ -1,5 +1,6 @@
 <template>
   <div class="ui_list_pic_06 ui_list_pic_06_skin">
+    <div class="ui_list_pic_06_title">浏览历史记录</div>
     <h6 class="titleHead" v-text="title"></h6>
     <div class="listWrapper">
       <div class="" name="data_column_block">
@@ -60,6 +61,7 @@ export default {
   },
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.picListBook[this.modulename];
+    this.CONFIG.params.num=2;
     this.pubId = URL.parse(document.URL, true).query.pubId;
   },
   mounted () {

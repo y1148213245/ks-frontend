@@ -48,9 +48,13 @@
         <div>
           <label></label>{{getStaticText('receivingArea') ? getStaticText('receivingArea') : '收货地区'}}：</div>
         <div class="selectPCC">
-          <select id="s_province" name="s_province" @blur="checkArea()"></select>
+          <!--<select id="s_province" name="s_province" @blur="checkArea()"></select>
           <select id="s_city" name="s_city" @blur="checkArea()"></select>
-          <select id="s_county" name="s_county" @blur="checkArea()"></select>
+          <select id="s_county" name="s_county" @blur="checkArea()"></select>-->
+          <span id="s_province">{{form.city | myAddressCity}}</span>
+          <span id="s_city">{{form.erae | myAddressErae}}</span>
+          <span id="s_county">{{form.minerae | myAddressMinerae}}</span>
+          <personalCenter_address v-if="addAddressDialog"></personalCenter_address>
         </div>
         <div class="warningInfo" v-if="emptyPCC">{{getStaticText('pleaseCompleteInformationOfProvincesAndCities') ? getStaticText('pleaseCompleteInformationOfProvincesAndCities') : '请完整的省市信息'}}</div>
       </div>
@@ -80,11 +84,13 @@ import * as type from "@work/shoppingCart/common/interfaces.js";
 import * as interfaces from "@work/login/common/interfaces.js";
 import { mapGetters, mapActions } from "vuex";
 import $ from "jquery";
+import { CityInfo } from "@components/work/personalCenter/01_personalCenter/assets/js/city-data";
 export default {
   name: "work_shoppingcart_01_components_address",
   reused: true,
   props: ["namespace", "parentconfig"],
   created: function () {
+	  this.$bus.$on("handleChange",this.handleChange);
     this.getMemberInfo().then((member) => {
       this.member.loginName = member.loginName;
       this.loadCallBack();
@@ -110,6 +116,13 @@ export default {
       contactorError: '',//新建收货地址--收货人验证信息
       goodsInfo: [],//新建收货地址--验证信息,
       CONFIG: null, // 当前组件的配置 需要从父级组件里面取
+	    CityInfo: CityInfo, /*数据源*/
+	    form: {
+		    city: "",
+		    erae: "",
+		    minerae: "",
+		    selectedOptions: [] //地区筛选数组
+	    },
     };
   },
   computed: {
@@ -181,9 +194,9 @@ export default {
               loginName: this.member.loginName,
               contactor: $("#s_contactor").val(),
               phone: $("#s_phone").val(),
-              province: $("#s_province").val(),
-              city: $("#s_city").val(),
-              county: $("#s_county").val(),
+              province: $("#s_province").text(),
+              city: $("#s_city").text(),
+              county: $("#s_county").text(),
               address: $("#s_address").val(),
               post: "",
               createTime: null,
@@ -298,7 +311,20 @@ export default {
       } else {
         return false
       }
-    }
+    },
+    /*修改地址*/
+	  handleChange(value) {
+		  if(value.length == 1){
+			  this.form.city = value[0];
+		  }else if(value.length==2){
+			  this.form.city = value[0];
+			  this.form.erae = value[1];
+		  }else{
+			  this.form.city = value[0];
+			  this.form.erae = value[1];
+			  this.form.minerae = value[2];
+		  };
+	  },
   },
   watch: {
     defaultAddress () { // 刚进页面时 将默认地址发广播形式给父组件
@@ -309,6 +335,38 @@ export default {
       this.showAddress = newValue[newValue.length - 1];
       this.$emit("deliveryAddress", this.showAddress);
     }
+  },
+	filters: {
+		myAddressCity: function(value) {
+			for (var y = 0; y < CityInfo.length; y++) {
+				if (CityInfo[y].value == value) {
+					return CityInfo[y].label;
+				}
+			}
+		},
+		myAddressErae: function(value) {
+			for (var y = 0; y < CityInfo.length; y++) {
+				for (var z = 0; z < CityInfo[y].children.length; z++) {
+					if (CityInfo[y].children[z].value == value && value != undefined) {
+						return CityInfo[y].children[z].label;
+					}
+				}
+			}
+		},
+		myAddressMinerae: function(value) {
+			for (var y = 0; y < CityInfo.length; y++) {
+				for (var z = 0; z < CityInfo[y].children.length; z++) {
+					for (var i = 0; i < CityInfo[y].children[z].children.length; i++) {
+						if (
+							CityInfo[y].children[z].children[i].value == value &&
+							value != undefined
+						) {
+							return CityInfo[y].children[z].children[i].label;
+						}
+					}
+				}
+			}
+		}
   }
 };
 </script>
@@ -417,6 +475,7 @@ export default {
   border: 1px solid #bfcbd9;
   margin-top: 5px;
 }
+
 .work_shoppingcart_01_address .newAddAddress .newWrapper label:before {
   content: '*';
   color: #f56c6c;

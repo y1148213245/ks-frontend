@@ -2,7 +2,7 @@
   <section class="personalcenter_list">
     <!-- 订单列表 -->
     <div v-show="currentShow=='list'" class="personalcenter_list_main">
-      <div v-if="CONFIG && CONFIG.tabListShow.length>0" class="personalcenter_list_main_tab">
+      <div v-if="CONFIG && CONFIG.tabListShow && CONFIG.tabListShow.length>0" class="personalcenter_list_main_tab">
         <el-radio-group v-model="radio" @change="changeOrderList">
           <el-radio-button :label="item.type" v-for="(item, index) in CONFIG.tabListShow" :key="index">{{item.title}}</el-radio-button>
         </el-radio-group>

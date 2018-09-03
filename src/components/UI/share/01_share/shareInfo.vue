@@ -3,7 +3,7 @@
   <div class="ui_share_01">
     <div class="bdsharebuttonbox" v-if="CONFIG && shareLists">
       <span v-for="(item, index) in shareLists" :key="index">
-        <a href="#" v-bind:class="item.class" :data-cmd="item.cmd" :title="item.title"></a>
+        <a v-bind:class="item.class" :data-cmd="item.cmd" :title="item.title"></a>
       </span>
     </div>
 
@@ -56,10 +56,11 @@ export default {
         'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
       }
     },
-    console () {
-      this.url = window.location.href;
-      console.log(this.url.length)
-    }
+    // 一下代码会导致点击一次，弹出两个分享页面，因此注释掉
+    // console () {
+    //   this.url = window.location.href;
+    //   console.log(this.url.length)
+    // }
   }
 }
 
