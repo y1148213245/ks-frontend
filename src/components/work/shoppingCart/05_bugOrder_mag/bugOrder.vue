@@ -603,7 +603,7 @@
                 this.nextYearTakeNameChangeList_next = this.nextYearTakeNameChangeList_next+','+i;
               }
             }
-            this.TakeNameChangeyear = new Date().getFullYear();
+            // this.TakeNameChangeyear = new Date().getFullYear();
             this.TakeNameChangeList = this.nextYearTakeNameChangeList_next;
             this.TakeNameChangeListLength = this.checkMagTypeNameInfo.totalNum;
             this.TakeNameOpenValue = this.checkMagTypeNameInfo.noPublishNum;
@@ -809,7 +809,7 @@
               } else if (datas.data.payMethodCode === "Balance") {
                 //  余额支付
                 // alert("购买完成！")
-                location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
+                location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&loginName=" + _this.loginName;
               }
 
 
