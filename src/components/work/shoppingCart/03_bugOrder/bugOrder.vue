@@ -221,10 +221,6 @@
 								location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
 							} else {
 								loading.close();
-								this.$message({
-									type: "error",
-									message: datas.data.errMsg
-								})
 							}
 
 						}

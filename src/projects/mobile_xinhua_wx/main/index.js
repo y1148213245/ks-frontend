@@ -18,6 +18,9 @@ import VueBus from "vue-bus"; // 通过 cnpm install vue-bus安装
 import VueCodemirror from 'vue-codemirror'; // vue 在线代码编辑器
 import 'codemirror/lib/codemirror.css'; // 编辑器的主题样式
 import componentsApi from "@api"; // 数据组件公共api
+import {
+  i18n
+} from "@common" // 国际化
 
 Vue.use(VueOccupy);
 Vue.use(ElementUI);
@@ -28,6 +31,7 @@ Vue.use(Vant)
 new Vue({
   el: '#app',
   store,
+  i18n,
   created() {
     //引入全局components
     ScanVues();

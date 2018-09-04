@@ -245,6 +245,7 @@ export default {
     toSetOrder (item) {
       //修改默认排序
       this.activeSetOrder = item.itemField;
+      this.totalCount = 0;
       this.getResourceLists();
     },
     changeColId (item) {
@@ -261,7 +262,7 @@ export default {
             detailParams + "&" + param + "=" + this.requestParams[param];
         }
       } else if (config.method == "sourceUrl") {
-        window.open(item[this.keys.sourceUrl]);
+        window.location.href=item[this.keys.sourceUrl];
         return false;
       } else if (config.method == "downloadUrl") {
         // 如果sourceUrl为空,则判断pub_widget_url数组里的值 by shenqian
@@ -278,7 +279,7 @@ export default {
             link = document.createElement("a"); //创建新的downloadFileLink元素
             link.id = "downloadFileLink";
             link.download = "";
-            link.target = "_blank";
+            link.target = "_self";
             link.href = value;
             document.body.appendChild(link); // 添加到页面解决火狐无法触发click方法
             link.click();
@@ -291,9 +292,7 @@ export default {
       } else if (config.method == "toResourceDetail") { // 去资源详情页（区分视频组、音频组、课件三种资源）
         window.open(toOtherPage(item, this.CONFIG[config.method][item[this.keys.pubResType]], keys));
       }
-      window.open(
-        toOtherPage(item, this.CONFIG[config.method], keys) + detailParams
-      );
+      window.open(toOtherPage(item, this.CONFIG[config.method], keys) + detailParams) ;
     },
     getColumnSubTitle () {
       // 获取栏目副标题
@@ -397,27 +396,27 @@ export default {
           let datas = rep.data;
           if (datas.success) {
             this.totalCount = datas.totalCount;
-            if (this.isMobileLoading) {
-              if (datas.success && datas.result.length > 0) {
+            if (datas.success && datas.result.length > 0) {
+              if (this.isMobileLoading) {
                 this.resourceLists = this.resourceLists.concat(datas.result);
-                this.totalPages = datas.totalPages;
-                this.pageNo = datas.pageNo;
-                this.pageNoz = datas.pageNo;
-                this.pageSize = datas.pageSize;
-              } else if (datas.success) {
-                Toast.fail({
-                  duration: 1000,
-                  message: datas.description
-                });
-              }
-            } else {
-              this.resourceLists = datas.result;
-              //默认发出第一条数据的pubId
-              if(this.resourceLists && this.resourceLists.length > 0){
-                if(typeof(this.CONFIG.emitEvent)!== 'undefined'  && this.CONFIG.emitEvent.contextEventName){
-                  this.$bus.$emit(this.CONFIG.emitEvent.contextEventName,  { id: this.resourceLists[0].id });
+              }else{
+                this.resourceLists = datas.result;
+                //默认发出第一条数据的pubId
+                if(this.resourceLists && this.resourceLists.length > 0){
+                  if(typeof(this.CONFIG.emitEvent)!== 'undefined'  && this.CONFIG.emitEvent.contextEventName){
+                    this.$bus.$emit(this.CONFIG.emitEvent.contextEventName,  { id: this.resourceLists[0].id });
+                  }
                 }
               }
+              this.totalPages = datas.totalPages;
+              this.pageNo = datas.pageNo;
+              this.pageNoz = datas.pageNo;
+              this.pageSize = datas.pageSize;
+            } else if (datas.success) {
+              Toast.fail({
+                duration: 1000,
+                message: datas.description
+              });
             }
           }
         }

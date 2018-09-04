@@ -37,10 +37,23 @@
               <span>{{getStaticText('orderNumber') ? getStaticText('orderNumber') : '订单号'}}：{{Aitem.parentOrderCode}}</span>
             </div>
             <div v-for="(item,index) in Aitem.orderList" :key="index">
-              <div class="personalcenter_list_title_common">
-                <span>{{getStaticText('subSingleNumber') ? getStaticText('subSingleNumber') : '子单号'}}：{{item.orderCode}}</span>
-                <el-button class="personalcenter_list_title_common_detailesbtn" type="text" @click="showDetails(outIndex,index)">{{getStaticText('orderDetail') ? getStaticText('orderDetail') : '订单详情'}}</el-button>
-              </div>
+              <el-row class="personalcenter_list_title_common">
+                <el-col :span="15">
+                  <span>{{getStaticText('subSingleNumber') ? getStaticText('subSingleNumber') : '子单号'}}：{{item.orderCode}}</span>
+                </el-col>
+                <el-col :span="6">
+                  <div class="personalcenter_list_main_orderStatus">
+                    <span v-if="item.payStatus==0 && item.status==1">{{getStaticText('pendingPayment') ? getStaticText('pendingPayment') : '订单状态：待付款'}}</span>
+                    <span v-if="item.payStatus==0 && item.status==2">{{getStaticText('cancelled') ? getStaticText('cancelled') : '订单状态：已取消'}}</span>
+                    <span v-if="item.payStatus==1 && item.status==1 && item.orderType=='91'">{{getStaticText('undelivery') ? getStaticText('undelivery') : '订单状态：待收货'}}</span>
+                    <span v-if="item.payStatus==1 && item.status==1 && item.orderType!='91'">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
+                    <span v-if="item.payStatus==1 && item.status==5">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
+                  </div>
+                </el-col>
+                <el-col :span="3">
+                  <el-button class="personalcenter_list_title_common_detailesbtn" type="text" @click="showDetails(outIndex,index)">{{getStaticText('orderDetail') ? getStaticText('orderDetail') : '订单详情'}}</el-button>
+                </el-col>
+              </el-row>
               <el-row class="personalcenter_list_main_listBox_card" v-for="(item1,innerindex) in item.itemList" :key="innerindex">
                 <el-col :span="15">
                   <div class="personalcenter_list_main_listBox_card_left">
@@ -77,9 +90,18 @@
                   <i class="el-icon-check el-icon--right"></i>
                 </el-button>
               </div>
-              <div v-if="Aitem.payStatus==1" class="fr">
+              <div v-if="Aitem.payStatus==1 && Aitem.status==5" class="fr">
                 <el-button type="primary" @click="deleteOrder(outIndex)">
                   {{getStaticText('deleteOrder') ? getStaticText('deleteOrder') : '删除订单'}}
+                  <i class="el-icon-check el-icon-close"></i>
+                </el-button>
+              </div>
+              <div v-if="Aitem.payStatus==1 && Aitem.status==1" class="fr">
+                <el-button type="text">
+                  {{getStaticText('seeDelivery') ? getStaticText('seeDelivery') : '查看物流'}}
+                </el-button>
+                <el-button type="primary">
+                  {{getStaticText('recieved') ? getStaticText('recieved') : '确认收货'}}
                   <i class="el-icon-check el-icon-close"></i>
                 </el-button>
               </div>
@@ -186,8 +208,9 @@
         </div>
         <div class="personalcenter_list_bookDetails_status">
           <span v-if="item.payStatus==0 && item.status==1">{{getStaticText('pendingPayment') ? getStaticText('pendingPayment') : '订单状态：待付款'}}</span>
-          <span v-if="item.payStatus==1">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
           <span v-if="item.payStatus==0 && item.status==2">{{getStaticText('cancelled') ? getStaticText('cancelled') : '订单状态：已取消'}}</span>
+          <span v-if="item.payStatus==1 && item.status==1">{{getStaticText('undelivery') ? getStaticText('undelivery') : '订单状态：待收货'}}</span>
+          <span v-if="item.payStatus==1 && item.status==5">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
         </div>
         <div class="personalcenter_list_title_common bg-purple-light">
           <span>
@@ -215,7 +238,7 @@
             <div class="personalcenter_list_main_listBox_card_right">{{getStaticText('money') ? getStaticText('money') : '¥'}} {{item1. memberPrice * item1. productNum }}</div>
           </el-col>
           <el-col :span="3">
-            <div class="personalcenter_list_main_listBox_card_right personalcenter_list_bookDetails_textDecoration">{{getStaticText('money') ? getStaticText('money') : '¥'}} {{item1.productPrice * item1. productNum }}</div>
+            <div class="personalcenter_list_main_listBox_card_right personalcenter_list_bookDetails_textDecoration">{{getStaticText('money') ? getStaticText('money') : '¥'}} {{item1.memberPrice * item1. productNum }}</div>
           </el-col>
         </el-row>
         <div class="personalcenter_list_bookDetails_goBackBtn">

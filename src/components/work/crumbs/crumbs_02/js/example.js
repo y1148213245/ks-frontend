@@ -43,7 +43,8 @@ const prod = {
         },
         staticText: {
           currentPosition:"当前位置"
-        }
+        },
+        showLang: 'Chinese',   //双语配置，Chinese中文，Korean朝鲜语
       }
     }
   }

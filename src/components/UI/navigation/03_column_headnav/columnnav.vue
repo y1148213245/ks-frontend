@@ -3,7 +3,7 @@
   <nav class="ui_navigation_03">
     <ul class="ui_navigation_03_ul">
       <li v-for="(item, ind) in columnHead" :key="ind" :class="{ui_navigation_03_li: showColId == item.id}">
-        <a :href="item.url" :target="CONFIG.targetType ? CONFIG.targetType : '_blank'">
+        <a :href="item.url" :target="CONFIG.targetType ? CONFIG.targetType : '_self'">
           <span v-text="item.name"></span>
         </a>
       </li>

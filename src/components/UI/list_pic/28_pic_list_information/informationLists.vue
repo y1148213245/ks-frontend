@@ -154,14 +154,14 @@ export default {
       imgDomArr.onload = DrawImage(imgDomArr[index], this.CONFIG.infoImgWidth, this.CONFIG.infoImgHeight);
     },
     toMore (item) { // 去更多列表
-      window.open(toOtherPage(item, this.CONFIG.toMore, this.keys));
+      window.location.href=toOtherPage(item, this.CONFIG.toMore, this.keys);
     },
     toDetail (item) { // 去详情
       let detailParams = "";
       for (let param in this.requestParams) {
         detailParams = detailParams + '&' + param + '=' + this.requestParams[param]
       }
-      window.open(toOtherPage(item, this.CONFIG.toDetail, this.keys) + detailParams);
+      window.location.href=toOtherPage(item, this.CONFIG.toDetail, this.keys) + detailParams;
     }
   }
 }

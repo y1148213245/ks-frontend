@@ -8,7 +8,7 @@
       :page-sizes="pageSizes"
       :page-size="pageSize"
       :layout="layout"
-      :total="totalCount">
+      :total="totalCount - 0">
     </el-pagination>
   </div>
 </template>

@@ -599,8 +599,6 @@ export default {
           this.CONFIG.toProbation.url = CONFIG.READ_URL;
           this.CONFIG.toProbation.fixedKeys.readType = 1;
         }
-      }else{
-        return false;
       }
 
       if (method == 'addBookShelf') { //加入书架

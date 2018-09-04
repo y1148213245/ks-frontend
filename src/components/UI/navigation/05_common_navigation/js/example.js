@@ -145,7 +145,7 @@ const prod = {
         },
         "directLink": {
           "switchFlag": false,
-          dierctWay: '_self', // 跳转窗口的方式 _blank代表新窗口 _self代表当前窗口
+          "dierctWay": '_self', // 跳转窗口的方式 _blank代表新窗口 _self代表当前窗口
           "directRules": {
             "1118": "../pages/newslistsnxw.html?colId=",
             "1119": "../pages/newslistyjxw.html?colId=",
@@ -154,7 +154,8 @@ const prod = {
             "1122": "../pages/newslistspjx.html?colId="
           }
         },
-        "reverseByColId":false //是否按照id反向排序 , 默认false或者不传值按照colId排序 , true则按照colId反向排序
+        "reverseByColId":false, //是否按照id反向排序 , 默认false或者不传值按照colId排序 , true则按照colId反向排序
+        "showLang": 'Chinese',   //双语配置，Chinese中文，Korean朝鲜语
       },
     },
   }

@@ -459,10 +459,18 @@
       // this.getDeliveryWay(); //获取配送方式
 
       //获取配置中默认的刊种名称 并且获取详情  //如果配置不对 那展示会失败
-      if(typeof(this.CONFIG.checkMagTypeNameDefault)!='undefined' && this.CONFIG.checkMagTypeNameDefault  && this.CONFIG.checkMagTypeNameDefault.length>0){
-        this.checkMagTypeName = this.CONFIG.checkMagTypeNameDefault;
+      //获取地址栏的参数
+      var uriQuery = URL.parse(document.URL, true).query;
+      if(typeof(uriQuery.magName)!="undefined"){
+        this.checkMagTypeName = uriQuery.magName;
         // this.getIdMagDo(this.checkMagTypeName);
         this.clickFunTakeNameChange("明年全年订阅");
+      }else{
+        if(typeof(this.CONFIG.checkMagTypeNameDefault)!='undefined' && this.CONFIG.checkMagTypeNameDefault  && this.CONFIG.checkMagTypeNameDefault.length>0){
+          this.checkMagTypeName = this.CONFIG.checkMagTypeNameDefault;
+          // this.getIdMagDo(this.checkMagTypeName);
+          this.clickFunTakeNameChange("明年全年订阅");
+        }
       }
 
 

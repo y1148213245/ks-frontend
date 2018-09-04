@@ -11,6 +11,7 @@ import CookieUtils from "./utils/CookieUtils";
 import {FIELD_ADAPTER} from "./utils/FieldAdapter";
 import toOtherPage from "./utils/ToOtherPage";
 import mobileLoading from "./utils/MobileLoading";
+import i18n from "./utils/i18n"
 
 try {
 	if (typeof $_$.IS_DISABLE != "undefined" && $_$.IS_DISABLE) { // 站点被禁用
@@ -90,7 +91,8 @@ export {
   Token,
   toOtherPage,
   getFieldAdapter,
-  mobileLoading
+  mobileLoading,
+  i18n
 };
 
 

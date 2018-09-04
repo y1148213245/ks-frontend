@@ -246,7 +246,7 @@
           <div class="mt15">
             <i class="wzdh_xgxx_bdmc mr08"></i>{{getStaticText('titleOfAccount') ? getStaticText('titleOfAccount') : '账户名称'}}:
             <span v-text="account && account.loginName"></span>
-            <el-button type="primary" @click="cryptoguar = true" class="butt" v-if="account.questions == ''">{{getStaticText('settingUpSecretProtection') ? getStaticText('settingUpSecretProtection') : '设置密保问题'}}</el-button>
+            <el-button type="primary" @click="cryptoguar = true" class="butt" v-if="CONFIG.secretQuestionBtnHide==undefined || CONFIG.secretQuestionBtnHide == false && account.questions == ''">{{getStaticText('settingUpSecretProtection') ? getStaticText('settingUpSecretProtection') : '设置密保问题'}}</el-button>
           </div>
           <div class="mt30 mb30">
             <div v-if="account && account.email">
@@ -279,7 +279,7 @@
           <div class="wzdh_xgxx_tj">
             <!--<el-button type="primary" @click="modifyInformation(1)" class="f14">修改密码</el-button>-->
             <!--<el-button type="primary" @click="modifyInformation(1)" class="f14">{{getStaticText('changePassword') ? getStaticText('changePassword') : '修改密码'}}</el-button>-->
-            <el-button type="primary" @click="modifyInfor(10)" class="f14">编辑信息</el-button>
+            <el-button type="primary" @click="modifyInfor(10)" class="f14" v-if="CONFIG.staticText.editInfo==true">{{getStaticText('editInfoText') ? getStaticText('editInfoText') :'编辑信息'}}</el-button>
           </div>
         </div>
         <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('return') ? getStaticText('return') :'返回'}}</el-button>
@@ -422,8 +422,8 @@
             </div>
           </div>
         </el-tab-pane>
-        <!-- 密保问题验证 -->
-        <el-tab-pane :label="getStaticText('securityQuestionVerify') ? getStaticText('securityQuestionVerify') : '密保问题验证'" name="third" v-if="account.questions !=''">
+        <!-- 密保问题验证  -->
+        <el-tab-pane :label="getStaticText('securityQuestionVerify') ? getStaticText('securityQuestionVerify') : '密保问题验证'" name="third"  v-if="CONFIG.secretQuestionBtnHide == undefined || CONFIG.secretQuestionBtnHide == false && account.questions !=''">
           <div class="main_right fl">
             <div class="wzdh_bmwtyz f14 color_6f6">
               <div class="wzdh_bmwtyz_ico account_modify-icon"></div>
@@ -439,6 +439,29 @@
                   </el-form-item>
                   <div>
                     <el-button type="primary" @click="submitQuestionsValidateNum('questionsValidateForm')">{{getStaticText('next') ? getStaticText('next') : '下一步'}}</el-button>
+                  </div>
+                </el-form>
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
+        <!-- 金融二期（pc）密码验证 -->
+        <el-tab-pane :label="getStaticText('passwordVerify') ? getStaticText('passwordVerify') : '密码验证'" name="forth" v-if="CONFIG.pswVerifyOption == true">
+          <div class="main_right fl">
+            <div class="wzdh_bmwtyz f14 color_6f6">
+              <div class="account_modify-form">
+                <el-form :model="passwordValidateForm" :rules="passwordValidateFormRules" ref="passwordValidateForm">
+                  <el-form-item :label="(getStaticText('passwordValidate') ? getStaticText('passwordValidate') : '密码') +':'" prop="passwordValidate">
+                    <el-input type="password" v-model="passwordValidateForm.passwordValidate" auto-complete="off" style="display:inline-block;width:200px;"></el-input>
+                    <div>
+                      忘记原密码？可以
+                      <a style="color: #2e6da4;cursor: pointer;" @click="changeActiveName('second')">手机号验证</a>
+                      或
+                      <a style="color: #2e6da4;cursor: pointer;" @click="changeActiveName('first')">邮箱验证</a>
+                    </div>
+                  </el-form-item>
+                  <div>
+                    <el-button type="primary" @click="submitPasswordValidateNum('passwordValidateForm')">{{getStaticText('next') ? getStaticText('next') : '下一步'}}</el-button>
                   </div>
                 </el-form>
               </div>
@@ -600,8 +623,8 @@
     </div>
     <!--修改个人信息-->
     <div v-show="currentShow=='modifyInfo'">
-      <el-radio v-model="userMode" label="1">普通用户</el-radio>
-      <el-radio v-model="userMode" label="2">教师用户</el-radio>
+      <el-radio v-model="userMode" label="1">{{getStaticText('ordinaryUserText') ? getStaticText('ordinaryUserText') :'普通用户'}}</el-radio>
+      <el-radio v-model="userMode" label="2">{{getStaticText('teacherUserText') ? getStaticText('teacherUserText') :'教师用户'}}</el-radio>
       <div>
         <el-form  ref="form" :model="modifyUserNav" label-width="80px">
           <el-form-item label="姓名" v-if="userMode==1||userMode==2" >
@@ -687,6 +710,7 @@ import { Get, Token } from "@common";
 import api from "../../api/personalCenterApi";
 import $ from "jquery";
 import { CityInfo } from "../../assets/js/city-data.js";
+import * as interfaces from '@work/login/common/interfaces.js';
 
 Vue.use(Vuex);
 Vue.prototype.$ajax = axios;
@@ -882,6 +906,19 @@ export default {
             this.getStaticText("pleaseEnterTheAnswerToSecretInsurance")
               ? this.getStaticText("pleaseEnterTheAnswerToSecretInsurance")
               : "请输入密保问题答案"
+          )
+        );
+      } else {
+        callback();
+      }
+    };
+    var passwordValidateForm = (rule, value, callback) => {
+      if (value === "") {
+        callback(
+          new Error(
+            this.getStaticText("pleaseEnterTheAccountPassword")
+              ? this.getStaticText("pleaseEnterTheAccountPassword")
+              : "请输入账户密码"
           )
         );
       } else {
@@ -1111,6 +1148,10 @@ export default {
       questionsValidateForm: {
         answer: ""
       },
+      //验证身份--密码验证
+      passwordValidateForm:{
+        passwordValidate:''
+      },
       // 验证身份--设置密保问题
       cryptoguarForm: {
         questionId: "",
@@ -1156,6 +1197,10 @@ export default {
       //身份验证--密保问题验证
       questionsValidateRules: {
         answer: [{ validator: questionsValidateForm, trigger: "blur" }]
+      },
+      //身份验证--密码验证
+      passwordValidateFormRules: {
+        passwordValidate: [{ validator: passwordValidateForm, trigger: "blur" }]
       },
       // 身份验证--修改密码
       modifyPasswordrules: {
@@ -1259,7 +1304,8 @@ export default {
       pointRecords: "getPointRecord",
       virtualMoneyList: "getVirtualMoney",
       addresses: "getAddresses",
-      myComment: "getMyComment"
+      myComment: "getMyComment",
+      member:"getMember"
     })
   },
   filters: {
@@ -1321,6 +1367,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions('login', {
+      action_login: interfaces.ACTION_LOGIN,
+    }),
     ordinaryUserSave(msg){
      let data=JSON.parse(JSON.stringify(msg));
      data.bookClassifyConcerned=data.bookClassifyConcerned.join();
@@ -2347,6 +2396,42 @@ export default {
           return false;
         }
       });
+    },
+    changeActiveName(tag) {
+      this.activeName = tag;
+    },
+    //密码验证
+    submitPasswordValidateNum() {
+      this.$refs.passwordValidateForm.validate(valid => {
+        if (valid) {
+          this.action_login({
+            member: {
+              loginName: this.member.loginName,
+              password: this.passwordValidateForm.passwordValidate,
+              flag: 'pc'
+            }
+          }).then((rep) => {
+            if (rep.data.result && rep.data.result == '1') {
+              if (this.modifyType == 1) {
+                this.showCurrent(7);
+              } else if (this.modifyType == 2) {
+                this.showCurrent(8);
+              } else {
+                this.showCurrent(9);
+              }
+            } else if (rep.data.result && rep.data.result == '0') {
+              this.$message({
+                type: "error",
+                message: rep.data.error && rep.data.error.errorMsg ? rep.data.error.errorMsg : (this.getStaticText('verifyFailed') ? this.getStaticText('verifyFailed') : '验证失败')
+              });
+            }
+            return false;
+          });
+        } else {
+          return false;
+        }
+      });
+
     },
     questionsValidateCallb(idata, rep) {
       if (idata == 201) {

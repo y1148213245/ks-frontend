@@ -4,17 +4,31 @@
     <h3 class="ui_navigation_05_title" v-if="CONFIG.comTitle.isShow">{{CONFIG.comTitle.name}}</h3>
     <ul class="ui_navigation_05_ul" v-for="(item1,index1) in tree" :key="index1">
       <li class="ui_navigation_05_ul_li" v-show="CONFIG && (typeof(CONFIG.showColumnArray) == 'undefined' || (typeof(CONFIG.showColumnArray) != 'undefined' && CONFIG.showColumnArray && (CONFIG.showColumnArray).indexOf(item1.id) !== -1))">
-        <span :class="{'ui_navigation_05_item--active':currentActive == item1.id}" class="ui_navigation_05_first" @click.self="navClick(item1,tree)">{{item1.name}}</span>
+        <template v-if="CONFIG && CONFIG.showLang && CONFIG.showLang ==='Korean'">
+          <span :class="{'ui_navigation_05_item--active':currentActive == item1.id}" class="ui_navigation_05_first" @click.self="navClick(item1,tree)">{{item1.code}}</span>
+          <ul class="ui_navigation_05_ul_child1" v-show="item1.childNav.length>0" v-for="(item2,index2) in item1.childNav" :key="index2">
 
-        <ul class="ui_navigation_05_ul_child1" v-show="item1.childNav.length>0" v-for="(item2,index2) in item1.childNav" :key="index2">
+            <li class="ui_navigation_05_ul_child1_li" :class="{'ui_navigation_05_item--active':currentActive == item2.id}" v-show="item1.showChild || currentActive == item2.id" @click.self="navClick(item2,item1.childNav)">
+              {{item2.code}}
+              <ul class="ui_navigation_05_ul_child2" v-if="showThreeColumn" v-show="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
+                <li class="ui_navigation_05_ul_child2_li" :class="{'ui_navigation_05_item--active':currentActive == item3.id}" v-show="item2.showChild" @click.self="changeContent(item3.id)">{{item3.code}}</li>
+              </ul>
+            </li>
+          </ul>
+        </template>
+        <template v-else>
+          <span :class="{'ui_navigation_05_item--active':currentActive == item1.id}" class="ui_navigation_05_first" @click.self="navClick(item1,tree)">{{item1.name}}</span>
 
-          <li class="ui_navigation_05_ul_child1_li" :class="{'ui_navigation_05_item--active':currentActive == item2.id}" v-show="item1.showChild || currentActive == item2.id" @click.self="navClick(item2,item1.childNav)">
-            {{item2.name}}
-            <ul class="ui_navigation_05_ul_child2" v-if="showThreeColumn" v-show="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
-              <li class="ui_navigation_05_ul_child2_li" :class="{'ui_navigation_05_item--active':currentActive == item3.id}" v-show="item2.showChild" @click.self="changeContent(item3.id)">{{item3.name}}</li>
-            </ul>
-          </li>
-        </ul>
+          <ul class="ui_navigation_05_ul_child1" v-show="item1.childNav.length>0" v-for="(item2,index2) in item1.childNav" :key="index2">
+
+            <li class="ui_navigation_05_ul_child1_li" :class="{'ui_navigation_05_item--active':currentActive == item2.id}" v-show="item1.showChild || currentActive == item2.id" @click.self="navClick(item2,item1.childNav)">
+              {{item2.name}}
+              <ul class="ui_navigation_05_ul_child2" v-if="showThreeColumn" v-show="item2.childNav.length>0" v-for="(item3,index3) in item2.childNav" :key="index3">
+                <li class="ui_navigation_05_ul_child2_li" :class="{'ui_navigation_05_item--active':currentActive == item3.id}" v-show="item2.showChild" @click.self="changeContent(item3.id)">{{item3.name}}</li>
+              </ul>
+            </li>
+          </ul>
+        </template>
       </li>
     </ul>
   </nav>
@@ -80,6 +94,7 @@ export default {
           var treeObj = {
             id: val[this.keys.id],
             name: val[this.keys.name],
+            code: val.code,
             parentId: val[this.keys.parentId],
             childNav: [],
             showChild: false, //子导航是否展示(鼠标单击控制展示收起)

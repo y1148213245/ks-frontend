@@ -67,10 +67,10 @@ export default {
   },
   methods: {
     backgroundImgEve (item) {  // 点击轮播图图片的时候 优先级：来源链接 >> 详情
-      window.open(item[this.keys.sourceUrl] ? item[this.keys.sourceUrl] : toOtherPage(item, this.CONFIG.toDetail, this.keys));
+      window.location.href=item[this.keys.sourceUrl] ? item[this.keys.sourceUrl] : toOtherPage(item, this.CONFIG.toDetail, this.keys);
     },
     toCustomFun (item, config) { // 执行自定义事件
-      window.open(item[this.keys.sourceUrl] ? item[this.keys.sourceUrl] : toOtherPage(item, this.CONFIG[config.method]), this.keys);
+      window.location.href=item[this.keys.sourceUrl] ? item[this.keys.sourceUrl] : toOtherPage(item, this.CONFIG[config.method]), this.keys;
     },
     queryData: function () {
       Post(CONFIG.BASE_URL + this.CONFIG.url, this.CONFIG.params).then((rep) => {

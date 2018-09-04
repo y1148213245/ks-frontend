@@ -13,7 +13,8 @@ const description = `个人中心`; // 组件描述信息
 const dev = {
   personalcenter: {
     personalcenter_01: {
-      navList: [{
+      navList: [
+        {
         title: "我的帐号",
         icon: "el-icon-edit",
         tag: "account"
@@ -59,9 +60,12 @@ const dev = {
           getMobileCode: {
             url: 'user/sendMobileMessage.do' /* /user/sendToMobile.do 文联用  user/sendMobileMessage.do 华育用 */
           },
-          staticText : {
-
-          }
+          staticText: {
+            editInfo:false, //个人信息页面修改个人信息页面的编辑信息按钮
+            editInfoText:"",//个人信息页面修改个人信息页面的编辑信息按钮文本
+            ordinaryUserText:"",//个人信息页面修改个人信息页面的编辑信息普通用户字段名
+            teacherUserText:""//个人信息页面修改个人信息页面的编辑信息教师用户字段名
+          },
         },
         'collection': { // 收藏的tab切换
           tabListShow: [{
@@ -121,7 +125,8 @@ const dev = {
               type: "7"
             }
           ],
-          tabTypeShow: [{
+          tabTypeShow: [
+            {
             title: '全部订单',
             type: ""
           }, {
@@ -133,7 +138,8 @@ const dev = {
               type: "2"
             }
           ],
-          courierOptions: [{
+          courierOptions: [
+            {
             value: "中通",
             label: "中通"
           },
@@ -350,7 +356,13 @@ const prod = {
         'account': {
           getMobileCode: {
             url: 'user/sendMobileMessage.do' /* /user/sendToMobile.do 文联用  user/sendMobileMessage.do 华育用 */
-          }
+          },
+          staticText: {
+            editInfo:false, //个人信息页面修改个人信息页面的编辑信息按钮
+            editInfoText:"",//个人信息页面修改个人信息页面的编辑信息按钮文本
+            ordinaryUserText:"",//个人信息页面修改个人信息页面的编辑信息普通用户字段名
+            teacherUserText:""//个人信息页面修改个人信息页面的编辑信息教师用户字段名
+          },
         },
         'collection': { // 收藏的tab切换
           tabListShow: [{
@@ -569,8 +581,6 @@ const prod = {
       }
     }
   }
-
-
 };
 
 const platform = 'PC';
