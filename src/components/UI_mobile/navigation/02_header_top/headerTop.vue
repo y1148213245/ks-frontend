@@ -48,7 +48,22 @@ export default {
     toCustomFun (fieldUrl) { // 执行自定义事件
       if(fieldUrl){
         if(fieldUrl.url == 'backUrl'){
-          window.history.go(-1);
+          let urlData=window.location.href;
+          var bluefile =urlData.substring(urlData.indexOf("=")+1, urlData.indexOf("#"))
+          if(bluefile=="details"){//判断是否进入订单详情页的详情页(有问题请找李修改)
+            let splicingUrl=urlData.substring(0, urlData.indexOf("?"));
+            let splicingUrlend=urlData.substring(urlData.indexOf("#"), urlData.length);
+            var jumpEditPage=splicingUrl+splicingUrlend
+            location.href=jumpEditPage;
+          }else{
+            if(urlData.match(/\#(.*)/)[1]=="myorderlist"||urlData.match(/\#(.*)/)[1]=="manageaddress"){//判断是否进入订单详情页
+              let jumpPersonPage=urlData.substring(0, urlData.indexOf("pages"));
+              location.href=jumpPersonPage+"pages/person.html";
+            }else{
+              window.history.go(-1);
+            }
+
+          }
           return false;
         }
         if(fieldUrl.url == 'personUrl'){

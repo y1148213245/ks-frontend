@@ -5,9 +5,9 @@
 
       <div class="title_wrapper">
         <div class="title">
-          <a :href="CONFIG.toIndexHref" class="index">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</a>>>
+          <a :href="CONFIG && CONFIG.toIndexHref" class="index">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</a>>>
           <!-- <a href="../pages/ebook.html" class="ebook">电子书城</a>>> -->
-          <a :href="CONFIG.secondCrumbsUrl ||(CONFIG.toEBookHref)" class="ebook">{{CONFIG.secondCrumbsName ||(getStaticText('ebay') ? getStaticText('ebay') : '电子书城')}}</a>>>
+          <a :href="CONFIG && CONFIG.secondCrumbsUrl ||(CONFIG && CONFIG.toEBookHref)" class="ebook">{{CONFIG.secondCrumbsName ||(getStaticText('ebay') ? getStaticText('ebay') : '电子书城')}}</a>>>
           <span class="current">{{getStaticText('moreBookList') ? getStaticText('moreBookList') : '更多图书列表'}}</span>
         </div>
       </div>

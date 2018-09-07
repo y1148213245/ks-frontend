@@ -233,6 +233,7 @@ export default {
         }
       } else {
         this.addAddressDialog = false;
+        this.emptyPCC = false;
       }
     },
     newAddAddressClose () {
@@ -294,9 +295,9 @@ export default {
     checkArea: function () {
       this.emptyPCC = false
       if (
-        $("#s_province").val() === "省份" ||
-        $("#s_city").val() === "地级市" ||
-        $("#s_county").val() === "市、县级市"
+        $("#s_province").text() === "" ||
+        $("#s_city").text() === "" ||
+        $("#s_county").text() === ""
       ) {
         // 省市区没有选择或者没有选择完全
         this.emptyPCC = true;

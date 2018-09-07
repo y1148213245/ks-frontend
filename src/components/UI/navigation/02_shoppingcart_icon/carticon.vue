@@ -65,10 +65,18 @@ export default {
       if (this.isLogin) {
         window.location.href = this.CONFIG.toCartUrl ? this.CONFIG.toCartUrl : '../pages/shoppingcart.html';
       } else {
-        this.$alert(this.getStaticText('pleaseLoginFirst') ? this.getStaticText('pleaseLoginFirst') : "请您先登录", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
-          confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定",
-          callback: action => {
-            window.location.href = this.CONFIG.toLoginUrl ? this.CONFIG.toLoginUrl : '../pages/login.html';
+        var _this = this;
+        _this.getMemberInfo().then((member) => {
+          if(member && member.loginName){
+            _this.isLogin = member.loginName;
+            window.location.href = _this.CONFIG.toCartUrl ? _this.CONFIG.toCartUrl : '../pages/shoppingcart.html';
+          }else{
+            _this.$alert(_this.getStaticText('pleaseLoginFirst') ? _this.getStaticText('pleaseLoginFirst') : "请您先登录", _this.getStaticText('systemPrompt') ? _this.getStaticText('systemPrompt') : "系统提示", {
+              confirmButtonText: _this.getStaticText('OK') ? _this.getStaticText('OK') : "确定",
+              callback: action => {
+                window.location.href = _this.CONFIG.toLoginUrl ? _this.CONFIG.toLoginUrl : '../pages/login.html';
+              }
+            });
           }
         });
       }

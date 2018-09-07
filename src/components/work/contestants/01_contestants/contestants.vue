@@ -566,7 +566,35 @@ export default {
         callback();
       }
     };
-
+    this.upLoadFileConfig = this.CONFIG.upLoadFile ? this.CONFIG.upLoadFile : {
+      "isGetCategoryId":false,
+      "categoryList":[
+          {
+            "type":"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "categoryId":"6093"
+          },
+          {
+            "type":"application/msword",
+            "categoryId":"6093"
+          },
+          {
+            "type":"text/plain",
+            "categoryId":"6093"
+          },
+          {
+            "type":"application/pdf",
+            "categoryId":"6093"
+          },
+          {
+            "type":"image",
+            "categoryId":"6092"
+          },
+          {
+            "type":"audio",
+            "categoryId":"7092"
+          }
+        ]
+    }
 
   },
 
@@ -941,19 +969,18 @@ export default {
       return CONFIG.BASE_URL + this.CONFIG.upLoadUrl;
     },
     beforeFileUpload (file) {
-      const isDOCX =
-        file.type ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-      const isDOC = file.type === "application/msword";
-      const isText = file.type === "text/plain";
-      const isPdf = file.type === "application/pdf";
-      const isAudio = file.type.indexOf('audio') > -1;
-      const isImage = file.type.indexOf('image') > -1;
+      let fileType = '';
+      for (let index = 0,len = this.upLoadFileConfig.categoryList.length; index < len; index++) {
+        const element = this.upLoadFileConfig.categoryList[index];
+        if (file.type == element.type || file.type.indexOf(element.type) > -1) {
+          fileType = element
+        }
+      }
 
       console.log(file.type);
       let size = file.size / 1024;
 
-      if (!isDOCX && !isDOC && !isText && !isPdf && !isAudio && !isImage) {
+      if (!fileType) {
         this.$message.error(this.getStaticText('uploadProductionFormatInfo') ? this.getStaticText('uploadProductionFormatInfo') : "上传作品文件只能是 doc、docx、txt、pdf格式,图片或音频!");
         if (size > 10240) {
           this.$message.error(this.getStaticText('uploadProductionSizeInfo') ? this.getStaticText('uploadProductionSizeInfo') : "上传作品文件不能超过10M!");

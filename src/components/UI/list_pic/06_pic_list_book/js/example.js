@@ -18,7 +18,7 @@ const dev = {
       hotsalebank: {
         title: '热销排行',
         url: "/data/ui_list_pic_06.json",
-        href: "./bookdetail.html?pubId=",
+        href: "177",
         staticText: {
           hits: "点击量：",
           price: "价格：￥",
@@ -29,7 +29,7 @@ const dev = {
       },
       historyrecord: {
         title: '浏览历史',
-        href: "./bookdetail.html?pubId=",
+        href: "177",
         getBookDetail: {
           url: 'book/getBookDetail.do',
           params: {
@@ -45,7 +45,12 @@ const dev = {
           deleteFailed: "删除失败！"
         }
       },
-
+      directUrl: { // 购物车列表有很多类型的商品 类型不同可能跳转不同的详情页面 根据类型配置 默认跳转bookdetail.html
+        '91': './bookdetail.html', // 纸质书
+        '94': './bookdetail.html', // 电子书
+        '149': './journaldetail.html', // 电子期刊
+        '177': './seriesdetail.html' // 丛书
+      }
     }
   }
 };
@@ -64,7 +69,7 @@ const prod = {
           pageSize: "4",
           searchText: ""
         },
-        href: "./bookdetail.html?pubId=",
+        href: "177",
         staticText: {
           hits: "点击量：",
           price: "价格：￥",
@@ -81,7 +86,7 @@ const prod = {
           username: "",
           // siteId: CONFIG.SITE_CONFIG.siteId
         },
-        href: "./bookdetail.html?pubId=",
+        href: "177",
         getBookDetail: {
           url: 'book/getBookDetail.do',
           params: {
@@ -97,6 +102,12 @@ const prod = {
           noCover: "暂无封面"
         }
       },
+      directUrl: { // 购物车列表有很多类型的商品 类型不同可能跳转不同的详情页面 根据类型配置 默认跳转bookdetail.html
+        '91': './bookdetail.html', // 纸质书
+        '94': './bookdetail.html', // 电子书
+        '149': './journaldetail.html', // 电子期刊
+        '177': './seriesdetail.html' // 丛书
+      }
     }
   }
 

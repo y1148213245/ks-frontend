@@ -19,6 +19,11 @@ const dev = {
         "audio": "AUDIO-MEDIA",
         "download": "ZILIAOKU"
       },
+      "downloadColumns":[1175,1176],
+      "attachType": {
+        "download": "all",
+        "pdf": "txtlpdf"
+      },
       "tabList": [],
       "tHeadList": [
         "文件类型",
@@ -120,6 +125,11 @@ const prod = {
           "audioIconShow": "audio",
           "downloadIconShow": "archive",
           "description": "描述："
+        },
+        "downloadColumns":[1175,1176],
+        "attachType": {
+          "download": "all",
+          "pdf": "txtlpdf"
         },
         "tabList": [],
         "tHeadList": [

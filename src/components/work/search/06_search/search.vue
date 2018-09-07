@@ -12,7 +12,7 @@
     <div class="work_search_06_searchcon">
       <input class="work_search_06_searchbtn" type="button" :value="getStaticText('search') ? getStaticText('search') : '搜索'" name="search" @click="goToSearchResult()">
       <i class="work_search_06_searchicon el-icon-search"></i>
-      <input class="work_search_06_searchtext" type="text" id="searchText" value="" :placeholder="getStaticText('inputKeyWord') ? getStaticText('inputKeyWord') : '输入关键字'" v-model="searchText" @keyup.13="goToSearchResult($event)">
+      <input class="work_search_06_searchtext" type="text" id="searchText" value="" :placeholder="getStaticText('inputKeyWord') ? getStaticText('inputKeyWord') : '输入关键字'" v-model="searchText" @keyup.13="goToSearchResult($event)" readonly onfocus="this.removeAttribute('readonly');">
     </div>
     <div class="work_search_06_advsearch" @click="goToAdvSearch()">{{getStaticText('advancedSearch') ? getStaticText('advancedSearch') : '高级检索'}}</div>
   </div>

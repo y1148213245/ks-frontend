@@ -505,7 +505,8 @@ var FIELD_ADAPTER = {
             wysp: "WYSP",   // 外语水平  [WYSP]
             activiyid:"ACTIVITYID", // 活动ID  [ACTIVITYID]
             activiylibid:"ACTIVITYLIBID",// 活动库ID  [ACTIVITYLIBID]
-            coverId: "COVERID"            
+            coverId: "COVERID",
+            workYears: "WORK_YEARS"  // 工作年限
         },
         sampleBookAdapter:{  // 样书库  [PORTAL_YANGSHUKU]
             sysCreated:"SYS_CREATED",        // 入库日期  [SYS_CREATED]

@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-08-31 15:55:18
+ * @Last Modified time: 2018-09-05 17:28:37
  * 购物车组件
  */
 
@@ -538,8 +538,9 @@
           <div class="payAmount">
             <span>{{getStaticText('actuallyPaid') ? getStaticText('actuallyPaid') : '实付金额：'}}</span>
             <!-- 全部都是电子书并且不需要发票 这个时候不要配送费 -->
-            <span class="payTotalAmount" v-if="allEbook === true && needInvoice === '0'">{{formatMoney(orderDetail.bookTotalMoney - orderDetail.bookSaveMoney + orderDetail.ebookTotalMoney - rmbCoin - orderDetail.ebookSaveMoney)}}</span>
-            <span class="payTotalAmount" v-else>{{formatMoney(orderDetail.bookTotalMoney - orderDetail.bookSaveMoney + orderDetail.ebookTotalMoney - orderDetail.ebookSaveMoney - rmbCoin + selectedDelivery.deliveryPrice)}}</span>
+            <!-- js数字精度丢失 -->
+            <span class="payTotalAmount" v-if="allEbook === true && needInvoice === '0'">{{formatMoney((orderDetail.bookTotalMoney * 100 + orderDetail.ebookTotalMoney * 100 - rmbCoin * 100 - orderDetail.ebookSaveMoney * 100 - orderDetail.bookSaveMoney * 100) / 100)}}</span>
+            <span class="payTotalAmount" v-else>{{formatMoney((orderDetail.bookTotalMoney * 100 + orderDetail.ebookTotalMoney * 100 + selectedDelivery.deliveryPrice * 100 - orderDetail.bookSaveMoney * 100 - orderDetail.ebookSaveMoney * 100 - rmbCoin * 100)/ 100)}}</span>
           </div>
           <div class="commitOrder">
             <el-button v-if="!hasCommitOrder" type="primary" size="large" @click="commitOrder()">{{getStaticText('submitOrder') ? getStaticText('submitOrder') : '提交订单'}}</el-button>
@@ -1222,15 +1223,15 @@ export default {
     clearing: function () { // 结算：即为初次进入提交订单页面 要将电子书状态、商品列表信息和结算详细信息存在本地
       var _this = this;
       var detailParams = {
-        totalMoney: this.totalMoney,
+        totalMoney: Number(this.totalMoney.toFixed(2)),
         totalNum: this.totalNum,
         saveAmount: this.saveAmount,
         freeFreight: this.freeFreight,
         sendPoints: this.sendPoints,
-        bookTotalMoney: this.bookTotalMoney,
-        bookSaveMoney: this.bookSaveMoney,
-        ebookTotalMoney: this.ebookTotalMoney,
-        ebookSaveMoney: this.ebookSaveMoney
+        bookTotalMoney: Number(this.bookTotalMoney.toFixed(2)),
+        bookSaveMoney: Number(this.bookSaveMoney.toFixed(2)),
+        ebookTotalMoney: Number(this.ebookTotalMoney.toFixed(2)),
+        ebookSaveMoney: Number(this.ebookSaveMoney.toFixed(2))
       };
       this.selectedProductListArray.forEach(function (items) {
         if (items.list.length > 0) {
@@ -1406,6 +1407,7 @@ export default {
     },
     getInvoiceInfo (data) {      // 接收发票信息
       this.curSelectedInvoice = data;
+
     },
     selectCoupon: function (item, index) {  // 选择某个可用优惠券
       if (this.couponProductListWrapper[item.type + '-' + item.id]) {

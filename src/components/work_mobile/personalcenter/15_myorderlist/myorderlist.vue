@@ -259,6 +259,14 @@ export default {
         resp => {
           this.orderDetails = resp.data.data;
           if (this.orderType == "book") {
+            var urlData=window.location.href;
+            let splicingUrl=urlData.substring(0, urlData.indexOf("#"));
+            let splicingUrlend=urlData.substring(urlData.indexOf("#"), urlData.length);
+            var jumpEditPage=splicingUrl+"?modal=details"+splicingUrlend
+            let urlDress = urlData.substring(0, urlData.indexOf("?"));
+            if(urlDress==""){
+              history.pushState(null, "", jumpEditPage);
+            }
             this.currentShow = "bookDetails";
           } else if (this.orderType == "periodical") {
             this.currentShow = "periodicalDetails";
@@ -289,7 +297,6 @@ export default {
           "&loginName=" +
           this.member.loginName
       ).then(resp => {
-        console.log(resp);
         let res = resp.data;
         if(res.result == "1"){
 	        this.initData();  //确认收货后再次请求列表
@@ -306,7 +313,6 @@ export default {
       var orderId = this.consumeLists[outIndex].id;
       Get(CONFIG.BASE_URL + this.ORDERCANCEL.url + "?orderId=" + orderId).then(
         resp => {
-          console.log(resp);
           if (resp.data.result == 1) {
             this.initData();
             Toast.success({
@@ -343,7 +349,6 @@ export default {
     //去付款
     toPayOrder(outIndex) {
       var payMethod = this.consumeLists[outIndex].orderList[0].payMethod;
-      console.log(payMethod);
     },
     //去图书详情
     tobookdetails(inneritem){

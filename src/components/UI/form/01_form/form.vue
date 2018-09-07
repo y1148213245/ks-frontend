@@ -22,7 +22,14 @@
             </el-upload>
 
             <!-- 其他附件 -->
-            <el-upload v-if="item.type === 'file'" v-model="form[item.model]">
+            <el-upload v-if="item.type === 'file'" v-model="form[item.model]"
+            :action="uploadUrl"
+            :show-file-list="true"
+            :file-list="fileList"
+            :on-change="handleChange"
+            :on-remove="handleRemove"
+            :on-success="handleAvatarSuccess1"
+            :before-upload="beforeAvatarUpload1">
               <el-button v-if="item.btnName">{{item.btnName}}</el-button>
             </el-upload>
 
@@ -64,7 +71,7 @@
             <!-- 额外button -->
             <el-button v-if="item.type=== 'extra-button'" type="primary" :id="item.id || ''">{{item.name}}</el-button>
 
-            <!-- 发送验证码 -->
+            <!-- 发送验证码 --> 
             <el-button v-if="item.type=== 'button-code'" type="primary" :id="item.id || ''" @click="doSendCode()" :class="{'isdisabled': isDisabled}" :disabled="isDisabled">
               {{sendTxt || item.name}}
               <span v-if="isCountDown">{{time}}s</span>
@@ -146,7 +153,9 @@ export default {
       pubId: "", // 活动id
       activityName: "", // 活动名称
       activityLibId: "", //活动库id
-      urlParams:{}    // 地址栏带的参数
+      urlParams:{},    // 地址栏带的参数
+      fileId: "", // 附件ID
+      fileList: [] // 附件列表(暂不支持上传多个文件,即使上传了多个文件依然会显示最后一个)
     };
   },
   computed: {},
@@ -426,7 +435,18 @@ export default {
             paramsObj.metaMap["ACTIVITYLIBID"] = this.activityLibId ? this.activityLibId : paramsObj.metaMap["ACTIVITYLIBID"];
           }
 
+          // 站点id(部分表单提交会区分站点,比如人才招聘)
+          if("SITE_ID" in paramsObj.metaMap){
+            paramsObj.metaMap["SITE_ID"] = CONFIG.SITE_CONFIG.siteId + "";
+          }
+
+
           let self = this;
+          // 如果成功上传了附件,那就加上返回的ID
+          if(self.fileId){
+            paramsObj.metaMap["COVERID"] = self.fileId + "";
+            paramsObj.metaMap["RESOURCEID"] = self.fileId + "";
+          }
           console.log(paramsObj);
           Post(CONFIG.BASE_URL + this.CONFIG.submit.url, paramsObj).then(
             res => {
@@ -478,16 +498,50 @@ export default {
       this.imageUrl.fileRecordID = res.ID;
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg" || "image/png" || "image/jpg";
+      const filetypes = ["image/jpeg", "image/png", "image/jpg"];
+      let isJPG = true;
       const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG) {
+      if (filetypes.indexOf(file.type) === -1) {
+        isJPG = false;
         this.$message.error("暂不支持" + file.type + "格式的图片");
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    handleAvatarSuccess1(res, file) {
+      if(res.Status != "fail"){
+        this.fileId = res.ID;
+      }else{
+        this.$message({
+          type: "error",
+          message: res.Message
+        });
+      }
+    },
+    beforeAvatarUpload1(file) {
+      const filetypes = ["image/jpeg", "image/jpg", "text/html", "application/msword", "application/pdf","application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+      let istype = true;
+      const isLt10M = file.size / 1024 / 1024 < 10;
+
+      if (filetypes.indexOf(file.type) === -1) {
+        istype = false;
+        this.$message.error("暂不支持" + file.type + "格式的文件");
+      }
+      if (!isLt10M) {
+        this.$message.error("上传文件大小不能超过 10MB!");
+      }
+      return istype && isLt10M;
+    },
+    handleChange(file, fileList){
+      // 取最后一个文件
+      this.fileList = fileList.slice(-1);
+    },
+    // 移除文件列表时的钩子
+    handleRemove(file, filelist){
+      this.fileId = "";
     }
   }
 };

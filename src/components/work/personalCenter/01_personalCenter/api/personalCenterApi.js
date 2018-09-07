@@ -141,6 +141,11 @@ export default {
     var url = CONFIG.BASE_URL + "order/deleteParentOrder.do?id=" + params.id;
     return Get(url);
   },
+  /*确认收货*/
+  confirmReceipt(params){
+    let url = CONFIG.BASE_URL + "order/confirmReceipt.do?orderId=" + params.orderId + "&loginName=" + params.loginName;
+    return Get(url);
+  },
   /*获取订单详情*/
   queryOrderDetails(params) {
     var url =

@@ -219,6 +219,9 @@ var actions = {
     api.queryTimeList(params).then(function (response) {
       let newdata = response.data;
       commit("setNewList", newdata);
+      if('function' == typeof params.orderListCallBack){
+        params.orderListCallBack();
+      }
       loading.close();
     });
   },
@@ -301,6 +304,17 @@ var actions = {
       let Idata = response.data.result;
       params.cb(Idata, response);
     });
+  },
+  /*确认收货*/
+  confirmReceipt({
+    commit,
+    getters
+  }, params){
+    params.loginName = getters.getMember.loginName;
+    api.confirmReceipt(params).then(function (response){
+      let Idata = response.data.result;
+      params.cb(Idata, response);
+    })
   },
   /*获取书架*/
   querybookShelfInfo({

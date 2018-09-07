@@ -5,6 +5,11 @@
     </el-tooltip> -->
     <div class="center_container">
       <vnav :navs="navs" :parent-config="CONFIG.subConfig" :current-show-index="currentShowIndex" class="personalcenter_nav"></vnav>
+      <div class="center_container_crumbs" v-if="CONFIG && CONFIG.staticText && CONFIG.staticText.crumbs == true">
+        <a href="./index.html">{{getStaticText('homePage') ? getStaticText('homePage') : '首页 '}}</a>>>
+        <a href="./personalcenter.html">{{getStaticText('personalCenter') ? getStaticText('personalCenter') : '个人中心'}}</a>>>
+        {{currentShow.title}}
+      </div>
       <h1 class="center_container-title">{{currentShow.title}}</h1>
       <component ref="currentComponent" v-if="updateContrl" :is="currentShow.tag" :detail-url="detailUrl" :show_star="show_star" :parent-config="CONFIG.subConfig" class="personalcenter_section"></component>
     </div>
@@ -98,6 +103,17 @@ export default {
         params = {};
       }
       return params;
+    },
+    getStaticText(text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
+      } else {
+        return false;
+      }
     }
   },
   watch:{
@@ -171,6 +187,10 @@ table {
   float: right;
   width: 78%;
   margin: 20px 0;
+}
+.center_container_crumbs{
+  width: 78%;
+  float: right;
 }
 
 /* UI美化样式 */

@@ -1,7 +1,12 @@
 <!-- 栏目详情 -->
 <template>
 <div class="work_common_06">
- <h1 v-if="CONFIG.showItem.indexOf('title') != -1" class="ui_pic_list_21-h1" :style="{backgroundImage:'url('+ (CONFIG.getColDetail.keys.pic ? colDetail[CONFIG.getColDetail.keys.pic] : colDetail.big_pic) +')',backgroundPosition:'center center'}" v-text="colDetail[CONFIG.getColDetail.keys.name]"></h1>
+  <template v-if="CONFIG && CONFIG.showLang && CONFIG.showLang ==='Korean'">
+    <h1 v-if="CONFIG.showItem.indexOf('title') != -1" class="ui_pic_list_21-h1 work_common_06_h1" :style="{backgroundImage:'url('+ (CONFIG.getColDetail.keys.pic ? colDetail[CONFIG.getColDetail.keys.pic] : colDetail.big_pic) +')',backgroundPosition:'center center'}" v-text="colDetail[CONFIG.getColDetail.keys.code]"></h1>
+  </template>
+  <template v-else>
+    <h1 v-if="CONFIG.showItem.indexOf('title') != -1" class="ui_pic_list_21-h1 work_common_06_h1" :style="{backgroundImage:'url('+ (CONFIG.getColDetail.keys.pic ? colDetail[CONFIG.getColDetail.keys.pic] : colDetail.big_pic) +')',backgroundPosition:'center center'}" v-text="colDetail[CONFIG.getColDetail.keys.name]"></h1>
+  </template>
 </div>
 </template>
 

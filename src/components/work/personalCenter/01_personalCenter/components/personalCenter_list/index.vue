@@ -44,10 +44,11 @@
                 <el-col :span="6">
                   <div class="personalcenter_list_main_orderStatus">
                     <span v-if="item.payStatus==0 && item.status==1">{{getStaticText('pendingPayment') ? getStaticText('pendingPayment') : '订单状态：待付款'}}</span>
-                    <span v-if="item.payStatus==0 && item.status==2">{{getStaticText('cancelled') ? getStaticText('cancelled') : '订单状态：已取消'}}</span>
-                    <span v-if="item.payStatus==1 && item.status==1 && item.orderType=='91'">{{getStaticText('undelivery') ? getStaticText('undelivery') : '订单状态：待收货'}}</span>
-                    <span v-if="item.payStatus==1 && item.status==1 && item.orderType!='91'">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
-                    <span v-if="item.payStatus==1 && item.status==5">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
+                    <span v-else-if="item.payStatus==0 && item.status==2">{{getStaticText('cancelled') ? getStaticText('cancelled') : '订单状态：已取消'}}</span>
+                    <span v-else-if="item.payStatus==1 && item.status==1 && item.deliveryStatus==0 && item.orderType=='91'">{{getStaticText('undelivery') ? getStaticText('undelivery') : '订单状态：待发货'}}</span>
+                    <span v-else-if="item.payStatus==1 && item.status==1 && item.deliveryStatus==2 && item.orderType=='91'">{{getStaticText('deliveryed') ? getStaticText('deliveryed') : '订单状态：待收货'}}</span>
+                    <span v-else-if="item.payStatus==1 && item.status==1 && item.orderType!='91'">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
+                    <span v-else>{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
                   </div>
                 </el-col>
                 <el-col :span="3">
@@ -78,8 +79,29 @@
                   <div class="personalcenter_list_main_listBox_card_right">{{getStaticText('money') ? getStaticText('money') : '¥'}}{{(item1.memberPrice == "null" ? 0 : Number(item1.memberPrice)) * item1.productNum }}</div>
                 </el-col>
               </el-row>
+              <el-row class="personalcenter_list_main_listBox_cardbtn" v-if="item.payStatus==1 && item.status==1 && item.deliveryStatus==2 && item.orderType=='91'">
+                <el-col :span="3" :offset="18">
+                  <el-button type="text" @click="showDetails(outIndex,index)">
+                    {{getStaticText('seeDelivery') ? getStaticText('seeDelivery') : '查看物流'}}
+                  </el-button>
+                </el-col>
+                <el-col :span="3">
+                  <el-button type="primary" @click="toConfirm(outIndex,index)">
+                    {{getStaticText('recieved') ? getStaticText('recieved') : '确认收货'}}
+                    <i class="el-icon-check el-icon-close"></i>
+                  </el-button>
+                </el-col>
+              </el-row>
+              <!-- <div v-if="item.payStatus==1 && item.status==1 && item.deliveryStatus==0 && item.orderType=='91'" class="fr">
+                <el-button type="text" @click="showDetails(outIndex,index)">
+                  {{getStaticText('seeDelivery') ? getStaticText('seeDelivery') : '查看物流'}}
+                </el-button>
+                <el-button type="primary">
+                  {{getStaticText('recieved') ? getStaticText('recieved') : '确认收货'}}
+                  <i class="el-icon-check el-icon-close"></i>
+                </el-button>
+              </div> -->
             </div>
-
             <div class="mt5">
               <div v-if="Aitem.payStatus==0 && Aitem.status==1" class="fr">
                 <el-button type="text" @click="cancelOrder(outIndex)" id="testUseCancelLocation">
@@ -93,15 +115,6 @@
               <div v-if="Aitem.payStatus==1 && Aitem.status==5" class="fr">
                 <el-button type="primary" @click="deleteOrder(outIndex)">
                   {{getStaticText('deleteOrder') ? getStaticText('deleteOrder') : '删除订单'}}
-                  <i class="el-icon-check el-icon-close"></i>
-                </el-button>
-              </div>
-              <div v-if="Aitem.payStatus==1 && Aitem.status==1" class="fr">
-                <el-button type="text">
-                  {{getStaticText('seeDelivery') ? getStaticText('seeDelivery') : '查看物流'}}
-                </el-button>
-                <el-button type="primary">
-                  {{getStaticText('recieved') ? getStaticText('recieved') : '确认收货'}}
                   <i class="el-icon-check el-icon-close"></i>
                 </el-button>
               </div>
@@ -208,9 +221,11 @@
         </div>
         <div class="personalcenter_list_bookDetails_status">
           <span v-if="item.payStatus==0 && item.status==1">{{getStaticText('pendingPayment') ? getStaticText('pendingPayment') : '订单状态：待付款'}}</span>
-          <span v-if="item.payStatus==0 && item.status==2">{{getStaticText('cancelled') ? getStaticText('cancelled') : '订单状态：已取消'}}</span>
-          <span v-if="item.payStatus==1 && item.status==1">{{getStaticText('undelivery') ? getStaticText('undelivery') : '订单状态：待收货'}}</span>
-          <span v-if="item.payStatus==1 && item.status==5">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
+          <span v-else-if="item.payStatus==0 && item.status==2">{{getStaticText('cancelled') ? getStaticText('cancelled') : '订单状态：已取消'}}</span>
+          <span v-else-if="item.payStatus==1 && item.status==1 && item.deliveryStatus==0 && item.orderType=='91'">{{getStaticText('undelivery') ? getStaticText('undelivery') : '订单状态：待发货'}}</span>
+          <span v-else-if="item.payStatus==1 && item.status==1 && item.deliveryStatus==2 && item.orderType=='91'">{{getStaticText('deliveryed') ? getStaticText('deliveryed') : '订单状态：待收货'}}</span>
+          <span v-else-if="item.payStatus==1 && item.status==1 && item.orderType!='91'">{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
+          <span v-else>{{getStaticText('completed') ? getStaticText('completed') : '订单状态：已完成'}}</span>
         </div>
         <div class="personalcenter_list_title_common bg-purple-light">
           <span>
@@ -548,6 +563,61 @@ export default {
   //   }
   // },
   methods: {
+    //确认收货
+    toConfirm(outIndex, index) {
+      var orderId = this.myOrderList.data[outIndex].orderList[index].orderId;
+      var param = {
+        orderId: orderId,
+        loginName: '',
+        cb: this.confirmReceiptCallb
+      };
+      this.$store.dispatch("personalCenter/confirmReceipt", param);
+      // Get(
+      //   CONFIG.BASE_URL +
+      //     this.CONFIRMRECEIPT.url +
+      //     "?orderId=" +
+      //     orderId +
+      //     "&loginName=" +
+      //     this.member.loginName
+      // ).then(resp => {
+      //   let res = resp.data;
+      //   if(res.result == "1"){
+	    //     this.initData();  //确认收货后再次请求列表
+      //   }else{
+	    //     Toast.fail({
+		  //       duration: 1000,
+		  //       message: "确认收货失败"
+	    //     });
+      //   }
+      // });
+    },
+    //确认收货回调
+    confirmReceiptCallb(idata,rep){
+      if (idata == 1) {
+        var param = {
+          pageIndex: 1,
+          pageSize: 8,
+          payStatus: this.payStatusNum,
+          status: this.displayCancel,
+          orderType: this.orderType,
+          orderListCallBack:this.activityRemarkAll
+        };
+        this.$store.dispatch("personalCenter/queryOrderList", param);
+        this.$message({
+          type: "success",
+          message: this.getStaticText("receiptSuccess")
+            ? this.getStaticText("receiptSuccess")
+            : "收货成功"
+        });
+      } else {
+        this.$message({
+          type: "info",
+          message: this.getStaticText("receiptFailed")
+            ? this.getStaticText("receiptFailed")
+            : "收货失败，请重试"
+        });
+      }
+    },
     // 展示退换货
     showReturn(item, item1, type) {
       this.returnBigPic = item1.bigPic; //展示图片
@@ -855,7 +925,8 @@ export default {
       var etime = value[1];
       var param = {
         stime: stime,
-        etime: etime
+        etime: etime,
+        orderListCallBack:this.activityRemarkAll
       };
       this.$store.dispatch("personalCenter/queryTimeList", param);
     },
@@ -901,9 +972,9 @@ export default {
     },
     cancelOrder(outIndex) {
       //文本待抽离
-      this.$confirm("确定取消此订单？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$confirm((this.getStaticText("confirmCancelOrder") ? this.getStaticText("confirmCancelOrder") : "确定取消此订单？"), (this.getStaticText("tips") ? this.getStaticText("tips") : "提示"), {
+        confirmButtonText: (this.getStaticText("confirm") ? this.getStaticText("confirm") : "确定"),
+		cancelButtonText: (this.getStaticText("cancel") ? this.getStaticText("tips") : "取消"),
         type: "warning"
       }).then(() => {
         var id = this.myOrderList.data[outIndex].id;
@@ -942,9 +1013,9 @@ export default {
     },
     deleteOrder(outIndex) {
       //文本待抽离
-      this.$confirm("确定删除此订单？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$confirm((this.getStaticText("confirmDeleteOrder") ? this.getStaticText("confirmDeleteOrder") : "确定删除此订单？"), (this.getStaticText("tips") ? this.getStaticText("tips") : "提示"), {
+        confirmButtonText: (this.getStaticText("confirm") ? this.getStaticText("confirm") : "确定"),
+		cancelButtonText: (this.getStaticText("cancel") ? this.getStaticText("tips") : "取消"),
         type: "warning"
       }).then(() => {
         var id = this.myOrderList.data[outIndex].id;
@@ -982,9 +1053,9 @@ export default {
       }
     },
     changeOrderList(val) {
-      if (val == "book") {
+      if (val == "94") {
         this.orderType = "book";
-      } else if (val == "periodical") {
+      } else if (val == "91") {
         this.orderType = "periodical";
       } else {
         console.log("知识服务订单");

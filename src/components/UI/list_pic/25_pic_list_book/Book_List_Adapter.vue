@@ -1,6 +1,6 @@
 <template>
   <div class="ui_list_pic_25">
-    <div v-bind:is="currentView" namespace="booklist" :colId="colId"></div>
+    <div v-bind:is="currentView" :namespace="namespace" :colId="colId"></div>
   </div>
 </template>
 <script type="text/ecmascript-6">

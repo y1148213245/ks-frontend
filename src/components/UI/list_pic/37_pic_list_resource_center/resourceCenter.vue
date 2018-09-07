@@ -73,8 +73,21 @@
         this.display = this.CONFIG.display;
         this.resourceTitle = this.display.resourceTitle;
         let _self = this;
+        if(this.CONFIG && this.CONFIG.showLang && this.CONFIG.showLang ==='Korean'){    //朝鲜语
         //将栏目树中的二级栏目传进来，在本组件中渲染三级栏目
         this.$bus.$on(_self.CONFIG.transTitle,function (item) {
+            _self.resourceTitle = item.code;
+            //渲染三级栏目
+            _self.showThreeColumn(item, true);
+          });
+          //用于初次加载，默认渲染tree中的第一个栏目中的数据
+          this.$bus.$on(_self.CONFIG.transDefaultColId,function (item) {
+            _self.resourceTitle = item.code;
+            _self.getListByColumnId(item);
+          });
+        }else{
+          //将栏目树中的二级栏目传进来，在本组件中渲染三级栏目
+          this.$bus.$on(_self.CONFIG.transTitle,function (item) {
           _self.resourceTitle = item.name;
           _self.currentIndex = -1
           //渲染三级栏目
@@ -85,6 +98,7 @@
           _self.resourceTitle = item.name;
           _self.getListByColumnId(item);
         });
+        }
       },
       mounted(){
 
@@ -186,12 +200,6 @@
         },
         toContent(item){
           switch (item[this.keys.pubResType]) {
-            case this.display.book:   //去阅读电子书
-              let params = Object.assign({},this.CONFIG.toEbook.params) ;
-              let url = CONFIG.READ_URL + '?bookId=' + item[this.keys.resId] + '&readType=' + params.readType + '&bookName=' + item[this.keys.resName] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
-
-              window.open(url);
-              break;
             case this.display.audio:  //去播放音频
               let audioParams = Object.assign({},this.CONFIG.toPlayAudio.params);
               window.open(toOtherPage(item,this.CONFIG.toPlayAudio,this.keys)+'&mediaResId='+item[audioParams.audioResId]);
@@ -201,33 +209,42 @@
               let videoParams = Object.assign({},this.CONFIG.toPlayVideo.params);
               window.open(toOtherPage(item,this.CONFIG.toPlayVideo,this.keys)+'&mediaResId='+item[videoParams.videoResId]);
               break;
-            case this.display.download:  //去下载
-              this.getZipAttachment(item);
+            case this.display.download:  //资料库包含pdf附件和zip包附件
+              let columns = this.CONFIG.downloadColumns;   // 附件为zip需要去下载的栏目
+              if(columns.includes(item[this.keys.colId])){
+                this.getZipAttachment(item,this.CONFIG.attachType.download);
+              }else {
+                // 附件为pdf需要在线阅读的栏目
+                this.getZipAttachment(item,this.CONFIG.attachType.pdf);
+              }
               break;
           }
         },
-        getZipAttachment (item) { // 获取附件
+        getZipAttachment (item,attachType) { // 获取附件
           let paramsObj = Object.assign({}, this.CONFIG.getZipAttachment.params);
           paramsObj.pubId = item.id;
-          
+          paramsObj.attachTypes = attachType;
           Get(CONFIG.BASE_URL + this.CONFIG.getZipAttachment.url + '?pubId=' + paramsObj.pubId + '&loginName=' + (this.member.loginName?this.member.loginName:'') + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&attachTypes=' + paramsObj.attachTypes).then((rep) => {
             let datas = rep.data;
-            
-            
             if (datas.result == '1' && datas.data) {
               this.zipAttachment = datas.data;
-              
-              
+
               if(this.zipAttachment[paramsObj.attachTypes]){
+                if(paramsObj.attachTypes == this.CONFIG.attachType.download){
                 //获取到需要下载的资源的ID
                 this.zipAttachmentId = this.zipAttachment[paramsObj.attachTypes][0][this.keys.fileRecordID];
-                
-                
                 if(this.zipAttachmentId){
-                  
                   this.toDownload();
                 }
+                }else if(paramsObj.attachTypes == this.CONFIG.attachType.pdf){
+                  // 如果附件是PDF，那么直接取第一个，去阅读器阅读
+                  let attachList = this.zipAttachment[paramsObj.attachTypes][0]
+                  let params = Object.assign({},this.CONFIG.toEbook.params) ;
+                  let url = CONFIG.READ_URL + '?bookId=' + attachList['docID'] + '&readType=' + params.readType + '&bookName=' + attachList['attachName'] + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType + '&doclibCode=ZILIAOKU';
+                  window.open(url);
               }
+                
+            }
             }
           });
         },
@@ -237,21 +254,33 @@
         },
         changeShow(item){  //类型文字展示转换
           switch(item[this.keys.pubResType]){
-            case this.display.book: return this.display.bookShow; break;
             case this.display.video: return this.display.videShow; break;
             case this.display.audio: return this.display.audioShow; break;
-            case this.display.download: return this.display.downloadShow; break;
+            case this.display.download: 
+              let columns = this.CONFIG.downloadColumns; 
+              if(columns.includes(item[this.keys.colId])){
+                return this.display.downloadShow; 
+              }else {
+                return this.display.bookShow; 
+          }
+              break;
           }
         },
         changeIconName(item){
           switch(item[this.keys.pubResType]){
-            case this.display.book: return this.display.bookIconShow; break;
             case this.display.video: return this.display.videIconShow; break;
             case this.display.audio: return this.display.audioIconShow; break;
-            case this.display.download: return this.display.downloadIconShow; break;
+            case this.display.download: 
+              let columns = this.CONFIG.downloadColumns; 
+              if(columns.includes(item[this.keys.colId])){
+                return this.display.downloadIconShow; 
+              }else {
+                return this.display.bookIconShow; 
           }
+              break;
         }
       }
+    }
     }
 </script>
 

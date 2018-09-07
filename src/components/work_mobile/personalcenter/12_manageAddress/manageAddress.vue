@@ -78,11 +78,30 @@
         member: interfaces.GET_MEMBER
       }),
     },
+//    beforeCreate(){
+//      let urlData=window.location.href;
+//      var bluefile =urlData.match(/\?modal=(.*)/)
+//      var urlparameter;
+//      if(bluefile!=null){
+//        urlparameter=bluefile[1]
+//      }
+//      if(urlparameter=="details"){//判断是否进入订单详情页的详情页
+//        let urlDress = urlData.substring(0, urlData.indexOf("?"));
+//        location.href=urlDress;
+//        location.reload()
+//      }
+//    },
     created(){
       //获取配置文件中的数据
       this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_12;
       this.display = this.CONFIG.display;
       this.addressInfo = this.CONFIG.addressInfo;
+      let urlData=window.location.href;
+      var bluefile =urlData.substring(urlData.indexOf("=")+1, urlData.indexOf("#"))
+      if(bluefile=="details"){
+        this.show = true;
+        this.isEditDialog = true;
+      }
     },
     mounted(){
       //发广播
@@ -98,18 +117,27 @@
         this.addressInfo.city = item.city;
         this.addressInfo.county = item.county;
         for (var i in areaList.county_list){
-          console.log(item.county);
           if(item.county&&areaList.county_list[i]==item.county){  //通过item.county获取areaCode值
             this.areaCode=i;
           }
         }
         this.addressInfo.address_detail = item.address;
         this.addressInfo.postal_code = item.post;
-        this.addressInfo.area_code = this.areaCode;  
+        this.addressInfo.area_code = this.areaCode;
         this.addressInfo.is_default = item.isDefault == '1' ? true : false;
-
-        this.show = true;
-        this.isEditDialog = true;
+        var urlData=window.location.href;
+        let urlDress = urlData.substring(0, urlData.indexOf("?"));
+        let splicingUrl=urlData.substring(0, urlData.indexOf("#"));
+        let splicingUrlend=urlData.substring(urlData.indexOf("#"), urlData.length);
+        var jumpEditPage=splicingUrl+"?modal=details"+splicingUrlend
+        if(urlDress==""){
+          history.pushState(null, "", jumpEditPage);
+          this.show = true;
+          this.isEditDialog = true;
+        }else{
+          this.show = true;
+          this.isEditDialog = true;
+        }
       },
       addAddress(){
         this.addressInfo = {
@@ -124,10 +152,23 @@
           postal_code: '',
           is_default: false,
         };
-        this.show = true;
-        this.isEditDialog = false
+
+        var urlData=window.location.href;
+        let urlDress = urlData.substring(0, urlData.indexOf("?"));
+        let splicingUrl=urlData.substring(0, urlData.indexOf("#"));
+        let splicingUrlend=urlData.substring(urlData.indexOf("#"), urlData.length);
+        var jumpEditPage=splicingUrl+"?modal=details"+splicingUrlend
+        if(urlDress==""){
+          history.pushState(null, "", jumpEditPage);
+          this.show = true;
+          this.isEditDialog = false
+        }else{
+          this.show = true;
+          this.isEditDialog = false
+        }
       },
       deleteAddress(item){
+        debugger;
         Dialog.confirm({
           message: this.display.sureToDeleteAddress
         }).then(() => {
@@ -136,11 +177,14 @@
             if (res.result == '1') {
               this.getAddressList(this.loginName);
             }else{
-              Toast(res.error.errorMsg);
+              if(res.error!=""&&res.error!=null){
+                Toast(res.error.errorMsg);
+              }
             }
           });
         }).catch(() => {
           Toast(this.display.cancelDeleteAddress);
+          conosle.log("取消按钮")
         });
 
       },
@@ -153,7 +197,10 @@
           if (res.result == '1' && res.data.length > 0) {
             this.list = res.data;
           }else{
-            Toast(res.error.errorMsg);
+            if(res.error!=""&&res.error!=null){
+              Toast(res.error.errorMsg);
+            }
+
           }
         })
       },
@@ -167,7 +214,9 @@
             Toast(res.data.msg);
             this.getAddressList(this.loginName);
           }else{
-            Toast(res.error.errorMsg);
+            if(res.error!=""&&res.error!=null){
+              Toast(res.error.errorMsg);
+            }
           }
         });
       },
@@ -181,8 +230,15 @@
           if (res.result == '1') {
             Toast(res.data.msg);
             this.getAddressList(this.loginName);
+            var urlData=window.location.href;
+            let splicingUrl=urlData.substring(0, urlData.indexOf("?"));
+            let splicingUrlend=urlData.substring(urlData.indexOf("#"), urlData.length);
+            var jumpEditPage=splicingUrl+splicingUrlend
+            history.pushState(null, "", jumpEditPage);
           }else{
-            Toast(res.error.errorMsg);
+            if(res.error!=""&&res.error!=null){
+              Toast(res.error.errorMsg);
+            }
           }
         });
 
@@ -193,7 +249,9 @@
           if(res.result == '1'){
             this.getAddressList(this.loginName);
           }else{
-            Toast(res.error.errorMsg);
+            if(res.error!=""&&res.error!=null){
+              Toast(res.error.errorMsg);
+            }
           }
 
         })
@@ -220,6 +278,11 @@
         } else {
           done();
         }
+        var urlData=window.location.href;
+        let splicingUrl=urlData.substring(0, urlData.indexOf("?"));
+        let splicingUrlend=urlData.substring(urlData.indexOf("#"), urlData.length);
+        var jumpEditPage=splicingUrl+splicingUrlend
+        history.pushState(null, "", jumpEditPage);
       },
       onSave(content){
         //给后台传的参数也需要转换一下
@@ -241,7 +304,9 @@
           if (res.result == '1') {
             this.getAddressList(this.loginName);
           }else{
-            Toast(res.error.errorMsg);
+            if(res.error!=""&&res.error!=null){
+              Toast(res.error.errorMsg);
+            }
           }
         });
       },

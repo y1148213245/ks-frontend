@@ -78,6 +78,12 @@ var getFieldAdapter =  (firstAdapter, secondAdapter) => {
   return Object.assign({}, FIELD_ADAPTER[firstAdapter].systemAdapter, FIELD_ADAPTER[firstAdapter][secondAdapter]);
 }
 
+window.addEventListener('storage', function (e) {
+  if (e.key == 'token') {
+    _axios.defaults.headers.token = Token();
+  }
+})
+
 export {
   Get,
   Post,

@@ -12,7 +12,7 @@
       </span>
     </div>
     <div class="el-input el-input--prefix">
-      <input type="password" class="login_03_password" v-model="member.password" :placeholder="getStaticText('inputPwd') ? getStaticText('inputPwd') : '请输入密码'" @keyup.enter="login" />
+      <input type="password" class="login_03_password" v-model="member.password" :placeholder="getStaticText('inputPwd') ? getStaticText('inputPwd') : '请输入密码'" @keyup.enter="login"/>
       <span class="el-input__prefix">
         <i class="fa fa-lock" aria-hidden="true"></i>
       </span>

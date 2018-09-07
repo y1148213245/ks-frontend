@@ -71,7 +71,7 @@
 
               </div>
             </el-form-item>
-            <el-button type="primary" @click="submitFormE($event,'ruleFormE')" class="register_02_bind_content_mail_input-box_button">{{getStaticText('registerNow') ? getStaticText('registerNow') : '立即注册'}}</el-button>
+            <el-button type="primary" :loading="emailButtonIsLoading" @click="submitFormE($event,'ruleFormE')" class="register_02_bind_content_mail_input-box_button">{{getStaticText('registerNow') ? getStaticText('registerNow') : '立即注册'}}</el-button>
           </el-form>
         </div>
 
@@ -107,7 +107,7 @@
                 <span class="register_02_bind_content_mobile_input-box_mobile-label">{{getStaticText('phoneNum') ? getStaticText('phoneNum') : '手机号:'}}</span>
                 <el-input type="text" v-model="ruleFormM.mobileNum" :placeholder="getStaticText('inputPhoneNum') ? getStaticText('inputPhoneNum') : '请输入手机号'" class="register_02_bind_content_mobile_input-box_mobile-input"></el-input>
                 <div v-show="this.cheStatus==0" class="el-form-item__error">{{getStaticText('phoneNumBoundInfo') ? getStaticText('phoneNumBoundInfo') : '手机号已被绑定'}}</div>
-                <el-button @click="getCode(ruleFormM.mobileNum)" class="register_02_bind_content_mobile_input-box_mobile-button" v-show="this.cheStatus!=0" :disabled="isTimeLimit" v-text="buttonMsg"></el-button>
+                <el-button type="primary" :loading="mobileButtonIsLoading" @click="getCode(ruleFormM.mobileNum)" class="register_02_bind_content_mobile_input-box_mobile-button" v-show="this.cheStatus!=0" :disabled="isTimeLimit" >{{buttonMsg}}</el-button>
               </div>
             </el-form-item>
             <el-form-item prop="sendNum">
@@ -117,7 +117,7 @@
                 <el-input type="text" v-model="ruleFormM.sendNum" :placeholder="getStaticText('inputPhoneVerifiCode') ? getStaticText('inputPhoneVerifiCode'): '请输入手机验证码'" class="register_02_bind_content_mobile_input-box_validate-input"></el-input>
               </div>
             </el-form-item>
-            <el-button type="primary" :disabled="islimitRegisterMobile" @click="submitFormM('ruleFormM')" class="register_02_bind_content_mobile_input-box_button">{{getStaticText('registerNow') ? getStaticText('registerNow') : '立即注册'}}</el-button>
+            <el-button type="primary"  :loading="registerMobileLoading" :disabled="islimitRegisterMobile" @click="submitFormM('ruleFormM')" class="register_02_bind_content_mobile_input-box_button">{{getStaticText('registerNow') ? getStaticText('registerNow') : '立即注册'}}</el-button>
           </el-form>
 
         </div>
@@ -300,6 +300,9 @@ export default {
       cheStatus: "2",
       isTimeLimit: false,
       islimitRegisterMobile: false,
+      mobileButtonIsLoading:false,
+      registerMobileLoading:false,
+      emailButtonIsLoading:false,
       buttonMsg: "",
       emailPostfix: "",/* 邮箱后缀 */
       ruleForm: {
@@ -417,7 +420,7 @@ export default {
     /* 发送手机验证码 */
     getCode (mobileNum) {
       if (mobileNum === "") {
-        loading.close();
+        this.mobileButtonIsLoading=false;
         this.$message({
           type: "error",
           message: this.getStaticText('inputPhoneNum') ? this.getStaticText('inputPhoneNum') : "请输入手机号"
@@ -432,7 +435,8 @@ export default {
           url: this.CONFIG.sendNum.url,
           mobileNum: mobileNum
         };
-        let loading = this.$loading({ text: this.getStaticText('verifiCodeIsSending') ? this.getStaticText('verifiCodeIsSending') : "验证码发送中..." });
+
+        this.mobileButtonIsLoading=true;
         this.action_sendMobileNum(params).then((resp) => {
           let sendStatus = resp.data.result;
           let sendNum = resp.data.data;
@@ -459,11 +463,11 @@ export default {
             }, 1000)
             this.MobileCallback(sendStatus, sendNum);
           }
-          loading.close();
+          this.mobileButtonIsLoading=false;
 
         }).catch((err) => {
           this.$message.error(this.getStaticText('networkTimeout') ? this.getStaticText('networkTimeout') : '网络超时')
-          loading.close();
+          this.mobileButtonIsLoading=false;
         });
       }
     },
@@ -481,16 +485,17 @@ export default {
             loginName: this.loginName,
             checkPass: this.checkPass,
           };
-          let loading = this.$loading({ text: this.getStaticText('verifiCodeIsSending') ? this.getStaticText('verifiCodeIsSending') : "验证码发送中..." });
-          this.islimitRegisterMobile = true;
+
+
+          this.registerMobileLoading = true;
           this.antion_register_byMobile(params).then((resp) => {
             let MStatus = resp.data.result;
             this.Mcallback(MStatus, resp);
             this.islimitRegisterMobile = false;
-            loading.close();
+            this.registerMobileLoading = false;
           }).catch((err) => {
             this.islimitRegisterMobile = false;
-            loading.close();
+            this.registerMobileLoading = false;
           });
         } else {
           console.log("error submit!!");
@@ -510,7 +515,7 @@ export default {
       }
     },
     backLogin () {
-      window.location.href = './login.html';
+      window.location.href = this.CONFIG.directLoginHref ? this.CONFIG.directLoginHref  : './login.html';
     },
     toLogin () {
       this.$alert(this.getStaticText('phoneNumWasSuccessfullyBound') ? this.getStaticText('phoneNumWasSuccessfullyBound') : "手机号绑定成功", this.getStaticText('congratulations') ? this.getStaticText('congratulations') : "恭喜", {
@@ -520,9 +525,9 @@ export default {
             type: "info",
             message: this.getStaticText('returnToLoginAfterThreeSeconds') ? this.getStaticText('returnToLoginAfterThreeSeconds') : "3秒后返回登录界面"
           });
-          window.setTimeout(function () {
+          window.setTimeout( () => {
             window.location.href =
-              './login.html';
+              this.CONFIG.directLoginHref ? this.CONFIG.directLoginHref  : './login.html';
           }, 3000);
         }
       });
@@ -547,13 +552,13 @@ export default {
           }
 
           /* 注册 */
-          let loading = this.$loading({ text: this.getStaticText('verifiCodeIsSending') ? this.getStaticText('verifiCodeIsSending') : "验证码发送中..." });
+          this.emailButtonIsLoading=true;
           this.action_register(params).then((resp) => {
             let EStatus = resp.data.result;
             this.Ecallback(EStatus, resp);
-            loading.close();
+            this.emailButtonIsLoading=false;
           }).catch((err) => {
-            loading.close();
+            this.emailButtonIsLoading=false;
           });
         } else {
           this.$message({

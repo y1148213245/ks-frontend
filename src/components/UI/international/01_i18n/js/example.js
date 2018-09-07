@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-09-03 17:40:11 
  * @Last Modified by: song
- * @Last Modified time: 2018-09-04 13:32:43
+ * @Last Modified time: 2018-09-04 19:38:00
  */
 /*    */
 /* import component from "../...vue";
@@ -18,16 +18,16 @@ const dev = {
   ui_international: {
     ui_international_01: {
       modulename: {
-        langsObj: [{ // 双语配置
-          order: 0,
-          name: '中文',
-          lang: 'cn',
-          href: './test.html'
-        }, {
+        langsObj: [{
           order: 1,
           name: '朝鲜语',
           lang: 'ko',
-          href: './test_k.html'
+          href: '_k'
+        }, {
+          order: 0,
+          name: '中文',
+          lang: 'cn',
+          href: ''
         }]
       }
     }
@@ -38,16 +38,16 @@ const prod = {
   ui_international: {
     ui_international_01: {
       modulename: {
-        langsObj: [{ // 双语配置
-          order: 0,
-          name: '中文',
-          lang: 'cn',
-          href: './test.html'
-        }, {
+        langsObj: [{
           order: 1,
           name: '朝鲜语',
           lang: 'ko',
-          href: './test_k.html'
+          href: '_k'
+        }, {
+          order: 0,
+          name: '中文',
+          lang: 'cn',
+          href: ''
         }]
       }
     }

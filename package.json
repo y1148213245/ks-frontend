@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js --report",
-    "scan":"node vscript/scan.js"
+    "scan": "node vscript/scan.js"
   },
   "dependencies": {
     "echarts": "^3.8.5",
@@ -74,6 +74,7 @@
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
     "vue-bus": "^1.0.0",
+    "vue-i18n": "^8.0.0",
     "vue-loader": "^13.3.0",
     "vue-occupy": "^0.0.9",
     "vue-style-loader": "^3.0.1",

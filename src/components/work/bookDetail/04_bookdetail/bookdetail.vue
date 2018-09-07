@@ -22,7 +22,7 @@
           <!-- 样书申领按钮 , 因为有单独的显示逻辑和事件逻辑 , 需单独处理  -->
           <div v-else-if="(config.name == 'apply')" v-bind="{class: 'work_bookdetail_04_btncontainer_' + config.field + '_' + config_i}" @click="toApply(config)" :key="innerConfig_i">
             <!-- 查询栏目id是否配置在可显示的栏目id -->
-            <div v-if="CONFIG.toApply && (CONFIG.toApply.showColId.indexOf(resourceDetail['colId']) != -1)">
+            <div v-if="showToApply">
               <i v-bind="{class: config.className}"></i>
               <label class="work_bookdetail_04_btnlabel">{{isBuy == 1 ? config.afterDisplay : config.display}}</label>
               <span v-bind="{class: 'work_bookdetail_04__btncontainer_' + config.field}" v-if="keys[config.field]">{{ resourceDetail[keys[config.field]] }}</span>
@@ -33,7 +33,7 @@
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_btnlabel">{{config.display}}</label>
             <span class="work_bookdetail_04_status" v-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook)">{{CONFIG.judgeInventory.noPaperBook ? CONFIG.judgeInventory.noPaperBook : '没有对应的纸质书'}}</span>
-            <span class="work_bookdetail_04_status" v-else-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail[keys.inventory] < resourceDetail[keys.lowInventory])">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
+            <span class="work_bookdetail_04_status" v-else-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (Number(resourceDetail[keys.inventory]) <= Number(resourceDetail[keys.lowInventory]))">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
             <span class="work_bookdetail_04_status" v-else>{{CONFIG.judgeInventory.enoughInventory ? CONFIG.judgeInventory.enoughInventory : "纸质书库存充足"}}</span>
           </div>          <!-- price 价格 *** 特别注意： 价格要区分电子书和纸质书价格 *** -->
 
@@ -98,7 +98,7 @@
 
               <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰  || （如果当前这本书是纸质书 && （配置了判断库存 && 当前库存小于最小库存）） 购买纸书按钮置灰-->
               <section v-else-if="config.name == 'addcart'"
-                :class="{work_bookdetail_04_forbid_addcart: (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook) || ((resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')) && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && resourceDetail[keys.inventory] < resourceDetail[keys.lowInventory]))}">
+                :class="{work_bookdetail_04_forbid_addcart: (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook) || ((resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')) && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail[keys.inventory]) < Number(resourceDetail[keys.lowInventory])))}">
                 <label class="work_bookdetail_04_op_label">
                   <i v-bind="{class: config.className}"></i>{{config.display}}
                 </label>
@@ -271,6 +271,19 @@
         <el-button @click="isdialogShow = false">{{CONFIG.display.cancel}}</el-button>
       </div>
     </el-dialog>
+    <!-- 资源下载 -->
+      <div class="work_bookdetail_04_attachTypes" v-if="showAttachTypes">
+        <div class="work_bookdetail_04_attachTypes_title">资源下载</div>
+        <div v-if="attachTypesList.length > 0">
+          <ul class="work_bookdetail_04_attachTypes_list">
+            <li v-for="(value,key) in attachTypesList" :key="key" class="work_bookdetail_04_attachTypes_item">
+              <a href="javascript:;" @click="downAttachTypes(value)">{{value.attachName}}</a>
+            </li>
+          </ul>
+        </div>
+        <div v-else><span>暂无资源</span></div>
+      </div>
+    <!-- END 资源下载 -->
   </div>
 </template>
 
@@ -344,8 +357,14 @@ export default {
       buyBtnOpacity: true,  //初次加载页面时按钮透明
       defaultSaleUrl:'', //纸书默认购买链接，天猫首页
 
+      showToApply:false,  // 展示样书申领
+
       isbn:"",  //图书的ISBN号
-      isbnConfig:{} // 都去获取isbn号的配置
+      isbnConfig:{}, // 都去获取isbn号的配置
+
+      showAttachTypes:false,  //展示资源下载
+      attachTypesCfg:{} ,// 资源下载配置
+      attachTypesList:[]  // 资源下载列表
     }
   },
   mounted () {
@@ -354,6 +373,11 @@ export default {
     this.isbn = urlQuery.ISBN || urlQuery.isbn;  // 接收地址栏isbn号
     this.modulename_share = this.modulename + 'share';
     this.resourceDetailConfig = this.CONFIG.getResourceDetail;
+    // 判断是否有资源下载的配置字段 attachTypesCfg
+    if (typeof (this.CONFIG["attachTypesCfg"]) != "undefined") {
+      this.attachTypesCfg = this.CONFIG["attachTypesCfg"];
+      
+    }
     this.publicizeInfoConfig = this.CONFIG.getPublicizeInfo;
     if (typeof (this.CONFIG.tabConfigList) != "undefined") {
       this.tabConfigList = this.CONFIG.tabConfigList;  //tab配置
@@ -386,13 +410,8 @@ export default {
     }
     // 无pubid的 , 有isbn书号的情况下 , 通过list.do接口传isbn书号
     this.isbnConfig = this.CONFIG.isbnConfig;
-    console.log(this.pubId);
-    console.log(this.isbn);
-    console.log(this.isbnConfig);
-    if((this.isbnConfig && this.pubId == "" || this.pubId == undefined) && this.isbn != "" ){
+    if((this.isbnConfig && this.pubId == "" || this.pubId == undefined) && this.isbn != "" && this.isbn != undefined){
       this.getPubIdByIsbn();
-    }else{
-      console.log("no_this.getPubIdByIsbn()");
     }
   },
 
@@ -427,15 +446,13 @@ export default {
       let paramsObj = Object.assign({}, this.isbnConfig.params);
       paramsObj.conditions.map((item) => {
         if (item.hasOwnProperty('BOOK_ISBN')) {
-          item['BOOK_ISBN'] = this.isbn;
+          item['BOOK_ISBN'] = _this.isbn;
         }
       })
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);
-      console.log(paramsObj);
       Post(CONFIG.BASE_URL + "spc/cms/publish/list.do", paramsObj).then(
         rep => {
           let datas = rep.data;
-          console.log(datas);
           if (datas.success && datas.result && datas.result.length > 0) {
             _this.pubId = datas.result[0]["id"]; // 获取第一本书的id既是pubId
             _this.getResourceDetail();  //获取图书详情信息
@@ -504,12 +521,11 @@ export default {
           }
         }
       }
-      // 样书申领事件
-      // if(config.method == 'toApply'){
-      //   this.toApply(this.CONFIG[config.method]);
-      //   return false;
-      // }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
+    },
+    downAttachTypes:function(value){  //资源下载
+      var downloadParam = "?" + this.attachTypesCfg.key01 + "=" + value[this.attachTypesCfg.val01];
+      window.open(CONFIG.BASE_URL + this.attachTypesCfg.url + downloadParam);
     },
     toApply : function(config){ //样书申领事件 , 将所有参数拼接到url中
       var _this = this;
@@ -582,7 +598,6 @@ export default {
             keysStr += (key + ",")
           }
         }
-        console.log(keysStr);
         paramsStr += ("keysStr=" + keysStr);
         config.url && window.open(config.url + paramsStr);
     },
@@ -831,7 +846,12 @@ export default {
     getResourceDetail () {
       let paramsObj = Object.assign({}, this.resourceDetailConfig.params);
       paramsObj.pubId = this.pubId;
-      Get(CONFIG.BASE_URL + this.resourceDetailConfig.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName).then((rep) => {
+      // 增加获取课件类型的传参
+      var attachTypesStr = "";
+      if(this.attachTypesCfg["type"]){
+        attachTypesStr += ("&attachTypes=" + this.attachTypesCfg["type"]);
+      }
+      Get(CONFIG.BASE_URL + this.resourceDetailConfig.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName + attachTypesStr).then((rep) => {
         let datas = rep.data;
         if (rep.status == 200 && datas.data) {
           this.resourceDetail = datas.data;
@@ -845,7 +865,21 @@ export default {
           this.isEb = this.resourceDetail.isEb;
           this.pub_comment_num = this.resourceDetail.pub_comment_num;
           this.payMoney = Number(this.resourceDetail[this.keys.courseSalePrice]);
-
+          //判断是否显示 样书申领
+          if(typeof this.CONFIG["toApply"] != "undefined" && (this.CONFIG.toApply.showColId == "" || (this.CONFIG.toApply.showColId.indexOf(this.resourceDetail['colId']) != -1))){
+            this.showToApply = true;
+          }
+          // 判断资源下载的栏目
+          // 检测配置字段是否显示
+          if(typeof this.CONFIG["attachTypesCfg"] != "undefined" && (this.CONFIG.attachTypesCfg.showColId == "" || (this.CONFIG.attachTypesCfg.showColId.indexOf(this.resourceDetail['colId']) != -1))){
+            this.showAttachTypes = true;
+          }
+          //资源下载列表
+          if(this.attachTypesCfg["type"] ){
+            if(this.resourceDetail[this.attachTypesCfg["type"]]){
+              this.attachTypesList = this.resourceDetail[this.attachTypesCfg["type"]];
+            }
+          }
           if (this.publicizeInfoConfig && this.publicizeInfoConfig.isShowPublicize) {
             this.getPublicizeInfo(); // 获取图书相关信息
           }
@@ -858,7 +892,6 @@ export default {
             for(var i= 0;i< this.combinateProductLsit.length ; i++){
               combinateProductAllPrice += Number(this.combinateProductLsit[i]["memberPrice"]);
             }
-            console.log(combinateProductAllPrice);
             this.$set(this.combinateProduct,"allPrice",combinateProductAllPrice);
 
             // 精简组合购买数组 -除去图书本身
@@ -916,6 +949,16 @@ export default {
         if (this.quantity < 1) { // 防止减到0
           this.quantity = 1
         }
+      }else {
+        // 监测直接输入
+        if (this.quantity > 200) { // 防止加过200
+          this.quantity = 200;
+          this.$alert(this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') ? this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') : "商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
+            confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定"
+          });
+        }else if (this.quantity < 1) { // 防止减到0
+          this.quantity = 1
+        }
       }
     },
     addCart (config) { // 加入购物车
@@ -929,7 +972,7 @@ export default {
           let relativeEBook = this.resourceDetail.relBook;
           if (relativeEBook) { // 这本书有对应纸质书
             if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory){  //配置了需要根据库存量来展示纸质书
-              if(relativeEBook[this.keys.inventory] > relativeEBook[this.keys.lowInventory]){  //纸质书库存量大于最小库存量，可以购买
+              if(Number(relativeEBook[this.keys.inventory]) > Number(relativeEBook[this.keys.lowInventory])){  //纸质书库存量大于最小库存量，可以购买
                 this.pubId = relativeEBook[this.keys.id];
               }else {
                 return false;
@@ -946,7 +989,7 @@ export default {
           }
         } else if(this.resourceDetail[this.keys.contentType] == this.bookContentType.bookType){  //如果是纸质书
           if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory){  //配置了需要根据库存量来展示纸质书
-            if(this.resourceDetail[this.keys.inventory] > this.resourceDetail[this.keys.lowInventory]){  //纸质书库存量大于最小库存量，可以购买
+            if(Number(this.resourceDetail[this.keys.inventory]) > Number(this.resourceDetail[this.keys.lowInventory])){  //纸质书库存量大于最小库存量，可以购买
               this.pubId = this.resourceDetail[this.keys.id];
             }else {  //配置了根据库存量来判断，但库存量不满足条件或不存在库存，返回false
               return false;
@@ -956,6 +999,8 @@ export default {
           }
         }
       } else if (config.name == 'addebcart') { // 执行电子书加入购物车操作
+        // 电子书购买一份就可以了，除非你家有矿
+        this.quantity = 1;
         if (this.resourceDetail[this.keys.contentType] == this.bookContentType.bookType) { // 判断这本书是不是纸质书
           let relativeBook = this.resourceDetail.relBook;
           if (relativeBook) { // 这本书有对应纸质书
@@ -1128,7 +1173,6 @@ export default {
           this.showCombinateNum = this.showCombinateNum + 1;
         }
       }
-      console.log(this.showCombinateNum)
     }
   },
   watch: {

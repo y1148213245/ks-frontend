@@ -279,7 +279,7 @@
           <div class="wzdh_xgxx_tj">
             <!--<el-button type="primary" @click="modifyInformation(1)" class="f14">修改密码</el-button>-->
             <!--<el-button type="primary" @click="modifyInformation(1)" class="f14">{{getStaticText('changePassword') ? getStaticText('changePassword') : '修改密码'}}</el-button>-->
-            <el-button type="primary" @click="modifyInfor(10)" class="f14" v-if="CONFIG.staticText.editInfo==true">{{getStaticText('editInfoText') ? getStaticText('editInfoText') :'编辑信息'}}</el-button>
+            <el-button type="primary" @click="modifyInfor(10)" class="f14" v-if="CONFIG.staticText&&CONFIG.staticText.editInfo?true:false">{{getStaticText('editInfoText') ? getStaticText('editInfoText') :'编辑信息'}}</el-button>
           </div>
         </div>
         <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('return') ? getStaticText('return') :'返回'}}</el-button>
@@ -388,7 +388,7 @@
                   </el-form-item>
                   <el-form-item :label="(getStaticText('mailboxVerificationCode') ? getStaticText('mailboxVerificationCode') : '邮箱验证码')+':'" prop="emailnum" v-if="butt">
                     <el-input type="text" v-model="emailValidateNum.emailnum" auto-complete="off" :placeholder="getStaticText('pleaseEnterTheMailboxVerificationCode') ? getStaticText('pleaseEnterTheMailboxVerificationCode') : '请输入邮箱验证码'" style="display:inline-block;width:220px;"></el-input>
-                    <span style="margin-left:10px;color:red">{{emailTime}}{{getStaticText('seconds') ? getStaticText('seconds') : 's'}}</span>
+                    <span style="margin-left:10px;color:red" v-show="!!emailTime">{{emailTime}}{{getStaticText('seconds') ? getStaticText('seconds') : 's'}}</span>
                   </el-form-item>
                   <div>
                     <el-button type="primary" @click="submitEmailValidateNum('emailValidateNum')" v-if="butt">{{getStaticText('next') ? getStaticText('next') : '下一步'}}</el-button>
@@ -529,10 +529,10 @@
           <div class="wzdh_xgyx_ico account_modify-icon"></div>
           <div class="account_modify-form" style="width:505px;">
             <el-form :model="emailForm" :rules="emailRules" ref="emailForm">
-              <el-form-item v-if="!getShowEmailPostfix()" :label="'请输入新邮箱：'" prop="email">
+              <el-form-item v-if="!getShowEmailPostfix()" :label="'新邮箱：'" prop="email">
                 <el-input id="center_account-input-email" class="center_account-input-email" type="text" v-model="emailForm.email" auto-complete="off" :placeholder="'请输入邮箱'"></el-input>
               </el-form-item>
-              <el-form-item v-if="getShowEmailPostfix()" :label="'请输入新邮箱：'" prop="emailSubfix">
+              <el-form-item v-if="getShowEmailPostfix()" :label="'新邮箱：'" prop="emailSubfix">
                 <el-input class="center_account_subfix-email_input" type="text" v-model="emailForm.emailSubfix" :placeholder="getStaticText('pleaseInputTheMailbox') ? getStaticText('pleaseInputTheMailbox') : '请输入邮箱'"></el-input>
                 @
                 <el-select class="center_account-postfix_email_select" v-model="emailForm.emailPostfix" :placeholder="getStaticText('mailbox') ? getStaticText('mailbox') : '邮箱'">
@@ -622,7 +622,7 @@
       </div>
     </div>
     <!--修改个人信息-->
-    <div v-show="currentShow=='modifyInfo'">
+    <div v-if="currentShow=='modifyInfo'">
       <el-radio v-model="userMode" label="1">{{getStaticText('ordinaryUserText') ? getStaticText('ordinaryUserText') :'普通用户'}}</el-radio>
       <el-radio v-model="userMode" label="2">{{getStaticText('teacherUserText') ? getStaticText('teacherUserText') :'教师用户'}}</el-radio>
       <div>
@@ -630,60 +630,69 @@
           <el-form-item label="姓名" v-if="userMode==1||userMode==2" >
             <el-input v-model="modifyUserNav.loginName"></el-input>
           </el-form-item>
-          <el-form-item label="职务" v-if="userMode==2" >
-            <el-input v-model="modifyUserNav.job"></el-input>
-          </el-form-item>
-          <el-form-item label="职称" v-if="userMode==2" >
-            <el-select v-model="modifyUserNav.positio" placeholder="职称">
-              <el-option v-for="(item,index) in modifyUser.positio"  :key="index" :label="item" :value="item">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="电话" v-if="userMode==2" >
-            <el-input v-model="modifyUserNav.mobileNo"></el-input>
-          </el-form-item>
-          <el-form-item label="行业" v-if="userMode==1">
-            <el-select v-model="modifyUserNav.industry" placeholder="请选择行业">
-              <el-option v-for="(item,index) in modifyUser.industry"  :key="index" :label="item" :value="item">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="教育程度" v-if="userMode==1">
-            <el-select v-model="modifyUserNav.educated" placeholder="请选择教育程度" >
-              <el-option v-for="(item,index) in modifyUser.educated"  :key="index" :label="item" :value="item">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="所在省份" v-if="userMode==1||userMode==2">
-            <el-select v-model="modifyUserNav.areainfo" placeholder="请选择所在省份" >
-              <el-option v-for="(item,index) in modifyUser.areainfo"  :key="index" :label="item" :value="item">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="具体地址" v-if="userMode==1||userMode==2">
-            <el-input type="textarea" v-model="modifyUserNav.address" ></el-input>
-          </el-form-item>
-          <el-form-item label="执教学校" v-if="userMode==2">
-            <el-input  v-model="modifyUserNav.company"></el-input>
-          </el-form-item>
-          <el-form-item label="所属院系" v-if="userMode==2">
-            <el-input  v-model="modifyUserNav.faculty"></el-input>
-          </el-form-item>
-          <el-form-item label="教研室" v-if="userMode==2">
-            <el-input  v-model="modifyUserNav.staffRoom"></el-input>
-          </el-form-item>
-          <el-form-item label="教学层次" v-if="userMode==2">
-            <el-select v-model="modifyUserNav.teachLevel" placeholder="请选择所在省份" >
-              <el-option v-for="(item,index) in modifyUser.teachLevel"  :key="index" :label="item" :value="item">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="教学专业" v-if="userMode==2">
-            <el-input  v-model="modifyUserNav.subject"></el-input>
-          </el-form-item>
-          <el-form-item label="教学课程" v-if="userMode==2">
-            <el-input type="textarea" v-model="modifyUserNav.teachCourse" ></el-input>
-          </el-form-item>
+          <div v-if="userMode==2">
+            <el-form-item label="职务">
+              <el-input v-model="modifyUserNav.job"></el-input>
+            </el-form-item>
+            <el-form-item label="职称">
+              <el-select v-model="modifyUserNav.positio" placeholder="职称">
+                <el-option v-for="(item,index) in modifyUser.positio"  :key="index" :label="item" :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="电话">
+              <el-input v-model="modifyUserNav.mobileNo"></el-input>
+            </el-form-item>
+          </div>
+          <div v-if="userMode==1">
+            <el-form-item label="行业" >
+              <el-select v-model="modifyUserNav.industry" placeholder="请选择行业">
+                <el-option v-for="(item,index) in modifyUser.industry"  :key="index" :label="item" :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="教育程度" >
+              <el-select v-model="modifyUserNav.educated" placeholder="请选择教育程度" >
+                <el-option v-for="(item,index) in modifyUser.educated"  :key="index" :label="item" :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div v-if="userMode==1||userMode==2" >
+            <el-form-item label="所在省份" >
+              <el-select v-model="modifyUserNav.areainfo" placeholder="请选择所在省份" >
+                <el-option v-for="(item,index) in modifyUser.areainfo"  :key="index" :label="item" :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="具体地址">
+              <el-input type="textarea" v-model="modifyUserNav.address" ></el-input>
+            </el-form-item>
+          </div>
+          <div v-if="userMode==2">
+            <el-form-item label="执教学校">
+              <el-input  v-model="modifyUserNav.company"></el-input>
+            </el-form-item>
+            <el-form-item label="所属院系">
+              <el-input  v-model="modifyUserNav.faculty"></el-input>
+            </el-form-item>
+            <el-form-item label="教研室">
+              <el-input  v-model="modifyUserNav.staffRoom"></el-input>
+            </el-form-item>
+            <el-form-item label="教学层次">
+              <el-select v-model="modifyUserNav.teachLevel" placeholder="请选择所在省份" >
+                <el-option v-for="(item,index) in modifyUser.teachLevel"  :key="index" :label="item" :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="教学专业" v-if="userMode==2">
+              <el-input  v-model="modifyUserNav.subject"></el-input>
+            </el-form-item>
+            <el-form-item label="教学课程" v-if="userMode==2">
+              <el-input type="textarea" v-model="modifyUserNav.teachCourse" ></el-input>
+            </el-form-item>
+          </div>
+
           <el-form-item label="邮政编码" v-if="userMode==2||userMode==1">
             <el-input type="textarea" v-model="modifyUserNav.postcode" ></el-input>
           </el-form-item>
@@ -692,7 +701,6 @@
               <el-checkbox v-for="(item,index) in modifyUser.bookClassifyConcerned" :key="index" :label="item" name="type"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-
           <el-button type="primary"  class="butt_back" @click="ordinaryUserSave(modifyUserNav)">保存</el-button>
           <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
         </el-form>
@@ -1773,9 +1781,9 @@ export default {
     checkArea: function() {
       this.emptyPCC = false;
       if (
-        $("#s_province").val() === "省份" ||
-        $("#s_city").val() === "地级市" ||
-        $("#s_county").val() === "市、县级市"
+        $("#s_province").text() === "" ||
+        $("#s_city").text() === "" ||
+        $("#s_county").text() === ""
       ) {
         // 省市区没有选择或者没有选择完全
         this.emptyPCC = true;

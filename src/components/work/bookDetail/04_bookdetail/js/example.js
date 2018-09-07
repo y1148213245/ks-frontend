@@ -93,6 +93,13 @@ const dev = {
         commitorderHref:"../pages/commitorder.html#/commitOrder/",
         showDialog: false,  //控制购买按钮是否显示
         zhentiContentType: '123',  //真题页面需要的配置
+        attachTypesCfg:{
+          showColId:"",
+          "type":"practice", // 资源下载附件的类型
+          "url":"/dynamicFile/stream.do", // 资源下载类型的下载地址
+          "key01":"recordID",    //资源下载类型的key01
+          "val01":"fileRecordID"    // 资源下载传参key01的值的取值字段
+        },   
         display: {
           courseUseTime: "使用期限：",
           buyCourse: "课程购买",
@@ -137,6 +144,15 @@ const dev = {
             }],
           },
         },
+        "toApply": {
+          "showColId": "",
+          "url": "../pages/applysamplebook.html",
+          "dataKeys": {
+            "REMARK": "id",
+            "SYS_TOPIC": "resName"
+          },
+          "fixedKeys": {}
+        },
         isbnConfig: { // 获取某一栏目下的数据列表
           url: "spc/cms/publish/list.do",
           params: {
@@ -144,7 +160,7 @@ const dev = {
                 pub_site_id: '37'
               },
               {
-                prod_product_type: '94'
+                prod_product_type: 'ebook'
               },
               {
                 BOOK_ISBN: ''
@@ -337,6 +353,13 @@ const prod = {
         commitorderHref:"../pages/commitorder.html#/commitOrder/",
         showDialog: false,  //控制购买按钮是否显示
         zhentiContentType: '123',  //真题页面需要的配置
+        attachTypesCfg:{
+          showColId:"",
+          "type":"practice", // 资源下载附件的类型
+          "url":"/dynamicFile/stream.do", // 资源下载类型的下载地址
+          "key01":"recordID",    //资源下载类型的key01
+          "val01":"fileRecordID"    // 资源下载传参key01的值的取值字段
+        },  
         display: {
           courseUseTime: "使用期限：",
           buyCourse: "课程购买",
@@ -381,6 +404,15 @@ const prod = {
             }],
           },
         },
+        "toApply": {
+          "showColId": "",
+          "url": "../pages/applysamplebook.html",
+          "dataKeys": {
+            "REMARK": "id",
+            "SYS_TOPIC": "resName"
+          },
+          "fixedKeys": {}
+        },
         isbnConfig: { // 获取某一栏目下的数据列表
           url: "spc/cms/publish/list.do",
           params: {
@@ -388,7 +420,7 @@ const prod = {
                 pub_site_id: '37'
               },
               {
-                prod_product_type: '94'
+                prod_product_type: 'ebook'
               },
               {
                 BOOK_ISBN: '1'

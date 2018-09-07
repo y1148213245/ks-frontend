@@ -1,12 +1,11 @@
 <template>
   <div class="ui_list_pic_06 ui_list_pic_06_skin">
-    <div class="ui_list_pic_06_title">浏览历史记录</div>
     <h6 class="titleHead" v-text="title"></h6>
     <div class="listWrapper">
       <div class="" name="data_column_block">
         <dl class="listCon" v-for="(entry, index) in list" v-if="index<(number || 4)" :key="index">
           <dt class="listDt">
-            <a :href="((CONFIG && CONFIG.href )? CONFIG.href : './bookdetail.html?pubId=')+entry.id">
+            <a  v-bind:href="(CONFIG && DSCONFIG && CONFIG.href &&DSCONFIG.directUrl&& DSCONFIG.directUrl[CONFIG.href] ? DSCONFIG.directUrl[CONFIG.href]+'?pubId='+entry.id : './bookdetail.html')">
               <img :src="entry && entry.pub_picBig" onload="DrawImage(this,70,84)" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'" />
             </a>
           </dt>
@@ -48,7 +47,8 @@ export default {
       list: [],
       CONFIG: null,
       title: '',
-      pubId: ''
+      pubId: '',
+      DSCONFIG:null
     }
   },
   computed: {
@@ -61,7 +61,11 @@ export default {
   },
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.picListBook[this.modulename];
-    this.CONFIG.params.num=2;
+    console.log(PROJECT_CONFIG[this.namespace].list_pic.picListBook)
+    if(PROJECT_CONFIG[this.namespace].list_pic.picListBook&&PROJECT_CONFIG[this.namespace].list_pic.picListBook.directUrl){
+      this.DSCONFIG=PROJECT_CONFIG[this.namespace].list_pic.picListBook//判断进入哪个详情页
+    }
+     console.log(this.modulename);
     this.pubId = URL.parse(document.URL, true).query.pubId;
   },
   mounted () {
@@ -92,6 +96,7 @@ export default {
     },
     gethistorylist (loginName) {
       let param = Object.assign({}, this.CONFIG.params);
+      param.num = this.number ? this.number : (param.num ? param.num : '4');
       param.username = loginName;
       Get(CONFIG.BASE_URL + this.CONFIG.url, { params: param }).then((rep) => {
         var data = rep.data.data;
