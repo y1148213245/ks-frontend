@@ -220,12 +220,35 @@ const prod = {
       },
       //附件上传接口
       upLoadUrl: "/dynamicFile/upload.do?",
+      /* 上传文件类型配置 */
       "upLoadFile":{
-        "category":[
-          {
-            "type":""
-          }
-        ]
+        "isGetCategoryId":false,/* 上传中是否传入下面的categoryid */
+        "categoryList":[
+            {
+              "type":"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "categoryId":"6093"
+            },
+            {
+              "type":"application/msword",
+              "categoryId":"6093"
+            },
+            {
+              "type":"text/plain",
+              "categoryId":"6093"
+            },
+            {
+              "type":"application/pdf",
+              "categoryId":"6093"
+            },
+            {
+              "type":"image",
+              "categoryId":"6092"
+            },
+            {
+              "type":"audio",
+              "categoryId":"7092"
+            }
+          ]
       },
       // 汇总上传接口
       informationUploading: {

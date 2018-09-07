@@ -270,6 +270,14 @@ export default {
             this.currentShow = "bookDetails";
           } else if (this.orderType == "periodical") {
             this.currentShow = "periodicalDetails";
+            var urlData=window.location.href;
+            let splicingUrl=urlData.substring(0, urlData.indexOf("#"));
+            let splicingUrlend=urlData.substring(urlData.indexOf("#"), urlData.length);
+            var jumpEditPage=splicingUrl+"?modal=details"+splicingUrlend
+            let urlDress = urlData.substring(0, urlData.indexOf("?"));
+            if(urlDress==""){
+              history.pushState(null, "", jumpEditPage);
+            }
           }
         }
       );

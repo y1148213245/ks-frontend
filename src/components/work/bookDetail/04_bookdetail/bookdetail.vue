@@ -33,6 +33,7 @@
             <i v-bind="{class: config.className}"></i>
             <label class="work_bookdetail_04_btnlabel">{{config.display}}</label>
             <span class="work_bookdetail_04_status" v-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook)">{{CONFIG.judgeInventory.noPaperBook ? CONFIG.judgeInventory.noPaperBook : '没有对应的纸质书'}}</span>
+            <span class="work_bookdetail_04_status" v-else-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && resourceDetail.relBook) && (Number(resourceDetail.relBook[keys.inventory]) <= Number(resourceDetail.relBook[keys.lowInventory]))">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
             <span class="work_bookdetail_04_status" v-else-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (Number(resourceDetail[keys.inventory]) <= Number(resourceDetail[keys.lowInventory]))">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
             <span class="work_bookdetail_04_status" v-else>{{CONFIG.judgeInventory.enoughInventory ? CONFIG.judgeInventory.enoughInventory : "纸质书库存充足"}}</span>
           </div>          <!-- price 价格 *** 特别注意： 价格要区分电子书和纸质书价格 *** -->
@@ -96,9 +97,14 @@
                 <ui_share_01 :namespace="namespace" :modulename="modulename_share"></ui_share_01>
               </div>
 
-              <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰  || （如果当前这本书是纸质书 && （配置了判断库存 && 当前库存小于最小库存）） 购买纸书按钮置灰-->
+              <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰 ||  如果当前这本书是电子书 && 关联了纸质书，并且配置了库存判断，但纸质书库存不足 购买纸书按钮置灰  || （如果当前这本书是纸质书 && （配置了判断库存 && 当前库存小于最小库存）） 购买纸书按钮置灰-->
               <section v-else-if="config.name == 'addcart'"
-                :class="{work_bookdetail_04_forbid_addcart: (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook) || ((resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')) && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail[keys.inventory]) < Number(resourceDetail[keys.lowInventory])))}">
+                :class="{
+                  work_bookdetail_04_forbid_addcart: 
+                  (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook) ||
+                  (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail.relBook[keys.inventory]) < Number(resourceDetail.relBook[keys.lowInventory]))) ||
+                  ((resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')) && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail[keys.inventory]) < Number(resourceDetail[keys.lowInventory])))
+                }">
                 <label class="work_bookdetail_04_op_label">
                   <i v-bind="{class: config.className}"></i>{{config.display}}
                 </label>

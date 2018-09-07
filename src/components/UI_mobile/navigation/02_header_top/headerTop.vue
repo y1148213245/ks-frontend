@@ -56,13 +56,16 @@ export default {
             var jumpEditPage=splicingUrl+splicingUrlend
             location.href=jumpEditPage;
           }else{
-            if(urlData.match(/\#(.*)/)[1]=="myorderlist"||urlData.match(/\#(.*)/)[1]=="manageaddress"){//判断是否进入订单详情页
-              let jumpPersonPage=urlData.substring(0, urlData.indexOf("pages"));
-              location.href=jumpPersonPage+"pages/person.html";
+            if(urlData.match(/\#(.*)/)!=null){
+              if(urlData.match(/\#(.*)/)[1]=="myorderlist"||urlData.match(/\#(.*)/)[1]=="manageaddress"){//判断是否进入订单详情页
+                let jumpPersonPage=urlData.substring(0, urlData.indexOf("pages"));
+                location.href=jumpPersonPage+"pages/person.html";
+              }else{
+                window.history.go(-1);
+              }
             }else{
               window.history.go(-1);
             }
-
           }
           return false;
         }

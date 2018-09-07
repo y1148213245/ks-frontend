@@ -259,7 +259,7 @@ export default {
             this.isDiscuss =1;
             this.getResourceDetail();
           }
-          this.$refs.commentContent.value = ''; //评论完置空评分和内容
+          //this.$refs.commentContent.value = ''; //评论完置空评分和内容
           this.starValue = 5;
           var param = {
             pubId: this.pubId,
@@ -267,6 +267,7 @@ export default {
             pageSize: '15'
           }
           this.queryComment(param);
+          this.$refs.commentContent.value = ''; //评论完置空评分和内容
         } else {
           this.$message({
             message: this.getStaticText('commentAddFailed') ? this.getStaticText('commentAddFailed') : '评论添加失败',
