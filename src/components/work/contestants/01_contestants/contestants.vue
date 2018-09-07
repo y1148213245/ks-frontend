@@ -427,6 +427,7 @@ export default {
       active: 0,
       dialogVisible: false,/* 模态弹框状态 */
       fileName: '',/* 附件名字 */
+      fileCategoryId:'',/* 附件分类id */
       addressInformaition: null,
       classInformaition: null,
       schoolInformaitionValue: null,
@@ -977,18 +978,24 @@ export default {
         }
       }
 
-      console.log(file.type);
+      // console.log(file.type);
       let size = file.size / 1024;
+      
 
       if (!fileType) {
         this.$message.error(this.getStaticText('uploadProductionFormatInfo') ? this.getStaticText('uploadProductionFormatInfo') : "上传作品文件只能是 doc、docx、txt、pdf格式,图片或音频!");
+        return false
         if (size > 10240) {
           this.$message.error(this.getStaticText('uploadProductionSizeInfo') ? this.getStaticText('uploadProductionSizeInfo') : "上传作品文件不能超过10M!");
           return false
         }
       }
 
-      return isDOCX || isDOC || isText || isPdf || isAudio || isImage;
+      if (this.upLoadFileConfig.isGetCategoryId) {
+        this.fileCategoryId = fileType.categoryId
+      }
+
+      return true;
     },
     upLoadingSuccess (res, file) {
       // 上传成功回调
@@ -1074,6 +1081,8 @@ export default {
             paramsObj.attachMap[0].FILERECORDID = this.attachID.toString(); //文件附件ID
             paramsObj.metaMap.COMMITUSER = this.loginName; //	提交用户
             paramsObj.metaMap.WORKSTYPE = this.worktype; //	文件类型
+
+            paramsObj.attachMap[0].CATEGORYID = this.fileCategoryId ? this.fileCategoryId : paramsObj.attachMap[0].CATEGORYID;
 
             if (this.isLimitSendText == false) {
               this.isLimitSendText = true;

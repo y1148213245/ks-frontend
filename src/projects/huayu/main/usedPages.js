@@ -31,7 +31,7 @@ module.exports = {
 		// "register.html",
 		// "songmintest.html",
 		// "teacherdetail.html",
-		// "test.html",
+		"test.html",
 		"uploadproduction.html",
 		// "xhjy.html",
 		// "zjk.html",
