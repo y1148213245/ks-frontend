@@ -122,7 +122,7 @@
           <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>
         <ul class="work_mobile_personalcenter_15_periodicalDetails_mainbox_ul">
-          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_periodicalDetails_mainbox_li"  @click="toperiodicalDetails(inneritem)">
+          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_periodicalDetails_mainbox_li"  @click="toperiodicalDetails(inneritem,$event)">
             <van-card :title="inneritem.periodicalName" :price="inneritem.totalPrice" :thumb="inneritem.bigPic" :desc="inneritem.periodicalRemark">
             </van-card>
             <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox_footerinformation">
@@ -365,10 +365,21 @@ export default {
       window.open(url)
     },
     //去期刊详情
-    toperiodicalDetails(inneritem){
-      var toDetailUrl=this.CONFIG.toperiodicalDetailsUrl;
-      var url=(toDetailUrl ? toDetailUrl : './maginfo.html')+'?pubId=' + inneritem.id
-      window.open(url)
+    toperiodicalDetails(inneritem,event){
+      let target=event.target;
+      switch (target.className){
+        case 'van-card__thumb':
+        case 'van-card__title':
+          var toDetailUrl=this.CONFIG.toperiodicalDetailsUrl;
+          var url=(toDetailUrl ? toDetailUrl : './maginfo.html')+'?pubId=' + inneritem.id;
+          window.open(url);
+          break;
+        case 'van-card__desc':
+          var tomagListDetailUrl=this.CONFIG.toperiodicalDetailsUrl;
+          var magListurl=(tomagListDetailUrl ? tomagListDetailUrl : './magList.html')+'?magName=' + inneritem.periodicalName;
+          window.open(magListurl);
+          break
+      }
     }
   },
   filters: {

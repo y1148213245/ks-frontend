@@ -274,7 +274,7 @@
           </div>
 
           <div class="wzdh_xgxx_tj modifyInfo">
-            <el-button type="primary " @click="modifyInformation(1)" class="f14">修改密码</el-button>
+            <el-button type="primary " @click="modifyInformation(1)" class="f14">{{getStaticText('changePassword') ? getStaticText('changePassword') : '修改密码'}}</el-button>
           </div>
           <div class="wzdh_xgxx_tj">
             <!--<el-button type="primary" @click="modifyInformation(1)" class="f14">修改密码</el-button>-->
@@ -1055,7 +1055,13 @@ export default {
     };
     var validateOldSendNum = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请输入手机验证码"));
+        callback(
+          new Error(
+            this.getStaticText("pleaseEnterYourPhoneVerificationCode")
+              ? this.getStaticText("pleaseEnterYourPhoneVerificationCode")
+              : "请输入手机验证码"
+          )
+        );
       } else if (value != this.cbOldSendNum) {
         callback(
           new Error(
