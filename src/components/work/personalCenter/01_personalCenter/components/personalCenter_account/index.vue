@@ -412,7 +412,7 @@
                   </el-form-item>
                   <el-form-item :label="getStaticText('mobileVerificationCode') ? getStaticText('mobileVerificationCode') : '手机验证码'+':'" prop="oldSendNum">
                     <el-input type="text" v-model="oldMobileValidateForm.oldSendNum" auto-complete="off" :placeholder="getStaticText('pleaseEnterYourPhoneVerificationCode') ? getStaticText('pleaseEnterYourPhoneVerificationCode') : '请输入手机验证码'" style="display:inline-block;width:220px;"></el-input>
-                    <span style="margin-left:10px;color:red" v-if="butt_phone">{{phoneTime}}{{getStaticText('seconds') ? getStaticText('seconds') : 's'}}</span>
+                    <span style="margin-left:10px;color:red" v-if="butt_phone" v-show="!!phoneTime">{{phoneTime}}{{getStaticText('seconds') ? getStaticText('seconds') : 's'}}</span>
                   </el-form-item>
                   <div>
                     <el-button type="primary" @click="submitMobileValidateNum('oldMobileValidateForm')" v-if="butt">{{getStaticText('next') ? getStaticText('next') : '下一步'}}</el-button>

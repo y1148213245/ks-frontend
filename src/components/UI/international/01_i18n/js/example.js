@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-09-03 17:40:11 
  * @Last Modified by: song
- * @Last Modified time: 2018-09-04 19:38:00
+ * @Last Modified time: 2018-09-07 17:58:32
  */
 /*    */
 /* import component from "../...vue";
@@ -18,17 +18,20 @@ const dev = {
   ui_international: {
     ui_international_01: {
       modulename: {
-        langsObj: [{
-          order: 1,
-          name: '朝鲜语',
-          lang: 'ko',
-          href: '_k'
-        }, {
-          order: 0,
-          name: '中文',
-          lang: 'cn',
-          href: ''
-        }]
+        langsConfig: {
+          '_k': {
+            order: 1,
+            name: '朝鲜语',
+            lang: 'ko',
+            hrefTag: '_k'
+          },
+          'default': {
+            order: 0,
+            name: '中文',
+            lang: 'cn',
+            hrefTag: ''
+          }
+        }
       }
     }
   }
@@ -38,17 +41,20 @@ const prod = {
   ui_international: {
     ui_international_01: {
       modulename: {
-        langsObj: [{
-          order: 1,
-          name: '朝鲜语',
-          lang: 'ko',
-          href: '_k'
-        }, {
-          order: 0,
-          name: '中文',
-          lang: 'cn',
-          href: ''
-        }]
+        langsConfig: {
+          '_k': {
+            order: 1,
+            name: '朝鲜语',
+            lang: 'ko',
+            hrefTag: '_k'
+          },
+          'default': {
+            order: 0,
+            name: '中文',
+            lang: 'cn',
+            hrefTag: ''
+          }
+        }
       }
     }
   }

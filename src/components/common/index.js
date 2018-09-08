@@ -8,20 +8,22 @@ import vv from "./utils/vv";
 import DrawImage from "./utils/DrawImage";
 import CreateCode from "./utils/CreateCode";
 import CookieUtils from "./utils/CookieUtils";
-import {FIELD_ADAPTER} from "./utils/FieldAdapter";
+import {
+  FIELD_ADAPTER
+} from "./utils/FieldAdapter";
 import toOtherPage from "./utils/ToOtherPage";
 import mobileLoading from "./utils/MobileLoading";
 import i18n from "./utils/i18n"
 
 try {
-	if (typeof $_$.IS_DISABLE != "undefined" && $_$.IS_DISABLE) { // 站点被禁用
-		var targetUrl = "../pages/disablepage.html";
-		if (window.location.href.indexOf('disablepage.html') === -1) { // 不在重定向页面
-			window.location.href = targetUrl;
-		}
-	}
+  if (typeof $_$.IS_DISABLE != "undefined" && $_$.IS_DISABLE) { // 站点被禁用
+    var targetUrl = "../pages/disablepage.html";
+    if (window.location.href.indexOf('disablepage.html') === -1) { // 不在重定向页面
+      window.location.href = targetUrl;
+    }
+  }
 } catch (error) {
-	console.log(error);
+  console.log(error);
 }
 var _axios = axios.create({
   timeout: 40000,
@@ -29,8 +31,8 @@ var _axios = axios.create({
 });
 
 var Token = function getToken() {
-  let session = sessionStorage;
-  let local = localStorage;
+  let session = window.sessionStorage;
+  let local = window.localStorage;
 
   let token = session.getItem('token');
   if (!token) {
@@ -57,10 +59,12 @@ _axios.interceptors.request.use(function (config) {
         }
       } */
       config.params.v_stamp = new Date().getTime();
-    }else{
-      config.params = {v_stamp:new Date().getTime()}
+    } else {
+      config.params = {
+        v_stamp: new Date().getTime()
+      }
     }
-    config.url =  encodeURI(config.url)
+    config.url = encodeURI(config.url)
   }
   return config;
 }, function (error) {
@@ -73,7 +77,7 @@ var Get = _axios.get;
 var Post = readProd || (process.env.NODE_ENV === 'production') ? _axios.post : _axios.get;
 var Delete = _axios.delete;
 
-var getFieldAdapter =  (firstAdapter, secondAdapter) => {
+var getFieldAdapter = (firstAdapter, secondAdapter) => {
   /* console.log(Object.assign(FIELD_ADAPTER[firstAdapter].systemAdapter, FIELD_ADAPTER[firstAdapter][secondAdapter])); */
   return Object.assign({}, FIELD_ADAPTER[firstAdapter].systemAdapter, FIELD_ADAPTER[firstAdapter][secondAdapter]);
 }
