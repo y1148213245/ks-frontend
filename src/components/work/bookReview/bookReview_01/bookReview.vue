@@ -3,9 +3,9 @@
   <div class="work_bookreview_01 work_bookreview_01_skin">
     <div class="title">
       <span>{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
-      <span v-if="(CONFIG && CONFIG.toAddReview && CONFIG.toAddReview.toAddReviewShow) && (isComment== '是' && (isDiscussLimit && isDiscuss == '0'))" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{CONFIG.toAddReview.toAddReviewName}}</span>
+      <span v-if="(CONFIG && CONFIG.toAddReview && CONFIG.toAddReview.toAddReviewShow) && (isComment== '是' && (isDiscussLimit ? isDiscuss == '0' : true))" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{CONFIG.toAddReview.toAddReviewName}}</span>
     </div>
-    <div class="reviewCon" v-if="isComment=='是' && (isDiscussLimit && isDiscuss == '0')">
+    <div class="reviewCon" v-if="isComment=='是' && (isDiscussLimit ? isDiscuss == '0' : true)">
       <div class="review">
         <span class="reviewSpan">{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
         <p class="star">
