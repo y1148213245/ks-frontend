@@ -683,6 +683,22 @@ var FIELD_ADAPTER = {
         askAnswerAdapter:{ // 问答库
             queContent: "QUE_CONTENT",
             quesContent: "QUES_CONTENT"
+        },
+        reviewAdapter:{ // 好书快听库
+            sysTopic: "REVIEW_SYS_TOPIC",  // 名字
+            synopsis: "REVIEW_SYNOPSIS",  // 内容简介
+            sysAuthors: "REVIEW_SYS_AUTHORS",  // 作者
+            format: "REVIEW_FORMAT",  // 开本
+            isbn: "REVIEW_ISBN",  //isbn
+            pressName: "REVIEW_PRESS_NAME", // 出版社
+        },
+        bookMaterialAdapter:{  // 有声书库
+            sysTopic: "BOOK_MATERIAL_SYS_TOPIC",  // 名字
+            synopsis: "BOOK_MATERIAL_SYNOPSIS",  // 内容简介
+            sysAuthors: "BOOK_MATERIAL_SYS_AUTHORS",  // 作者
+            format: "BOOK_MATERIAL_FORMAT",  // 开本
+            isbn: "BOOK_MATERIAL_ISBN",  //isbn
+            pressName: "BOOK_MATERIAL_PRESS_NAME", // 出版社
         }
     }
 };

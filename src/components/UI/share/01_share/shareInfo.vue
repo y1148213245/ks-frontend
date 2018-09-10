@@ -35,7 +35,7 @@ export default {
     $(document).ready(() => {
       window._bd_share_config = {
         common : {
-          bdUrl : window.location.href.split('&')[0],
+          bdUrl : ((window.location.href).indexOf("resType")==-1) ? window.location.href.split('&')[0] : (window.location.href.split('&')[0]+'&'+window.location.href.split('&')[1]),
         },
         share : {
           "bdSize" : 16,

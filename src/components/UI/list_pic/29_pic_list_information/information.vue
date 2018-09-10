@@ -412,11 +412,12 @@ export default {
               this.pageNo = datas.pageNo;
               this.pageNoz = datas.pageNo;
               this.pageSize = datas.pageSize;
-            } else if (datas.success) {
+            } else if (datas.success && datas.result.length == 0) {
               // Toast.fail({
               //   duration: 1000,
               //   message: datas.description
               // });
+              this.resourceLists=[];
             }
           }
         }
