@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-10 14:47:49
+ * @Last Modified time: 2018-09-10 14:52:08
  * 购物车组件
  */
 
@@ -1590,8 +1590,8 @@ export default {
           _this.hasCommitOrder = false; // 防止重复提交订单
         }
       };
-      console.log(params);
-      // this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
+      // console.log(params);
+      this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
       let loadingTag = _this.$loading({ fullscreen: true });
     },
     getRmbCoin: function () {         // 实时兑换下载币为人民币
