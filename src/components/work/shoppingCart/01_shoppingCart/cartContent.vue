@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-08 18:41:53
+ * @Last Modified time: 2018-09-10 14:47:49
  * 购物车组件
  */
 
@@ -1517,12 +1517,12 @@ export default {
           deliveryPrice: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.deliveryPrice, // 运费
           deliveryRemark: "",
           deliveryType: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.id, // 运输方式
-          discountAmount: this.orderDetail.saveAmount, // 商品各种活动优惠 不包含免运费的活动
+          discountAmount: Number(this.orderDetail.saveAmount.toFixed(2)), // 商品各种活动优惠 不包含免运费的活动
           id: 0,
           isReceipt: "1",
           loginName: this.member.loginName,
           orderCode: "",
-          payAmount: this.allEbook === true && this.needInvoice === "0" ? this.orderDetail.totalMoney + this.orderDetail.saveAmount : this.orderDetail.totalMoney + this.orderDetail.saveAmount + this.selectedDelivery.deliveryPrice, // 应付金额 = 商品总价 + 运费
+          payAmount: Number((this.allEbook === true && this.needInvoice === "0" ? this.orderDetail.totalMoney + this.orderDetail.saveAmount : this.orderDetail.totalMoney + this.orderDetail.saveAmount + this.selectedDelivery.deliveryPrice).toFixed(2)), // 应付金额 = 商品总价 + 运费
           payCode: "",
           payMethod: this.balancePay ? 'Balance' : this.payMethod, // 支付方式： Weixin 微信支付 Alipay 支付宝支付 Balance 下载币支付 // edit by mmc 2018/3/29
           payRemark: this.payremark, // 订单备注
@@ -1530,7 +1530,7 @@ export default {
           payTime: null,
           payType: 1, // 0线下支付  1在线支付
           payUser: "",
-          realAmount: curRealAmount, // 实付金额 = 商品总价 + 运费 - 商品各种活动优惠 - 使用下载币抵扣金额
+          realAmount: Number(curRealAmount.toFixed(2)), // 实付金额 = 商品总价 + 运费 - 商品各种活动优惠 - 使用下载币抵扣金额
           receiptType: this.curSelectedInvoice.receiptType, // 1普通 2增值税发票
           /* 不需要发票的话 这些都为空 */
           receiptId: (this.curSelectedInvoice.receiptType == 1 ? this.curSelectedInvoice.receiptId : "") || '', // 普：发票内容
@@ -1543,7 +1543,7 @@ export default {
           remark: "",
           siteId: CONFIG.SITE_CONFIG.siteId,
           splitOrderList: temp,
-          totalPrice: this.orderDetail.totalMoney + this.orderDetail.saveAmount, // 商品总价（不含优惠运费）
+          totalPrice: Number((this.orderDetail.totalMoney + this.orderDetail.saveAmount).toFixed(2)), // 商品总价（不含优惠运费）
           couponsOrder: this.selectedCouponsPassword, // 优惠券的密码 如果有两张 以数组形式传递
           point: this.orderDetail.sendPoints,
           orderType: 'book', // book 图书总单（包括电子书、纸质书、单独期刊） periodical 订阅
@@ -1590,8 +1590,8 @@ export default {
           _this.hasCommitOrder = false; // 防止重复提交订单
         }
       };
-      // console.log(params);
-      this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
+      console.log(params);
+      // this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
       let loadingTag = _this.$loading({ fullscreen: true });
     },
     getRmbCoin: function () {         // 实时兑换下载币为人民币
@@ -2060,8 +2060,8 @@ input[type='number'] {
 
 #orderWrapper .invoice .chooseInvoice {
   height: 80px;
-  /* padding-left: 28px; */
-  line-height: 80px;
+  /* padding-left: 28px;
+  line-height: 80px; */
 }
 
 #orderWrapper .invoice .chooseInvoice label {

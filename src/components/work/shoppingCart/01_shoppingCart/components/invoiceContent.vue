@@ -2,20 +2,35 @@
  * @Author: song 
  * @Date: 2018-09-08 11:52:11 
  * @Last Modified by: song
- * @Last Modified time: 2018-09-08 18:41:32
+ * @Last Modified time: 2018-09-10 10:26:01
  */
 <!-- 购物车 发票信息组件 created by song 2017/12/27 -->
 
 <template>
   <div class="work_shoppingcart_01_invoice invoice">
     <div class="infoHead">{{getStaticText('invoiceInfo') ? getStaticText('invoiceInfo') : '发票信息'}}</div>
-    <div :class="{orderContent: needInvoice === '0', chooseInvoice: needInvoice === '1'}">
+    <div class="work_shoppingcart_01_invoice_selectinvoice" :class="{orderContent: needInvoice === '0', chooseInvoice: needInvoice === '1'}">
       <span>{{getStaticText('chooseWetherNeedInvoice') ? getStaticText('chooseWetherNeedInvoice') : '选择是否需要发票：'}}</span>
       <template>
         <el-radio-group v-model="needInvoice">
           <el-radio @change="toggleFlag(true)" label="1">{{getStaticText('yes') ? getStaticText('yes'): '是'}}</el-radio>
           <el-radio @change="toggleFlag(false)" label="0">{{getStaticText('no') ? getStaticText('no') : '否'}}</el-radio>
         </el-radio-group>
+
+        <!-- 选择需要发票才显示  显示选择的发票类型 -->
+        <div class="orderContents" v-if="showInvoiceContent">
+          <span v-text="tempInvoice.invoiceType"></span>
+          <span v-if="tempInvoice.invoiceType == '普通发票'">
+            <span v-text="tempInvoice.unReceiptTitle"></span>
+            <span v-text="tempInvoice.unTaxpayerCode"></span>
+            <span v-text="tempInvoice.receiptId"></span>
+          </span>
+          <span v-if="tempInvoice.invoiceType == '增值税发票'">
+            <span v-text="tempInvoice.receiptTitle"></span>
+            <span v-text="tempInvoice.taxpayerCode"></span>
+          </span>
+          <a href="javascript:void(0)" @click="selectInvoice()">{{getStaticText('alter') ? getStaticText('alter') : '修改'}}</a>
+        </div>
       </template>
     </div>
     <!-- 选择发票类型弹框 -->
@@ -71,21 +86,6 @@
       </el-dialog>
     </div>
     <!-- END 选择发票类型弹框 -->
-
-    <!-- 选择需要发票才显示  显示选择的发票类型 -->
-    <div class="orderContents" v-if="showInvoiceContent">
-      <span v-text="tempInvoice.invoiceType"></span>
-      <span v-if="tempInvoice.invoiceType == '普通发票'">
-        <span v-text="tempInvoice.unReceiptTitle"></span>
-        <span v-text="tempInvoice.unTaxpayerCode"></span>
-        <span v-text="tempInvoice.receiptId"></span>
-      </span>
-      <span v-if="tempInvoice.invoiceType == '增值税发票'">
-        <span v-text="tempInvoice.receiptTitle"></span>
-        <span v-text="tempInvoice.taxpayerCode"></span>
-      </span>
-      <a href="javascript:void(0)" @click="selectInvoice()">{{getStaticText('alter') ? getStaticText('alter') : '修改'}}</a>
-    </div>
   </div>
 </template>
 
@@ -319,6 +319,11 @@ export default {
 
 .work_shoppingcart_01_invoice .invoiceWrapper .invoiceHead .selectedInVoice {
   border: 2px solid #e4393c;
+}
+
+.work_shoppingcart_01_invoice .work_shoppingcart_01_invoice_selectinvoice {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .work_shoppingcart_01_invoice .orderContents a {

@@ -3,7 +3,7 @@
   <div class="ui_navigation_02" @click="toShoppingCart()">
     <span class="ui_navigation_02_img"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
     <span class="ui_navigation_02_tips" v-if="CONFIG && CONFIG.tips" v-text="CONFIG.tips"></span>
-    <span class="ui_navigation_02_text" v-if="totalCount" v-text="totalCount"></span>
+    <span class="ui_navigation_02_text" v-text="totalCount"></span>
   </div>
 </template>
 
