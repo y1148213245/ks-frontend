@@ -409,7 +409,7 @@
           console.log(curConfig);
         }
 
-        for (let key in this.examples[com].prod[itemConfig][subItemConfig]) {  // 遍历处理组件升级问题
+        /* for (let key in this.examples[com].prod[itemConfig][subItemConfig]) {  // 遍历处理组件升级问题
           if (!curConfig[itemConfig][subItemConfig].hasOwnProperty(key)) {  // 组件升级新增属性
             // console.log('组件升级新增属性');
             curConfig[itemConfig][subItemConfig][key] = this.examples[com].prod[itemConfig][subItemConfig][key];
@@ -424,7 +424,7 @@
             }
 
           }
-        }
+        } */
 
         this.currentComponent[itemConfig] = this.currentComponent[itemConfig] ? this.currentComponent[itemConfig] : {};
         this.currentComponent[itemConfig][subItemConfig] = curConfig[itemConfig][subItemConfig];

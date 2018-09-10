@@ -116,7 +116,7 @@
       </el-table>
       <ui_pagination :pageMessage="{totalCount: this.pointRecords.data && this.pointRecords.totalCount - 0 || 0}" :excuteFunction="pointRecordPaging" :page-sizes="[8,16,32,64]" style="margin-top: 40px;"></ui_pagination>
 
-      <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('back') ? getStaticText('back') : '返回'}}</el-button>
+      <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('return') ? getStaticText('return') : '返回'}}</el-button>
     </div>
 
     <!--管理收获地址-->
@@ -229,7 +229,7 @@
           <el-button type="primary" @click="confirmUpdateAddress(true)">{{getStaticText('confirm') ? getStaticText('confirm') : '确 定'}}</el-button>
         </div>
       </el-dialog>
-      <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('back') ? getStaticText('back') : '返回'}}</el-button>
+      <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('return') ? getStaticText('return') : '返回'}}</el-button>
     </div>
     <!--修改个人信息-->
     <div v-show="currentShow=='accountEdit'">
@@ -701,8 +701,8 @@
               <el-checkbox v-for="(item,index) in modifyUser.bookClassifyConcerned" :key="index" :label="item" name="type"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-button type="primary"  class="butt_back" @click="ordinaryUserSave(modifyUserNav)">保存</el-button>
-          <el-button type="primary" @click="showCurrent(0)" class="butt_back">返回</el-button>
+          <el-button type="primary"  class="butt_back" @click="ordinaryUserSave(modifyUserNav)">{{getStaticText('save') ? getStaticText('save') : '保存'}}</el-button>
+          <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('return') ? getStaticText('return') : '返回'}}</el-button>
         </el-form>
       </div>
     </div>
@@ -1915,7 +1915,7 @@ export default {
           type: "error",
           message: _this.getStaticText("mailboxBindingFailed")
             ? _this.getStaticText("mailboxBindingFailed")
-            : "邮箱绑定失败：" + rep.data.error.errorMsg
+            : "邮箱绑定失败：" + (data && data.error ? data.error.errorMsg : '')
         });
       }
     },

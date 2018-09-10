@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-05 17:28:37
+ * @Last Modified time: 2018-09-08 18:41:53
  * 购物车组件
  */
 
@@ -314,21 +314,9 @@
         <work_shoppingcart_01_components_address v-show="needInvoice === '1' || allEbook === false" namespace="address" parentconfig="CONFIG" @deliveryAddress="getDeliveryAddress"></work_shoppingcart_01_components_address>
         <!-- END 收货地址组件 -->
 
-        <div class="invoice">
-          <div class="infoHead">{{getStaticText('invoiceInfo') ? getStaticText('invoiceInfo') : '发票信息'}}</div>
-          <div :class="{orderContent: needInvoice === '0', chooseInvoice: needInvoice === '1'}">
-            <span>{{getStaticText('chooseWetherNeedInvoice') ? getStaticText('chooseWetherNeedInvoice') : '选择是否需要发票：'}}</span>
-            <template>
-              <el-radio v-model="needInvoice" label="1">{{getStaticText('yes') ? getStaticText('yes'): '是'}}</el-radio>
-              <el-radio v-model="needInvoice" label="0">{{getStaticText('no') ? getStaticText('no') : '否'}}</el-radio>
-            </template>
-          </div>
-
-          <!-- 发票信息组件 -->
-          <work_shoppingcart_01_components_invoice v-show="needInvoice === '1'" namespace="invoice" @invoiceInfo="getInvoiceInfo" parentconfig="CONFIG"></work_shoppingcart_01_components_invoice>
-          <!-- END 发票信息组件 -->
-
-        </div>
+        <!-- 发票信息组件 -->
+        <work_shoppingcart_01_components_invoice namespace="invoice" @invoiceInfo="getInvoiceInfo" @needinvoiceFlag="getInvoiceFlag" parentconfig="CONFIG"></work_shoppingcart_01_components_invoice>
+        <!-- END 发票信息组件 -->
 
         <!-- 优惠券模块 -->
         <div class="discount" v-if="isShowCoupon">
@@ -663,13 +651,12 @@ export default {
       curSelectedAddress: {}, // 当前选择的地址 从地址选择子组件中接收到的
       curSelectedInvoice: {   // 当前选择的发票 从发票信息子组件中接收到的
         invoiceType: "普通发票", // 发票类型 默认显示普通发票
-        receipttypes: "个人",
-        receiptType: "1",       // 1:个人  2:单位
+        receiptType: "1",       // 1:普通发票  2:增值税发票
         receiptId: "明细",      // 普通发票的明细  默认显示明细
         receiptTitle: "",       // 公司名称
         taxpayerCode: "",       // 纳税人识别号
-        companyAddress: "",     // 公司住址 即注册地址
-        companyPhone: "",       // 公司联系方式 即注册电话
+        companyAddress: "",     // 公司住址 即地址
+        companyPhone: "",       // 公司联系方式 即电话
         bankName: "",           // 开户银行
         bankAccount: ""         // 开户账号
       },
@@ -1405,9 +1392,12 @@ export default {
     getDeliveryAddress (data) {  // 接收收货地址信息
       this.curSelectedAddress = data;
     },
-    getInvoiceInfo (data) {      // 接收发票信息
+    getInvoiceFlag(data) { // 接收是否需要发票
+      this.needInvoice = data;
+    },
+    getInvoiceInfo (data) {      // 接收发票明细信息
       this.curSelectedInvoice = data;
-
+      // console.log('this.curSelectedInvoice :', data);
     },
     selectCoupon: function (item, index) {  // 选择某个可用优惠券
       if (this.couponProductListWrapper[item.type + '-' + item.id]) {
@@ -1504,8 +1494,7 @@ export default {
       if (this.needInvoice === "0") {
         this.curSelectedInvoice = {
           invoiceType: "",  // 发票类型
-          receipttypes: "",
-          receiptType: "",  // 1:个人  2:单位
+          receiptType: "",  // 1:普通发票  2:增值税发票
           receiptId: "",    // 普通发票的明细  默认显示明细
           receiptTitle: "", // 发票抬头：个人 / 公司名称
           taxpayerCode: "", // 纳税人识别号
@@ -1542,15 +1531,15 @@ export default {
           payType: 1, // 0线下支付  1在线支付
           payUser: "",
           realAmount: curRealAmount, // 实付金额 = 商品总价 + 运费 - 商品各种活动优惠 - 使用下载币抵扣金额
-          receiptId:
-            this.curSelectedInvoice.receiptType == 1 ? this.curSelectedInvoice.receiptId : "",
-          receiptType: this.curSelectedInvoice.receiptType,
-          receiptTitle: this.curSelectedInvoice.receiptType == 1 ? "个人" : this.curSelectedInvoice.receiptTitle,
-          taxpayerCode: this.curSelectedInvoice.taxpayerCode,
-          companyAddress: this.curSelectedInvoice.companyAddress,
-          companyPhone: this.curSelectedInvoice.companyPhone,
-          bankName: this.curSelectedInvoice.bankName,
-          bankAccount: this.curSelectedInvoice.bankAccount,
+          receiptType: this.curSelectedInvoice.receiptType, // 1普通 2增值税发票
+          /* 不需要发票的话 这些都为空 */
+          receiptId: (this.curSelectedInvoice.receiptType == 1 ? this.curSelectedInvoice.receiptId : "") || '', // 普：发票内容
+          receiptTitle: (this.curSelectedInvoice.receiptType == 2 ? this.curSelectedInvoice.receiptTitle : this.curSelectedInvoice.unReceiptTitle) || '', // 公：户名
+          taxpayerCode: (this.curSelectedInvoice.receiptType == 2 ? this.curSelectedInvoice.taxpayerCode : this.curSelectedInvoice.unTaxpayerCode) || '', // 公：纳税人识别号
+          companyAddress: (this.curSelectedInvoice.receiptType == 2 ? this.curSelectedInvoice.companyAddress : '') || '', // 增：地址
+          companyPhone: (this.curSelectedInvoice.receiptType == 2 ? this.curSelectedInvoice.companyPhone : '') || '', // 增：电话
+          bankName: (this.curSelectedInvoice.receiptType == 2 ? this.curSelectedInvoice.bankName : '') || '', // 增：银行名称
+          bankAccount: (this.curSelectedInvoice.receiptType == 2 ? this.curSelectedInvoice.bankAccount : '') || '', // 增：银行账户
           remark: "",
           siteId: CONFIG.SITE_CONFIG.siteId,
           splitOrderList: temp,
@@ -2070,9 +2059,9 @@ input[type='number'] {
 /********* START 发票信息 *********/
 
 #orderWrapper .invoice .chooseInvoice {
-  height: 50px;
-  padding-left: 28px;
-  line-height: 70px;
+  height: 80px;
+  /* padding-left: 28px; */
+  line-height: 80px;
 }
 
 #orderWrapper .invoice .chooseInvoice label {
