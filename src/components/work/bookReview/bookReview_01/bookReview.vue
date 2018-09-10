@@ -8,7 +8,7 @@
     <div class="reviewCon" v-if="isComment=='是' && (isDiscussLimit ? isDiscuss == '0' : true)">
       <div class="review">
         <span class="reviewSpan">{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
-        <p class="star">
+        <p class="star">  
           <el-rate v-model="starValue" :show-text="true" :max="5" void-color="#c1c1c0"></el-rate>
         </p>
       </div>

@@ -13,7 +13,7 @@
           <div class="clearfix" v-if="getKeys(item,'beginTime')">
             <div class="ac_text">
               <span>{{getStaticText('activityTime') ? getStaticText('activityTime') : '活动时间：'}}</span>
-              <time class="time">{{formatDateNEW(item[getKeys(item,'beginTime')])}}{{getStaticText('to')? getStaticText('to') : '至'}}{{(item[getKeys(item,'reviewDate')] || formatDateNEW(item[getKeys(item,'endTime')]))}}
+              <time class="time">{{formatDateNEW(item[getKeys(item,'beginTime')])}}{{getStaticText('to')? getStaticText('to') : '至'}}{{((item[getKeys(item,'reviewDate')] && formatDateNEW(item[getKeys(item,'reviewDate')])) || formatDateNEW(item[getKeys(item,'endTime')]))}}
               </time>
             </div>
 
