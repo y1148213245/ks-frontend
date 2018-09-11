@@ -1,11 +1,19 @@
-// 文联我的书架  只有电子书 试读用
+
+/* 新增
+   180911 新增书架接口返回回调方法: listLoadedCallBack
+          新增期刊个性化数据查询(通过书架接口返回数据拼参数查list.do接口,返回已发布的期刊)
+          新增期刊个性化名字显示(在名字后显示期刊年份与期数)
+
+ */
 <template>
   <section class="personalcenter_shelflWrapper">
+    <!-- 类型切换导航 -->
     <nav v-if="CONFIG && CONFIG.navList">
       <template v-for="(item,index) in CONFIG.navList">
         <el-button type="primary" @click="changType(item)" v-text="item.name" :key="index"></el-button>
       </template>
     </nav>
+    <!-- 资源列表 -->
     <div class="myShelf" v-if="bookShelfInfo.data && bookShelfInfo.data.length > 0">
       <ul>
         <li v-for="(item,index) in bookShelfInfo.data" class="shelfContent" :key="index">
@@ -15,12 +23,11 @@
                 <img v-bind:src="item[productKeys.pic] || require('@static/img/defaultCover.png')" onload="DrawImage(this,150,150)" />
               </div>
               <div class="namePrice">
-                <div v-text="item[productKeys.name]" :title="item[productKeys.name]"></div>
+                <div v-text="getProductName(item)" :title="getProductName(item)">
+                </div>
               </div>
-              <!-- 只有图书类型会显示阅读 -->
-              <div class="readBox" v-if="item[productKeys.resourceType] && item[productKeys.resourceType] == 'BOOK'" @click="toRead(item[productKeys.resourceId],1,item[productKeys.name])" style="cursor:pointer">
-                <!--    <a target="_blank" v-bind:href="readConfig.baseURL + '/ebook/read.jsp?bookId=' + item.resourceId + '&readType=1&bookName=' + item.productName">
-                  阅读</a> -->
+              
+              <div class="readBox" v-if="getIsRead(currentProductType.keyType)" @click="toRead(item[productKeys.resourceId],1,item[productKeys.name])" style="cursor:pointer">
                 <a target="_blank">{{getStaticText('read') ? getStaticText('read') : '阅读'}}</a>
               </div>
             </div>
@@ -28,15 +35,19 @@
         </li>
       </ul>
     </div>
+    <!-- 无数据提示 -->
     <div class="emptyColl" v-else>
       <img src="../../assets/img/empty.png" alt="">
       <div>{{getStaticText('myBookshelfIsEmpty') ? getStaticText('myBookshelfIsEmpty') : '我的书架是空的' }}</div>
     </div>
+    <!-- 分页 -->
     <ui_pagination :pageMessage="{totalCount: this.bookShelfInfo.data && this.bookShelfInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
   </section>
 </template>
+
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions } from "vuex";
+import { Post } from '@common'
 export default {
   name: "book",
   reused: true,
@@ -65,6 +76,8 @@ export default {
       resourceId: "resourceId",
       resourceType: "resourseType"
     };
+    this.defaultObj.name = this.getStaticText("book") ? this.getStaticText("book") : "图书"
+    
     if (this.parentConfig.book) {
       let keysList, currentType;
 
@@ -79,12 +92,8 @@ export default {
         this.productKeys = keysList[currentType];
       }
     } else {
-      this.currentProductType = {
-        name: this.getStaticText("book") ? this.getStaticText("book") : "图书",
-        type: "2",
-        productType: "",
-        keyType: "book"
-      };
+      /* 默认资源类型 */
+      this.currentProductType = this.defaultObj;
     }
   },
   mounted: function() {
@@ -102,12 +111,81 @@ export default {
       var param = {
         pageIndex: this.pageNo,
         pageSize: this.pageSize,
-        type: this.currentProductType.type
+        type: this.currentProductType.type,
+        cb:this.listLoadedCallBack
       };
       if (this.currentProductType.productType) {
         param.productType = this.currentProductType.productType;
       }
       this.$store.dispatch("personalCenter/querybookShelfInfo", param);
+    },
+    /* 书架接口回调 */
+    listLoadedCallBack(data){
+      /* 个性化处理 */
+      let currentProductType = this.currentProductType
+      switch (currentProductType.keyType) {
+        case 'periodical':{
+          this.$store.dispatch("personalCenter/setNewBookShelfInfo", {data:''});//传{data:''} 为了使数据结构一致
+          let list = data.data;
+          let conditions_str = ''
+          /* 初始化条件 */
+          let conditions = [
+            {MAGAZINE_PERIOD_NUM:[],op:'in'},
+            {MAGAZINE_PUBLISH_YEAR:[],op:'in'},
+            {pub_resource_name:[],op:'in'}
+          ]
+          let changedKeys = []//有变化的key名
+          /* 遍历数据 */
+          list.forEach(item => {
+            /* 遍历数据中每一个属性 */
+            for (const key in item) {
+              /* 遍历条件 */
+              conditions.forEach(condition => {
+                /* 遍历每个条件中每个属性 */
+                for (const condition_key in condition) {
+                  const element = condition[condition_key];
+                  /* 对比赋值 */
+                  if (key == condition_key) {
+                    condition[condition_key].push(item[key])
+                    changedKeys.push(condition_key)
+                  }
+                }
+              });
+            }
+          });
+          /* 去重 */
+          changedKeys = [...new Set(changedKeys)]
+          conditions.forEach(item => { 
+            changedKeys.forEach(key => {
+              if (item.hasOwnProperty(key)) {
+                item[key] = [...new Set(item[key])].join(' ')
+              }
+            });
+          })
+          conditions_str = JSON.stringify(conditions)
+          let params = {
+            conditions:conditions_str,
+            groupBy:'pub_resource_id',
+            orderBy:'pub_a_order asc pub_lastmodified desc id asc',
+            pageNo:this.pageNo,
+            pageSize:this.pageSize,
+            searchText:''
+          }
+          let loading = this.$loading({text:this.getStaticText("loading") ? this.getStaticText("loading") : '正在加载中...'})
+          Post(CONFIG.BASE_URL + 'spc/cms/publish/list.do',params).then(resp => {
+            loading.close();
+            if (resp.data && resp.data.result) {
+              this.$store.dispatch("personalCenter/setNewBookShelfInfo", {data:resp.data.result});
+            }
+          }).catch(err=>{
+            loading.close();
+          })
+          break;
+        }
+          
+        default:
+          break;
+      }
     },
     changType(item) {
       this.currentProductType = item;
@@ -134,6 +212,20 @@ export default {
         "&userName=&siteType=" +
         CONFIG.READ_CONFIG.siteType;
       window.open(url);
+    },
+    getIsRead(type){
+      if(this.CONFIG && this.CONFIG.isReadList){
+        return this.CONFIG.isReadList.indexOf(type) > -1
+      } else {
+        return true
+      }
+    },
+    getProductName(product){
+      let productKeys = this.productKeys;
+      let periodNum = productKeys.periodNum && product[productKeys.periodNum] ? product[productKeys.periodNum] + (this.getStaticText('periodicalPeriod') ? this.getStaticText('periodicalPeriod') : '期') : '';
+      let publishYear = productKeys.publishYear && product[productKeys.publishYear] ? product[productKeys.publishYear] + (this.getStaticText('periodicalYear') ? this.getStaticText('periodicalYear') : '年') : '';
+
+      return product[productKeys.name] + (publishYear || periodNum ? '(' + publishYear + periodNum + ')' : '')
     },
     getStaticText(text) {
       if (

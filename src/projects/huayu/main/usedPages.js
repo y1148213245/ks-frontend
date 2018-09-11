@@ -2,10 +2,10 @@
 module.exports = {
   isRewirte:false,//运行脚本时是否重写(默认 false))
   pages:[
-		"activity.html",
+		// "activity.html",
 		// "activityexhibition.html",
-		"activitylist.html",
-		"activityrace.html",
+		// "activitylist.html",
+		// "activityrace.html",
 		// "activityshow.html",
 		// "activityvote.html",
 
@@ -25,14 +25,14 @@ module.exports = {
 		// "newsdetail.html",
 		// "newslist.html",
 		// "pagemanagement.html",
-		// "personalcenter.html",
+		"personalcenter.html",
 		// "productiondetail.html",
 		// "register_success.html",
 		// "register.html",
 		// "songmintest.html",
 		// "teacherdetail.html",
-		"test.html",
-		"uploadproduction.html",
+		// "test.html",
+		// "uploadproduction.html",
 		// "xhjy.html",
 		// "zjk.html",
 		// "zxsc.html",

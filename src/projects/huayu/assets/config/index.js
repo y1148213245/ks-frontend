@@ -1,5 +1,5 @@
 var CONFIG = {
-	"BASE_URL": "http://172.19.57.71:8080/portal/api/",
+	"BASE_URL": "http://172.19.57.68:8080/portal/api/",
 	// "BASE_URL": "http://172.19.36.97:9092/spc-portal-web/",
 
 	"READ_URL": "../../../reader/kspdf/read.jsp",
@@ -3546,6 +3546,7 @@ var $_$ = {
 						}
 					},
 					"book": {
+						"isReadList":["book","periodical"],
 						"navList": [{
 							"name": "图书",
 							"type": "2",
@@ -3566,9 +3567,11 @@ var $_$ = {
 							},
 							"periodical": {
 								"name": "pub_resource_name",
-								"pic": "pub_picBig",
+								"pic": "pub_picMiddle",
 								"resourceId": "pub_resource_id",
-								"resourceType": "pub_resource_type"
+								"resourceType": "pub_resource_type",
+								"periodNum":"MAGAZINE_PERIOD_NUM",
+								"publishYear":"MAGAZINE_PUBLISH_YEAR"
 							}
 						}
 					},

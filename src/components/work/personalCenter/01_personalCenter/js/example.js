@@ -700,10 +700,11 @@ const prod = {
           showItem: ['operate']
         },
         'book': {
+          "isReadList":["book","periodical"],//开启阅读功能的资源  对应keyType的值
           navList: [{
-            name: '图书',
-            type: '2',
-            productType: '',
+            name: '图书',//导航中的名字
+            type: '2',//请求参数 1试读 2阅读  3全部
+            productType: '',//请求参数 资源类型
             keyType: 'book' //字段适配器名,对应productKeys配置中的key,字段适配器名
           },
             {
@@ -744,7 +745,9 @@ const prod = {
               name: 'pub_resource_name',
               pic: 'pub_picBig',
               resourceId: 'pub_resource_id',
-              resourceType: 'pub_resource_type'
+              resourceType: 'pub_resource_type',
+              periodNum:'MAGAZINE_PERIOD_NUM',
+              publishYear:'MAGAZINE_PUBLISH_YEAR'
             }
           }
         },

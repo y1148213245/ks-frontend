@@ -321,15 +321,27 @@ var actions = {
     commit,
     getters
   }, params) {
-    params.loginName = getters.getMember.loginName;
     let loading = Vue.prototype.$loading({
       text: "正在加载中..."
     });
-    api.querybookShelfInfo(params).then(function (response) {
-      let bookShelfInfo = response.data;
-      commit("setBookShelfInfo", bookShelfInfo);
+    let param = {
+      pageIndex: params.pageIndex,
+      pageSize: params.pageSize,
+      type: params.type,
+      productType:params.productType,
+      loginName: getters.getMember.loginName
+    }
+    api.querybookShelfInfo(param).then(function (response) {
       loading.close();
+      let bookShelfInfo = response.data;
+      if (params.cb && typeof params.cb === 'function') {
+        params.cb(bookShelfInfo)
+      }
+      commit("setBookShelfInfo", bookShelfInfo);
     });
+  },
+  setNewBookShelfInfo({commit},data){
+    commit("setBookShelfInfo", data);
   },
   /*获取我的消息*/
   queryMyMessageList({
