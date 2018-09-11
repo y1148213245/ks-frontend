@@ -279,7 +279,7 @@
           <div class="wzdh_xgxx_tj">
             <!--<el-button type="primary" @click="modifyInformation(1)" class="f14">修改密码</el-button>-->
             <!--<el-button type="primary" @click="modifyInformation(1)" class="f14">{{getStaticText('changePassword') ? getStaticText('changePassword') : '修改密码'}}</el-button>-->
-            <el-button type="primary" @click="modifyInfor(10)" class="f14" v-if="CONFIG.staticText&&CONFIG.staticText.editInfo?true:false">{{getStaticText('editInfoText') ? getStaticText('editInfoText') :'编辑信息'}}</el-button>
+            <el-button type="primary" @click="modifyInfor(10)" class="f14" v-if="CONFIG.editInfo ? true : false">{{getStaticText('editInfoText') ? getStaticText('editInfoText') :'编辑信息'}}</el-button>
           </div>
         </div>
         <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('return') ? getStaticText('return') :'返回'}}</el-button>
@@ -529,10 +529,10 @@
           <div class="wzdh_xgyx_ico account_modify-icon"></div>
           <div class="account_modify-form" style="width:505px;">
             <el-form :model="emailForm" :rules="emailRules" ref="emailForm">
-              <el-form-item v-if="!getShowEmailPostfix()" :label="'新邮箱：'" prop="email">
-                <el-input id="center_account-input-email" class="center_account-input-email" type="text" v-model="emailForm.email" auto-complete="off" :placeholder="'请输入邮箱'"></el-input>
+              <el-form-item v-if="!getShowEmailPostfix()" :label="getStaticText('newMailbox') ? getStaticText('newMailbox') : '新邮箱：'" prop="email">
+                <el-input id="center_account-input-email" class="center_account-input-email" type="text" v-model="emailForm.email" auto-complete="off" :placeholder="getStaticText('pleaseInputTheMailbox') ? getStaticText('pleaseInputTheMailbox') : '请输入邮箱'"></el-input>
               </el-form-item>
-              <el-form-item v-if="getShowEmailPostfix()" :label="'新邮箱：'" prop="emailSubfix">
+              <el-form-item v-if="getShowEmailPostfix()" :label="getStaticText('newMailbox') ? getStaticText('newMailbox') : '新邮箱：'" prop="emailSubfix">
                 <el-input class="center_account_subfix-email_input" type="text" v-model="emailForm.emailSubfix" :placeholder="getStaticText('pleaseInputTheMailbox') ? getStaticText('pleaseInputTheMailbox') : '请输入邮箱'"></el-input>
                 @
                 <el-select class="center_account-postfix_email_select" v-model="emailForm.emailPostfix" :placeholder="getStaticText('mailbox') ? getStaticText('mailbox') : '邮箱'">
@@ -627,76 +627,76 @@
       <el-radio v-model="userMode" label="2">{{getStaticText('teacherUserText') ? getStaticText('teacherUserText') :'教师用户'}}</el-radio>
       <div>
         <el-form  ref="form" :model="modifyUserNav" label-width="80px">
-          <el-form-item label="姓名" v-if="userMode==1||userMode==2" >
+          <el-form-item :label="getStaticText('name') ? getStaticText('name') :'姓名'" v-if="userMode==1||userMode==2" >
             <el-input v-model="modifyUserNav.loginName"></el-input>
           </el-form-item>
           <div v-if="userMode==2">
-            <el-form-item label="职务">
+            <el-form-item :label="getStaticText('post') ? getStaticText('post') :'职务'">
               <el-input v-model="modifyUserNav.job"></el-input>
             </el-form-item>
-            <el-form-item label="职称">
-              <el-select v-model="modifyUserNav.positio" placeholder="职称">
+            <el-form-item :label="getStaticText('title') ? getStaticText('title') :'职称'">
+              <el-select v-model="modifyUserNav.positio" :placeholder="getStaticText('title') ? getStaticText('title') :'职称'">
                 <el-option v-for="(item,index) in modifyUser.positio"  :key="index" :label="item" :value="item">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="电话">
+            <el-form-item :label="getStaticText('phone') ? getStaticText('phone') :'电话'">
               <el-input v-model="modifyUserNav.mobileNo"></el-input>
             </el-form-item>
           </div>
           <div v-if="userMode==1">
-            <el-form-item label="行业" >
-              <el-select v-model="modifyUserNav.industry" placeholder="请选择行业">
+            <el-form-item :label="getStaticText('industry') ? getStaticText('industry') :'行业'">
+              <el-select v-model="modifyUserNav.industry" :placeholder="getStaticText('chooseIndustry') ? getStaticText('chooseIndustry') :'请选择行业'">
                 <el-option v-for="(item,index) in modifyUser.industry"  :key="index" :label="item" :value="item">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="教育程度" >
-              <el-select v-model="modifyUserNav.educated" placeholder="请选择教育程度" >
+            <el-form-item :label="getStaticText('educationLevel') ? getStaticText('educationLevel') :'教育程度'" >
+              <el-select v-model="modifyUserNav.educated" :placeholder="getStaticText('chooseEducationLevel') ? getStaticText('chooseEducationLevel') :'请选择教育程度'" >
                 <el-option v-for="(item,index) in modifyUser.educated"  :key="index" :label="item" :value="item">
                 </el-option>
               </el-select>
             </el-form-item>
           </div>
           <div v-if="userMode==1||userMode==2" >
-            <el-form-item label="所在省份" >
-              <el-select v-model="modifyUserNav.areainfo" placeholder="请选择所在省份" >
+            <el-form-item :label="getStaticText('province') ? getStaticText('province') :'所在省份'" >
+              <el-select v-model="modifyUserNav.areainfo" :placeholder="getStaticText('chooseProvince') ? getStaticText('chooseProvince') :'请选择所在省份'" >
                 <el-option v-for="(item,index) in modifyUser.areainfo"  :key="index" :label="item" :value="item">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="具体地址">
-              <el-input type="textarea" v-model="modifyUserNav.address" ></el-input>
+            <el-form-item :label="getStaticText('specificAddress') ? getStaticText('specificAddress') :'具体地址'">
+              <el-input type="textarea" v-model="modifyUserNav.address"></el-input>
             </el-form-item>
           </div>
           <div v-if="userMode==2">
-            <el-form-item label="执教学校">
+            <el-form-item :label="getStaticText('teachingSchool') ? getStaticText('teachingSchool') :'执教学校'">
               <el-input  v-model="modifyUserNav.company"></el-input>
             </el-form-item>
-            <el-form-item label="所属院系">
+            <el-form-item :label="getStaticText('faculty') ? getStaticText('faculty') :'所属院系'">
               <el-input  v-model="modifyUserNav.faculty"></el-input>
             </el-form-item>
-            <el-form-item label="教研室">
+            <el-form-item :label="getStaticText('staffRoom') ? getStaticText('staffRoom') :'教研室'">
               <el-input  v-model="modifyUserNav.staffRoom"></el-input>
             </el-form-item>
-            <el-form-item label="教学层次">
-              <el-select v-model="modifyUserNav.teachLevel" placeholder="请选择所在省份" >
+            <el-form-item :label="getStaticText('teachingLevel') ? getStaticText('teachingLevel') :'教学层次'">
+              <el-select v-model="modifyUserNav.teachLevel" :placeholder="getStaticText('chooseTeachingLevel') ? getStaticText('chooseTeachingLevel') :'请选择教学层次'">
                 <el-option v-for="(item,index) in modifyUser.teachLevel"  :key="index" :label="item" :value="item">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="教学专业" v-if="userMode==2">
+            <el-form-item :label="getStaticText('teachingMajor') ? getStaticText('teachingMajor') :'教学专业'" v-if="userMode==2">
               <el-input  v-model="modifyUserNav.subject"></el-input>
             </el-form-item>
-            <el-form-item label="教学课程" v-if="userMode==2">
+            <el-form-item :label="getStaticText('teachingCourse') ? getStaticText('teachingCourse') :'教学课程'" v-if="userMode==2">
               <el-input type="textarea" v-model="modifyUserNav.teachCourse" ></el-input>
             </el-form-item>
           </div>
 
-          <el-form-item label="邮政编码" v-if="userMode==2||userMode==1">
+          <el-form-item :label="getStaticText('postalCode') ? getStaticText('postalCode') :'邮政编码'" v-if="userMode==2||userMode==1">
             <el-input type="textarea" v-model="modifyUserNav.postcode" ></el-input>
           </el-form-item>
-          <el-form-item label="关注图书分类" prop="type" v-if="userMode==1||userMode==2">
+          <el-form-item :label="getStaticText('bookClassification') ? getStaticText('bookClassification') :'关注图书分类'" prop="type" v-if="userMode==1||userMode==2">
             <el-checkbox-group v-model="modifyUserNav.bookClassifyConcerned">
               <el-checkbox v-for="(item,index) in modifyUser.bookClassifyConcerned" :key="index" :label="item" name="type"></el-checkbox>
             </el-checkbox-group>
@@ -994,8 +994,8 @@ export default {
       if (value === "") {
         callback(
           new Error(
-            this.getStaticText("pleaseInputTheNewPasswordAgain")
-              ? this.getStaticText("pleaseInputTheNewPasswordAgain")
+            this.getStaticText("pleaseInputThePasswordAgain")
+              ? this.getStaticText("pleaseInputThePasswordAgain")
               : "请再次输入密码"
           )
         );
@@ -1899,9 +1899,9 @@ export default {
         this.$message({
           type: "success",
           message: _this.getStaticText(
-            "theVerificationCodeHasBeenSentToYourMailbox"
+            "hasBeenSentToYourMailbox"
           )
-            ? _this.getStaticText("theVerificationCodeHasBeenSentToYourMailbox")
+            ? _this.getStaticText("hasBeenSentToYourMailbox")
             : "已发送至您的邮箱，请点击链接绑定邮箱"
         });
         this.emailDialog = false;

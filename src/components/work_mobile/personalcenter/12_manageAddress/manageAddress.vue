@@ -332,8 +332,18 @@
   }
 </script>
 
-<style scoped>
+<style >
   .work_mobile_personalcenter_12 {
     font-size: 14px;
+  }
+  .work_mobile_personalcenter_12 .van-field__body {
+    line-height: .32rem;
+    height: auto;
+  }
+  .work_mobile_personalcenter_12 .van-field__body .van-field__control{
+    height: .3rem;
+  }
+  .work_mobile_personalcenter_12 .van-field__body textarea.van-field__control{
+
   }
 </style>

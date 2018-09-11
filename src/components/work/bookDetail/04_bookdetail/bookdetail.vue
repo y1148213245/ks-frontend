@@ -969,7 +969,7 @@ export default {
     },
     addCart (config) { // 加入购物车
       if (this.loginName == undefined || this.loginName == '') {  // 未登录
-        window.open('../pages/login.html');
+        window.open(this.CONFIG.loginUrl ? this.CONFIG.loginUrl : '../pages/login.html');
         return false
       }
       this.pubId = this.resourceDetail[this.keys.id];
@@ -1044,7 +1044,7 @@ export default {
     },
     addcombinateProductToCart(config,combinateId){ //组合商品加入购物车
       if (this.loginName == undefined || this.loginName == '') {  // 未登录
-        window.open('../pages/login.html');
+        window.open(this.CONFIG.loginUrl ? this.CONFIG.loginUrl : '../pages/login.html');
         return false
       }
       if (typeof (config) == undefined) {return;}
@@ -1077,7 +1077,7 @@ export default {
     },
     collectOrLike (config) { // 点赞 或者 收藏
       if (this.loginName == undefined || this.loginName == '') {  // 未登录
-        window.open('../pages/login.html');
+        window.open(this.CONFIG.loginUrl ? this.CONFIG.loginUrl : '../pages/login.html');
         return false
       }
       if (this.collectLikeOn) {  // 未登录

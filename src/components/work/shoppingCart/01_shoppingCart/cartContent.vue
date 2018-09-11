@@ -1519,7 +1519,7 @@ export default {
           deliveryType: this.allEbook === true && this.needInvoice === "0" ? "" : this.selectedDelivery.id, // 运输方式
           discountAmount: Number(this.orderDetail.saveAmount.toFixed(2)), // 商品各种活动优惠 不包含免运费的活动
           id: 0,
-          isReceipt: "1",
+          isReceipt: this.needInvoice,
           loginName: this.member.loginName,
           orderCode: "",
           payAmount: Number((this.allEbook === true && this.needInvoice === "0" ? this.orderDetail.totalMoney + this.orderDetail.saveAmount : this.orderDetail.totalMoney + this.orderDetail.saveAmount + this.selectedDelivery.deliveryPrice).toFixed(2)), // 应付金额 = 商品总价 + 运费
