@@ -77,7 +77,7 @@ export default {
       resourceType: "resourseType"
     };
     this.defaultObj.name = this.getStaticText("book") ? this.getStaticText("book") : "图书"
-    
+
     if (this.parentConfig.book) {
       let keysList, currentType;
 
@@ -175,7 +175,7 @@ export default {
           Post(CONFIG.BASE_URL + 'spc/cms/publish/list.do',params).then(resp => {
             loading.close();
             if (resp.data && resp.data.result) {
-              this.$store.dispatch("personalCenter/setNewBookShelfInfo", {data:resp.data.result});
+              this.$store.dispatch("personalCenter/setNewBookShelfInfo", {data:resp.data.result,totalCount:resp.data.totalCount});
             }
           }).catch(err=>{
             loading.close();
@@ -192,6 +192,8 @@ export default {
       this.productKeys = this.CONFIG.productKeys[
         this.currentProductType.keyType
       ];
+      this.pageNo = '1';
+      this.pageSize = '8';
       this.loadData();
     },
     pagingF: function({ pageNo, pageSize }) {
