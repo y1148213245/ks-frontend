@@ -918,7 +918,10 @@ export default {
         }
       };
       this.$store.dispatch("personalCenter/commitOrder", params);
-      loading = this.$loading({ fullscreen: true });
+      loading = this.$loading({ 
+        fullscreen: true ,
+        text: this.getStaticText("loading") ? this.getStaticText("loading") : '正在加载中...'
+        });
     },
     changeDateValue(value) {
       var stime = value[0];

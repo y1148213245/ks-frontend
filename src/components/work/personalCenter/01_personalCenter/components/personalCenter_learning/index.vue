@@ -114,7 +114,7 @@ export default {
     queryBookList (productType = this.CONFIG.defaultActive) {  //如果不穿参数，则调取默认的
       let loading = this.$loading({ 
         fullscreen: true,
-        text: "正在加载中..."
+        text: this.getStaticText("loading") ? this.getStaticText("loading") : '正在加载中...'
       });
       let params = Object.assign({}, this.resourceListsConfig.params);
       params.pageNo = this.pageNo ? this.pageNo : params.pageNo;

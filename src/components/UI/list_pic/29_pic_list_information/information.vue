@@ -114,7 +114,7 @@ export default {
       toOrderByBtn: {}, // 排序配置
       activeSetOrder: "pub_a_order asc pub_lastmodified desc id asc",
       pubId: "", //
-      cascadId: "", //
+      cascadId: "", //分类id
       searchText: "",
       columnName: "",  // 稿件的栏目名称
       seriesId:"", // 丛书的id
@@ -190,7 +190,7 @@ export default {
     }
     //  = "";
 
-    if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) {
+    if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) {Cascad
       // 通过接收广播获取栏目id
       this.$bus.$on(this.CONFIG.onEvent.eventName, data => {
         this.resourceLists = [];
@@ -211,6 +211,13 @@ export default {
         this.resourceLists = [];
         this.totalCount = 0;
         this.pubId = data.id;
+        this.getResourceFun();
+      });
+    } else if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.onCascadId) {   //接受cascadId 广播修改
+      this.$bus.$on(this.CONFIG.onEvent.onCascadId, data => {
+        this.resourceLists = [];
+        this.totalCount = 0;
+        this.cascadId = data[0];
         this.getResourceFun();
       });
     } else {
@@ -372,6 +379,20 @@ export default {
           item.BOOK_BOOK_CASCADID = this.cascadId
             ? this.cascadId
             : item.BOOK_BOOK_CASCADID;
+        }
+
+        // 好书快听
+        if (item.hasOwnProperty("REVIEW_BOOK_CASCADID")) {
+          item.REVIEW_BOOK_CASCADID = this.cascadId
+            ? this.cascadId
+            : item.REVIEW_BOOK_CASCADID;
+        }
+
+        // 有声书
+        if (item.hasOwnProperty("BOOK_MATERIAL_BOOK_CASCADID")) {
+          item.BOOK_MATERIAL_BOOK_CASCADID = this.cascadId
+            ? this.cascadId
+            : item.BOOK_MATERIAL_BOOK_CASCADID;
         }
 
         if (item.hasOwnProperty("PRODUCT-ARTICLE_COLUMNNAME")) {

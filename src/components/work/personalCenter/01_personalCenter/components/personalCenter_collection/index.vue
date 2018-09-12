@@ -27,7 +27,7 @@
                 </div>
               </div>
               <div class="readBox">
-                <a target="_blank" v-bind:href="'../pages/bookdetail.html?pubId=' + item.pubId">{{getStaticText('buy') ? getStaticText('buy') :'购买'}}</a>
+                <a target="_blank" v-bind:href="(CONFIG.toBookdetail ? CONFIG.toBookdetail : '../pages/bookdetail.html?pubId=') + item.pubId">{{getStaticText('buy') ? getStaticText('buy') :'购买'}}</a>
               </div>
               <div class="deleteCllo" @click="deleteCollProduct(item)">
                 <img src="../../assets/img/deleteCllo.png" alt="">
@@ -269,7 +269,7 @@ export default {
     },
     //新增收藏去详情页
     toDetails(pubId){
-    	window.location.href = "../pages/bookdetail.html?pubId=" + pubId;
+    	window.location.href = (this.CONFIG.toBookdetail ? this.CONFIG.toBookdetail : "../pages/bookdetail.html?pubId=") + pubId;
     }
   }
 };

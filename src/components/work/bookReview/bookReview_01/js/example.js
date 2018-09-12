@@ -58,11 +58,13 @@ const dev = {
         toAddReviewName:"评论",
         toAddReviewUrl:'./pages/reviewPublish.html'
       },
+      "loginUrl": '../pages/login.html',
       staticText:{
         comments:"评论",
         noHeadPicture:"暂无头像",
         noComments:"暂无评论",
         commentsEmptyInfo:"评论内容不能为空",
+        commentsTooMany:"评论不能超过250字",
         pleaseGradeBeforeSubmitting:"请先评分再提交评论~",
         commentAddFailed:"评论添加失败",
         contentBefore: "您还可以输入",
@@ -123,6 +125,7 @@ var prod = {
         typeAdapter:'bookAdapter',
         isDiscussLimit:true //评论限制 (评论逻辑控制)  例:获取后台控制评论1次之后不可再评论的状态
       },
+      "loginUrl": '../pages/login.html',
       staticText:{
         comments:"评论",
         noHeadPicture:"暂无头像",

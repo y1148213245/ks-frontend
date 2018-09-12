@@ -468,7 +468,7 @@ export default {
     },
     toCustomFun (config) { // 执行自定义事件
       let _this = this;
-      if(config.method == 'toBuyLayer'){
+      if(config.method == 'toBuyLayer' || config.method == "toShoppingCart"){
 
         if(this.loginName == undefined || this.loginName == '') { // 未登录
           this.$message({
@@ -753,8 +753,8 @@ export default {
         var errorMsg = this.commitInfo.errMsg
           ? this.commitInfo.errMsg
           : "订单提交有误";
-        this.$alert(errorMsg, "系统提示", {
-          confirmButtonText: "确定"
+        this.$alert(errorMsg, this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
+          confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定"
         });
       }
     },

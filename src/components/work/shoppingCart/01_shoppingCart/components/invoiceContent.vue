@@ -137,7 +137,7 @@ export default {
     };
   },
   created () {
-    this.CONFIG = this.parentconfig.invoiceContent;
+    this.CONFIG = this.parentconfig && this.parentconfig.invoiceContent ? this.parentconfig.invoiceContent : null;
     this.unrules = {
       unReceiptTitle: [
         { required: true, message: this.getStaticText('pleaseFillInTheCompanyName') ? this.getStaticText('pleaseFillInTheCompanyName') : '请填写户名', trigger: 'blur' },

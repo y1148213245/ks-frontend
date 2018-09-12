@@ -84,7 +84,7 @@
                 <span class="register_02_bind_content_mail_input-postFix-box_label">{{getStaticText('email') ? getStaticText('email') : '邮箱:'}}</span>
 
                 <div class="register_02_bind_content_mail-postFix_email" v-if="getShowEmailPostfix()">
-                  <el-input type="text" v-model="ruleFormPE.subfixEmail" :placeholder="getStaticText('inputEmailInfo') ? getStaticText('inputEmailInfo') : '请输入邮箱'" class="register_02_bind_content_mail_input-postFix-box_input" @keyup.enter.native="submitFormE($event,'ruleFormPE')"></el-input>
+                  <el-input type="text" v-model="ruleFormPE.subfixEmail" :placeholder="getStaticText('inputEmailInfo') ? getStaticText('inputEmailInfo') : '请输入邮箱 email@mail.com'" class="register_02_bind_content_mail_input-postFix-box_input" @keyup.enter.native="submitFormE($event,'ruleFormPE')"></el-input>
                   @
                   <el-select v-model="emailPostfix" :placeholder="getStaticText('postFixEmail') ? getStaticText('postFixEmail') : '邮箱'">
                     <el-option v-for="(item,index) in GLOBLE_CONFIG.EMAIL_CONFIG.postfix" :key="index" :label="item" :value="item">

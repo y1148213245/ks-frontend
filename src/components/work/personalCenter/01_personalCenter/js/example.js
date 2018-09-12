@@ -238,6 +238,7 @@ const dev = {
           }
         },
         'collection': { // 收藏的tab切换
+          "toBookdetail":"../pages/bookdetail.html?pubId=",
           tabListShow: [{
             title: '电子书',
             type: 94
@@ -262,6 +263,7 @@ const dev = {
             }
           ],
           "staticText":{
+            "loading":"正在加载中...",
             "fullOrder":"全部订单",
             "waitForPayment":"等待付款",
             "startDate":"开始日期",
@@ -483,6 +485,11 @@ const dev = {
           }
         },
         'learning': {
+          "staticText":{
+            "noImg":"暂无图片",
+            "noData":"暂无数据",
+            "loading":"正在加载中..."
+          },
           tabListShow: [{
             label: '音频',
             productType: '183'
@@ -626,6 +633,66 @@ const dev = {
             "finished": "已结束",
             "haveInHand": "进行中",
             "scoring": "评分中"
+          }
+        },
+        'book': {
+          "staticText":{
+            "read":"阅读",
+            "myBookshelfIsEmpty":"我的书架是空的",
+            "book":"图书",
+            "loading":"正在加载中...",
+            "periodicalPeriod":"期",
+            "periodicalYear":"年"
+          },
+          "isReadList":["book","periodical"],//开启阅读功能的资源  对应keyType的值
+          navList: [{
+            name: '图书',//导航中的名字
+            type: '2',//请求参数 1试读 2阅读  3全部
+            productType: '',//请求参数 资源类型
+            keyType: 'book' //字段适配器名,对应productKeys配置中的key,字段适配器名
+          },
+            {
+              name: '期刊',
+              type: '3',
+              productType: 'periodical',
+              keyType: 'periodical'
+            },
+            // {
+            //   name:'知识服务',
+            //   type:'3',
+            //   productType:'knowledge'
+            // },
+            // {
+            //   name:'音频组',
+            //   type:'3',
+            //   productType:'183'
+            // },
+            // {
+            //   name:'视频组',
+            //   type:'3',
+            //   productType:'172'
+            // },
+            // {
+            //   name:'资料组',
+            //   type:'3',
+            //   productType:'185'
+            // }
+          ],
+          productKeys: {
+            book: {
+              name: 'productName',
+              pic: 'bigPic',
+              resourceId: 'resourceId',
+              resourceType: 'resourseType'
+            },
+            periodical: {
+              name: 'pub_resource_name',
+              pic: 'pub_picBig',
+              resourceId: 'pub_resource_id',
+              resourceType: 'pub_resource_type',
+              periodNum:'MAGAZINE_PERIOD_NUM',
+              publishYear:'MAGAZINE_PUBLISH_YEAR'
+            }
           }
         }
       }
@@ -859,6 +926,7 @@ const prod = {
           }
         },
         'collection': { // 收藏的tab切换
+          "toBookdetail":"../pages/bookdetail.html?pubId=",
           tabListShow: [{
             title: '电子书',
             type: 94
@@ -883,6 +951,7 @@ const prod = {
             }
           ],
           "staticText":{
+            "loading":"正在加载中...",
             "fullOrder":"全部订单",
             "waitForPayment":"等待付款",
             "startDate":"开始日期",
@@ -1039,6 +1108,14 @@ const prod = {
           showItem: ['operate']
         },
         'book': {
+          "staticText":{
+            "read":"阅读",
+            "myBookshelfIsEmpty":"我的书架是空的",
+            "book":"图书",
+            "loading":"正在加载中...",
+            "periodicalPeriod":"期",
+            "periodicalYear":"年"
+          },
           "isReadList":["book","periodical"],//开启阅读功能的资源  对应keyType的值
           navList: [{
             name: '图书',//导航中的名字
@@ -1103,6 +1180,11 @@ const prod = {
           pageSize: "10", //每页显示
         },
         'learning': {
+          "staticText":{
+            "noImg":"暂无图片",
+            "noData":"暂无数据",
+            "loading":"正在加载中..."
+          },
           tabListShow: [{
             label: '音频',
             productType: '183'

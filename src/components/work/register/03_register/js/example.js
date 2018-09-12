@@ -67,7 +67,9 @@ const dev = {
         yes: "确定",
         returnToLoginAfterThreeSeconds: "3秒后返回登录界面",
         requestFailed: "请求失败",
-        inputEmail: '请输入邮箱'
+        inputEmail: '请输入邮箱',
+        inputEmailFormatError:"请输入正确邮箱格式",
+        "postFixEmail":"邮箱"
       },
       directLoginHref: './login.html', // 跳转登录页面
     }
@@ -131,7 +133,9 @@ const prod = {
         yes: "确定",
         returnToLoginAfterThreeSeconds: "3秒后返回登录界面",
         requestFailed: "请求失败",
-        inputEmail: '请输入邮箱'
+        inputEmail: '请输入邮箱',
+        inputEmailFormatError:"请输入正确邮箱格式",
+        "postFixEmail":"邮箱"
       },
       directLoginHref: './login.html', // 跳转登录页面
     }

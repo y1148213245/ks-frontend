@@ -311,11 +311,11 @@
 
         <!-- 收货地址组件 -->
         <!-- 需要发票 或者 不全是电子书才显示收货地址组件 -->
-        <work_shoppingcart_01_components_address v-show="needInvoice === '1' || allEbook === false" namespace="address" parentconfig="CONFIG" @deliveryAddress="getDeliveryAddress"></work_shoppingcart_01_components_address>
+        <work_shoppingcart_01_components_address v-show="needInvoice === '1' || allEbook === false" namespace="address" :parentconfig="CONFIG" @deliveryAddress="getDeliveryAddress"></work_shoppingcart_01_components_address>
         <!-- END 收货地址组件 -->
 
         <!-- 发票信息组件 -->
-        <work_shoppingcart_01_components_invoice namespace="invoice" @invoiceInfo="getInvoiceInfo" @needinvoiceFlag="getInvoiceFlag" parentconfig="CONFIG"></work_shoppingcart_01_components_invoice>
+        <work_shoppingcart_01_components_invoice namespace="invoice" @invoiceInfo="getInvoiceInfo" @needinvoiceFlag="getInvoiceFlag" :parentconfig="CONFIG"></work_shoppingcart_01_components_invoice>
         <!-- END 发票信息组件 -->
 
         <!-- 优惠券模块 -->

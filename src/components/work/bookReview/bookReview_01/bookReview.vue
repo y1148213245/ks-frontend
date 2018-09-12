@@ -162,7 +162,7 @@ export default {
     /* 去评论详情页*/
     toReviewInfo (toReviewInfo) {
       if (this.loginName == undefined || this.loginName == '') {
-        window.open( '../pages/login.html');
+        window.open(this.CONFIG.loginUrl ? this.CONFIG.loginUrl : '../pages/login.html');
         return false;
       }
       if(typeof(this.operList.review.toReviewInfoUrl)!='undefined'){
@@ -183,7 +183,7 @@ export default {
     /* 去评论页面评论*/
     toAddReview(){
       if (this.loginName == undefined || this.loginName == '') {
-        window.open( '../pages/login.html');
+        window.open(this.CONFIG.loginUrl ? this.CONFIG.loginUrl : '../pages/login.html');
         return false;
       }
       if(typeof(this.CONFIG.toAddReview)!='undefined'){
@@ -199,21 +199,21 @@ export default {
         //   message: '请登录',
         //   type: 'error'
         // })
-        window.open( '../pages/login.html');
+        window.open( this.CONFIG.loginUrl ? this.CONFIG.loginUrl : '../pages/login.html');
         return false;
       }
       var bookDetail = this.bookInfo;
       var content = this.$refs.commentContent.value;
       if(content.replace(/\s+/g,"")==''){
         this.$message({
-          message: this.getStaticText('commentsEmptfyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论内容不能为空',
+          message: this.getStaticText('commentsEmptyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论内容不能为空',
           type: 'error'
         })
         return false;
       }
       if(content.length>250){
         this.$message({
-          message: this.getStaticText('commentsEmptfyInfo') ? this.getStaticText('commentsEmptyInfo') : '评论不能超过250字',
+          message: this.getStaticText('commentsTooMany') ? this.getStaticText('commentsTooMany') : '评论不能超过250字',
           type: 'error'
         })
         return false;
@@ -287,7 +287,7 @@ export default {
             //   message: '请登录',
             //   type: 'error'
             // })
-            window.open( '../pages/login.html');
+            window.open(this.CONFIG.loginUrl ? this.CONFIG.loginUrl : '../pages/login.html');
             return false;
           }
         }else{
