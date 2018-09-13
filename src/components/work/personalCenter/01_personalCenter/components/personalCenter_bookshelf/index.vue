@@ -27,7 +27,7 @@
                 </div>
               </div>
               
-              <div class="readBox" v-if="getIsRead(currentProductType.keyType)" @click="toRead(item[productKeys.resourceId],1,item[productKeys.name])" style="cursor:pointer">
+              <div class="readBox" v-if="getIsRead(currentProductType.keyType)" @click="toRead(item[productKeys.resourceId],1,item[productKeys.name],item[productKeys.resourceType])" style="cursor:pointer">
                 <a target="_blank">{{getStaticText('read') ? getStaticText('read') : '阅读'}}</a>
               </div>
             </div>
@@ -202,7 +202,7 @@ export default {
 
       this.loadData();
     },
-    toRead(bookId, readType, bookName) {
+    toRead(bookId, readType, bookName, docLibCode) {
       var url =
         CONFIG.READ_URL +
         "?bookId=" +
@@ -213,6 +213,9 @@ export default {
         bookName +
         "&userName=&siteType=" +
         CONFIG.READ_CONFIG.siteType;
+        if (docLibCode) {
+          url += '&doclibCode=' + docLibCode
+        }
       window.open(url);
     },
     getIsRead(type){
