@@ -263,6 +263,7 @@ const dev = {
             }
           ],
           "staticText":{
+            "payment":"付款",
             "loading":"正在加载中...",
             "fullOrder":"全部订单",
             "waitForPayment":"等待付款",

@@ -181,9 +181,7 @@ var actions = {
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
-    let loading = Vue.prototype.$loading({
-      text: "正在加载中..."
-    });
+    let loading = Vue.prototype.$loading({});
     api.queryOrderList(params).then(function (response) {
       let orderList = response.data;
       commit("setOrderList", orderList);
@@ -197,9 +195,7 @@ var actions = {
   queryOrderDetails({
     commit,
   }, params) {
-    let loading = Vue.prototype.$loading({
-      text: "正在加载中..."
-    });
+    let loading = Vue.prototype.$loading({});
     api.queryOrderDetails(params).then(function (response) {
       let orderDetails = response.data.data;
       commit("setOrderDetailst", orderDetails);
@@ -213,9 +209,7 @@ var actions = {
     getters
   }, params) {
     params.loginName = getters.getMember.loginName;
-    let loading = Vue.prototype.$loading({
-      text: "正在加载中..."
-    });
+    let loading = Vue.prototype.$loading({});
     api.queryTimeList(params).then(function (response) {
       let newdata = response.data;
       commit("setNewList", newdata);
@@ -262,7 +256,7 @@ var actions = {
   }, params) {
     params.loginName = getters.getMember.loginName;
     api.checkPswQuestion(params).then(function (response) {
-      let Idata = response.data.data.code;
+      let Idata = response.data.error.errorCode;
       params.cb(Idata, response);
     });
   },
@@ -321,9 +315,7 @@ var actions = {
     commit,
     getters
   }, params) {
-    let loading = Vue.prototype.$loading({
-      text: "正在加载中..."
-    });
+    let loading = Vue.prototype.$loading({});
     let param = {
       pageIndex: params.pageIndex,
       pageSize: params.pageSize,
@@ -350,9 +342,7 @@ var actions = {
   }, params) {
     // params.loginName = getters.getMember.loginName;
     // params.type = 2;
-    let loading = Vue.prototype.$loading({
-      text: "正在加载中..."
-    });
+    let loading = Vue.prototype.$loading({});
     api.queryMyMessageList(params).then(function (response) {
       let myMessageList = response.data;
       commit("setMyMessageList", myMessageList);
@@ -365,9 +355,7 @@ var actions = {
     getters
   }, params) {
     params.param.loginName = getters.getMember.loginName;
-    let loading = Vue.prototype.$loading({
-      text: "正在加载中..."
-    });
+    let loading = Vue.prototype.$loading({});
     api.queryCollectionInfo(params.param).then(function (response) {
       let collectionInfo = response.data;
       commit("setCollectionInfo", {
@@ -392,9 +380,7 @@ var actions = {
     commit,
     getters
   }, params) {
-    let loading = Vue.prototype.$loading({
-      text: "正在加载中..."
-    });
+    let loading = Vue.prototype.$loading({});
     api.findPassword(params).then(function (response) {
       let findStatus = response.data.result;
       let findNum = response.data.data;
@@ -526,9 +512,7 @@ var actions = {
     commit,
     getters
   }, params) {
-    let loading = Vue.prototype.$loading({
-      text: "正在加载中..."
-    });
+    let loading = Vue.prototype.$loading({});
     api.getReturnGoodsDetails(params).then(function (response) {
       let returnGoodsDetails = response.data.data;
       commit("setReturnGoodsDetails", returnGoodsDetails);
@@ -611,9 +595,7 @@ var actions = {
     commit,
     getters
   }, params) {
-    let loading = Vue.prototype.$loading({
-      text: "正在加载中..."
-    });
+    let loading = Vue.prototype.$loading({});
     api.searchNoteList(params).then(function (response) {
       let searchNoteList = response.data;
       commit("setSearchNoteList", searchNoteList);

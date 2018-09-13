@@ -190,7 +190,7 @@ export default {
     }
     //  = "";
 
-    if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) {Cascad
+    if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) {
       // 通过接收广播获取栏目id
       this.$bus.$on(this.CONFIG.onEvent.eventName, data => {
         this.resourceLists = [];

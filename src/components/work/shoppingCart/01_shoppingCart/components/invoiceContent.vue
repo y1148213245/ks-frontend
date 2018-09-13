@@ -19,13 +19,13 @@
 
         <!-- 选择需要发票才显示  显示选择的发票类型 -->
         <div class="orderContents" v-if="showInvoiceContent">
-          <span v-text="tempInvoice.invoiceType"></span>
-          <span v-if="tempInvoice.invoiceType == '普通发票'">
+          <span v-text="tempInvoice.invoiceType = getStaticText('regularInvoice') ? getStaticText('regularInvoice') : getStaticText('valueAddedTaxInvoice')"></span>
+          <span v-if="tempInvoice.invoiceType == '普通发票' || tempInvoice.invoiceType == '일반 령수증'">
             <span v-text="tempInvoice.unReceiptTitle"></span>
             <span v-text="tempInvoice.unTaxpayerCode"></span>
-            <span v-text="tempInvoice.receiptId"></span>
+            <span v-text="tempInvoice.receiptId = getStaticText('detail') ? getStaticText('detail') : getStaticText('stationery')"></span>
           </span>
-          <span v-if="tempInvoice.invoiceType == '增值税发票'">
+          <span v-if="tempInvoice.invoiceType == '增值税发票' || tempInvoice.invoiceType == '부가가치세 령수증'">
             <span v-text="tempInvoice.receiptTitle"></span>
             <span v-text="tempInvoice.taxpayerCode"></span>
           </span>

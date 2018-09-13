@@ -34,7 +34,7 @@
             <label class="work_bookdetail_04_btnlabel">{{config.display}}</label>
             <span class="work_bookdetail_04_status" v-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook)">{{CONFIG.judgeInventory.noPaperBook ? CONFIG.judgeInventory.noPaperBook : '没有对应的纸质书'}}</span>
             <span class="work_bookdetail_04_status" v-else-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && resourceDetail.relBook) && (Number(resourceDetail.relBook[keys.inventory]) <= Number(resourceDetail.relBook[keys.lowInventory]))">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
-            <span class="work_bookdetail_04_status" v-else-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && (Number(resourceDetail[keys.inventory]) <= Number(resourceDetail[keys.lowInventory]))">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
+            <span class="work_bookdetail_04_status" v-else-if="CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91') && (Number(resourceDetail[keys.inventory]) <= Number(resourceDetail[keys.lowInventory]))">{{CONFIG.judgeInventory.lessInventory ? CONFIG.judgeInventory.lessInventory : "纸质书库存不足"}}</span>
             <span class="work_bookdetail_04_status" v-else>{{CONFIG.judgeInventory.enoughInventory ? CONFIG.judgeInventory.enoughInventory : "纸质书库存充足"}}</span>
           </div>          <!-- price 价格 *** 特别注意： 价格要区分电子书和纸质书价格 *** -->
 
@@ -102,8 +102,8 @@
                 :class="{
                   work_bookdetail_04_forbid_addcart: 
                   (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook) ||
-                  (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail.relBook[keys.inventory]) < Number(resourceDetail.relBook[keys.lowInventory]))) ||
-                  ((resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')) && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail[keys.inventory]) < Number(resourceDetail[keys.lowInventory])))
+                  (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail.relBook[keys.inventory]) <= Number(resourceDetail.relBook[keys.lowInventory]))) ||
+                  ((resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')) && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail[keys.inventory]) <= Number(resourceDetail[keys.lowInventory])))
                 }">
                 <label class="work_bookdetail_04_op_label">
                   <i v-bind="{class: config.className}"></i>{{config.display}}
@@ -468,7 +468,7 @@ export default {
     },
     toCustomFun (config) { // 执行自定义事件
       let _this = this;
-      if(config.method == 'toBuyLayer' || config.method == "toShoppingCart"){
+      if(config.method == 'toBuyLayer'){
 
         if(this.loginName == undefined || this.loginName == '') { // 未登录
           this.$message({
@@ -525,6 +525,21 @@ export default {
             this.CONFIG.toProbation.url = CONFIG.READ_URL;
             this.CONFIG.toProbation.fixedKeys.readType = 0;
           }
+        }
+      }
+      // 判断去购物车结算按钮被点击事件
+      if(config.method == "toShoppingCart"){
+        if(this.loginName == undefined || this.loginName == '') { // 未登录
+          this.$message({
+            message: "请先登录",
+            type: 'error',
+            duration: 2000,
+            onClose: function(){
+
+              window.location = _this.CONFIG.loginUrl ? _this.CONFIG.loginUrl : "login.html";
+            }
+          });
+          return false;
         }
       }
       window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
@@ -674,7 +689,7 @@ export default {
             loadingTag.close();
             _this.$message({
               message: datas.error.errorMsg,
-              type: error
+              type: 'error'
             });
           }
         }
@@ -945,23 +960,48 @@ export default {
       if (op > 0) {
         ++this.quantity;
         if (this.quantity > 200) { // 防止加过200
-          this.quantity = 200;
+          
           this.$alert(this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') ? this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') : "商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
             confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定"
           });
+          this.quantity = 200;
+        } else if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory && this.quantity > (Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]) || Number(this.resourceDetail.relBook[this.keys.inventory]) - Number(this.resourceDetail.relBook[this.keys.lowInventory]))){
+          
+          this.$message({
+            type: 'error',
+            message: this.CONFIG.judgeInventory.lessInventory ? this.CONFIG.judgeInventory.lessInventory : "纸质书库存不足"
+          })
+          this.quantity = Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]);
         }
       } else if (op < 0) {
         --this.quantity;
+        if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory && this.quantity > (Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]) || Number(this.resourceDetail.relBook[this.keys.inventory]) - Number(this.resourceDetail.relBook[this.keys.lowInventory]))){
+          
+          this.$message({
+            type: 'error',
+            message: this.CONFIG.judgeInventory.lessInventory ? this.CONFIG.judgeInventory.lessInventory : "纸质书库存不足"
+          })
+          // this.quantity = Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]);
+        }
+        
         if (this.quantity < 1) { // 防止减到0
           this.quantity = 1
         }
       }else {
         // 监测直接输入
         if (this.quantity > 200) { // 防止加过200
-          this.quantity = 200;
+          
           this.$alert(this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') ? this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') : "商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
             confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定"
           });
+          this.quantity = 200;
+        }else if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory && this.quantity > (Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]) || Number(this.resourceDetail.relBook[this.keys.inventory]) - Number(this.resourceDetail.relBook[this.keys.lowInventory]))){
+          
+          this.$message({
+            type: 'error',
+            message: this.CONFIG.judgeInventory.lessInventory ? this.CONFIG.judgeInventory.lessInventory : "纸质书库存不足"
+          })
+          // this.quantity = Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]);
         }else if (this.quantity < 1) { // 防止减到0
           this.quantity = 1
         }
@@ -978,7 +1018,7 @@ export default {
           let relativeEBook = this.resourceDetail.relBook;
           if (relativeEBook) { // 这本书有对应纸质书
             if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory){  //配置了需要根据库存量来展示纸质书
-              if(Number(relativeEBook[this.keys.inventory]) > Number(relativeEBook[this.keys.lowInventory])){  //纸质书库存量大于最小库存量，可以购买
+              if(Number(relativeEBook[this.keys.inventory]) > Number(relativeEBook[this.keys.lowInventory]) && (this.quantity <= Number(relativeEBook[this.keys.inventory]) - Number(relativeEBook[this.keys.lowInventory]))){  //纸质书库存量大于最小库存量，可以购买
                 this.pubId = relativeEBook[this.keys.id];
               }else {
                 return false;
@@ -995,7 +1035,7 @@ export default {
           }
         } else if(this.resourceDetail[this.keys.contentType] == this.bookContentType.bookType){  //如果是纸质书
           if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory){  //配置了需要根据库存量来展示纸质书
-            if(Number(this.resourceDetail[this.keys.inventory]) > Number(this.resourceDetail[this.keys.lowInventory])){  //纸质书库存量大于最小库存量，可以购买
+            if(Number(this.resourceDetail[this.keys.inventory]) > Number(this.resourceDetail[this.keys.lowInventory]) && (this.quantity <= Number(resourceDetail[this.keys.inventory]) - Number(resourceDetail[this.keys.lowInventory]))){  //纸质书库存量大于最小库存量，可以购买
               this.pubId = this.resourceDetail[this.keys.id];
             }else {  //配置了根据库存量来判断，但库存量不满足条件或不存在库存，返回false
               return false;

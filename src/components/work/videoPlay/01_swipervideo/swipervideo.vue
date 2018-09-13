@@ -1,6 +1,6 @@
 /*
- * @Author: song 
- * @Date: 2018-07-03 10:52:51 
+ * @Author: song
+ * @Date: 2018-07-03 10:52:51
  * @Last Modified by: yan.chaoming
  * @Last Modified time: 2018-08-25 10:35:00
  * 视频播放组件 列表是轮播图形式的
@@ -40,7 +40,8 @@
     <!-- END 音频播放器 -->
 
     <!-- 系列课程列表 -->
-    <div class="work_videoplay_01_myswipercon_container" v-show="videoLists && videoLists.length>0">
+    <!--购买显示全部能播放-->
+    <div class="work_videoplay_01_myswipercon_container" v-show='isBuy==1' v-if="videoLists && videoLists.length>0">
       <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
         <div class="work_videoplay_01_myswiperwra swiper-wrapper">
           <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-text="item[keys.resName]" @click="toPlayVideo(item,index)" :class="{work_videoplay_01_activevideo: curShowIndex == index}"></div>
@@ -51,9 +52,25 @@
         <div class="swiper-button-prev swiper-button-prev-smallPic"></div>
         <div class="swiper-button-next swiper-button-next-smallPic"></div>
       </div>
-      
+
     </div>
-    
+
+    <!--未购买指给第一条添加播放的点击事件-->
+    <div class="work_videoplay_01_myswipercon_container"  v-show='isBuy==0' v-if="videoLists && videoLists.length>0">
+      <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
+        <div class="work_videoplay_01_myswiperwra swiper-wrapper">
+          <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-if="index < (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 0)" v-text="item[keys.resName]" @click="toPlayVideo(item,index)" :class="{work_videoplay_01_activevideo: curShowIndex == index}"></div>
+          <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-if="index>=(CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 0)" v-text="item[keys.resName]" :class="{work_videoplay_01_activevideo: curShowIndex == index}"></div>
+          <div class="work_videoplay_01_myswiper_tips swiper-slide" v-text="resType == 'VIDEO-MEDIA' ? (CONFIG.staticText && CONFIG.staticText.noNextVideo ? CONFIG.staticText.noNextVideo : '没有下一个视频啦') : (CONFIG.staticText && CONFIG.staticText.noNextAudio ? CONFIG.staticText.noNextAudio : '没有下一个音频啦')"></div>
+        </div>
+      </div>
+      <div class="work_videoplay_01_myswipercon_btns">
+        <div class="swiper-button-prev swiper-button-prev-smallPic"></div>
+        <div class="swiper-button-next swiper-button-next-smallPic"></div>
+      </div>
+
+    </div>
+
     <!-- END 系列课程列表 -->
   </div>
 </template>
@@ -78,11 +95,12 @@ export default {
       mediaResId: '',//播放单个视频时需要的VIDEO-MEDIA_RESOURCEID
       myDPlayerdp: '', // 视频播放器插件
       videoLists: null, // 视频课程列表
-      curVideoObj: null, // 当前播放视频 / 音频 对象  
-      curAttachObj: {},  //当前附件对象  
+      curVideoObj: null, // 当前播放视频 / 音频 对象
+      curAttachObj: {},  //当前附件对象
       curShowIndex: 0, // 当前选中列表中的视频
       resType: 'VIDEO-MEDIA', // 资源类型：音频 AUDIO-MEDIA / 视频 VIDEO-MEDIA 默认视频
       playUrl: '', // 资源播放地址
+      isBuy:''
     };
   },
   computed: {
@@ -110,7 +128,19 @@ export default {
     this.getListOrPlayVideo(); // 查询视频列表
   },
   methods: {
+    getDetailISBUY () {
+      let params = Object.assign({}, this.CONFIG.getResourceDetail.params);
+      params.pubId=this.parentId;
+      params.loginName = this.member.loginName;
+      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + params.pubId + '&loginName=' +  params.loginName).then((rep) => {
+        let datas = rep.data;
+        if (rep.status=='200' && datas.data) {
+          this.isBuy = datas.data.isBuy;
+        }
+      })
+    },
     getListOrPlayVideo () {
+      this.getDetailISBUY ()
       if (this.CONFIG.queryParamsType == '') { // 从配置里面去参数
         this.queryResourceLists();
         return false;
@@ -152,7 +182,7 @@ export default {
       Post(CONFIG.BASE_URL + QUERYCONFIG.url, paramsObj).then((res) => {
         let datas = res.data;
         if (datas.success && datas.result.length > 0) {
-          
+
           this.videoLists = datas.result; // 视频列表
 
 
@@ -245,7 +275,7 @@ export default {
       let eventName = this.CONFIG.event ? this.CONFIG.event.emitDetail_name : 'resourceDetailLoaded'
       this.$bus.emit(eventName,detail)
     }
-  
+
   }
 }
 </script>

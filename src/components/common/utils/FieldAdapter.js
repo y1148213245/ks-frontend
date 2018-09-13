@@ -201,7 +201,8 @@ var FIELD_ADAPTER = {
             bookFreeDownLoadPath: "bookFreeDownLoadPath",
             bookdownloadpath: "bookDownLoadPath",
             saleUrl:"BOOK_SALE_URL",
-            isComment:"BOOK_IS_COMMENT"//是否可评论
+            isComment:"BOOK_IS_COMMENT", // 是否可评论
+            awardName: "BOOK_AWARD_NAME" // 奖项名称
         },
         newsAdapter: { // 资讯
             documentId: "information_SYS_DOCUMENTID",
@@ -276,7 +277,7 @@ var FIELD_ADAPTER = {
         videoAdapter: { // 视频 包括视频组
             sysTopic: "VIDEO-MEDIA_SYS_TOPIC",
             mediaName: "VIDEO-MEDIA_MEDIA_NAME",
-            sysCreated: "	VIDEO-MEDIA_SYS_CREATED",
+            sysCreated: "VIDEO-MEDIA_SYS_CREATED",
             mediaCat: "VIDEO-MEDIA_MEDIA_CAT",
             editor: "VIDEO-MEDIA_EDITOR",
             description: "VIDEO-MEDIA_DESCRIPTION",
@@ -699,6 +700,20 @@ var FIELD_ADAPTER = {
             format: "BOOK_MATERIAL_FORMAT",  // 开本
             isbn: "BOOK_MATERIAL_ISBN",  //isbn
             pressName: "BOOK_MATERIAL_PRESS_NAME", // 出版社
+        },
+        libraryCollectionAdapter:{  // 书摘库
+            sysTopic:"LIBRARY_COLLECTION_SYS_TOPIC", // 名称
+            sysAuthors: "LIBRARY_COLLECTION_SYS_AUTHORS", //作者
+            snopsis: "LIBRARY_COLLECTION_SNOPSIS", // 摘要
+            docSource: "LIBRARY_COLLECTION_DOC_SOURCE", //来源
+            quesContent: "LIBRARY_COLLECTION_QUES_CONTENT" //正文
+        },
+        shuPingShuZhaiAdapter:{  //书评库
+            sysTopic:"ShuPingShuZhai_SYS_TOPIC", // 名称
+            sysAuthors: "ShuPingShuZhai_SYS_AUTHORS", //作者
+            snopsis: "ShuPingShuZhai_SNOPSIS", // 摘要
+            docSource: "ShuPingShuZhai_DOC_SOURCE", //来源
+            quesContent: "ShuPingShuZhai_QUES_CONTENT" //正文
         }
     }
 };

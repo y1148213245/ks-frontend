@@ -184,7 +184,7 @@ export default {
           }else {
             this.$message({
               type: "error",
-              message: rep.data.error && rep.data.error.errorMsg ? rep.data.error.errorMsg : (this.getStaticText('onlyUsername') ? this.getStaticText('onlyUsername') : '仅支持用户名登录')
+              message: rep.data.error && rep.data.error.errorMsg ? rep.data.error.errorMsg : (this.getStaticText('onlyUsername') ? this.getStaticText('onlyUsername') : '用户名不存在')
             });
           }
           

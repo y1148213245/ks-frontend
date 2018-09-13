@@ -90,7 +90,8 @@ export default {
       });
     },
     toInfoDetail (pubId, colId) { // 跳转咨询详情
-      window.open("../pages/informationdetail.html?pubId=" + pubId + '&conditions=' + this.paramsObj.conditions + '&orderBy=' + this.paramsObj.orderBy + '&pageNo=' + this.paramsObj.pageNo + '&pageSize=' + this.paramsObj.pageSize);
+      let toInfoDetailUrl=this.CONFIG.toInfoDetailUrl
+      window.open(toInfoDetailUrl+"?pubId=" + pubId + '&conditions=' + this.paramsObj.conditions + '&orderBy=' + this.paramsObj.orderBy + '&pageNo=' + this.paramsObj.pageNo + '&pageSize=' + this.paramsObj.pageSize);
     },
     paging: function ({ pageNo, pageSize }) {  // 翻页
       var param = {

@@ -2459,7 +2459,7 @@ export default {
       } else {
         this.$message({
           type: "info",
-          message: rep.data.data.errorMsg
+          message: rep.data.error.errorMsg
         });
       }
     },

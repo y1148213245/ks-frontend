@@ -128,8 +128,14 @@ export default {
       //     item.pub_resource_type = this.pub_resource_type;
       //   }
       // })
+
+      //默认模糊查询，searchConFlag为true时分词查询
       if(this.urlArr.searchText){
-        paramsObj.searchText = this.urlArr.searchText
+        if(this.CONFIG.searchConFlag && (this.CONFIG.searchConFlag=="true")){
+          paramsObj.searchText = this.urlArr.searchText;
+        }else{
+          paramsObj.searchText ='pub_resource_name'+":"+"*"+this.urlArr.searchText+"*";
+        }
       }
       Post(CONFIG.BASE_URL + this.resourceListsConfig.url, paramsObj).then((rep) => {
         let datas = rep.data;

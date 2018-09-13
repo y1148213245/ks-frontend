@@ -280,12 +280,25 @@ export default {
       }
     };
     var validateSubfixEmail = (rule, value, callback) => {
-
       if (value === "") {
         callback(new Error(this.getStaticText('inputEmail') ? this.getStaticText('inputEmail') : "请输入邮箱"));
       }else if(!/^[A-Za-z\d_]+$/.test(value)){
         callback(new Error(this.getStaticText('inputEmailFormatError') ? this.getStaticText('inputEmailFormatError') : "请输入正确邮箱格式"))
       }else{
+        callback();
+      }
+    };
+    var validateEmail = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error(this.getStaticText('inputEmail') ? this.getStaticText('inputEmail') : "请输入邮箱"));
+      } else if (
+        value !=
+        value.match(
+          /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+        )
+      ) {
+        callback(new Error(this.getStaticText('inputEmailFormatError') ? this.getStaticText('inputEmailFormatError') : "请输入正确邮箱格式"));
+      } else {
         callback();
       }
     }
@@ -332,7 +345,7 @@ export default {
         sendNum: [{ validator: validateSendNum, trigger: "blur" }],
       },
       rulesE: {
-        Email: [{ validator: ValidateRules.validateEmail, trigger: "blur" }],
+        Email: [{ validator: validateEmail, trigger: "blur" }],
       },
       rulesPE: {
         subfixEmail: [{ validator: validateSubfixEmail, trigger: "blur" }]
@@ -508,7 +521,7 @@ export default {
       if (MStatus == 0) {
         this.$message({
           type: "info",
-          message: (this.getStaticText('registerFailed') ? this.getStaticText('registerFailed') : "注册失败,") + response.data.error.errorMsg
+          message: response.data.error.errorMsg
         });
       } else {
         this.toLogin();
@@ -574,7 +587,7 @@ export default {
       if (EStatus == 0) {
         this.$message({
           type: "info",
-          message: (this.getStaticText('registerFailed') ? this.getStaticText('registerFailed') : "注册失败,") + rep.data.error.errorMsg
+          message: rep.data.error.errorMsg
         });
       } else {
         this.isMailsend = true;

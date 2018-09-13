@@ -65,8 +65,8 @@ const dev = {
               fixedKeys: {}
             }
           }
-        }
-        ,
+        },
+        searchConFlag:"false",
         getResourceLists: {
           url: "spc/cms/publish/list.do",
           params: {
@@ -163,8 +163,8 @@ const prod = {
               fixedKeys: {}
             }
           }
-        }
-        ,
+        },
+        searchConFlag:"false",
         getResourceLists: {
           url: "spc/cms/publish/list.do",
           params: {

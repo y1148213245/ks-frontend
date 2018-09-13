@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-10 14:52:08
+ * @Last Modified time: 2018-09-11 13:57:41
  * 购物车组件
  */
 
@@ -1041,7 +1041,8 @@ export default {
       if (val > 0) {
         ++product.nums;
         if (product.nums > 200) { // 防止加过200
-          this.maxQuantity(product.nums)
+          this.maxQuantity(product.nums);
+          product.nums = 200;
         }
       } else if (val < 0) {
         product.nums--;

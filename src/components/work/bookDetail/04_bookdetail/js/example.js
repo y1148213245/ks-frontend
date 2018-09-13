@@ -191,6 +191,11 @@ const dev = {
           },
           fixedKeys: {}
         },
+        "toShoppingCart": {
+          "url": "../pages/shoppingcart.html",
+          "dataKeys": {},
+          "fixedKeys": {}
+        },
         toBuy: { // 去购买
           url: "../pages/bookBuy.html",
           dataKeys: {
@@ -330,7 +335,7 @@ const dev = {
             "params":{}
           }
         },
-        "loginUrl": "../../pages/login.html",  //跳登录页
+        "loginUrl": "../pages/login.html",  //跳登录页
         judgeInventory: {  //库存量配置
           showInventory: true,
           noPaperBook: "没有对应的纸质书",
@@ -451,6 +456,11 @@ const prod = {
           },
           fixedKeys: {}
         },
+        "toShoppingCart": {
+          "url": "../pages/shoppingcart.html",
+          "dataKeys": {},
+          "fixedKeys": {}
+        },
         toBuy: { // 去购买
           url: "../pages/bookBuy.html",
           dataKeys: {
@@ -590,7 +600,7 @@ const prod = {
             "params":{}
           }
         },
-        "loginUrl": "../../pages/login.html",  //跳登录页
+        "loginUrl": "../pages/login.html",  //跳登录页
         judgeInventory: {  //库存量配置
           showInventory: true,
           noPaperBook: "没有对应的纸质书",
