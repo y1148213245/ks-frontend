@@ -122,6 +122,7 @@ const prod = {
         },
         toFree:  "../pages/articledetail.html",
         toFee:  "../pages/articledetail.html",
+        useIsBuy:true,//是否需要判断数据的isBuy属性来控制稿件的阅读
         staticText: {
           noImg: "暂无图片",
           noData: "暂无数据",

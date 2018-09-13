@@ -1,4 +1,8 @@
 <!-- created by zrn at 2018-08-04 -->
+/*
+新增
+  180912 新增是否使用数据中的isBuy属性来控制稿件的阅读
+ */
 <template>
   <div class="ui_list_pic_38">
     <div class="ui_list_pic_38_resourcelists">
@@ -7,7 +11,7 @@
             <h1 class="ui_list_pic_38_resourcelists_columnname">{{column.name}}</h1>
             <span class="ui_list_pic_38_resourcelists_columnname__subtitle"></span>
             <ul class="ui_list_pic_38_resourcelists_ul" >
-              <li class="ui_list_pic_38_resourcelists_li" v-for="(item, index) in column.data" :key="index" @click="(columnIndex === 0 && index < resourceListsConfig.freeNum || isBuy === 1) ? toCustomFun(item,1) : toCustomFun(item,2)">
+              <li class="ui_list_pic_38_resourcelists_li" v-for="(item, index) in column.data" :key="index" @click="(columnIndex === 0 && index < resourceListsConfig.freeNum || (CONFIG.useIsBuy == undefined || CONFIG.useIsBuy ? isBuy === 1 : true)) ? toCustomFun(item,1) : toCustomFun(item,2)">
                 <template v-for="(config, config_i) in resourceListsConfig.complicatedItem">
                   <!-- 需要特殊处理的复杂项 -->
                   <!-- img 图片 -->
