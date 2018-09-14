@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-07-03 10:52:51
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-08-25 10:35:00
+ * @Last Modified time: 2018-09-14 15:55:38
  * 视频播放组件 列表是轮播图形式的
  * TODO: 轮播的分页怎么办
  */
@@ -155,6 +155,7 @@ export default {
               screenshot: true, // 截屏功能
               video: {
                 url: this.playUrl + this.mediaResId, // 视频地址
+                type:'flv'
               },
             });
           }
@@ -229,6 +230,7 @@ export default {
         screenshot: true, // 截屏功能
         video: {
           url: this.playUrl + (this.resType == 'ZILIAOKU' ? this.curAttachObj[this.keys.fileRecordID] : this.curVideoObj[this.keys.resourceId]), // 视频地址
+          type:'flv'
         },
       });
     },
