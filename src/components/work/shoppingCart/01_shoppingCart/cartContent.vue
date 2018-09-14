@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-13 15:50:49
+ * @Last Modified time: 2018-09-13 16:27:21
  * 购物车组件
  */
 
@@ -1042,7 +1042,7 @@ export default {
       if (val > 0) { // 在页面上执行 + 操作
         if (product.nums > 200) { // 防止加过200
           this.maxQuantity(product.nums);
-        } else if ((product.inventory || 0) - product.nums < product.lowInventory) { // 不能超过最小库存
+        } else if ((product.inventory || 0) - product.nums <= product.lowInventory) { // 不能超过最小库存
           this.$message({
             type: "error",
             message: this.getStaticText('notEnoughProduct') ? this.getStaticText('notEnoughProduct') : "库存不足"
@@ -1062,7 +1062,7 @@ export default {
           product.nums = 200;
         } else if (fixedVal < 1) { // 防止减到0
           product.nums = 1;
-        } else if ((product.inventory || 0) - fixedVal < product.lowInventory) { // 不能超过最小库存
+        } else if ((product.inventory || 0) - fixedVal <= product.lowInventory) { // 不能超过最小库存
           return false;
         } else {
           product.nums = fixedVal;
@@ -1215,7 +1215,7 @@ export default {
       if ($(".productNums").val().length > 4) {
         event.preventDefault();
       }
-      if ((product.inventory || 0) - fixedVal < product.lowInventory) { // 不能超过最小库存
+      if ((product.inventory || 0) - fixedVal <= product.lowInventory) { // 不能超过最小库存
         this.$message({
           type: "error",
           message: this.getStaticText('notEnoughProduct') ? this.getStaticText('notEnoughProduct') : "库存不足"
@@ -1606,8 +1606,8 @@ export default {
           _this.hasCommitOrder = false; // 防止重复提交订单
         }
       };
-      // console.log(params);
-      this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
+      console.log(params);
+      // this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
       let loadingTag = _this.$loading({ fullscreen: true });
     },
     getRmbCoin: function () {         // 实时兑换下载币为人民币

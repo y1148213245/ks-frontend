@@ -129,15 +129,17 @@ export default {
   },
   methods: {
     getDetailISBUY () {
-      let params = Object.assign({}, this.CONFIG.getResourceDetail.params);
-      params.pubId=this.parentId;
-      params.loginName = this.member.loginName;
-      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + params.pubId + '&loginName=' +  params.loginName).then((rep) => {
-        let datas = rep.data;
-        if (rep.status=='200' && datas.data) {
-          this.isBuy = datas.data.isBuy;
-        }
-      })
+      if( this.CONFIG.getResourceDetail!==undefined){
+        let params = Object.assign({}, this.CONFIG.getResourceDetail.params);
+        params.pubId=this.parentId;
+        params.loginName = this.member.loginName;
+        Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + params.pubId + '&loginName=' +  params.loginName).then((rep) => {
+          let datas = rep.data;
+          if (rep.status=='200' && datas.data) {
+            this.isBuy = datas.data.isBuy;
+          }
+        })
+      }
     },
     getListOrPlayVideo () {
       this.getDetailISBUY ()

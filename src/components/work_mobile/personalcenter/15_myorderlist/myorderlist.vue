@@ -364,21 +364,16 @@ export default {
       var url=(toDetailUrl ? toDetailUrl : './bookdetail.html')+'?pubId=' + inneritem.pubId
       window.open(url)
     },
-    //去期刊详情
+    //去刊种详情
     toperiodicalDetails(inneritem,event){
       let target=event.target;
       switch (target.className){
         case 'van-card__thumb':
         case 'van-card__title':
-          var toDetailUrl=this.CONFIG.toperiodicalDetailsUrl;
-          var url=(toDetailUrl ? toDetailUrl : './maginfo.html')+'?pubId=' + inneritem.id;
-          window.open(url);
+          var magListDetailUrl=this.CONFIG.toperiodicalDetailsUrl;
+          var toMagListDetailUrl=(magListDetailUrl ? magListDetailUrl : './magList.html')+'?magName=' + inneritem.periodicalName;
+          window.open(toMagListDetailUrl);
           break;
-        case 'van-card__desc':
-          var tomagListDetailUrl=this.CONFIG.toperiodicalDetailsUrl;
-          var magListurl=(tomagListDetailUrl ? tomagListDetailUrl : './magList.html')+'?magName=' + inneritem.periodicalName;
-          window.open(magListurl);
-          break
       }
     }
   },

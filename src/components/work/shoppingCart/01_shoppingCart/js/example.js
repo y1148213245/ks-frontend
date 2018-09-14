@@ -226,6 +226,7 @@ const dev = {
           confirm: "确定",
           operateError: '操作失败',
           selectCorrectPayWay: '请选择有效的支付方式',
+          notEnoughProduct: "库存不足"
         },
         addressContent: {
           staticText: {
@@ -407,6 +408,7 @@ const prod = {
           confirm: "确定",
           operateError: '操作失败',
           selectCorrectPayWay: '请选择有效的支付方式',
+          notEnoughProduct: "库存不足"
         },
         addressContent: {
           staticText:{
