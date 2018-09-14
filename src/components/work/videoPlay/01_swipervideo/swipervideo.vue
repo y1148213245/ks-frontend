@@ -100,7 +100,7 @@ export default {
       curShowIndex: 0, // 当前选中列表中的视频
       resType: 'VIDEO-MEDIA', // 资源类型：音频 AUDIO-MEDIA / 视频 VIDEO-MEDIA 默认视频
       playUrl: '', // 资源播放地址
-      isBuy:''
+      isBuy:1
     };
   },
   computed: {
@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     getDetailISBUY () {
-      if( this.CONFIG.getResourceDetail!==undefined){
+      if( this.CONFIG.getResourceDetail!==undefined&&this.modulename!=='videoplay'){
         let params = Object.assign({}, this.CONFIG.getResourceDetail.params);
         params.pubId=this.parentId;
         params.loginName = this.member.loginName;

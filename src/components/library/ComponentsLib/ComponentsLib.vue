@@ -42,6 +42,10 @@
 				<img :src="imgUrl" alt="暂无图片">
 				<div v-if="this.showComponents && this.showComponents.name">组件标签名： <span><{{this.showComponents.name}}></{{this.showComponents.name}}></span></div>
 				<div>组件描述：{{this.showComponents && this.showComponents.description}}</div>
+				<!-- 供测试用 暂时展示 测试完删 start-->
+				<div>pageType 配置：{{showComponents && showComponents.pageType}}</div>
+				<div>resourceType 配置：{{showComponents && showComponents.resourceType}}</div>
+				<!-- 供测试用 暂时展示 测试完删 end-->
 				<div>dev 配置：</div>
 				<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.dev"></textarea>
 				<div>prod 配置：</div>
