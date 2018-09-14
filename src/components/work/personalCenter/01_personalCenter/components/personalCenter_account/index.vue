@@ -246,7 +246,7 @@
           <div class="mt15">
             <i class="wzdh_xgxx_bdmc mr08"></i>{{getStaticText('titleOfAccount') ? getStaticText('titleOfAccount') : '账户名称'}}:
             <span v-text="account && account.loginName"></span>
-            <el-button type="primary" @click="cryptoguar = true" class="butt" v-if="CONFIG.secretQuestionBtnHide==undefined || CONFIG.secretQuestionBtnHide == false && account.questions == ''">{{getStaticText('settingUpSecretProtection') ? getStaticText('settingUpSecretProtection') : '设置密保问题'}}</el-button>
+            <el-button type="primary" v-show='isShowSecretProtection' @click="cryptoguar = true" class="butt" v-if="CONFIG.secretQuestionBtnHide==undefined || CONFIG.secretQuestionBtnHide == false && account.questions == ''">{{getStaticText('settingUpSecretProtection') ? getStaticText('settingUpSecretProtection') : '设置密保问题'}}</el-button>
           </div>
           <div class="mt30 mb30">
             <div v-if="account && account.email">
@@ -423,7 +423,7 @@
           </div>
         </el-tab-pane>
         <!-- 密保问题验证  -->
-        <el-tab-pane :label="getStaticText('securityQuestionVerify') ? getStaticText('securityQuestionVerify') : '密保问题验证'" name="third"  v-if="CONFIG.secretQuestionBtnHide == undefined || CONFIG.secretQuestionBtnHide == false && account.questions !=''">
+        <el-tab-pane v-if='isShowSecretProtection' :label="getStaticText('securityQuestionVerify') ? getStaticText('securityQuestionVerify') : '密保问题验证'" name="third"  v-show="CONFIG.secretQuestionBtnHide == undefined || CONFIG.secretQuestionBtnHide == false && account.questions !=''">
           <div class="main_right fl">
             <div class="wzdh_bmwtyz f14 color_6f6">
               <div class="wzdh_bmwtyz_ico account_modify-icon"></div>
@@ -1270,12 +1270,14 @@ export default {
       contactorError: "", //新建收货地址--收货人验证信息
       goodsInfo: [], //新建收货地址--验证信息
       paymentList: [], //支付方式
+      isShowSecretProtection:true
     };
   },
   created() {
 	  this.$bus.$on("handleChange",this.handleChange);
     this.defaultPic = require("../../assets/img/timg.jpg"); // webpack静态资源打包问题
     this.CONFIG = this.parentConfig.account;
+    this.isShowSecretProtection=this.CONFIG.isShowSecretProtection===false?this.CONFIG.isShowSecretProtection:true;
     this.modifyUser=this.parentConfig.modifyUser;
     this.GLOBLE_CONFIG = CONFIG;
     this.getShowEmailPostfix()

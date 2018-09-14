@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-11 13:57:41
+ * @Last Modified time: 2018-09-13 15:50:49
  * 购物车组件
  */
 
@@ -68,7 +68,7 @@
                       <!-- 纸质书组合购买才有步进器 -->
                       <div class="quantity" v-if="item.productType == bookTypeTag">
                         <a href="javascript:void(0)" v-on:click="changeQuantity(item,-1)">-</a>
-                        <input class="productNums" type="number" v-model="item.nums" @keyup="changeQuantity(item, 0, $event.currentTarget.value)" @keypress="checkNumber($event, item)">
+                        <input class="productNums" type="number" v-model="item.nums" @keyup="changeQuantity(item, 0, $event.currentTarget.value)" @keypress="checkNumber($event, item, $event.currentTarget.value)">
                         <a href="javascript:void(0)" v-on:click="changeQuantity(item,1)">+</a>
                       </div>
                       <!-- 电子书没有步进器 -->
@@ -169,7 +169,7 @@
                     <div class="cart-tab-4">
                       <div class="quantity">
                         <a href="javascript:void(0)" v-on:click="changeQuantity(product,-1)">-</a>
-                        <input class="productNums" type="number" v-model="product.nums" @keyup="changeQuantity(product, 0, $event.currentTarget.value)" @keypress="checkNumber($event, product)">
+                        <input class="productNums" type="number" v-model="product.nums" @keyup="changeQuantity(product, 0, $event.currentTarget.value)" @keypress="checkNumber($event, product, $event.currentTarget.value)">
                         <a href="javascript:void(0)" v-on:click="changeQuantity(product,1)">+</a>
                       </div>
                     </div>
@@ -1037,25 +1037,33 @@ export default {
       }
     },
     changeQuantity: function (product, val, fixedVal) { // 改变纸质书商品数量
+      /* 改变纸书数量的时候 要判断库存量  当前库存inventory - 当前数量 > 最小库存lowInventory  最大数量是 200*/
       // var initialQuantity = product.nums; // 记录最初的值
-      if (val > 0) {
-        ++product.nums;
+      if (val > 0) { // 在页面上执行 + 操作
         if (product.nums > 200) { // 防止加过200
           this.maxQuantity(product.nums);
-          product.nums = 200;
+        } else if ((product.inventory || 0) - product.nums < product.lowInventory) { // 不能超过最小库存
+          this.$message({
+            type: "error",
+            message: this.getStaticText('notEnoughProduct') ? this.getStaticText('notEnoughProduct') : "库存不足"
+          });
+        } else {
+          ++product.nums;
         }
-      } else if (val < 0) {
+      } else if (val < 0) { // 在页面上执行 - 操作
         product.nums--;
         if (product.nums < 1) { // 防止减到0
           product.nums = 1;
         }
       }
-      if (fixedVal) { // 手动输入固定值
+      if (fixedVal) { // 手动输入有效固定值
         if (fixedVal > 200) { // 防止加过200
           this.maxQuantity(fixedVal);
           product.nums = 200;
         } else if (fixedVal < 1) { // 防止减到0
           product.nums = 1;
+        } else if ((product.inventory || 0) - fixedVal < product.lowInventory) { // 不能超过最小库存
+          return false;
         } else {
           product.nums = fixedVal;
         }
@@ -1200,11 +1208,18 @@ export default {
         }, 50);
       }
     },
-    checkNumber: function (event, product) { // 购买数量格式校验
+    checkNumber: function (event, product, fixedVal) { // 购买数量格式校验
       if (!String.fromCharCode(event.keyCode).match(/\d/)) {
         event.preventDefault();
       }
       if ($(".productNums").val().length > 4) {
+        event.preventDefault();
+      }
+      if ((product.inventory || 0) - fixedVal < product.lowInventory) { // 不能超过最小库存
+        this.$message({
+          type: "error",
+          message: this.getStaticText('notEnoughProduct') ? this.getStaticText('notEnoughProduct') : "库存不足"
+        });
         event.preventDefault();
       }
     },

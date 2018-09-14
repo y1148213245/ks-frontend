@@ -26,7 +26,7 @@
       <div class="ui_mobile_list_02_sort" id="screenBox" v-else>
         <span class="ui_mobile_list_02_nosub">{{getStaticText('noSecondaryClassification') ? getStaticText('noSecondaryClassification') : "暂无二级分类"}}</span>
       </div>
-      <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyBook && classifyBook.length > exMoreNum">{{getStaticText('more' ? getStaticText('more') : "更多")}}</a>
+      <a class="ui_mobile_list_02_more" id="moreBtn" @click="showMore()" v-if="classifyBook && (classifyBook.length > exMoreNum)">{{getStaticText('more') ? getStaticText('more') : "更多"}}</a>
     </div>
     <!--图书列表-->
     <div class="ui_mobile_list_02_booklist">

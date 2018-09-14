@@ -38,18 +38,19 @@
 				</el-menu>
 			</el-col>
 
-			<el-col :span="17" class="comInfo">
-				<img :src="imgUrl" alt="暂无图片">
-				<div v-if="this.showComponents && this.showComponents.name">组件标签名： <span><{{this.showComponents.name}}></{{this.showComponents.name}}></span></div>
-				<div>组件描述：{{this.showComponents && this.showComponents.description}}</div>
-				<div>dev 配置：</div>
-				<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.dev"></textarea>
-				<div>prod 配置：</div>
-				<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.prod"></textarea>
-				<div>html片段：</div>
-				<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.templateCon"></textarea>
-			</el-col>
-</el-row>
+				<el-col :span="17" class="comInfo" v-if="!noComponent">
+					<img :src="imgUrl" alt="暂无图片">
+					<div v-if="this.showComponents && this.showComponents.name">组件标签名： <span><{{this.showComponents.name}}></{{this.showComponents.name}}></span></div>
+					<div>组件描述：{{this.showComponents && this.showComponents.description}}</div>
+					<div>dev 配置：</div>
+					<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.dev"></textarea>
+					<div>prod 配置：</div>
+					<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.prod"></textarea>
+					<div>html片段：</div>
+					<textarea class="jsonInfo" v-html="this.showComponents && this.showComponents.templateCon"></textarea>
+				</el-col>
+				<div v-else class="noComponent">没有相关组件</div>
+		</el-row>
 	</div>
 </template>
 <script type="text/ecmascript-6">
@@ -74,6 +75,7 @@ export default {
 			checkedPageType: [],       // 已选页面类别 多选 数组
 			searchExamples: {},        // 搜索
 			VueExamples: {},           // 扫描出来的vue文件的全部内容 截取的是template模块
+			noComponent:false
 		}
 	},
 	mounted: function () {
@@ -115,14 +117,16 @@ export default {
 			this.imgUrl = hasImg ? require('./screenshots/' + com.name + '.jpg') : '';
 		},
 		filterDatas () {
+
 			// this.examples  页面左侧渲染的数组列表 随着筛选条件不同会被改变
 			// this.tempExamples     最初的数组列表 不变
 			let datas = this.tempExamples	// 组件对象
 			let loadedDatas = {};
 			let resourceTypeArr = this.checkedResourceType;  // 当前选中资源 字符串
 			let pageTypeArr = this.checkedPageType;          // 当前选中页面
-
+			this.noComponent=true;
 			if (resourceTypeArr || pageTypeArr.length > 0 || this.searchText !== '') {
+
 				this.examples = []; //有筛选条件了，清空显示数组
 
 				for (let key in datas) {
@@ -169,15 +173,17 @@ export default {
 					//几次的筛选结果
 					for (let index = 0, len = isResultArr.length; index < len; index++) {
 						if (isResultArr[index]) { // 三个维度全都符合
-							isHave = true
+							isHave = true;
+						
 						} else {    // 有一个维度不符合就跳出整个循环
-							isHave = false;
+							isHave = false;						
 							break;
 						}
 					}
 
 					if (isHave) {
 						loadedDatas[key] = component;
+						this.noComponent=false;
 					}
 				}
 				this.examples = loadedDatas;
@@ -186,6 +192,7 @@ export default {
 			}
 			this.showComponents = null;
 			this.loadComponent(this.examples);
+			
 		},
 
 	}
@@ -304,5 +311,11 @@ export default {
 
 .common_components_lib .comInfo div {
   margin-top: 10px;
+}
+
+.noComponent{
+	text-align: center;
+	margin-top: 250px;
+	font-size: 18px;
 }
 </style>

@@ -140,9 +140,12 @@ export default {
       this.columnName = uriQuery.columnName;
     }
     // 丛书的id (金融书城PC)
-    if (typeof uriQuery.seriesId != "undefined") {
+    if(uriQuery.seriesId && uriQuery.seriesId != "undefined"){
       this.seriesId = uriQuery.seriesId;
     }
+    // if (typeof uriQuery.seriesId !== "undefined") {
+    //   this.seriesId = uriQuery.seriesId;
+    // }
 
     // 作者名字(金融博览财富)
     if (typeof uriQuery.authorSysTopic != "undefined") {
@@ -368,11 +371,19 @@ export default {
             ? this.colId
             : item[this.keys.colId];
         }
+        // pub_parent_id冲突
         if (item.hasOwnProperty("pub_parent_id")) {
-          if(this.seriesId){
+          if(item.pub_parent_id == "pubId"){
+            item.pub_parent_id = this.pubId;
+          }else if(item.pub_parent_id == "seriesId"){
             item.pub_parent_id = this.seriesId;
           }else{
-            item.pub_parent_id = this.pubId ? this.pubId : item.pub_parent_id;
+            // 向下兼容
+            if(this.seriesId){
+              item.pub_parent_id = this.seriesId;
+            }else{
+              item.pub_parent_id = this.pubId ? this.pubId : item.pub_parent_id;
+            }
           }
         }
         if (item.hasOwnProperty("BOOK_BOOK_CASCADID")) {
