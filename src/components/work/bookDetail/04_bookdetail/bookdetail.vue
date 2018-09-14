@@ -1035,7 +1035,7 @@ export default {
           }
         } else if(this.resourceDetail[this.keys.contentType] == this.bookContentType.bookType){  //如果是纸质书
           if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory){  //配置了需要根据库存量来展示纸质书
-            if(Number(this.resourceDetail[this.keys.inventory]) > Number(this.resourceDetail[this.keys.lowInventory]) && (this.quantity <= Number(resourceDetail[this.keys.inventory]) - Number(resourceDetail[this.keys.lowInventory]))){  //纸质书库存量大于最小库存量，可以购买
+            if(Number(this.resourceDetail[this.keys.inventory]) > Number(this.resourceDetail[this.keys.lowInventory]) && (this.quantity <= Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]))){  //纸质书库存量大于最小库存量，可以购买
               this.pubId = this.resourceDetail[this.keys.id];
             }else {  //配置了根据库存量来判断，但库存量不满足条件或不存在库存，返回false
               return false;
