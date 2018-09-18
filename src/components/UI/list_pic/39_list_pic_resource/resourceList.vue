@@ -97,11 +97,6 @@ export default {
         if(res.data.result == "1" && res.data.data){
           this.resIds = res.data.data;
           this.getResourceList(res.data.data);
-        }else{
-          this.$message({
-            type: "error",
-            message:  this.getStaticText('errorMag') ? this.getStaticText('errorMag') : '查询失败'
-          });
         }
       });
     },
@@ -127,11 +122,6 @@ export default {
         if(res.data.success && res.data.result.length > 0){
           this.totalCount = res.data.totalCount;
           this.resourceLists = res.data.result;
-        }else if (!res.data.success) {
-            this.$message({
-            type: "error",
-            message: this.getStaticText('errorMag1') ? this.getStaticText('errorMag1') : '查询失败'
-          });
         }
       });
     },
