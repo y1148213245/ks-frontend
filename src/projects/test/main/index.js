@@ -10,9 +10,9 @@ import Vant from 'vant'
 // require styles
 import 'swiper/dist/css/swiper.css'
 import 'vant/lib/vant-css/index.css'
-
-import ScanVues from "@common/scans/ScanVues";
-
+// import work_videoplay_01 from "@components/work/videoPlay/01_swipervideo/swipervideo.vue"
+// import ScanVues from "@common/scans/ScanVues";
+import ScanVues from './usedComponents';//按需引入
 import store from "./store.js";
 
 
@@ -46,6 +46,9 @@ new Vue({
 		}
 
 		document.getElementById("app").style["display"] = "block";
+	},
+	components:{
+		// work_videoplay_01
 	}
 });
 

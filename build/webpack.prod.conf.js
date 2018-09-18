@@ -121,6 +121,11 @@ const webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       },
       {
+        from: path.resolve(__dirname, '../static/js'), // 公共js  180917新增:将新增js插件放入core包中 避免各个项目再次引用
+        to: "core/js",
+        ignore: ['.*']
+      },
+      {
         from: path.resolve(__dirname, '../src/components/**/data/*'),
         to: "data/[name].[ext]",
         ignore: ['.*']

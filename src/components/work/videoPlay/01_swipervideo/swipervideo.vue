@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-07-03 10:52:51
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-09-14 15:55:38
+ * @Last Modified time: 2018-09-18 11:00:55
  * 视频播放组件 列表是轮播图形式的
  * TODO: 轮播的分页怎么办
  */
@@ -56,7 +56,7 @@
     </div>
 
     <!--未购买指给第一条添加播放的点击事件-->
-    <div class="work_videoplay_01_myswipercon_container"  v-show='isBuy==0' v-if="videoLists && videoLists.length>0">
+    <div class="work_videoplay_01_myswipercon_container" v-show='isBuy==0' v-if="videoLists && videoLists.length>0">
       <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
         <div class="work_videoplay_01_myswiperwra swiper-wrapper">
           <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-if="index < (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 0)" v-text="item[keys.resName]" @click="toPlayVideo(item,index)" :class="{work_videoplay_01_activevideo: curShowIndex == index}"></div>
@@ -75,14 +75,14 @@
   </div>
 </template>
 
-<script>
+<script> 
 import PROJECT_CONFIG from 'projectConfig';
 import { Get, Post, getFieldAdapter, toOtherPage } from "@common";
 import { mapGetters } from 'vuex';
 import * as interfaces from "@work/login/common/interfaces.js";
 import URL from "url";
 import { Toast } from 'vant';
-
+const BaseConfig = require('../../../../../config');
 export default {
   name: 'work_videoplay_01',
   props: ['namespace', 'modulename'],
@@ -100,7 +100,10 @@ export default {
       curShowIndex: 0, // 当前选中列表中的视频
       resType: 'VIDEO-MEDIA', // 资源类型：音频 AUDIO-MEDIA / 视频 VIDEO-MEDIA 默认视频
       playUrl: '', // 资源播放地址
-      isBuy:1
+      isBuy: 1,
+      CORE_PATH: process.env.NODE_ENV === 'production'
+        ? BaseConfig.build.assetsPublicPath + BaseConfig.build.assetsSubDirectory
+        : BaseConfig.dev.assetsPublicPath + BaseConfig.build.assetsSubDirectory
     };
   },
   computed: {
@@ -112,37 +115,45 @@ export default {
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_videoplay.work_videoplay_01[this.modulename];
     this.playUrl = CONFIG.BASE_URL + this.CONFIG.playVideoUrl; // 资源播放地址
     let queryObj = URL.parse(document.URL, true).query;
-    if (this.CONFIG.queryParamsType == 'url') { // 从视频组里取数据的时候才把参数传到地址栏里
-      this.curId = queryObj && queryObj.id ? queryObj.id : ''; // 当前播放的视频id
-      this.parentId = queryObj && queryObj.parentId ? queryObj.parentId : '';// 视频组id
-      this.mediaResId = queryObj && queryObj.mediaResId ? queryObj.mediaResId : '';//播放单个视频时需要的的VIDEO-MEDIA_RESOURCEID
-      this.resType = queryObj && queryObj.resType ? queryObj.resType : 'VIDEO-MEDIA';
+
+    let script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.src = this.CORE_PATH + '/js/jwplayer/jwplayer.js'
+    document.getElementsByTagName('head')[0].appendChild(script)
+    script.onload = () => {
+      if (this.CONFIG.queryParamsType == 'url') { // 从视频组里取数据的时候才把参数传到地址栏里
+        this.curId = queryObj && queryObj.id ? queryObj.id : ''; // 当前播放的视频id
+        this.parentId = queryObj && queryObj.parentId ? queryObj.parentId : '';// 视频组id
+        this.mediaResId = queryObj && queryObj.mediaResId ? queryObj.mediaResId : '';//播放单个视频时需要的的VIDEO-MEDIA_RESOURCEID
+        this.resType = queryObj && queryObj.resType ? queryObj.resType : 'VIDEO-MEDIA';
+      }
+      if (this.resType === "AUDIO-MEDIA" && this.CONFIG.getResourceLists.typeAdapter1) {
+        this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter1);
+      } else if (this.resType === "ZILIAOKU" && this.CONFIG.getResourceLists.typeAdapter2) {
+        this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter2);
+      } else {
+        this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter);
+      }
+      this.getListOrPlayVideo(); // 查询视频列表
     }
-    if(this.resType === "AUDIO-MEDIA" && this.CONFIG.getResourceLists.typeAdapter1){
-      this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter1);
-    }else if(this.resType === "ZILIAOKU" && this.CONFIG.getResourceLists.typeAdapter2){
-      this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter2);
-    }else {
-      this.keys = getFieldAdapter(this.CONFIG.getResourceLists.sysAdapter, this.CONFIG.getResourceLists.typeAdapter);
-    }
-    this.getListOrPlayVideo(); // 查询视频列表
+
   },
   methods: {
     getDetailISBUY () {
-      if( this.CONFIG.getResourceDetail!==undefined&&this.modulename!=='videoplay'){
+      if (this.CONFIG.getResourceDetail !== undefined && this.modulename !== 'videoplay') {
         let params = Object.assign({}, this.CONFIG.getResourceDetail.params);
-        params.pubId=this.parentId;
+        params.pubId = this.parentId;
         params.loginName = this.member.loginName;
-        Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + params.pubId + '&loginName=' +  params.loginName).then((rep) => {
+        Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + params.pubId + '&loginName=' + params.loginName).then((rep) => {
           let datas = rep.data;
-          if (rep.status=='200' && datas.data) {
+          if (rep.status == '200' && datas.data) {
             this.isBuy = datas.data.isBuy;
           }
         })
       }
     },
     getListOrPlayVideo () {
-      this.getDetailISBUY ()
+      this.getDetailISBUY()
       if (this.CONFIG.queryParamsType == '') { // 从配置里面去参数
         this.queryResourceLists();
         return false;
@@ -152,13 +163,26 @@ export default {
         this.getDetailById(this.curId);  //获取当前播放视频的详情信息
         this.$nextTick(() => {
           if (this.resType == 'VIDEO-MEDIA' || this.resType == 'ZILIAOKU') { // 如果是视频资源才初始化视频播放器插件
-            this.curDPlayer = new DPlayer({ // 播放器
-              container: document.getElementById('myDPlayer'), // 挂载容器
-              screenshot: true, // 截屏功能
-              video: {
-                url: this.playUrl + this.mediaResId, // 视频地址
-                type:'flv'
-              },
+            // this.curDPlayer = new DPlayer({ // 播放器
+            //   container: document.getElementById('myDPlayer'), // 挂载容器
+            //   screenshot: true, // 截屏功能
+            //   video: {
+            //     url: this.playUrl + this.mediaResId, // 视频地址
+            //     type:'flv'
+            //   },
+            // });
+            console.log(this.CORE_PATH + '/js/jwplayer/jwplayer.flash.swf');
+            var thePlayer = jwplayer('myDPlayer').setup({
+              autostart: 'true',
+              controls: true,
+              flashplayer: this.CORE_PATH + '/js/jwplayer/jwplayer.flash.swf',
+              html5player: this.CORE_PATH + '/js/jwplayer/jwplayer.html5.js',
+              file: this.playUrl + this.mediaResId, // 视频地址
+              width: '630px',
+              aspectratio: '5:3',
+              provider: "http",
+              type: 'flv',
+              image: this.CORE_PATH + '/js/jwplayer/player.jpg'
             });
           }
         });
@@ -189,7 +213,7 @@ export default {
           this.videoLists = datas.result; // 视频列表
 
 
-          if(this.resType == 'ZILIAOKU'){  //如果是资料库，获取视频附件，
+          if (this.resType == 'ZILIAOKU') {  //如果是资料库，获取视频附件，
             this.getAttachDetail(this.curId);
           }
 
@@ -213,27 +237,39 @@ export default {
         }
       })
     },
-    toPlayVideo (item,index) { // 点击播放视频列表里的某一个
+    toPlayVideo (item, index) { // 点击播放视频列表里的某一个
       this.curShowIndex = index;   //当前播放视频的索引
-      if(this.resType == 'ZILIAOKU'){  //资料库需要通过附件数据来初始化视频
+      if (this.resType == 'ZILIAOKU') {  //资料库需要通过附件数据来初始化视频
         this.getAttachDetail(item.id);
         //this.curAttachObj = item;
-      }else if(this.resType == 'VIDEO-MEDIA'){
+      } else if (this.resType == 'VIDEO-MEDIA') {
         this.curVideoObj = item;
         this.initDPlayer();
-      }else if(this.resType == 'AUDIO-MEDIA'){
+      } else if (this.resType == 'AUDIO-MEDIA') {
         this.curVideoObj = item;
       }
       this.emitDetailEvent(item)
     },
     initDPlayer () { // 初始化视频播放器
-      this.curDPlayer = new DPlayer({ // 播放器
-        container: document.getElementById('myDPlayer'), // 挂载容器
-        screenshot: true, // 截屏功能
-        video: {
-          url: this.playUrl + (this.resType == 'ZILIAOKU' ? this.curAttachObj[this.keys.fileRecordID] : this.curVideoObj[this.keys.resourceId]), // 视频地址
-          type:'flv'
-        },
+      // this.curDPlayer = new DPlayer({ // 播放器
+      //   container: document.getElementById('myDPlayer'), // 挂载容器
+      //   screenshot: true, // 截屏功能
+      //   video: {
+      //     url: this.playUrl + (this.resType == 'ZILIAOKU' ? this.curAttachObj[this.keys.fileRecordID] : this.curVideoObj[this.keys.resourceId]), // 视频地址
+      //     type: 'flv'
+      //   },
+      // });
+      var thePlayer = jwplayer('myDPlayer').setup({
+        //          autostart: 'true',//视频自动启动；
+        controls: true,
+        flashplayer: this.CORE_PATH + '/js/jwplayer/jwplayer.flash.swf', //获取player.swf文件路径
+        html5player: this.CORE_PATH + '/js/jwplayer/jwplayer.html5.js',
+        file: this.playUrl + (this.resType == 'ZILIAOKU' ? this.curAttachObj[this.keys.fileRecordID] : this.curVideoObj[this.keys.resourceId]), // 视频地址
+        type: 'flv',
+        width: '630px',
+        aspectratio: '5:3',
+        provider: "http",
+        image: this.CORE_PATH + '/js/jwplayer/player.jpg',
       });
     },
     initSwiper () { // 初始化轮播图
@@ -260,14 +296,14 @@ export default {
         }
       })
     },
-    getAttachDetail(id){  //获取资料库视频附件的
-      let paramsObj = Object.assign({},this.CONFIG.getResourceDetail.params);
+    getAttachDetail (id) {  //获取资料库视频附件的
+      let paramsObj = Object.assign({}, this.CONFIG.getResourceDetail.params);
       paramsObj.pubId = id;
-      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName+ '&attachTypes=' + paramsObj.attachTypes).then((rep)=>{
+      Get(CONFIG.BASE_URL + this.CONFIG.getResourceDetail.url + '?pubId=' + paramsObj.pubId + '&loginName=' + this.loginName + '&attachTypes=' + paramsObj.attachTypes).then((rep) => {
         let datas = rep.data;
         if (rep.status == 200 && datas.data) {
           let attachDetail = datas.data;
-          if(attachDetail['video']){
+          if (attachDetail['video']) {
             this.curAttachObj = attachDetail['video'][0];   //初始化视频播放器需要的附件对象
             this.initDPlayer();
             this.emitDetailEvent(this.curAttachObj)
@@ -275,9 +311,9 @@ export default {
         }
       })
     },
-    emitDetailEvent(detail){
+    emitDetailEvent (detail) {
       let eventName = this.CONFIG.event ? this.CONFIG.event.emitDetail_name : 'resourceDetailLoaded'
-      this.$bus.emit(eventName,detail)
+      this.$bus.emit(eventName, detail)
     }
 
   }
@@ -308,7 +344,7 @@ export default {
   font-size: 14px;
 }
 
-.work_videoplay_01_myswiper_tips{
+.work_videoplay_01_myswiper_tips {
   height: 100px;
   line-height: 100px;
   text-align: center;
