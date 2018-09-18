@@ -19,11 +19,11 @@
 
         <!-- 选择需要发票才显示  显示选择的发票类型 -->
         <div class="orderContents" v-if="showInvoiceContent">
-          <span v-text="tempInvoice.invoiceType = getStaticText('regularInvoice') ? getStaticText('regularInvoice') : getStaticText('valueAddedTaxInvoice')"></span>
+          <span v-text="tempInvoice.invoiceType"></span>
           <span v-if="tempInvoice.invoiceType == '普通发票' || tempInvoice.invoiceType == '일반 령수증'">
             <span v-text="tempInvoice.unReceiptTitle"></span>
             <span v-text="tempInvoice.unTaxpayerCode"></span>
-            <span v-text="tempInvoice.receiptId = getStaticText('detail') ? getStaticText('detail') : getStaticText('stationery')"></span>
+            <span v-text="tempInvoice.receiptId"></span>
           </span>
           <span v-if="tempInvoice.invoiceType == '增值税发票' || tempInvoice.invoiceType == '부가가치세 령수증'">
             <span v-text="tempInvoice.receiptTitle"></span>
@@ -41,7 +41,7 @@
           <span @click="selectInvoiceType('增值税发票', 2)" :class="{selectedInVoice: curInvoice.invoiceType == '增值税发票'}">{{getStaticText('valueAddedTaxInvoice') ? getStaticText('valueAddedTaxInvoice') : '增值税发票'}}</span>
         </div>
         <!--发票有三种： 普通发票/增值税发票/电子发票 目前支持前两种-->
-        <div class="commonInvoice invoiceCon" v-show="curInvoice.invoiceType == '普通发票'">
+        <div class="commonInvoice invoiceCon" v-show="curInvoice.invoiceType == '普通发票' || curInvoice.invoiceType == '일반 령수증'">
           <!-- <div>{{getStaticText('invoiceTitle') ? getStaticText('invoiceTitle') : '发票抬头'}}：</div>
               <input type="text" value="个人" disabled="disabled"> -->
           <el-form :model="curInvoice" :rules="unrules" ref="uncurInvoice" label-width="120px" class="undemo-ruleForm">
@@ -56,7 +56,7 @@
           <span @click="selectInvoiceDetail('明细')" :class="{invoice: curInvoice.receiptId == '明细'}">{{getStaticText('detail') ? getStaticText('detail') : '明细'}}</span>
           <span @click="selectInvoiceDetail('图书')" :class="{invoice: curInvoice.receiptId == '图书'}">{{getStaticText('stationery') ? getStaticText('stationery') : '图书'}}</span>
         </div>
-        <div class="taxInvoice invoiceCon" v-show="curInvoice && curInvoice.invoiceType == '增值税发票'">
+        <div class="taxInvoice invoiceCon" v-show="curInvoice && (curInvoice.invoiceType == '增值税发票' || curInvoice.invoiceType == '부가가치세 령수증')">
           <el-form :model="curInvoice" :rules="rules" ref="curInvoice" label-width="120px" class="demo-ruleForm">
             <el-form-item :label="getStaticText('companyName') ? getStaticText('companyName') : '户名'" prop="receiptTitle">
               <el-input v-model="curInvoice.receiptTitle" id="receiptTitle"></el-input>
@@ -240,6 +240,16 @@ export default {
       this.tempInvoice = JSON.parse(JSON.stringify(this.curInvoice));
       this.tempInvoice.receiptType = this.curInvoice.invoiceType === "普通发票" ? 1 : 2;
       this.showInvoiceContent = true;
+      if(this.tempInvoice.invoiceType=='普通发票'|| this.tempInvoice.invoiceType == '일반 령수증'){
+        this.tempInvoice.invoiceType=this.getStaticText('regularInvoice') ? this.getStaticText('regularInvoice') : '普通发票';
+        if(this.tempInvoice.receiptId=='明细'|| this.tempInvoice.receiptId == '명세'){
+          this.tempInvoice.receiptId=this.getStaticText('detail') ? this.getStaticText('detail') :'明细';
+        }else{
+          this.tempInvoice.receiptId=this.getStaticText('stationery') ? this.getStaticText('stationery') :'图书';
+        }
+      }else{
+        this.tempInvoice.invoiceType=this.getStaticText('valueAddedTaxInvoice') ? this.getStaticText('valueAddedTaxInvoice') : '增值税发票';
+      }
       this.$emit('invoiceInfo', this.tempInvoice);
     },
     getStaticText (text) {

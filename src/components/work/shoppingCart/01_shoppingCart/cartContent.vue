@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-17 12:08:57
+ * @Last Modified time: 2018-09-17 18:01:44
  * 购物车组件
  */
 
@@ -1036,16 +1036,19 @@ export default {
         });
       }
     },
+    noEnoughNums () {
+      this.$message({
+        type: "error",
+        message: this.getStaticText('notEnoughProduct') ? this.getStaticText('notEnoughProduct') : "库存不足"
+      });
+    },
     changeQuantity: function (product, val, e) { // 改变纸质书商品数量
       /* 改变纸书数量的时候 要判断库存量  当前库存inventory - 当前数量 > 最小库存lowInventory  最大数量是 200*/
       if (val > 0) { // 在页面上执行 + 操作
         if (product.nums > 200) { // 防止加过200
           this.maxQuantity(product.nums);
         } else if ((product.inventory || 0) - product.nums <= product.lowInventory) { // 不能超过最小库存
-          this.$message({
-            type: "error",
-            message: this.getStaticText('notEnoughProduct') ? this.getStaticText('notEnoughProduct') : "库存不足"
-          });
+          this.noEnoughNums();
         } else {
           ++product.nums;
         }
@@ -1056,18 +1059,21 @@ export default {
         }
       }
       let fixedVal = e && e.currentTarget ? e.currentTarget.value : '';
+      let maxValue = (product.inventory || 0) - product.lowInventory; // 用户能输入的最大值
       if (fixedVal) { // 手动输入有效固定值
         if (fixedVal > 200) { // 防止加过200
-          this.maxQuantity(fixedVal);
-          product.nums = 200;
+          if (maxValue > 200)  {// 用户能输入的最大值 大于 200
+            this.maxQuantity(fixedVal);
+            product.nums = 200;
+          } else { // 用户能输入的最大值 小于 200
+            this.noEnoughNums();
+            product.nums = maxValue; // 超过了的话就取最大值
+          }
         } else if (fixedVal < 1) { // 防止减到0
           product.nums = 1;
         } else if ((product.inventory || 0) - fixedVal <= product.lowInventory) { // 不能超过最小库存
-          this.$message({
-            type: "error",
-            message: this.getStaticText('notEnoughProduct') ? this.getStaticText('notEnoughProduct') : "库存不足"
-          });
-          product.nums = (product.inventory || 0) - product.lowInventory; // 超过了的话就取最大值
+          this.noEnoughNums();
+          product.nums = maxValue; // 超过了的话就取最大值
         } else {
           product.nums = fixedVal;
         }
@@ -1305,7 +1311,9 @@ export default {
       this.orderList.map((item) => {
         if (item.list.length > 0) {
           item.list.map((subItem) => {
-            totalWeight += Number(subItem.weight) * subItem.nums;
+            if (subItem.productType != this.ebookTypeTag && subItem.productType != this.ejournalTypeTag) { // 电子 书/期刊 的重量不用计算到总重量
+              totalWeight += Number(subItem.weight) * subItem.nums;
+            }
           })
         }
       })
