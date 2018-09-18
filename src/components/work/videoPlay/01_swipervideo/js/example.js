@@ -2,7 +2,7 @@
  * @Author: song 
  * @Date: 2018-07-03 10:55:04 
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-08-24 15:47:54
+ * @Last Modified time: 2018-09-18 17:07:31
  * 视频播放组件 列表是轮播图形式的
  */
 
@@ -23,6 +23,11 @@ conditions: [{ // 配置成对象 组件里面传值要转成字符串
 }, { // 配置成对象 组件里面传值要转成字符串
   pub_site_id: ''
 }]
+* 新增
+180918 新增jwplayer插件替换DPlayer插件，jwplayer依赖文件位于工程根目录下static/js/jwplayer文件夹内
+       新增地址栏获取播放文件类型：参数名为mediaType，值例如：flv，mp4
+       新增配置获取播放文件类型：参数名为mediaType，值例如：flv，mp4
+       新增浏览器flash开关状态监测
 `; // 组件描述信息
 
 const dev = {
@@ -92,6 +97,7 @@ const prod = {
   work_videoplay: {
     "work_videoplay_01": {
       "modulename": {
+        mediaType:'mp4',//播放的视频类型 flv，mp4
         "getResourceLists": {
           "url": "spc/cms/publish/list.do",
           "params": {

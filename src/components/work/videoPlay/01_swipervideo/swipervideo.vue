@@ -2,9 +2,8 @@
  * @Author: song
  * @Date: 2018-07-03 10:52:51
  * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-09-18 11:00:55
+ * @Last Modified time: 2018-09-18 17:09:43
  * 视频播放组件 列表是轮播图形式的
- * TODO: 轮播的分页怎么办
  */
 
 <template>
@@ -94,6 +93,7 @@ export default {
       parentId: '', // 视频组id
       mediaResId: '',//播放单个视频时需要的VIDEO-MEDIA_RESOURCEID
       myDPlayerdp: '', // 视频播放器插件
+      mediaType: 'mp4',//播放的视频类型
       videoLists: null, // 视频课程列表
       curVideoObj: null, // 当前播放视频 / 音频 对象
       curAttachObj: {},  //当前附件对象
@@ -116,10 +116,13 @@ export default {
     this.playUrl = CONFIG.BASE_URL + this.CONFIG.playVideoUrl; // 资源播放地址
     let queryObj = URL.parse(document.URL, true).query;
 
+    /* 添加视频插件 */
     let script = document.createElement('script')
     script.type = 'text/javascript'
     script.src = this.CORE_PATH + '/js/jwplayer/jwplayer.js'
     document.getElementsByTagName('head')[0].appendChild(script)
+    /* end添加视频插件 */
+
     script.onload = () => {
       if (this.CONFIG.queryParamsType == 'url') { // 从视频组里取数据的时候才把参数传到地址栏里
         this.curId = queryObj && queryObj.id ? queryObj.id : ''; // 当前播放的视频id
@@ -137,6 +140,23 @@ export default {
       this.getListOrPlayVideo(); // 查询视频列表
     }
 
+    this.mediaType = this.CONFIG.mediaType ? this.CONFIG.mediaType : this.mediaType //取视频类型的配置
+    queryObj.mediaType ? this.mediaType = queryObj.mediaType : ''
+    
+    if (this.mediaType == 'flv') {//判断是否播放flash文件
+      /* 浏览器设置的falsh插件在此网站上是否允许 */
+      if (window.ActiveXObject) {
+        var s = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+        if (!s) {
+          alert('请将您的浏览器设置falsh插件在此网站上始终允许！');
+        }
+      } else {
+        var s = navigator.plugins['Shockwave Flash'];
+        if (!s) {
+          alert('请将您的浏览器设置falsh插件在此网站上始终允许！');
+        }
+      }
+    }
   },
   methods: {
     getDetailISBUY () {
@@ -162,28 +182,9 @@ export default {
         this.CONFIG.showVideoList = false;  //单个视频不显示轮播列表
         this.getDetailById(this.curId);  //获取当前播放视频的详情信息
         this.$nextTick(() => {
-          if (this.resType == 'VIDEO-MEDIA' || this.resType == 'ZILIAOKU') { // 如果是视频资源才初始化视频播放器插件
-            // this.curDPlayer = new DPlayer({ // 播放器
-            //   container: document.getElementById('myDPlayer'), // 挂载容器
-            //   screenshot: true, // 截屏功能
-            //   video: {
-            //     url: this.playUrl + this.mediaResId, // 视频地址
-            //     type:'flv'
-            //   },
-            // });
-            console.log(this.CORE_PATH + '/js/jwplayer/jwplayer.flash.swf');
-            var thePlayer = jwplayer('myDPlayer').setup({
-              autostart: 'true',
-              controls: true,
-              flashplayer: this.CORE_PATH + '/js/jwplayer/jwplayer.flash.swf',
-              html5player: this.CORE_PATH + '/js/jwplayer/jwplayer.html5.js',
-              file: this.playUrl + this.mediaResId, // 视频地址
-              width: '630px',
-              aspectratio: '5:3',
-              provider: "http",
-              type: 'flv',
-              image: this.CORE_PATH + '/js/jwplayer/player.jpg'
-            });
+          if (this.resType == 'VIDEO-MEDIA' || this.resType == 'ZILIAOKU') {
+            // 如果是视频资源才初始化视频播放器插件
+            this.initDPlayer(this.playUrl + this.mediaResId)
           }
         });
       } else {    //有parentId表示视频组，那么去视频组播放视频
@@ -250,23 +251,15 @@ export default {
       }
       this.emitDetailEvent(item)
     },
-    initDPlayer () { // 初始化视频播放器
-      // this.curDPlayer = new DPlayer({ // 播放器
-      //   container: document.getElementById('myDPlayer'), // 挂载容器
-      //   screenshot: true, // 截屏功能
-      //   video: {
-      //     url: this.playUrl + (this.resType == 'ZILIAOKU' ? this.curAttachObj[this.keys.fileRecordID] : this.curVideoObj[this.keys.resourceId]), // 视频地址
-      //     type: 'flv'
-      //   },
-      // });
+    initDPlayer (url = (this.playUrl + (this.resType == 'ZILIAOKU' ? this.curAttachObj[this.keys.fileRecordID] : this.curVideoObj[this.keys.resourceId]))) { // 初始化视频播放器
       var thePlayer = jwplayer('myDPlayer').setup({
-        //          autostart: 'true',//视频自动启动；
+        autostart: 'true',//视频自动启动；
         controls: true,
         flashplayer: this.CORE_PATH + '/js/jwplayer/jwplayer.flash.swf', //获取player.swf文件路径
         html5player: this.CORE_PATH + '/js/jwplayer/jwplayer.html5.js',
-        file: this.playUrl + (this.resType == 'ZILIAOKU' ? this.curAttachObj[this.keys.fileRecordID] : this.curVideoObj[this.keys.resourceId]), // 视频地址
-        type: 'flv',
-        width: '630px',
+        file: url, // 视频地址
+        type: this.mediaType,
+        width: '100%',
         aspectratio: '5:3',
         provider: "http",
         image: this.CORE_PATH + '/js/jwplayer/player.jpg',
