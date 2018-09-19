@@ -19,6 +19,10 @@
         <span>{{CONFIG.display.pubdate}}</span>
         <span>{{resourceDetail[keys.pubdate] | formatDateNEW}}</span>
       </div>
+      <div class="work_videodetail_01_baseinfo_created" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('created') !== -1 && keys.created && resourceDetail[keys.created] != undefined">
+        <span>{{CONFIG.display.created}}</span>
+        <span>{{resourceDetail[keys.created] | formatDateNEW}}</span>
+      </div>
       <time class="work_videodetail_01_baseinfo_time" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('time') !== -1 && keys.time && resourceDetail[keys.time] != undefined">{{resourceDetail[keys.time]}}
         <span>{{CONFIG.display.time}}</span>
         <span>{{resourceDetail[keys.time] || "暂无时间"}}</span>
@@ -54,7 +58,7 @@ import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
 
 export default {
-  name: "work_videodetail_02",
+  name: "work_videodetail_01",
   props: ["namespace", "modulename"],
   reused: true,
   data () {

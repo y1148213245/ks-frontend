@@ -3164,7 +3164,8 @@ input.bdhm {
   padding: 9px 15px;
 }
 .wzdh_xgxx .wzdh_xgxx_tj {
-  padding-left: 100px;
+  display: inline-block;
+  margin: 50px 5px 0 0;
 }
 .wzdh_xgxx .wzdh_xgxx_btn {
   width: 85px;

@@ -133,6 +133,7 @@ const dev = {
   shoppingCart: {
     shoppingCart_01: {
       cartContent: {
+        inventorySwitchFlag: false, // 是否需要库存判断开关按钮
         directUrl: { // 购物车列表有很多类型的组件 类型不同可能跳转不同的详情页面 根据类型配置
           '91': './bookdetail.html',
           '94': './bookdetail.html',
@@ -226,7 +227,8 @@ const dev = {
           confirm: "确定",
           operateError: '操作失败',
           selectCorrectPayWay: '请选择有效的支付方式',
-          notEnoughProduct: "库存不足"
+          notEnoughProduct: "库存不足",
+          perBook: "本。"
         },
         addressContent: {
           staticText: {
@@ -315,6 +317,7 @@ const prod = {
   shoppingCart: {
     shoppingCart_01: {
       cartContent: {
+        inventorySwitchFlag: false, // 是否需要库存判断开关按钮
         directUrl: { // 购物车列表有很多类型的组件 类型不同可能跳转不同的详情页面 根据类型配置
           '91': './bookdetail.html',
           '94': './bookdetail.html',
@@ -408,41 +411,42 @@ const prod = {
           confirm: "确定",
           operateError: '操作失败',
           selectCorrectPayWay: '请选择有效的支付方式',
-          notEnoughProduct: "库存不足"
+          notEnoughProduct: "库存不足",
+          perBook: "本。"
         },
         addressContent: {
-          staticText:{
-            receiverAddress:"收货地址",
-            pleaseAddNewAddress:"暂无可选地址，您需要新增地址。",
-            selectOtherAddress:"选择其他收货地址",
-            addNewAddress:"新增地址",
-            selectReceiverAddress:"选择收货地址",
-            cancel:"取 消",
-            yes:"确 定",
-            addNewReceiverAddress:"新增收货地址",
-            receiver:"收货人",
-            receivingArea:"收货地区",
-            pleaseCompleteInformationOfProvincesAndCities:"请完整的省市信息",
-            detailedAddress:"详细地址",
-            pleaseFillInTheDetailedAddress:"请填写详细地址",
-            phone:"联系电话",
-            newAddressSuccessfullyAdded:"新增地址成功",
-            newAddressFailed:"新增地址失败",
-            pleaseFillInTheConsignee:"请填写收货人",
-            consigneeMustNotExceed40Characters:"收货人不能超过40个字符",
-            pleaseFillInTheContactNumber:"请填写联系电话",
-            pleaseEnterTheNumber:"请输入数字",
-            theTelephoneIsLong:"电话长度过长",
-            province:"省份",
-            prefectureLevelCity:"地级市",
-            cityCountyLevelCity:"市、县级市"
+          staticText: {
+            receiverAddress: "收货地址",
+            pleaseAddNewAddress: "暂无可选地址，您需要新增地址。",
+            selectOtherAddress: "选择其他收货地址",
+            addNewAddress: "新增地址",
+            selectReceiverAddress: "选择收货地址",
+            cancel: "取 消",
+            yes: "确 定",
+            addNewReceiverAddress: "新增收货地址",
+            receiver: "收货人",
+            receivingArea: "收货地区",
+            pleaseCompleteInformationOfProvincesAndCities: "请完整的省市信息",
+            detailedAddress: "详细地址",
+            pleaseFillInTheDetailedAddress: "请填写详细地址",
+            phone: "联系电话",
+            newAddressSuccessfullyAdded: "新增地址成功",
+            newAddressFailed: "新增地址失败",
+            pleaseFillInTheConsignee: "请填写收货人",
+            consigneeMustNotExceed40Characters: "收货人不能超过40个字符",
+            pleaseFillInTheContactNumber: "请填写联系电话",
+            pleaseEnterTheNumber: "请输入数字",
+            theTelephoneIsLong: "电话长度过长",
+            province: "省份",
+            prefectureLevelCity: "地级市",
+            cityCountyLevelCity: "市、县级市"
 
           }
         },
         invoiceContent: {
           staticText: {
             chooseInvoiceType: "选择发票类型",
-            regularInvoice:"普通发票",
+            regularInvoice: "普通发票",
             valueAddedTaxInvoice: "增值税发票",
             invoiceTitle: "发票抬头",
             invoiceContent: "发票内容",
@@ -455,7 +459,7 @@ const prod = {
             depositBank: "开户银行",
             bankAccount: "银行账户",
             alter: "修改",
-            confirm:"确定",
+            confirm: "确定",
             cancel: "取消",
             pleaseFillInTheCompanyName: "请填写户名",
             pleaseFillInTheTaxpayerIdentificationNumber: "请填写税号",

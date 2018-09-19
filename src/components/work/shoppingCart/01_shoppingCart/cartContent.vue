@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-17 18:01:44
+ * @Last Modified time: 2018-09-18 16:47:16
  * 购物车组件
  */
 
@@ -662,7 +662,8 @@ export default {
       },
       downloadCoin: "", // 下载币
       balancePay: false, // 下载币全额支付
-      CONFIG: null
+      CONFIG: null,
+      maxPurchasedNums: 0, // 用户可购买的最大库存量
     };
   },
   computed: {
@@ -1030,7 +1031,7 @@ export default {
       });
     },
     maxQuantity (nums) { // 限制更改商品数量时的最大数量
-      if (nums > 200) { // 防止加过200
+      if (nums >= 200) { // 防止加过200
         this.$alert(this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') ? this.getStaticText('theQuantityOfProductsMustNotExceedTwoHundred') : "商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
           confirmButtonText: this.getStaticText('confirm') ? this.getStaticText('confirm') : "确定",
         });
@@ -1039,15 +1040,16 @@ export default {
     noEnoughNums () {
       this.$message({
         type: "error",
-        message: this.getStaticText('notEnoughProduct') ? this.getStaticText('notEnoughProduct') : "库存不足"
+        message: (this.getStaticText('notEnoughProduct') ? this.getStaticText('notEnoughProduct') : "由于库存不足，您最多可购买") + this.maxPurchasedNums + (this.getStaticText('perBook') ? this.getStaticText('perBook') : "本。")
       });
     },
     changeQuantity: function (product, val, e) { // 改变纸质书商品数量
       /* 改变纸书数量的时候 要判断库存量  当前库存inventory - 当前数量 > 最小库存lowInventory  最大数量是 200*/
       if (val > 0) { // 在页面上执行 + 操作
-        if (product.nums > 200) { // 防止加过200
+        if (product.nums >= 200) { // 防止加过200
           this.maxQuantity(product.nums);
-        } else if ((product.inventory || 0) - product.nums <= product.lowInventory) { // 不能超过最小库存
+          product.nums = 200;
+        } else if (((product.inventory || 0) - product.nums <= product.lowInventory) && this.CONFIG && this.CONFIG.inventorySwitchFlag) { // 不能超过最小库存
           this.noEnoughNums();
         } else {
           ++product.nums;
@@ -1059,21 +1061,21 @@ export default {
         }
       }
       let fixedVal = e && e.currentTarget ? e.currentTarget.value : '';
-      let maxValue = (product.inventory || 0) - product.lowInventory; // 用户能输入的最大值
+      this.maxPurchasedNums = (product.inventory || 0) - product.lowInventory; // 用户能输入的最大值
       if (fixedVal) { // 手动输入有效固定值
         if (fixedVal > 200) { // 防止加过200
-          if (maxValue > 200)  {// 用户能输入的最大值 大于 200
+          if (this.maxPurchasedNums > 200 || !this.CONFIG || !this.CONFIG.inventorySwitchFlag)  {// 用户能输入的最大值(库存) 大于 200
             this.maxQuantity(fixedVal);
             product.nums = 200;
           } else { // 用户能输入的最大值 小于 200
             this.noEnoughNums();
-            product.nums = maxValue; // 超过了的话就取最大值
+            product.nums = this.maxPurchasedNums; // 超过了的话就取最大值
           }
         } else if (fixedVal < 1) { // 防止减到0
           product.nums = 1;
-        } else if ((product.inventory || 0) - fixedVal <= product.lowInventory) { // 不能超过最小库存
+        } else if (((product.inventory || 0) - product.nums <= product.lowInventory) && this.CONFIG && this.CONFIG.inventorySwitchFlag) { // 不能超过最小库存
           this.noEnoughNums();
-          product.nums = maxValue; // 超过了的话就取最大值
+          product.nums = this.maxPurchasedNums; // 超过了的话就取最大值
         } else {
           product.nums = fixedVal;
         }
@@ -1733,6 +1735,7 @@ export default {
               _this.selectedDelivery.deliveryPrice = item.deliveryPrice;
             }
           });
+          this.getDeliveryFee();
         }
       }
     },
