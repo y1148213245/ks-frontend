@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-18 16:47:16
+ * @Last Modified time: 2018-09-18 17:47:17
  * 购物车组件
  */
 
@@ -97,8 +97,10 @@
                       </div>
                       <div class="cart-tab-2">
                         <div class="cart-item-pic">
-                          <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)">
-                          <!--<img src="~projects/wenlian/assets/img/bookex.jpg" alt="">-->
+                          <a v-bind:href="(CONFIG && CONFIG.directUrl && CONFIG.directUrl[product.productType] ? CONFIG.directUrl[product.productType] : './bookdetail.html') + '?pubId=' + product.pubId+'&columnId='+product.colId">
+                            <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)">
+                            <!--<img src="~projects/wenlian/assets/img/bookex.jpg" alt="">-->
+                          </a>
                         </div>
                         <div class="cart-item-title">
                           <div class="item-name">
@@ -142,8 +144,10 @@
                     </div>
                     <div class="cart-tab-2">
                       <div class="cart-item-pic">
-                        <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)">
-                        <!--<img src="~projects/wenlian/assets/img/bookex.jpg" alt="">-->
+                        <a v-bind:href="(CONFIG && CONFIG.directUrl && CONFIG.directUrl[product.productType] ? CONFIG.directUrl[product.productType] : './bookdetail.html') + '?pubId=' + product.pubId+'&columnId='+product.colId">
+                          <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)">
+                          <!--<img src="~projects/wenlian/assets/img/bookex.jpg" alt="">-->
+                        </a>
                       </div>
                       <div class="cart-item-title">
                         <div class="item-name">
@@ -205,7 +209,9 @@
                     </div>
                     <div class="cart-tab-2">
                       <div class="cart-item-pic">
-                        <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" style="line-height: 80px;text-align: center;float: left;">
+                        <a v-bind:href="(CONFIG && CONFIG.directUrl && CONFIG.directUrl[product.productType] ? CONFIG.directUrl[product.productType] : './bookdetail.html') +'?pubId=' + product.pubId">
+                          <img v-bind:src="product.smallPic || '../assets/img/zwfm.png'" onload="DrawImage(this,80,80)" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" style="line-height: 80px;text-align: center;float: left;">
+                        </a>
                       </div>
                       <div class="cart-item-title">
                         <div class="item-name">
@@ -1044,6 +1050,7 @@ export default {
       });
     },
     changeQuantity: function (product, val, e) { // 改变纸质书商品数量
+      this.maxPurchasedNums = ((product.inventory || 0) - product.lowInventory) > 0 ? ((product.inventory || 0) - product.lowInventory ): 0; // 用户能输入的最大值
       /* 改变纸书数量的时候 要判断库存量  当前库存inventory - 当前数量 > 最小库存lowInventory  最大数量是 200*/
       if (val > 0) { // 在页面上执行 + 操作
         if (product.nums >= 200) { // 防止加过200
@@ -1061,7 +1068,6 @@ export default {
         }
       }
       let fixedVal = e && e.currentTarget ? e.currentTarget.value : '';
-      this.maxPurchasedNums = (product.inventory || 0) - product.lowInventory; // 用户能输入的最大值
       if (fixedVal) { // 手动输入有效固定值
         if (fixedVal > 200) { // 防止加过200
           if (this.maxPurchasedNums > 200 || !this.CONFIG || !this.CONFIG.inventorySwitchFlag)  {// 用户能输入的最大值(库存) 大于 200

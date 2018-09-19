@@ -59,7 +59,7 @@
         <input type="text" v-model="checkCode" />
         <van-button size="normal" @click="sendCode(memberEmail.email,'memberEmail',showItem)" v-show="!isSendEmailCode">{{display.sendCode || '发送验证码'}}</van-button>
         <!-- <van-button size="normal" @click="reSendCode(memberEmail.email,showItem)" v-show="isSendEmailCode">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button> -->
-        <van-button size="normal" v-show="isSendEmailCode">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button>
+        <van-button size="normal" v-show="isSendEmailCode" class="reSendCodeBtn">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button>
       </div>
       <div class="work_mobile_personalcenter_03_savenn">
         <van-button size="normal" @click="editUserInfo('email')">{{display.sure || '确定'}}</van-button>
@@ -81,7 +81,7 @@
         <input type="text" v-model="checkCode" />
         <van-button size="normal" @click="sendCode(memberMobile.mobileno,'memberMobile',showItem)" v-show="!isSend">{{display.sendCode || '发送验证码'}}</van-button>
         <!-- <van-button size="normal" @click="reSendCode(memberMobile.mobileno,showItem)" v-show="isSend">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button> -->
-        <van-button size="normal" v-show="isSend">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button>
+        <van-button size="normal" v-show="isSend" class="reSendCodeBtn">{{display.reSendCode || '重新发送'}}({{sendCodeTime}}{{CONFIG.display.timeUnit}})</van-button>
 
       </div>
       <div class="work_mobile_personalcenter_03_savenn">
@@ -824,5 +824,8 @@ export default {
   box-sizing: border-box;
   resize: none;
   margin: 0.3rem 0;
+}
+.reSendCodeBtn{
+  padding:0 0 0 8px;
 }
 </style>
