@@ -1,17 +1,11 @@
 var CONFIG = {
-  // BASE_URL: "http://172.19.57.153/portal/api/",
-  BASE_URL: "http://172.19.36.97:9092/spc-portal-web/",
-  // BASE_URL: "../../../api/",//服務器打包
-
-  // READ_URL: "http://172.19.57.153:8945/spc-reader/ebook/read.jsp",  // 阅读地址
-  READ_URL: "http://test.founder.com.cn/ynxh/portal/reader/ebook/read.jsp",  // 
-  // READ_URL: "../../../reader/ebook/read.jsp",  // 临时打包
-
-  GO_CONTRIBUTE_URL: "http://172.19.57.168:8989/wenlian/ssoWenlianLogin.do?",
-  PAGE_MANAGEMENT_URL: "http://172.19.92.76:8085/spc/api/",  // 页面管理系统地址
-  SITE_CONFIG: {
-    siteId: 1,
-    chId: 0
+  "BASE_URL": "http://172.19.57.71:8080/portal/api/",
+  "READ_URL": "../../../reader/ebook/read.jsp",
+  "GO_CONTRIBUTE_URL": "http://172.19.57.168:8989/wenlian/ssoWenlianLogin.do?",
+  "PAGE_MANAGEMENT_URL": "../../../frontend-api/api/",
+  "SITE_CONFIG": {
+    "siteId": 29,
+    "chId": 0
   },
   "READ_CONFIG": {
     "siteType": 0
@@ -43,7 +37,7 @@ var $_$ = {
         "url": "spc/cms/col/getColNextLevelNode",
         "params": {
           "colId": "379"
-  },
+        },
         "targetType": "_blank",
         "getCols": {
           "url": "spc/cms/col/getAllColBySiteId",
@@ -59,8 +53,8 @@ var $_$ = {
             "id": "id",
             "parentId": "parentId",
             "name": "name"
-        }
-      },
+          }
+        },
         "showType": {
           "parentId": "379",
           "showChildNav": [268]
@@ -94,7 +88,7 @@ var $_$ = {
           },
           "toQQ": {
             "url": "http://wpa.qq.com/msgrd?v=3&uin=1148213245&site=qq&menu=yes"
-        }
+          }
         },
         "modulename": {
           "showItem": ["QQ", "toTop"],
@@ -104,9 +98,9 @@ var $_$ = {
           },
           "toQQ": {
             "url": "http://wpa.qq.com/msgrd?v=3&uin=378365117&site=qq&menu=yes"
+          }
+        }
       }
-    }
-  }
     }
   },
   "header": {

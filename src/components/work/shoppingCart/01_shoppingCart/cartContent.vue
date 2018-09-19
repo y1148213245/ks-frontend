@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-18 17:47:17
+ * @Last Modified time: 2018-09-19 14:15:45
  * 购物车组件
  */
 
@@ -788,6 +788,7 @@ export default {
       // 从浏览器本地存储取订单细节信息
       // 包括 totalMoney totalNum saveAmount  freeFreight sendPoints bookTotalMoney bookSaveMoney ebookTotalMoney ebookSaveMoney
       var tempDetail = JSON.parse(window.sessionStorage.getItem("recordOrderDetail"));
+      this.freeFreight = tempDetail.freeFreight; // 显示状态 是列表页 or 提交订单页
       Object.assign(this.orderDetail, tempDetail);
     },
     commonMessageFun(obj, status, configText, defaultText) {
@@ -1313,6 +1314,7 @@ export default {
       console.log(this.orderList);
       console.log(this.curSelectedAddress); */
       if (this.freeFreight) { // 如果这单免运费的话 就不需要再根据物流模板计算运费
+        this.selectedDelivery.deliveryPrice = 0;
         return false;
       }
       let totalWeight = 0;
