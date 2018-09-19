@@ -465,13 +465,11 @@
         this.checkMagTypeName = uriQuery.magName;
         // this.getIdMagDo(this.checkMagTypeName);
         this.clickFunTakeNameChange("明年全年订阅");
-        this.getIdMagDo(this.checkMagTypeName);
       }else{
         if(typeof(this.CONFIG.checkMagTypeNameDefault)!='undefined' && this.CONFIG.checkMagTypeNameDefault  && this.CONFIG.checkMagTypeNameDefault.length>0){
           this.checkMagTypeName = this.CONFIG.checkMagTypeNameDefault;
           // this.getIdMagDo(this.checkMagTypeName);
           this.clickFunTakeNameChange("明年全年订阅");
-          this.getIdMagDo(this.checkMagTypeName);
         }
       }
 
@@ -526,6 +524,7 @@
         if(item=='明年全年订阅'){
           this.TakeNameChangeList = this.nextYearTakeNameChangeList_next;
           this.TakeNameChangeyear = (new Date().getFullYear())+1;
+          this.getIdMagDo(this.checkMagTypeName);
           // this.getAllprice();
           
         }else{
@@ -585,6 +584,7 @@
 //             TakeNameOpenList = this.checkMagTypeNameInfo.noPublishNum
             // TakeNameOpenList = this.checkMagTypeNameInfo.totalNum
             this.TakeNameChangeList = '';
+            this.nextYearTakeNameChangeList_next = '';
             this.TakeNameOpenList = [];
             this.TakeNameEndList = [];
 
