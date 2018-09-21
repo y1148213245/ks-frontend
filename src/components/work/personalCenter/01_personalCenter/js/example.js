@@ -263,6 +263,11 @@ const dev = {
             }
           ],
           "staticText":{
+            "RemittanceNumEmpty":"汇款单号不能为空",
+            "pleaseWriteNumber":"请输入数字",
+            "pleaseWriteRemittanceNum":"请输入汇款单号",
+            "writeRemittanceNum":"填写汇款单号",
+            "remittanceNum":"汇款单号",
             "payment":"付款",
             "loading":"正在加载中...",
             "fullOrder":"全部订单",

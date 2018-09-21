@@ -156,15 +156,17 @@
       </div>
     </div>
     <!-- 修改组件配置文件的模态弹窗 -->
-    <el-dialog title="编辑组件配置信息" v-if="editConfigModel" :visible.sync="editConfigModel">
-      <div>
+    <el-dialog class="editVueConfig" v-if="editConfigModel" :visible.sync="editConfigModel" :show-close="false" :close-on-click-modal="false">
+      <!-- <div>
         <textarea id="prodConfig" v-html="currentComponent" style="width: 100%; min-height: 400px;"></textarea>
       </div>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="editConfigModel = false">取 消</el-button>
         <el-button type="primary" @click="confirmConfig()">确 定</el-button>
-      </span>
+      </span> -->
+      <!-- 接收子组件传过来的方法 不要带() -->
+      <vueconfig @broadcastconfig="confirmConfig" :vueconfig="currentComponent"></vueconfig>
 
     </el-dialog>
 
@@ -224,6 +226,7 @@ import VueExamples from "@common/scans/ScanVues";
 import { Get, Post, Delete } from "@common";
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
+import vueconfig from "./components/vueconfig.vue"
 
 export default {
   name: "components_pagemanagement",
@@ -294,6 +297,9 @@ export default {
         ],
       },
     };
+  },
+  components: {
+    vueconfig
   },
 
   mounted () {
@@ -423,22 +429,27 @@ export default {
       this.editGlobalConfigModel = true;
       this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
     },
-    confirmConfig () {  // 确定修改组件配置信息
-      var key = "";
-      var value = {};
+    confirmConfig (data) {  // 确定修改组件配置信息
+      if (!data) {
+        this.editConfigModel = false;
+        return false;
+      }
+      var key = ""; // namespace的值
+      // var value = {};
       for (var i = 0, len = this.usedComTagArr.length; i < len; i++) {
         if (this.usedComTagArr[i].indexOf('<' + this.currentExamples.name) !== -1) { // 修改的当前组件
           key = this.usedComTagArr[i].substring(this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace'))) + 1, this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('"', this.usedComTagArr[i].indexOf('namespace')) + 1));
-          value = document.getElementById('prodConfig').value;
+          // value = document.getElementById('prodConfig').value;
           break;
         }
       }
       let params = {
         projectName: this.siteName,
         key: '$_$.' + key,
-        value: JSON.parse(value)
+        value: data
       };
       Post(this.configUrl + 'project/config', params).then((res) => {
+        this.editConfigModel = false;
         if (res.data && res.data.success) {
           this.$message({
             type: "success",
@@ -451,7 +462,6 @@ export default {
             message: "修改失败，请稍后重试"
           });
         }
-        this.editConfigModel = false;
       })
     },
     reloadPageManagementConfig () { // 重新请求页面管理系统的配置文件 config/index.js
@@ -1106,5 +1116,17 @@ body {
 
 .components_pagemanagement .newFileName:focus {
   border-color: #e15616;
+}
+
+.components_pagemanagement .editVueConfig .el-dialog {
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  margin: 0px;
+  margin-top: 80px !important;
+  overflow-y: hidden;
 }
 </style>

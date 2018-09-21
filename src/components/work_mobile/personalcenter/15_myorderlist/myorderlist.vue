@@ -47,6 +47,7 @@
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_totalnum" v-if="orderType=='book'">{{display.all}}{{item.totalProductNum}}{{display.numtext}}</span>
               <!-- 期刊不展示数量-->
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_total">{{display.total}}：{{display.money}}{{item.realAmount}}</span>
+              <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_balanceDeduct" v-show="item.balanceAmount!='0.00'">{{display.balanceDeduct}}：{{display.money}}{{item.balanceAmount}}</span>
             </div>
             <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_pendingPaymentBtn" v-if="item.payStatus==0 && item.status==1">
               <van-button size="small" @click="cancelOrder(outIndex)">
@@ -396,6 +397,10 @@ export default {
 .work_mobile_personalcenter_15 {
   font-size: 0.3rem;
   padding: 0.5rem;
+}
+.sub-person .work_mobile_personalcenter_15_list_ul_li .work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_balanceDeduct{
+  float: right;
+  margin-right:10px;
 }
 </style>
 

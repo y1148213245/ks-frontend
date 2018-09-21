@@ -54,6 +54,7 @@
     "holmes-js": "^0.0.1",
     "html-webpack-plugin": "^2.30.1",
     "jquery": "^3.3.1",
+    "jsoneditor": "^5.24.5",
     "moment": "^2.20.1",
     "node-notifier": "^5.1.2",
     "node-sass": "^4.5.3",

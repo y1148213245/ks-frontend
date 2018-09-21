@@ -32,7 +32,8 @@ const dev = {
         deleteOrder: "删除订单",
         total: "总计",
         express: "快递",
-        realPay: "实付款"
+        realPay: "实付款",
+        balanceDeduct:"下载币抵扣"
       },
       //列表页接口
       getMyOrder: {
@@ -85,7 +86,8 @@ const prod = {
         deleteOrder: "删除订单",
         total: "总计",
         express: "快递",
-        realPay: "实付款"
+        realPay: "实付款",
+        balanceDeduct:"下载币抵扣"
       },
       //列表页接口
       getMyOrder: {

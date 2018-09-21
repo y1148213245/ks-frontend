@@ -1,6 +1,9 @@
 <template>
   <div class="ui_list_pic_06 ui_list_pic_06_skin">
-    <h6 class="titleHead" v-text="title"></h6>
+    <div>
+      <h6 class="titleHead" v-text="title"></h6>
+      <i class="el-icon-delete" v-if="modulename === 'historyrecord' && CONFIG.deleteAll && CONFIG.deleteAll==true" @click="deleteAllHistory()"></i>
+    </div>
     <div class="listWrapper">
       <div class="" name="data_column_block">
         <dl class="listCon" v-for="(entry, index) in list" v-if="index<(number || 4)" :key="index">
@@ -19,7 +22,7 @@
             <p :class="{lineHeight: modulename === 'historyrecord'}">{{getStaticText('price') ? getStaticText('price') : '价格：￥'}}
               <span class="price">{{entry.memberPrice?Number(entry.memberPrice).toFixed(2):'0.00'}}</span>
             </p>
-            <p class="delete" v-if="modulename === 'historyrecord'">
+            <p class="delete" v-if="modulename === 'historyrecord' && !(CONFIG.deleteAll && CONFIG.deleteAll==true)">
               <a href="javascript:void(0)" @click="deleteOneHistory(entry.id)">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </a>
@@ -119,6 +122,29 @@ export default {
           this.list = [];
         }
       })
+    },
+    deleteAllHistory(){
+      if (this.member.loginName) {
+        Get(CONFIG.BASE_URL + 'browserHistory/deleteHistoryByUser.do?&loginName=' + this.member.loginName).then((rep) => {
+          if (rep.data.result === "1") {
+            this.$message({
+              type: "success",
+              message: this.getStaticText('deleteSuccess') ? this.getStaticText('deleteSuccess') : "删除成功!"
+            });
+            this.gethistorylist(this.member.loginName);
+          } else {
+            this.$message({
+              type: "error",
+              message: this.getStaticText('deleteFailed') ? this.getStaticText('deleteFailed') : "删除失败!"
+            });
+          }
+        })
+      } 
+      else {
+        var tempList = [];
+        window.localStorage.setItem('newHistoryLog', JSON.stringify(tempList));
+        this.list = [];
+      }
     },
     deleteOneHistory (pubId) {
       if (this.member.loginName) {
@@ -290,5 +316,11 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.el-icon-delete{
+  cursor: pointer;
+  font-size: 16px;
+  float: right;
+  margin-top: 24px;
 }
 </style>

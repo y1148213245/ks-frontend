@@ -43,7 +43,8 @@ const dev = {
           noCover: "暂无封面",
           deleteSuccess: "删除成功！",
           deleteFailed: "删除失败！"
-        }
+        },
+        deleteAll:true
       },
       directUrl: { // 购物车列表有很多类型的商品 类型不同可能跳转不同的详情页面 根据类型配置 默认跳转bookdetail.html
         '91': './bookdetail.html', // 纸质书
@@ -81,6 +82,7 @@ const prod = {
       historyrecord: {
         title: '浏览历史',
         url: "browserHistory/getHistoryList.do",
+        deleteAll:true,
         params: {
           num: 3,
           username: "",
