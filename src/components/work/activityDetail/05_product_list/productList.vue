@@ -72,7 +72,7 @@
           </el-table-column>
           <el-table-column :prop="keys.author" label="作者"></el-table-column>
           <el-table-column :prop="keys.date" :formatter="colFormatTime" label="时间"></el-table-column>
-          <el-table-column :prop="keys.abstract" label="简介"></el-table-column>
+          <!-- <el-table-column :prop="keys.abstract" label="简介"></el-table-column> -->
         </el-table>
 
       </template>
