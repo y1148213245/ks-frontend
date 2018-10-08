@@ -3,9 +3,9 @@
   <div class="work_bookreview_01 work_bookreview_01_skin">
     <div class="title">
       <span>{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
-      <span v-if="(CONFIG && CONFIG.toAddReview && CONFIG.toAddReview.toAddReviewShow) && (isComment== '是' && (isDiscussLimit ? isDiscuss == '0' : true))" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{CONFIG.toAddReview.toAddReviewName}}</span>
+      <span v-if="(CONFIG && CONFIG.toAddReview && CONFIG.toAddReview.toAddReviewShow) && (!canNotDiscussManyTimes ||isComment== '是' && (isDiscussLimit ? isDiscuss == '0' : true))" class="add_pl work_bookdetail_04_review_button_span"  @click="toAddReview()">{{CONFIG.toAddReview.toAddReviewName}}</span>
     </div>
-    <div class="reviewCon" v-if="isComment=='是' && (isDiscussLimit ? isDiscuss == '0' : true)">
+    <div class="reviewCon" v-if="!canNotDiscussManyTimes || (isComment=='是' && (isDiscussLimit ? isDiscuss == '0' : true))">
       <div class="review">
         <span class="reviewSpan">{{getStaticText('comments') ? getStaticText('comments') : "评论"}}</span>
         <p class="star">  
@@ -93,7 +93,8 @@ export default {
       isComment:'否',  //是否能评论 (图书详情中数据)(后台新建图书开关控制)))
       isDiscuss:'1', //评论限制 (评论逻辑控制) 0 可以 1不可以
       queryConfigAddReview:0, //是否能评论完了 0可以 1不行
-      nowUserLikeObj:{}
+      nowUserLikeObj:{},
+      canNotDiscussManyTimes: true, // 是否限制多次评论 现在产品规划成只能评论一次 所以默认是不能多次评论
     }
   },
   mounted () {
@@ -152,6 +153,9 @@ export default {
             this.isDiscuss = this.resourceDetail.isDiscuss
             this.isComment = (this.resourceDetailKeys.isComment && this.resourceDetail.hasOwnProperty(this.resourceDetailKeys.isComment)) ? this.resourceDetail[this.resourceDetailKeys.isComment] : '是' ;
             this.queryComment();   //获取回复列表
+            if(this.CONFIG.limitDisscussType && this.CONFIG.limitDisscussType.includes(this.resourceDetail.pub_content_type)) { // 当前资源的类型是在可以多次评论的数组里面
+              this.canNotDiscussManyTimes = false;
+            }
           }
         });
       });

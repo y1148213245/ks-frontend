@@ -43,9 +43,12 @@ export default {
       }
       let len = document.getElementsByClassName("bdsharebuttonbox").length;
       if(len != 0 ){
-        document.getElementsByClassName("bdsharebuttonbox")[len - 1].appendChild(document.createElement('script')).src =
+        // document.getElementsByClassName("bdsharebuttonbox")[len - 1].
+        document.body.appendChild(document.createElement('script')).src =
         'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
+        console.log('share init')
       }
+      
     })
   },
 

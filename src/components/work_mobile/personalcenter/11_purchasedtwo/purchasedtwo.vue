@@ -12,7 +12,7 @@
           <!-- <select v-model="selected">
             <option v-for="option in options" :value="option.value">{{option.text}}</option>
           </select> -->
-          <span v-for="(option, index) in options" :key="index" v-bind="{class: 'work_mobile_personalcenter_11_select' +  index }" @click="selected = option.value">
+          <span v-for="(option, index) in options" :key="index" @click="selected = option.value" :class="[{selectedModel: selected == option.value}, 'work_mobile_personalcenter_11_select' +  index]">
             {{option.text}}
           </span>
         </div>
@@ -171,6 +171,7 @@ export default {
     methods: {
     //tab切换
     changeTab (tab, index) {
+        this.selected = '1';
         this.tab = tab;
         //切换时需要重置pageIndex和pageSize
         this.pageIndex = this.CONFIG.getBoughtBooks.params.pageIndex;

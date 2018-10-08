@@ -40,6 +40,12 @@ const dev = {
         },
         sysAdapter: "sykAdapter", // 系统字段
         typeAdapter: "videoAdapter", // 类型字段
+        "staticText":{
+          "noAuthor":"暂无作者",
+          "noPublicInfo":"暂无出版信息",
+          "noTime":"暂无时间",
+          "noDescription":"暂无描述信息"
+        }
       }
     }
   }
@@ -70,6 +76,12 @@ const prod = {
           description: "描述信息：",
           videolists: "视频列表："
         },
+        "staticText":{
+          "noAuthor":"暂无作者",
+          "noPublicInfo":"暂无出版信息",
+          "noTime":"暂无时间",
+          "noDescription":"暂无描述信息"
+        }
       }
     }
   }

@@ -191,6 +191,7 @@ export default {
     this.display = this.CONFIG.display;
     this.tabtitle = this.display.tabTitle;
     this.initData();
+    this.active = sessionStorage.getItem("ordertab_active"); //记住tab切换状态
   },
 
   mounted() {
@@ -251,6 +252,9 @@ export default {
       } else {
         console.log("知识服务订单");
       }
+      // 把tab存储到sessionstorage里
+      this.active = index;
+      sessionStorage.setItem("ordertab_active", this.active)
       this.initData();
     },
     //前往详情页

@@ -79,7 +79,7 @@
                 <span class="el-button--text f16">{{getStaticText('commentListOfBooks') ? getStaticText('commentListOfBooks') : '评论图书列表'}}</span>
               </div>
               <ul class="wdzh_dongtai_fxts_list pt20">
-                <li v-for="list in myComment">
+                <li v-for="(list,index) in myComment" :key="index">
                   <div>
                     <a href="javascript:void(0)" class="scoped_imgBox" @click="toBookDetail(list.pubId)"><img class="scoped_img p_img" v-bind:src="list.bigPic" onload="DrawImage(this,106,142)" :alt="getStaticText('noPicture') ? getStaticText('noPicture') : '暂无图片'" /></a>
                   </div>
@@ -483,7 +483,7 @@
                 <el-input type="password" v-model="modifyPassword.pass" auto-complete="off" :placeholder="(getStaticText('pleaseSetNewPwd') ? getStaticText('pleaseSetNewPwd') : '请设置新密码')" style="display:inline-block;width:200px;"></el-input>
               </el-form-item>
               <el-form-item :label="(getStaticText('pleaseConfirmTheNewPassword') ? getStaticText('pleaseConfirmTheNewPassword') : '请确认新密码')+':'" prop="checkPass">
-                <el-input type="password" v-model="modifyPassword.checkPass" auto-complete="off" :placeholder="(getStaticText('pleaseConfirmTheNewPassword') ? getStaticText('pleaseConfirmTheNewPassword') : '请确认新密码')+':'" style="display:inline-block;width:200px;"></el-input>
+                <el-input type="password" v-model="modifyPassword.checkPass" auto-complete="off" :placeholder="(getStaticText('pleaseConfirmTheNewPassword') ? getStaticText('pleaseConfirmTheNewPassword') : '请确认新密码')" style="display:inline-block;width:200px;"></el-input>
               </el-form-item>
               <div>
                 <el-button type="primary" @click="submitModifyPassword('modifyPassword')">{{getStaticText('submit') ? getStaticText('submit') :'提交'}}</el-button>
@@ -622,90 +622,7 @@
       </div>
     </div>
     <!--修改个人信息-->
-    <div v-if="currentShow=='modifyInfo'">
-      <el-radio v-model="userMode" label="1">{{getStaticText('ordinaryUserText') ? getStaticText('ordinaryUserText') :'普通用户'}}</el-radio>
-      <el-radio v-model="userMode" label="2">{{getStaticText('teacherUserText') ? getStaticText('teacherUserText') :'教师用户'}}</el-radio>
-      <div>
-        <el-form  ref="form" :model="modifyUserNav" label-width="80px">
-          <el-form-item :label="getStaticText('name') ? getStaticText('name') :'姓名'" v-if="userMode==1||userMode==2" >
-            <el-input v-model="modifyUserNav.loginName"></el-input>
-          </el-form-item>
-          <div v-if="userMode==2">
-            <el-form-item :label="getStaticText('post') ? getStaticText('post') :'职务'">
-              <el-input v-model="modifyUserNav.job"></el-input>
-            </el-form-item>
-            <el-form-item :label="getStaticText('title') ? getStaticText('title') :'职称'">
-              <el-select v-model="modifyUserNav.positio" :placeholder="getStaticText('title') ? getStaticText('title') :'职称'">
-                <el-option v-for="(item,index) in modifyUser.positio"  :key="index" :label="item" :value="item">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="getStaticText('phone') ? getStaticText('phone') :'电话'">
-              <el-input v-model="modifyUserNav.mobileNo"></el-input>
-            </el-form-item>
-          </div>
-          <div v-if="userMode==1">
-            <el-form-item :label="getStaticText('industry') ? getStaticText('industry') :'行业'">
-              <el-select v-model="modifyUserNav.industry" :placeholder="getStaticText('chooseIndustry') ? getStaticText('chooseIndustry') :'请选择行业'">
-                <el-option v-for="(item,index) in modifyUser.industry"  :key="index" :label="item" :value="item">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="getStaticText('educationLevel') ? getStaticText('educationLevel') :'教育程度'" >
-              <el-select v-model="modifyUserNav.educated" :placeholder="getStaticText('chooseEducationLevel') ? getStaticText('chooseEducationLevel') :'请选择教育程度'" >
-                <el-option v-for="(item,index) in modifyUser.educated"  :key="index" :label="item" :value="item">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </div>
-          <div v-if="userMode==1||userMode==2" >
-            <el-form-item :label="getStaticText('province') ? getStaticText('province') :'所在省份'" >
-              <el-select v-model="modifyUserNav.areainfo" :placeholder="getStaticText('chooseProvince') ? getStaticText('chooseProvince') :'请选择所在省份'" >
-                <el-option v-for="(item,index) in modifyUser.areainfo"  :key="index" :label="item" :value="item">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="getStaticText('specificAddress') ? getStaticText('specificAddress') :'具体地址'">
-              <el-input type="textarea" v-model="modifyUserNav.address"></el-input>
-            </el-form-item>
-          </div>
-          <div v-if="userMode==2">
-            <el-form-item :label="getStaticText('teachingSchool') ? getStaticText('teachingSchool') :'执教学校'">
-              <el-input  v-model="modifyUserNav.company"></el-input>
-            </el-form-item>
-            <el-form-item :label="getStaticText('faculty') ? getStaticText('faculty') :'所属院系'">
-              <el-input  v-model="modifyUserNav.faculty"></el-input>
-            </el-form-item>
-            <el-form-item :label="getStaticText('staffRoom') ? getStaticText('staffRoom') :'教研室'">
-              <el-input  v-model="modifyUserNav.staffRoom"></el-input>
-            </el-form-item>
-            <el-form-item :label="getStaticText('teachingLevel') ? getStaticText('teachingLevel') :'教学层次'">
-              <el-select v-model="modifyUserNav.teachLevel" :placeholder="getStaticText('chooseTeachingLevel') ? getStaticText('chooseTeachingLevel') :'请选择教学层次'">
-                <el-option v-for="(item,index) in modifyUser.teachLevel"  :key="index" :label="item" :value="item">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="getStaticText('teachingMajor') ? getStaticText('teachingMajor') :'教学专业'" v-if="userMode==2">
-              <el-input  v-model="modifyUserNav.subject"></el-input>
-            </el-form-item>
-            <el-form-item :label="getStaticText('teachingCourse') ? getStaticText('teachingCourse') :'教学课程'" v-if="userMode==2">
-              <el-input type="textarea" v-model="modifyUserNav.teachCourse" ></el-input>
-            </el-form-item>
-          </div>
-
-          <el-form-item :label="getStaticText('postalCode') ? getStaticText('postalCode') :'邮政编码'" v-if="userMode==2||userMode==1">
-            <el-input type="textarea" v-model="modifyUserNav.postcode" ></el-input>
-          </el-form-item>
-          <el-form-item :label="getStaticText('bookClassification') ? getStaticText('bookClassification') :'关注图书分类'" prop="type" v-if="userMode==1||userMode==2">
-            <el-checkbox-group v-model="modifyUserNav.bookClassifyConcerned">
-              <el-checkbox v-for="(item,index) in modifyUser.bookClassifyConcerned" :key="index" :label="item" name="type"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-button type="primary"  class="butt_back" @click="ordinaryUserSave(modifyUserNav)">{{getStaticText('save') ? getStaticText('save') : '保存'}}</el-button>
-          <el-button type="primary" @click="showCurrent(0)" class="butt_back">{{getStaticText('return') ? getStaticText('return') : '返回'}}</el-button>
-        </el-form>
-      </div>
-    </div>
+    <improvePersonalInfo :currentShow="currentShow" :parentConfig="parentConfig" @currentShowF="currentShowF"></improvePersonalInfo>
   </section>
 </template>
 
@@ -718,8 +635,9 @@ import { Get, Token } from "@common";
 import api from "../../api/personalCenterApi";
 import $ from "jquery";
 import { CityInfo } from "../../assets/js/city-data.js";
-import * as interfaces from '@work/login/common/interfaces.js';
-
+import * as interfaces from "@work/login/common/interfaces.js";
+// 测试表单
+import improvePersonalInfo from "../improvePersonalInfo";
 Vue.use(Vuex);
 Vue.prototype.$ajax = axios;
 
@@ -1076,28 +994,9 @@ export default {
     };
     let token = Token();
     return {
-      modifyUserNav:{
-        bookClassifyConcerned:[],//关注图书分类
-        loginName:"",//用户名
-        industry:"",//
-        educated:"",//
-        areainfo:"",//
-        address:"",//
-        job:"",//职务
-        positio:"",
-        mobileNo:"",
-        staffRoom:"",
-        teachLevel:"",
-        subject:"",
-        faculty:"",
-        company:"",
-        teachCourse:"",
-        postcode:""
-      },
-      userMode:"1",//判断是普通用户还是教师用户
       CONFIG: null,
       GLOBLE_CONFIG: null,
-      modifyUser:null,//完善个人信息
+      modifyUser: null, //完善个人信息
       defaultPic: "",
       emailDialog: false /* 邮箱弹窗 */,
       uploadHeader: {
@@ -1114,7 +1013,7 @@ export default {
         "modifyPassword",
         "modifyMobile",
         "modifyEmail",
-        "modifyInfo",
+        "modifyInfo"
       ],
       // 计时器
       emailTime: "",
@@ -1163,8 +1062,8 @@ export default {
         answer: ""
       },
       //验证身份--密码验证
-      passwordValidateForm:{
-        passwordValidate:''
+      passwordValidateForm: {
+        passwordValidate: ""
       },
       // 验证身份--设置密保问题
       cryptoguarForm: {
@@ -1270,15 +1169,18 @@ export default {
       contactorError: "", //新建收货地址--收货人验证信息
       goodsInfo: [], //新建收货地址--验证信息
       paymentList: [], //支付方式
-      isShowSecretProtection:true
+      isShowSecretProtection: true
     };
   },
   created() {
-	  this.$bus.$on("handleChange",this.handleChange);
+    this.$bus.$on("handleChange", this.handleChange);
     this.defaultPic = require("../../assets/img/timg.jpg"); // webpack静态资源打包问题
     this.CONFIG = this.parentConfig.account;
-    this.isShowSecretProtection=this.CONFIG.isShowSecretProtection===false?this.CONFIG.isShowSecretProtection:true;
-    this.modifyUser=this.parentConfig.modifyUser;
+    this.isShowSecretProtection =
+      this.CONFIG.isShowSecretProtection === false
+        ? this.CONFIG.isShowSecretProtection
+        : true;
+    this.modifyUser = this.parentConfig.modifyUser;
     this.GLOBLE_CONFIG = CONFIG;
     this.getShowEmailPostfix()
       ? (this.emailForm.emailPostfix = CONFIG.EMAIL_CONFIG.postfix[0])
@@ -1286,27 +1188,34 @@ export default {
     this.completeAddress = this.getStaticText("thisIsACompleteAddress")
       ? this.getStaticText("thisIsACompleteAddress")
       : "这是一条完整的地址";
-
   },
-  watch:{
-    account(nv,ov){
-      if(nv.loginName){
-        var modifyarr=this.modifyUserNav
-        for(var y in modifyarr){
-          for(var x in nv){
-            if(y==x&&y!="bookClassifyConcerned"&&nv[x]!="undefined"){
-              modifyarr[y]=nv[x];
-            }else if(y==x&&y=="bookClassifyConcerned"&&nv[x]!="undefined"){
+  watch: {
+    account(nv, ov) {
+      if (nv.loginName) {
+        var modifyarr = this.modifyUserNav;
+        for (var y in modifyarr) {
+          for (var x in nv) {
+            if (
+              y == x &&
+              y != "bookClassifyConcerned" &&
+              nv[x] != "undefined"
+            ) {
+              modifyarr[y] = nv[x];
+            } else if (
+              y == x &&
+              y == "bookClassifyConcerned" &&
+              nv[x] != "undefined"
+            ) {
               nv[x].split(",");
-              modifyarr[y]=nv[x];
+              modifyarr[y] = nv[x];
             }
-
           }
         }
-
-        }
-
+      }
     }
+  },
+  components: {
+    improvePersonalInfo
   },
   mounted() {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
@@ -1321,7 +1230,7 @@ export default {
       virtualMoneyList: "getVirtualMoney",
       addresses: "getAddresses",
       myComment: "getMyComment",
-      member:"getMember"
+      member: "getMember"
     })
   },
   filters: {
@@ -1383,33 +1292,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions('login', {
-      action_login: interfaces.ACTION_LOGIN,
+    ...mapActions("login", {
+      action_login: interfaces.ACTION_LOGIN
     }),
-    ordinaryUserSave(msg){
-     let data=JSON.parse(JSON.stringify(msg));
-     data.bookClassifyConcerned=data.bookClassifyConcerned.join();
-
-      axios.post(
-          CONFIG.BASE_URL +
-          "user/editMemberByName.do?",data)
-        .then(function(response) {
-          console.log("成功")
-//          var data = response.data.substring(
-//            response.data.indexOf("<a>") + 3,
-//            response.data.indexOf("</a>")
-//          );
-//          var orderCode = response.data.substring(
-//            response.data.indexOf("<div>") + 5,
-//            response.data.indexOf("</div>")
-//          );
-//          window.location.href =
-//            "./qrcode.html?data=" + data + "&orderCode=" + orderCode;
-        });
-
+    currentShowF(currentShowF) {
+      this.currentShow = "main";
     },
     //个人信息编辑信息
-    modifyInfor(type){
+    modifyInfor(type) {
       this.showCurrent(type);
     },
     /*帐号信息加载完毕回调*/
@@ -1454,20 +1344,20 @@ export default {
       this.$store.dispatch("personalCenter/queryVirtualMoney", param);
     },
     /*修改地址*/
-	  handleChange(value) {
+    handleChange(value) {
       /*this.form.city = this.form.selectedOptions[0];
       this.form.erae = this.form.selectedOptions[1];
       this.form.minerae = this.form.selectedOptions[2];*/
-      if(value.length == 1){
-	      this.form.city = value[0];
-      }else if(value.length==2){
-	      this.form.city = value[0];
-	      this.form.erae = value[1];
-      }else{
-	      this.form.city = value[0];
-	      this.form.erae = value[1];
-	      this.form.minerae = value[2];
-      };
+      if (value.length == 1) {
+        this.form.city = value[0];
+      } else if (value.length == 2) {
+        this.form.city = value[0];
+        this.form.erae = value[1];
+      } else {
+        this.form.city = value[0];
+        this.form.erae = value[1];
+        this.form.minerae = value[2];
+      }
     },
     /*重置校验表单*/
     initRules() {
@@ -1663,9 +1553,9 @@ export default {
             city: $("#s_city").val(),
             county: $("#s_county").val(),*/
             //edit by ma.jw
-	          province: $("#s_province").text(),
-	          city: $("#s_city").text(),
-	          county: $("#s_county").text(),
+            province: $("#s_province").text(),
+            city: $("#s_city").text(),
+            county: $("#s_county").text(),
             address: $("#s_address").val(),
             post: this.newAddAddress.post,
             createTime: this.newAddAddress.createTime,
@@ -1682,7 +1572,7 @@ export default {
           this.newAddAddress.county = "";
           this.newAddAddress.address = "";
           this.addAddressDialog = false;
-/*	        $("#s_province").text("");
+          /*	        $("#s_province").text("");
 	        $("#s_city").text("");
 	        $("#s_county").text("");*/
           // this.$refs[form].resetFields();
@@ -1900,9 +1790,7 @@ export default {
       if (idata == 1) {
         this.$message({
           type: "success",
-          message: _this.getStaticText(
-            "hasBeenSentToYourMailbox"
-          )
+          message: _this.getStaticText("hasBeenSentToYourMailbox")
             ? _this.getStaticText("hasBeenSentToYourMailbox")
             : "已发送至您的邮箱，请点击链接绑定邮箱"
         });
@@ -1917,7 +1805,7 @@ export default {
           type: "error",
           message: _this.getStaticText("mailboxBindingFailed")
             ? _this.getStaticText("mailboxBindingFailed")
-            : "邮箱绑定失败：" + (data && data.error ? data.error.errorMsg : '')
+            : "邮箱绑定失败：" + (data && data.error ? data.error.errorMsg : "")
         });
       }
     },
@@ -2424,10 +2312,10 @@ export default {
             member: {
               loginName: this.member.loginName,
               password: this.passwordValidateForm.passwordValidate,
-              flag: 'pc'
+              flag: "pc"
             }
-          }).then((rep) => {
-            if (rep.data.result && rep.data.result == '1') {
+          }).then(rep => {
+            if (rep.data.result && rep.data.result == "1") {
               if (this.modifyType == 1) {
                 this.showCurrent(7);
               } else if (this.modifyType == 2) {
@@ -2435,10 +2323,15 @@ export default {
               } else {
                 this.showCurrent(9);
               }
-            } else if (rep.data.result && rep.data.result == '0') {
+            } else if (rep.data.result && rep.data.result == "0") {
               this.$message({
                 type: "error",
-                message: rep.data.error && rep.data.error.errorMsg ? rep.data.error.errorMsg : (this.getStaticText('verifyFailed') ? this.getStaticText('verifyFailed') : '验证失败')
+                message:
+                  rep.data.error && rep.data.error.errorMsg
+                    ? rep.data.error.errorMsg
+                    : this.getStaticText("verifyFailed")
+                      ? this.getStaticText("verifyFailed")
+                      : "验证失败"
               });
             }
             return false;
@@ -2447,7 +2340,6 @@ export default {
           return false;
         }
       });
-
     },
     questionsValidateCallb(idata, rep) {
       if (idata == 201) {

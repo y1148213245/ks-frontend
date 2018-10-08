@@ -6,7 +6,7 @@
         <td height="40" width="265"  class="work_search_05-table-td1">
           <span class="work_search_05-table-title">{{getStaticText('bookName') ? getStaticText('bookName') : '书名:'}}</span>
           <span>
-            <el-input style="width: 200px;" size="small" :placeholder="getStaticText('inputBookName') ? getStaticText('inputBookName') : '请输入书名'" v-model="bookName"></el-input>
+            <el-input style="width: 196px;" size="small" :placeholder="getStaticText('inputBookName') ? getStaticText('inputBookName') : '请输入书名'" v-model="bookName"></el-input>
           </span>
         </td>
         <td height="40" width="265"  class="work_search_05-table-td2">
@@ -30,7 +30,7 @@
           <span class="search_jg_01">
           <el-date-picker v-model="picker_to_model" type="date" size="small" :placeholder="getStaticText('selectDate') ? getStaticText('selectDate') : '选择日期'" :picker-options="pickerOptions_to" @change="picker_to"></el-date-picker>
           </span>
-        <td>
+        <td style="width:380px!important">
           <span class="work_search_05-table-title">{{getStaticText('price') ? getStaticText('price') : '定价:'}}</span>
           <span><el-input style="width: 100px;" size="small" :placeholder="getStaticText('inputPrice') ? getStaticText('inputPrice') : '请输入价格'" v-model="priceFrom"></el-input></span>{{getStaticText('to') ? getStaticText('to') : '至'}}
           <span><el-input style="width: 100px;" size="small" :placeholder="getStaticText('inputPrice') ? getStaticText('inputPrice') : '请输入价格'" v-model="priceTo"></el-input></span>

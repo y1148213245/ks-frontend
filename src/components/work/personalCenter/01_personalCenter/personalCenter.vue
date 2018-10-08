@@ -12,6 +12,7 @@
       </div>
       <h1 class="center_container-title">{{currentShow.title}}</h1>
       <component ref="currentComponent" v-if="updateContrl" :is="currentShow.tag" :detail-url="detailUrl" :show_star="show_star" :parent-config="CONFIG.subConfig" class="personalcenter_section"></component>
+
     </div>
   </div>
 </template>
@@ -36,6 +37,7 @@ import comment from "./components/personalCenter_comment";
 import feedback from "./components/personalCenter_feedback";
 import samplebook from "./components/personalCenter_samplebook";
 import learning from "./components/personalCenter_learning"
+
 
 export default {
   name: "work_personalcenter_01",

@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "code": null,
+  "message": "Success",
+  "errorMessage": null,
+  "list": null,
+  "data": {
+    "template": "template",
+    "code": "SELECT PICTURE",
+    "big_pic": "",
+    "url": "",
+    "columnType": "0",
+    "people_num": "",
+    "uniqueCode": "",
+    "small_pic": "",
+    "name": "精选图片",
+    "id": "1344",
+    "describe": "",
+    "create_date": "",
+    "contentType": 170
+  },
+  "page": null
+}

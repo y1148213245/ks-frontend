@@ -594,12 +594,12 @@ export default {
           logisticsNum: this.courierNumber
         };
         api.submitLogisticsInfo(params).then(function(response) {
-          if (response.result == 1) {
-            this.$message.success(vm.getStaticText('informationSubmitSuccess') ? vm.getStaticText('informationSubmitSuccess') : '信息提交成功');
+          if (response.data && response.data.result == '1') {
+            vm.$message.success(vm.getStaticText('informationSubmitSuccess') ? vm.getStaticText('informationSubmitSuccess') : '信息提交成功');
           } else {
-            this.$message.error(vm.getStaticText('informationSubmitFail') ? vm.getStaticText('informationSubmitFail') : '抱歉，信息提交失败');
+            vm.$message.error(vm.getStaticText('informationSubmitFail') ? vm.getStaticText('informationSubmitFail') : '抱歉，信息提交失败');
           }
-          this.currentShow = "afterserviceDetails";
+          vm.currentShow = "afterserviceDetails";
         });
       }
     },

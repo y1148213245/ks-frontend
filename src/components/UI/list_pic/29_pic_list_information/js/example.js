@@ -115,12 +115,15 @@ const dev = {
           noImg: "暂无图片",
           noData: "暂无数据",
           noDate:"暂无日期",
-          yuan:"￥"
+          yuan:"￥",
+          total: "共",
+          productQuantity: "条搜索结果"
         },
         showSearchBtn: true, // 检索框,
         emitEvent: {
           contextEventName: ""
-        }
+        },
+        isShowTotal: false
       },
 
     }
@@ -238,12 +241,15 @@ const prod = {
           noImg: "暂无图片",
           noData: "暂无数据",
           noDate:"暂无日期",
-          yuan:"￥"
+          yuan: "￥",
+          total: "共",
+          productQuantity: "条搜索结果"
         },
         showSearchBtn: true, // 检索框,
         emitEvent: {
           contextEventName: ""
-        }
+        },
+        isShowTotal: false
       },
 
     }

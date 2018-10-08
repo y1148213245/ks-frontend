@@ -10,7 +10,10 @@ const name = component.name;
 
 const title = "评论组件";  // 组件title
 
-const description = `评论,orReGetMenberName:true, //单独成列表页的话就配置成true 如果在详情页用的话就false 或者不写  true的话也会根据pubId 再次获取图书信息`;
+const description = `评论,orReGetMenberName:true, //单独成列表页的话就配置成true 如果在详情页用的话就false 或者不写  true的话也会根据pubId 再次获取图书信息
+  --------- 2018 / 9 / 28 新增可以多次评论的资源类型 金融PC是稿件和咨询都能多次评论 ----------
+  "limitDisscussType": ["93", "150"] // 限制可以多次评论的数据类型
+`;
 
 const dev = {
   bookreview: {

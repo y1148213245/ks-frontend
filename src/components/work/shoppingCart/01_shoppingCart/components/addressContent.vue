@@ -280,7 +280,7 @@ export default {
       let phoneReg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
       if (!(phoneReg.test(phoneVal))) {
         this.emptyPhone = true;
-        this.phoneError = "请输入正确的手机号码 "
+        this.phoneError = this.getStaticText('theTelephoneNumWrong') ? this.getStaticText('theTelephoneNumWrong') : "请输入正确的手机号码"
       }
       if (phoneVal.length > 11) {
         this.phoneError = this.getStaticText('theTelephoneIsLong') ? this.getStaticText('theTelephoneIsLong') : "电话长度过长";

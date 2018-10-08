@@ -35,7 +35,9 @@
               <span>
                 <i class="el-icon-time"></i> {{Aitem.createTime.split('.')[0]}}</span>
               <span>{{getStaticText('orderNumber') ? getStaticText('orderNumber') : '订单号'}}：{{Aitem.parentOrderCode}}</span>
+             <el-button class="writeNumBtn" v-if="CONFIG.showWriteNumBtn&&CONFIG.showWriteNumBtn==true&&Aitem.payStatus && Aitem.payStatus==0 && Aitem.payType && Aitem.payType==1" @click="writeRemitNum(outIndex)">{{getStaticText('writeRemitNum') ? getStaticText('writeRemitNum') : '填写汇款单号'}}</el-button>
             </div>
+           
             <div v-for="(item,index) in Aitem.orderList" :key="index">
               <el-row class="personalcenter_list_title_common">
                 <el-col :span="15">
@@ -141,6 +143,24 @@
             </div>
           </div>
         </div>
+
+         <el-dialog :title="getStaticText('writeRemitNum') ? getStaticText('writeRemitNum') : '填写汇款单号'" :visible.sync="showWriteNumBox">
+            <el-form :model="remitNumForm" ref="remitNumForm" label-width="100px" class="demo-ruleForm">
+              <el-form-item :label="getStaticText('remitNum') ? getStaticText('remitNum') : '汇款单号'" prop="remitNum" :rules="rules">
+                <el-input type="text" v-model.number="remitNumForm.remitNum" autocomplete="off" class="remitNum"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="cancelWriteNum('remitNumForm')">{{getStaticText("cancel") ? getStaticText("cancel") : "取消"}}</el-button>
+              <el-button type="primary" @click="commitRemitNum('remitNumForm')">{{getStaticText("confirm") ? getStaticText("confirm") : "确定"}}</el-button>
+            </div>
+          </el-dialog>
+          <el-dialog :title="getStaticText('tips') ? getStaticText('tips') : '提示'" :visible.sync="tipsBoxVisible" width="30%">
+            <span>{{tipsWords}}</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button type="primary" @click="tipsBoxVisible = false">{{getStaticText("confirm") ? getStaticText("confirm") : "确定"}}</el-button>
+            </span>
+          </el-dialog>
       </div>
       <div class="personalcenter_list_main_emptyColl" v-else>
         <img src="../../assets/img/empty.png" alt="">
@@ -185,7 +205,8 @@
                 <span>{{item.receiptTitle}}</span>
               </p>
               <p v-if="item.receiptType==1">{{getStaticText('invoiceContent') ? getStaticText('invoiceContent') : '发票内容'}}：
-                <span>{{item.receiptId}}</span>
+                <span v-if="item.receiptId=='明细' || item.receiptId=='명세'">{{getStaticText('detail') ? getStaticText('detail') :'明细'}}</span>
+                <span v-if="item.receiptId=='图书' || item.receiptId=='도서'">{{getStaticText('stationery') ? getStaticText('stationery') :'图书'}}</span>
               </p>
             </div>
           </el-card>
@@ -388,6 +409,7 @@
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import kdnApi from "../../assets/js/KDN.js";
+import { Get } from "@common";
 export default {
   name: "list",
   reused: true,
@@ -550,7 +572,20 @@ export default {
       //   ]
       // },
       pickerOptions2: {},
-      timeValue: ""
+      timeValue: "",
+      showWriteNumBox:false, //汇款单号弹框
+      remitNumError:'', //汇款单号验证提示
+      emptyRemitNum:false,  //汇款单号是否为空，默认不为空
+      remitNumForm: {
+        remitNum:''
+      },
+      tipsBoxVisible:false,
+      tipsWords:'',
+      currentIndex:'',
+      rules:[
+        { required: true, message: this.getStaticText('RemitNumEmpty') ? this.getStaticText('RemitNumEmpty') : '汇款单号不能为空'},
+        { type: 'number', message: this.getStaticText('pleaseWriteNumber') ? this.getStaticText('pleaseWriteNumber') : '请输入数字'}
+      ]
     };
   },
   // filters: {
@@ -974,10 +1009,9 @@ export default {
       this.$store.dispatch("personalCenter/queryOrderList", param);
     },
     cancelOrder(outIndex) {
-      //文本待抽离
       this.$confirm((this.getStaticText("confirmCancelOrder") ? this.getStaticText("confirmCancelOrder") : "确定取消此订单？"), (this.getStaticText("tips") ? this.getStaticText("tips") : "提示"), {
         confirmButtonText: (this.getStaticText("confirm") ? this.getStaticText("confirm") : "确定"),
-		cancelButtonText: (this.getStaticText("cancel") ? this.getStaticText("tips") : "取消"),
+		cancelButtonText: (this.getStaticText("cancel") ? this.getStaticText("cancel") : "取消"),
         type: "warning"
       }).then(() => {
         var id = this.myOrderList.data[outIndex].id;
@@ -1015,7 +1049,6 @@ export default {
       }
     },
     deleteOrder(outIndex) {
-      //文本待抽离
       this.$confirm((this.getStaticText("confirmDeleteOrder") ? this.getStaticText("confirmDeleteOrder") : "确定删除此订单？"), (this.getStaticText("tips") ? this.getStaticText("tips") : "提示"), {
         confirmButtonText: (this.getStaticText("confirm") ? this.getStaticText("confirm") : "确定"),
 		cancelButtonText: (this.getStaticText("cancel") ? this.getStaticText("tips") : "取消"),
@@ -1098,6 +1131,53 @@ export default {
           (this.getStaticText("yuan") ? this.getStaticText("yuan") : "元")
         );
       }
+    },
+    writeRemitNum(index){
+      this.showWriteNumBox=true;
+      this.currentIndex=index;
+    },
+    commitRemitNum(formName){
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          var param={
+            orderCode:this.myOrderList.data[this.currentIndex].parentOrderCode,
+            remitNum:this.remitNumForm.remitNum
+          }
+          var _this=this;
+          //调保存汇款单号接口
+          //"http://172.19.36.81:9092/spc-portal-web/order/saveRemitNum.do"
+          Get(CONFIG.BASE_URL + "order/saveRemitNum.do" , {params:param}).then(resp=>{
+            if(resp.data.result==1){
+              if(_this.$refs[formName] && _this.$refs[formName]){
+                _this.$refs[formName].resetFields();
+              }
+              _this.showWriteNumBox=false;
+              _this.tipsBoxVisible=true;
+              _this.tipsWords=_this.getStaticText("saveRemitNumSuccess") ? _this.getStaticText("saveRemitNumSuccess") : "汇款单号保存成功!"
+              //更新订单列表
+              var param = {
+                pageIndex: 1,
+                pageSize: 8,
+                payStatus: "",
+                status: "",
+                orderType: _this.orderType,
+                orderListCallBack:_this.activityRemarkAll
+              };
+              _this.$store.dispatch("personalCenter/queryOrderList", param);
+            }else{
+              _this.tipsWords=_this.getStaticText("saveRemitNumFail") ? _this.getStaticText("saveRemitNumFail") : "汇款单号保存失败!"
+            }
+          })
+        } else {
+          return false;
+        }
+      });
+    },
+    cancelWriteNum(formName){
+      if(this.$refs[formName] && this.$refs[formName]){
+        this.$refs[formName].resetFields();
+      }
+      this.showWriteNumBox=false;
     },
     //计算活动减免额
     activityRemarkAll() {
@@ -1331,4 +1411,17 @@ export default {
   float: right;
 }
 /*退换货*/
+.writeNumBtn{
+  height: 34px;
+  line-height: 0;
+  float: right;
+  border-radius: 1px;
+  margin: 2px -18px 0 0;
+}
+.demo-ruleForm{
+  margin-left: 80px;
+}
+.remitNum {
+  width: 370px;
+}
 </style>

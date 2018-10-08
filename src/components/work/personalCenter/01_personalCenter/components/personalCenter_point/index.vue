@@ -2,20 +2,19 @@
 <template>
 <section class="personalcenter_point main_right fl">
 	<div class="wzdh_jf f14 color_6f6">
-		<div class="color_6f6 line-h24">您现在有积分:<span class="re30">{{account.payPoints}}</span></div>
-    <div class="color_6f6 line-h24">您现在有下载币: <span class="re30">{{account.virtualCoin}}</span></div>
-		<div class="color_6f6 line-h24">1积分=1下载币 </div>
+		<div class="color_6f6 line-h24">{{getStaticText('ownPointsNow')? getStaticText('ownPointsNow') : '您现在有积分'}}:<span class="re30">{{account.payPoints}}</span></div>
+    <div class="color_6f6 line-h24">{{getStaticText('ownVirtualCoinNow')? getStaticText('ownVirtualCoinNow') : '您现在有下载币'}}: <span class="re30">{{account.virtualCoin}}</span></div>
+		<div class="color_6f6 line-h24">{{getStaticText('onePointOneCoin')? getStaticText('onePointOneCoin') : '1积分=1下载币'}} </div>
 		<div class="wzdh_jf_duih">
 			<div class="wzdh_jf_duih_01">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="elform">
         <el-form-item prop="number" style="width:520px; margin:30px auto;">
-          <span>积分：</span>
-          <el-input style="width: 200px;" type="text" v-model.number="ruleForm.number" auto-complete="off"
-                    placeholder="请输入兑换积分数量" class="inputwid"></el-input>
-          <div style="display:inline-block"><span>兑换</span><span class="re30">{{ruleForm.number}}</span>下载币<i class="jf_duih_03"></i></div>
+          <span>{{getStaticText('points')? getStaticText('points') : '积分'}}：</span>
+          <el-input style="width: 200px;" type="text" v-model.number="ruleForm.number" auto-complete="off" :placeholder="getStaticText('writeExchangePointNum') ? getStaticText('writeExchangePointNum') : '请输入兑换积分数量'" class="inputwid"></el-input>
+          <div style="display:inline-block"><span>{{getStaticText('exchange')? getStaticText('exchange') : '兑换'}}</span><span class="re30">{{ruleForm.number}}</span>{{getStaticText('virtualCoin')? getStaticText('virtualCoin') : '下载币'}}<i class="jf_duih_03"></i></div>
         </el-form-item>
         <div class="col_full nobottommargin btnbox">
-            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+            <el-button type="primary" @click="submitForm('ruleForm')">{{getStaticText('submit')? getStaticText('submit') : '提交'}}</el-button>
         </div>
       </el-form>
       </div>
@@ -23,13 +22,13 @@
 
 		<div class="wzdh_jf_sm">
 			<el-table border :data="pointRecords.data" style="width: 100%">
-				<el-table-column type="index" width="150" label="序号" align="center">
+				<el-table-column type="index" width="150" :label="getStaticText('number')? getStaticText('number') : '序号'" align="center">
 				</el-table-column>
-				<el-table-column label="获取途径" prop="operName" align="center">
+				<el-table-column :label="getStaticText('access')? getStaticText('access') : '获取途径'" prop="operName" align="center">
 				</el-table-column>
-        <el-table-column label="积分值" prop="ruleValue" align="center" sortable>
+        <el-table-column :label="getStaticText('pointValue')? getStaticText('pointValue') : '积分值'" prop="ruleValue" align="center" sortable>
 				</el-table-column>
-				<el-table-column label="获取日期" prop="createTime" align="center" sortable>
+				<el-table-column :label="getStaticText('getDate')? getStaticText('getDate') : '获取日期'" prop="createTime" align="center" sortable>
 				</el-table-column>
 			</el-table>
       <ui_pagination :pageMessage="{totalCount: this.pointRecords.data && this.pointRecords.totalCount - 0 || 0}" :excuteFunction="pointRecordPaging" :page-sizes="[8,16,32,64]" style="margin-top: 40px;"></ui_pagination>
@@ -43,7 +42,10 @@ import { mapGetters, mapActions } from "vuex";
 export default {
     name: "point",
     reused: true,
-    props: ["namespace"],
+    props: ["namespace", "parentConfig"],
+    created() {
+    this.CONFIG = this.parentConfig.point;
+    },
     mounted: function() {
     this.$store.dispatch("personalCenter/queryUser", {
       loadedCallBack: this.loadedCallBack
@@ -52,11 +54,11 @@ export default {
   data() {
     var validatenumber = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请输入兑换数额"));
+        callback(new Error(this.getStaticText("writeExchangeNum") ? this.getStaticText("writeExchangeNum") : "请输入兑换数额"));
       } else if (!Number.isInteger(value)) {
-        callback(new Error("请输入数字"));
+        callback(new Error(this.getStaticText("writeNum") ? this.getStaticText("writeNum") : "请输入数字"));
       }else if (value === 0) {
-        callback(new Error("请输入大于0的整数金额"));
+        callback(new Error(this.getStaticText("writeInteger") ? this.getStaticText("writeInteger") : "请输入大于0的整数金额"));
       } else {
         callback();
       }
@@ -104,6 +106,17 @@ export default {
         }
       });
     },
+    getStaticText(text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
+      } else {
+        return false;
+      }
+    },
     exchangeCallb(exchangeStatus) {
       if (exchangeStatus == 1) {
         this.$store.dispatch("personalCenter/queryPointRecord", {});
@@ -112,12 +125,12 @@ export default {
         });
         this.$message({
           type: "success",
-          message: "兑换成功!"
+          message: this.getStaticText("exchangeSuccess") ? this.getStaticText("exchangeSuccess") : "兑换成功!"
         });
       } else {
         this.$message({
           type: "error",
-          message: "积分不够,兑换失败!"
+          message: this.getStaticText("exchangeFail") ? this.getStaticText("exchangeFail") : "积分不够,兑换失败!"
         });
       }
     },

@@ -64,11 +64,9 @@ export default {
   },
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.picListBook[this.modulename];
-    console.log(PROJECT_CONFIG[this.namespace].list_pic.picListBook)
     if(PROJECT_CONFIG[this.namespace].list_pic.picListBook&&PROJECT_CONFIG[this.namespace].list_pic.picListBook.directUrl){
       this.DSCONFIG=PROJECT_CONFIG[this.namespace].list_pic.picListBook//判断进入哪个详情页
     }
-     console.log(this.modulename);
     this.pubId = URL.parse(document.URL, true).query.pubId;
   },
   mounted () {
@@ -107,7 +105,7 @@ export default {
         if (hasData) {
           var dataList = []; // 历史记录返回的数据字段与模板上的不同 处理一下字段名称
           var len = data.length;
-          for (var i = 0; i < len; i++) {console.log(data[i].memberPrice)
+          for (var i = 0; i < len; i++) {
             var temp = {
               pub_picBig: data[i].bigPic, // 封面图
               pub_read_num: data[i].pub_read_num, //点击量
@@ -317,7 +315,7 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.el-icon-delete{
+.ui_list_pic_06 .el-icon-delete{
   cursor: pointer;
   font-size: 16px;
   float: right;

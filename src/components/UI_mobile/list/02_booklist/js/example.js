@@ -15,6 +15,7 @@ const dev = {
   booklist: {
     booklist_01: {
       'module':{
+        searchConFlag:false,
         url: '../data/list_02_booklist_data.json',
         staticText : {
           hot:"热门",
@@ -40,6 +41,7 @@ const prod = {
   booklist: {
     booklist_01: {
       'module': {
+        searchConFlag:false,
         url:  'spc/cms/publish/list.do',
         params: {
           conditions: [

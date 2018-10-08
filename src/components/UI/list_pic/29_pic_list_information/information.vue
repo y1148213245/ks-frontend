@@ -28,6 +28,13 @@
       <i class="el-icon-search ui_list_pic_29_search_icon" @keyup.enter="getResourceLists()" @click="getResourceLists()"></i>
     </div>
 
+    <!-- 总的条目 zrn add it at 2018-09-29 -->
+    <div class="ui_list_pic_29_totalnumbox" v-if="CONFIG && CONFIG.isShowTotal">
+      <span class="ui_list_pic_29_totalnumbox_word1">{{getStaticText('total') ? getStaticText('total') : '共有'}}</span>
+      <span class="ui_list_pic_29_totalnum">{{totalCount}}</span>
+      <span class="ui_list_pic_29_totalnumbox_word1">{{getStaticText('productQuantity') ? getStaticText('productQuantity') : '条搜索结果'}}</span>
+    </div>
+
     <div class="ui_list_pic_29_resourcelists">
       <ul class="ui_list_pic_29_resourcelists_ul" v-if="resourceLists && resourceLists.length > 0">
         <li class="ui_list_pic_29_resourcelists_li" v-for="(item, index) in resourceLists" :key="index" v-if="index >= resourceListsConfig.startNum">
@@ -301,6 +308,18 @@ export default {
         // 如果sourceUrl为空,则判断pub_widget_url数组里的值 -- end
       } else if (config.method == "toResourceDetail") { // 去资源详情页（区分视频组、音频组、课件三种资源）
         window.open(toOtherPage(item, this.CONFIG[config.method][item[this.keys.pubResType]], keys));
+      }else if(config.method == "toApp"){
+        let toApp = this.CONFIG.toApp;
+        if (toApp.type == 'phone') {
+          let params = '';
+          for (let index = 0; index < toApp.phone.values.length; index++) {
+            const element = toApp.phone.values[index];
+            params += item[element] + ',';
+          }
+          params = params.substring(0, params.length - 1);
+          eval(toApp.phone.functionName + '(' + params + ')');
+        }
+        return false;
       }
       window.open(toOtherPage(item, this.CONFIG[config.method], keys) + detailParams) ;
     },

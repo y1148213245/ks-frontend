@@ -351,6 +351,7 @@ var FIELD_ADAPTER = {
             bigPic: "big_pic",
             smallPic: "small_pic",
             describe: "describe", //描述信息
+            description: "description",  //描述信息
             parentId: "parentId",
         },
         magazineAdapter: { // 期刊

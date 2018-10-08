@@ -236,7 +236,7 @@ const dev = {
             "postalCode":"邮政编码",
             "bookClassification":"关注图书分类"
           }
-        },
+        },        
         'collection': { // 收藏的tab切换
           "toBookdetail":"../pages/bookdetail.html?pubId=",
           tabListShow: [{
@@ -263,11 +263,13 @@ const dev = {
             }
           ],
           "staticText":{
-            "RemittanceNumEmpty":"汇款单号不能为空",
+            "saveRemitNumSuccess":"汇款单号保存成功!",
+            "saveRemitNumFail":"汇款单号保存失败!",
+            "RemitNumEmpty":"汇款单号不能为空",
             "pleaseWriteNumber":"请输入数字",
-            "pleaseWriteRemittanceNum":"请输入汇款单号",
-            "writeRemittanceNum":"填写汇款单号",
-            "remittanceNum":"汇款单号",
+            "pleaseWriteRemitNum":"请输入汇款单号",
+            "writeRemitNum":"填写汇款单号",
+            "remitNum":"汇款单号",
             "payment":"付款",
             "loading":"正在加载中...",
             "fullOrder":"全部订单",
@@ -310,6 +312,8 @@ const dev = {
             "valueAddedTaxInvoice":"增值税发票",
             "invoicesTitle":"发票抬头",
             "invoiceContent":"发票内容",
+            "detail": "明细",
+            "stationery": "图书",
             "detailsOfPayment":"支付详情",
             "paymentMethod":"支付方式",
             "weChatPayment":"微信支付",
@@ -700,6 +704,97 @@ const dev = {
               publishYear:'MAGAZINE_PUBLISH_YEAR'
             }
           }
+        },
+        "point":{
+          "staticText":{
+            "ownPointsNow":"您现在有积分",
+            "ownVirtualCoinNow":"您现在有下载币",
+            "onePointOneCoin":"1积分=1下载币",
+            "points":"积分",
+            "exchange":"兑换",
+            "virtualCoin":"下载币",
+            "submit":"提交",
+            "writeExchangePointNum":"请输入兑换积分数量",
+            "number":"序号",
+            "access":"获取途径",
+            "pointValue":"积分值",
+            "getDate":"获取日期",
+            "writeExchangeNum":"请输入兑换数额",
+            "writeNum":"请输入数字",
+            "writeInteger":"请输入大于0的整数金额",
+            "exchangeSuccess":"兑换成功!",
+            "exchangeFail":"兑换成功!"
+          }
+        },
+        comment: { // 我的评论配置
+          detailUrl: {
+            '91': './bookdetail.html', // 纸质书
+            '94': './bookdetail.html', // 电子书
+            '149': './journaldetail.html', // 电子期刊
+            '177': './seriesdetail.html' // 丛书
+          }
+        },
+        "modifyUser": {
+          "isMemberInfo":true,
+          "getMemberInfo":{
+            "submitUrl": "user/getMemberByName.do"
+          },
+          "editMemberInfo":{
+            "submitUrl": "user/editMemberByName.do",
+            "params": {
+              "loginName": "",
+              "userNick": "",
+              "birthday": "",
+              "mobileno": "",//电话
+              "introduction": "",
+              "address": "",//具体地址
+              "memberType": "",
+              "username": "",
+              "industry": ["银行业", "证券、基金业", "保险业", "信托、租聘业", "其他金融机构", "金融监管机构", "高等院校", "科研院所", "政府机关", "其他"],//请选择行业
+              "educated": ["博士", "硕士", "本科", "大专", "高中"],
+              "areaInfo": ["北京", "天津", "上海", "重庆", "黑龙江省", "吉林省", "辽宁省", "河北省", "山西省", "青海省", "山东省", "河南省", "江苏省", "安徽省", "浙江省", "福建省", "江西省", "湖南省", "湖北省", "广东省", "台湾省", "海南省", "甘肃省", "陕西省", "四川省", "贵州省", "云南省", "内蒙古自治区", "新疆维吾尔自治区", "西藏自治区", "宁夏回族自治区", "广西壮族自治区"],//所在省份
+              "postcode": "",//邮政编码
+              "bookClassifyConcerned": ["金融", "银行", "证券", "保险"],//关注图书分类
+              "job": "",//职务
+              "positio": ["助教", "讲师", "副教授", "教授"],//职称
+              "company": "",//执教学校
+              "faculty": "",//所属院系
+              "staffRoom": "",//教研室
+              "teachLevel": ["研究生", "本科生", "高职"],//教育程度
+              "subject": "",//教学专业
+              "teachCourse": "",//教学课程
+              "tachingMaterialClassify": ""
+            }
+          },
+          'staticText': {
+            'saveFormFail':'保存失败',
+            'saveFormSuccessfully':'保存成功',
+            'pleaseEnterCellPhoneNumber': '邮编为空',
+            'pleaseEnterCorrectCellPhoneNumber':'请输入正确的手机号',
+            'pleaseEnterCellPhoneNumber':'手机号为空',
+            'pleaseEnterCellPostNumber':'邮编为空',
+            'pleaseEnterCorrectCellPostNumber':'请输入正确的邮编',
+            'ordinaryUserText':'普通用户',
+            'teacherUserText':'教师用户',
+            'name':'姓名',
+            'post':'职务',
+            'title':'职称',
+            'phone':'电话',
+            'industry':'行业',
+            'educationLevel':'教育程度',
+            'province':'所在省份',
+            'specificAddress':'具体地址',
+            'teachingSchool':'执教学校',
+            'faculty':'所属院系',
+            'staffRoom':'教研室',
+            'teachingLevel':'教学层次',
+            'teachingMajor':'教学专业',
+            'teachingCourse':'教学课程',
+            'postalCode':'邮政编码',
+            'bookClassification':'关注图书分类',
+            'save':'保存',
+            'return':'返回'
+          }
         }
       }
     }
@@ -957,6 +1052,14 @@ const prod = {
             }
           ],
           "staticText":{
+            "saveRemitNumSuccess":"汇款单号保存成功!",
+            "saveRemitNumFail":"汇款单号保存失败!",
+            "RemitNumEmpty":"汇款单号不能为空",
+            "pleaseWriteNumber":"请输入数字",
+            "pleaseWriteRemitNum":"请输入汇款单号",
+            "writeRemitNum":"填写汇款单号",
+            "remitNum":"汇款单号",
+            "payment":"付款",
             "loading":"正在加载中...",
             "fullOrder":"全部订单",
             "waitForPayment":"等待付款",
@@ -1044,7 +1147,10 @@ const prod = {
             "abolishFailed":"取消失败，请重试",
             "deleteSuccess":"删除成功",
             "deleteFailed":"删除失败，请重试",
-            "abolishSuccess":"取消成功",
+            "confirmDeleteOrder":"确定删除此订单？",
+            "tips":"提示",
+            "cancel":"取消",
+            "confirmCancelOrder":"确定取消此订单？"
           }
         },
         "afterservice": {
@@ -1244,12 +1350,95 @@ const prod = {
           },
           pageSizes: [10, 20, 50, 100],
         },
+        "point":{
+          "staticText":{
+            "ownPointsNow":"您现在有积分",
+            "ownVirtualCoinNow":"您现在有下载币",
+            "onePointOneCoin":"1积分=1下载币",
+            "points":"积分",
+            "exchange":"兑换",
+            "virtualCoin":"下载币",
+            "submit":"提交",
+            "writeExchangePointNum":"请输入兑换积分数量",
+            "number":"序号",
+            "access":"获取途径",
+            "pointValue":"积分值",
+            "getDate":"获取日期",
+            "writeExchangeNum":"请输入兑换数额",
+            "writeNum":"请输入数字",
+            "writeInteger":"请输入大于0的整数金额",
+            "exchangeSuccess":"兑换成功!",
+            "exchangeFail":"兑换成功!"
+          }
+        },
         comment: { // 我的评论配置
           detailUrl: {
             '91': './bookdetail.html', // 纸质书
             '94': './bookdetail.html', // 电子书
             '149': './journaldetail.html', // 电子期刊
             '177': './seriesdetail.html' // 丛书
+          }
+        },
+        "modifyUser": {
+          "isMemberInfo":true,
+          "getMemberInfo":{
+            "submitUrl": "user/getMemberByName.do"
+          },
+          "editMemberInfo":{
+            "submitUrl": "user/editMemberByName.do",
+            "params": {
+                "loginName": "",
+                "userNick": "",
+                "birthday": "",
+                "mobileno": "",//电话
+                "introduction": "",
+                "address": "",//具体地址
+                "memberType": "",
+                "username": "",
+                "industry": ["银行业", "证券、基金业", "保险业", "信托、租聘业", "其他金融机构", "金融监管机构", "高等院校", "科研院所", "政府机关", "其他"],//请选择行业
+                "educated": ["博士", "硕士", "本科", "大专", "高中"],
+                "areaInfo": ["北京", "天津", "上海", "重庆", "黑龙江省", "吉林省", "辽宁省", "河北省", "山西省", "青海省", "山东省", "河南省", "江苏省", "安徽省", "浙江省", "福建省", "江西省", "湖南省", "湖北省", "广东省", "台湾省", "海南省", "甘肃省", "陕西省", "四川省", "贵州省", "云南省", "内蒙古自治区", "新疆维吾尔自治区", "西藏自治区", "宁夏回族自治区", "广西壮族自治区"],//所在省份
+                "postcode": "",//邮政编码
+                "bookClassifyConcerned": ["金融", "银行", "证券", "保险"],//关注图书分类
+                "job": "",//职务
+                "positio": ["助教", "讲师", "副教授", "教授"],//职称
+                "company": "",//执教学校
+                "faculty": "",//所属院系
+                "staffRoom": "",//教研室
+                "teachLevel": ["研究生", "本科生", "高职"],//教育程度
+                "subject": "",//教学专业
+                "teachCourse": "",//教学课程
+                "tachingMaterialClassify": ""
+            }
+          },
+          'staticText': {
+            'saveFormFail':'保存失败',
+            'saveFormSuccessfully':'保存成功',
+            'pleaseEnterCellPhoneNumber': '邮编为空',
+            'pleaseEnterCorrectCellPhoneNumber':'请输入正确的手机号',
+            'pleaseEnterCellPhoneNumber':'手机号为空',
+            'pleaseEnterCellPostNumber':'邮编为空',
+            'pleaseEnterCorrectCellPostNumber':'请输入正确的邮编',
+            'ordinaryUserText':'普通用户',
+            'teacherUserText':'教师用户',
+            'name':'姓名',
+            'post':'职务',
+            'title':'职称',
+            'phone':'电话',
+            'industry':'行业',
+            'educationLevel':'教育程度',
+            'province':'所在省份',
+            'specificAddress':'具体地址',
+            'teachingSchool':'执教学校',
+            'faculty':'所属院系',
+            'staffRoom':'教研室',
+            'teachingLevel':'教学层次',
+            'teachingMajor':'教学专业',
+            'teachingCourse':'教学课程',
+            'postalCode':'邮政编码',
+            'bookClassification':'关注图书分类',
+            'save':'保存',
+            'return':'返回'
           }
         }
       }

@@ -5,7 +5,7 @@
     <div aria-label="Breadcrumb" role="navigation" class="el-breadcrumb">
       <span class="el-breadcrumb__item">{{getStaticText('yourPosition') ? getStaticText('yourPosition')  : '您的位置：'}}</span>
       <span class="el-breadcrumb__item">
-        <span role="link" class="el-breadcrumb__inner is-link"><a href="CONFIG.indexHref ? CONFIG.indexHref : '../pages/index.html'">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</a></span>
+        <span role="link" class="el-breadcrumb__inner is-link"><a :href="CONFIG.indexHref ? CONFIG.indexHref : '../pages/index.html'">{{getStaticText('homePage') ? getStaticText('homePage') : '首页'}}</a></span>
         <i class="el-breadcrumb__separator el-icon-arrow-right"></i>
       </span>
       <span class="el-breadcrumb__item" aria-current="page">
@@ -107,6 +107,20 @@ export default {
     })
   },
   mounted: function () {
+    $(document).ready(() => {
+      window._bd_share_config = {
+        common : {
+          bdUrl : ((window.location.href).indexOf("resType")==-1) ? window.location.href.split('&')[0] : (window.location.href.split('&')[0]+'&'+window.location.href.split('&')[1]),
+        },
+        share : {
+          "bdSize" : 16,
+        }
+      }
+      let len = document.getElementsByClassName("bdsharebuttonbox").length;
+      if(len != 0 ){
+        document.getElementsByClassName("bdsharebuttonbox")[len - 1].src ='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
+      }
+    });
     this.keys = this.CONFIG.queryDetail.keys;
     this.displayItem = this.CONFIG.queryDetail.display;
     this.pubId = URL.parse(document.URL, true).query.pubId;

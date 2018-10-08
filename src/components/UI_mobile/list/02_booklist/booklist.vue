@@ -10,10 +10,7 @@
     <div class="ui_mobile_list_02_subnav" v-if="listType == 'colId'"> <!-- 按栏目查图书列表 -->
       <span class="ui_mobile_list_02_read" :class="{ui_mobile_list_02_active:indexValue==0?true:false}" @click="toBookList('pub_read_num desc',0)">{{getStaticText('hot') ? getStaticText('hot') : "热门"}}</span>
       <span class="ui_mobile_list_02_star" :class="{ui_mobile_list_02_active:indexValue==1?true:false}" @click="toBookList('pub_star_num desc',1)">{{getStaticText('goodReputation') ? getStaticText('goodReputation') : "好评"}}</span>
-      <span class="ui_mobile_list_02_pricecon"><span class="ui_mobile_list_02_saleprice" :class="{ui_mobile_list_02_active:indexValue==2?true:false}" @click="toBookList('prod_sale_price asc',2)">{{getStaticText('price') ? getStaticText('price') : "价格"}}</span><a
-      href="javascript:void(0)" @click="toBookList('prod_sale_price asc',2)"><i
-      class="ui_mobile_list_02_asc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a><a href="javascript:void(0)" @click="toBookList('prod_sale_price desc',2)"><i
-      class="ui_mobile_list_02_desc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a></span>
+      <span class="ui_mobile_list_02_pricecon"><span class="ui_mobile_list_02_saleprice" :class="{ui_mobile_list_02_active:indexValue==2?true:false}" @click="toBookList(priceOrder,2)">{{getStaticText('price') ? getStaticText('price') : "价格"}}</span><a href="javascript:void(0)" @click="toBookList('prod_sale_price asc',2)"><i class="ui_mobile_list_02_asc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a><a href="javascript:void(0)" @click="toBookList('prod_sale_price desc',2)"><i class="ui_mobile_list_02_desc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a></span>
       <span :class="{ui_mobile_list_02_active:indexValue==3?true:false}" @click="toBookList('BOOK_PUBDATE desc',3)">{{getStaticText('newBook') ? getStaticText('newBook') : "新书"}}</span>
     </div>
     <!--二级分类title-->
@@ -101,7 +98,8 @@ export default {
       checkCascadeId:0,// 是否展示全部按钮
       isShowAllBotton:false,// 是否展示全部按钮
       exMoreNum:4, // 超过多少就展示更多按钮
-      query:''
+      query:'',
+      priceOrder:'prod_sale_price asc'
     };
   },
   created () {
@@ -161,10 +159,14 @@ export default {
     loadBookList (cascadId, isNOConcat) { // 获取图书列表数据 isNOConcat: 是否需要拼接数据
       this.checkCascadeId = cascadId;
       let paramsObj = Object.assign({}, this.CONFIG.params);
-      if (this.searchText) {
-        paramsObj.searchText = this.searchText;
+      //默认模糊查询，searchConFlag为true时分词查询
+      if(this.searchText){
+        if(this.CONFIG.searchConFlag && (this.CONFIG.searchConFlag=="true")){
+          paramsObj.searchText = this.searchText;
+        }else{
+          paramsObj.searchText ='pub_resource_name'+":"+"*"+this.searchText+"*";
+        }
       }
-
       let isHas_BOOK_BOOK_CASCADID = false;
       let isHas_pub_site_id = false;
       let isHas_pub_col_id = false;
@@ -219,6 +221,11 @@ export default {
     },
     toBookList (orderParam, thisValue) {
       this.initData();
+      if(this.priceOrder == 'prod_sale_price asc'){
+        this.priceOrder = 'prod_sale_price desc';
+      }else{
+        this.priceOrder = 'prod_sale_price asc';
+      }
       this.orderParam = orderParam;
       this.indexValue = thisValue;
       this.loadBookList(this.cascadId);

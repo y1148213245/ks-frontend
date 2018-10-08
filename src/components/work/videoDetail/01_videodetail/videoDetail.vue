@@ -9,11 +9,11 @@
       </div>
        <div class="work_videodetail_01_baseinfo_author" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('author') !== -1 && keys.author && resourceDetail[keys.author] != undefined">
         <span>{{CONFIG.display.author}}</span>
-        <span>{{resourceDetail[keys.author] || "暂无作者"}}</span>
+        <span>{{resourceDetail[keys.author] || (getStaticText('noAuthor') ? getStaticText('noAuthor') :'暂无作者') }}</span>
       </div>
       <div class="work_videodetail_01_baseinfo_pressname" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('pressname') !== -1 && keys.pressname && resourceDetail[keys.pressname] != undefined">
         <span>{{CONFIG.display.pressname}}</span>
-        <span>{{resourceDetail[keys.pressname] || "暂无出版信息"}}</span>
+        <span>{{resourceDetail[keys.pressname] || (getStaticText('noPublicInfo') ? getStaticText('noPublicInfo') :'暂无出版信息') }}</span>
       </div>
       <div class="work_videodetail_01_baseinfo_pubdate" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('pubdate') !== -1 && keys.pubdate && resourceDetail[keys.pubdate] != undefined">
         <span>{{CONFIG.display.pubdate}}</span>
@@ -25,7 +25,7 @@
       </div>
       <time class="work_videodetail_01_baseinfo_time" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('time') !== -1 && keys.time && resourceDetail[keys.time] != undefined">{{resourceDetail[keys.time]}}
         <span>{{CONFIG.display.time}}</span>
-        <span>{{resourceDetail[keys.time] || "暂无时间"}}</span>
+        <span>{{resourceDetail[keys.time] || (getStaticText('noTime') ? getStaticText('noTime') :'暂无时间') }}</span>
       </time>
     </div>
 
@@ -35,7 +35,7 @@
       
       <div class="work_videodetail_01_description" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('description') !== -1 && keys.description && resourceDetail[keys.description] != undefined">
         <span>{{CONFIG.display.description}}</span>
-        <span>{{resourceDetail[keys.description] || "暂无描述信息"}}</span>
+        <span>{{resourceDetail[keys.description] || (getStaticText('noDescription') ? getStaticText('noDescription') :'暂无描述信息')}}</span>
       </div>
 
       <div class="work_videodetail_01_videolists" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('videolists') !== -1 && keys.video && resourceDetail[keys.video] != undefined">
@@ -88,6 +88,13 @@ export default {
     this.getResourceDetail();
   },
   methods: {
+     getStaticText (text) {
+      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
+        return this.CONFIG.staticText[text]
+      } else {
+        return false
+      }
+    },
     getResourceDetail () {
       let paramsObj = Object.assign({}, this.CONFIG.getResourceDetail.params);
       paramsObj.pubId = this.pubId;

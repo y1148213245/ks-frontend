@@ -74,7 +74,7 @@ export default {
   methods: {
     userbook (loginName) {  // 购买该书的用户还买
       let paramsObj = Object.assign({}, this.CONFIG.params);
-      paramsObj.loginName = loginName;
+      paramsObj.loginName = loginName ? loginName : '';
       paramsObj.pubId = this.pubId;
       Get(CONFIG.BASE_URL+this.CONFIG.url, { params: paramsObj }).then((rep) => {
         if (rep.data.result === '1') {
@@ -137,7 +137,7 @@ export default {
 
   watch: {
     member: function (newValue, oldVlue) {
-      if (newValue.loginName && newValue.loginName != oldVlue.loginName && this.modulename == 'userbook') {
+      if (this.modulename == 'userbook') {
         this.userbook(newValue.loginName);
       }
     }

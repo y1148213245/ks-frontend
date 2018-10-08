@@ -188,7 +188,8 @@ export default {
       passwordObj: {
         newpass: "",
         oldpass: ""
-      }
+      },
+      sendCodeOne:true  //用于阻止多次提交手机号
     };
   },
   computed: {
@@ -503,7 +504,11 @@ export default {
           clearInterval(this.timer);
           this.sendCodeTime = this.display.sendCodeTime;
           if (name == "mobileno") {
-            this.getMobileCode(num);
+            // 组织多次提交号码
+            if (this.sendCodeOne) {            
+              this.getMobileCode(num);
+              this.sendCodeOne = false;
+            }
           } else if (name == "email") {
             this.getEmailCode(num);
           }
@@ -575,6 +580,7 @@ export default {
                 let msg = "验证码发送成功";
                 let _self = this;
                 _self.isSend = true;
+                _self.sendCodeOne = true;
                 _self.timeInterval(_self);
                 this.codeNum = res.data;
                 Toast.success({

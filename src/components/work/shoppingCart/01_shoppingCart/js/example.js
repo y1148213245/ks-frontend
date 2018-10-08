@@ -252,6 +252,7 @@ const dev = {
             consigneeMustNotExceed40Characters: "收货人不能超过40个字符",
             pleaseFillInTheContactNumber: "请填写联系电话",
             pleaseEnterTheNumber: "请输入数字",
+            theTelephoneNumWrong:"请输入正确的手机号码",
             theTelephoneIsLong: "电话长度过长",
             province: "省份",
             prefectureLevelCity: "地级市",
