@@ -198,6 +198,7 @@ export default {
       isMobileLoading: false, //默认不是下拉增量加载
       totalPages: 0, // 订单总页数
       pageIndex: "1",
+      pageNo: 1,
       noMore: false,
       keys: {}, // (好书快听,电子书/纸书,有声书)接口字段容器
       requestParams: "", // 去详情页需要传查询list.do的所有参数
@@ -338,8 +339,9 @@ export default {
         } else {
           if (data && data instanceof Array && data.length >= 0) {
             this.list = data;
+            this.pageNo = req.data.pageNo;
             this.totalCount = req.data.totalCount;
-            this.totalPages = req.data.totalCount;
+            this.totalPages = req.data.totalPages;
           }
         }
       })
@@ -376,8 +378,8 @@ export default {
         this.activeSetOrder = item.itemField.order;
       }
 
-      this.totalCount = 0;
-      this.getSearchResult(this.pageNo);
+      //this.totalCount = 0;
+      this.getSearchResult({});
     },
     getStaticText (text) {
       if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {

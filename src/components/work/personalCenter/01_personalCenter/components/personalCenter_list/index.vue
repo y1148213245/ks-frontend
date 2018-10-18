@@ -35,7 +35,7 @@
               <span>
                 <i class="el-icon-time"></i> {{Aitem.createTime.split('.')[0]}}</span>
               <span>{{getStaticText('orderNumber') ? getStaticText('orderNumber') : '订单号'}}：{{Aitem.parentOrderCode}}</span>
-             <el-button class="writeNumBtn" v-if="CONFIG.showWriteNumBtn&&CONFIG.showWriteNumBtn==true&&Aitem.payStatus && Aitem.payStatus==0 && Aitem.payType && Aitem.payType==1" @click="writeRemitNum(outIndex)">{{getStaticText('writeRemitNum') ? getStaticText('writeRemitNum') : '填写汇款单号'}}</el-button>
+             <el-button class="writeNumBtn" v-if="CONFIG.showWriteNumBtn && CONFIG.showWriteNumBtn==true && Aitem.payStatus==0 && Aitem.status==1 && Aitem.payType==1" @click="writeRemitNum(outIndex)">{{getStaticText('writeRemitNum') ? getStaticText('writeRemitNum') : '填写汇款单号'}}</el-button>
             </div>
            
             <div v-for="(item,index) in Aitem.orderList" :key="index">
@@ -420,6 +420,8 @@ export default {
       this.CONFIG.tabListShow && this.CONFIG.tabListShow.length > 0
         ? this.CONFIG.tabListShow[0].type
         : "book";
+    this.orderType =
+      this.CONFIG.tabListShow && this.CONFIG.tabListShow.length > 0 && this.CONFIG.tabListShow[0].type == 91 ? "periodical" : "book";
     this.exchangeState =
       this.CONFIG && this.CONFIG.exchangeState
         ? this.CONFIG.exchangeState

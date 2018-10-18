@@ -1,0 +1,64 @@
+{
+  "result": "1",
+  "data": [
+    {
+      "id": 27,
+      "picGroupId": 3,
+      "picName": "测试链接到图书1",
+      "picUrl": "../data/img/ui_mobile_swiper_03_dataimg.jpg",
+      "picType": "RES",
+      "picAddress": "23",
+      "picSort": 1,
+      "createTime": "2018-10-11 13:51:50",
+      "updateTime": "2018-10-11 13:51:50"
+    },
+    {
+      "id": 28,
+      "picGroupId": 3,
+      "picName": "测试链接到图书2",
+      "picUrl": "../data/img/ui_mobile_swiper_03_dataimg1.jpg",
+      "picType": "RES",
+      "picAddress": "280",
+      "picSort": 2,
+      "createTime": "2018-10-11 13:52:39",
+      "updateTime": "2018-10-11 13:52:39"
+    },
+    {
+      "id": 31,
+      "picGroupId": 3,
+      "picName": "测试链接到栏目290",
+      "picUrl": "../data/img/ui_mobile_swiper_03_dataimg.jpg",
+      "picType": "COL",
+      "picAddress": "290",
+      "picSort": 5,
+      "createTime": "2018-10-12 10:08:45",
+      "updateTime": "2018-10-12 10:08:45"
+    },
+    {
+      "id": 32,
+      "picGroupId": 3,
+      "picName": "测试链接到百度",
+      "picUrl": "../data/img/ui_mobile_swiper_03_dataimg1.jpg",
+      "picType": "URL",
+      "picAddress": "www.baidu.com",
+      "picSort": 6,
+      "createTime": "2018-10-12 10:09:41",
+      "updateTime": "2018-10-12 10:09:41"
+    },
+    {
+      "id": 33,
+      "picGroupId": 3,
+      "picName": "测试链接到栏目（没链接）",
+      "picUrl": "../data/img/ui_mobile_swiper_03_dataimg.jpg",
+      "picType": "COL",
+      "picAddress": "336",
+      "picSort": 7,
+      "createTime": "2018-10-12 10:10:57",
+      "updateTime": "2018-10-12 10:10:57"
+    }
+  ],
+  "error": null,
+  "totalPages": null,
+  "totalCount": null,
+  "token": ""
+}

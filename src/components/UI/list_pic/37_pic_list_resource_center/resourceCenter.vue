@@ -43,6 +43,7 @@
   import PROJECT_CONFIG from "projectConfig";
   import { Get, Post, getFieldAdapter, toOtherPage } from "@common";
   import { mapGetters } from 'vuex';
+  import URL from "url";
   import * as interfaces from "@work/login/common/interfaces.js";
     export default {
       name: "ui_list_pic_37",
@@ -64,7 +65,8 @@
           tempItem: '', //临时保存数据
           zipAttachment: {},  //存储附件
           zipAttachmentId: '',  //存储附件Id
-          allCols:''//站点栏目树
+          allCols:'',//站点栏目树
+          orderBy:''
         };
       },
       created(){
@@ -99,6 +101,17 @@
           _self.getListByColumnId(item);
         });
         }
+          // 获取location搜索变量
+          this.locationQuery = URL.parse(document.URL, true).query;
+        // 初始加载
+        if(this.CONFIG.isAutoLoad){
+          this.autoLoad();
+        }
+        // 广播排序
+        this.$bus.$on(_self.CONFIG.eventName_loadDate,function(item){
+          _self.orderBy = item.orderBy;
+          _self.autoLoad();
+        });
       },
       mounted(){
 
@@ -109,6 +122,33 @@
         })
       },
       methods: {
+        // autoLoad
+        autoLoad(){
+          let params = Object.assign({},this.CONFIG.getList.params);
+          params.pageSize = this.pageSize ? this.pageSize : params.pageSize;
+          params.pageNo = this.pageNo ? this.pageNo : params.pageNo;
+          params.orderBy = this.orderBy ? this.orderBy : params.orderBy;
+          // 模糊查询
+          var newSearchText =this.locationQuery.searchText || '';
+          let searchText = '';
+          if (this.CONFIG.isMoreFieldSearch && this.CONFIG.isMoreFieldSearch.length > 0) {
+            for (var i=0;i<this.CONFIG.isMoreFieldSearch.length;i++){
+              searchText = searchText+' '+this.CONFIG.isMoreFieldSearch[i]+":"+"*"+newSearchText+"*";
+              if(i<(this.CONFIG.isMoreFieldSearch.length-1)){
+                searchText = searchText + ' OR ';
+              }
+            }
+          }else{
+            searchText = newSearchText;
+          }
+          params.searchText = searchText;
+          Post(CONFIG.BASE_URL + this.CONFIG.getList.url, params).then((rep) => {
+            this.totalCount = rep.data.totalCount;
+            if(rep.data.success && rep.data.result && rep.data.result.length > 0){
+              this.tBodyList = rep.data.result;
+            }
+          });
+        },
         //切换tab
         changeTab(item,index){
           this.currentIndex = index;
@@ -196,7 +236,11 @@
         paging ({ pageNo, pageSize }) {
           this.pageNo = pageNo;
           this.pageSize = pageSize;
-          this.getListByColumnId(this.tempItem);
+          if(this.CONFIG.isAutoLoad){
+            this.autoLoad();
+          }else{
+            this.getListByColumnId(this.tempItem);
+          }
         },
         toContent(item){
           switch (item[this.keys.pubResType]) {

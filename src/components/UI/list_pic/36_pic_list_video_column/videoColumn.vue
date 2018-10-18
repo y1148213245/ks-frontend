@@ -6,7 +6,7 @@
       <div class="ui_list_pic_36_column-title">{{display.courseName}}</div>
       <!-- 需要通过配置来判断是否购买的课程 -->
       <div v-if="CONFIG && CONFIG.needtobuy" class="ui_list_pic_36_videoList_out">
-        <ul class="ui_list_pic_36_videoList ui_list_pic_36_videoList_buy" v-if="videoList && videoList.length && isBuy == '1'">
+        <ul class="ui_list_pic_36_videoList ui_list_pic_36_videoList_buy" v-if="videoList && videoList.length && (isBuy == '1' || isVip == 1)">
           <!-- 已经购买 课程列表全部展示-->
           <li v-for="(video,index) in videoList" :key="index" @mouseover="showIcon(index)" @mouseout="hideIcon()" @click="toPlayVideo(video)">
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>
@@ -76,6 +76,7 @@ export default {
       pubId: '',
       pub_parent_id: '',
       isBuy: "0",   //判断课程是否购买
+      isVip: 0, // 判断是否是会员
       resourceDetail: {},  //存在课程详情信息
       isDialogShow: false,  //是否显示测试卷弹窗
       dialogTitle: '',  //弹窗标题
@@ -134,6 +135,7 @@ export default {
         if (rep.status == 200 && datas.data) {
           this.resourceDetail = datas.data;
           this.isBuy = this.resourceDetail[this.keys.isbuy];
+          this.isVip = this.resourceDetail.isVip;
         }else {
           this.$message({
             type: "error",

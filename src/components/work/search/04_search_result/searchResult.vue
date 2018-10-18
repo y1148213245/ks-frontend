@@ -75,6 +75,7 @@ export default {
   reused: true,
   props: {
     namespace: String,
+    modulename:String,
     isAutomaticLoad: {
       type: Boolean,
       default: true,
@@ -136,7 +137,7 @@ export default {
 
   methods: {
     initConfig () {
-      let CONFIG = PROJECT_CONFIG[this.namespace].search.search_result_04;
+      let CONFIG  = this.mudulename ? PROJECT_CONFIG[this.namespace].search[this.modulename] : PROJECT_CONFIG[this.namespace].search.search_result_04;
       this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
       //增量加载
       if (typeof (this.CONFIG.isMobileLoading) != 'undefined') {
@@ -171,20 +172,21 @@ export default {
       //增量加载
       param.searchText = '';
       var newSearchText = searchText ? searchText : (this.locationQuery && this.locationQuery.searchText || '');
+      let searchTextObj = '';
       if (typeof (this.CONFIG.isMoreFieldSearch) != 'undefined') {
         if (this.CONFIG.isMoreFieldSearch) {
           for (var i=0;i<this.CONFIG.isMoreFieldSearch.length;i++)
           {
-            param.searchText = param.searchText+' '+this.CONFIG.isMoreFieldSearch[i]+":"+"*"+newSearchText+"*";
+            searchTextObj = searchTextObj+' '+this.CONFIG.isMoreFieldSearch[i]+":"+"*"+newSearchText+"*";
             if(i<(this.CONFIG.isMoreFieldSearch.length-1)){
-              param.searchText = param.searchText + ' OR ';
+              searchTextObj = searchTextObj + ' OR ';
             }
           }
         }
       }else{
-        param.searchText = newSearchText;
+        searchTextObj = newSearchText;
       }
-
+      param.searchText = searchTextObj;
       Post(CONFIG.BASE_URL + config.url, param).then((req) => {
         let data = req.data.result;
         // if (data && data instanceof Array && data.length >= 0) {

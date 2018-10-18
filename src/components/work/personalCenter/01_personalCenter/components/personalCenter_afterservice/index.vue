@@ -193,7 +193,7 @@
           <hr>
           <span>{{getStaticText('completeReturn') ? getStaticText('completeReturn') : '退货完成'}}</span>
         </div>
-        <!-- 取消换货 -->
+        <!-- 取消退货 -->
         <div class="afterservice_textcenter" v-if="returnCancel">
           <hr>
           <div>{{getStaticText('cancelReturn') ? getStaticText('cancelReturn') : '退货申请已取消'}}</div>
@@ -286,7 +286,7 @@
           <div class="mtb15">
             <span>{{getStaticText('courierCompany') ? getStaticText('courierCompany') : '快递公司'}}：</span>
             <el-select v-model="courierCompany" :placeholder="getStaticText('chooseCourierCompany') ? getStaticText('chooseCourierCompany') : '请选择快递公司'" @change="handleChange">
-              <el-option v-for="item in courierOptions" :key="item.value" :label="item.label" :value="item.value">
+              <el-option v-for="item in defaultCourier" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
             </el-cascader>
@@ -585,7 +585,7 @@ export default {
         this.$message.error(vm.getStaticText('writeCourierNumber') ? vm.getStaticText('writeCourierNumber') : '请填写快递单号');
         return false;
       } else if (this.logisticsCompany == "") {
-        this.$message.error(vm.getStaticText('chooseCourierCompany') ? vm.getStaticText('chooseCourierCompany') : '请填写快递单号');
+        this.$message.error(vm.getStaticText('chooseCourierCompany') ? vm.getStaticText('chooseCourierCompany') : '请选择快递公司');
         return false;
       } else {
         var params = {

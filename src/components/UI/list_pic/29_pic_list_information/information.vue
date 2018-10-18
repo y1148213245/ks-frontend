@@ -22,6 +22,16 @@
       <span class="ui_list_pic_29_orderby_span" v-for="(item, index) in toOrderByBtn.itemList" :key="index" @click="toSetOrder(item)" :class="{toOrderByBtn_Active: item.itemField==activeSetOrder}">{{item.name}}</span>
     </div>
 
+    <!-- 排序2 最新 热门(带升降排序) -->
+    <div class="ui_list_pic_29_orderby_con1" v-if="CONFIG && CONFIG.toOrderByBtn2 && CONFIG.toOrderByBtn2.isShow">
+      <span class="ui_list_pic_29_orderby_name1"> {{CONFIG.toOrderByBtn2.name}}</span>
+      <span class="ui_list_pic_29_orderby_span1" v-for="(item, index) in CONFIG.toOrderByBtn2.itemList" :key="index" @click="toSetOrder2(item)" :class="{'toOrderByBtn_Activedesc': item.itemField.order == activeSetOrder2 , 'toOrderByBtn_Activeasc' : item.itemField2.order == activeSetOrder2}">
+        {{item.name}}
+        <a href="javascript:;" class="ui_list_pic_29_orderby_one"></a>
+        <a href="javascript:;" class="ui_list_pic_29_orderby_two"></a>
+        </span>
+    </div>
+
     <!-- 搜索框 -->
     <div class="ui_list_pic_29_search_con" v-if="CONFIG.showSearchBtn">
       <el-input class="ui_list_pic_29_search_input" v-model="searchText"></el-input>
@@ -125,7 +135,10 @@ export default {
       searchText: "",
       columnName: "",  // 稿件的栏目名称
       seriesId:"", // 丛书的id
-      authorSysTopic: "" // 作者名字
+      authorSysTopic: "", // 作者名字
+      activeSetOrder2: "", // 带升降排序
+      orderBy:'',
+      articleNature: "" // 稿件标签(金融博览)
     };
   },
 
@@ -159,9 +172,7 @@ export default {
       this.authorSysTopic = uriQuery.authorSysTopic;
     }
 
-
-    this.CONFIG =
-      PROJECT_CONFIG[this.namespace].list_pic.list_pic_29[this.modulename];
+    this.CONFIG =PROJECT_CONFIG[this.namespace].list_pic.list_pic_29[this.modulename];
     this.resourceListsConfig = this.CONFIG.getResourceLists;
     this.keys = JSON.parse(
       JSON.stringify(
@@ -198,6 +209,13 @@ export default {
         this.activeSetOrder = this.toOrderByBtn.itemFieldDefult;
       }
     }
+
+    // 带升降排序
+    if (typeof this.CONFIG.toOrderByBtn2 != "undefined") {
+      if (this.CONFIG.toOrderByBtn2) {
+        this.activeSetOrder2 = this.CONFIG.toOrderByBtn2.itemFieldDefult;
+      }
+    }
     //  = "";
 
     if (this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.eventName) {
@@ -230,11 +248,31 @@ export default {
         this.cascadId = data[0];
         this.getResourceFun();
       });
-    } else {
+    } else if(this.CONFIG && this.CONFIG.onEvent && this.CONFIG.onEvent.onArticleNature){
+      this.$bus.$on(this.CONFIG.onEvent.onArticleNature, data => {
+        this.resourceLists = [];
+        this.totalCount = 0;
+        this.articleNature = data.fieldName;
+        this.getResourceFun();
+      });
+    }else {
       this.getResourceFun();
     }
 
     // this.getColumnSubTitle(); // $on方法回调是异步的
+
+    // 获取location搜索变量
+    this.locationQuery = URL.parse(document.URL, true).query;
+    // 初始加载
+    if(this.CONFIG.isAutoLoad){
+      this.autoLoad();
+    }
+    // 广播排序
+    let _self = this;
+    this.$bus.$on(_self.CONFIG.eventName_loadDate,function(item){
+      _self.orderBy = item.orderBy;
+      _self.autoLoad();
+    });
   },
 
   mounted () {
@@ -255,6 +293,48 @@ export default {
   },
 
   methods: {
+    autoLoad(){
+      let paramsObj = Object.assign({}, this.resourceListsConfig.params);
+      // paramsObj.conditions = '[{"pub_col_id":1129}]';
+      paramsObj.pageSize = this.pageSize ? this.pageSize : paramsObj.pageSize;
+      paramsObj.pageNo = this.pageNo ? this.pageNo : paramsObj.pageNo;
+      paramsObj.orderBy = this.orderBy ? this.orderBy : paramsObj.orderBy;
+      // 模糊查询
+      var newSearchText =this.locationQuery.searchText || '';
+      let searchTextObj = '';
+      if (this.CONFIG.isMoreFieldSearch) {
+        for (var i=0;i<this.CONFIG.isMoreFieldSearch.length;i++){
+          searchTextObj = searchTextObj+' '+this.CONFIG.isMoreFieldSearch[i]+":"+"*"+newSearchText+"*";
+          if(i<(this.CONFIG.isMoreFieldSearch.length-1)){
+            searchTextObj = searchTextObj + ' OR ';
+          }
+        }
+      }else{
+        searchTextObj = newSearchText;
+      }
+      paramsObj.searchText = searchTextObj;
+      Post(CONFIG.BASE_URL + this.resourceListsConfig.url, paramsObj).then(
+        rep => {
+          let datas = rep.data;
+          if (datas.success) {
+            this.totalCount = datas.totalCount;
+            if (datas.success && datas.result.length > 0) {
+              if (this.isMobileLoading) {
+                this.resourceLists = this.resourceLists.concat(datas.result);
+              }else{
+                this.resourceLists = datas.result;
+              }
+              this.totalPages = datas.totalPages;
+              this.pageNo = datas.pageNo;
+              this.pageNoz = datas.pageNo;
+              this.pageSize = datas.pageSize;
+            } else if (datas.success && datas.result.length == 0) {
+              this.resourceLists=[];
+            }
+          }
+        }
+      );
+    },
     getResourceFun () {
       this.getResourceLists();
       this.getColumnSubTitle();
@@ -263,6 +343,15 @@ export default {
       //修改默认排序
       this.activeSetOrder = item.itemField;
       this.totalCount = 0;
+      this.getResourceLists();
+    },
+    toSetOrder2 (item) {
+      //修改默认排序
+      if(this.activeSetOrder2 == item.itemField.order){
+        this.activeSetOrder2 = item.itemField2.order;
+      }else{
+        this.activeSetOrder2 = item.itemField.order;
+      }
       this.getResourceLists();
     },
     changeColId (item) {
@@ -382,6 +471,12 @@ export default {
           paramsObj.orderBy = this.activeSetOrder;
         }
       }
+
+      if (typeof this.CONFIG.toOrderByBtn2 != "undefined") {
+        if (this.CONFIG.toOrderByBtn2) {
+          paramsObj.orderBy = this.activeSetOrder2;
+        }
+      }
       // this.activeSetOrder = paramsObj.orderBy;
 
       paramsObj.conditions.map(item => {
@@ -439,6 +534,11 @@ export default {
           item["PRODUCT-ARTICLE_SYS_AUTHORS"] = this.authorSysTopic ? this.authorSysTopic : item["PRODUCT-ARTICLE_SYS_AUTHORS"];
         }
 
+        // 稿件标签(金融博览)
+        if(item.hasOwnProperty("PRODUCT-ARTICLE_ARTICLE_NATURE")){
+            item["PRODUCT-ARTICLE_ARTICLE_NATURE"] = this.articleNature ? this.articleNature : item["PRODUCT-ARTICLE_ARTICLE_NATURE"];
+        }
+
       });
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);
       this.requestParams = paramsObj;
@@ -483,11 +583,17 @@ export default {
     },
     paging: function ({ pageNo, pageSize }) {
       // 翻页
-      var pagingParams = {
-        pageNo: pageNo,
-        pageSize: pageSize
-      };
-      this.getResourceLists(pagingParams);
+      if(!this.CONFIG.isAutoLoad){
+        var pagingParams = {
+          pageNo: pageNo,
+          pageSize: pageSize
+        };
+        this.getResourceLists(pagingParams);
+      }else{
+        this.pageNo = pageNo;
+        this.pageSize = pageSize;
+        this.autoLoad();
+      }
     },
     getStaticText (text) {
       if (

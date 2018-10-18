@@ -8,7 +8,7 @@
       <div class="" name="data_column_block">
         <dl class="listCon" v-for="(entry, index) in list" v-if="index<(number || 4)" :key="index">
           <dt class="listDt">
-            <a  v-bind:href="(CONFIG && DSCONFIG && CONFIG.href &&DSCONFIG.directUrl&& DSCONFIG.directUrl[CONFIG.href] ? DSCONFIG.directUrl[CONFIG.href]+'?pubId='+entry.id : './bookdetail.html')">
+            <a  v-bind:href="(CONFIG && DSCONFIG && CONFIG.href &&DSCONFIG.directUrl&& DSCONFIG.directUrl[CONFIG.href] ? DSCONFIG.directUrl[CONFIG.href]+'?pubId='+entry.id : './bookdetail.html?pubId='+entry.id)">
               <img :src="entry && entry.pub_picBig" onload="DrawImage(this,70,84)" :alt="getStaticText('noCover') ? getStaticText('noCover') : '暂无封面'" />
             </a>
           </dt>

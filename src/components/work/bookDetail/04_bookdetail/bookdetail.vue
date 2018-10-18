@@ -10,6 +10,11 @@
           <div v-if="config.name == 'img'" class="work_bookdetail_04_imgcontainter" @click="toCustomFun(config)" :key="innerConfig_i">
             <label class="work_bookdetail_04_img_label">{{config.display}}</label>
             <img class="work_bookdetail_04_img" v-bind="{class: 'work_bookdetail_04_' + config.field}" :src="resourceDetail[keys[config.field]] || require('@static/img/defaultCover.png')" :alt="getStaticText('noImg') ? getStaticText('noImg') : '暂无图片'" @load="dealResourceImg($event)" />
+            <!-- 2018/10/17 详情页做电子书和纸质书的区分 -->
+            <span v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')" class="work_bookdetail_04_ebook_diff">
+              <i class="work_bookdetail_04_ebook_icon fas fa-bookmark"></i>
+              <span class="work_bookdetail_04_ebook_text">电子书</span>
+            </span>
           </div>
 
           <!-- 自定义事件按钮 包括（title 标题） -->
@@ -52,7 +57,7 @@
             </section>
             <section v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')">
               <label class="work_bookdetail_04_price_label">{{config.display}}</label>
-              <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_ebPrice_' + config.field}">{{formatPriceNew(resourceDetail.relBook[keys[config.field]])}}</span>
+              <span v-if="resourceDetail.relBook" v-bind="{class: 'work_bookdetail_04_bPrice_' + config.field}">{{formatPriceNew(resourceDetail.relBook[keys[config.field]])}}</span>
               <span v-if="!resourceDetail.relBook" class="work_bookdetail_04_ebPrice_noprice">{{getStaticText('noResource') ? getStaticText('noResource') : '暂无'}}</span>
             </section>
           </div>
@@ -1305,5 +1310,29 @@ input[type="number"] {
 }
 .buyBtnOpacity div{
   opacity: .6;
+}
+
+/* 样式区分纸质书和电子书 */
+.work_bookdetail_04_ebook_diff {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+}
+
+.work_bookdetail_04_ebook_icon {
+  font-size: 51px;
+  color: #0099ff;
+}
+
+.work_bookdetail_04_ebook_text {
+  position: absolute;
+  top: 0;
+  z-index: 999;
+  font-size: 10px;
+  color: #fff;
+  width: 100%;
+  text-align: center;
 }
 </style>

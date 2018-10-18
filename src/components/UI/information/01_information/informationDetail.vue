@@ -68,6 +68,12 @@
           <img :src="information[keys.picture]" onload="DrawImage(this,940,455)">
         </div> -->
 
+        <!-- 阅读数量 -->
+        <div class="ui_information_01-nums" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('nums') !== -1 ? true : false">
+          <label class="ui_information_01-label">{{getStaticText('nums') ? getStaticText('nums') : '阅读：'}}</label>
+          <div class="ui_information_01-nums_num">{{information.pub_read_num}}</div>
+        </div>
+
         <!-- 评论组件 -->
         <work_bookreview_01 namespace="information" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('review') !== -1 ? true : false"></work_bookreview_01>
         <!-- END 评论组件 -->

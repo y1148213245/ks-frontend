@@ -36,18 +36,20 @@ export default {
   },
   created: function(){
     this.CONFIG = PROJECT_CONFIG[this.namespace].search.search_01;
+    // this.showCondition = this.CONFIG.searchConditionArr && this.CONFIG.searchConditionArr.length > 0 ? this.CONFIG.searchConditionArr[0] : {};
+    var queryParams = URL.parse(document.URL, true).query;
+    this.showCondition.name = queryParams.catagorySearch ? this.getStaticText(queryParams.catagorySearch) :((this.CONFIG.searchConditionArr && this.CONFIG.searchConditionArr.length > 0)? this.CONFIG.searchConditionArr[0].name:undefined);
+    this.searchText = queryParams && queryParams.searchText ? queryParams.searchText : '';
   },
   mounted: function () {
-    this.showCondition = this.CONFIG.searchConditionArr && this.CONFIG.searchConditionArr.length > 0 ? this.CONFIG.searchConditionArr[0] : {};
-    var queryParams = URL.parse(document.URL, true).query;
-    this.searchText = queryParams && queryParams.searchText ? queryParams.searchText : '';
+    
   },
   methods: {
     selectCondition (item) {
       this.showCondition = item;
     },
     goToSearchResult () {
-      window.location.href = (this.CONFIG.searchUrl ? this.CONFIG.searchUrl : "../pages/search.html") + '?searchText=' + this.searchText + '&catagory=' + (this.showCondition ? this.showCondition.tag : "");
+      window.location.href = (this.CONFIG.searchUrl ? this.CONFIG.searchUrl : "../pages/search.html") + '?searchText=' + this.searchText + '&catagory=' + (this.showCondition ? this.showCondition.tag : "")+'&catagorySearch='+(this.showCondition.catagorySearch?this.showCondition.catagorySearch:(URL.parse(document.URL, true).query.catagorySearch ? URL.parse(document.URL, true).query.catagorySearch : this.CONFIG.searchConditionArr[0].catagorySearch));
     },
     goToAdvSearch () {
         window.location.href = this.CONFIG.advSearchUrl ? this.CONFIG.advSearchUrl : "../pages/searchadvanced.html";

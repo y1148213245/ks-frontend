@@ -61,11 +61,9 @@ export default {
       PROJECT_CONFIG[this.namespace].navigation.navigation_05[this.modulename];
     this.keys = this.CONFIG.getNavLists.keys;
     this.showThreeColumn = this.CONFIG.showThreeColumn;
-    this.getNavList();
-
-
   },
   mounted () {
+    this.getNavList();
   },
   methods: {
     navInteract (colId) {

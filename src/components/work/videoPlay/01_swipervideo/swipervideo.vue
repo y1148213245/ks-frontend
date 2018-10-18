@@ -1,8 +1,8 @@
 /*
  * @Author: song
  * @Date: 2018-07-03 10:52:51
- * @Last Modified by: yan.chaoming
- * @Last Modified time: 2018-09-18 17:09:43
+ * @Last Modified by: song
+ * @Last Modified time: 2018-10-17 11:07:50
  * 视频播放组件 列表是轮播图形式的
  */
 
@@ -40,7 +40,7 @@
 
     <!-- 系列课程列表 -->
     <!--购买显示全部能播放-->
-    <div class="work_videoplay_01_myswipercon_container" v-show='isBuy==1' v-if="videoLists && videoLists.length>0">
+    <div class="work_videoplay_01_myswipercon_container" v-show="(isBuy == '1' || isVip == 1)" v-if="videoLists && videoLists.length>0">
       <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
         <div class="work_videoplay_01_myswiperwra swiper-wrapper">
           <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-text="item[keys.resName]" @click="toPlayVideo(item,index)" :class="{work_videoplay_01_activevideo: curShowIndex == index}"></div>
@@ -100,7 +100,8 @@ export default {
       curShowIndex: 0, // 当前选中列表中的视频
       resType: 'VIDEO-MEDIA', // 资源类型：音频 AUDIO-MEDIA / 视频 VIDEO-MEDIA 默认视频
       playUrl: '', // 资源播放地址
-      isBuy: 1,
+      isBuy: "0",   //判断课程是否购买
+      isVip: 0, // 判断是否是会员
       CORE_PATH: process.env.NODE_ENV === 'production'
         ? BaseConfig.build.assetsPublicPath + BaseConfig.build.assetsSubDirectory
         : BaseConfig.dev.assetsPublicPath + BaseConfig.build.assetsSubDirectory
@@ -168,6 +169,7 @@ export default {
           let datas = rep.data;
           if (rep.status == '200' && datas.data) {
             this.isBuy = datas.data.isBuy;
+            this.isVip = datas.data.isVip;
           }
         })
       }

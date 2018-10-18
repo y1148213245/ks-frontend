@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-09-19 14:15:45
+ * @Last Modified time: 2018-10-09 15:39:08
  * 购物车组件
  */
 
@@ -1313,6 +1313,12 @@ export default {
       /* console.log(this.selectedDelivery)
       console.log(this.orderList);
       console.log(this.curSelectedAddress); */
+      var curRealAmount; // 当前订单的实付金额
+      if (this.allEbook === true && this.allEbook === '0') {
+        curRealAmount = this.orderDetail.bookTotalMoney + this.orderDetail.ebookTotalMoney - this.rmbCoin - this.orderDetail.ebookSaveMoney - this.orderDetail.bookSaveMoney;
+      } else {
+        curRealAmount = this.orderDetail.bookTotalMoney + this.orderDetail.ebookTotalMoney + this.selectedDelivery.deliveryPrice - this.orderDetail.bookSaveMoney - this.orderDetail.ebookSaveMoney - this.rmbCoin
+      }
       if (this.freeFreight) { // 如果这单免运费的话 就不需要再根据物流模板计算运费
         this.selectedDelivery.deliveryPrice = 0;
         return false;
@@ -1331,8 +1337,13 @@ export default {
         expenseTemp: this.selectedDelivery && this.selectedDelivery.expenseTemp ? this.selectedDelivery.expenseTemp : '', // 物流公司下的模板Id
         city: this.curSelectedAddress ? this.curSelectedAddress.province : '', // 收件城市 省
         weight: totalWeight, // 选择结算的所有纸质商品（纸质书/纸质期刊）的重量
+        money: curRealAmount + '',
       }
-      axios.get(CONFIG.BASE_URL + 'order/getDeliveryFee.do' + '?expenseTemp=' + params.expenseTemp + '&city=' + encodeURI(params.city) + '&weight=' + params.weight).then((response) => {
+      /* 延边项目个性化的地方：吉林省 延边 延吉市 2018/10/09 song */
+      if (this.CONFIG && this.CONFIG.yanjishiFeeSwitchFlag && this.curSelectedAddress && this.curSelectedAddress.city == '延边' && this.curSelectedAddress.county == '延吉市') {
+        params.city = this.curSelectedAddress.county
+      }
+      axios.get(CONFIG.BASE_URL + 'order/getDeliveryFee.do' + '?expenseTemp=' + params.expenseTemp + '&city=' + encodeURI(params.city) + '&weight=' + params.weight + '&money=' + params.money).then((response) => {
         if (response.data && response.data.result == '1') { // 请求成功
           this.selectedDelivery.deliveryPrice = Number(response.data.data);
           /* 运费随物流模板实时变化 那每次重新计算的时候都要重新计算订单实付总额 防止支付负数 */

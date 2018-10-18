@@ -1,0 +1,108 @@
+{
+  "result": "1",
+  "data": [
+    {
+      "id": 7,
+      "picGroupId": 5,
+      "picName": "测试链接到百度",
+      "picUrl": "/data/ui_swiper_11_pic_slide1.jpg",
+      "picType": "URL",
+      "picAddress": "www.baidu.com",
+      "picSort": 0,
+      "createTime": "2018-09-30 15:13:16",
+      "updateTime": "2018-10-10 11:44:57"
+    },
+    {
+      "id": 16,
+      "picGroupId": 5,
+      "picName": "测试链接到栏目",
+      "picUrl": "/data/ui_swiper_11_pic_slide2.jpg",
+      "picType": "COL",
+      "picAddress": "276",
+      "picSort": 0,
+      "createTime": "2018-10-10 11:32:47",
+      "updateTime": "2018-10-10 11:44:40"
+    },
+    {
+      "id": 19,
+      "picGroupId": 5,
+      "picName": "测试链接到淘宝",
+      "picUrl": "/data/ui_swiper_11_pic_slide1.jpg",
+      "picType": "URL",
+      "picAddress": "https://www.taobao.com/",
+      "picSort": 3,
+      "createTime": "2018-10-10 14:24:44",
+      "updateTime": "2018-10-10 14:24:44"
+    },
+    {
+      "id": 21,
+      "picGroupId": 5,
+      "picName": "测试链接到栏目279",
+      "picUrl": "/data/ui_swiper_11_pic_slide2.jpg",
+      "picType": "COL",
+      "picAddress": "279",
+      "picSort": 5,
+      "createTime": "2018-10-10 15:39:42",
+      "updateTime": "2018-10-10 15:39:42"
+    },
+    {
+      "id": 22,
+      "picGroupId": 5,
+      "picName": "测试链接到图片",
+      "picUrl": "/data/ui_swiper_11_pic_slide1.jpg",
+      "picType": "RES",
+      "picAddress": "102",
+      "picSort": 6,
+      "createTime": "2018-10-10 17:31:41",
+      "updateTime": "2018-10-10 17:31:41"
+    },
+    {
+      "id": 23,
+      "picGroupId": 5,
+      "picName": "测试链接到视频",
+      "picUrl": "/data/ui_swiper_11_pic_slide2.jpg",
+      "picType": "RES",
+      "picAddress": "429",
+      "picSort": 7,
+      "createTime": "2018-10-10 17:32:14",
+      "updateTime": "2018-10-10 17:32:14"
+    },
+    {
+      "id": 24,
+      "picGroupId": 5,
+      "picName": "测试链接到纸书",
+      "picUrl": "/data/ui_swiper_11_pic_slide1.jpg",
+      "picType": "RES",
+      "picAddress": "24",
+      "picSort": 8,
+      "createTime": "2018-10-10 17:33:55",
+      "updateTime": "2018-10-10 17:33:55"
+    },
+    {
+      "id": 25,
+      "picGroupId": 5,
+      "picName": "测试链接到电子书",
+      "picUrl": "/data/ui_swiper_11_pic_slide2.jpg",
+      "picType": "RES",
+      "picAddress": "23",
+      "picSort": 9,
+      "createTime": "2018-10-10 17:37:55",
+      "updateTime": "2018-10-10 17:37:55"
+    },
+    {
+      "id": 26,
+      "picGroupId": 5,
+      "picName": "测试链接到电子书1",
+      "picUrl": "/data/ui_swiper_11_pic_slide1.jpg",
+      "picType": "RES",
+      "picAddress": "177",
+      "picSort": 10,
+      "createTime": "2018-10-10 18:16:06",
+      "updateTime": "2018-10-10 18:16:06"
+    }
+  ],
+  "error": null,
+  "totalPages": null,
+  "totalCount": null,
+  "token": ""
+}

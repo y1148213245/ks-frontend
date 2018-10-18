@@ -4,6 +4,16 @@
     <div class="center_ad" v-show="currentShow=='main'">
       <div v-if="siteId == 1 || 8 ">
         <ul>
+          <!-- 开通 VIP 配置里有开关可以控制 -->
+          <li class="personalcenter_account_openvip" v-if="CONFIG && CONFIG.openVipSwitchFlag">
+            <el-button v-if="vipInfoDetail && !isExpaired" class="personalcenter_account_openvip_button renewvip" v-text="getStaticText('renewVip') ? getStaticText('renewVip') : '立即续费'" @click="modifyInfor(11)" type="danger"></el-button>
+            <el-button v-else class="personalcenter_account_openvip_button openvip" v-text="getStaticText('openVIP') ? getStaticText('openVIP') : '开通VIP'" @click="modifyInfor(11)" type="danger"></el-button>
+            <div class="personalcenter_account_openvip_endtime" v-if="vipInfoDetail && !isExpaired">
+              <span> {{vipInfoDetail.endTime | formatDate}} </span>
+              <span v-text="getStaticText('endTime') ? getStaticText('endTime') : '到期'"></span>
+            </div>
+          </li>
+          <!-- END 开通 VIP -->
           <li>
             <span class="center_te">{{getStaticText('myAccount') ? getStaticText('myAccount') :'我的账户'}}</span>:
             <span>{{account && account.loginName}}</span>
@@ -12,6 +22,10 @@
                 <img v-bind:src="account.avatar || defaultPic" :alt="getStaticText('noAvatar') ? getStaticText('noAvatar') : '暂无头像'" />
               </div>
             </div>
+          </li>
+          <li v-if="CONFIG && CONFIG.openVipSwitchFlag && vipInfoDetail && !isExpaired">
+            <span class="center_te">{{getStaticText('vipname') ? getStaticText('vipname') : '会员名称'}}</span>:
+            <span v-text="vipInfoDetail.payMemberName"></span>
           </li>
           <li>
             <span class="center_te">{{getStaticText('accountLevel') ? getStaticText('accountLevel') : '账户等级'}}</span>:
@@ -555,7 +569,7 @@
         <ul>
           <el-radio-group v-model="virtualValue">
             <li>
-              <el-radio :label="5">5{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp{{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}500{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
+              <el-radio :label="0.01">0.01{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp{{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}500{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
             </li>
             <li>
               <el-radio :label="10">10{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}1000{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
@@ -621,8 +635,13 @@
         </div>
       </div>
     </div>
+
     <!--修改个人信息-->
-    <improvePersonalInfo :currentShow="currentShow" :parentConfig="parentConfig" @currentShowF="currentShowF"></improvePersonalInfo>
+    <!-- <improvePersonalInfo :is="currentShow" :parentConfig="parentConfig" @currentShowF="currentShowF"></improvePersonalInfo> -->
+
+    <!-- 修改个人信息 、开通VIP、查看vip充值记录 -->
+    <component :is="currentShow" :parentConfig="parentConfig" :namespace="namespace" @currentShowF="currentShowF"></component>
+    <!-- END 修改个人信息 、开通VIP、查看vip充值记录 -->
   </section>
 </template>
 
@@ -630,16 +649,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import { Get, Token } from "@common";
 import api from "../../api/personalCenterApi";
 import $ from "jquery";
 import { CityInfo } from "../../assets/js/city-data.js";
 import * as interfaces from "@work/login/common/interfaces.js";
-// 测试表单
+// 完善个人信息表单
 import improvePersonalInfo from "../improvePersonalInfo";
-Vue.use(Vuex);
-Vue.prototype.$ajax = axios;
+// 开通 VIP 功能
+import openvip from "../openVip/openVip.vue";
 
 export default {
   name: "personalCenter_account",
@@ -1013,7 +1033,8 @@ export default {
         "modifyPassword",
         "modifyMobile",
         "modifyEmail",
-        "modifyInfo"
+        "modifyInfo",
+        "openvip"
       ],
       // 计时器
       emailTime: "",
@@ -1169,7 +1190,9 @@ export default {
       contactorError: "", //新建收货地址--收货人验证信息
       goodsInfo: [], //新建收货地址--验证信息
       paymentList: [], //支付方式
-      isShowSecretProtection: true
+      isShowSecretProtection: true,
+      vipInfoDetail: null, // 会员详细信息
+      isExpaired: true, // 会员是否过期
     };
   },
   created() {
@@ -1215,7 +1238,8 @@ export default {
     }
   },
   components: {
-    improvePersonalInfo
+    improvePersonalInfo, // 完善个人信息
+    openvip, // 开通vip
   },
   mounted() {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
@@ -1234,6 +1258,9 @@ export default {
     })
   },
   filters: {
+    formatDate: function(val) {
+      return val.substring(0, val.indexOf(' ')); // 会员到期时间 只显示到天就行 不需要到时分秒
+    },
     toNum: function(value) {
       return parseFloat(value);
     },
@@ -1295,7 +1322,19 @@ export default {
     ...mapActions("login", {
       action_login: interfaces.ACTION_LOGIN
     }),
-    currentShowF(currentShowF) {
+    queryVipInfo() { // 查询会员信息 展示会员名称在我的账户界面
+      Get(CONFIG.BASE_URL + 'user/getMemberPayedAndRight.do?loginName='+  (this.account.loginName || this.member.loginName) + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((resp) => {
+        if (resp.data && resp.data.result=="1" && resp.data.data.length > 0) {
+          this.vipInfoDetail = resp.data.data[0];
+          let curTimeStamps = new Date().getTime();
+          let vipEndTimeStamps = moment(this.vipInfoDetail.endTime,'YYYY-MM-DD HH:mm:ss').valueOf();
+          if (curTimeStamps <= vipEndTimeStamps) { // 没过期
+            this.isExpaired = false;
+          }
+        }
+      })
+    },
+    currentShowF(currentShowF) { // 在子组件里点击【返回】按钮时触发
       this.currentShow = "main";
     },
     //个人信息编辑信息
@@ -1312,6 +1351,9 @@ export default {
         this.paymentList = response.data.data;
         this.payMethodCode = this.paymentList[0].payCode;
       });
+    if (this.CONFIG && this.CONFIG.openVipSwitchFlag) {
+      this.queryVipInfo(); // 查询会员信息
+    }
     },
     /*积分分页*/
     pointRecordPaging({ pageNo, pageSize }) {
@@ -3254,5 +3296,15 @@ input.bdhm {
 }
 .newPhoneNum {
   text-align: left;
+}
+
+.personalcenter_account_openvip .personalcenter_account_openvip_button {
+  margin-left: 10px;
+}
+
+.personalcenter_account_openvip_endtime {
+  display: inline-block;
+  margin-left: 20px;
+  vertical-align: bottom;
 }
 </style>
