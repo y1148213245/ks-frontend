@@ -12,10 +12,8 @@ const dev = {
 const prod = {
   login: {
     work_login_01: {
-      url:'spc/cms/publish/list.do',
-      keys: {},
-      eventName_loadDate: 'loadSearchResult',
-      // showItem:['dontBind']/* dontBind:不绑定直接登陆功能 */,
+      // showItem:['dontBind','input','bindBtn']/* dontBind:不绑定直接登陆功能 */,
+      isAutoLogin:false,/* 直接登录 */
       toIndexHref:'./index.html',
       staticText:{
         userName: '用户名',

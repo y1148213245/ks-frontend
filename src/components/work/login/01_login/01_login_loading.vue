@@ -2,14 +2,14 @@
 <template>
  <div class="work_login_01">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="work_login_01-ruleForm" v-if="status == 1 ">
-      <el-form-item :label="getStaticText('userName') ? getStaticText('userName') : '用户名'" prop="username">
+      <el-form-item v-if="getItemIsShow('input')" :label="getStaticText('userName') ? getStaticText('userName') : '用户名'" prop="username">
         <el-input v-model="ruleForm.username"></el-input>
       </el-form-item>
-      <el-form-item :label="getStaticText('password') ? getStaticText('password') : '密码'" prop="password">
+      <el-form-item v-if="getItemIsShow('input')" :label="getStaticText('password') ? getStaticText('password') : '密码'" prop="password">
         <el-input type="password" v-model="ruleForm.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">{{getStaticText('bind') ? getStaticText('bind') : '绑定'}}</el-button>
+        <el-button v-if="getItemIsShow('bindBtn')" type="primary" @click="submitForm('ruleForm')">{{getStaticText('bind') ? getStaticText('bind') : '绑定'}}</el-button>
         <el-button v-if="getItemIsShow('dontBind')" type="warning" @click="bind('0')">{{getStaticText('notBind') ? getStaticText('notBind') : '不绑定直接登陆'}}</el-button>
       </el-form-item>
     </el-form>
@@ -76,16 +76,19 @@ export default {
       }); /* 检查用户信息 */
     }
 
-    this.rules = [
-      username = [
-      { required: true, message: this.getStaticText('pleaseInputUserName') ? this.getStaticText('pleaseInputUserName') : '请输入用户名', trigger: 'blur' },
-      { validator: this.validateloginName, trigger: "blur" }
-    ],
-      password = [
-      { required: true, message: this.getStaticText('pleaseInputPass') ? this.getStaticText('pleaseInputPass') :'请输入密码', trigger: 'blur' },
-    ],
-    ]
-
+    this.rules = {
+      username : [
+        { required: true, message: this.getStaticText('pleaseInputUserName') ? this.getStaticText('pleaseInputUserName') : '请输入用户名', trigger: 'blur' },
+        { validator: this.validateloginName, trigger: "blur" }
+      ],
+      password : [
+        { required: true, message: this.getStaticText('pleaseInputPass') ? this.getStaticText('pleaseInputPass') :'请输入密码', trigger: 'blur' },
+      ],
+    }
+    /* 判断是否配置直接登录 */
+    if (this.CONFIG.isAutoLogin) {
+      this.bind('0')
+    }
   },
 
   mounted () {
@@ -146,6 +149,7 @@ export default {
     toLogin (token) {
       window.localStorage.setItem('token', token);
       let _this = this;
+      _this.status = 2;
       let interval = setInterval(() => {
         _this.second--;
         if (_this.second < 1) {
