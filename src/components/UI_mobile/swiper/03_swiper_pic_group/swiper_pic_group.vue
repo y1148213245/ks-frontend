@@ -73,14 +73,18 @@ export default {
           siteId: CONFIG.SITE_CONFIG.siteId,
           chId: CONFIG.SITE_CONFIG.chId
         };
+        if(item.picAddress.indexOf('_') != -1){
+          var colId=item.picAddress.split('_')[1];
+        }else{
+          var colId=item.picAddress;
+        }
         Get(CONFIG.BASE_URL + this.CONFIG.getAllColUrl, { params: param }).then(    //调获取所有栏目接口
           resp => {
             var colList = resp.data.data;
             for (var i in colList) {
-              if (colList[i].id == item.picAddress) {       //栏目ID与返回值一致时i，获取外部链接
+              if (colList[i].id == colId) {       //栏目ID与返回值一致时，获取外部链接
                 window.open(
-                  colList[i].url ? colList[i].url : "index.html",
-                  this.CONFIG.openTarget
+                  colList[i].url ? colList[i].url : "index.html", this.CONFIG.openTarget
                 );
               }
             }
@@ -91,7 +95,11 @@ export default {
         let value = this.CONFIG.phone.values;
         for (let index = 0; index < value.length; index++) {
           const element = value[index];
-          params += item[element] + ",";
+          if(item[element].indexOf('_') != -1){
+            params += item[element].split('_')[1] + ",";
+          }else{
+            params += item[element]+ ",";
+          }
         }
         params = params.substring(0, params.length - 1);
         eval(this.CONFIG.phone.functionName + "(" + params + ")");   

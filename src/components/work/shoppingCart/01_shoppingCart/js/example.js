@@ -229,7 +229,10 @@ const dev = {
           operateError: '操作失败',
           selectCorrectPayWay: '请选择有效的支付方式',
           notEnoughProduct: "库存不足",
-          perBook: "本。"
+          perBook: "本。",
+          perYear: '年',
+          No: '第',
+          perPeriod: '期'
         },
         addressContent: {
           staticText: {
@@ -415,7 +418,10 @@ const prod = {
           operateError: '操作失败',
           selectCorrectPayWay: '请选择有效的支付方式',
           notEnoughProduct: "库存不足",
-          perBook: "本。"
+          perBook: "本。",
+          perYear: '年',
+          No: '第',
+          perPeriod: '期'
         },
         addressContent: {
           staticText: {

@@ -2633,7 +2633,7 @@ export default {
 
 .butt_back {
   float: right;
-  margin: 30px 20px 0 0;
+  margin: 30px 120px 0 0;
 }
 
 .num {

@@ -3,14 +3,17 @@
     <van-tabs v-model="active" @click="clickTab">
       <van-tab v-for="(tabtitle,index) in tabtitleList" :title="tabtitle.title" :key="index">
         <div class="work_mobile_personalcenter_14_content">
-          <div class="work_mobile_personalcenter_14_all_cancel">
-            <button class="work_mobile_personalcenter_14_all_cancel_btn" @click="batchCancelCollection(loginName)">{{display.allCancelCollection}}</button>
-          </div>
+            <div class="work_mobile_personalcenter_14_all_cancel">
+              <button class="work_mobile_personalcenter_14_all_cancel_btn" @click="batchCancelCollection(loginName)">{{display.allCancelCollection}}</button>
+              <el-checkbox class="work_mobile_personalcenter_14_all_select" v-model="selectAll" @change="selectAllFunc">{{getStaticText('selectAll') ? getStaticText('selectAll') : '全选'}}</el-checkbox>
+            </div>
           <div class="work_mobile_personalcenter_14_content_lists">
             <div v-for="(item , index) in collectionlist" :key="index" :name="item.pubId">
                 <!-- 图书 -->
                 <div v-if="tabtitle.index ==0" class="work_mobile_personalcenter_14_content_lists_list">
-                    <van-checkbox v-model="item.checked" @change="selectProduct(item)"></van-checkbox>
+                    <div class="work_mobile_personalcenter_14_content_lists_list_check">
+                      <el-checkbox v-model="item.checked" @change="selectProduct"></el-checkbox>
+                    </div>
                     <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img" @click.self="toDetailsPage(item)">
                     <span class="work_mobile_personalcenter_14_content_lists_list_title" @click.self="toDetailsPage(item)">{{item.productName}}</span>
                     <span class="work_mobile_personalcenter_14_content_lists_list_author">{{item.author | formatAuthor }}</span>
@@ -20,7 +23,9 @@
                 </div>
                 <!-- 期刊 -->
                 <div v-else-if="tabtitle.index ==1" class="work_mobile_personalcenter_14_content_lists_list">
-                  <van-checkbox v-model="item.checked" @change="selectProduct(item)"></van-checkbox>
+                  <div class="work_mobile_personalcenter_14_content_lists_list_check">
+                    <el-checkbox v-model="item.checked" @change="selectProduct"></el-checkbox>
+                  </div>
                   <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img" @click.self="toPeriodicalDetailsPage(item)">
                   <span class="work_mobile_personalcenter_14_content_lists_list_title" @click.self="toPeriodicalDetailsPage(item)">{{item.productName}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_author">{{item.author | formatAuthor }}</span>
@@ -28,7 +33,9 @@
                 </div>
                 <!-- 知识服务 -->
                 <div v-else class="work_mobile_personalcenter_14_content_lists_list">
-                  <van-checkbox v-model="item.checked" @change="selectProduct(item)"></van-checkbox>
+                  <div class="work_mobile_personalcenter_14_content_lists_list_check">
+                    <el-checkbox v-model="item.checked" @change="selectProduct"></el-checkbox>
+                  </div>
                   <img :src="item.midPic" :alt="item.productName" class="work_mobile_personalcenter_14_content_lists_list_img" @click.self="toDetailsPage(item)">
                   <span class="work_mobile_personalcenter_14_content_lists_list_title" @click.self="toDetailsPage(item)">{{item.productName}}</span>
                   <span class="work_mobile_personalcenter_14_content_lists_list_author">{{display.author}}:{{item.author | formatAuthor}}</span>
@@ -72,6 +79,7 @@ export default {
       result: [],  //批量取消存放的pubid
       active: 0,
       tabtitleList: [],
+      selectAll:false
     }
   },
 
@@ -106,6 +114,7 @@ export default {
     clickTab (index, title) {
       this.collectionlist = [];
       this.initData(this.loginName, index)
+      this.selectAll = false;
     },
     initData (loginName, index) { // 初始化数据
       this.pageSize = this.COLLECTIONCONFIG.params.pageSize;
@@ -133,6 +142,9 @@ export default {
       Get(BASE_URL).then((resp) => {
         let res = resp.data;
         if (res.result == '1' && res.data.length > 0) {
+          res.data.forEach(element =>{
+            element.checked = false;
+          })
           obj.collectionlist = obj.collectionlist.concat(res.data);
           obj.totalPages = res.totalPages;
         } else if (res.result == '0') {
@@ -179,14 +191,31 @@ export default {
 
     //批量取消
     batchCancelCollection (loginName) {
+      let _self = this;
+      this.collectionlist.forEach(element => {
+        if(element.checked){
+          if(_self.result.indexOf(element.pubId)<0){
+            _self.result.push(element.pubId)
+          }
+        }
+      });
       if (this.result) {
         this.cancelCollection(loginName, this.result.join(","));
       }
     },
-    selectProduct(item) {
-      if(item.checked && !this.result.includes(item.pubId)) {
-        this.result.push(item.pubId);
+    selectProduct(val) {
+      for(let i = 0,len = this.collectionlist.length;i < len;i ++){
+        if(!this.collectionlist[i].checked){
+          this.selectAll = false;
+          return false;
+        }
       }
+      this.selectAll = true;
+    },
+    selectAllFunc(val){
+      this.collectionlist.map((item,i)=>{
+        item.checked = val;
+      })
     },
     //去期刊详情页
     toPeriodicalDetailsPage (item) {
@@ -195,6 +224,17 @@ export default {
     //去详情页
     toDetailsPage (item) {
       window.location.href = this.CONFIG.toDetailUrl ? this.CONFIG.toDetailUrl : './bookdetail.html' + '?pubId=' + item.pubId;
+    },
+    getStaticText (text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
+      } else {
+        return false;
+      }
     }
   },
   watch: {

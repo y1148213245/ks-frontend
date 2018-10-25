@@ -3,7 +3,7 @@
     <div class="work_search_08_content">
       <!-- 图书 -->
       <div v-if="currentSearch === 'BOOK'">
-        <work_search_04 :namespace=namespace :modulename=modulename></work_search_04>
+        <work_search_04 :namespace=namespace></work_search_04>
       </div>
       <!-- 电子书 -->
       <div v-if="currentSearch === 'EBOOK'">

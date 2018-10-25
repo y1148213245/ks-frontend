@@ -674,8 +674,11 @@ export default {
   border: 1px solid rgb(223, 236, 236);
 }
 .afterservice_main_card_left {
-  margin: 10px;
-  height: 100px;
+  /* margin: 10px; */    
+  padding: 10px 10px;
+  height: 120px;
+  border-right: .5px solid #dfecec;
+  box-sizing: border-box;
 }
 .afterservice_main_card_left_img {
   float: left;

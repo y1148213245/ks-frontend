@@ -169,7 +169,7 @@ var FIELD_ADAPTER = {
             flatPlate: "BOOK_FLAT_PLATE",
             remark: "BOOK_REMARK",
             coverSoft: "BOOK_COVER_SOFT",
-            textType: "BOOK_TEXT_TYPE",
+            textType: "BOOK_TEXT_TYPE", // 纸张
             textColor: "BOOK_TEXT_COLOR",
             textSoft: "BOOK_TEXT_SOFT",
             pubdate: "BOOK_PUBDATE",
@@ -182,10 +182,10 @@ var FIELD_ADAPTER = {
             fitment: "BOOK_FITMENT",
             printCompany: "BOOK_PRINT_COMPANY",
             synopsis: "BOOK_SYNOPSIS",
-            printedSheets: "BOOK_PRINTED_SHEETS",
+            printedSheets: "BOOK_PRINTED_SHEETS", // 印张
             proofEditor: "BOOK_PROOF_EDITOR",
             keywords: "BOOK_KEYWORDS",
-            bookwords: "BOOK_WORDS",
+            bookwords: "BOOK_WORDS", // 字数
             themeWord: "BOOK_THEME_WORD",
             ontology: "BOOK_ONTOLOGY",
             bookBsn: "BOOK_BSN",
@@ -196,7 +196,7 @@ var FIELD_ADAPTER = {
             clcCascadId: "BOOK_CLC_CASCADID",
             departId: "BOOK_DEPARTID",
             departCascadId: "BOOK_DEPART_CASCADID",
-            pageNum: "BOOK_PAGE_NUM_BOOK",
+            pageNum: "BOOK_PAGE_NUM_BOOK", // 页数
             activityList: "activityList",
             bookFreeDownLoadPath: "bookFreeDownLoadPath",
             bookdownloadpath: "bookDownLoadPath",

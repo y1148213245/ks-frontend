@@ -261,7 +261,7 @@
                 <span class="mt5" :title="item1.productName">{{item1.productName||(getStaticText('noBookTitleForTheTimeBeing') ? getStaticText('noBookTitleForTheTimeBeing') : "暂无书名")}}</span>
                 <span class="personalcenter_list_main_listBox_card_left_author">{{getStaticText('author') ? getStaticText('author') : '作者'}}：{{item1.author||(getStaticText('noAuthor') ? getStaticText('noAuthor') : '暂无作者')}}</span>
               </div>
-              <div v-if="item.itemList[0].productType == 91 && exchangeState" class="OperationDoubleBtn personalcenter_list_main_listBox_card_left_returnBtn">
+              <div v-if="item.itemList[0].productType == 91 && exchangeState && item.payStatus==1" class="OperationDoubleBtn personalcenter_list_main_listBox_card_left_returnBtn">
                 <el-button type="text" @click="showReturn(item,item1,1)">{{getStaticText('returnGoods') ? getStaticText('returnGoods') :'退货'}}</el-button>
                 <el-button type="text" @click="showReturn(item,item1,2)">{{getStaticText('exchangeGoods') ? getStaticText('exchangeGoods') :'换货'}}</el-button>
               </div>
@@ -340,8 +340,8 @@
           <el-step :title="getStaticText('completeTheReturnTransOfTheGoods') ? getStaticText('completeTheReturnTransOfTheGoods') : '完成换货'" icon="el-icon-check"></el-step>
         </el-steps>
       </div>
-      <div class="personalcenter_list_main_title">
-        <el-row :gutter="1">
+      <div class="personalcenter_list_main_title personalcenter_list_main_title02">
+        <el-row>
           <el-col :span="14">
             <div class="personalcenter_list_title_common bg-purple-light">{{getStaticText('commodityName') ? getStaticText('commodityName') : '商品名称'}}</div>
           </el-col>
@@ -393,6 +393,7 @@
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="">
           </el-dialog>
+          <div class="personalcenter_list_returnForm_words">可上传jpg、png格式图片、每张不超过15M，最多上传五张</div>
         </div>
       </div>
       <div v-if="goodsType==2">
@@ -1303,7 +1304,10 @@ export default {
 .personalcenter_list_main_listBox_card_right {
   font-size: 16px;
   text-align: center;
-  margin-top: 45px;
+  padding-top: 45px;
+  box-sizing: border-box;
+  height: 120px;
+  border-left: 1px solid #a7c0db;
 }
 .personalcenter_list_main_listBox_footer {
   font-size: 18px;

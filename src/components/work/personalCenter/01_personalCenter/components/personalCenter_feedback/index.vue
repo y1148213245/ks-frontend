@@ -53,11 +53,12 @@ export default {
       let paramsObj = this.CONFIG.params;
       let paramsChild = {
         "REQUESTER":this.member.loginName,
-        "QUE_CONTENT":$(".personalcenter-feedback-input").val(),
+        //"QUE_CONTENT":$(".personalcenter-feedback-input").val(),
         "QUES_CONTENT":$(".personalcenter-feedback-input").val()
       }
       // paramsObj.metaMap[this.CONFIG.feedbackkeys] = $(".personalcenter-feedback-input").val();
-      paramsObj.metaMap = paramsChild;
+      //paramsObj.metaMap = paramsChild;
+      paramsObj.metaMap = Object.assign(paramsObj.metaMap, paramsChild);
       Post(CONFIG.BASE_URL + this.CONFIG.submitUrl, paramsObj).then(
         res => {
           let datas = res.data;

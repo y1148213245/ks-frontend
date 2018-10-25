@@ -87,6 +87,8 @@
 
 <script>
 import Vue from "vue";
+import { mapGetters } from "vuex";
+import * as interfaces from "@work/login/common/interfaces.js";
 import PROJECT_CONFIG from "projectConfig";
 import { Post, Get, ValidateRules, getFieldAdapter } from "@common";
 import area from "./js/area.js";
@@ -158,7 +160,11 @@ export default {
       fileList: [] // 附件列表(暂不支持上传多个文件,即使上传了多个文件依然会显示最后一个)
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters("login", { // 获取用户信息(某些功能比如在线留言需要传递提问者字段)
+      member: interfaces.GET_MEMBER
+    })
+  },
   created() {
     var uriQuery = URL.parse(document.URL, true).query;
     console.log(uriQuery);
@@ -438,6 +444,11 @@ export default {
           // 站点id(部分表单提交会区分站点,比如人才招聘)
           if("SITE_ID" in paramsObj.metaMap){
             paramsObj.metaMap["SITE_ID"] = CONFIG.SITE_CONFIG.siteId + "";
+          }
+
+          // 提问者
+          if("REQUESTER" in paramsObj.metaMap){
+            paramsObj.metaMap["REQUESTER"] = this.member.loginName ? this.member.loginName : "匿名用户";
           }
 
 

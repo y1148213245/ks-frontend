@@ -294,12 +294,8 @@ export default {
     },
     checkArea: function () {
       this.emptyPCC = false
-      if (
-        $("#s_province").text() === "" ||
-        $("#s_city").text() === "" ||
-        $("#s_county").text() === ""
-      ) {
         // 省市区没有选择或者没有选择完全
+      if(!this.form.minerae){
         this.emptyPCC = true;
         this.goodsInfo.push("false");
       } else {
@@ -323,8 +319,9 @@ export default {
 		  }else{
 			  this.form.city = value[0];
 			  this.form.erae = value[1];
-			  this.form.minerae = value[2];
-		  };
+        	  this.form.minerae = value[2];
+              this.checkArea();
+      };
 	  },
   },
   watch: {
@@ -362,7 +359,7 @@ export default {
 							CityInfo[y].children[z].children[i].value == value &&
 							value != undefined
 						) {
-							return CityInfo[y].children[z].children[i].label;
+                            return CityInfo[y].children[z].children[i].label;
 						}
 					}
 				}

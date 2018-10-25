@@ -88,18 +88,18 @@ const dev = {
   work_bookdetail: {
     work_bookdetail_04: {
       modulename: {
-        qrcodeHref:"../pages/qrcode.html?data=",
-        errorpageHref:"../pages/errorpage.html",
-        commitorderHref:"../pages/commitorder.html#/commitOrder/",
-        showDialog: false,  //控制购买按钮是否显示
-        zhentiContentType: '123',  //真题页面需要的配置
-        attachTypesCfg:{
-          showColId:"",
-          "type":"practice", // 资源下载附件的类型
-          "url":"/dynamicFile/stream.do", // 资源下载类型的下载地址
-          "key01":"recordID",    //资源下载类型的key01
-          "val01":"fileRecordID"    // 资源下载传参key01的值的取值字段
-        },   
+        qrcodeHref: "../pages/qrcode.html?data=",
+        errorpageHref: "../pages/errorpage.html",
+        commitorderHref: "../pages/commitorder.html#/commitOrder/",
+        showDialog: false, //控制购买按钮是否显示
+        zhentiContentType: '123', //真题页面需要的配置
+        attachTypesCfg: {
+          showColId: "",
+          "type": "practice", // 资源下载附件的类型
+          "url": "/dynamicFile/stream.do", // 资源下载类型的下载地址
+          "key01": "recordID", //资源下载类型的key01
+          "val01": "fileRecordID" // 资源下载传参key01的值的取值字段
+        },
         display: {
           courseUseTime: "使用期限：",
           buyCourse: "课程购买",
@@ -116,7 +116,7 @@ const dev = {
           params: {
             pubId: "",
             loginName: "",
-            attachTypes: 'video'  //获取视频时需要传的参数
+            attachTypes: 'video' //获取视频时需要传的参数
           },
           "ZILIAOZU": {
             "sysAdapter": "sykAdapter",
@@ -124,13 +124,13 @@ const dev = {
           },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "bookAdapter", // 类型字段
-          defaultSaleUrl:"https://www.tmall.com/",
+          defaultSaleUrl: "https://www.tmall.com/",
           complicatedItem: {
             "one": [{
               name: '',
               field: '',
               display: '',
-              afterDisplay: '',//固定显示内容是什么 后
+              afterDisplay: '', //固定显示内容是什么 后
               method: '',
               className: "",
             }],
@@ -138,7 +138,7 @@ const dev = {
               name: '',
               field: '',
               display: '',
-              afterDisplay: '',//固定显示内容是什么 后
+              afterDisplay: '', //固定显示内容是什么 后
               method: '',
               className: "",
             }],
@@ -279,64 +279,66 @@ const dev = {
         bookContentType: { // 书的类型  纸书：91 电子书 94
           bookType: '91',
           ebookType: '94',
+          ejournalTypeTag: '149'
         },
-        getPubidByLocationQueryFromSyk:{/* 通过地址栏参数从索引中查图书详情所需的pubId */
-          url:'spc/cms/publish/list.do',
-          params:{
-            conditions: [/* 条件配置 */
-            ],
+        getPubidByLocationQueryFromSyk: { /* 通过地址栏参数从索引中查图书详情所需的pubId */
+          url: 'spc/cms/publish/list.do',
+          params: {
+            conditions: [ /* 条件配置 */ ],
             groupBy: "pub_resource_id",
             orderBy: "pub_a_order asc pub_lastmodified desc",
             pageNo: "1",
             pageSize: "10",
             searchText: "",
           },
-          queryParams:{
-            title:'BOOK_SYS_TOPIC'
+          queryParams: {
+            title: 'BOOK_SYS_TOPIC'
           }
         },
         staticText: {
           noImg: "暂无图片",
+          ebookType: "电子书",
+          ejournalTypeTag: '电子期刊',
           noResource: "暂无",
           quantityOfGoodsMustNotExceedTwoHundred: "商品数量不能大于200",
           systemPrompt: "系统提示",
           OK: "确定",
           noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
           noEBookInfo: "该书没有对应电子书，无法加入购物车",
-          noDate:"暂无日期",
-          yuan:"￥",
-          noDiscount:"暂无活动",
-          price:"价格",
-          combinatePrice:"套餐价",
-          save:"省",
+          noDate: "暂无日期",
+          yuan: "￥",
+          noDiscount: "暂无活动",
+          price: "价格",
+          combinatePrice: "套餐价",
+          save: "省",
         },
-        getPayMethodsBySiteId: {  //获取站点的支付方式
+        getPayMethodsBySiteId: { //获取站点的支付方式
           url: "cart/getPayMethod.do",
           params: {
             siteId: ''
           }
         },
         commitOrderUrl: "order/submitSplitOrder.do", //提交订单接口
-        "combinateProductCfg":{
-          "show":true,  // 是否显示组合购买
-          "title":"组合购买",   // 组合购买数据的标题名称
-          "lastBtn":"加入购物车",  // 最后一个按钮显示内容
-          "showCombinateItem":3,  //展示图书个数
-          "addCart":{
-            "url":"cart/addCombinateProductToCart.do",
-            "params":{
+        "combinateProductCfg": {
+          "show": true, // 是否显示组合购买
+          "title": "组合购买", // 组合购买数据的标题名称
+          "lastBtn": "加入购物车", // 最后一个按钮显示内容
+          "showCombinateItem": 3, //展示图书个数
+          "addCart": {
+            "url": "cart/addCombinateProductToCart.do",
+            "params": {
               "loginName": "",
               "siteId": 37,
-              "combinateId":""
+              "combinateId": ""
             }
           },
-          "toDetail":{
-            "url":"booldetail.html", // 跳转的详情页
-            "params":{}
+          "toDetail": {
+            "url": "booldetail.html", // 跳转的详情页
+            "params": {}
           }
         },
-        "loginUrl": "../pages/login.html",  //跳登录页
-        judgeInventory: {  //库存量配置
+        "loginUrl": "../pages/login.html", //跳登录页
+        judgeInventory: { //库存量配置
           showInventory: true,
           noPaperBook: "没有对应的纸质书",
           lessInventory: "纸质书库存不足",
@@ -353,18 +355,18 @@ const prod = {
   work_bookdetail: {
     work_bookdetail_04: {
       modulename: {
-        qrcodeHref:"../pages/qrcode.html?data=",
-        errorpageHref:"../pages/errorpage.html",
-        commitorderHref:"../pages/commitorder.html#/commitOrder/",
-        showDialog: false,  //控制购买按钮是否显示
-        zhentiContentType: '123',  //真题页面需要的配置
-        attachTypesCfg:{
-          showColId:"",
-          "type":"practice", // 资源下载附件的类型
-          "url":"/dynamicFile/stream.do", // 资源下载类型的下载地址
-          "key01":"recordID",    //资源下载类型的key01
-          "val01":"fileRecordID"    // 资源下载传参key01的值的取值字段
-        },  
+        qrcodeHref: "../pages/qrcode.html?data=",
+        errorpageHref: "../pages/errorpage.html",
+        commitorderHref: "../pages/commitorder.html#/commitOrder/",
+        showDialog: false, //控制购买按钮是否显示
+        zhentiContentType: '123', //真题页面需要的配置
+        attachTypesCfg: {
+          showColId: "",
+          "type": "practice", // 资源下载附件的类型
+          "url": "/dynamicFile/stream.do", // 资源下载类型的下载地址
+          "key01": "recordID", //资源下载类型的key01
+          "val01": "fileRecordID" // 资源下载传参key01的值的取值字段
+        },
         display: {
           courseUseTime: "使用期限：",
           buyCourse: "课程购买",
@@ -381,7 +383,7 @@ const prod = {
           params: {
             pubId: "",
             loginName: "",
-            attachTypes: 'video'  //获取视频时需要传的参数
+            attachTypes: 'video' //获取视频时需要传的参数
           },
           "ZILIAOZU": {
             "sysAdapter": "sykAdapter",
@@ -389,13 +391,13 @@ const prod = {
           },
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "bookAdapter", // 类型字段
-          defaultSaleUrl:"https://www.tmall.com/",
+          defaultSaleUrl: "https://www.tmall.com/",
           complicatedItem: {
             "one": [{
               name: '',
               field: '',
               display: '',
-              afterDisplay: '',//固定显示内容是什么 后
+              afterDisplay: '', //固定显示内容是什么 后
               method: '',
               className: "",
             }],
@@ -403,7 +405,7 @@ const prod = {
               name: '',
               field: '',
               display: '',
-              afterDisplay: '',//固定显示内容是什么 后
+              afterDisplay: '', //固定显示内容是什么 后
               method: '',
               className: "",
             }],
@@ -544,64 +546,66 @@ const prod = {
         bookContentType: { // 书的类型  纸书：91 电子书 94
           bookType: '91',
           ebookType: '94',
+          ejournalTypeTag: '149'
         },
-        getPubidByLocationQueryFromSyk:{/* 通过地址栏参数从索引中查图书详情所需的pubId */
-          url:'spc/cms/publish/list.do',
-          params:{
-            conditions: [/* 条件配置 */
-            ],
+        getPubidByLocationQueryFromSyk: { /* 通过地址栏参数从索引中查图书详情所需的pubId */
+          url: 'spc/cms/publish/list.do',
+          params: {
+            conditions: [ /* 条件配置 */ ],
             groupBy: "pub_resource_id",
             orderBy: "pub_a_order asc pub_lastmodified desc",
             pageNo: "1",
             pageSize: "10",
             searchText: "",
           },
-          queryParams:{
-            title:'BOOK_SYS_TOPIC'
+          queryParams: {
+            title: 'BOOK_SYS_TOPIC'
           }
         },
         staticText: {
           noImg: "暂无图片",
+          ebookType: "电子书",
+          ejournalTypeTag: '电子期刊',
           noResource: "暂无",
           quantityOfGoodsMustNotExceedTwoHundred: "商品数量不能大于200",
           systemPrompt: "系统提示",
           OK: "确定",
           noPaperBookInfo: "该书没有对应纸质书，无法加入购物车",
           noEBookInfo: "该书没有对应电子书，无法加入购物车",
-          noDate:"暂无日期",
-          yuan:"￥",
-          noDiscount:"暂无活动",
-          price:"价格",
-          combinatePrice:"套餐价",
-          save:"省",
+          noDate: "暂无日期",
+          yuan: "￥",
+          noDiscount: "暂无活动",
+          price: "价格",
+          combinatePrice: "套餐价",
+          save: "省",
         },
-        getPayMethodsBySiteId: {  //获取站点的支付方式
+        getPayMethodsBySiteId: { //获取站点的支付方式
           url: "cart/getPayMethod.do",
           params: {
             siteId: ''
           }
         },
         commitOrderUrl: "order/submitSplitOrder.do", //提交订单接口
-        "combinateProductCfg":{
-          "show":true,  // 是否显示组合购买
-          "title":"组合购买",   // 组合购买数据的标题名称
-          "lastBtn":"加入购物车",  // 最后一个按钮显示内容
-          "showCombinateItem":3,  //展示图书个数
-          "addCart":{
-            "url":"cart/addCombinateProductToCart.do",
-            "params":{
+        "combinateProductCfg": {
+          "show": true, // 是否显示组合购买
+          "title": "组合购买", // 组合购买数据的标题名称
+          "lastBtn": "加入购物车", // 最后一个按钮显示内容
+          "showCombinateItem": 3, //展示图书个数
+          "addCart": {
+            "url": "cart/addCombinateProductToCart.do",
+            "params": {
               "loginName": "",
               "siteId": 37,
-              "combinateId":""
+              "combinateId": ""
             }
           },
-          "toDetail":{
-            "url":"booldetail.html", // 跳转的详情页
-            "params":{}
+          "toDetail": {
+            "url": "booldetail.html", // 跳转的详情页
+            "params": {}
           }
         },
-        "loginUrl": "../pages/login.html",  //跳登录页
-        judgeInventory: {  //库存量配置
+        "loginUrl": "../pages/login.html", //跳登录页
+        judgeInventory: { //库存量配置
           showInventory: true,
           noPaperBook: "没有对应的纸质书",
           lessInventory: "纸质书库存不足",

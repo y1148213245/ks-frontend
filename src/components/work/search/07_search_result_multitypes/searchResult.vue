@@ -307,7 +307,7 @@ export default {
       }
       // 同资源类型多字段单个查询(选择标题是标题,选择作者是作者,选择关键字是关键字,以此类推)
       else if(this.CONFIG.isSingleField){
-        this.category = this.locationQuery.catagory ? this.locationQuery.catagory : "pub_resource_name";
+        this.category = (this.locationQuery.catagory && this.locationQuery.catagory !== "undefined" && this.locationQuery.catagory !== "null") ? this.locationQuery.catagory : "pub_resource_name";
         param.searchText = this.category + ":" + "*" + newSearchText + "*"; 
       }else{
         param.searchText = newSearchText;

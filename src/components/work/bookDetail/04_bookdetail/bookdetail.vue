@@ -13,7 +13,12 @@
             <!-- 2018/10/17 详情页做电子书和纸质书的区分 -->
             <span v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94')" class="work_bookdetail_04_ebook_diff">
               <i class="work_bookdetail_04_ebook_icon fas fa-bookmark"></i>
-              <span class="work_bookdetail_04_ebook_text">电子书</span>
+              <span class="work_bookdetail_04_ebook_text">{{getStaticText('ebookType') ? getStaticText('ebookType') : '电子书'}}</span>
+            </span>
+            <!-- 2018/10/17 详情页做电子期刊和纸质期刊的区分 -->
+            <span v-if="resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ejournalTypeTag ? CONFIG.bookContentType.ejournalTypeTag : '149')" class="work_bookdetail_04_ejournal_diff">
+              <i class="work_bookdetail_04_ejournal_icon fas fa-bookmark"></i>
+              <span class="work_bookdetail_04_ejournal_text">{{getStaticText('ejournalTypeTag') ? getStaticText('ejournalTypeTag') : '电子期刊'}}</span>
             </span>
           </div>
 
@@ -140,7 +145,8 @@
           <!-- 促销活动 -->
           <div v-else-if="config.name == 'activity'" class="work_bookdetail_04_activitycontainter" @click="toCustomFun(config)">
             <i v-bind="{class: config.className}"></i>
-            <label class="work_bookdetail_04_probation_label" v-html="config.display"></label>
+            <label class="work_bookdetail_04_probation_label" v-if="CONFIG && CONFIG.isShowFullMinus && resourceDetail[keys[config.field]] && resourceDetail[keys[config.field]].length > 0" v-html="config.display"></label>
+            <label class="work_bookdetail_04_probation_label" v-if="!CONFIG.isShowFullMinus" v-html="config.display"></label>
             <section v-for="(activity, index) in resourceDetail[keys[config.field]]" :key="index" v-bind="{class: 'work_bookdetail_04_' + config.field}">
               <span>{{activity.discountName}}</span>
             </section>

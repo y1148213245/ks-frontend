@@ -65,12 +65,17 @@ export default {
           siteId: CONFIG.SITE_CONFIG.siteId,
           chId: CONFIG.SITE_CONFIG.chId
         };
+        if (item.picAddress.indexOf("_") != -1) {
+          var colId = item.picAddress.split("_")[1];
+        } else {
+          var colId = item.picAddress;
+        }
         Get(CONFIG.BASE_URL + this.CONFIG.getAllColUrl, { params: param }).then(
           //调所有栏目接口
           resp => {
             var colList = resp.data.data;
             for (var i in colList) {
-              if (colList[i].id == item.picAddress) {
+              if (colList[i].id == colId) {
                 //栏目ID与返回值一致时i，获取外部链接
                 window.open(
                   colList[i].url ? colList[i].url : "index.html",
@@ -81,19 +86,23 @@ export default {
           }
         );
       } else if (item.picType == "RES") {
+        if (item.picAddress.indexOf("_") != -1) {
+          var resPubId = item.picAddress.split("_")[1];
+        } else {
+          var resPubId = item.picAddress;
+        }
         Get(
           CONFIG.BASE_URL +
             this.CONFIG.getDetailUrl +
             "?pubId=" +
-            item.picAddress +
+            resPubId +
             "&loginName=" +
             this.loginName
         ).then(resp => {
           //调图书详情接口
           var resDetail = resp.data.data;
           window.open(
-            this.CONFIG.toResDetail[resDetail.contentType].detailUrl +
-              item.picAddress,
+            this.CONFIG.toResDetail[resDetail.contentType].detailUrl + resPubId,
             this.CONFIG.openTarget
           );
         });

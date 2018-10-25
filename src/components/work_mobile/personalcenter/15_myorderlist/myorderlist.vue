@@ -44,9 +44,10 @@
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_collectGoods" v-if="item.payStatus==1">{{display.collectGoods}}</span>
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_complete" v-if="item.payStatus==5">{{display.complete}}</span>
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_cancel" v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
+              <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_deliveryPrice">{{display.express2}}{{display.money}}{{toFixed2(item.orderList[0].deliveryPrice)}}{{display.express2End}}</span>
+              <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_total">{{display.total}}：<em><i>{{display.money}}</i>{{item.realAmount}}</em></span>
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_totalnum" v-if="orderType=='book'">{{display.all}}{{item.totalProductNum}}{{display.numtext}}</span>
               <!-- 期刊不展示数量-->
-              <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_total">{{display.total}}：{{display.money}}{{item.realAmount}}</span>
               <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_balanceDeduct" v-show="item.balanceAmount!='0.00'">{{display.balanceDeduct}}：{{display.money}}{{item.balanceAmount}}</span>
             </div>
             <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_pendingPaymentBtn" v-if="item.payStatus==0 && item.status==1">
@@ -68,6 +69,7 @@
       </ul>
     </div>
     <div class="work_mobile_personalcenter_15_bookDetails" v-show="currentShow=='bookDetails'">
+      <div class="work_mobile_personalcenter_15_bookDetails_title">{{display.pageTitle}}</div>
       <div class="work_mobile_personalcenter_15_bookDetails_mainbox" v-for="item in orderDetails" :key="item.id">
         <div class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation">
           <span class="work_mobile_personalcenter_15_bookDetails_mainbox_receiptinformation_person">{{item.deliveryPerson}}</span>
@@ -85,15 +87,19 @@
           <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>
         <ul class="work_mobile_personalcenter_15_bookDetails_mainbox_ul">
-          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_bookDetails_mainbox_li" @click="tobookdetails(inneritem)">
+          <li v-for="inneritem  in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_bookDetails_mainbox_li" @click="tobookdetails(inneritem)">
             <van-card :title="inneritem.productName" :desc="inneritem.author" :num="inneritem.productNum" :price="inneritem.memberPrice" :thumb="inneritem.bigPic">
             </van-card>
           </li>
         </ul>
         <div class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation">
-          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_total">{{display.total}}：{{display.money}}{{item.orderTotalPrice}}</span>
-          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_express">{{display.express}}：{{display.money}}{{item.deliveryPrice}}</span>
-          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_realPay">{{display.realPay}}：{{display.money}}{{item.orderTotalPrice + item.deliveryPrice}}</span>
+          <div class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_spans">
+            <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_express">{{display.express2}}：{{display.money}}{{display.expressNone}}{{display.express2End}}</span>
+            <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_total">{{display.total}}：<em><i>{{display.money}}</i>{{item.orderTotalPrice}}</em></span>
+            <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_totalnum">{{display.all}}{{item.productNum}}{{display.numtext}}</span>
+          </div>
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_express02">{{display.express}}：<em><i>{{display.money}}</i>{{item.deliveryPrice}}</em></span>
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_realPay">{{display.realPay}}：<em><i>{{display.money}}</i>{{item.orderTotalPrice + item.deliveryPrice}}</em></span>
         </div>
         <div class="work_mobile_personalcenter_15_bookDetails_mainbox_pendingPaymentBtn" v-if="item.payStatus==0 && item.status==1">
           <van-button size="small" @click="cancelOrder(outIndex)">
@@ -123,7 +129,7 @@
           <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>
         <ul class="work_mobile_personalcenter_15_periodicalDetails_mainbox_ul">
-          <li v-for="(inneritem, innerindex) in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_periodicalDetails_mainbox_li"  @click="toperiodicalDetails(inneritem,$event)">
+          <li v-for="inneritem in  item.itemList" :key="inneritem.id" class="work_mobile_personalcenter_15_periodicalDetails_mainbox_li"  @click="toperiodicalDetails(inneritem,$event)">
             <van-card :title="inneritem.periodicalName" :price="inneritem.totalPrice" :thumb="inneritem.bigPic" :desc="inneritem.periodicalRemark">
             </van-card>
             <div class="work_mobile_personalcenter_15_periodicalDetails_mainbox_footerinformation">
@@ -380,7 +386,25 @@ export default {
           window.open(toMagListDetailUrl);
           break;
       }
-    }
+    },
+    // 保留两位小数
+    toFixed2(num){
+			var result = parseFloat(num);
+			if (isNaN(result)) {
+				return false
+			}
+			result = Math.round(num*100)/100;
+			let s_x = result.toString();
+			let pos_decimal =  s_x.indexOf('.')
+			if (pos_decimal < 0) {
+        pos_decimal = s_x.length;
+				s_x += '.'
+			};
+			while(s_x.length<= pos_decimal+2){
+				s_x +='0'
+			}
+			return s_x
+		}
   },
   filters: {
     filterFun: function(value) {

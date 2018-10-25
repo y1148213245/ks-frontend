@@ -20,8 +20,11 @@
           <van-loading color="black" v-if="isLoading"/>
           <ul class="work_mobile_personalcenter_11_book-list_ul">
             <li class="work_mobile_personalcenter_11_book-list_li_one" v-for="(book, index) in boughtBooksList" :key="index" v-if="boughtBooksList && boughtBooksList.length > 0">
-              <div class="work_mobile_personalcenter_11_book-list_li_img-box">
+              <div v-if="book.midPic" class="work_mobile_personalcenter_11_book-list_li_img-box">
                 <img class="work_mobile_personalcenter_11_book-list_li_img-box_img" :src="book.midPic" :alt="display.noPicture || '暂无图片'" @click="toBookPage(book)"/>
+              </div>
+              <div v-else class="work_mobile_personalcenter_11_book-list_li_img-box">
+                <img class="work_mobile_personalcenter_11_book-list_li_img-box_img" :src="book.bigPic" :alt="display.noPicture || '暂无图片'" @click="toBookPage(book)"/>
               </div>
               <div class="work_mobile_personalcenter_11_book-list_li_content-box_bookName" @click="toBookPage(book)">
                 {{book.productName}}
@@ -56,11 +59,11 @@
           <ul class="work_mobile_personalcenter_11_book-list_periodical_ul">
             <li class="work_mobile_personalcenter_11_book-list_periodical_li" v-for="(book, index) in boughtBooksList" :key="index" v-if="boughtBooksList && boughtBooksList.length > 0">
               <div class="work_mobile_personalcenter_11_book-list_periodical_li_img-box">
-                <img class="work_mobile_personalcenter_11_book-list_periodical_li_img-box_img" :src="book.midPic" :alt="display.noPicture || '暂无图片'" />
+                <img class="work_mobile_personalcenter_11_book-list_periodical_li_img-box_img" @click="toMagazinePage(book)" :src="book.midPic" :alt="display.noPicture || '暂无图片'"/>
               </div>
               <div class="work_mobile_personalcenter_11_book-list_periodical_li_content-box">
                 <div class="work_mobile_personalcenter_11_book-list_periodical_li_content-box_bookName">{{display.periodicalName || '期刊名：'}}
-                  <span v-text="book.productName"></span>
+                  <span v-text="book.pub_resource_name"  @click="toMagazinePage(book)"></span>
                 </div>
                 <div class="work_mobile_personalcenter_11_book-list_periodical_li_content-box_author">{{display.periodicalContent || '期刊内容：'}}
                   <span v-text="book.author"></span>
@@ -228,6 +231,10 @@ export default {
           var url=CONFIG.READ_URL + '?bookId=' + book.resourceId + '&readType=' + (params.readType ? params.readType : '0') + '&bookName=' + book.resourceName + '&userName=&siteType=' + (params.siteType ? params.siteType : '0');
         }
           window.open(url, '_self');
+      },
+      toMagazinePage(magazine){
+        window.location.href = this.CONFIG.toPeriodicalDetailsPageUrl ? this.CONFIG.toPeriodicalDetailsPageUrl : './maginfo.html' + '?pubId='+magazine.pubId;
+
       }
     },
     watch: {

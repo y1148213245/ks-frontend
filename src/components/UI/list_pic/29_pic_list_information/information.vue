@@ -86,7 +86,7 @@
 
       <div class="ui_list_pic_29_resourcelists_nodata" v-if="resourceLists && resourceLists.length == 0">{{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}</div>
     </div>
-    <ui_pagination class="ui_list_pic_29_ui_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination" :pageMessage="{totalCount: totalCount}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
+    <ui_pagination class="ui_list_pic_29_ui_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination && resourceLists.length>0" :pageMessage="{totalCount: totalCount}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
   </div>
 </template>
 
@@ -106,6 +106,7 @@ import ui_pagination from "../../pagination/pagination/pagination";
 import { Icon, Toast } from "vant";
 import moment from "moment";
 import $ from "jquery"
+import qs from 'qs'
 
 export default {
   name: "ui_list_pic_29",
@@ -122,7 +123,7 @@ export default {
       requestParams: "", // 去详情页需要传查询list.do的所有参数
       isMobileLoading: false, //默认不是下拉增量加载
       pageIndex: "1", // 页码 从 1 开始
-      pageSize: "10", // 每页显示个数
+      pageSize: "", // 每页显示个数
       totalPages: "0", // 订单总页数
       pageNo: "1",
       pageNoz: "1",
@@ -296,7 +297,7 @@ export default {
     autoLoad(){
       let paramsObj = Object.assign({}, this.resourceListsConfig.params);
       // paramsObj.conditions = '[{"pub_col_id":1129}]';
-      paramsObj.pageSize = this.pageSize ? this.pageSize : paramsObj.pageSize;
+      paramsObj.pageSize = this.pageSize ? this.pageSize :paramsObj.pageSize;
       paramsObj.pageNo = this.pageNo ? this.pageNo : paramsObj.pageNo;
       paramsObj.orderBy = this.orderBy ? this.orderBy : paramsObj.orderBy;
       // 模糊查询
@@ -319,15 +320,7 @@ export default {
           if (datas.success) {
             this.totalCount = datas.totalCount;
             if (datas.success && datas.result.length > 0) {
-              if (this.isMobileLoading) {
-                this.resourceLists = this.resourceLists.concat(datas.result);
-              }else{
                 this.resourceLists = datas.result;
-              }
-              this.totalPages = datas.totalPages;
-              this.pageNo = datas.pageNo;
-              this.pageNoz = datas.pageNo;
-              this.pageSize = datas.pageSize;
             } else if (datas.success && datas.result.length == 0) {
               this.resourceLists=[];
             }
@@ -592,6 +585,7 @@ export default {
       }else{
         this.pageNo = pageNo;
         this.pageSize = pageSize;
+        console.log(this.pageSize)
         this.autoLoad();
       }
     },

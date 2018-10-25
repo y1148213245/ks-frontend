@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-10-09 15:39:08
+ * @Last Modified time: 2018-10-19 18:28:27
  * 购物车组件
  */
 
@@ -136,7 +136,7 @@
                       <span>{{item.activityName}}</span>
                     </span>
                   </div>
-                  <li v-for="(product, index) in item.list" v-if="item.productType == bookTypeTag || item.productType == seriesTypeTag" class="bookWrapper" v-bind:class="{checkedLi: product.checked}" :key="index">
+                  <li v-for="(product, index) in item.list" v-if="item.productType == bookTypeTag || item.productType == seriesTypeTag || item.productType == journalTypeTag" class="bookWrapper" v-bind:class="{checkedLi: product.checked}" :key="index">
                     <div class="cart-tab-1">
                       <div class="cart-item-check">
                         <el-checkbox v-model="product.checked" @change="selectedProduct(product, item)"></el-checkbox>
@@ -151,9 +151,14 @@
                       </div>
                       <div class="cart-item-title">
                         <div class="item-name">
-                          <a v-bind:href="(CONFIG && CONFIG.directUrl && CONFIG.directUrl[product.productType] ? CONFIG.directUrl[product.productType] : './bookdetail.html') + '?pubId=' + product.pubId+'&columnId='+product.colId" class="scoped_text" :title="product.productName">{{product.productName}}</a>
+                          <a v-bind:href="(CONFIG && CONFIG.directUrl && CONFIG.directUrl[product.productType] ? CONFIG.directUrl[product.productType] : './bookdetail.html') + '?pubId=' + product.pubId+'&columnId='+product.colId" class="scoped_text" :title="product.productName">
+                            <span>{{product.productName}}</span>
+                            <!-- 期刊需要加xx杂志xx年xx期 2018/10/19 song -->
+                            <span v-if="item.productType == journalTypeTag" class>{{product.MAGAZINE_PUBLISH_YEAR}}{{getStaticText('perYear') ? getStaticText('perYear') : '年'}} {{getStaticText('No') ? getStaticText('No') : '第'}}{{product.MAGAZINE_PERIOD_NUM}}{{getStaticText('perPeriod') ? getStaticText('perPeriod') : '期'}}</span>
+                          </a>
                         </div>
-                        <div class="author">
+                        <!-- 期刊不需要作者 -->
+                        <div class="author" v-if="item.productType != journalTypeTag">
                           <span class="scoped_text">{{getStaticText('author') ? getStaticText('author') : '作者：'}}</span>
                           <span v-text="product.author" :title="product.author" class="scoped_text"></span>
                         </div>
@@ -215,11 +220,16 @@
                       </div>
                       <div class="cart-item-title">
                         <div class="item-name">
-                          <a v-bind:href="(CONFIG && CONFIG.directUrl && CONFIG.directUrl[product.productType] ? CONFIG.directUrl[product.productType] : './bookdetail.html') +'?pubId=' + product.pubId" class="scoped_text" :title="product.productName">{{product.productName}}</a>
+                          <a v-bind:href="(CONFIG && CONFIG.directUrl && CONFIG.directUrl[product.productType] ? CONFIG.directUrl[product.productType] : './bookdetail.html') +'?pubId=' + product.pubId" class="scoped_text" :title="product.productName">
+                            <span>{{product.productName}}</span>
+                            <!-- 期刊需要加xx杂志xx年xx期 2018/10/19 song -->
+                            <span v-if="item.productType == ejournalTypeTag">{{product.MAGAZINE_PUBLISH_YEAR}}{{getStaticText('perYear') ? getStaticText('perYear') : '年'}} {{getStaticText('No') ? getStaticText('No') : '第'}}{{product.MAGAZINE_PERIOD_NUM}}{{getStaticText('perPeriod') ? getStaticText('perPeriod') : '期'}}</span>
+                          </a>
                           <span class="scoped_text" v-if="item.productType == ebookTypeTag"> {{getStaticText('ebook') ? getStaticText('ebook') : '(电子书)'}}</span>
                           <span class="scoped_text" v-if="item.productType == ejournalTypeTag"> {{getStaticText('ejournal') ? getStaticText('ejournal') : '(电子期刊)'}}</span>
                         </div>
-                        <div class="author">
+                        <!-- 期刊不需要作者 -->
+                        <div class="author" v-if="item.productType != ejournalTypeTag">
                           <span class="scoped_text">{{getStaticText('author') ? getStaticText('author') : '作者：'}}</span>
                           <span v-text="product.author" :title="product.author" class="scoped_text"></span>
                         </div>
@@ -650,6 +660,7 @@ export default {
       selectedCouponsPassword: "", // 当前选择的优惠券id
       bookTypeTag: "91", // 纸书类型代号
       ebookTypeTag: "94", // 电子书类型代号
+      journalTypeTag: '208', // 纸质期刊类型代号
       ejournalTypeTag: '149', // 电子期刊类型代号
       seriesTypeTag: '177', // 丛书类型代号
       showCancelCoupons: false,
@@ -997,7 +1008,7 @@ export default {
       this.selectedProductListArray.forEach((item) => {
         saveMoneyArray.push(item.saveValue);
         sendPointsArray.push(item.sendPoints); // 积分
-        if (item.productType === this.bookTypeTag || item.productType == this.seriesTypeTag) { // 纸质商品
+        if (item.productType === this.bookTypeTag || item.productType == this.seriesTypeTag || item.productType == this.journalTypeTag) { // 纸质商品
           bookTotalMoneyArray.push(item.totalPrice);
           bookSaveMoneyArray.push(item.saveValue);
         } else if (item.productType === this.ebookTypeTag || item.productType === this.ejournalTypeTag) { // 电子商品
@@ -1281,7 +1292,7 @@ export default {
       }
       this.orderList.forEach(function (item) {
         if (item.list.length > 0) {
-          if (item.productType === _this.bookTypeTag || item.productType === _this.seriesTypeTag) {
+          if (item.productType === _this.bookTypeTag || item.productType === _this.seriesTypeTag || item.productType === _this.journalTypeTag) {
             // 纸质书
             _this.allEbook = false;
           }

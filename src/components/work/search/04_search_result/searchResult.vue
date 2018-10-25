@@ -137,7 +137,13 @@ export default {
 
   methods: {
     initConfig () {
-      let CONFIG  = this.mudulename ? PROJECT_CONFIG[this.namespace].search[this.modulename] : PROJECT_CONFIG[this.namespace].search.search_result_04;
+      let CONFIG = null;
+      if(this.modulename){
+        CONFIG = PROJECT_CONFIG[this.namespace].search[this.modulename];
+      }else{
+        CONFIG = PROJECT_CONFIG[this.namespace].search.search_result_04;
+      }
+      // let CONFIG  = this.mudulename ?  : ;
       this.CONFIG = JSON.parse(JSON.stringify(CONFIG));
       //增量加载
       if (typeof (this.CONFIG.isMobileLoading) != 'undefined') {
@@ -232,7 +238,7 @@ export default {
       } else {
         return this.getStaticText('noDate') ? this.getStaticText('noDate') : "暂无日期"
       }
-    },
+    }
   },
 }
 

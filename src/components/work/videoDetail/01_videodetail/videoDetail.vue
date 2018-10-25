@@ -17,11 +17,11 @@
       </div>
       <div class="work_videodetail_01_baseinfo_pubdate" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('pubdate') !== -1 && keys.pubdate && resourceDetail[keys.pubdate] != undefined">
         <span>{{CONFIG.display.pubdate}}</span>
-        <span>{{resourceDetail[keys.pubdate] | formatDateNEW}}</span>
+        <span>{{resourceDetail[keys.pubdate] | formatDateHH}}</span>
       </div>
       <div class="work_videodetail_01_baseinfo_created" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('created') !== -1 && keys.created && resourceDetail[keys.created] != undefined">
         <span>{{CONFIG.display.created}}</span>
-        <span>{{resourceDetail[keys.created] | formatDateNEW}}</span>
+        <span>{{resourceDetail[keys.created] | formatDateHH}}</span>
       </div>
       <time class="work_videodetail_01_baseinfo_time" v-if="CONFIG && CONFIG.showItem && CONFIG.showItem.indexOf('time') !== -1 && keys.time && resourceDetail[keys.time] != undefined">{{resourceDetail[keys.time]}}
         <span>{{CONFIG.display.time}}</span>
@@ -152,5 +152,9 @@ export default {
 .work_videodetail_01_videolists_li {
   height: 36px;
   line-height: 36px;
+}
+
+.work_videodetail_01_baseinfo_created {
+  text-align: left;
 }
 </style>

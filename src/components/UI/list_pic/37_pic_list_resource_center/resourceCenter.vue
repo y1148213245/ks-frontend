@@ -34,7 +34,8 @@
         </tr>
       </tbody>
     </table>
-    <ui_pagination v-if="tBodyList"  :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging">
+    <div class="ui_list_pic_37_resourcelists_nodata" v-if="tBodyList && tBodyList.length == 0">{{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}</div>
+    <ui_pagination v-if="tBodyList.length>0"  :page-sizes="CONFIG.pageSizes" :pageMessage="{totalCount}" :excuteFunction="paging">
     </ui_pagination>
   </div>
 </template>
@@ -323,7 +324,18 @@
           }
               break;
         }
+      },
+      getStaticText (text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
+      } else {
+        return false;
       }
+    }
     }
     }
 </script>
