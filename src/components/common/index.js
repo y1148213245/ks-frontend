@@ -46,6 +46,11 @@ var Token = function getToken() {
 
 _axios.defaults.headers.token = Token();
 
+var cookie = CookieUtils.getCookie('token')
+if (cookie) {
+  _axios.defaults.headers.token = cookie
+}
+
 // 添加请求拦截器
 _axios.interceptors.request.use(function (config) {
   // console.log(config);

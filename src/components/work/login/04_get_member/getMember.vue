@@ -37,7 +37,7 @@
 <script>
 import URL from 'url'
 import PROJECT_CONFIG from 'projectConfig'
-import { _axios, Post } from '@common'
+import { _axios, Post, CookieUtils} from '@common'
 import { mapGetters, mapActions } from 'vuex'
 import * as interfaces from "@work/login/common/interfaces.js"
 
@@ -69,6 +69,7 @@ export default {
   methods: {
     ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION,
+      loginOut: interfaces.ACTION_LOGOUT
     }),
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_04
@@ -93,7 +94,8 @@ export default {
       }
     },
     exit () {
-      localStorage.setItem('token', '');
+      this.loginOut();
+      
       let toExit = this.CONFIG.toExit
       if (toExit && toExit.type) {
         if (toExit.type == 'href') {

@@ -13,10 +13,15 @@ export default {
   },
 
   //设置cookie,增加到vue实例方便全局调用
-  setCookie(c_name, value, expiredays) {
-    var exdate = new Date();
-    exdate.setDate(exdate.getDate() + expiredays);
-    document.cookie = c_name + "=" + value + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+  setCookie(c_name, value, expiredays, domain) {
+    let d = new Date();
+    d.setTime(d.getTime() + (expiredays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    let cookie = c_name + "=" + value + "; " + expires
+    if (domain) {
+      cookie += "; domain=" + domain + "; path = /";
+    }
+    document.cookie = cookie;
   },
 
   //删除cookie
