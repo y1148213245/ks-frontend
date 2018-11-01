@@ -4,20 +4,20 @@
 module.exports = {
   //项目名 - 根据这里设置的项目名，启动不同的项目
   concurrentProject: process.env.PROJECT_ENV || "huayu",
-  proxy: {
-  	'/file': {
-  		target: 'http://172.19.57.71:8080',
-  		pathRewrite: {"^/file": "/portal/file"},
+  //proxy: {
+  	// 'http://localhost:8081': {
+  		// target: 'http://www.liaoningxinhuajiaoyu.com',
+  		// pathRewrite: {"^/file": "/portal/file"},
   		//changeOrigin: true
-  	}
-  }
-  /* proxy: {
+  	// }
+  //},
+  proxy: {
     "/file": {
-      target: "http://172.19.57.153",
+      target: "http://www.liaoningxinhuajiaoyu.com",
       pathRewrite: {
         "^/file": "/portal/file"
       },
       logLevel: 'debug'
     }
-  } */
-};
+  }
+}

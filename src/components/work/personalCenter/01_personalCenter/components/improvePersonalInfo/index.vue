@@ -1,12 +1,14 @@
 <template>
   <div v-if="isMemberInfo">
     <div class="info" v-if="currentShow=='modifyInfo'">
-      <el-radio v-model="userMode" label="1">{{getStaticText('ordinaryUserText') ? getStaticText('ordinaryUserText') :'普通用户'}}</el-radio>
-      <el-radio v-model="userMode" label="2">{{getStaticText('teacherUserText') ? getStaticText('teacherUserText') :'教师用户'}}</el-radio>
+      <div class="selectUserMode">
+        <el-radio v-model="userMode" label="1">{{getStaticText('ordinaryUserText') ? getStaticText('ordinaryUserText') :'普通用户'}}</el-radio>
+        <el-radio v-model="userMode" label="2">{{getStaticText('teacherUserText') ? getStaticText('teacherUserText') :'教师用户'}}</el-radio>
+      </div>
       <div>
         <el-form  ref="form" :model="modifyUserNav" label-width="80px">
           <el-form-item :label="getStaticText('name') ? getStaticText('name') :'姓名'" v-if="userMode==1||userMode==2" >
-            <el-input :disabled="true" v-model="modifyUserNav.loginName"></el-input>
+            <el-input v-model="modifyUserNav.username"></el-input>
           </el-form-item>
           <div v-if="userMode==2">
             <el-form-item :label="getStaticText('post') ? getStaticText('post') :'职务'">
@@ -95,7 +97,7 @@
   import PROJECT_CONFIG from "projectConfig";
 
   export default {
-    name: "improvePersonalInfo",
+    name: "modifyInfo",
     reused: true,
     props: {
       parentConfig: Object,
@@ -105,7 +107,7 @@
       return {
         modifyUserNav:{
           bookClassifyConcerned:[],//关注图书分类
-          loginName:"",//用户名
+          username:"",//用户名
           industry:'',//请选择行业
           educated:'',//教育程度
           areaInfo:'',//所在省份
@@ -131,9 +133,10 @@
       };
     },
     created() {
-      this.CONFIG = this.parentConfig;
-      this.modifyUser = JSON.parse(JSON.stringify(this.CONFIG.modifyUser.editMemberInfo.params));
-      this.isMemberInfo = this.CONFIG.modifyUser.isMemberInfo;
+      this.CONFIG = this.parentConfig.modifyUser;
+      this.modifyUser = JSON.parse(JSON.stringify(this.CONFIG.editMemberInfo.params));
+      this.isMemberInfo = this.CONFIG.isMemberInfo;
+      this.getMemberByName();
     },
     computed: {
       ...mapGetters("personalCenter/", {
@@ -145,8 +148,7 @@
         action_login: interfaces.ACTION_LOGIN,
       }),
       getMemberByName(){
-        let username = this.modifyUserNav.loginName;
-        axios.get(CONFIG.BASE_URL+this.CONFIG.modifyUser.getMemberInfo.submitUrl+'?loginName='+username)
+        axios.get(CONFIG.BASE_URL+this.CONFIG.getMemberInfo.submitUrl+'?loginName='+this.account.loginName)
         .then((res)=>{
           let data = res.data.data;
           this.modifyUserNav = Object.assign(this.modifyUserNav,JSON.parse(JSON.stringify(data)));
@@ -159,7 +161,7 @@
       ordinaryUserSave(msg){
         let data=JSON.parse(JSON.stringify(msg));
         data.bookClassifyConcerned=data.bookClassifyConcerned.join();
-        axios.post(CONFIG.BASE_URL +this.CONFIG.modifyUser.editMemberInfo.submitUrl+"?loginName="+data.loginName,data)
+        axios.post(CONFIG.BASE_URL +this.CONFIG.editMemberInfo.submitUrl+"?loginName="+this.account.loginName,data)
         .then((response)=> {
           if (response.data.result == 1) {   
             this.$message({
@@ -203,8 +205,8 @@
         this.$emit('currentShowF',this.currentShow)
       },
       getStaticText(text) {
-        if (this.CONFIG.modifyUser &&this.CONFIG.modifyUser.staticText &&this.CONFIG.modifyUser.staticText[text]) {
-          return this.CONFIG.modifyUser.staticText[text];
+        if (this.CONFIG &&this.CONFIG.staticText &&this.CONFIG.staticText[text]) {
+          return this.CONFIG.staticText[text];
         } else {
           return false;
         }
@@ -218,7 +220,6 @@
             for(var x in nv){
               if(y==x&&y!="bookClassifyConcerned"&&nv[x]!="undefined"){
                 modifyarr[y]=nv[x];
-                this.getMemberByName();
               }else if(y==x&&y=="bookClassifyConcerned"&&nv[x]!="undefined"){
                 nv[x].split(",");
                 modifyarr[y]=nv[x];
@@ -230,4 +231,8 @@
     }
   };
 </script>
-<style></style>
+<style>
+.selectUserMode{
+  margin: 15px 0;
+}
+</style>

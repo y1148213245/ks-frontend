@@ -32,6 +32,7 @@ const dev = {
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "columnAdapter", // 类型字段
         },
+        isQueryRelResource: false, // 拿地址栏的colId去查pub_col_all关联栏目数据
         getResourceLists: { // 获取某一栏目下的数据列表
           url: "../data/pic_list_29_data.json",
           params: {
@@ -155,6 +156,7 @@ const prod = {
           sysAdapter: "sykAdapter", // 系统字段
           typeAdapter: "columnAdapter", // 类型字段
         },
+        isQueryRelResource: false, // 拿地址栏的colId去查pub_col_all关联栏目数据
         getResourceLists: { // 获取某一栏目下的数据列表
           url: "spc/cms/publish/list.do",
           params: {

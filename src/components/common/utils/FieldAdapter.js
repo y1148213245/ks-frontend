@@ -113,6 +113,7 @@ var FIELD_ADAPTER = {
             productBigPic: "bigPic",
             productResType: "resourseType",
             colId: "pub_col_id",
+            allColId: "pub_col_all",
             colName: "pub_col_name",
             resId: "pub_resource_id",
             resName: "pub_resource_name",

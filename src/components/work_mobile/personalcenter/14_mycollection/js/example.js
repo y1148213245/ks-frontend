@@ -26,8 +26,9 @@ const dev = {
         navTitle: '我的收藏',
         tabTitle:[
           {index:0,title:'图书'},
-          {index:1,title:'期刊'},
-          {index:2,title:'知识服务'}
+          {index:1,title:'电子书'},
+          {index:2,title:'期刊'},
+          {index:3,title:'知识服务'}
         ],
         allCancelCollection:'批量取消收藏',
         cancelCollection:'取消收藏',
@@ -74,8 +75,9 @@ const prod = {
       navTitle: '我的收藏',
       tabTitle:[
         {index:0,title:'图书'},
-        {index:1,title:'期刊'},
-        {index:2,title:'知识服务'}
+        {index:1,title:'电子书'},
+        {index:2,title:'期刊'},
+        {index:3,title:'知识服务'}
       ],
       allCancelCollection:'批量取消收藏',
       cancelCollection:'取消收藏',
@@ -87,6 +89,9 @@ const prod = {
       priceType:'￥',
       isbn: 'ISBN:'
     },
+    bookType: "91",  // 纸质书
+    ebookType: "94",  // 电子书
+    magazineType: "149",  // 期刊
     toKnowledgeService: 'https://www.baidu.com/', //TODO知识服务外链，还没有地址，先这么写
     getCollectList: {
       url: "collection/getCollectList.do",

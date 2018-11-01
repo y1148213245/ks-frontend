@@ -11,8 +11,8 @@ var mobileLoading = function (_this, method) {
   let clientHeight = $(window).height(); // 屏幕可视高度
   let scrollHeight = $(window).scrollTop(); // 滚动条滚动高度
   let allHeight = $(document).height(); // 总高度
-  if (clientHeight + scrollHeight === allHeight) {
-    if (vthis.pageIndex < vthis.totalPages) { // 当前页小于翻页最大值
+  if (clientHeight + scrollHeight ==  allHeight ) {
+    if (Number(vthis.pageIndex) < Number(vthis.totalPages)) { // 当前页小于翻页最大值
       vthis.pageIndex = parseInt(vthis.pageIndex) + 1 + '';
       vthis[method]();
     }

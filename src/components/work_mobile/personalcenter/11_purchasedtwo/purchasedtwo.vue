@@ -59,14 +59,14 @@
           <ul class="work_mobile_personalcenter_11_book-list_periodical_ul">
             <li class="work_mobile_personalcenter_11_book-list_periodical_li" v-for="(book, index) in boughtBooksList" :key="index" v-if="boughtBooksList && boughtBooksList.length > 0">
               <div class="work_mobile_personalcenter_11_book-list_periodical_li_img-box">
-                <img class="work_mobile_personalcenter_11_book-list_periodical_li_img-box_img" @click="toMagazinePage(book)" :src="book.midPic" :alt="display.noPicture || '暂无图片'"/>
+                <img class="work_mobile_personalcenter_11_book-list_periodical_li_img-box_img" @click="toMagazinePage(book)" :src="book.pub_picSmall" :alt="display.noPicture || '暂无图片'"/>
               </div>
               <div class="work_mobile_personalcenter_11_book-list_periodical_li_content-box">
                 <div class="work_mobile_personalcenter_11_book-list_periodical_li_content-box_bookName">{{display.periodicalName || '期刊名：'}}
                   <span v-text="book.pub_resource_name"  @click="toMagazinePage(book)"></span>
                 </div>
                 <div class="work_mobile_personalcenter_11_book-list_periodical_li_content-box_author">{{display.periodicalContent || '期刊内容：'}}
-                  <span v-text="book.author"></span>
+                  <span v-text="book.MAGAZINE_SYNOPSIS"></span>
                 </div>
               </div>
             </li>
@@ -183,6 +183,7 @@ export default {
         this.currentIndex = index;
         //因为数组是拼接的，所以获取数据前先清空数据列表
         this.boughtBooksList = [];
+        $(window).scrollTop(0);
         //获取数据
         switch (index) {
           case 0: this.queryMyBoughtBooks(this.loginName, this.tab); break;  //去调图书接口
@@ -194,7 +195,7 @@ export default {
     initData (loginName) {
         this.pageIndex = this.CONFIG.getBoughtBooks.params.pageIndex;
         this.pageSize = this.CONFIG.getBoughtBooks.params.pageSize;
-      let params = Object.assign({}, this.CONFIG.getBoughtBooks.params);
+        let params = Object.assign({}, this.CONFIG.getBoughtBooks.params);
         //将需要变化的参数传进来
         // params.type = type;
         // params.status = status;
@@ -208,19 +209,89 @@ export default {
       this.isHasPeriodical = false;
       this.isHasService = false;
       let params = Object.assign({}, this.CONFIG.getBoughtBooks.params);
-      Get(CONFIG.BASE_URL + this.CONFIG.getBoughtBooks.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&type=' + (tab ? tab.type : this.tab.type) + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&productType=' + (this.tab.productType ? this.tab.productType : '') + '&status=' + (tab ? tab.status : this.tab.status)).then((resp) => {
-          let res = resp.data;
-          this.isLoading = false;
-          if (res.result == '1' && res.data.length > 0) {
-              this.boughtBooksList = this.boughtBooksList.concat(res.data);
-              this.totalCount = res.totalCount;
-              this.totalPages = res.totalPages;
-          }else{
-            this.isHasBook = true;
-            this.isHasPeriodical = true;
-            this.isHasService = true;
-          }
-        })
+      let _self = this;
+      getData();
+      function getData(){
+        Get(CONFIG.BASE_URL + _self.CONFIG.getBoughtBooks.url + '?loginName=' + (loginName ? loginName : _self.member.loginName) + '&pageIndex=' + _self.pageIndex + '&pageSize=' + _self.pageSize + '&type=' + (tab ? tab.type : _self.tab.type) + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&productType=' + (_self.tab.productType ? _self.tab.productType : '') + '&status=' + (tab ? tab.status : _self.tab.status)).then((resp) => {
+            let res = resp.data;
+            _self.isLoading = false;
+            if(_self.tab.productType !== 'periodical'){
+              _self.isLoading = false;
+            }
+            if (res.result == '1' && res.data.length > 0) {
+                if(_self.tab.productType !== 'periodical'){
+                  _self.boughtBooksList = _self.boughtBooksList.concat(res.data);
+                  _self.totalPages = res.totalPages;
+                }
+                  _self.totalCount = res.totalCount;
+                if(_self.currentIndex === 1 && _self.pageSize < _self.totalCount){
+                  _self.pageSize = _self.totalCount;
+                  getData();
+                }
+                // 期刊再次请求
+              if(_self.currentIndex === 1 && _self.pageSize >= _self.totalCount){
+                /* 初始化条件 */
+                let conditions = [
+                  {MAGAZINE_PERIOD_NUM:[],op:'in'},
+                  {MAGAZINE_PUBLISH_YEAR:[],op:'in'},
+                  {pub_resource_name:[],op:'in'}
+                ];
+                let conditions_str = '';
+                let changedKeys = []//有变化的key名
+                /* 遍历数据 */
+                res.data.forEach(item => {
+                  /* 遍历数据中每一个属性 */
+                  for (const key in item) {
+                    /* 遍历条件 */
+                    conditions.forEach(condition => {
+                      /* 遍历每个条件中每个属性 */
+                      for (const condition_key in condition) {
+                        const element = condition[condition_key];
+                        /* 对比赋值 */
+                        if (key == condition_key) {
+                          condition[condition_key].push(item[key])
+                          changedKeys.push(condition_key)
+                        }
+                      }
+                    });
+                  }
+                });
+                /* 去重 */
+                changedKeys = [...new Set(changedKeys)]
+                conditions.forEach(item => { 
+                  changedKeys.forEach(key => {
+                    if (item.hasOwnProperty(key)) {
+                      item[key] = [...new Set(item[key])].join(' ')
+                    }
+                  });
+                });
+                conditions_str = JSON.stringify(conditions)
+                let paramsObj ={
+                  conditions:conditions_str,
+                  groupBy:'pub_resource_id',
+                  orderBy:'pub_a_order asc pub_lastmodified desc id asc',
+                  pageNo:_self.pageIndex,
+                  pageSize:_self.pageSize,
+                  searchText:''
+                }
+                Post(CONFIG.BASE_URL+_self.CONFIG.url,paramsObj).then(res =>{
+                  _self.isLoading = false;
+                  _self.boughtBooksList=res.data.result;
+                  if(_self.boughtBooksList.length < 1){
+                    _self.isHasBook = true;
+                    _self.isHasPeriodical = true;
+                    _self.isHasService = true;
+                  }
+                })
+              }
+            }else{
+              _self.isHasBook = true;
+              _self.isHasPeriodical = true;
+              _self.isHasService = true;
+            }
+            
+          })
+        }
       },
       // contentType //内容类型 91纸质书 94电子书 PORTAL_WORKS:作品
       toBookPage(book) {
@@ -232,9 +303,14 @@ export default {
         }
           window.open(url, '_self');
       },
-      toMagazinePage(magazine){
-        window.location.href = this.CONFIG.toPeriodicalDetailsPageUrl ? this.CONFIG.toPeriodicalDetailsPageUrl : './maginfo.html' + '?pubId='+magazine.pubId;
-
+      toMagazinePage(book){
+        // window.location.href = this.CONFIG.toPeriodicalDetailsPageUrl ? this.CONFIG.toPeriodicalDetailsPageUrl : './maginfo.html' + '?pubId='+magazine.pubId;
+        let params = Object.assign({},this.CONFIG.toProbationParams) ;
+        var url=CONFIG.READ_URL + '?bookId=' + book.pub_resource_id + '&readType=' + (params.readType ? params.readType : '0') + '&bookName=' + book.pub_resource_name + '&userName=&siteType=' + (params.siteType ? params.siteType : '0');
+        if (this.tab.productType) {
+          url += '&doclibCode=' + this.tab.productType
+        }
+        window.open(url, '_self');
       }
     },
     watch: {

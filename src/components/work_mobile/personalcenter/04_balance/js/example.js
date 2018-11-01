@@ -31,8 +31,8 @@ const dev = {
         params: {
           payType: 'Weixin', // 支付类型:支付宝Alipay 微信：Weixin
           price: '', //  充值金额
-          loginName: 'cmm123',
-          siteId: '66',
+          loginName: '',
+          siteId: '',
           flag: 'wxShop', //标识flag=wxShop微信商城
         }
       },

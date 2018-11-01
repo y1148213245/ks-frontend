@@ -155,7 +155,7 @@ export default {
           let data = resp.data;
           let datas = data.substring(data.indexOf("<a>") + 3, data.indexOf("</a>"));
           let orderCode = data.substring(data.indexOf("<div>") + 5, data.indexOf("</div>"));
-          window.location.href = this.CONFIG.qrcodeUrl + "?data=" + datas + "&orderCode=" + orderCode;
+          window.location.href = this.CONFIG.qrcodeUrl + "?data=" + datas + "&orderCode=" + orderCode + '&payType=virtualCoin';
         });
       }
     },

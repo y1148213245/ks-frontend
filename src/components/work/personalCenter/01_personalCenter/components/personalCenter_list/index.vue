@@ -1282,6 +1282,7 @@ export default {
 .personalcenter_list_main_listBox_card_left_text {
   height: 100px;
   float: left;
+  width:60%;
 }
 .personalcenter_list_main_listBox_card_left_text span {
   font-size: 18px;

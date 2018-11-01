@@ -97,6 +97,8 @@ export default {
       let rechargeConfig = this.CONFIG.goToCharge;
       let paramsObj = Object.assign({}, rechargeConfig.params);
       paramsObj.price = item.price;
+      paramsObj.loginName = this.member.loginName;
+      paramsObj.siteId = CONFIG.SITE_CONFIG.siteId;
       Get(CONFIG.BASE_URL + rechargeConfig.url, { 'params': paramsObj }).then((resp) => {
         let datas = resp.data;
         if (datas.result == '1') { // 请求成功

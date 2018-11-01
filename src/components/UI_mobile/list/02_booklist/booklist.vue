@@ -11,7 +11,7 @@
       <span class="ui_mobile_list_02_read" :class="{ui_mobile_list_02_active:indexValue==0?true:false}" @click="toBookList('pub_read_num desc',0)">{{getStaticText('hot') ? getStaticText('hot') : "热门"}}</span>
       <span class="ui_mobile_list_02_star" :class="{ui_mobile_list_02_active:indexValue==1?true:false}" @click="toBookList('pub_star_num desc',1)">{{getStaticText('goodReputation') ? getStaticText('goodReputation') : "好评"}}</span>
       <span class="ui_mobile_list_02_pricecon"><span class="ui_mobile_list_02_saleprice" :class="{ui_mobile_list_02_active:indexValue==2?true:false}" @click="toBookList(priceOrder,2)">{{getStaticText('price') ? getStaticText('price') : "价格"}}</span><a href="javascript:void(0)" @click="toBookList('prod_sale_price asc',2)"><i class="ui_mobile_list_02_asc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a><a href="javascript:void(0)" @click="toBookList('prod_sale_price desc',2)"><i class="ui_mobile_list_02_desc" :style="{ backgroundImage: 'url(' + bgmUrl + ')'}"></i></a></span>
-      <span :class="{ui_mobile_list_02_active:indexValue==3?true:false}" @click="toBookList('BOOK_PUBDATE desc',3)">{{getStaticText('newBook') ? getStaticText('newBook') : "新书"}}</span>
+      <span :class="{ui_mobile_list_02_active:indexValue==3?true:false}" @click="toBookList('BOOK_PublishDate desc',3)">{{getStaticText('newBook') ? getStaticText('newBook') : "新书"}}</span>
     </div>
     <!--二级分类title-->
     <div class="ui_mobile_list_02_sortCon" v-if="listType == 'cascadId'"> <!-- 按分类查图书列表 -->
@@ -506,7 +506,9 @@ export default {
   color: #888888;
   font-size: 0.24rem;
   text-overflow: ellipsis;
+  /*! autoprefixer: off */
   -webkit-box-orient: vertical;
+  /* autoprefixer: on */
 }
 
 .ui_mobile_list_02_price {

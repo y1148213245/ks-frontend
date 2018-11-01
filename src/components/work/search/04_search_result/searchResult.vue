@@ -219,7 +219,11 @@ export default {
       })
     },
     toDetail (pubId) {
-      window.location.href = this.CONFIG.detailHref + pubId;
+      if(this.modulename){
+        window.location.href = this.CONFIG.detailHref + pubId+'&catagorySearch='+URL.parse(document.URL, true).query.catagorySearch;
+      }else{
+        window.location.href = this.CONFIG.detailHref + pubId;
+      }
     },
     getStaticText (text) {
       if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {

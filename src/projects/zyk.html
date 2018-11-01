@@ -11,6 +11,15 @@
 <body>
   <div id="app" style="display: none">
     <components_resource_lib></components_resource_lib>
+    <script>
+      function setCookie (cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "domain=.ybep.com.cn; path = /";
+      }
+      setCookie('token','012fe30ca63944aeb281b6fb3f970470',1)
+    </script>
   </div>
 </body>
 </html>

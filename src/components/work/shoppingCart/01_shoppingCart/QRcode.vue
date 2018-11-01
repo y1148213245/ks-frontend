@@ -23,7 +23,8 @@
     data() {
       return {
         orderCode: '',
-        CONFIG:null
+        CONFIG:null,
+        queryParams: null, // 地址栏传参
       }
     },
     created(){
@@ -33,8 +34,8 @@
       let href = window.location.href;
       let url = href.substring(href.indexOf('?data=') + 6, href.indexOf('&orderCode'));
       this.drawQRcode(url);
-      let params = URL.parse(window.location.href || '', true).query
-      this.orderCode = params.orderCode;
+      this.queryParams = URL.parse(window.location.href || '', true).query
+      this.orderCode = queryParams.orderCode;
     },
     methods: {
       drawQRcode(url) {
@@ -54,12 +55,36 @@
         }, 3000);
       },
       queryOrder() {
-        axios.get(CONFIG.BASE_URL + '/order/getParentOrder.do?orderCode=' + this.orderCode).then(function (response) {
+        /*  
+         * Edit 2018/10/30 song
+         * 不同的付费用途调取的接口不一样 响应体的格式也不一样
+         * 购物车购买商品调 getParentOrder.do       data.payStatus === '1' 表示成功
+         * 虚拟币调 getRecharge.do                  data.status === '0' 表示成功
+         * 付费会员调 getMemberPayByOrderCode.do    data.OrderStatus === 'PAYED' 表示成功
+        */
+       if (this.queryParams && this.queryParams.payType && this.queryParams.payType == 'virtualCoin') { // 虚拟币充值
+        axios.get(CONFIG.BASE_URL + 'recharge/getRechargeOrder.do?orderCode=' + this.orderCode).then(function (response) {  
           var data = response.data.data;
           if (data && data.payStatus && data.payStatus === '1') {  // 支付成功跳转生成订单页面 支付失败继续请求
             window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/" + data.payStatus + '/order';
           }
         })
+       } else if(this.queryParams && this.queryParams.payType && this.queryParams.payType == 'chargeVip') { // 付费会员
+         axios.get(CONFIG.BASE_URL + 'member/getMemberPayByOrder.do?orderCode=' + this.orderCode).then(function (response) {  
+          var data = response.data.data;
+          if (data && data.OrderStatus && data.OrderStatus === 'PAYED') {  // 支付成功跳转生成订单页面 支付失败继续请求
+            window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/" + data.payStatus + '/order';
+          }
+        })
+       } else { // 购物车购买商品
+         axios.get(CONFIG.BASE_URL + 'order/getParentOrder.do?orderCode=' + this.orderCode).then(function (response) {  
+          var data = response.data.data;
+          if (data && data.status && data.status === '0') {  // 支付成功跳转生成订单页面 支付失败继续请求
+            window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/" + data.payStatus + '/order';
+          }
+        })
+       }
+        
       },
       getStaticText(text){
         if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]){

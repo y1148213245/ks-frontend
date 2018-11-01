@@ -22,8 +22,9 @@
 <script>
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import * as interfaces from "@work/login/common/interfaces.js";
+import * as time_interfaces from "@common/utils/store/interfaces";
 import { Get } from "@common";
 export default {
   name: 'work_activitydetail_01',
@@ -44,17 +45,27 @@ export default {
   computed: {
     ...mapGetters("login", {
       member: interfaces.GET_MEMBER
+    }),
+    ...mapGetters("util", {
+      currentTime: time_interfaces.GET_CURRENT_TIME
     })
   },
 
   created () {
     this.initConfig();
-    this.loadDatas();
+    this.getCurrentTime().then(resp=>{
+      console.log(moment(Number(resp)).format("YYYY-MM-DD"));
+      this.loadDatas();
+    })
+    
   },
 
   mounted () { },
 
   methods: {
+    ...mapActions("util", {
+      getCurrentTime: time_interfaces.GET_CURRENT_TIME,
+    }),
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].activityDetail.work_activitydetail_01;
       this.keys = this.CONFIG.keys;
@@ -87,7 +98,7 @@ export default {
           this.$bus.emit(this.CONFIG.eventName_loadedDatas, data);
 
           //判断活动过期
-          let thisTimestamp = new Date().getTime();
+          let thisTimestamp = this.currentTime;
           if (data[this.keys.endDate]) {
             if (thisTimestamp < data[this.keys.endDate] && thisTimestamp < data[this.keys.reviewDate] && thisTimestamp > data[this.keys.startDate]) {
               this.activeStatus = 1;

@@ -640,7 +640,7 @@
     <!-- <improvePersonalInfo :is="currentShow" :parentConfig="parentConfig" @currentShowF="currentShowF"></improvePersonalInfo> -->
 
     <!-- 修改个人信息 、开通VIP、查看vip充值记录 -->
-    <component :is="currentShow" :parentConfig="parentConfig" :namespace="namespace" @currentShowF="currentShowF"></component>
+    <component :is="currentShow" :parentConfig="parentConfig" :namespace="namespace" :currentShow="currentShow" @currentShowF="currentShowF"></component>
     <!-- END 修改个人信息 、开通VIP、查看vip充值记录 -->
   </section>
 </template>
@@ -657,7 +657,7 @@ import $ from "jquery";
 import { CityInfo } from "../../assets/js/city-data.js";
 import * as interfaces from "@work/login/common/interfaces.js";
 // 完善个人信息表单
-import improvePersonalInfo from "../improvePersonalInfo";
+import modifyInfo from "../improvePersonalInfo";
 // 开通 VIP 功能
 import openvip from "../openVip/openVip.vue";
 
@@ -1238,7 +1238,7 @@ export default {
     }
   },
   components: {
-    improvePersonalInfo, // 完善个人信息
+    modifyInfo, // 完善个人信息
     openvip, // 开通vip
   },
   mounted() {
@@ -1845,9 +1845,9 @@ export default {
       } else {
         this.$message({
           type: "error",
-          message: _this.getStaticText("mailboxBindingFailed")
+          message: (_this.getStaticText("mailboxBindingFailed")
             ? _this.getStaticText("mailboxBindingFailed")
-            : "邮箱绑定失败：" + (data && data.error ? data.error.errorMsg : "")
+            : "邮箱绑定失败：") + (rep.data && rep.data.error ? rep.data.error.errorMsg : "")
         });
       }
     },
@@ -1879,9 +1879,7 @@ export default {
       } else {
         this.$message({
           type: "info",
-          message: _this.getStaticText("failureOfSecretProtectionSettings")
-            ? _this.getStaticText("failureOfSecretProtectionSettings")
-            : "密保问题设置失败" + rep.data.error.errorMsg
+          message: rep.data.data.errorMsg
         });
       }
     },
@@ -2155,7 +2153,7 @@ export default {
                   response.data.indexOf("</div>")
                 );
                 window.location.href =
-                  "./qrcode.html?data=" + data + "&orderCode=" + orderCode;
+                  "./qrcode.html?data=" + data + "&orderCode=" + orderCode + "&payType=virtualCoin";
               });
           }
         })

@@ -25,8 +25,8 @@ conditions: [{ // 配置成对象 组件里面传值要转成字符串
 }]
 * 新增
 180918 新增jwplayer插件替换DPlayer插件，jwplayer依赖文件位于工程根目录下static/js/jwplayer文件夹内
-       新增地址栏获取播放文件类型：参数名为mediaType，值例如：flv，mp4
-       新增配置获取播放文件类型：参数名为mediaType，值例如：flv，mp4
+       新增地址栏获取播放文件类型：参数名为mediaType，值例如：mp3,flv,rtmp,jpg,png,gif,swf,rbs,3gp,mp4,m4v
+       新增配置获取播放文件类型：参数名为mediaType，值例如：mp3,flv,rtmp,jpg,png,gif,swf,rbs,3gp,mp4,m4v
        新增浏览器flash开关状态监测
 `; // 组件描述信息
 

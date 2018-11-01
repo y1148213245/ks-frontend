@@ -36,6 +36,8 @@
 <script>
 import URL from "url";
 import PROJECT_CONFIG from "projectConfig";
+import { mapGetters, mapActions } from 'vuex';
+import * as interfaces from "@common/utils/store/interfaces";
 import { Post } from "@common";
 import moment from "moment"
 
@@ -55,6 +57,11 @@ export default {
       activityStatus: []
     }
   },
+  computed: {
+    ...mapGetters("util", {
+      currentTime: interfaces.GET_CURRENT_TIME
+    }),
+	},
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].list_pic.ui_list_pic_22;
     this.activityStatus = [
@@ -79,9 +86,16 @@ export default {
   mounted () {
     this.keys = this.CONFIG.keys;
     this.subKeys = this.CONFIG.getActivityList.baseKeys;
-    this.getActivitys();
+    this.getCurrentTime().then(resp=>{
+      console.log(moment(Number(resp)).format("YYYY-MM-DD"));
+      this.getActivitys();
+    })
+    
   },
   methods: {
+    ...mapActions("util", {
+      getCurrentTime: interfaces.GET_CURRENT_TIME,
+    }),
     getActivitys: function () {
       let url = this.CONFIG.url + "?colId=" + this.CONFIG.params.colId;
       let _this = this
@@ -161,7 +175,7 @@ export default {
 
       Post(CONFIG.BASE_URL + url, params).then((req) => {
         let data = req.data.result;
-        let currentTime = new Date().getTime();
+        let currentTime = this.currentTime;
         if (data && data instanceof Array && data.length > 0) {
           data.forEach(item => {
             if (currentTime > item[this.getKeys(item, 'endTime')]) {

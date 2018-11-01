@@ -7,6 +7,10 @@ var CONFIG = {
 		"siteId": 8,
 		"chId": 0
 	},
+	"COOKIE": {
+        "DAY": 1,
+        "DOMAIN": ".ybep.com.cn"
+    },
   "IS_VALIDATE_TEST": true,
   EMAIL_CONFIG:{
 		showPostfix:true,

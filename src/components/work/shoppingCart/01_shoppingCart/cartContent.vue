@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-08-29 16:57:53
  * @Last Modified by: song
- * @Last Modified time: 2018-10-19 18:28:27
+ * @Last Modified time: 2018-10-25 14:55:27
  * 购物车组件
  */
 
@@ -1324,12 +1324,7 @@ export default {
       /* console.log(this.selectedDelivery)
       console.log(this.orderList);
       console.log(this.curSelectedAddress); */
-      var curRealAmount; // 当前订单的实付金额
-      if (this.allEbook === true && this.allEbook === '0') {
-        curRealAmount = this.orderDetail.bookTotalMoney + this.orderDetail.ebookTotalMoney - this.rmbCoin - this.orderDetail.ebookSaveMoney - this.orderDetail.bookSaveMoney;
-      } else {
-        curRealAmount = this.orderDetail.bookTotalMoney + this.orderDetail.ebookTotalMoney + this.selectedDelivery.deliveryPrice - this.orderDetail.bookSaveMoney - this.orderDetail.ebookSaveMoney - this.rmbCoin
-      }
+      var curRealAmount = this.orderDetail.bookTotalMoney + this.orderDetail.ebookTotalMoney - this.rmbCoin - this.orderDetail.ebookSaveMoney - this.orderDetail.bookSaveMoney;; // 当前订单的实付金额
       if (this.freeFreight) { // 如果这单免运费的话 就不需要再根据物流模板计算运费
         this.selectedDelivery.deliveryPrice = 0;
         return false;
@@ -1618,7 +1613,7 @@ export default {
                     loadingTag.close();
                     var data = response.data.substring(response.data.indexOf("<a>") + 3,  response.data.indexOf("</a>"));
                     var orderCode = response.data.substring(response.data.indexOf("<div>") + 5,  response.data.indexOf("</div>"));
-                    var wxpayUrl = "../pages/qrcode.html?data=" + data + "&orderCode=" + orderCode;
+                    var wxpayUrl = "../pages/qrcode.html?data=" + data + "&orderCode=" + orderCode + '&payType=shoppingcart';
                     window.open(wxpayUrl, '_self');
                   });
               } else {

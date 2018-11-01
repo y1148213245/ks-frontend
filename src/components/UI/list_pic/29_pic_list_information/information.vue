@@ -86,7 +86,7 @@
 
       <div class="ui_list_pic_29_resourcelists_nodata" v-if="resourceLists && resourceLists.length == 0">{{getStaticText('noData') ? getStaticText('noData') : '暂无数据'}}</div>
     </div>
-    <ui_pagination class="ui_list_pic_29_ui_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination && resourceLists.length>0" :pageMessage="{totalCount: totalCount}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
+    <ui_pagination class="ui_list_pic_29_ui_pagination" v-if="CONFIG && CONFIG.pagination && CONFIG.pagination.showPagination" :pageMessage="{totalCount: totalCount}" :excuteFunction="paging" :page-sizes="CONFIG.pagination.pagesize"></ui_pagination>
   </div>
 </template>
 
@@ -119,6 +119,7 @@ export default {
       keys: {}, // 接口字段容器
       columnKeys: {}, // 栏目字段适配容器
       colId: "",
+      allColId: '', //查关联稿件
       columnDetailInfo: "", // 栏目详细信息
       requestParams: "", // 去详情页需要传查询list.do的所有参数
       isMobileLoading: false, //默认不是下拉增量加载
@@ -172,6 +173,8 @@ export default {
     if (typeof uriQuery.authorSysTopic != "undefined") {
       this.authorSysTopic = uriQuery.authorSysTopic;
     }
+
+    
 
     this.CONFIG =PROJECT_CONFIG[this.namespace].list_pic.list_pic_29[this.modulename];
     this.resourceListsConfig = this.CONFIG.getResourceLists;
@@ -478,6 +481,12 @@ export default {
             ? this.colId
             : item[this.keys.colId];
         }
+        if (item.hasOwnProperty(this.keys.allColId) && this.CONFIG.isQueryRelResource) {
+          item[this.keys.allColId] = this.colId
+            ? this.colId
+            : item[this.keys.allColId];
+        }
+        
         // pub_parent_id冲突
         if (item.hasOwnProperty("pub_parent_id")) {
           if(item.pub_parent_id == "pubId"){

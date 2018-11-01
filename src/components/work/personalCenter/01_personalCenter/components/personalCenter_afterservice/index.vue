@@ -61,8 +61,8 @@
         </el-steps>
       </div>
       <!-- Book card -->
-      <div class="afterservice_main_title">
-        <el-row :gutter="1">
+      <div class="afterservice_main_title afterservice_main_title02">
+        <el-row>
           <el-col :span="14">
             <div class="afterservice_title_common bg-purple-light">{{getStaticText('goodsName') ? getStaticText('goodsName') : '商品名称'}}</div>
           </el-col>
@@ -154,7 +154,7 @@
           </div>
           <div class="mtb15">
             <span>{{getStaticText('courierNumber') ? getStaticText('courierNumber') : '快递单号'}}：</span>
-            <el-input v-model.number="courierNumber" :placeholder="getStaticText('writeCourierNumber') ? getStaticText('writeCourierNumber') : '请填写快递单号'" style="width:200px;display:inline-block"></el-input>
+            <el-input v-model="courierNumber" :placeholder="getStaticText('writeCourierNumber') ? getStaticText('writeCourierNumber') : '请填写快递单号'" style="width:200px;display:inline-block"></el-input>
           </div>
           <div class="afterservice_textcenter">
             <el-button type="primary" @click="subInformation">{{getStaticText('submit') ? getStaticText('submit') : '提交'}}</el-button>
@@ -213,8 +213,8 @@
         </el-steps>
       </div>
       <!-- Book card -->
-      <div class="afterservice_main_title">
-        <el-row :gutter="1">
+      <div class="afterservice_main_title afterservice_main_title02">
+        <el-row>
           <el-col :span="14">
             <div class="afterservice_title_common bg-purple-light">{{getStaticText('goodsName') ? getStaticText('goodsName') : '商品名称'}}</div>
           </el-col>
@@ -584,7 +584,10 @@ export default {
       if (this.courierNumber == "") {
         this.$message.error(vm.getStaticText('writeCourierNumber') ? vm.getStaticText('writeCourierNumber') : '请填写快递单号');
         return false;
-      } else if (this.logisticsCompany == "") {
+      }else if(!(/^[0-9a-zA-Z]*$/g ).test(this.courierNumber)){
+        this.$message.error(vm.getStaticText('wrongCourierNumber') ? vm.getStaticText('wrongCourierNumber') :'请填写正确的快递单号');
+        return false;
+      }else if(this.logisticsCompany == "") {
         this.$message.error(vm.getStaticText('chooseCourierCompany') ? vm.getStaticText('chooseCourierCompany') : '请选择快递公司');
         return false;
       } else {
@@ -670,6 +673,9 @@ export default {
   background: #e5e9f2;
   border-radius: 4px;
 }
+.afterservice_main_title02 .bg-purple-light{
+  border-radius: 0px;
+}
 .afterservice_main_card {
   border: 1px solid rgb(223, 236, 236);
 }
@@ -710,7 +716,10 @@ export default {
 .afterservice_main_card_right {
   font-size: 16px;
   text-align: center;
-  margin-top: 45px;
+  padding-top: 45px;
+  height: 120px;
+  box-sizing: border-box;
+  border-right: .5px solid #dfecec;
 }
 .afterservice_details {
   font-size: 16px;

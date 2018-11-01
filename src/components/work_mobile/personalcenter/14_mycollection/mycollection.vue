@@ -9,8 +9,8 @@
             </div>
           <div class="work_mobile_personalcenter_14_content_lists">
             <div v-for="(item , index) in collectionlist" :key="index" :name="item.pubId">
-                <!-- 图书 -->
-                <div v-if="tabtitle.index ==0" class="work_mobile_personalcenter_14_content_lists_list">
+                <!-- 图书 || 电子书-->
+                <div v-if="tabtitle.index ==0 || tabtitle.index ==1" class="work_mobile_personalcenter_14_content_lists_list">
                     <div class="work_mobile_personalcenter_14_content_lists_list_check">
                       <el-checkbox v-model="item.checked" @change="selectProduct"></el-checkbox>
                     </div>
@@ -22,7 +22,7 @@
                   <button class="work_mobile_personalcenter_14_content_lists_list_cancel_btn" @click="cancelCollection(loginName,item.pubId)">{{display.cancelCollection}}</button>
                 </div>
                 <!-- 期刊 -->
-                <div v-else-if="tabtitle.index ==1" class="work_mobile_personalcenter_14_content_lists_list">
+                <div v-else-if="tabtitle.index ==2" class="work_mobile_personalcenter_14_content_lists_list">
                   <div class="work_mobile_personalcenter_14_content_lists_list_check">
                     <el-checkbox v-model="item.checked" @change="selectProduct"></el-checkbox>
                   </div>
@@ -129,8 +129,10 @@ export default {
       let params = Object.assign({}, obj.COLLECTIONCONFIG.params);
       //三个tab三个不同的index，三个不同的contentType
       if (index == 0) {
-        params.contentType = this.CONFIG.bookType ? this.CONFIG.bookType : "91";  // 暂时是纸质书
+        params.contentType = this.CONFIG.bookType ? this.CONFIG.bookType : "91";  // 纸质书
       } else if (index == 1) {
+        params.contentType = this.CONFIG.ebookType ? this.CONFIG.ebookType : "94";  // 电子书
+      } else if (index == 2) {
         params.contentType = this.CONFIG.magazineType ? this.CONFIG.magazineType : "149";  // 期刊
       } else {
         //TODO 知识服务暂时写成外链

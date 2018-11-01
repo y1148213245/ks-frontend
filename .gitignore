@@ -1,9 +1,8 @@
 .DS_Store
 node_modules/
 
-src/projects/xiehe_m/
-src/projects/huayu/*
-
+src/projects/
+src/config/
 /dist/
 npm-debug.log*
 yarn-debug.log*
