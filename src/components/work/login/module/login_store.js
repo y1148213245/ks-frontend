@@ -2,7 +2,7 @@
  * @Author: yan.chaoming
  * @Date: 2017-12-26 09:23:33
  * @Last Modified by: yancm
- * @Last Modified time: 2018-11-01 14:37:59
+ * @Last Modified time: 2018-11-02 11:07:44
  */
 
 import * as interfaces from "../common/interfaces.js";
@@ -42,6 +42,11 @@ let actions = {
 				if (1) {
 					window.localStorage.setItem('token', datas.token);
 					
+					/* 登录与退出的cookie依赖全局配置CONFIG
+					CONFIG.COOKIE
+					CONFIG.COOKIE.DAY 过期时间
+					CONFIG.COOKIE.DOMAIN 
+					*/
 					if (CONFIG && CONFIG.COOKIE) {
 						let day, domain;
 						if (CONFIG.COOKIE.DAY) {
