@@ -27,7 +27,8 @@ const dev = {
           btnname:"去书城逛逛",
           delete:'删除',
           readTrying: '试读',
-          noProbation: '暂无试读文件'
+          noProbation: '暂无试读文件',
+          getReadUrlError:'暂无阅读地址'
         },
         probation:{
           url:'',
@@ -74,7 +75,8 @@ const dev = {
           btnname:"去书城逛逛",
           delete:'删除',
           readTrying: '试读',
-          noProbation: '暂无试读文件'
+          noProbation: '暂无试读文件',
+          getReadUrlError:'暂无阅读地址'
         },
         toDetailUrl: '../pages/bookdetail.html',
         toBookLibraryUrl: '../pages/index.html', //TODO 暂时不知道书城地址,写了个详情的地址

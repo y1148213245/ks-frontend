@@ -388,7 +388,8 @@ const dev = {
             "confirmDeleteOrder": "确定删除此订单？",
             "tips": "提示",
             "cancel": "取消",
-            "confirmCancelOrder": "确定取消此订单？"
+            "confirmCancelOrder": "确定取消此订单？",
+            "getReadUrlError": "暂无阅读地址"
           }
         },
         "afterservice": {

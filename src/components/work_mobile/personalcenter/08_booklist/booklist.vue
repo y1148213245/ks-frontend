@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { Get, Delete, mobileLoading, getFieldAdapter, toOtherPage } from "@common";
+import { Get, Delete, mobileLoading, getFieldAdapter, toOtherPage, readUtils } from "@common";
 import { mapGetters } from 'vuex';
 import * as interfaces from "@work/login/common/interfaces.js";
 import PROJECT_CONFIG from 'projectConfig';
@@ -175,6 +175,19 @@ export default {
      **/
     toProbation (item, modulename) { // 执行自定义事件
       if (modulename == "bookmyshelf") { // 我的书架 -> 直接去阅读正文地址
+        /* 新增阅读接口返回url 依赖全局配置'晒书阅读配置 CONFIG.SHAISHU_READ'
+          CONFIG.SHAISHU_READ.type 阅读文件类型
+        */
+        if (CONFIG && CONFIG.SHAISHU_READ) {
+          let resId = item.resourceId;
+          let resType = item.resourseType;
+          let type = CONFIG.SHAISHU_READ.type;
+          let proType = item.productType;
+          // let siteId = CONFIG.SITE_CONFIG.siteId;
+          
+          readUtils.shaishuRead.full(resId, resType, type, proType)
+          return
+        } 
         let params = Object.assign({},this.PROBATION.params) ;
         var url = CONFIG.READ_URL + '?bookId=' + item.resourceId + '&readType=' + params.readType + '&bookName=' + item.resourceName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
       } else { // 收藏夹 -> 详情页

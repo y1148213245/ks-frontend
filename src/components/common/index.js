@@ -12,6 +12,7 @@ import {
   FIELD_ADAPTER
 } from "./utils/FieldAdapter";
 import toOtherPage from "./utils/ToOtherPage";
+import readUtils from "./utils/toRead";
 import mobileLoading from "./utils/MobileLoading";
 import i18n from "./utils/i18n"
 
@@ -107,7 +108,8 @@ export {
   toOtherPage,
   getFieldAdapter,
   mobileLoading,
-  i18n
+  i18n,
+  readUtils
 };
 
 

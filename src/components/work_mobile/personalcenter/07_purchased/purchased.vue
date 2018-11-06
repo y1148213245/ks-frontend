@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import { Post, Get, mobileLoading } from "@common";
+  import { Post, Get, mobileLoading, readUtils } from "@common";
   import { Toast } from "vant";
   import { mapGetters } from 'vuex';
   import * as interfaces from "@work/login/common/interfaces.js";
@@ -100,10 +100,22 @@
         if (!book) {
           return false;
         } else {
-          let params = Object.assign({}, this.CONFIG.toReadBook.params);
-          let toReadUrl = (this.CONFIG.toReadBook.url || CONFIG.READ_URL) + '?bookId=' + book.resourceId + '&readType=' + params.readType + '&bookName=' + book.resourceName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
-          //点击开始试读跳转页面，先这么写
-          window.open(toReadUrl);
+          /* 新增阅读接口返回url 依赖全局配置'晒书阅读配置 CONFIG.SHAISHU_READ'
+          CONFIG.SHAISHU_READ.type 阅读文件类型
+        */
+          if (CONFIG && CONFIG.SHAISHU_READ) {
+            let resId = book.resourceId;
+            let resType = book.resourseType;
+            let type = CONFIG.SHAISHU_READ.type;
+            let proType = book.productType;
+            // let siteId = CONFIG.SITE_CONFIG.siteId;
+            readUtils.shaishuRead.full(resId, resType, type, proType);
+          } else {
+            let params = Object.assign({}, this.CONFIG.toReadBook.params);
+            let toReadUrl = (this.CONFIG.toReadBook.url || CONFIG.READ_URL) + '?bookId=' + book.resourceId + '&readType=' + params.readType + '&bookName=' + book.resourceName + '&userName=&siteType=' + CONFIG.READ_CONFIG.siteType;
+            //点击开始试读跳转页面，先这么写
+            window.open(toReadUrl);
+          }
         }
       },
       //加入书架

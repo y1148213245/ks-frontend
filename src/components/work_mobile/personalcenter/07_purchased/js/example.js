@@ -1,8 +1,8 @@
 /*
  * @Author: song
  * @Date: 2018-06-07 15:26:18
- * @Last Modified by: song
- * @Last Modified time: 2018-07-02 17:41:28
+ * @Last Modified by: yancm
+ * @Last Modified time: 2018-11-05 11:08:22
  * 个人中心消费记录
  */
 
@@ -33,6 +33,7 @@ const dev = {
         noPicture: '暂无图片',
         addSuccess: '成功加入书架',
         addFailed: '加入书架失败',
+        getReadUrlError:'暂无阅读地址',
         tabsList: [{
             title: '全部',
             type: '2', //已购买

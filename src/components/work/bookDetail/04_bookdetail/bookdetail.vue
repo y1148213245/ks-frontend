@@ -110,7 +110,7 @@
               <!-- 如果当前这本书是电子书 && 没有关联纸质书 购买纸书按钮置灰 ||  如果当前这本书是电子书 && 关联了纸质书，并且配置了库存判断，但纸质书库存不足 购买纸书按钮置灰  || （如果当前这本书是纸质书 && （配置了判断库存 && 当前库存小于最小库存）） 购买纸书按钮置灰-->
               <section v-else-if="config.name == 'addcart'"
                 :class="{
-                  work_bookdetail_04_forbid_addcart: 
+                  work_bookdetail_04_forbid_addcart:
                   (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && !resourceDetail.relBook) ||
                   (resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.ebookType ? CONFIG.bookContentType.ebookType : '94') && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail.relBook[keys.inventory]) <= Number(resourceDetail.relBook[keys.lowInventory]))) ||
                   ((resourceDetail.contentType == (CONFIG && CONFIG.bookContentType && CONFIG.bookContentType.bookType ? CONFIG.bookContentType.bookType : '91')) && (CONFIG.judgeInventory && CONFIG.judgeInventory.showInventory && Number(resourceDetail[keys.inventory]) <= Number(resourceDetail[keys.lowInventory])))
@@ -309,7 +309,7 @@ import { mapGetters, mapActions, mapState } from 'vuex';
 import * as interfaces from "@work/login/common/interfaces.js";
 import * as type from "@work/bookDetail/common/interfaces.js";
 import Vue from 'vue';
-import { Get, Post, DrawImage, getFieldAdapter, toOtherPage } from "@common";
+import { Get, Post, DrawImage, getFieldAdapter, toOtherPage, readUtils } from "@common";
 import URL from 'url';
 import PROJECT_CONFIG from "projectConfig";
 import moment from "moment";
@@ -393,7 +393,7 @@ export default {
     // 判断是否有资源下载的配置字段 attachTypesCfg
     if (typeof (this.CONFIG["attachTypesCfg"]) != "undefined") {
       this.attachTypesCfg = this.CONFIG["attachTypesCfg"];
-      
+
     }
     this.publicizeInfoConfig = this.CONFIG.getPublicizeInfo;
     if (typeof (this.CONFIG.tabConfigList) != "undefined") {
@@ -505,36 +505,52 @@ export default {
         return false
       }
       if (config.method == 'toProbation') { // 执行免费试读操作
-        //加入书架
-        if(this.CONFIG.addBookshelfBeforeProbation) {
-          Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=2' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
-            var datas = rep.data;
-            if (datas.result == "1") {
-              this.getResourceDetail();  //获取图书详情信息
-            }
-          });
-        }
-        if(this.isBuy == "1"){  //判断是否购买 0=>未购买  1=>购买
-          if(!this.resourceDetail[this.keys.bookdownloadpath]){  //已经购买 没有全文阅读地址
-            this.$message({
-              message: "本书没有阅读地址",
-              type: 'error'
-            });
-            return false;
-          }else {                                               //已经购买 有全文阅读地址
-            this.CONFIG.toProbation.url = CONFIG.READ_URL;
-            this.CONFIG.toProbation.fixedKeys.readType = 1;
+        /* 新增阅读接口返回url 依赖全局配置'晒书阅读配置 CONFIG.SHAISHU_READ'
+          CONFIG.SHAISHU_READ.type 阅读文件类型
+        */
+        if (CONFIG && CONFIG.SHAISHU_READ) {
+          let resId = this.resourceDetail[this.keys.resId];
+          let resType = this.resourceDetail[this.keys.pubResType];
+          let type = CONFIG.SHAISHU_READ.type;
+          let proType = this.resourceDetail[this.keys.contentType];
+          // let siteId = CONFIG.SITE_CONFIG.siteId;
+          if( this.isBuy == "1" ) {
+            readUtils.shaishuRead.full(resId ,resType ,type ,proType)
+          }else{
+            readUtils.shaishuRead.free(resId ,resType ,type)
           }
-        }else {
-          if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 未购买  没有试读地址
-            this.$message({
-              message: "本书没有试读地址",
-              type: 'error'
+        } else {
+          //加入书架
+          if(this.CONFIG.addBookshelfBeforeProbation) {
+            Post(CONFIG.BASE_URL + 'user/addBookShelf.do' + '?loginName=' + this.loginName + '&pubId=' + this.pubId + '&type=2' + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((rep) => {
+              var datas = rep.data;
+              if (datas.result == "1") {
+                this.getResourceDetail();  //获取图书详情信息
+              }
             });
-            return false;
-          }else {                                               //未购买 有试读阅读地址
-            this.CONFIG.toProbation.url = CONFIG.READ_URL;
-            this.CONFIG.toProbation.fixedKeys.readType = 0;
+          }
+          if(this.isBuy == "1"){  //判断是否购买 0=>未购买  1=>购买
+            if(!this.resourceDetail[this.keys.bookdownloadpath]){  //已经购买 没有全文阅读地址
+              this.$message({
+                message: "本书没有阅读地址",
+                type: 'error'
+              });
+              return false;
+            }else {                                               //已经购买 有全文阅读地址
+              this.CONFIG.toProbation.url = CONFIG.READ_URL;
+              this.CONFIG.toProbation.fixedKeys.readType = 1;
+            }
+          }else {
+            if (!this.resourceDetail[this.keys.bookFreeDownLoadPath]) { // 未购买  没有试读地址
+              this.$message({
+                message: "本书没有试读地址",
+                type: 'error'
+              });
+              return false;
+            }else {                                               //未购买 有试读阅读地址
+              this.CONFIG.toProbation.url = CONFIG.READ_URL;
+              this.CONFIG.toProbation.fixedKeys.readType = 0;
+            }
           }
         }
       }
@@ -553,7 +569,9 @@ export default {
           return false;
         }
       }
-      window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
+      if ( !(config.method == 'toProbation' && CONFIG && CONFIG.SHAISHU_READ) ) {
+        window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
+      }
     },
     downAttachTypes:function(value){  //资源下载
       var downloadParam = "?" + this.attachTypesCfg.key01 + "=" + value[this.attachTypesCfg.val01];
@@ -971,13 +989,13 @@ export default {
       if (op > 0) {
         ++this.quantity;
         if (this.quantity > 200) { // 防止加过200
-          
+
           this.$alert(this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') ? this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') : "商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
             confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定"
           });
           this.quantity = 200;
         } else if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory && this.quantity > (Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]) || Number(this.resourceDetail.relBook[this.keys.inventory]) - Number(this.resourceDetail.relBook[this.keys.lowInventory]))){
-          
+
           this.$message({
             type: 'error',
             message: this.CONFIG.judgeInventory.lessInventory ? this.CONFIG.judgeInventory.lessInventory : "纸质书库存不足"
@@ -987,27 +1005,27 @@ export default {
       } else if (op < 0) {
         --this.quantity;
         if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory && this.quantity > (Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]) || Number(this.resourceDetail.relBook[this.keys.inventory]) - Number(this.resourceDetail.relBook[this.keys.lowInventory]))){
-          
+
           this.$message({
             type: 'error',
             message: this.CONFIG.judgeInventory.lessInventory ? this.CONFIG.judgeInventory.lessInventory : "纸质书库存不足"
           })
           // this.quantity = Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]);
         }
-        
+
         if (this.quantity < 1) { // 防止减到0
           this.quantity = 1
         }
       }else {
         // 监测直接输入
         if (this.quantity > 200) { // 防止加过200
-          
+
           this.$alert(this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') ? this.getStaticText('quantityOfGoodsMustNotExceedTwoHundred') : "商品数量不能大于200", this.getStaticText('systemPrompt') ? this.getStaticText('systemPrompt') : "系统提示", {
             confirmButtonText: this.getStaticText('OK') ? this.getStaticText('OK') : "确定"
           });
           this.quantity = 200;
         }else if(this.CONFIG.judgeInventory && this.CONFIG.judgeInventory.showInventory && this.quantity > (Number(this.resourceDetail[this.keys.inventory]) - Number(this.resourceDetail[this.keys.lowInventory]) || Number(this.resourceDetail.relBook[this.keys.inventory]) - Number(this.resourceDetail.relBook[this.keys.lowInventory]))){
-          
+
           this.$message({
             type: 'error',
             message: this.CONFIG.judgeInventory.lessInventory ? this.CONFIG.judgeInventory.lessInventory : "纸质书库存不足"

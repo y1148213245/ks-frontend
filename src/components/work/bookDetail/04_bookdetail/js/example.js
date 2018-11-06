@@ -376,7 +376,8 @@ const prod = {
           payWay: "支付方式",
           zhifubao: "支付宝",
           weixin: "微信",
-          drumpPage: "正在跳转支付页面..."
+          drumpPage: "正在跳转支付页面...",
+          getReadUrlError:"暂无阅读链接"
         },
         getResourceDetail: { // 获取某一栏目下的数据列表
           url: "book/getBookDetail.do",

@@ -27,7 +27,7 @@
                 </div>
               </div>
               
-              <div class="readBox" v-if="getIsRead(currentProductType.keyType)" @click="toRead(item[productKeys.resourceId],1,item[productKeys.name],item[productKeys.resourceType])" style="cursor:pointer">
+              <div class="readBox" v-if="getIsRead(currentProductType.keyType)" @click="toRead(item)" style="cursor:pointer">
                 <a target="_blank">{{getStaticText('read') ? getStaticText('read') : '阅读'}}</a>
               </div>
             </div>
@@ -47,7 +47,7 @@
 
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions } from "vuex";
-import { Post } from '@common'
+import { Post, readUtils } from '@common'
 export default {
   name: "book",
   reused: true,
@@ -74,7 +74,8 @@ export default {
       name: "productName",
       pic: "bigPic",
       resourceId: "resourceId",
-      resourceType: "resourseType"
+      resourceType: "resourseType",
+      productType: "contentType"
     };
     this.defaultObj.name = this.getStaticText("book") ? this.getStaticText("book") : "图书"
 
@@ -202,21 +203,34 @@ export default {
 
       this.loadData();
     },
-    toRead(bookId, readType, bookName, docLibCode) {
+    toRead(item) {
       var url =
         CONFIG.READ_URL +
         "?bookId=" +
-        bookId +
-        "&readType=" +
-        readType +
-        "&bookName=" +
-        bookName +
+        item[this.productKeys.resourceId] +
+        "&readType=1" +
+        "&bookName="  +
+        item[this.productKeys.name] +
         "&userName=&siteType=" +
         CONFIG.READ_CONFIG.siteType;
-        if (docLibCode) {
-          url += '&doclibCode=' + docLibCode
+        if (item[this.productKeys.resourceType]) {
+          url += '&doclibCode=' + item[this.productKeys.resourceType]
         }
-      window.open(url);
+      
+      /* 新增阅读接口返回url 依赖全局配置'晒书阅读配置 CONFIG.SHAISHU_READ'
+        CONFIG.SHAISHU_READ.type 阅读文件类型
+      */
+      if ( CONFIG && CONFIG.SHAISHU_READ ) {
+        let resId = item[this.productKeys.resourceId];
+        let resType = item[this.productKeys.resourceType];
+        let type = CONFIG.SHAISHU_READ.type;
+        let proType = item[this.productKeys.productType];
+        // let siteId = CONFIG.SITE_CONFIG.siteId;
+        
+        readUtils.shaishuRead.full(resId ,resType ,type ,proType);
+      } else {
+        window.open(url);
+      }
     },
     getIsRead(type){
       if(this.CONFIG && this.CONFIG.isReadList){
