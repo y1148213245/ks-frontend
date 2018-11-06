@@ -261,7 +261,8 @@
                 <span class="mt5" :title="item1.productName">{{item1.productName||(getStaticText('noBookTitleForTheTimeBeing') ? getStaticText('noBookTitleForTheTimeBeing') : "暂无书名")}}</span>
                 <span class="personalcenter_list_main_listBox_card_left_author">{{getStaticText('author') ? getStaticText('author') : '作者'}}：{{item1.author||(getStaticText('noAuthor') ? getStaticText('noAuthor') : '暂无作者')}}</span>
               </div>
-              <div v-if="item.itemList[0].productType == 91 && exchangeState && item.payStatus==1" class="OperationDoubleBtn personalcenter_list_main_listBox_card_left_returnBtn">
+              <!-- 是纸书订单 && 已经成功付款 && 已经成功确认收货  三者条件都为真才显示 【退货 / 换货】按钮-->
+              <div v-if="item.itemList[0].productType == 91 && exchangeState && item.payStatus==1 && item.confirmStatus === '1'" class="OperationDoubleBtn personalcenter_list_main_listBox_card_left_returnBtn">
                 <el-button type="text" @click="showReturn(item,item1,1)">{{getStaticText('returnGoods') ? getStaticText('returnGoods') :'退货'}}</el-button>
                 <el-button type="text" @click="showReturn(item,item1,2)">{{getStaticText('exchangeGoods') ? getStaticText('exchangeGoods') :'换货'}}</el-button>
               </div>

@@ -55,7 +55,7 @@
     </div>
 
     <!--未购买指给第一条添加播放的点击事件-->
-    <div class="work_videoplay_01_myswipercon_container" v-show='isBuy==0' v-if="videoLists && videoLists.length>0">
+    <div class="work_videoplay_01_myswipercon_container ssss" v-show='isBuy==0 && isVip == 0' v-if="videoLists && videoLists.length>0">
       <div class="work_videoplay_01_myswipercon swiper-container" v-if="CONFIG && CONFIG.showVideoList">
         <div class="work_videoplay_01_myswiperwra swiper-wrapper">
           <div class="work_videoplay_01_myswiper swiper-slide" v-for="(item, index) in videoLists" :key="index" v-if="index < (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 0)" v-text="item[keys.resName]" @click="toPlayVideo(item,index)" :class="{work_videoplay_01_activevideo: curShowIndex == index}"></div>
@@ -115,8 +115,10 @@ export default {
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_videoplay.work_videoplay_01[this.modulename];
     this.playUrl = CONFIG.BASE_URL + this.CONFIG.playVideoUrl; // 资源播放地址
+    
+  },
+  mounted(){
     let queryObj = URL.parse(document.URL, true).query;
-
     /* 添加视频插件 */
     let script = document.createElement('script')
     script.type = 'text/javascript'
@@ -174,7 +176,7 @@ export default {
         })
       }
     },
-    getListOrPlayVideo () {
+    getListOrPlayVideo() {
       this.getDetailISBUY()
       if (this.CONFIG.queryParamsType == '') { // 从配置里面去参数
         this.queryResourceLists();
@@ -194,7 +196,7 @@ export default {
         this.queryResourceLists();
       }
     },
-    queryResourceLists () {
+    queryResourceLists() {
       let QUERYCONFIG = this.CONFIG.getResourceLists;
       let paramsObj = JSON.parse(JSON.stringify(QUERYCONFIG.params));
       paramsObj.conditions.map((item) => {
@@ -214,7 +216,6 @@ export default {
         if (datas.success && datas.result.length > 0) {
 
           this.videoLists = datas.result; // 视频列表
-
 
           if (this.resType == 'ZILIAOKU') {  //如果是资料库，获取视频附件，
             this.getAttachDetail(this.curId);
@@ -269,6 +270,8 @@ export default {
     },
     initSwiper () { // 初始化轮播图
       new Swiper('.swiper-container', {
+        observer:true,
+        observeParents:true, //自动初始化swiper
         initialSlide: this.curShowIndex, // 当前播放的滑倒最左边
         slidesPerView: 4, // 每屏4张
         spaceBetween: 30, // 间隔
@@ -311,6 +314,13 @@ export default {
       this.$bus.emit(eventName, detail)
     }
 
+  },
+  watch:{
+    member(n,o){
+      if(n.loginName){
+        this.getListOrPlayVideo(); 
+      }
+    }
   }
 }
 </script>

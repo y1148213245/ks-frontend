@@ -133,6 +133,7 @@ const dev = {
   shoppingCart: {
     shoppingCart_01: {
       cartContent: {
+        isMobile:true,
         inventorySwitchFlag: false, // 是否需要库存判断开关按钮
         yanjishiFeeSwitchFlag: false, // 个性化需求：延边教育项目针对延吉市有一套邮费规则
         directUrl: { // 购物车列表有很多类型的组件 类型不同可能跳转不同的详情页面 根据类型配置
@@ -322,6 +323,7 @@ const prod = {
   shoppingCart: {
     shoppingCart_01: {
       cartContent: {
+        isMobile:true,
         inventorySwitchFlag: false, // 是否需要库存判断开关按钮
         yanjishiFeeSwitchFlag: false, // 个性化需求：延边教育项目针对延吉市有一套邮费规则
         directUrl: { // 购物车列表有很多类型的组件 类型不同可能跳转不同的详情页面 根据类型配置

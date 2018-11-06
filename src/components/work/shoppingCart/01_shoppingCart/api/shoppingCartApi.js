@@ -7,11 +7,10 @@ import axios from 'axios';
 
 export default {
   queryShoppingCart (param, cb) {
-    /*let loading = Vue.prototype.$loading({ text: "数据加载中..." });*/
+    let loading = Vue.prototype.$loading();
     var stamp = new Date().getTime();
     axios.get(CONFIG.BASE_URL + 'cart/getCartAndActivity.do?loginName=' + param.loginName + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&timeStamp=' + stamp).then(function (response) {
       if (cb && cb instanceof Function) {
-        /*loading.close();*/
         if (response.data.data && response.data.data.content) {
           var len = response.data.data.content.length;
           var tempLen = 0;
@@ -24,6 +23,7 @@ export default {
           cb({ productList: response.data.data.content, totalCount: tempLen });
         }
       }
+      loading.close();
     })
   },
   deleteCartProduct (ids, cb) {

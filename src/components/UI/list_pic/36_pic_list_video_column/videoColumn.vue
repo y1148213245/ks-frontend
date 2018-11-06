@@ -15,7 +15,7 @@
             </div>
           </li>
         </ul>
-        <ul class="ui_list_pic_36_videoList ui_list_pic_36_videoList_nobuy" v-if="videoList && videoList.length && isBuy == '0'">
+        <ul class="ui_list_pic_36_videoList ui_list_pic_36_videoList_nobuy" v-if="videoList && videoList.length && isBuy == '0' && isVip == 0">
           <!-- 还未购买 只给第一条课程添加事件-->
           <li v-for="(video,index) in videoList" :key="index" @click="toPlayVideo(video)" v-if="index < (CONFIG.freeCourseNum ? CONFIG.freeCourseNum : 0)" class="ui_list_pic_36_videoList_first">
             <div class="ui_list_pic_36_videoList_columnName">{{index + 1}}{{display.symbol}}{{video[keys.resName]}}</div>

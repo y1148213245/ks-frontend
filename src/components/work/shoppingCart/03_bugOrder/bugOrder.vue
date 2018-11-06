@@ -186,19 +186,18 @@
 				if(this.loginName == undefined || this.loginName == '') { // 未登录
 					return false;
 				}
-				//console.log(Number(this.menberMoney) + '____');
-				//console.log(Number(this.bookMoney) + '====');
-				if(Number(this.bookMoney) > Number(this.menberMoney)) {
-					this.balanceHintShow = true;
-					return false;
-				}
-				if(this.balanceHintShow) {
-					return false;
-				}
 				//判断支付方式 生成不同的参数
-				//如果是余额支付那么判断余额够不够
+				if(this.defaultPay=="Balance"){
+					//如果是余额支付那么判断余额够不够
+					if(Number(this.bookMoney) > Number(this.menberMoney)) {
+						this.balanceHintShow = true;
+						return false;
+					}
+					// if(this.balanceHintShow) {
+					// 	return false;
+					// }
+				}
 				this.setOrderParams();
-
 				// http://172.19.36.97:9092/spc-portal-web/order/submitSplitOrder.do
 				var _this = this;
 				if(this.resourceDetail.isBuy=='1'){
@@ -207,8 +206,7 @@
 						message: "请不要重复购买",
 						duration: 2000
 					})
-				}else
-				{
+				}else{
 					let loading = Vue.prototype.$loading({
 						text: "数据加载中..."
 					});
@@ -217,8 +215,33 @@
 						if(response.status == 200 && response.data) {
 							let datas = response.data;
 							if(datas.data && datas.result == 1 && datas.data.submitStatus) {
-							// alert("购买完成！")
-								location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
+								if(_this.defaultPay=="Balance"){ //余额支付
+									location.href=_this.orderSuccessUrl + "?pubId=" + _this.pubId + "&&loginName=" + _this.loginName;
+								}else if(_this.defaultPay=="Weixin"){  //微信支付
+									loading.close();
+									let params={
+										payType: 'Weixin', // 支付类型:支付宝Alipay 微信：Weixin
+										orderId: datas.data.orderId, //  支付金额
+										loginName: _this.loginName,
+										siteId: CONFIG.SITE_CONFIG.siteId,
+										flag: 'wxShop', //标识flag=wxShop微信商城
+									};
+									Get(CONFIG.BASE_URL + 'epay/getWxShopPay.do' , { 'params': params }).then((resp) => {
+										let datas = resp.data;
+										if (datas.result == '1') { // 请求成功
+										if (typeof WeixinJSBridge == "undefined") {
+											if (document.addEventListener) {
+											document.addEventListener('WeixinJSBridgeReady', _this.onBridgeReady, false);
+											} else if (document.attachEvent) {
+											document.attachEvent('WeixinJSBridgeReady', _this.onBridgeReady);
+											document.attachEvent('onWeixinJSBridgeReady', _this.onBridgeReady);
+											}
+										} else {
+											_this.onBridgeReady(datas.data ? JSON.parse(datas.data) : []);
+										}
+										}
+									})
+								}
 							} else {
 								loading.close();
 							}
@@ -229,8 +252,26 @@
 				}
 
 			},
-			setOrderParams() {
+			onBridgeReady (data) {
+				// 在微信浏览器里面打开H5网页中执行JS调起支付  WeixinJSBridge内置对象在其他浏览器中无效 【授权】
+				WeixinJSBridge.invoke(
+					'getBrandWCPayRequest', {
+					"appId": data.appId,     //公众号名称，由商户传入
+					"timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数
+					"nonceStr": data.nonceStr, //随机串
+					"package": data.package,
+					"signType": data.signType,         //微信签名方式：
+					"paySign": data.paySign //微信签名
+					},
+					function (res) {
+					console.log(res)
+					if (res.err_msg == "get_brand_wcpay_request:ok") {
 
+					}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+					}
+				);
+			},
+			setOrderParams() {
 				this.curSelectedInvoice = {
 					invoiceType: "", // 发票类型
 					receipttypes: "",

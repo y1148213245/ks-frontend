@@ -566,7 +566,7 @@ import axios from "axios";
 import moment from "moment";
 import $ from "jquery";
 import { Base64 } from 'js-base64';
-// import {DrawImage} from "@common";
+import { Get, DrawImage } from "@common";
 import PROJECT_CONFIG from "projectConfig";
 
 export default {
@@ -1159,6 +1159,7 @@ export default {
     },
     moveFavorite: function (product) { // 移入收藏
       var _this = this;
+      _this.loading = true; // 加loading防止操作请求时间太长 造成多次移入收藏夹
       if (product.isCollect === "1") { // 已收藏的话就直接移除就行
         var param = {
           ids: product.id,
@@ -1175,6 +1176,7 @@ export default {
                 message: _this.getStaticText('moveIntoCollectionFolderFailed') ? _this.getStaticText('moveIntoCollectionFolderFailed') : "移入收藏夹失败"
               });
             }
+            _this.loading = false;
           }
         };
         _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
@@ -1204,6 +1206,7 @@ export default {
                     message: _this.getStaticText('moveIntoCollectionFolderFailed') ? _this.getStaticText('moveIntoCollectionFolderFailed') : "移入收藏夹失败"
                   });
                 }
+                _this.loading = false;
               }
             };
             _this.$store.dispatch("shoppingcart/" + type.DELETE_CART_PRODUCT, param);
@@ -1608,7 +1611,32 @@ export default {
                 loadingTag.close();
                 window.open(CONFIG.BASE_URL + "epay/getPayForm.do?orderId=" + argus.orderId + "&loginName=" + _this.member.loginName + "&payMethodCode=" + argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId, "_self");
               } else if (_this.payMethod === "Weixin") { // 微信支付
-                axios.get(CONFIG.BASE_URL + "epay/getPayForm.do?orderId=" + argus.orderId + "&loginName=" + _this.member.loginName + "&payMethodCode=" + argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId)
+                if(_this.CONFIG && _this.CONFIG.isMobile){  //isMobile为true时，调微信端-微信支付接口
+                  let params={
+										payType: 'Weixin', // 支付类型:支付宝Alipay 微信：Weixin
+										orderId: _this.commitInfo.orderId, //  支付金额
+										loginName: _this.member.loginName,
+										siteId: CONFIG.SITE_CONFIG.siteId,
+										flag: 'wxShop', //标识flag=wxShop微信商城
+									};
+									Get(CONFIG.BASE_URL + 'epay/getWxShopPay.do' , { 'params': params }).then((resp) => {
+										let datas = resp.data;
+										if (datas.result == '1') { // 请求成功
+										if (typeof WeixinJSBridge == "undefined") {
+											if (document.addEventListener) {
+											document.addEventListener('WeixinJSBridgeReady', _this.onBridgeReady, false);
+											} else if (document.attachEvent) {
+											document.attachEvent('WeixinJSBridgeReady', _this.onBridgeReady);
+											document.attachEvent('onWeixinJSBridgeReady', _this.onBridgeReady);
+											}
+										} else {
+											_this.onBridgeReady(datas.data ? JSON.parse(datas.data) : []);
+										}
+										}
+									})
+                }else{
+                  //默认PC端
+                  axios.get(CONFIG.BASE_URL + "epay/getPayForm.do?orderId=" + argus.orderId + "&loginName=" + _this.member.loginName + "&payMethodCode=" + argus.payMethodCode + '&siteId=' + CONFIG.SITE_CONFIG.siteId)
                   .then(function (response) {
                     loadingTag.close();
                     var data = response.data.substring(response.data.indexOf("<a>") + 3,  response.data.indexOf("</a>"));
@@ -1616,6 +1644,7 @@ export default {
                     var wxpayUrl = "../pages/qrcode.html?data=" + data + "&orderCode=" + orderCode + '&payType=shoppingcart';
                     window.open(wxpayUrl, '_self');
                   });
+                }
               } else {
                 loadingTag.close();
                 _this.$alert( _this.getStaticText('selectCorrectPayWay') ? _this.getStaticText('selectCorrectPayWay') : "请选择有效的支付方式");
@@ -1638,6 +1667,25 @@ export default {
       // console.log(params);
       this.$store.dispatch("shoppingcart/" + type.COMMIT_ORDER, params);
       let loadingTag = _this.$loading({ fullscreen: true });
+    },
+    onBridgeReady (data) {
+      // 在微信浏览器里面打开H5网页中执行JS调起支付  WeixinJSBridge内置对象在其他浏览器中无效 【授权】
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+        "appId": data.appId,     //公众号名称，由商户传入
+        "timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数
+        "nonceStr": data.nonceStr, //随机串
+        "package": data.package,
+        "signType": data.signType,         //微信签名方式：
+        "paySign": data.paySign //微信签名
+        },
+        function (res) {
+        console.log(res)
+        if (res.err_msg == "get_brand_wcpay_request:ok") {
+
+        }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+        }
+      );
     },
     getRmbCoin: function () {         // 实时兑换下载币为人民币
       if (this.downloadCoin == "") { // 清空输入框

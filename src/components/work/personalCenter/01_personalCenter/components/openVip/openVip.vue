@@ -151,7 +151,7 @@ export default {
       if (this.selectedPayWay.payCode == 'Alipay') { // 支付宝支付
         window.location.href = openVipUrl;
       } else if (this.selectedPayWay.payCode == "Weixin") { // 微信支付
-        Get(openVipUrl).then(function (resp) {
+        Get(openVipUrl).then((resp) => {
           let data = resp.data;
           let datas = data.substring(data.indexOf("<a>") + 3, data.indexOf("</a>"));
           let orderCode = data.substring(data.indexOf("<div>") + 5, data.indexOf("</div>"));
