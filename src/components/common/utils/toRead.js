@@ -2,7 +2,7 @@
  * @Author: yancm 
  * @Date: 2018-11-02 11:27:22 
  * @Last Modified by: yancm
- * @Last Modified time: 2018-11-05 15:25:49
+ * @Last Modified time: 2018-11-07 13:41:16
  */
 import { Get } from '@common'
 
@@ -19,7 +19,7 @@ let shaishuRead = {
             if (!data.error) {
                 window.location.href = data.data;
             } else {
-                if (CONFIG && CONFIG.SHAISHU_READ){
+                if (CONFIG && CONFIG.SHAISHU_READ) {
                     alert(CONFIG.SHAISHU_READ.errorText || '暂无阅读地址');
                 }
             }
@@ -32,7 +32,7 @@ let shaishuRead = {
             resourceType,
             type,
             productType
-            
+
         }
         if (siteId) {
             params.siteId = siteId;
@@ -42,7 +42,7 @@ let shaishuRead = {
             if (!data.error) {
                 window.location.href = data.data;
             } else {
-                if (CONFIG && CONFIG.SHAISHU_READ){
+                if (CONFIG && CONFIG.SHAISHU_READ) {
                     alert(CONFIG.SHAISHU_READ.errorText || '暂无阅读地址');
                 }
             }
