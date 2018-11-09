@@ -99,7 +99,8 @@ export default {
       isShowAllBotton: false, // 是否展示全部按钮
       exMoreNum: 4, // 超过多少就展示更多按钮
       query: "",
-      priceOrder: "prod_sale_price asc"
+      priceOrder: "prod_sale_price asc",
+      clampLoadQueue: [] // 多行文本省略插件加载完成后执行的队列
     };
   },
   created() {
@@ -111,6 +112,26 @@ export default {
       this.searchText = data;
       this.toBookList(this.orderParam, this.indexValue);
     });
+    /* 多行文本省略兼容 */
+    let agent = navigator.userAgent.toLowerCase();
+    let vscript = document.createElement("script");
+    let queue = this.clampLoadQueue;
+    vscript.src = "https://cdn.bootcss.com/Clamp.js/0.5.1/clamp.js";
+
+    vscript.onload = () => {
+      if (queue.length > 0) {
+        for (let index = 0; index < queue.length; index++) {
+          const element = queue[index];
+          if (typeof element == "function") {
+            element();
+          }
+        }
+      }
+    };
+    vscript.onerror = () => {
+      console.log("load clamp.js error");
+    };
+    document.body.appendChild(vscript);
   },
   mounted() {
     this.bgmUrl = require("./data/img/bg_ico.png");
@@ -214,6 +235,24 @@ export default {
           if (datas && datas instanceof Array) {
             this.bookList = isNOConcat ? datas : this.bookList.concat(datas);
             this.scroll = true;
+            let fn = () => {
+              let texts = document.getElementsByClassName(
+                "ui_mobile_list_02_abstract"
+              );
+              if (texts && texts.length) {
+                for (let index = 0; index < texts.length; index++) {
+                  const element = texts[index];
+                  $clamp(element, { clamp: 3 });
+                }
+              }
+            };
+            if (window.$clamp) {
+              this.$nextTick(() => {
+                fn();
+              });
+            } else {
+              this.clampLoadQueue.push(fn);
+            }
           }
         }
       });
