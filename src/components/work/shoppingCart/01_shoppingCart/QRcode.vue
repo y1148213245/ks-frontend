@@ -65,21 +65,21 @@
        if (this.queryParams && this.queryParams.payType && this.queryParams.payType == 'virtualCoin') { // 虚拟币充值
         axios.get(CONFIG.BASE_URL + 'recharge/getRechargeOrder.do?orderCode=' + this.orderCode).then(function (response) {  
           var data = response.data.data;
-          if (data && data.status && data.status === '0') {  // 支付成功跳转生成订单页面 支付失败继续请求
-            window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/1/order";
+          if (data && data.status == 0) {  // 支付成功跳转生成订单页面 支付失败继续请求
+            window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderid + "/1/order";
           }
         })
        } else if(this.queryParams && this.queryParams.payType && this.queryParams.payType == 'chargeVip') { // 付费会员
          axios.get(CONFIG.BASE_URL + 'member/getMemberPayByOrder.do?orderCode=' + this.orderCode).then(function (response) {  
           var data = response.data.data;
-          if (data && data.OrderStatus && data.OrderStatus === 'PAYED') {  // 支付成功跳转生成订单页面 支付失败继续请求
+          if (data && data.OrderStatus == 'PAYED') {  // 支付成功跳转生成订单页面 支付失败继续请求
             window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/1/order";
           }
         })
        } else { // 购物车购买商品
          axios.get(CONFIG.BASE_URL + 'order/getParentOrder.do?orderCode=' + this.orderCode).then(function (response) {  
           var data = response.data.data;
-          if (data && data.payStatus && data.payStatus === '1') {  // 支付成功跳转生成订单页面 支付失败继续请求
+          if (data && data.payStatus == '1') {  // 支付成功跳转生成订单页面 支付失败继续请求
             window.location.href = "../pages/commitorder.html#/commitOrder/" + data.orderCode + "/1/order";
           }
         })

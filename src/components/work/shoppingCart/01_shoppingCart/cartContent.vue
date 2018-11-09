@@ -1349,7 +1349,7 @@ export default {
         money: curRealAmount + '',
       }
       /* 延边项目个性化的地方：吉林省 延边 延吉市 2018/10/09 song */
-      if (this.CONFIG && this.CONFIG.yanjishiFeeSwitchFlag && this.curSelectedAddress && this.curSelectedAddress.city == '延边' && this.curSelectedAddress.county == '延吉市') {
+      if (this.CONFIG && this.CONFIG.yanjishiFeeSwitchFlag && this.curSelectedAddress && this.curSelectedAddress.county == '延吉市') {
         params.city = this.curSelectedAddress.county
       }
       axios.get(CONFIG.BASE_URL + 'order/getDeliveryFee.do' + '?expenseTemp=' + params.expenseTemp + '&city=' + encodeURI(params.city) + '&weight=' + params.weight + '&money=' + params.money).then((response) => {

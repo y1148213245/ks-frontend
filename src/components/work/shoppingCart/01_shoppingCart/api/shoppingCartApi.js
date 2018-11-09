@@ -24,7 +24,9 @@ export default {
         }
       }
       loading.close();
-    })
+    }).catch(function () {
+      loading.close();
+    }) 
   },
   deleteCartProduct (ids, cb) {
     axios.post(CONFIG.BASE_URL + 'cart/deleteCart.do?ids=' + ids).then(function (response) {

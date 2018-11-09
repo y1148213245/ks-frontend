@@ -94,6 +94,7 @@ export default {
     if (this.getShowItem('code')) {
       this.createCode();
     }
+    
 
   },
 
@@ -104,6 +105,7 @@ export default {
     initConfig () {
       this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_03;
       this.isPC = this.CONFIG.isPC ? this.CONFIG.isPC : 'true';
+      this.member.flag = this.CONFIG && this.CONFIG.platformType ? this.CONFIG.platformType : 'pc'; // PC端登录的时候 flag为pc；微信端登录的时候 flag为 wxShop
     },
     /* 创建验证码 */
     createCode () {

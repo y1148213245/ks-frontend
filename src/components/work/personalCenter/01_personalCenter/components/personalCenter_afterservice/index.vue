@@ -252,7 +252,7 @@
           <span>{{getStaticText('exchangeCount') ? getStaticText('exchangeCount') : '换货数量'}}：{{returnGoodsDetails.num}}</span>
         </div>
         <div class="mtb15">
-          <span>{{getStaticText('problemDescription') ? getStaticText('problemDescription') : '问题描述'}}：{{returnGoodsDetails.reasons}}</span>
+          <span>{{getStaticText('problemDescription') ? getStaticText('problemDescription') : '问题描述'}}：{{returnGoodsDetails.verifyApplyReason}}</span>
         </div>
         <div class="mtb15">
           <span class="afterservice_details_img" v-if="imgArr.length">{{getStaticText('picture') ? getStaticText('picture') : '图片'}}：

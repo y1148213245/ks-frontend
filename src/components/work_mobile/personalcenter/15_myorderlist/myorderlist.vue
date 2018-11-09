@@ -15,16 +15,22 @@
             </div>
             <ul class="work_mobile_personalcenter_15_list_ul_li_mainbox">
               <li class="work_mobile_personalcenter_15_list_ul_li_mainbox_li" v-for="(subItem, index) in item.orderList" :key="index">
-                <ul class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul">
+                <ul class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul" v-if="orderType=='book' || orderType=='periodical'">
                   <li class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_li" v-for="(order, innerindex) in  subItem.itemList" :key="innerindex" @click="toDetails(outIndex,index)">
                     <van-card v-if="orderType=='book'" :title="order.productName" :desc="order.author" :num="order.productNum" :price="order.memberPrice" :thumb="order.bigPic">
                     </van-card>
                     <van-card v-else-if="orderType=='periodical'" :title="order.periodicalName" :desc="order.periodicalRemark" :price="order.totalPrice" :thumb="order.bigPic">
                     </van-card>
                   </li>
-                  
                 </ul>
-                <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation">
+                <!-- 知识服务没有订单详情 -->
+                <ul v-else class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul02">
+                  <li class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_li" v-for="(order, innerindex) in  subItem.itemList" :key="innerindex">
+                    <van-card :title="order.productName" :desc="order.author" :price="order.productPrice">
+                    </van-card>
+                  </li>
+                </ul>
+                <div v-if="orderType !== 'knowledge'" class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation">
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_pendingPayment" v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_collectGoods" v-if="item.payStatus==1&& subItem.deliveryStatus < 3">{{display.collectGoods}}</span>
                   <!-- <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_complete" v-if="item.payStatus==5">{{display.complete}}</span> -->
@@ -37,7 +43,8 @@
                   <!-- 期刊不展示数量-->
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_balanceDeduct" v-show="item.balanceAmount!='0.00'">{{display.balanceDeduct}}：{{display.money}}{{item.balanceAmount}}</span>
                 </div>
-                <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn">
+                <div v-else class="work_mobile_personalcenter_15_book-list_service_li_content-box_totalmony">{{display.money}}{{item.realAmount}}</div>
+                <div v-if="orderType !== 'knowledge'" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn">
                   <div v-if="subItem.itemList[0].productType!=94 && item.payStatus==1 && subItem.deliveryStatus==0" class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_pendingDelivery">
                     <span>{{display.pendingDelivery}}</span>
                   </div>
@@ -55,7 +62,7 @@
                   </div>
                 </div>
               </li>
-              <div class="work_mobile_personalcenter_15_list_ul_li_mainbox_pendingPaymentBtn" v-if="item.payStatus==0 && item.status==1">
+              <div v-if="item.payStatus==0 && item.status==1 && orderType !== 'knowledge'" class="work_mobile_personalcenter_15_list_ul_li_mainbox_pendingPaymentBtn">
                 <van-button size="small" @click="toPayOrder(outIndex)">
                   {{display.payment}}
                 </van-button>
@@ -63,7 +70,7 @@
                   {{display.cancelOrder}}
                 </van-button>
               </div>
-              <div v-if="item.payStatus==5" class="work_mobile_personalcenter_15_list_ul_li_mainbox_completeBtn">
+              <div v-if="item.payStatus==5 && orderType !== 'knowledge'" class="work_mobile_personalcenter_15_list_ul_li_mainbox_completeBtn">
                 <van-button size="small" @click="deleteOrder(outIndex)">
                   {{display.deleteOrder}}
                 </van-button>
@@ -71,7 +78,6 @@
             </ul>
           </li>
         </template>
-
         <span class="work_mobile_personalcenter_15_list_ul_empty" v-else>{{display.empty}}</span>
       </ul>
     </div>
@@ -187,7 +193,7 @@ export default {
       kdnOptionsBaseUrl: "http://www.kdniao.com", //快递鸟地址
       loading: true,
       deliveryStatus: "", //订单发货状态
-      noScroll: false, // 取消订单的时候会请求下一页的数据
+      noScroll: false // 取消订单的时候会请求下一页的数据
     };
   },
 
@@ -227,7 +233,6 @@ export default {
       if (!this.noScroll) {
         mobileLoading(this, "queryMyOrder");
       }
-      
     });
   },
   methods: {
@@ -236,8 +241,8 @@ export default {
       this.pageSize = this.ORDERCONFIG.params.pageSize;
       this.pageIndex = this.ORDERCONFIG.params.pageIndex;
       this.consumeLists = [];
-      if(this.active == 1){
-        this.orderType = 'periodical';
+      if (this.active == 1) {
+        this.orderType = "periodical";
       }
       this.queryMyOrder(loginName); // 获取我的订单
     },
@@ -282,7 +287,7 @@ export default {
       } else if (index == 1) {
         this.orderType = "periodical";
       } else {
-        console.log("知识服务订单");
+        this.orderType = "knowledge";
       }
       // 把tab存储到sessionstorage里
       this.active = index;
@@ -291,33 +296,52 @@ export default {
     },
     //前往详情页
     toDetails(outIndex, index) {
-      var orderId = '';
-      if(index === -1){
+      var orderId = "";
+      if (index === -1) {
         orderId = outIndex;
-      }else{
+      } else {
         orderId = this.consumeLists[outIndex].orderList[index].orderId;
       }
       Get(CONFIG.BASE_URL + this.ORDERDETAILS.url + "?orderId=" + orderId).then(
         resp => {
           this.orderDetails = resp.data.data;
           if (this.orderType == "book") {
-            var urlData=window.location.href;
-            let splicingUrl=urlData.substring(0, urlData.indexOf("#"));
-            let splicingUrlend=urlData.substring(urlData.indexOf("#"), urlData.length);
-            var jumpEditPage=splicingUrl+"?modal=details"+splicingUrlend
+            var urlData = window.location.href;
+            let splicingUrl = urlData.substring(0, urlData.indexOf("#"));
+            let splicingUrlend = urlData.substring(
+              urlData.indexOf("#"),
+              urlData.length
+            );
+            var jumpEditPage = splicingUrl + "?modal=details" + splicingUrlend;
             let urlDress = urlData.substring(0, urlData.indexOf("?"));
-            if(urlDress==""){
+            if (urlDress == "") {
               history.pushState(null, "", jumpEditPage);
             }
             this.currentShow = "bookDetails";
           } else if (this.orderType == "periodical") {
             this.currentShow = "periodicalDetails";
-            var urlData=window.location.href;
-            let splicingUrl=urlData.substring(0, urlData.indexOf("#"));
-            let splicingUrlend=urlData.substring(urlData.indexOf("#"), urlData.length);
-            var jumpEditPage=splicingUrl+"?modal=details"+splicingUrlend
+            var urlData = window.location.href;
+            let splicingUrl = urlData.substring(0, urlData.indexOf("#"));
+            let splicingUrlend = urlData.substring(
+              urlData.indexOf("#"),
+              urlData.length
+            );
+            var jumpEditPage = splicingUrl + "?modal=details" + splicingUrlend;
             let urlDress = urlData.substring(0, urlData.indexOf("?"));
-            if(urlDress==""){
+            if (urlDress == "") {
+              history.pushState(null, "", jumpEditPage);
+            }
+          } else if (this.orderType == "knowledge") {
+            this.currentShow = "knowledgeDetails";
+            var urlData = window.location.href;
+            let splicingUrl = urlData.substring(0, urlData.indexOf("#"));
+            let splicingUrlend = urlData.substring(
+              urlData.indexOf("#"),
+              urlData.length
+            );
+            var jumpEditPage = splicingUrl + "?modal=details" + splicingUrlend;
+            let urlDress = urlData.substring(0, urlData.indexOf("?"));
+            if (urlDress == "") {
               history.pushState(null, "", jumpEditPage);
             }
           }
@@ -338,10 +362,10 @@ export default {
     },
     //确认收货
     toConfirm(outIndex, index) {
-      var orderId = '';
-      if(index === -1){
+      var orderId = "";
+      if (index === -1) {
         orderId = outIndex;
-      }else{
+      } else {
         orderId = this.consumeLists[outIndex].orderList[index].orderId;
       }
       Get(
@@ -353,21 +377,21 @@ export default {
           this.member.loginName
       ).then(resp => {
         let res = resp.data;
-        if(res.result == "1"){
+        if (res.result == "1") {
           Toast.success({
             duration: 1000,
             message: "确认收货成功"
           });
-          if(index === -1){
-            this.toDetails(outIndex,-1)
-          }else{
-            this.initData(this.member.loginName);  //确认收货后再次请求列表
+          if (index === -1) {
+            this.toDetails(outIndex, -1);
+          } else {
+            this.initData(this.member.loginName); //确认收货后再次请求列表
           }
-        }else{
-	        Toast.fail({
-		        duration: 1000,
-		        message: "确认收货失败"
-	        });
+        } else {
+          Toast.fail({
+            duration: 1000,
+            message: "确认收货失败"
+          });
         }
       });
     },
@@ -415,41 +439,49 @@ export default {
       var payMethod = this.consumeLists[outIndex].orderList[0].payMethod;
     },
     //去图书详情
-    tobookdetails(inneritem){
-      var toDetailUrl=this.CONFIG.toBookDetailUrl;
-      var url=(toDetailUrl ? toDetailUrl : './bookdetail.html')+'?pubId=' + inneritem.pubId
-      window.open(url)
+    tobookdetails(inneritem) {
+      var toDetailUrl = this.CONFIG.toBookDetailUrl;
+      var url =
+        (toDetailUrl ? toDetailUrl : "./bookdetail.html") +
+        "?pubId=" +
+        inneritem.pubId;
+      window.open(url);
     },
     //去刊种详情
-    toperiodicalDetails(inneritem,event){
-      let target=event.target;
-      switch (target.className){
-        case 'van-card__thumb':
-        case 'van-card__title':
-          var magListDetailUrl=this.CONFIG.toperiodicalDetailsUrl;
-          var toMagListDetailUrl=(magListDetailUrl ? magListDetailUrl : './magList.html')+'?magName=' + inneritem.periodicalName;
+    toperiodicalDetails(inneritem, event) {
+      let target = event.target;
+      switch (target.className) {
+        case "van-card__thumb":
+        case "van-card__title":
+          var magListDetailUrl = this.CONFIG.toperiodicalDetailsUrl;
+          var toMagListDetailUrl =
+            (magListDetailUrl ? magListDetailUrl : "./magList.html") +
+            "?magName=" +
+            inneritem.periodicalName;
           window.open(toMagListDetailUrl);
           break;
       }
     },
+    //去刊种详情
+    toknowledgeDetails(inneritem) {},
     // 保留两位小数
-    toFixed2(num){
-			var result = parseFloat(num);
-			if (isNaN(result)) {
-				return false
-			}
-			result = Math.round(num*100)/100;
-			let s_x = result.toString();
-			let pos_decimal =  s_x.indexOf('.')
-			if (pos_decimal < 0) {
+    toFixed2(num) {
+      var result = parseFloat(num);
+      if (isNaN(result)) {
+        return false;
+      }
+      result = Math.round(num * 100) / 100;
+      let s_x = result.toString();
+      let pos_decimal = s_x.indexOf(".");
+      if (pos_decimal < 0) {
         pos_decimal = s_x.length;
-				s_x += '.'
-			};
-			while(s_x.length<= pos_decimal+2){
-				s_x +='0'
-			}
-			return s_x
-		}
+        s_x += ".";
+      }
+      while (s_x.length <= pos_decimal + 2) {
+        s_x += "0";
+      }
+      return s_x;
+    }
   },
   filters: {
     filterFun: function(value) {
@@ -467,31 +499,44 @@ export default {
 </script>
 
 <style>
-.work_mobile_personalcenter_15 .work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_confirm{
-  background:#fff;overflow: hidden;padding:.12rem .33rem;
+.work_mobile_personalcenter_15_book-list_service_li_content-box_totalmony {
+  text-align: right;
+  color: #e97e54;
+  font-size: 0.3rem;
+  padding-right: 5%;
 }
-.work_mobile_personalcenter_15 .work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_confirm .van-button{
+.work_mobile_personalcenter_15
+  .work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_confirm {
+  background: #fff;
+  overflow: hidden;
+  padding: 0.12rem 0.33rem;
+}
+.work_mobile_personalcenter_15
+  .work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_collectGoodsBtn_confirm
+  .van-button {
   display: block;
   border: 1px solid #ff7d35;
-    color: #ff5c03;
+  color: #ff5c03;
   height: 0.44rem;
-    line-height: .44rem;
-    padding: 0 .23rem;
-    margin-left: .2rem;
-    -webkit-border-radius: .2rem;
-    -moz-border-radius: .2rem;
-    border-radius: .2rem;
-    font-size: .24rem;
-    float: right;
+  line-height: 0.44rem;
+  padding: 0 0.23rem;
+  margin-left: 0.2rem;
+  -webkit-border-radius: 0.2rem;
+  -moz-border-radius: 0.2rem;
+  border-radius: 0.2rem;
+  font-size: 0.24rem;
+  float: right;
 }
 
 .work_mobile_personalcenter_15 {
   font-size: 0.3rem;
   padding: 0.5rem;
 }
-.sub-person .work_mobile_personalcenter_15_list_ul_li .work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_balanceDeduct{
+.sub-person
+  .work_mobile_personalcenter_15_list_ul_li
+  .work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_balanceDeduct {
   float: right;
-  margin-right:10px;
+  margin-right: 10px;
 }
 </style>
 

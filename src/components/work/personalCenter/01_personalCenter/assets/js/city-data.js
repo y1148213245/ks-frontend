@@ -1,6 +1,6 @@
 export const CityInfo = [{
     value: 1,
-    label: '北京',
+    label: '北京市',
     children: [{
       value: 1,
       label: '北京市',
@@ -81,7 +81,7 @@ export const CityInfo = [{
   },
   {
     value: 2,
-    label: '天津',
+    label: '天津市',
     children: [{
       value: 2,
       label: '天津市',
@@ -162,7 +162,7 @@ export const CityInfo = [{
   },
   {
     value: 3,
-    label: '河北',
+    label: '河北省',
     children: [{
         value: 3,
         label: '石家庄市',
@@ -910,7 +910,7 @@ export const CityInfo = [{
   },
   {
     value: 4,
-    label: '山西',
+    label: '山西省',
     children: [{
         value: 14,
         label: '太原市',
@@ -1446,7 +1446,7 @@ export const CityInfo = [{
   },
   {
     value: 5,
-    label: '内蒙古',
+    label: '内蒙古自治区',
     children: [{
         value: 25,
         label: '呼和浩特市',
@@ -1915,7 +1915,7 @@ export const CityInfo = [{
   },
   {
     value: 6,
-    label: '辽宁',
+    label: '辽宁省',
     children: [{
         value: 37,
         label: '沈阳市',
@@ -2390,7 +2390,7 @@ export const CityInfo = [{
   },
   {
     value: 7,
-    label: '吉林',
+    label: '吉林省',
     children: [{
         value: 51,
         label: '长春市',
@@ -2641,7 +2641,7 @@ export const CityInfo = [{
       },
       {
         value: 59,
-        label: '延边',
+        label: '延边朝鲜族自治州',
         children: [{
             value: 581,
             label: '延吉市'
@@ -2680,7 +2680,7 @@ export const CityInfo = [{
   },
   {
     value: 8,
-    label: '黑龙江',
+    label: '黑龙江省',
     children: [{
         value: 60,
         label: '哈尔滨市',
@@ -3270,7 +3270,7 @@ export const CityInfo = [{
   },
   {
     value: 9,
-    label: '上海',
+    label: '上海市',
     children: [{
       value: 73,
       label: '上海市',
@@ -3355,7 +3355,7 @@ export const CityInfo = [{
   },
   {
     value: 10,
-    label: '江苏',
+    label: '江苏省',
     children: [{
         value: 74,
         label: '南京市',
@@ -3849,7 +3849,7 @@ export const CityInfo = [{
   },
   {
     value: 11,
-    label: '浙江',
+    label: '浙江省',
     children: [{
         value: 87,
         label: '杭州市',
@@ -4269,7 +4269,7 @@ export const CityInfo = [{
   },
   {
     value: 12,
-    label: '安徽',
+    label: '安徽省',
     children: [{
         value: 98,
         label: '合肥市',
@@ -4779,7 +4779,7 @@ export const CityInfo = [{
   },
   {
     value: 13,
-    label: '福建',
+    label: '福建省',
     children: [{
         value: 115,
         label: '福州市',
@@ -5169,7 +5169,7 @@ export const CityInfo = [{
   },
   {
     value: 14,
-    label: '江西',
+    label: '江西省',
     children: [{
         value: 124,
         label: '南昌市',
@@ -5625,7 +5625,7 @@ export const CityInfo = [{
   },
   {
     value: 15,
-    label: '山东',
+    label: '山东省',
     children: [{
         value: 135,
         label: '济南市',
@@ -6275,7 +6275,7 @@ export const CityInfo = [{
   },
   {
     value: 16,
-    label: '河南',
+    label: '河南省',
     children: [{
         value: 152,
         label: '郑州市',
@@ -7005,7 +7005,7 @@ export const CityInfo = [{
   },
   {
     value: 17,
-    label: '湖北',
+    label: '湖北省',
     children: [{
         value: 169,
         label: '武汉市',
@@ -7488,7 +7488,7 @@ export const CityInfo = [{
   },
   {
     value: 18,
-    label: '湖南',
+    label: '湖南省',
     children: [{
         value: 183,
         label: '长沙市',
@@ -8051,7 +8051,7 @@ export const CityInfo = [{
   },
   {
     value: 19,
-    label: '广东',
+    label: '广东省',
     children: [{
         value: 197,
         label: '广州市',
@@ -8645,7 +8645,7 @@ export const CityInfo = [{
   },
   {
     value: 20,
-    label: '广西',
+    label: '广西壮族',
     children: [{
         value: 218,
         label: '南宁市',
@@ -9156,7 +9156,7 @@ export const CityInfo = [{
   },
   {
     value: 21,
-    label: '海南',
+    label: '海南省',
     children: [{
         value: 232,
         label: '海口市',
@@ -9263,7 +9263,7 @@ export const CityInfo = [{
   },
   {
     value: 22,
-    label: '重庆',
+    label: '重庆市',
     children: [{
       value: 234,
       label: '重庆市',
@@ -9432,7 +9432,7 @@ export const CityInfo = [{
   },
   {
     value: 23,
-    label: '四川',
+    label: '四川省',
     children: [{
         value: 235,
         label: '成都市',
@@ -10266,7 +10266,7 @@ export const CityInfo = [{
   },
   {
     value: 24,
-    label: '贵州',
+    label: '贵州省',
     children: [{
         value: 256,
         label: '贵阳市',
@@ -10668,7 +10668,7 @@ export const CityInfo = [{
   },
   {
     value: 25,
-    label: '云南',
+    label: '云南省',
     children: [{
         value: 265,
         label: '昆明市',
@@ -11269,7 +11269,7 @@ export const CityInfo = [{
   },
   {
     value: 26,
-    label: '西藏',
+    label: '西藏自治区',
     children: [{
         value: 281,
         label: '拉萨市',
@@ -11601,7 +11601,7 @@ export const CityInfo = [{
   },
   {
     value: 27,
-    label: '陕西',
+    label: '陕西省',
     children: [{
         value: 288,
         label: '西安市',
@@ -12084,7 +12084,7 @@ export const CityInfo = [{
   },
   {
     value: 28,
-    label: '甘肃',
+    label: '甘肃省',
     children: [{
         value: 298,
         label: '兰州市',
@@ -12503,7 +12503,7 @@ export const CityInfo = [{
   },
   {
     value: 29,
-    label: '青海',
+    label: '青海省',
     children: [{
         value: 312,
         label: '西宁市',
@@ -12720,7 +12720,7 @@ export const CityInfo = [{
   },
   {
     value: 30,
-    label: '宁夏',
+    label: '宁夏回族自治区',
     children: [{
         value: 320,
         label: '银川市',
@@ -12834,7 +12834,7 @@ export const CityInfo = [{
   },
   {
     value: 31,
-    label: '新疆',
+    label: '新疆维吾尔自治区',
     children: [{
         value: 325,
         label: '乌鲁木齐市',
@@ -13401,7 +13401,7 @@ export const CityInfo = [{
   },
   {
     value: 32,
-    label: '香港',
+    label: '香港特别行政区',
     children: [{
       value: 343,
       label: '香港',
@@ -13422,7 +13422,7 @@ export const CityInfo = [{
   },
   {
     value: 33,
-    label: '澳门',
+    label: '澳门特别行政区',
     children: [{
       value: 344,
       label: '澳门',
@@ -13463,7 +13463,7 @@ export const CityInfo = [{
   },
   {
     value: 34,
-    label: '台湾',
+    label: '台湾省',
     children: [{
       value: 345,
       label: '台湾',

@@ -264,10 +264,14 @@ export default {
   getMyComment(params) {
     var url =
       CONFIG.BASE_URL +
-      "comment/getMyComment.do?loginName=" +
+      "comment/getMyCommentNew.do?loginName=" +
       params.loginName +
       "&siteId=" +
-      CONFIG.SITE_CONFIG.siteId;
+      CONFIG.SITE_CONFIG.siteId+
+      "&pageIndex="+
+      params.pageIndex+
+      "&pageSize="+
+      params.pageSize;
     return Get(url);
   },
   /*积分兑换下载币*/

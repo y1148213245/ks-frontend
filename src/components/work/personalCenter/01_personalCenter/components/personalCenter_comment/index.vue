@@ -14,10 +14,13 @@
             </template>
           </el-table-column>
           <el-table-column label="评论详情" prop="" align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.discussContent}}</span>
+            </template>
           </el-table-column>
           <el-table-column label="评论时间" prop="ruleValue" align="center" width="180">
             <template slot-scope="scope">
-              <span>{{formatDateNEW(Number(scope.row.pubTime))}}</span>
+              <span>{{scope.row.discussContent}}</span>
             </template>
           </el-table-column>
           <!-- <el-table-column label="删除" prop="createTime" align="center" width="150">

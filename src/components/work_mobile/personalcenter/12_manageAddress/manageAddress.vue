@@ -92,9 +92,18 @@ export default {
       this.addressInfo.province = item.province;
       this.addressInfo.city = item.city;
       this.addressInfo.county = item.county;
-      for (var i in this.areaList.county_list) {
-        if (item.county && this.areaList.county_list[i] == item.county) {  //通过item.county获取areaCode值
-          this.areaCode = i;
+      for(var pro in this.areaList.province_list){
+        if(item.province &&  this.areaList.province_list[pro] == item.province){
+          let provinceCodeTwo = pro.slice(0,3);
+          for (var i in this.areaList.county_list) {
+            if (item.county && this.areaList.county_list[i] == item.county) {  //通过item.county获取areaCode值
+              // 判断是否是同一省份的同一个区areaCode的前两位代表省份
+              let countyCodeTwo = i.slice(0,3);
+              if(provinceCodeTwo == countyCodeTwo){
+                this.areaCode = i;
+              }
+            }
+          }
         }
       }
       this.addressInfo.addressDetail = item.address;
