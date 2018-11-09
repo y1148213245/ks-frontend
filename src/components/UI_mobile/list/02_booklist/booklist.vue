@@ -68,62 +68,63 @@
 </template>
 
 <script>
-import URL from 'url'
-import PROJECT_CONFIG from 'projectConfig'
-import { Post, Get } from '@common'
-import $ from 'jquery'
+import URL from "url";
+import PROJECT_CONFIG from "projectConfig";
+import { Post, Get } from "@common";
+import $ from "jquery";
 
 export default {
-  name: 'ui_mobile_list_02',
-  props: ['namespace', 'module'],
+  name: "ui_mobile_list_02",
+  props: ["namespace", "module"],
   reused: true,
-  data () {
+  data() {
     return {
       bgmUrl: "",
       rankbgmUrl: "",
-      CONFIG: "",  // 组件配置
-      keys: null,    // 接口字段
-      bookList: [],  // 图书列表
+      CONFIG: "", // 组件配置
+      keys: null, // 接口字段
+      bookList: [], // 图书列表
       indexValue: null, // 当前选中筛选条件：热门、好评、价格、新书
       noMore: false,
-      colId: '', // 栏目
-      cascadId: '', // 分类
-      listType: '', // 列表类型
-      orderParam: '', // 排序类型
+      colId: "", // 栏目
+      cascadId: "", // 分类
+      listType: "", // 列表类型
+      orderParam: "", // 排序类型
       totalCount: 0, // 总数
       pageNo: "1",
       pageSize: "10",
-      classifyBook: null,  // 分类
-      searchText: '',  // 搜索内容
-      checkCascadeId:0,// 是否展示全部按钮
-      isShowAllBotton:false,// 是否展示全部按钮
-      exMoreNum:4, // 超过多少就展示更多按钮
-      query:'',
-      priceOrder:'prod_sale_price asc'
+      classifyBook: null, // 分类
+      searchText: "", // 搜索内容
+      checkCascadeId: 0, // 是否展示全部按钮
+      isShowAllBotton: false, // 是否展示全部按钮
+      exMoreNum: 4, // 超过多少就展示更多按钮
+      query: "",
+      priceOrder: "prod_sale_price asc"
     };
   },
-  created () {
-    this.CONFIG = PROJECT_CONFIG[this.namespace].booklist.booklist_01[this.module];
+  created() {
+    this.CONFIG =
+      PROJECT_CONFIG[this.namespace].booklist.booklist_01[this.module];
     this.query = URL.parse(document.URL, true).query;
     this.cascadId = this.query.cascadId ? this.query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
-    this.$bus.on('showSearchResult', (data) => {
+    this.$bus.on("showSearchResult", data => {
       this.searchText = data;
       this.toBookList(this.orderParam, this.indexValue);
     });
   },
-  mounted () {
-    this.bgmUrl = require('./data/img/bg_ico.png');
-    this.rankbgmUrl = require('./data/img/rank.png');
+  mounted() {
+    this.bgmUrl = require("./data/img/bg_ico.png");
+    this.rankbgmUrl = require("./data/img/rank.png");
     // let query = URL.parse(document.URL, true).query;
-    this.colId = this.query.colId ? this.query.colId : "";  // 按栏目查的时候从地址栏获取colId
+    this.colId = this.query.colId ? this.query.colId : ""; // 按栏目查的时候从地址栏获取colId
     // this.cascadId = query.cascadId ? query.cascadId : ""; // 按分类查的时候从地址栏获取cascadId
     // this.orderParam = query.cascadId ? "BOOK_PUBDATE desc" : "pub_read_num desc";
     this.orderParam = this.query.orderBy ? this.query.orderBy : this.orderParam;
     //20180629 增加配置项 zong
-    if(typeof(this.CONFIG.exMoreNum)!='undefined'){
+    if (typeof this.CONFIG.exMoreNum != "undefined") {
       this.exMoreNum = this.CONFIG.exMoreNum;
     }
-    if(typeof(this.CONFIG.isShowAllBotton)!='undefined'){
+    if (typeof this.CONFIG.isShowAllBotton != "undefined") {
       this.isShowAllBotton = this.CONFIG.isShowAllBotton;
     }
     this.checkCascadeId = this.cascadId;
@@ -137,16 +138,18 @@ export default {
     this.loadBookList(this.cascadId);
     /*检测滚动条*/
     $(window).scroll(() => {
-      let clientHeight = $(window).height();   // 屏幕可视高度
-      let scrollHeight = $(window).scrollTop();     // 滚动条滚动高度
-      let allHeight = $(document).height();         // 总高度
+      let clientHeight = $(window).height(); // 屏幕可视高度
+      let scrollHeight = $(window).scrollTop(); // 滚动条滚动高度
+      let allHeight = $(document).height(); // 总高度
       var pageNo = this.totalCount / this.pageSize;
-      var pageNoMax = parseInt(pageNo, 10) === pageNo ? pageNo : Math.ceil(pageNo);
+      var pageNoMax =
+        parseInt(pageNo, 10) === pageNo ? pageNo : Math.ceil(pageNo);
       if (clientHeight + scrollHeight === allHeight && this.scroll === true) {
         this.scroll = false;
-        if (this.pageNo < pageNoMax) {   // 当前页小于翻页最大值
+        if (this.pageNo < pageNoMax) {
+          // 当前页小于翻页最大值
           this.noMore = false;
-          this.pageNo = parseInt(this.pageNo) + 1 + '';
+          this.pageNo = parseInt(this.pageNo) + 1 + "";
           this.loadBookList(this.cascadId);
         }
       }
@@ -156,37 +159,45 @@ export default {
     });
   },
   methods: {
-    loadBookList (cascadId, isNOConcat) { // 获取图书列表数据 isNOConcat: 是否需要拼接数据
+    loadBookList(cascadId, isNOConcat) {
+      // 获取图书列表数据 isNOConcat: 是否需要拼接数据
       this.checkCascadeId = cascadId;
       let paramsObj = Object.assign({}, this.CONFIG.params);
       //默认模糊查询，searchConFlag为true时分词查询
-      if(this.searchText){
-        if(this.CONFIG.searchConFlag && (this.CONFIG.searchConFlag=="true")){
+      if (this.searchText) {
+        if (this.CONFIG.searchConFlag && this.CONFIG.searchConFlag == "true") {
           paramsObj.searchText = this.searchText;
-        }else{
-          paramsObj.searchText ='pub_resource_name'+":"+"*"+this.searchText+"*";
+        } else {
+          paramsObj.searchText =
+            "pub_resource_name" + ":" + "*" + this.searchText + "*";
         }
       }
       let isHas_BOOK_BOOK_CASCADID = false;
       let isHas_pub_site_id = false;
       let isHas_pub_col_id = false;
-      paramsObj.conditions.map((item) => {
-        if (cascadId && item.hasOwnProperty('BOOK_BOOK_CASCADID')) {
-          item.BOOK_BOOK_CASCADID = cascadId.replace('~', '_');
-          isHas_BOOK_BOOK_CASCADID = true
+      paramsObj.conditions.map(item => {
+        if (cascadId && item.hasOwnProperty("BOOK_BOOK_CASCADID")) {
+          item.BOOK_BOOK_CASCADID = cascadId.replace("~", "_");
+          isHas_BOOK_BOOK_CASCADID = true;
         }
-        if (CONFIG.SITE_CONFIG.siteId && item.hasOwnProperty('pub_site_id')) {
-          item.pub_site_id = CONFIG.SITE_CONFIG.siteId
+        if (CONFIG.SITE_CONFIG.siteId && item.hasOwnProperty("pub_site_id")) {
+          item.pub_site_id = CONFIG.SITE_CONFIG.siteId;
           isHas_pub_site_id = true;
         }
-        if (this.colId && item.hasOwnProperty('pub_col_id')) {
+        if (this.colId && item.hasOwnProperty("pub_col_id")) {
           item.pub_col_id = this.colId;
           isHas_pub_col_id = true;
         }
-      })
-      if (!isHas_BOOK_BOOK_CASCADID && cascadId) paramsObj.conditions.push({ BOOK_BOOK_CASCADID: cascadId.replace('~', '_'), op: "lk" });
-      if (!isHas_pub_site_id && CONFIG.SITE_CONFIG.siteId) paramsObj.conditions.push({pub_site_id:CONFIG.SITE_CONFIG.siteId})
-      if (!isHas_pub_col_id && this.colId) paramsObj.conditions.push({pub_col_id:this.colId})
+      });
+      if (!isHas_BOOK_BOOK_CASCADID && cascadId)
+        paramsObj.conditions.push({
+          BOOK_BOOK_CASCADID: cascadId.replace("~", "_"),
+          op: "lk"
+        });
+      if (!isHas_pub_site_id && CONFIG.SITE_CONFIG.siteId)
+        paramsObj.conditions.push({ pub_site_id: CONFIG.SITE_CONFIG.siteId });
+      if (!isHas_pub_col_id && this.colId)
+        paramsObj.conditions.push({ pub_col_id: this.colId });
 
       if (this.orderParam) {
         paramsObj.orderBy = this.orderParam;
@@ -195,8 +206,9 @@ export default {
       }
       paramsObj.conditions = JSON.stringify(paramsObj.conditions);
       paramsObj.pageNo = this.pageNo;
-      Post(CONFIG.BASE_URL+this.CONFIG.url, paramsObj).then((res) => {
-        if (res.data.success) { // 请求成功
+      Post(CONFIG.BASE_URL + this.CONFIG.url, paramsObj).then(res => {
+        if (res.data.success) {
+          // 请求成功
           var datas = res.data.result;
           this.totalCount = res.data.totalCount;
           if (datas && datas instanceof Array) {
@@ -204,11 +216,14 @@ export default {
             this.scroll = true;
           }
         }
-      })
+      });
     },
-    queryClassificationList () { // 图书分类查询
+    queryClassificationList() {
+      // 图书分类查询
       let _this = this;
-      Get(CONFIG.BASE_URL+this.CONFIG.queryClassification.url, { params: this.CONFIG.queryClassification.params }).then(rep => {
+      Get(CONFIG.BASE_URL + this.CONFIG.queryClassification.url, {
+        params: this.CONFIG.queryClassification.params
+      }).then(rep => {
         var datas = rep.data;
         if (datas && datas instanceof Array && datas.length > 0) {
           for (var i = 0, len = datas.length; i < len; i++) {
@@ -219,102 +234,123 @@ export default {
         }
       });
     },
-    toBookList (orderParam, thisValue) {
+    toBookList(orderParam, thisValue) {
       this.initData();
-      if(this.priceOrder == 'prod_sale_price asc'){
-        this.priceOrder = 'prod_sale_price desc';
-      }else{
-        this.priceOrder = 'prod_sale_price asc';
+      if (this.priceOrder == "prod_sale_price asc") {
+        this.priceOrder = "prod_sale_price desc";
+      } else {
+        this.priceOrder = "prod_sale_price asc";
       }
       this.orderParam = orderParam;
       this.indexValue = thisValue;
       this.loadBookList(this.cascadId);
     },
-    initData () {    // 初始化数据操作
+    initData() {
+      // 初始化数据操作
       this.bookList = [];
       this.scroll = true;
       this.noMore = false;
       this.pageNo = "1";
     },
-    toMoreLink () {
+    toMoreLink() {
       let config = this.CONFIG.toMoreList;
-      let url = config.url + '?';
+      let url = config.url + "?";
       let _this = this;
       for (const key in config.keys) {
         const element = config.keys[key];
-        url += key + '=' + _this[element] + '&';
+        url += key + "=" + _this[element] + "&";
       }
       for (const key in config.fixedKeys) {
         const element = config.fixedKeys[key];
-        url += key + '=' + element + '&';
+        url += key + "=" + element + "&";
       }
 
       url = url.substring(0, url.length - 1);
       window.location.href = url;
     },
-    toDetail (item) {
+    toDetail(item) {
       let toDetailType = this.CONFIG.toDetailType;
-      if (toDetailType.type == 'phone') {
-        let params = '';
+      if (toDetailType.type == "phone") {
+        let params = "";
         for (let index = 0; index < toDetailType.phone.values.length; index++) {
           const element = toDetailType.phone.values[index];
-          params += item[element] + ',';
+          params += item[element] + ",";
         }
-        params = params.substring(0, params.length - 1)
-        console.log(toDetailType.phone.functionName + '(' + params + ')');
-        eval(toDetailType.phone.functionName + '(' + params + ')')
-      } else if (toDetailType.type == 'href') {
-        let url = toDetailType.href.url + '?';
+        params = params.substring(0, params.length - 1);
+        console.log(toDetailType.phone.functionName + "(" + params + ")");
+        eval(toDetailType.phone.functionName + "(" + params + ")");
+      } else if (toDetailType.type == "href") {
+        let url = toDetailType.href.url + "?";
         for (const key in toDetailType.href.keys) {
           const element = toDetailType.href.keys[key];
-          url += key + '=' + item[element] + '&';
+          url += key + "=" + item[element] + "&";
         }
         for (const key in toDetailType.href.fixedKeys) {
           const element = toDetailType.href.fixedKeys[key];
-          url += key + '=' + element + '&';
+          url += key + "=" + element + "&";
         }
-        url = url.substring(0, url.length - 1)
+        url = url.substring(0, url.length - 1);
         window.location.href = url;
       }
     },
-    showMore () { // 查看更多 按分类查时的功能
+    showMore() {
+      // 查看更多 按分类查时的功能
       var _this = this;
-      if ($('#moreBtn').html() == (_this.getStaticText('packUp') ? _this.getStaticText('packUp') : "收起")) {
+      if (
+        $("#moreBtn").html() ==
+        (_this.getStaticText("packUp") ? _this.getStaticText("packUp") : "收起")
+      ) {
         $("#screenBox").css("height", "");
         $("#moreBtn").removeClass("classToClose");
         $("#moreBtn").addClass("classToMore");
-        $('#moreBtn').html(_this.getStaticText('more') ? _this.getStaticText('more') : "更多");
+        $("#moreBtn").html(
+          _this.getStaticText("more") ? _this.getStaticText("more") : "更多"
+        );
       } else {
         $("#screenBox").css("height", "auto");
         $("#moreBtn").removeClass("classToMore");
         $("#moreBtn").addClass("classToClose");
-        $('#moreBtn').html(_this.getStaticText('packUp') ? _this.getStaticText('packUp') : "收起");
+        $("#moreBtn").html(
+          _this.getStaticText("packUp") ? _this.getStaticText("packUp") : "收起"
+        );
       }
     },
-    getStaticText (text) {
-      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
-        return this.CONFIG.staticText[text]
+    getStaticText(text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
       } else {
-        return false
+        return false;
       }
     },
-    formatPriceNew (value) {
+    formatPriceNew(value) {
       if (value) {
-        return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥') + Number(value).toFixed(2);
+        return (
+          (this.getStaticText("yuan") ? this.getStaticText("yuan") : "￥") +
+          Number(value).toFixed(2)
+        );
       } else {
-        return (this.getStaticText('yuan') ? this.getStaticText('yuan') : '￥')+'0.00';
+        return (
+          (this.getStaticText("yuan") ? this.getStaticText("yuan") : "￥") +
+          "0.00"
+        );
       }
     },
-    formatAuthor (value) {
-      if (!value) { // 返回为空
-        return this.getStaticText('noAuthor') ? this.getStaticText('noAuthor') : '暂无作者';
+    formatAuthor(value) {
+      if (!value) {
+        // 返回为空
+        return this.getStaticText("noAuthor")
+          ? this.getStaticText("noAuthor")
+          : "暂无作者";
       } else {
         return value;
       }
     }
-
   }
-}
+};
 </script>
 <style>
 /* .ui_mobile_list_02 {
@@ -356,7 +392,7 @@ export default {
 .ui_mobile_list_02_saleprice {
   margin-right: 0.2rem;
 }
-.ui_mobile_list_02_sortitem_active{
+.ui_mobile_list_02_sortitem_active {
   color: #c40001;
   float: left;
   font-size: 0.26rem;
@@ -367,7 +403,6 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   text-align: center;
-
 }
 .ui_mobile_list_02_asc {
   top: 0;
