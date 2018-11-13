@@ -1,7 +1,7 @@
 <template>
   <div v-if="isMemberInfo">
     <div class="info" v-if="currentShow=='modifyInfo'">
-      <div class="selectUserMode">
+      <div class="info_selectUserMode">
         <el-radio v-model="userMode" label="1">{{getStaticText('ordinaryUserText') ? getStaticText('ordinaryUserText') :'普通用户'}}</el-radio>
         <el-radio v-model="userMode" label="2">{{getStaticText('teacherUserText') ? getStaticText('teacherUserText') :'教师用户'}}</el-radio>
       </div>
@@ -75,7 +75,7 @@
           </div>
 
           <el-form-item :label="getStaticText('postalCode') ? getStaticText('postalCode') :'邮政编码'" v-if="userMode==2||userMode==1">
-            <el-input style="width: 200px" v-model="modifyUserNav.postcode" @blur="checkPostcode(modifyUserNav.postcode)"></el-input><span>{{postcodeInfo}}</span>
+            <el-input style="width: 200px;" v-model="modifyUserNav.postcode" @blur="checkPostcode(modifyUserNav.postcode)"></el-input><span class="info_postcodeInfo">{{postcodeInfo}}</span>
           </el-form-item>
           <el-form-item :label="getStaticText('bookClassification') ? getStaticText('bookClassification') :'关注图书分类'" prop="type" v-if="userMode==1||userMode==2">
             <el-checkbox-group v-model="modifyUserNav.bookClassifyConcerned">
@@ -91,148 +91,198 @@
 </template>
 
 <script>
-  import axios from "axios";
-  import { mapGetters, mapActions } from "vuex";
-  import * as interfaces from '@work/login/common/interfaces.js';
-  import PROJECT_CONFIG from "projectConfig";
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
+import * as interfaces from "@work/login/common/interfaces.js";
+import PROJECT_CONFIG from "projectConfig";
 
-  export default {
-    name: "modifyInfo",
-    reused: true,
-    props: {
-      parentConfig: Object,
-      currentShow:''
-    },
-    data: function() {
-      return {
-        modifyUserNav:{
-          bookClassifyConcerned:[],//关注图书分类
-          username:"",//用户名
-          industry:'',//请选择行业
-          educated:'',//教育程度
-          areaInfo:'',//所在省份
-          address:"",//具体地址
-          job:"",//职务
-          positio:'',//职称
-          mobileno:"", //电话
-          staffRoom:"", //教研室
-          teachLevel:'', //教学层次
-          subject:"", //教学专业
-          faculty:"", //所属院系
-          company:"", //执教学校
-          teachCourse:"", //教学课程
-          postcode:"" //邮政编码
-        },
-        userMode:"1",//判断是普通用户还是教师用户
-        CONFIG: null,
-        modifyUser:null,//完善个人信息
-        fullLoading: "", //全屏加载框
-        checkPhoneInfo: "", //完善个人信息--联系电话验证信息
-        postcodeInfo:"",//邮编验证信息
-        isMemberInfo:""//是否添加编辑组件
-      };
-    },
-    created() {
-      this.CONFIG = this.parentConfig.modifyUser;
-      this.modifyUser = JSON.parse(JSON.stringify(this.CONFIG.editMemberInfo.params));
-      this.isMemberInfo = this.CONFIG.isMemberInfo;
-      this.getMemberByName();
-    },
-    computed: {
-      ...mapGetters("personalCenter/", {
-        account: "getAccount"
-      })
-    },
-    methods: {
-      ...mapActions('login', {
-        action_login: interfaces.ACTION_LOGIN,
-      }),
-      getMemberByName(){
-        axios.get(CONFIG.BASE_URL+this.CONFIG.getMemberInfo.submitUrl+'?loginName='+this.account.loginName)
-        .then((res)=>{
+export default {
+  name: "modifyInfo",
+  reused: true,
+  props: {
+    parentConfig: Object,
+    currentShow: ""
+  },
+  data: function() {
+    return {
+      modifyUserNav: {
+        bookClassifyConcerned: [], //关注图书分类
+        username: "", //用户名
+        industry: "", //请选择行业
+        educated: "", //教育程度
+        areaInfo: "", //所在省份
+        address: "", //具体地址
+        job: "", //职务
+        positio: "", //职称
+        mobileno: "", //电话
+        staffRoom: "", //教研室
+        teachLevel: "", //教学层次
+        subject: "", //教学专业
+        faculty: "", //所属院系
+        company: "", //执教学校
+        teachCourse: "", //教学课程
+        postcode: "" //邮政编码
+      },
+      userMode: "1", //判断是普通用户还是教师用户
+      CONFIG: null,
+      modifyUser: null, //完善个人信息
+      fullLoading: "", //全屏加载框
+      checkPhoneInfo: "", //完善个人信息--联系电话验证信息
+      postcodeInfo: "", //邮编验证信息
+      isMemberInfo: "" //是否添加编辑组件
+    };
+  },
+  created() {
+    this.CONFIG = this.parentConfig.modifyUser;
+    this.modifyUser = JSON.parse(
+      JSON.stringify(this.CONFIG.editMemberInfo.params)
+    );
+    this.isMemberInfo = this.CONFIG.isMemberInfo;
+    this.getMemberByName();
+  },
+  computed: {
+    ...mapGetters("personalCenter/", {
+      account: "getAccount"
+    })
+  },
+  methods: {
+    ...mapActions("login", {
+      action_login: interfaces.ACTION_LOGIN
+    }),
+    getMemberByName() {
+      axios
+        .get(
+          CONFIG.BASE_URL +
+            this.CONFIG.getMemberInfo.submitUrl +
+            "?loginName=" +
+            this.account.loginName
+        )
+        .then(res => {
           let data = res.data.data;
-          this.modifyUserNav = Object.assign(this.modifyUserNav,JSON.parse(JSON.stringify(data)));
-          this.modifyUserNav.bookClassifyConcerned = this.modifyUserNav.bookClassifyConcerned.split(',');
+          this.modifyUserNav = Object.assign(
+            this.modifyUserNav,
+            JSON.parse(JSON.stringify(data))
+          );
+          this.modifyUserNav.bookClassifyConcerned = this.modifyUserNav.bookClassifyConcerned.split(
+            ","
+          );
         })
-        .catch(function(err){
-          console.log(err)
+        .catch(function(err) {
+          console.log(err);
         });
-      },
-      ordinaryUserSave(msg){
-        let data=JSON.parse(JSON.stringify(msg));
-        data.bookClassifyConcerned=data.bookClassifyConcerned.join();
-        axios.post(CONFIG.BASE_URL +this.CONFIG.editMemberInfo.submitUrl+"?loginName="+this.account.loginName,data)
-        .then((response)=> {
-          if (response.data.result == 1) {   
-            this.$message({
-              type: 'success',
-              message: this.getStaticText("saveFormSuccessfully")
-            ? this.getStaticText("saveFormSuccessfully")
-            : response.data.data.msg
-            })
-          }else{
-            this.$message({
-              type: 'error',
-              message: this.getStaticText("saveFormFail")
-            ? this.getStaticText("saveFormFail")
-            : response.data.error.msg
-            })
-          }
-        })
-      },
-      checkPhone(value){
-        let reg=/^[1][3,4,5,6,7,8,9][0-9]{9}$/
-        if (value === "") {
-          this.checkPhoneInfo = this.getStaticText("pleaseEnterCellPhoneNumber") ? this.getStaticText("pleaseEnterCellPhoneNumber") : "手机号为空";
-        } else if (!reg.test(value)) {
-          this.checkPhoneInfo = this.getStaticText("pleaseEnterCorrectCellPhoneNumber") ? this.getStaticText("pleaseEnterCorrectCellPhoneNumber") : "请输入正确的手机号"
-        } else {
-          this.checkPhoneInfo="手机号正确"
-        }
-      },
-      checkPostcode(value){
-        let reg=/^[0-9]{6}$/;
-        if (value === "") {
-          this.postcodeInfo = this.getStaticText("pleaseEnterCellPostNumber") ? this.getStaticText("pleaseEnterCellPostNumber") : "邮编为空"
-        } else if (!reg.test(value)) {
-          this.postcodeInfo = this.getStaticText("pleaseEnterCorrectCellPostNumber") ? this.getStaticText("pleaseEnterCorrectCellPostNumber") : "请输入正确的邮编";
-        } else {
-          this.postcodeInfo="邮编正确"
-        }
-      },
-      /*显示状态*/
-      showCurrent1() {
-        this.$emit('currentShowF',this.currentShow)
-      },
-      getStaticText(text) {
-        if (this.CONFIG &&this.CONFIG.staticText &&this.CONFIG.staticText[text]) {
-          return this.CONFIG.staticText[text];
-        } else {
-          return false;
-        }
-      },
     },
-    watch:{
-      account(nv,ov){
-        if(nv.loginName){
-          var modifyarr=this.modifyUserNav;
-          for(var y in modifyarr){
-            for(var x in nv){
-              if(y==x&&y!="bookClassifyConcerned"&&nv[x]!="undefined"){
-                modifyarr[y]=nv[x];
-              }else if(y==x&&y=="bookClassifyConcerned"&&nv[x]!="undefined"){
-                nv[x].split(",");
-                modifyarr[y]=nv[x];
-              }
+    ordinaryUserSave(msg) {
+      if (this.postcodeInfo == "" && this.checkPhoneInfo == "") {
+        let data = JSON.parse(JSON.stringify(msg));
+        data.bookClassifyConcerned = data.bookClassifyConcerned.join();
+        axios
+          .post(
+            CONFIG.BASE_URL +
+              this.CONFIG.editMemberInfo.submitUrl +
+              "?loginName=" +
+              this.account.loginName,
+            data
+          )
+          .then(response => {
+            if (response.data.result == 1) {
+              this.$message({
+                type: "success",
+                message: this.getStaticText("saveFormSuccessfully")
+                  ? this.getStaticText("saveFormSuccessfully")
+                  : response.data.data.msg
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: this.getStaticText("saveFormFail")
+                  ? this.getStaticText("saveFormFail")
+                  : response.data.error.msg
+              });
+            }
+          });
+      }
+    },
+    checkPhone(value) {
+      let reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+      if (value === "") {
+        this.checkPhoneInfo = this.getStaticText("pleaseEnterCellPhoneNumber")
+          ? this.getStaticText("pleaseEnterCellPhoneNumber")
+          : "手机号为空";
+      } else if (!reg.test(value)) {
+        this.checkPhoneInfo = this.getStaticText(
+          "pleaseEnterCorrectCellPhoneNumber"
+        )
+          ? this.getStaticText("pleaseEnterCorrectCellPhoneNumber")
+          : "请输入正确的手机号";
+      } else {
+        this.checkPhoneInfo = "";
+      }
+    },
+    checkPostcode(value) {
+      let reg = /^[0-9]{6}$/;
+      if (value === "") {
+        this.postcodeInfo = this.getStaticText("pleaseEnterCellPostNumber")
+          ? this.getStaticText("pleaseEnterCellPostNumber")
+          : "邮编为空";
+      } else if (!reg.test(value)) {
+        this.postcodeInfo = this.getStaticText(
+          "pleaseEnterCorrectCellPostNumber"
+        )
+          ? this.getStaticText("pleaseEnterCorrectCellPostNumber")
+          : "请输入正确的邮编";
+      } else {
+        this.postcodeInfo = "";
+      }
+    },
+    /*显示状态*/
+    showCurrent1() {
+      this.$emit("currentShowF", this.currentShow);
+    },
+    getStaticText(text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
+      } else {
+        return false;
+      }
+    }
+  },
+  watch: {
+    account(nv, ov) {
+      if (nv.loginName) {
+        var modifyarr = this.modifyUserNav;
+        for (var y in modifyarr) {
+          for (var x in nv) {
+            if (
+              y == x &&
+              y != "bookClassifyConcerned" &&
+              nv[x] != "undefined"
+            ) {
+              modifyarr[y] = nv[x];
+            } else if (
+              y == x &&
+              y == "bookClassifyConcerned" &&
+              nv[x] != "undefined"
+            ) {
+              nv[x].split(",");
+              modifyarr[y] = nv[x];
             }
           }
         }
       }
     }
-  };
+  }
+};
 </script>
 <style>
-.selectUserMode{
+.info_selectUserMode {
   margin: 15px 0;
+}
+.info_postcodeInfo {
+  margin-left: 10px;
+  color: #f56c6c;
 }
 </style>

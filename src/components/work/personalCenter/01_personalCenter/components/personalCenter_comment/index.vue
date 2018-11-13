@@ -20,7 +20,7 @@
           </el-table-column>
           <el-table-column label="评论时间" prop="ruleValue" align="center" width="180">
             <template slot-scope="scope">
-              <span>{{scope.row.discussContent}}</span>
+              <span>{{scope.row.discussTime}}</span>
             </template>
           </el-table-column>
           <!-- <el-table-column label="删除" prop="createTime" align="center" width="150">

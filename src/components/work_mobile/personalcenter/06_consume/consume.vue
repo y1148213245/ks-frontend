@@ -21,7 +21,13 @@
                 <li class="work_mobile_personalcenter_06_consumelists_li_li_li" v-for="(order, ind) in  subItem.itemList" :key="ind">
                   <div class="work_mobile_personalcenter_06_consumelists_divf">
                     <span class="work_mobile_personalcenter_06_consumelists_bookname"> {{order.productName}} </span>
-                    <span class="work_mobile_personalcenter_06_consumelists_money"> -{{Number(order.memberPrice).toFixed(2) * order.productNum + display.money}}</span>
+                    <!-- 是否是循环的最后一个oder 避免保留两位小数 导致总价格有点对不上 -->
+                    <span  class="work_mobile_personalcenter_06_consumelists_money"> 
+                      -{{(Number(item.realAmount) * 
+                      (Number(order.productPrice) * Number(order.productNum)) /
+                      (Number(item.realAmount)+Number(item.balanceAmount))).toFixed(2) 
+                       + display.money}}
+                    </span>
                   </div>
                   <div class="work_mobile_personalcenter_06_consumelists_divd">
                     <span class="work_mobile_personalcenter_06_consumelists_date"> {{subItem.createTime}} </span>

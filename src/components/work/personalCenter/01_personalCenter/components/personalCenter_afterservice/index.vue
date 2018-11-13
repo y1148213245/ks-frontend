@@ -505,7 +505,7 @@ export default {
         } else if (
           data.status == 1 &&
           data.deliveryStatus == 2 &&
-          data.returnMoneyStatus == 0
+          data.returnMoneyStatus == 1
         ) {
           //处理中
           this.returnDetailsActive = 3;
@@ -542,8 +542,8 @@ export default {
         } else if (data.status == 5) {
           //取消退货
           this.returnCancel = true;
-         // this.currentShow = "afterserviceReturnDetails";
-          this.returnDetailsActive=0;
+          // this.currentShow = "afterserviceReturnDetails";
+          this.returnDetailsActive = 0;
         }
       } else if (data.type == 2) {
         this.currentShow = "afterserviceExchangeDetails";
@@ -565,9 +565,9 @@ export default {
           this.exchangeDetailsActive = 1;
         } else if (data.status == 5) {
           //取消换货
-          this.exchangeCancel=true;
+          this.exchangeCancel = true;
           this.exchangeDetailsActive = 5;
-          this.returnDetailsActive=0;
+          this.returnDetailsActive = 0;
         }
       }
     },
@@ -580,15 +580,27 @@ export default {
     },
     //提交快递信息
     subInformation() {
-      var vm=this;
+      var vm = this;
       if (this.courierNumber == "") {
-        this.$message.error(vm.getStaticText('writeCourierNumber') ? vm.getStaticText('writeCourierNumber') : '请填写快递单号');
+        this.$message.error(
+          vm.getStaticText("writeCourierNumber")
+            ? vm.getStaticText("writeCourierNumber")
+            : "请填写快递单号"
+        );
         return false;
-      }else if(!(/^[0-9a-zA-Z]*$/g ).test(this.courierNumber)){
-        this.$message.error(vm.getStaticText('wrongCourierNumber') ? vm.getStaticText('wrongCourierNumber') :'请填写正确的快递单号');
+      } else if (!/^[0-9a-zA-Z]*$/g.test(this.courierNumber)) {
+        this.$message.error(
+          vm.getStaticText("wrongCourierNumber")
+            ? vm.getStaticText("wrongCourierNumber")
+            : "请填写正确的快递单号"
+        );
         return false;
-      }else if(this.logisticsCompany == "") {
-        this.$message.error(vm.getStaticText('chooseCourierCompany') ? vm.getStaticText('chooseCourierCompany') : '请选择快递公司');
+      } else if (this.logisticsCompany == "") {
+        this.$message.error(
+          vm.getStaticText("chooseCourierCompany")
+            ? vm.getStaticText("chooseCourierCompany")
+            : "请选择快递公司"
+        );
         return false;
       } else {
         var params = {
@@ -597,31 +609,45 @@ export default {
           logisticsNum: this.courierNumber
         };
         api.submitLogisticsInfo(params).then(function(response) {
-          if (response.data && response.data.result == '1') {
-            vm.$message.success(vm.getStaticText('informationSubmitSuccess') ? vm.getStaticText('informationSubmitSuccess') : '信息提交成功');
+          if (response.data && response.data.result == "1") {
+            vm.$message.success(
+              vm.getStaticText("informationSubmitSuccess")
+                ? vm.getStaticText("informationSubmitSuccess")
+                : "信息提交成功"
+            );
           } else {
-            vm.$message.error(vm.getStaticText('informationSubmitFail') ? vm.getStaticText('informationSubmitFail') : '抱歉，信息提交失败');
+            vm.$message.error(
+              vm.getStaticText("informationSubmitFail")
+                ? vm.getStaticText("informationSubmitFail")
+                : "抱歉，信息提交失败"
+            );
           }
           vm.currentShow = "afterserviceDetails";
         });
       }
     },
-    withdraw(idNum,type) {
+    withdraw(idNum, type) {
       let vm = this;
       var id = idNum;
       api.cancleReturnGoods(id).then(function(response) {
         if (response.data.result == 1) {
-          if(type=="exchangeGoods"){
+          if (type == "exchangeGoods") {
             vm.exchangeGoodsDialog = false;
-          }else if(type=="returnGoods"){
+          } else if (type == "returnGoods") {
             vm.returnGoodsDialog = false;
           }
           vm.$message({
-            message: (vm.getStaticText('cancelSuccess') ? vm.getStaticText('cancelSuccess') : '取消成功'),
+            message: vm.getStaticText("cancelSuccess")
+              ? vm.getStaticText("cancelSuccess")
+              : "取消成功",
             type: "success"
           });
         } else {
-          vm.$message.error(vm.getStaticText('cancelFail') ? vm.getStaticText('cancelFail') : '抱歉，取消失败');
+          vm.$message.error(
+            vm.getStaticText("cancelFail")
+              ? vm.getStaticText("cancelFail")
+              : "抱歉，取消失败"
+          );
         }
         vm.currentShow = "afterserviceDetails";
         vm.loadedCallBack();
@@ -642,7 +668,7 @@ export default {
 .mb20 {
   margin-bottom: 20px;
 }
-.selectBox{
+.selectBox {
   float: left;
 }
 .mtb15 {
@@ -673,17 +699,18 @@ export default {
   background: #e5e9f2;
   border-radius: 4px;
 }
-.afterservice_main_title02 .bg-purple-light{
+.afterservice_main_title02 .bg-purple-light {
   border-radius: 0px;
 }
 .afterservice_main_card {
   border: 1px solid rgb(223, 236, 236);
+  border-right:none;
 }
 .afterservice_main_card_left {
-  /* margin: 10px; */    
+  /* margin: 10px; */
   padding: 10px 10px;
   height: 120px;
-  border-right: .5px solid #dfecec;
+  border-right: 0.5px solid #dfecec;
   box-sizing: border-box;
 }
 .afterservice_main_card_left_img {
@@ -719,7 +746,7 @@ export default {
   padding-top: 45px;
   height: 120px;
   box-sizing: border-box;
-  border-right: .5px solid #dfecec;
+  border-right: 0.5px solid #dfecec;
 }
 .afterservice_details {
   font-size: 16px;

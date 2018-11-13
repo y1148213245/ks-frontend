@@ -27,63 +27,72 @@
 
 <script>
 import { Post, Get, mobileLoading } from "@common";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 import * as interfaces from "@work/login/common/interfaces.js";
-import PROJECT_CONFIG from 'projectConfig';
+import PROJECT_CONFIG from "projectConfig";
 import areaList from "@common/utils/areaList.js";
 import Vue from "vue";
-import { Dialog, AddressEdit, Loading, Toast } from 'vant';
+import { Dialog, AddressEdit, Loading, Toast } from "vant";
 Vue.use(AddressEdit).use(Loading);
 
 export default {
   name: "work_mobile_personalcenter_12",
-  props: ['namespace'],
+  props: ["namespace"],
   reused: true,
-  data () {
+  data() {
     return {
-      loginName: '',
-      isLoading: 'false',
-      CONFIG: null,     //获取组件配置的
-      display: null,    //展示组件静态文本的
-      chosenAddressId: '1',  //选择的地址id
-      list: [],  //地址列表
-      show: false,  //是否显示弹窗
-      isShowConfirmButton: false,  //是否展示弹窗确认按钮
+      loginName: "",
+      isLoading: "false",
+      CONFIG: null, //获取组件配置的
+      display: null, //展示组件静态文本的
+      chosenAddressId: "1", //选择的地址id
+      list: [], //地址列表
+      show: false, //是否显示弹窗
+      isShowConfirmButton: false, //是否展示弹窗确认按钮
       isShowCancelButton: true, // 是否展示弹窗取消按钮
-      isCloseOnClickOverlay: true,  //点击遮罩层关闭弹窗
-      addressInfo: {},   //收货人信息
-      isShowPostal: true,  //是否显示邮编
-      isShowDefault: true,  //显示默认地址栏
-      areaList: areaList,  //地区列表
-      isEditDialog: '',  //判断是编辑弹窗还是新建地址弹窗 编辑（0），新建（1）
+      isCloseOnClickOverlay: true, //点击遮罩层关闭弹窗
+      addressInfo: {}, //收货人信息
+      isShowPostal: true, //是否显示邮编
+      isShowDefault: true, //显示默认地址栏
+      areaList: areaList, //地区列表
+      isEditDialog: "", //判断是编辑弹窗还是新建地址弹窗 编辑（0），新建（1）
       showDelete: false,
-      areaCode: '',
-      showEditDialog: false, // 是否展示编辑地址的模态弹窗 这个变量是为了去除在编辑界面修改数据之后又点了取消导致表单里有缓存数据
-    }
+      areaCode: "",
+      showEditDialog: false // 是否展示编辑地址的模态弹窗 这个变量是为了去除在编辑界面修改数据之后又点了取消导致表单里有缓存数据
+    };
   },
   computed: {
     ...mapGetters("login", {
       member: interfaces.GET_MEMBER
-    }),
+    })
   },
-  created () {
+  created() {
     //获取配置文件中的数据
-    this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_12;
+    this.CONFIG =
+      PROJECT_CONFIG[
+        this.namespace
+      ].work_mobile_personalcenter.work_mobile_personalcenter_12;
     this.display = this.CONFIG.display;
     this.addressInfo = this.CONFIG.addressInfo;
     let urlData = window.location.href;
-    var bluefile = urlData.substring(urlData.indexOf("=") + 1, urlData.indexOf("#"))
+    var bluefile = urlData.substring(
+      urlData.indexOf("=") + 1,
+      urlData.indexOf("#")
+    );
     if (bluefile == "details") {
       this.show = true;
       this.isEditDialog = true;
     }
   },
-  mounted () {
+  mounted() {
     //发广播
-    this.$bus.$emit(this.CONFIG.emitEvent.contextEventName, this.display.navTitle);
+    this.$bus.$emit(
+      this.CONFIG.emitEvent.contextEventName,
+      this.display.navTitle
+    );
   },
   methods: {
-    EditAddress (item) {
+    EditAddress(item) {
       //需要将表单传过来的数据接收到，由于数据格式字段不一样，所以一个一个接受
       this.showEditDialog = true; // 是否展示编辑地址的模态弹窗
       this.addressInfo.id = item.id;
@@ -92,15 +101,31 @@ export default {
       this.addressInfo.province = item.province;
       this.addressInfo.city = item.city;
       this.addressInfo.county = item.county;
-      for(var pro in this.areaList.province_list){
-        if(item.province &&  this.areaList.province_list[pro] == item.province){
-          let provinceCodeTwo = pro.slice(0,3);
-          for (var i in this.areaList.county_list) {
-            if (item.county && this.areaList.county_list[i] == item.county) {  //通过item.county获取areaCode值
-              // 判断是否是同一省份的同一个区areaCode的前两位代表省份
-              let countyCodeTwo = i.slice(0,3);
-              if(provinceCodeTwo == countyCodeTwo){
-                this.areaCode = i;
+      for (var pro in this.areaList.province_list) {
+        if (
+          item.province &&
+          this.areaList.province_list[pro] == item.province
+        ) {
+          let provinceCodeTwo = pro.slice(0, 2);
+          for (var cit in this.areaList.city_list) {
+            let cityCodeTwo = cit.slice(2, 4);
+            if (item.city && this.areaList.city_list[cit] == item.city) {
+              for (var i in this.areaList.county_list) {
+                if (
+                  item.county &&
+                  this.areaList.county_list[i] == item.county
+                ) {
+                  //通过item.county获取areaCode值
+                  // 判断是否是同一省份的同一个区areaCode的前两位代表省份 2-4代表市区
+                  let countyCodeTwo = i.slice(0, 2);
+                  let countyCodeFour = i.slice(2, 4);
+                  if (
+                    provinceCodeTwo == countyCodeTwo &&
+                    cityCodeTwo == countyCodeFour
+                  ) {
+                    this.areaCode = i;
+                  }
+                }
               }
             }
           }
@@ -109,12 +134,15 @@ export default {
       this.addressInfo.addressDetail = item.address;
       this.addressInfo.postalCode = item.post;
       this.addressInfo.areaCode = this.areaCode;
-      this.addressInfo.isDefault = item.isDefault == '1' ? true : false;
+      this.addressInfo.isDefault = item.isDefault == "1" ? true : false;
       var urlData = window.location.href;
       let urlDress = urlData.substring(0, urlData.indexOf("?"));
       let splicingUrl = urlData.substring(0, urlData.indexOf("#"));
-      let splicingUrlend = urlData.substring(urlData.indexOf("#"), urlData.length);
-      var jumpEditPage = splicingUrl + "?modal=details" + splicingUrlend
+      let splicingUrlend = urlData.substring(
+        urlData.indexOf("#"),
+        urlData.length
+      );
+      var jumpEditPage = splicingUrl + "?modal=details" + splicingUrlend;
       if (urlDress == "") {
         history.pushState(null, "", jumpEditPage);
         this.show = true;
@@ -124,78 +152,88 @@ export default {
         this.isEditDialog = true;
       }
     },
-    addAddress () {
+    addAddress() {
       this.showEditDialog = true; // 是否展示编辑地址的模态弹窗
       this.addressInfo = {
-        id: '',
-        name: '',
-        tel: '',
-        province: '',
-        city: '',
-        county: '',
-        addressDetail: '',
-        areaCode: '',
-        postalCode: '',
-        isDefault: false,
+        id: "",
+        name: "",
+        tel: "",
+        province: "",
+        city: "",
+        county: "",
+        addressDetail: "",
+        areaCode: "",
+        postalCode: "",
+        isDefault: false
       };
 
       var urlData = window.location.href;
       let urlDress = urlData.substring(0, urlData.indexOf("?"));
       let splicingUrl = urlData.substring(0, urlData.indexOf("#"));
-      let splicingUrlend = urlData.substring(urlData.indexOf("#"), urlData.length);
-      var jumpEditPage = splicingUrl + "?modal=details" + splicingUrlend
+      let splicingUrlend = urlData.substring(
+        urlData.indexOf("#"),
+        urlData.length
+      );
+      var jumpEditPage = splicingUrl + "?modal=details" + splicingUrlend;
       if (urlDress == "") {
         history.pushState(null, "", jumpEditPage);
         this.show = true;
-        this.isEditDialog = false
+        this.isEditDialog = false;
       } else {
         this.show = true;
-        this.isEditDialog = false
+        this.isEditDialog = false;
       }
     },
-    deleteAddress (item) {
+    deleteAddress(item) {
       Dialog.confirm({
         message: this.display.sureToDeleteAddress
-      }).then(() => {
-        Post(CONFIG.BASE_URL + this.CONFIG.deleteAddress + '?ids=' + item.id).then((resp) => {
-          let res = resp.data;
-          if (res.result == '1') {
-            this.getAddressList(this.loginName);
-          } else {
-            if (res.error != "" && res.error != null) {
-              Toast(res.error.errorMsg);
+      })
+        .then(() => {
+          Post(
+            CONFIG.BASE_URL + this.CONFIG.deleteAddress + "?ids=" + item.id
+          ).then(resp => {
+            let res = resp.data;
+            if (res.result == "1") {
+              this.getAddressList(this.loginName);
+            } else {
+              if (res.error != "" && res.error != null) {
+                Toast(res.error.errorMsg);
+              }
             }
-          }
+          });
+        })
+        .catch(() => {
+          Toast(this.display.cancelDeleteAddress);
+          conosle.log("取消按钮");
         });
-      }).catch(() => {
-        Toast(this.display.cancelDeleteAddress);
-        conosle.log("取消按钮")
-      });
-
     },
-    getAddressList (loginName) {
+    getAddressList(loginName) {
       this.isLoading = true;
       this.list = [];
-      Get(CONFIG.BASE_URL + this.CONFIG.addressUrl + '?loginName=' + (loginName ? loginName : this.member.loginName)).then((resp) => {
+      Get(
+        CONFIG.BASE_URL +
+          this.CONFIG.addressUrl +
+          "?loginName=" +
+          (loginName ? loginName : this.member.loginName)
+      ).then(resp => {
         this.isLoading = false;
         let res = resp.data;
-        if (res.result == '1' && res.data.length > 0) {
+        if (res.result == "1" && res.data.length > 0) {
           this.list = res.data;
         } else {
           if (res.error != "" && res.error != null) {
             Toast(res.error.errorMsg);
           }
-
         }
-      })
+      });
     },
-    toAddAddress (params) {
+    toAddAddress(params) {
       //新添加地址id先给0
       params.id = 0;
       this.show = false;
-      Post(CONFIG.BASE_URL + this.CONFIG.addAddress, params).then((resp) => {
+      Post(CONFIG.BASE_URL + this.CONFIG.addAddress, params).then(resp => {
         let res = resp.data;
-        if (res.result == '1' && res.data) {
+        if (res.result == "1" && res.data) {
           Toast(res.data.msg);
           this.getAddressList(this.loginName);
         } else {
@@ -205,20 +243,23 @@ export default {
         }
       });
     },
-    toEditAddress (params) {
+    toEditAddress(params) {
       this.show = false;
-      if (params.isDefault == '1') {
+      if (params.isDefault == "1") {
         this.setDefaultAddress(params);
       }
-      Post(CONFIG.BASE_URL + this.CONFIG.updateAddress, params).then((resp) => {
+      Post(CONFIG.BASE_URL + this.CONFIG.updateAddress, params).then(resp => {
         let res = resp.data;
-        if (res.result == '1') {
+        if (res.result == "1") {
           Toast(res.data.msg);
           this.getAddressList(this.loginName);
           var urlData = window.location.href;
           let splicingUrl = urlData.substring(0, urlData.indexOf("?"));
-          let splicingUrlend = urlData.substring(urlData.indexOf("#"), urlData.length);
-          var jumpEditPage = splicingUrl + splicingUrlend
+          let splicingUrlend = urlData.substring(
+            urlData.indexOf("#"),
+            urlData.length
+          );
+          var jumpEditPage = splicingUrl + splicingUrlend;
           history.pushState(null, "", jumpEditPage);
         } else {
           if (res.error != "" && res.error != null) {
@@ -226,22 +267,27 @@ export default {
           }
         }
       });
-
     },
-    setDefaultAddress (item) {
-      Get(CONFIG.BASE_URL + this.CONFIG.setDefaultAddress + '?loginName=' + (this.loginName ? this.loginName : this.member.loginName) + '&id=' + item.id).then((resp) => {
+    setDefaultAddress(item) {
+      Get(
+        CONFIG.BASE_URL +
+          this.CONFIG.setDefaultAddress +
+          "?loginName=" +
+          (this.loginName ? this.loginName : this.member.loginName) +
+          "&id=" +
+          item.id
+      ).then(resp => {
         let res = resp.data;
-        if (res.result == '1') {
+        if (res.result == "1") {
           this.getAddressList(this.loginName);
         } else {
           if (res.error != "" && res.error != null) {
             Toast(res.error.errorMsg);
           }
         }
-
-      })
+      });
     },
-    dataChange (content) {
+    dataChange(content) {
       let params = {};
       params.id = content.id;
       params.contactor = content.name;
@@ -251,14 +297,14 @@ export default {
       params.county = content.county;
       params.address = content.addressDetail;
       params.post = content.postalCode;
-      params.isDefault = content.isDefault ? '1' : '0';
+      params.isDefault = content.isDefault ? "1" : "0";
       params.loginName = this.loginName;
       params.createTime = null;
       params.updateTime = null;
       return params;
     },
-    beforeClose (action, done) {
-      if (action === 'confirm') {
+    beforeClose(action, done) {
+      if (action === "confirm") {
         setTimeout(done, 1000);
       } else {
         this.showEditDialog = false; // 是否展示编辑地址的模态弹窗
@@ -266,28 +312,31 @@ export default {
       }
       var urlData = window.location.href;
       let splicingUrl = urlData.substring(0, urlData.indexOf("?"));
-      let splicingUrlend = urlData.substring(urlData.indexOf("#"), urlData.length);
-      var jumpEditPage = splicingUrl + splicingUrlend
+      let splicingUrlend = urlData.substring(
+        urlData.indexOf("#"),
+        urlData.length
+      );
+      var jumpEditPage = splicingUrl + splicingUrlend;
       history.pushState(null, "", jumpEditPage);
     },
-    onSave (content) {
+    onSave(content) {
       //给后台传的参数也需要转换一下
       let params = this.dataChange(content);
 
       if (this.isEditDialog) {
-
         this.toEditAddress(params);
       } else {
-
         this.toAddAddress(params);
       }
       this.showEditDialog = false; // 是否展示编辑地址的模态弹窗
     },
-    onDelete (content) {
+    onDelete(content) {
       this.show = false;
-      Post(CONFIG.BASE_URL + this.CONFIG.deleteAddress + '?ids=' + content.id).then((resp) => {
+      Post(
+        CONFIG.BASE_URL + this.CONFIG.deleteAddress + "?ids=" + content.id
+      ).then(resp => {
         let res = resp.data;
-        if (res.result == '1') {
+        if (res.result == "1") {
           this.getAddressList(this.loginName);
         } else {
           if (res.error != "" && res.error != null) {
@@ -297,25 +346,25 @@ export default {
       });
     },
     //手机号验证
-    telValidator (tel) {
+    telValidator(tel) {
       let reg1 = /^1\d{10}$/;
       let reg2 = /^0\d{2,3}-?\d{7,8}$/;
       if (reg1.test(tel) || reg2.test(tel)) {
         return true;
       } else {
-        return false
+        return false;
       }
     }
   },
   watch: {
-    member: function (newValue, oldValue) {
+    member: function(newValue, oldValue) {
       if (newValue.loginName && newValue.loginName != oldValue.loginName) {
         this.getAddressList(newValue.loginName); // 初始化数据之后再执行查询已购图书的方法
         this.loginName = newValue.loginName;
       }
     }
   }
-}
+};
 </script>
 
 <style >

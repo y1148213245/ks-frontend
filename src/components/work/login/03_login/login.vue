@@ -40,7 +40,7 @@
       <ul>
         <template v-for="(item,i) in (CONFIG.thirdParty && CONFIG.thirdParty.showItem || [])">
           <li :key="i" :title="item.title">
-            <a :class="'login_03-third_party_'+item.tag" :href="toThirdLogin(item.type)" :target="CONFIG.thirdParty.target">
+            <a :class="'login_03-third_party_'+item.tag" href="javascript:void(0);" @click="toThirdLogin(item.type)" :target="CONFIG.thirdParty.target">
               <i class="fa" :class="'fa-'+item.tag"></i>
             </a>
           </li>
@@ -62,7 +62,7 @@ import { mapActions } from 'vuex';
 import * as interfaces from '@work/login/common/interfaces.js';
 import URL from 'url';
 import PROJECT_CONFIG from "projectConfig";
-import { Get, CreateCode } from '@common';
+import { Get, Post ,CreateCode } from '@common';
 export default {
   name: 'work_login_03_login',
   reused: true,
@@ -123,8 +123,7 @@ export default {
     login: function () {
       //this.loginValid(); // 先校验是否为空
       /* 这样分开写是为了 当用户名填写不正确密码未填写时 提示为空 应该首先提示用户名不正确 */
-
-
+      
       if (this.getShowItem('code')) { /* 是否配置验证码功能 */
         /* 验证 */
         if (this.inputCode.trim().toLowerCase() != this.code.toLowerCase()) {
@@ -164,9 +163,16 @@ export default {
                 message: this.getStaticText('accountFrozenInfo') ? this.getStaticText('accountFrozenInfo') : "账号已被冻结，请联系管理员"
               });
             } else {
-
+              console.log(document.referrer)
               if (!document.referrer) {
-                window.location.href = this.CONFIG.indexPath ? this.CONFIG.indexPath : './index.html'
+                let resp = rep.data.data;
+                // 微信授权
+                if(this.CONFIG.platformType === "wxShop" && !resp.wxShopOpenId){
+                  let wxUrl = resp.authorizeUrl
+                  window.location.href = wxUrl;
+                }else{
+                  window.location.href = this.CONFIG.indexPath ? this.CONFIG.indexPath : './index.html'
+                }
                 return false
               }
               let referrName = this.getFileName(document.referrer)
@@ -179,7 +185,6 @@ export default {
                   return false
                 }
               }
-
               window.location.href = document.referrer;
 
             }
@@ -236,7 +241,16 @@ export default {
       }
     },*/
     toThirdLogin (type) {
-      return CONFIG.BASE_URL + this.CONFIG.thirdParty.url + type;
+      // 微信单独处理
+      if(type === "wechat"){
+        let wxUrl = '';
+        Get(CONFIG.BASE_URL+this.CONFIG.thirdParty.wxUrl).then((resp) => {
+          console.log(resp.data.data)
+          window.location.href = resp.data.data;
+        })
+      }else{
+        window.location.href = CONFIG.BASE_URL + this.CONFIG.thirdParty.url + type;
+      }
     },
     getFileName (path) {
       let pathName = URL.parse(path).pathname
