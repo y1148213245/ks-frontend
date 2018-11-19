@@ -244,7 +244,7 @@ export default {
   },
   watch: {
     member: function (newValue, oldValue) {
-      if(this.CONFIG && this.CONFIG.getResourceDetail){
+      if(this.CONFIG && this.CONFIG.getResourceDetail && newValue.loginName){
         this.getResourceDetail();
       }
     }

@@ -24,7 +24,7 @@
             <span class="work_mobile_personalcenter_05_record_out">
               {{Number(item.price).toFixed(2) + display.money}}
             </span>
-            <span class="work_mobile_personalcenter_05_record_money">{{display.moneyIcon + Number(item.money).toFixed(2)}}</span>
+            <span class="work_mobile_personalcenter_05_record_money">{{display.moneyIcon + Number(item.price).toFixed(2)}}</span>
           </div>
           <div class="work_mobile_personalcenter_05_record_divs">
             <span class="work_mobile_personalcenter_05_record_date">{{item.date | formatDateHH}}</span>
@@ -51,22 +51,7 @@ export default {
   data () {
     return {
       CONFIG: null,
-      recordLists: [{
-        price: '6',
-        money: '6',
-        date: '1528353486937',
-        way: '微信支付',
-      }, {
-        price: '16',
-        money: '16',
-        date: '1528353486940',
-        way: '微信支付',
-      }, {
-        price: '80',
-        money: '80',
-        date: '1528353486137',
-        way: '微信支付',
-      }],
+      recordLists: [],
       totalCount: '0', // 订单总个数
       totalPages: '0', // 订单总页数
       pageIndex: "1",  // 页码 从 1 开始

@@ -162,7 +162,7 @@
           <span class="warningInfo" v-if="emptyDetail">{{getStaticText('pleaseFillInTheDetailedAddress') ? getStaticText('pleaseFillInTheDetailedAddress') : '请填写详细地址'}}</span>
         </div>
         <div class="newWrapper">
-          <div>{{getStaticText('contactNumber') ? getStaticText('contactNumber') : '联系电话'}}：</div>
+          <div>{{getStaticText('contactNumber') ? getStaticText('contactNumber') : '手机号码'}}：</div>
           <input id="s_phone" v-model="newAddAddress.phone" @blur="checkPhone()" maxlength="11">
           <span class="warningInfo" v-if="emptyPhone">{{phoneError}}</span>
         </div>
@@ -232,9 +232,9 @@
             <span class="warningInfo" v-if="emptyDetail">{{getStaticText('pleaseFillInTheDetailedAddress') ? getStaticText('pleaseFillInTheDetailedAddress') : '请填写详细地址'}}</span>
           </div>
           <div class="newWrapper">
-            <div>{{getStaticText('contactNumber') ? getStaticText('contactNumber') : '联系电话'}}：</div>
+            <div>{{getStaticText('contactNumber') ? getStaticText('contactNumber') : '手机号码'}}：</div>
             <input id="t_phone" type="number" v-model="address.phone" @blur="checkPhone()" @keypress="checkNumberType($event)" maxlength="11">
-            <span class="warningInfo" v-if="emptyPhone">{{getStaticText('pleaseFillInTheContactNumber') ? getStaticText('pleaseFillInTheContactNumber') : '请填写联系电话'}}</span>
+            <span class="warningInfo" v-if="emptyPhone">{{getStaticText('pleaseFillInTheContactNumber') ? getStaticText('pleaseFillInTheContactNumber') : '请填写正确的手机号码'}}</span>
           </div>
         </div>
 
@@ -260,7 +260,7 @@
           <div class="mt15">
             <i class="wzdh_xgxx_bdmc mr08"></i>{{getStaticText('titleOfAccount') ? getStaticText('titleOfAccount') : '账户名称'}}:
             <span v-text="account && account.loginName"></span>
-            <el-button type="primary" v-show='isShowSecretProtection' @click="cryptoguar = true" class="butt" v-if="CONFIG.secretQuestionBtnHide==undefined || CONFIG.secretQuestionBtnHide == false && account.questions == ''">{{getStaticText('settingUpSecretProtection') ? getStaticText('settingUpSecretProtection') : '设置密保问题'}}</el-button>
+            <el-button type="primary" v-show='isShowSecretProtection && setSecretQuesBtnShow' @click="cryptoguar = true" class="butt" v-if="(CONFIG.secretQuestionBtnHide==undefined || CONFIG.secretQuestionBtnHide == false) && account.questions == ''">{{getStaticText('settingUpSecretProtection') ? getStaticText('settingUpSecretProtection') : '设置密保问题'}}</el-button>
           </div>
           <div class="mt30 mb30">
             <div v-if="account && account.email">
@@ -437,7 +437,7 @@
           </div>
         </el-tab-pane>
         <!-- 密保问题验证  -->
-        <el-tab-pane v-if='isShowSecretProtection' :label="getStaticText('securityQuestionVerify') ? getStaticText('securityQuestionVerify') : '密保问题验证'" name="third"  v-show="CONFIG.secretQuestionBtnHide == undefined || CONFIG.secretQuestionBtnHide == false && account.questions !=''">
+        <el-tab-pane v-if='isShowSecretProtection' :label="getStaticText('securityQuestionVerify') ? getStaticText('securityQuestionVerify') : '密保问题验证'" name="third"  v-show="(CONFIG.secretQuestionBtnHide == undefined || CONFIG.secretQuestionBtnHide == false) && account.questions !='' && activeName == 'third'">
           <div class="main_right fl">
             <div class="wzdh_bmwtyz f14 color_6f6">
               <div class="wzdh_bmwtyz_ico account_modify-icon"></div>
@@ -569,7 +569,7 @@
         <ul>
           <el-radio-group v-model="virtualValue">
             <li>
-              <el-radio :label="0.01">0.01{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp{{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}500{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
+              <el-radio :label="5">5{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp{{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}500{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
             </li>
             <li>
               <el-radio :label="10">10{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}1000{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
@@ -613,7 +613,7 @@
             <div class="grid-content bg-purple">&nbsp &nbsp &nbsp{{getStaticText('paymentProject') ? getStaticText('paymentProject') : '支付项目'}}</div>
           </el-col>
         </el-row>
-        <div class="ml30">{{getStaticText('rechargeDownloadCurrency') ? getStaticText('rechargeDownloadCurrency') : '充值下载币'}} {{this.virtualValue}}00</div>
+        <div class="ml30">{{getStaticText('rechargeDownloadCurrency') ? getStaticText('rechargeDownloadCurrency') : '充值下载币'}} {{this.virtualValue}}</div>
         <el-row>
           <el-col :span="24">
             <div class="grid-content bg-purple">&nbsp &nbsp &nbsp {{getStaticText('paymentMethod') ? getStaticText('paymentMethod') : '支付方式'}}</div>
@@ -1192,7 +1192,8 @@ export default {
       paymentList: [], //支付方式
       isShowSecretProtection: true,
       vipInfoDetail: null, // 会员详细信息
-      isExpaired: true, // 会员是否过期
+      setSecretQuesBtnShow: true,  //设置密保问题按钮是否显示
+      isExpaired: true // 会员是否过期
     };
   },
   created() {
@@ -1239,7 +1240,7 @@ export default {
   },
   components: {
     modifyInfo, // 完善个人信息
-    openvip, // 开通vip
+    openvip // 开通vip
   },
   mounted() {
     this.siteId = CONFIG.SITE_CONFIG.siteId;
@@ -1259,7 +1260,7 @@ export default {
   },
   filters: {
     formatDate: function(val) {
-      return val.substring(0, val.indexOf(' ')); // 会员到期时间 只显示到天就行 不需要到时分秒
+      return val.substring(0, val.indexOf(" ")); // 会员到期时间 只显示到天就行 不需要到时分秒
     },
     toNum: function(value) {
       return parseFloat(value);
@@ -1322,19 +1323,31 @@ export default {
     ...mapActions("login", {
       action_login: interfaces.ACTION_LOGIN
     }),
-    queryVipInfo() { // 查询会员信息 展示会员名称在我的账户界面
-      Get(CONFIG.BASE_URL + 'user/getMemberPayedAndRight.do?loginName='+  (this.account.loginName || this.member.loginName) + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then((resp) => {
-        if (resp.data && resp.data.result=="1" && resp.data.data.length > 0) {
+    queryVipInfo() {
+      // 查询会员信息 展示会员名称在我的账户界面
+      Get(
+        CONFIG.BASE_URL +
+          "user/getMemberPayedAndRight.do?loginName=" +
+          (this.account.loginName || this.member.loginName) +
+          "&siteId=" +
+          CONFIG.SITE_CONFIG.siteId
+      ).then(resp => {
+        if (resp.data && resp.data.result == "1" && resp.data.data.length > 0) {
           this.vipInfoDetail = resp.data.data[0];
           let curTimeStamps = new Date().getTime();
-          let vipEndTimeStamps = moment(this.vipInfoDetail.endTime,'YYYY-MM-DD HH:mm:ss').valueOf();
-          if (curTimeStamps <= vipEndTimeStamps) { // 没过期
+          let vipEndTimeStamps = moment(
+            this.vipInfoDetail.endTime,
+            "YYYY-MM-DD HH:mm:ss"
+          ).valueOf();
+          if (curTimeStamps <= vipEndTimeStamps) {
+            // 没过期
             this.isExpaired = false;
           }
         }
-      })
+      });
     },
-    currentShowF(currentShowF) { // 在子组件里点击【返回】按钮时触发
+    currentShowF(currentShowF) {
+      // 在子组件里点击【返回】按钮时触发
       this.currentShow = "main";
     },
     //个人信息编辑信息
@@ -1351,9 +1364,9 @@ export default {
         this.paymentList = response.data.data;
         this.payMethodCode = this.paymentList[0].payCode;
       });
-    if (this.CONFIG && this.CONFIG.openVipSwitchFlag) {
-      this.queryVipInfo(); // 查询会员信息
-    }
+      if (this.CONFIG && this.CONFIG.openVipSwitchFlag) {
+        this.queryVipInfo(); // 查询会员信息
+      }
     },
     /*积分分页*/
     pointRecordPaging({ pageNo, pageSize }) {
@@ -1390,6 +1403,10 @@ export default {
       /*this.form.city = this.form.selectedOptions[0];
       this.form.erae = this.form.selectedOptions[1];
       this.form.minerae = this.form.selectedOptions[2];*/
+      // 去除错误提示信息
+      if (value.length > 2) {
+        this.emptyPCC = false;
+      }
       if (value.length == 1) {
         this.form.city = value[0];
       } else if (value.length == 2) {
@@ -1450,6 +1467,7 @@ export default {
         $("#t_city").html() === "" &&
         $("#t_minerae").html() === "" &&
         $("#t_erae").html() === "";
+      console.log($("#t_phone").val());
       if (flag) {
         // 点击确定
         if ($("#t_contactor").val() === "") {
@@ -1461,7 +1479,11 @@ export default {
           this.emptyDetail = true;
           this.emptyPCC = false;
           return false;
-        } else if ($("#t_phone").val() === "") {
+        } else if (
+          !$("#t_phone")
+            .val()
+            .match(/^[1][3,4,5,7,8][0-9]{9}$/)
+        ) {
           // 联系方式为空
           this.emptyPhone = true;
           this.emptyPCC = false;
@@ -1688,21 +1710,25 @@ export default {
       if (!phoneVal) {
         this.phoneError = this.getStaticText("pleaseInputPhoneNum")
           ? this.getStaticText("pleaseInputPhoneNum")
-          : "请填写联系电话";
+          : "请填写手机号码";
       }
       // if (!String.fromCharCode(event.keyCode).match(/\d/)) {
-      if (!phoneVal.match(/^[0-9]*$/)) {
+      if (!phoneVal.match(/^[1][3,4,5,7,8][0-9]{9}$/)) {
         // 控制只能输入数字
         this.phoneError = this.getStaticText("pleaseEnterNumber")
           ? this.getStaticText("pleaseEnterNumber")
-          : "请输入数字";
+          : "请输入正确的电话号码";
       }
       if (phoneVal.length > 11) {
         this.phoneError = this.getStaticText("telephoneLengthIsTooLong")
           ? this.getStaticText("telephoneLengthIsTooLong")
           : "电话长度过长";
       }
-      if (!phoneVal || !phoneVal.match(/^[0-9]*$/) || phoneVal.length > 11) {
+      if (
+        !phoneVal ||
+        !phoneVal.match(/^[1][3,4,5,7,8][0-9]{9}$/) ||
+        phoneVal.length > 11
+      ) {
         this.emptyPhone = true;
         this.goodsInfo.push("false");
       } else {
@@ -1845,9 +1871,11 @@ export default {
       } else {
         this.$message({
           type: "error",
-          message: (_this.getStaticText("mailboxBindingFailed")
-            ? _this.getStaticText("mailboxBindingFailed")
-            : "邮箱绑定失败：") + (rep.data && rep.data.error ? rep.data.error.errorMsg : "")
+          message:
+            (_this.getStaticText("mailboxBindingFailed")
+              ? _this.getStaticText("mailboxBindingFailed")
+              : "邮箱绑定失败：") +
+            (rep.data && rep.data.error ? rep.data.error.errorMsg : "")
         });
       }
     },
@@ -1876,6 +1904,7 @@ export default {
             ? _this.getStaticText("secretInsuranceIsSetUpSuccessfully")
             : "密保问题设置成功"
         });
+        this.setSecretQuesBtnShow = false;  //密保问题设置成功后隐藏按钮
       } else {
         this.$message({
           type: "info",
@@ -2153,7 +2182,11 @@ export default {
                   response.data.indexOf("</div>")
                 );
                 window.location.href =
-                  "./qrcode.html?data=" + data + "&orderCode=" + orderCode + "&payType=virtualCoin";
+                  "./qrcode.html?data=" +
+                  data +
+                  "&orderCode=" +
+                  orderCode +
+                  "&payType=virtualCoin";
               });
           }
         })

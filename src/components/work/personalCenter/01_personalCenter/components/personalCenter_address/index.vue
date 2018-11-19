@@ -7,7 +7,8 @@
       :change-on-select="true"
       :clearable="true"
       :filterable="true"
-      @change="handleChange()">
+      @change="handleChange"
+      >
     </el-cascader>
 
 </template>

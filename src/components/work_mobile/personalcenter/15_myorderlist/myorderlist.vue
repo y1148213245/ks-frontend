@@ -1,5 +1,5 @@
 <template>
-  <div class="work_mobile_personalcenter_15" v-loading="loading">
+  <div class="work_mobile_personalcenter_15">
     <div class="work_mobile_personalcenter_15_list" v-show="currentShow=='list'">
       <van-tabs v-model="active" @click="clickTab">
         <van-tab v-for="(item,index) in tabtitle" :title="item" :key="index">
@@ -16,7 +16,7 @@
             <ul class="work_mobile_personalcenter_15_list_ul_li_mainbox">
               <li class="work_mobile_personalcenter_15_list_ul_li_mainbox_li" v-for="(subItem, index) in item.orderList" :key="index">
                 <ul class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul" v-if="orderType=='book' || orderType=='periodical'">
-                  <li class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_li" v-for="(order, innerindex) in  subItem.itemList" :key="innerindex" @click="toDetails(outIndex,index)">
+                  <li class="work_mobile_personalcenter_15_list_ul_li_mainbox_li_ul_li" v-for="(order, innerindex) in  subItem.itemList" :key="innerindex" @click="toDetails(outIndex,index,item.realAmount)">
                     <van-card v-if="orderType=='book'" :title="order.productName" :desc="order.author" :num="order.productNum" :price="order.memberPrice" :thumb="order.bigPic">
                     </van-card>
                     <van-card v-else-if="orderType=='periodical'" :title="order.periodicalName" :desc="order.periodicalRemark" :price="order.totalPrice" :thumb="order.bigPic">
@@ -38,7 +38,7 @@
 
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_cancel" v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_deliveryPrice">{{display.express2}}{{display.money}}{{toFixed2(item.orderList[0].deliveryPrice)}}{{display.express2End}}</span>
-                  <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_total">{{display.total}}：<em><i>{{display.money}}</i>{{item.realAmount}}</em></span>
+                  <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_total">{{display.total}}：<em><i>{{display.money}}</i>{{Number(item.realAmount)+Number(item.balanceAmount)}}</em></span>
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_totalnum" v-if="orderType=='book'">{{display.all}}{{item.totalProductNum}}{{display.numtext}}</span>
                   <!-- 期刊不展示数量-->
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_balanceDeduct" v-show="item.balanceAmount!='0.00'">{{display.balanceDeduct}}：{{display.money}}{{item.balanceAmount}}</span>
@@ -114,7 +114,7 @@
             <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_totalnum">{{display.all}}{{item.productNum}}{{display.numtext}}</span>
           </div>
           <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_express02">{{display.express}}：<em><i>{{display.money}}</i>{{item.deliveryPrice}}</em></span>
-          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_realPay">{{display.realPay}}：<em><i>{{display.money}}</i>{{item.orderTotalPrice + item.deliveryPrice}}</em></span>
+          <span class="work_mobile_personalcenter_15_bookDetails_mainbox_footerinformation_realPay">{{display.realPay}}：<em><i>{{display.money}}</i>{{item.realAmount}}</em></span>
         </div>
         <div class="work_mobile_personalcenter_15_bookDetails_mainbox_pendingPaymentBtn" v-if="item.payStatus==0 && item.status==1">
           <van-button size="small" @click="cancelOrder(outIndex)">
@@ -295,7 +295,7 @@ export default {
       this.initData();
     },
     //前往详情页
-    toDetails(outIndex, index) {
+    toDetails(outIndex, index,realAmount) {
       var orderId = "";
       if (index === -1) {
         orderId = outIndex;
@@ -304,6 +304,7 @@ export default {
       }
       Get(CONFIG.BASE_URL + this.ORDERDETAILS.url + "?orderId=" + orderId).then(
         resp => {
+          resp.data.data[0].realAmount = realAmount;
           this.orderDetails = resp.data.data;
           if (this.orderType == "book") {
             var urlData = window.location.href;

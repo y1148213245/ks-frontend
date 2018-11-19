@@ -364,7 +364,11 @@ export default {
             detailParams + "&" + param + "=" + this.requestParams[param];
         }
       } else if (config.method == "sourceUrl") {
-        window.location.href=item[this.keys.sourceUrl];
+        if(config.target == "blank"){
+          window.open(item[this.keys.sourceUrl]);
+        }else{
+          window.location.href=item[this.keys.sourceUrl];
+        }
         return false;
       } else if (config.method == "downloadUrl") {
         // 如果sourceUrl为空,则判断pub_widget_url数组里的值 by shenqian

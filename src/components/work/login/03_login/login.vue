@@ -48,7 +48,7 @@
 
         <template v-for="(item,i) in (CONFIG.thirdParty && CONFIG.thirdParty.customShowItem || [])">
           <li :key="i+'a'" :title="item.title">
-            <a :class="'login_03-third_party_'+item.tag" :href="item.href" :target="CONFIG.thirdParty.target">
+            <a :class="'login_03-third_party_'+item.tag"  href="javascript:void(0);" @click="toThirdLogin(item.type)" :target="CONFIG.thirdParty.target">
               <i class="fa" :class="'fa-'+item.tag"></i>{{item.text}}</a>
           </li>
         </template>
@@ -181,7 +181,13 @@ export default {
               for (let i = 0; i < len; i++) {
                 let item = this.CONFIG.disBacks[i];
                 if (referrName == item) {
+                  // 微信授权
+                if(this.CONFIG.platformType === "wxShop" && !resp.wxShopOpenId){
+                  let wxUrl = resp.authorizeUrl
+                  window.location.href = wxUrl;
+                }else{
                   window.location.href = this.CONFIG.indexPath ? this.CONFIG.indexPath : './index.html'
+                }
                   return false
                 }
               }
@@ -245,7 +251,6 @@ export default {
       if(type === "wechat"){
         let wxUrl = '';
         Get(CONFIG.BASE_URL+this.CONFIG.thirdParty.wxUrl).then((resp) => {
-          console.log(resp.data.data)
           window.location.href = resp.data.data;
         })
       }else{

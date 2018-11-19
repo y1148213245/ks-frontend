@@ -29,7 +29,7 @@ export default {
   queryVirtualMoney(params) {
     var url =
       CONFIG.BASE_URL +
-      "rechargeVirtualCoin/getVirtualCoinByLoginName.do?loginName=" +
+      "user/getRechargeInfo.do?loginName=" +
       params.loginName +
       "&pageIndex=" +
       (params.pageIndex || 1) +

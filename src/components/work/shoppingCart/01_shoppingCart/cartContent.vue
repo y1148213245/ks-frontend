@@ -1528,7 +1528,7 @@ export default {
       this.selectedOrderList.forEach(function (item) {
         temp.push(item);
       });
-      if (this.curSelectedAddress === null && this.allEbook === false) { // 没有填写地址情况
+      if (this.curSelectedAddress === undefined && this.allEbook === false) { // 没有填写地址情况
         _this.$message({
           type: "error",
           message: _this.getStaticText('shippingAddressMustNotBeEmpty') ? _this.getStaticText('shippingAddressMustNotBeEmpty') : "收货地址不得为空"

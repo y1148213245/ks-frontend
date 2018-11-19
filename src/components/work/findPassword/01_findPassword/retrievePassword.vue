@@ -51,7 +51,7 @@
 							</el-form-item>
 
 							<div class="col_full nobottommargin btnbox">
-								<el-button id="retrieve_02-input-submit" type="primary" @click="submitForm('validEmail')" class="button nomargin" v-if="butt">{{getStaticText('submit') ? getStaticText('submit') : '提交'}}（{{time}}）</el-button>
+								<el-button id="retrieve_02-input-submit" type="primary" @click="submitForm('validEmail')" class="button nomargin" v-if="butt">{{getStaticText('submit') ? getStaticText('submit') : '提交'}}（{{time}}s）</el-button>
 								<el-button id="retrieve_02-input-reset" type="text" :disabled="true" class="button nomargin" v-show="!butt">{{getStaticText('verifiCodeInvalidInfo') ? getStaticText('verifiCodeInvalidInfo') : '验证码已失效，请重新验证'}}</el-button>
 							</div>
 						</el-form>

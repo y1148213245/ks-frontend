@@ -23,10 +23,7 @@
                     <span class="work_mobile_personalcenter_06_consumelists_bookname"> {{order.productName}} </span>
                     <!-- 是否是循环的最后一个oder 避免保留两位小数 导致总价格有点对不上 -->
                     <span  class="work_mobile_personalcenter_06_consumelists_money"> 
-                      -{{(Number(item.realAmount) * 
-                      (Number(order.productPrice) * Number(order.productNum)) /
-                      (Number(item.realAmount)+Number(item.balanceAmount))).toFixed(2) 
-                       + display.money}}
+                      -{{order.realAmountPersonalPrice+display.money}}
                     </span>
                   </div>
                   <div class="work_mobile_personalcenter_06_consumelists_divd">
@@ -65,6 +62,7 @@ export default {
       totalPages: '0', // 订单总页数
       pageIndex: "1",  // 页码 从 1 开始
       pageSize: "15",  // 每页显示个数
+      discoutNumMony:{},
     };
   },
 
@@ -104,6 +102,32 @@ export default {
       Get(CONFIG.BASE_URL + this.ORDERCONFIG.url + '?loginName=' + (loginName ? loginName : this.member.loginName) + '&pageIndex=' + this.pageIndex + '&pageSize=' + this.pageSize + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&payStatus=' + params.payStatus + '&status=' + params.status).then((resp) => {
         let res = resp.data;
         if (res.result == '1' && res.data.length > 0) {
+          // 获取itemList不是最好一次占有的总折扣
+          res.data.forEach(element => {
+            let balanceAmount = element.balanceAmount;
+            let realAmount = element.realAmount;
+            let orderList = element.orderList
+            orderList.forEach(order => {
+              let itemList = order.itemList;
+              itemList.forEach((item,index) => {
+                let memberPrice = item.memberPrice;
+                let productNum = item.productNum;
+                let num = 0;
+                let extactLast = 0;
+                if(index < itemList.length-1){
+                  num =  (Number(realAmount) * (Number(memberPrice) * Number(productNum)) /(Number(realAmount)+Number(balanceAmount))).toFixed(2);
+                  item.realAmountPersonalPrice = num;
+                }else{
+                  itemList.forEach((itemL,index)=>{
+                    if(index < itemList.length-1){
+                      extactLast = extactLast + Number(itemL.realAmountPersonalPrice);
+                    }
+                  })
+                  item.realAmountPersonalPrice = (Number(realAmount) - extactLast).toFixed(2);
+                }
+              })
+            })
+          });
           this.consumeLists = this.consumeLists.concat(res.data);
           this.totalCount = res.totalCount;
           this.totalPages = res.totalPages;
