@@ -35,90 +35,95 @@
 </template>
 
 <script>
-import URL from 'url'
-import PROJECT_CONFIG from 'projectConfig'
-import { _axios, Post, CookieUtils} from '@common'
-import { mapGetters, mapActions } from 'vuex'
-import * as interfaces from "@work/login/common/interfaces.js"
+import URL from "url";
+import PROJECT_CONFIG from "projectConfig";
+import { _axios, Post, CookieUtils } from "@common";
+import { mapGetters, mapActions } from "vuex";
+import * as interfaces from "@work/login/common/interfaces.js";
 
 export default {
-  name: 'work_login_04',
+  name: "work_login_04",
   reused: true,
   props: {
-    namespace: String,
+    namespace: String
   },
-  data () {
+  data() {
     return {
-      CONFIG: null,
+      CONFIG: null
     };
   },
 
   computed: {
     ...mapGetters("login", {
-      member: interfaces.GET_MEMBER,
+      member: interfaces.GET_MEMBER
     })
   },
 
-  created () {
+  created() {
     this.initConfig();
     this.getMemberInfo();
   },
 
-  mounted () { },
+  mounted() {},
 
   methods: {
     ...mapActions("login", {
       getMemberInfo: interfaces.ACTION_KEEP_SESSION,
       loginOut: interfaces.ACTION_LOGOUT
     }),
-    initConfig () {
-      this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_04
+    initConfig() {
+      this.CONFIG = PROJECT_CONFIG[this.namespace].login.work_login_04;
     },
-    getIsShow (item) {
-      if (this.CONFIG.hasOwnProperty('showItem')) {
+    getIsShow(item) {
+      if (this.CONFIG.hasOwnProperty("showItem")) {
         let arr = this.CONFIG.showItem;
         if (arr.indexOf(item) > -1) {
-          return true
+          return true;
         } else {
-          return false
+          return false;
         }
       } else {
-        return false
+        return false;
       }
     },
-    getStaticText (text) {
-      if (this.CONFIG && this.CONFIG.staticText && this.CONFIG.staticText[text]) {
-        return this.CONFIG.staticText[text]
+    getStaticText(text) {
+      if (
+        this.CONFIG &&
+        this.CONFIG.staticText &&
+        this.CONFIG.staticText[text]
+      ) {
+        return this.CONFIG.staticText[text];
       } else {
-        return false
+        return false;
       }
     },
-    exit () {
+    exit() {
       this.loginOut();
-      
-      let toExit = this.CONFIG.toExit
+
+      let toExit = this.CONFIG.toExit;
+
       if (toExit && toExit.type) {
-        if (toExit.type == 'href') {
-          window.location.href = toExit.href
-          return false
-        } else if (toExit.type == 'function') {
+        if (toExit.type == "href") {
+          window.location.href = toExit.href;
+          return false;
+        } else if (toExit.type == "function") {
           let func = toExit.func;
-          let str = func.funcName + '(this.member'
+          let str = func.funcName + "(this.member";
           for (let index = 0; index < func.params.length; index++) {
             const element = func.params[index];
-            str += ',' + '\'' + element + '\''
+            str += "," + "'" + element + "'";
           }
-          str += ')'
-          eval(str)
+          str += ")";
+          eval(str);
         }
       } else {
-        _axios.defaults.headers.token = '';
+        _axios.defaults.headers.token = "";
         this.getMemberInfo();
         location.reload(true);
       }
     }
   }
-}
+};
 </script>
 <style>
 .work_login_04 {
@@ -129,7 +134,8 @@ export default {
 .work_login_04-info {
   float: left;
 }
-.work_login_04-exit,.work_login_04-login{
+.work_login_04-exit,
+.work_login_04-login {
   cursor: pointer;
 }
 </style>
