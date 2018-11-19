@@ -2,7 +2,7 @@
  * @Author: yancm 
  * @Date: 2018-11-02 11:27:22 
  * @Last Modified by: yancm
- * @Last Modified time: 2018-11-07 13:41:16
+ * @Last Modified time: 2018-11-15 18:19:50
  */
 import { Get } from '@common'
 
@@ -17,7 +17,8 @@ let shaishuRead = {
         return Get(CONFIG.BASE_URL + '/user/getShaiShuUrl.do', { params }).then(resp => {
             let data = resp.data;
             if (!data.error) {
-                window.location.href = data.data;
+                window.open(data.data)
+                // window.location.href = data.data;
             } else {
                 if (CONFIG && CONFIG.SHAISHU_READ) {
                     alert(CONFIG.SHAISHU_READ.errorText || '暂无阅读地址');
@@ -40,7 +41,8 @@ let shaishuRead = {
         return Get(CONFIG.BASE_URL + '/user/getShaiShuFullUrl.do', { params }).then(resp => {
             let data = resp.data;
             if (!data.error) {
-                window.location.href = data.data;
+                window.open(data.data)
+                // window.location.href = data.data;
             } else {
                 if (CONFIG && CONFIG.SHAISHU_READ) {
                     alert(CONFIG.SHAISHU_READ.errorText || '暂无阅读地址');

@@ -48,7 +48,7 @@ var Token = function getToken() {
 _axios.defaults.headers.token = Token();
 
 var cookie = CookieUtils.getCookie('token')
-if (cookie) {
+if (cookie || CONFIG && CONFIG.COOKIE) {  //新增依赖cookie登录与退出
   _axios.defaults.headers.token = cookie
 }
 
