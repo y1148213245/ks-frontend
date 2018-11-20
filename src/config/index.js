@@ -3,7 +3,7 @@
  */
 module.exports = {
   //项目名 - 根据这里设置的项目名，启动不同的项目
-  concurrentProject: process.env.PROJECT_ENV || "build",
+  concurrentProject: process.env.PROJECT_ENV || "huayu",
   //proxy: {
   // 'http://localhost:8081': {
   // target: 'http://www.liaoningxinhuajiaoyu.com',

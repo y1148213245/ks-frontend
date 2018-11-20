@@ -264,6 +264,7 @@ export default {
             this.getResourceDetail();
           }
           this.$refs.commentContent.value = ''; //评论完置空评分和内容
+          this.content = '';
           this.starValue = 5;
           var param = {
             pubId: this.pubId,

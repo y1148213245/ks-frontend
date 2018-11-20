@@ -411,7 +411,7 @@
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import kdnApi from "../../assets/js/KDN.js";
-import { Get } from "@common";
+import { Get,Post } from "@common";
 export default {
   name: "list",
   reused: true,
@@ -1183,8 +1183,43 @@ export default {
       }
       this.showWriteNumBox=false;
     },
-    //计算活动减免额
     activityRemarkAll() {
+      // 期刊图片访问list.do
+      let periodicalOrderList = this.myOrderList.data;
+      periodicalOrderList.forEach(element => {
+        element.orderList.forEach(subItem => {
+          subItem.itemList.forEach(item => {
+            let conditions = [
+              {MAGAZINE_PUBLISH_YEAR:[],op:'in'},
+              {pub_resource_name:[],op:'in'}
+            ];
+            conditions.forEach((cons,index,el) => {
+              if(index == 0){
+                cons.MAGAZINE_PUBLISH_YEAR.push(item.periodicalYear);
+                cons.MAGAZINE_PUBLISH_YEAR=[...new Set(cons.MAGAZINE_PUBLISH_YEAR)].join(' ');
+              }else if(index == 1){
+                cons.pub_resource_name.push(item.periodicalName);
+                cons.pub_resource_name=[...new Set(cons.pub_resource_name)].join(' ');
+              }
+            })
+            let params = {
+              conditions:JSON.stringify(conditions),
+              groupBy:'pub_resource_id',
+              orderBy:'MAGAZINE_PERIOD_NUM desc',
+              searchText:''
+            }
+            Post(CONFIG.BASE_URL + 'spc/cms/publish/list.do',params).then(resp => {
+              if (resp.data && resp.data.result) {
+                let res = resp.data.result;
+                if(res.length > 0){
+                  item.bigPic = res[0].pub_picBig;
+                }
+              }
+            })
+          })
+        })
+      });
+      //计算活动减免额
       $.each(this.myOrderList.data,function (index, item) {
         var activityRemarkAll = 0;
         if(item.couposAmount != null && item.couposAmount != ''){

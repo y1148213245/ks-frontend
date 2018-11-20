@@ -569,19 +569,19 @@
         <ul>
           <el-radio-group v-model="virtualValue">
             <li>
-              <el-radio :label="5">5{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp{{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}500{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
+              <el-radio :label="5">5{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp{{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}5{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
             </li>
             <li>
-              <el-radio :label="10">10{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}1000{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
+              <el-radio :label="10">10{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}10{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
             </li>
             <li>
-              <el-radio :label="20">20{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}2000{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
+              <el-radio :label="20">20{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}20{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
             </li>
             <li>
-              <el-radio :label="50">50{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}5000{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
+              <el-radio :label="50">50{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}50{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
             </li>
             <li>
-              <el-radio :label="100">100{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}10000{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
+              <el-radio :label="100">100{{getStaticText('yuan') ? getStaticText('yuan') : '元'}} &nbsp &nbsp &nbsp {{getStaticText('exchange') ? getStaticText('exchange') : '兑换'}}100{{getStaticText('downloadedCurrency') ? getStaticText('downloadedCurrency') : '下载币'}}</el-radio>
             </li>
           </el-radio-group>
         </ul>

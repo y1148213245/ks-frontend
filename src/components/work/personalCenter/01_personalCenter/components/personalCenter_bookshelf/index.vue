@@ -41,7 +41,7 @@
       <div>{{getStaticText('myBookshelfIsEmpty') ? getStaticText('myBookshelfIsEmpty') : '我的书架是空的' }}</div>
     </div>
     <!-- 分页 -->
-    <ui_pagination :pageMessage="{totalCount: this.bookShelfInfo.data && this.bookShelfInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="[8,16,32,64]"></ui_pagination>
+    <ui_pagination :pageMessage="{totalCount: this.bookShelfInfo.data && this.bookShelfInfo.totalCount - 0 || 0}" :excuteFunction="pagingF" :page-sizes="pageSizes"></ui_pagination>
   </section>
 </template>
 
@@ -65,7 +65,9 @@ export default {
         type: "2",
         productType: "",
         keyType: "book" //字段适配器名,对应productKeys配置中的key,字段适配器名
-      }
+      },
+      params:null,//存储期刊访问list.do的参数
+      pageSizes:[8,16,32,64],
     };
   },
   created() {
@@ -123,70 +125,85 @@ export default {
     /* 书架接口回调 */
     listLoadedCallBack(data){
       /* 个性化处理 */
+      // if(data.data.length < 1){
+      //   this.loadData();
+      // }
+      if(data.totalCount > this.pageSize){
+        this.loadData()
+        this.pageSize = data.totalCount;
+      }else{
+        this.periodicalBook(data,this.pageNo,this.pageSizes[0])
+      }
+    },
+    periodicalBook(data,pageNo,pageSize){
       let currentProductType = this.currentProductType
-      switch (currentProductType.keyType) {
-        case 'periodical':{
-          this.$store.dispatch("personalCenter/setNewBookShelfInfo", {data:''});//传{data:''} 为了使数据结构一致
-          let list = data.data;
-          let conditions_str = ''
-          /* 初始化条件 */
-          let conditions = [
-            {MAGAZINE_PERIOD_NUM:[],op:'in'},
-            {MAGAZINE_PUBLISH_YEAR:[],op:'in'},
-            {pub_resource_name:[],op:'in'}
-          ]
-          let changedKeys = []//有变化的key名
-          /* 遍历数据 */
-          list.forEach(item => {
-            /* 遍历数据中每一个属性 */
-            for (const key in item) {
-              /* 遍历条件 */
-              conditions.forEach(condition => {
-                /* 遍历每个条件中每个属性 */
-                for (const condition_key in condition) {
-                  const element = condition[condition_key];
-                  /* 对比赋值 */
-                  if (key == condition_key) {
-                    condition[condition_key].push(item[key])
-                    changedKeys.push(condition_key)
-                  }
+        switch (currentProductType.keyType) {
+          case 'periodical':{
+            if(data){
+              this.$store.dispatch("personalCenter/setNewBookShelfInfo", {data:''});//传{data:''} 为了使数据结构一致
+              let list = data.data;
+              let conditions_str = ''
+              /* 初始化条件 */
+              let conditions = [
+                {MAGAZINE_PERIOD_NUM:[],op:'in'},
+                {MAGAZINE_PUBLISH_YEAR:[],op:'in'},
+                {pub_resource_name:[],op:'in'}
+              ]
+              let changedKeys = []//有变化的key名
+              /* 遍历数据 */
+              list.forEach(item => {
+                /* 遍历数据中每一个属性 */
+                for (const key in item) {
+                  /* 遍历条件 */
+                  conditions.forEach(condition => {
+                    /* 遍历每个条件中每个属性 */
+                    for (const condition_key in condition) {
+                      const element = condition[condition_key];
+                      /* 对比赋值 */
+                      if (key == condition_key) {
+                        condition[condition_key].push(item[key])
+                        changedKeys.push(condition_key)
+                      }
+                    }
+                  });
                 }
               });
-            }
-          });
-          /* 去重 */
-          changedKeys = [...new Set(changedKeys)]
-          conditions.forEach(item => { 
-            changedKeys.forEach(key => {
-              if (item.hasOwnProperty(key)) {
-                item[key] = [...new Set(item[key])].join(' ')
+              /* 去重 */
+              changedKeys = [...new Set(changedKeys)]
+              conditions.forEach(item => { 
+                changedKeys.forEach(key => {
+                  if (item.hasOwnProperty(key)) {
+                    item[key] = [...new Set(item[key])].join(' ')
+                  }
+                });
+              })
+              conditions_str = JSON.stringify(conditions);
+              this.params = {
+                conditions:conditions_str,
+                groupBy:'pub_resource_id',
+                orderBy:'pub_a_order asc pub_lastmodified desc id asc',
+                pageNo:this.pageNo,
+                pageSize:this.pageSize,
+                searchText:''
               }
-            });
-          })
-          conditions_str = JSON.stringify(conditions)
-          let params = {
-            conditions:conditions_str,
-            groupBy:'pub_resource_id',
-            orderBy:'pub_a_order asc pub_lastmodified desc id asc',
-            pageNo:this.pageNo,
-            pageSize:this.pageSize,
-            searchText:''
-          }
-          let loading = this.$loading({text:this.getStaticText("loading") ? this.getStaticText("loading") : '正在加载中...'})
-          Post(CONFIG.BASE_URL + 'spc/cms/publish/list.do',params).then(resp => {
-            loading.close();
-            if (resp.data && resp.data.result) {
-              this.$store.dispatch("personalCenter/setNewBookShelfInfo", {data:resp.data.result,totalCount:resp.data.totalCount});
             }
-          }).catch(err=>{
-            loading.close();
-          })
-          break;
+            this.params.pageNo = pageNo;
+            this.params.pageSize = pageSize.toString();
+            let loading = this.$loading({text:this.getStaticText("loading") ? this.getStaticText("loading") : '正在加载中...'})
+            Post(CONFIG.BASE_URL + 'spc/cms/publish/list.do',this.params).then(resp => {
+              loading.close();
+              if (resp.data && resp.data.result) {
+                this.$store.dispatch("personalCenter/setNewBookShelfInfo", {data:resp.data.result,totalCount:resp.data.totalCount});
+              }
+            }).catch(err=>{
+              loading.close();
+            })
+            break;
+          }
+            
+          default:
+            break;
         }
-          
-        default:
-          break;
-      }
     },
     changType(item) {
       this.currentProductType = item;
@@ -198,10 +215,14 @@ export default {
       this.loadData();
     },
     pagingF: function({ pageNo, pageSize }) {
-      this.pageNo = pageNo;
-      this.pageSize = pageSize;
-
-      this.loadData();
+      if(this.currentProductType.keyType === "periodical"){
+        //期刊分页 
+        this.periodicalBook(null,pageNo,pageSize);
+      }else{
+        this.pageNo = pageNo;
+        this.pageSize = pageSize;
+        this.loadData();
+      }
     },
     toRead(item) {
       var url =

@@ -167,7 +167,7 @@ export default {
               if (!document.referrer) {
                 let resp = rep.data.data;
                 // 微信授权
-                if(this.CONFIG.platformType === "wxShop" && !resp.wxShopOpenId){
+                if(this.CONFIG.platformType === "wxShop"){
                   let wxUrl = resp.authorizeUrl
                   window.location.href = wxUrl;
                 }else{
@@ -182,7 +182,7 @@ export default {
                 let item = this.CONFIG.disBacks[i];
                 if (referrName == item) {
                   // 微信授权
-                if(this.CONFIG.platformType === "wxShop" && !resp.wxShopOpenId){
+                if(this.CONFIG.platformType === "wxShop"){
                   let wxUrl = resp.authorizeUrl
                   window.location.href = wxUrl;
                 }else{

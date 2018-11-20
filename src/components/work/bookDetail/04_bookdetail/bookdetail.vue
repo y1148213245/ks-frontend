@@ -569,8 +569,61 @@ export default {
           return false;
         }
       }
-      if ( !(config.method == 'toProbation' && CONFIG && CONFIG.SHAISHU_READ) ) {
-        window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
+      
+      /*  zrn add at 2018-11-19  */
+      // 立即购买(电子书)
+      if(config.method == "toBuyEbook"){
+        if(this.resourceDetail.contentType == "94" && this.resourceDetail.isBuy == "0"){
+          window.open(this.CONFIG[config.method].url + "?pubId=" + this.resourceDetail.id);
+          return false;
+        }else if(this.resourceDetail.contentType == "94" && this.resourceDetail.isBuy == "1"){
+          this.$message({
+            message: "您已购买过此电子书",
+            type: 'error',
+            duration: 2000
+          });
+          return false;
+        }else{
+          if(this.resourceDetail.contentType == "91" && !this.resourceDetail.relBook){
+            this.$message({
+              message: "此书没有对应的电子书",
+              type: 'error',
+              duration: 2000
+            });
+            return false;
+          }else if(this.resourceDetail.relBook && this.resourceDetail.relBook.isBuy == "0"){
+            window.open(this.CONFIG[config.method].url + "?pubId=" + this.resourceDetail.relBook.id);
+            return false;
+          }else if(this.resourceDetail.relBook.isBuy == "1"){
+            this.$message({
+              message: "您已购买过此电子书",
+              type: 'error',
+              duration: 2000
+            });
+            return false;
+          }
+        }
+      }
+      // 立即购买(纸书)
+      else if(config.method == "toBuyBook"){
+        if(this.resourceDetail.contentType == "94"){
+          window.open(this.CONFIG[config.method].url + "?pubId=" + this.resourceDetail.id);
+          return false;
+        }else if(this.resourceDetail.contentType == "91" && this.resourceDetail.relBook){
+          window.open(this.CONFIG[config.method].url + "?pubId=" + this.resourceDetail.relBook.id);
+          return false;
+        }else if(!this.resourceDetail.relBook){
+            this.$message({
+              message: "该书没有对应的纸书",
+              type: 'error',
+              duration: 2000
+            });
+            return false;
+        }
+
+        if ( !(config.method == 'toProbation' && CONFIG && CONFIG.SHAISHU_READ) ) {
+          window.open(toOtherPage(this.resourceDetail, this.CONFIG[config.method], this.keys));
+        }
       }
     },
     downAttachTypes:function(value){  //资源下载
