@@ -102,6 +102,14 @@ export default {
 
       let toExit = this.CONFIG.toExit;
 
+      if (toExit && toExit.syncLogout_url) {
+        /* 调一下第三方同步退出接口 */
+        let vscript = document.createElement("img");
+        vscript.src = toExit.syncLogout_url;
+        vscript.style.display = "none";
+        document.body.appendChild(vscript);
+      }
+
       if (toExit && toExit.type) {
         if (toExit.type == "href") {
           window.location.href = toExit.href;

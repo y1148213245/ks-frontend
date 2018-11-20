@@ -15,13 +15,14 @@ const dev = {
         func: {
           funcName: '',
           params: [],
-        }
+        },
+        syncLogout_url: ''/* 第三方同步退出接口 */
       },
       staticText: {
         loginSys: "[登录]",
         welcomeBack: "欢迎回来！",
         exitSys: "退出",
-        register:"注 册"
+        register: "注 册"
       }
     }
   }
@@ -48,7 +49,7 @@ const prod = {
         loginSys: "[登录]",
         welcomeBack: "欢迎回来！",
         exit: "退出",
-        register:"注 册"
+        register: "注 册"
       }
     }
   }
