@@ -21,7 +21,7 @@
             <el-form-item prop="pass" class="register_02_register_form_box_passwordbox">
               <i class="register_02_register_form_box_passwordbox_icon"></i>
               <span class="register_02_register_form_box_passwordbox_label">{{getStaticText('setNewPwd') ? getStaticText('setNewPwd'): '设置新密码:'}}</span>
-              <el-input type="password" v-model="ruleForm.pass" :placeholder="getStaticText('pwdSupportCode') ? getStaticText('pwdSupportCode') : '密码支持6-16位字符'" class="register_02_register_form_box_passwordbox_input"></el-input>
+              <el-input type="password" v-model="ruleForm.pass" :placeholder="getStaticText('pwdSupportCode') ? getStaticText('pwdSupportCode') : '密码支持6-16位字母加数字'" class="register_02_register_form_box_passwordbox_input"></el-input>
             </el-form-item>
 
             <el-form-item prop="checkPass" class="register_02_register_form_box_confirm-password-box">
@@ -189,20 +189,28 @@ export default {
     };
     /* 密码格式验证 */
     var validatePass2 = (rule, value, callback) => {
-      var i;
-      var char;
-      var badword;
-      badword = ';|<>`&!*(~^)#?:"/$=\\' + "'"
-      for (i = 0; i < value.length; i++) {
-        char = value.charAt(i);      }
-      if (badword.indexOf(char) >= 0) {
-        callback(new Error(this.getStaticText('pwdFormatErrorInfo') ? this.getStaticText('pwdFormatErrorInfo') : '格式错误，密码仅支持汉字、字母、数字、"-"、"_"的组合'));
-      } else if (value === "") {
+      var regStr = '^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$';
+      var reg = new RegExp(regStr);
+
+      // var i;
+      // var char;
+      // var badword;
+      // badword = ';|<>`&!*(~^)#?:"/$=\\' + "'"
+      // for (i = 0; i < value.length; i++) {
+      //   char = value.charAt(i);      }
+      // if (badword.indexOf(char) >= 0) {
+      //   callback(new Error(this.getStaticText('pwdFormatErrorInfo') ? this.getStaticText('pwdFormatErrorInfo') : '格式错误，密码仅支持汉字、字母、数字、"-"、"_"的组合'));
+      // } else if (value === "") {
+      //   callback(new Error(this.getStaticText('pleaseInputPwd') ? this.getStaticText('pleaseInputPwd') : "请输入密码"));
+      // } else if (value.length <= 5) {
+      //   callback(new Error(this.getStaticText('pwdAtLeastSixDigits') ? this.getStaticText('pwdAtLeastSixDigits') : "密码至少为6位数"));
+      // } else if (value.length >= 17) {
+      //   callback(new Error(this.getStaticText('pwdCanBeUpToSixteenDigits') ? this.getStaticText('pwdCanBeUpToSixteenDigits') : "密码最多为16位数"));
+      // } 
+      if (value === "") {
         callback(new Error(this.getStaticText('pleaseInputPwd') ? this.getStaticText('pleaseInputPwd') : "请输入密码"));
-      } else if (value.length <= 5) {
-        callback(new Error(this.getStaticText('pwdAtLeastSixDigits') ? this.getStaticText('pwdAtLeastSixDigits') : "密码至少为6位数"));
-      } else if (value.length >= 17) {
-        callback(new Error(this.getStaticText('pwdCanBeUpToSixteenDigits') ? this.getStaticText('pwdCanBeUpToSixteenDigits') : "密码最多为16位数"));
+      } else if (!reg.test(value)) {
+        callback(new Error(this.getStaticText('pwdFormatErrorInfo') ? this.getStaticText('pwdFormatErrorInfo') : '密码过于简单，需要字母加数字，6-16位'));
       } else {
         if (this.ruleForm.checkPass !== "") {
           this.$refs.ruleForm.validateField("checkPass");
