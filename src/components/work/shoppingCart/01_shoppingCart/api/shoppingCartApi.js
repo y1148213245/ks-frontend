@@ -6,8 +6,8 @@ import axios from 'axios';
 // import {CONFIG.SITE_CONFIG} from "projectConfig";
 
 export default {
-  queryShoppingCart (param, cb) {
-    let loading = Vue.prototype.$loading();
+  queryShoppingCart(param, cb) {
+    // let loading = Vue.prototype.$loading();
     var stamp = new Date().getTime();
     axios.get(CONFIG.BASE_URL + 'cart/getCartAndActivity.do?loginName=' + param.loginName + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&timeStamp=' + stamp).then(function (response) {
       if (cb && cb instanceof Function) {
@@ -23,19 +23,19 @@ export default {
           cb({ productList: response.data.data.content, totalCount: tempLen });
         }
       }
-      loading.close();
+      // loading.close();
     }).catch(function () {
-      loading.close();
-    }) 
+      // loading.close();
+    })
   },
-  deleteCartProduct (ids, cb) {
+  deleteCartProduct(ids, cb) {
     axios.post(CONFIG.BASE_URL + 'cart/deleteCart.do?ids=' + ids).then(function (response) {
       if (cb && cb instanceof Function) {
         cb({ deleteStatus: true });
       }
     })
   },
-  changeProductCount (params, cb) {
+  changeProductCount(params, cb) {
     axios.get(CONFIG.BASE_URL + 'cart/updateCart.do?productId=' + params.productId + '&number=' + params.number + '&loginName=' + params.loginName).then(function (response) {
       if (cb && cb instanceof Function) {
         if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
@@ -48,7 +48,7 @@ export default {
       }
     }).catch(function (error) { });
   },
-  queryOrderAddress (params, cb) {
+  queryOrderAddress(params, cb) {
     axios.get(CONFIG.BASE_URL + 'user/addresses.do?loginName=' + params.loginName).then(function (response) {
       if (cb && cb instanceof Function) {
         var res = response.data && response.data.result ? response.data.result : '0';
@@ -60,21 +60,21 @@ export default {
       }
     })
   },
-  addOrderAddress (params, cba) {
+  addOrderAddress(params, cba) {
     axios.post(CONFIG.BASE_URL + 'user/addAddress.do?', params).then(function (response) {
       if (cba && cba instanceof Function) {
         cba({ addStatus: true });
       }
     }).catch(function (error) { });
   },
-  queryDefaultAddress (name, cb) {
+  queryDefaultAddress(name, cb) {
     axios.get(CONFIG.BASE_URL + 'user/getDefalutAddress.do?loginName=' + name).then(function (response) {
       if (cb && cb instanceof Function) {
         cb({ defaultAddress: response.data.data });
       }
     })
   },
-  checkCoupons (password, cb) {
+  checkCoupons(password, cb) {
     axios.get(CONFIG.BASE_URL + 'user/checkCoupons.do?couponPassword=' + password).then(function (response) {
       if (cb && cb instanceof Function) {
         var res = response.data.result; // 返回结果 1：成功 0：失败
@@ -91,21 +91,21 @@ export default {
       }
     }).catch(function (error) { });
   },
-  getPayment (data, cb) {
+  getPayment(data, cb) {
     axios.get(CONFIG.BASE_URL + 'cart/getPayMethod.do' + '?siteId=' + CONFIG.SITE_CONFIG.siteId).then(function (response) {
       if (cb && cb instanceof Function) {
         cb({ paymentList: response.data.data });
       }
     })
   },
-  getDeliveryWay (datas, cb) {
+  getDeliveryWay(datas, cb) {
     axios.get(CONFIG.BASE_URL + 'cart/findDeliverysByStatus.do').then(function (response) {
       if (cb && cb instanceof Function) {
         cb({ deliveryList: response.data.data });
       }
     }).catch(function (error) { });
   },
-  commitOrder (params, cb) {
+  commitOrder(params, cb) {
     let loading = Vue.prototype.$loading({ text: "数据加载中..." });
     axios.post(CONFIG.BASE_URL + 'order/submitSplitOrder.do', params).then(function (response) {
       if (cb && cb instanceof Function) {
@@ -121,7 +121,7 @@ export default {
       }
     })
   },
-  addFavorite (params, cb) {
+  addFavorite(params, cb) {
     axios.post(CONFIG.BASE_URL + 'collection/addCollect.do?loginName=' + params.loginName + '&pubId=' + params.pubId + '&operateType=' + params.operateType + '&productId=' + params.productId + '&siteId=' + CONFIG.SITE_CONFIG.siteId).then(function (response) {
       if (cb && cb instanceof Function) {
         if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
@@ -134,21 +134,21 @@ export default {
       }
     }).catch(function (error) { });
   },
-  queryVirtualCoin (loginName, cb) {
+  queryVirtualCoin(loginName, cb) {
     axios.get(CONFIG.BASE_URL + 'rechargeVirtualCoin/getCoinByName.do?loginName=' + loginName).then(function (response) {
       if (cb && cb instanceof Function) {
         cb({ virtualCoin: response.data.data });
       }
     })
   },
-  getRmbCoin (virtualCoin, cb) {
+  getRmbCoin(virtualCoin, cb) {
     axios.get(CONFIG.BASE_URL + 'rechargeVirtualCoin/getRbm.do?virtualCoin=' + virtualCoin).then(function (response) {
       if (cb && cb instanceof Function) {
         cb({ rmbCoin: response.data.data });
       }
     }).catch(function (error) { });
   },
-  changeActivity (params, cb) {
+  changeActivity(params, cb) {
     axios.get(CONFIG.BASE_URL + 'cart/getCartAndActivityForChange.do?loginName=' + params.loginName + '&siteId=' + CONFIG.SITE_CONFIG.siteId + '&productId=' + params.productId + '&activityId=' + params.activityId).then(function (response) {
       if (cb && cb instanceof Function) {
         if (response.data.result === "0" && response.data.error && response.data.error.errorCode === "403") { // 判断登录失效
@@ -164,7 +164,7 @@ export default {
   /**
    * 购物车 根据用户名获取优惠券
    */
-  queryCoupons (params, cb) {
+  queryCoupons(params, cb) {
     axios.get(CONFIG.BASE_URL + 'user/getCounponsByName.do?loginName=' + params.loginName + '&type=' + params.type).then(function (response) {
       if (cb && cb instanceof Function) {
         cb({
