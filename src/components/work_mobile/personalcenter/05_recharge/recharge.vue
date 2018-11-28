@@ -27,7 +27,7 @@
             <span class="work_mobile_personalcenter_05_record_money">{{display.moneyIcon + Number(item.price).toFixed(2)}}</span>
           </div>
           <div class="work_mobile_personalcenter_05_record_divs">
-            <span class="work_mobile_personalcenter_05_record_date">{{item.date | formatDateHH}}</span>
+            <span class="work_mobile_personalcenter_05_record_date">{{item.chargeTime | formatDateHH}}</span>
             <span class="work_mobile_personalcenter_05_record_way">{{item.way}}</span>
           </div>
         </li>
@@ -69,7 +69,7 @@ export default {
     this.CONFIG = PROJECT_CONFIG[this.namespace].work_mobile_personalcenter.work_mobile_personalcenter_05;
     this.RECHARGECONFIG = this.CONFIG.getRechargeLog; // 获取充值记录
     this.display = this.CONFIG.display;
-    this.initData('songmin');
+    // this.initData('songmin');
   },
 
   mounted () {

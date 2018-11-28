@@ -72,6 +72,8 @@
                   <div class="personalcenter_list_main_listBox_card_right">
                     <span v-if="item.itemList[0].productType== 94">{{getStaticText('ebookOrder') ? getStaticText('ebookOrder') : '电子书订单'}}</span>
                     <span v-if="item.itemList[0].productType== 91">{{getStaticText('paperBookOrder') ? getStaticText('paperBookOrder') : '纸书订单'}}</span>
+                    <span v-if="item.itemList[0].productType== 149">{{getStaticText('paperBookOrder') ? getStaticText('paperBookOrder') : '电子期刊订单'}}</span>
+                    <span v-if="item.itemList[0].productType== 208">{{getStaticText('paperBookOrder') ? getStaticText('paperBookOrder') : '纸质期刊订单'}}</span>
                   </div>
                 </el-col>
                 <el-col :span="3">
@@ -388,7 +390,7 @@
         <!-- 图片上传 -->
         <div>
           <span class="mr20">{{getStaticText('uploadPicture') ? getStaticText('uploadPicture') : '上传图片'}}:</span>
-          <el-upload class="disinlblo" :action="uploadUrl()" list-type="picture-card" name="headPicUrl" :headers="setToken" :limit="5" :before-upload="beforeHandleUpload" :on-preview="handlePictureCardPreview" :on-exceed="handleExceed" :on-remove="handleSuccess" :on-success="handleSuccess">
+          <el-upload class="disinlblo" :action="uploadUrl()" list-type="picture-card" name="headPicUrl" :headers="setToken" :limit="5" :before-upload="beforeHandleUpload" :on-preview="handlePictureCardPreview" :on-exceed="handleExceed" :on-remove="handleRemove" :on-success="handleSuccess">
             <i class="el-icon-plus personalcenter_list_returnForm_plus"></i>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
@@ -804,7 +806,7 @@ export default {
           message: data.data.msg,
           type: "success"
         });
-      } else {
+      }else{
         this.$message.error(
           this.getStaticText("failureToSubmitApplication")
             ? this.getStaticText("failureToSubmitApplication")

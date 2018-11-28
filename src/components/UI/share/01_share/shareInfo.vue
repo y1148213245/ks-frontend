@@ -23,7 +23,9 @@ export default {
       shareLists: [],
     };
   },
-
+  beforeCreate(){
+    window._bd_share_config = "";
+  },
   created () {
     this.CONFIG = PROJECT_CONFIG[this.namespace].share.ui_share_01[this.modulename];
     this.shareLists = this.CONFIG && this.CONFIG.shareLists;
@@ -32,7 +34,7 @@ export default {
   },
 
   mounted () {
-    $(document).ready(() => {
+    this.$nextTick(() => {
       window._bd_share_config = {
         common : {
           bdUrl : ((window.location.href).indexOf("resType")==-1) ? window.location.href.split('&')[0] : (window.location.href.split('&')[0]+'&'+window.location.href.split('&')[1]),
@@ -41,9 +43,9 @@ export default {
           "bdSize" : 16,
         }
       }
-      let len = document.getElementsByClassName("bdsharebuttonbox").length;
+      // 注意页面中不能出现多个bdsharebuttonbox类 否则会出现点击出现多个分享
+      let len = document.getElementsByClassName("bdsharebuttonbox")[0].length;
       if(len != 0 ){
-        // document.getElementsByClassName("bdsharebuttonbox")[len - 1].
         document.body.appendChild(document.createElement('script')).src =
         'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5);
         console.log('share init')

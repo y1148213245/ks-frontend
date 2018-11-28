@@ -33,8 +33,8 @@
                 <div v-if="orderType !== 'knowledge'" class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation">
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_pendingPayment" v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_collectGoods" v-if="item.payStatus==1&& subItem.deliveryStatus < 3">{{display.collectGoods}}</span>
-                  <!-- <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_complete" v-if="item.payStatus==5">{{display.complete}}</span> -->
-                  <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_complete" v-if="item.payStatus==1 && subItem.deliveryStatus==3">{{display.complete}}</span>
+                  <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_complete" v-if="item.payStatus==5">{{display.complete}}</span>
+                  <!-- <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_complete" v-if="item.payStatus==1 && subItem.deliveryStatus==3">{{display.complete}}</span> -->
 
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_cancel" v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
                   <span class="work_mobile_personalcenter_15_list_ul_li_mainbox_footerinformation_deliveryPrice">{{display.express2}}{{display.money}}{{toFixed2(item.orderList[0].deliveryPrice)}}{{display.express2End}}</span>
@@ -97,7 +97,7 @@
         <div class="work_mobile_personalcenter_15_bookDetails_mainbox_orderstatus">
           <span v-if="item.payStatus==0 && item.status==1">{{display.pendingPayment}}</span>
           <span v-if="item.payStatus==1 && item.deliveryStatus < 3">{{display.collectGoods}}</span>
-          <span v-if="item.payStatus==1 && item.deliveryStatus == 3">{{display.complete}}</span>
+          <!-- <span v-if="item.payStatus==1 && item.deliveryStatus == 3">{{display.complete}}</span> -->
           <span v-if="item.payStatus==5">{{display.complete}}</span>
           <span v-if="item.payStatus==0 && item.status==2">{{display.cancel}}</span>
         </div>

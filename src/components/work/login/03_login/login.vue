@@ -6,13 +6,13 @@
       <!-- 登录不需要单独校验用户名 -->
       <!-- <input type="text" v-if="isPC == 'true'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" @change="checkUsername"/> -->
       <!-- <input type="text" v-if="isPC == 'false'" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login" @blur="checkUsername"/> -->
-      <input type="text" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'" @keyup.enter="login"/>
+      <input id="user_name" type="text" class="login_03_userinput" v-model="member.loginName" :placeholder="getStaticText('inputUserName') ? getStaticText('inputUserName') : '请输入用户名'"/>
       <span class="el-input__prefix">
         <i class="fa fa-user" aria-hidden="true"></i>
       </span>
     </div>
     <div class="el-input el-input--prefix">
-      <input type="password" class="login_03_password" v-model="member.password" :placeholder="getStaticText('inputPwd') ? getStaticText('inputPwd') : '请输入密码'" @keyup.enter="login"/>
+      <input id="user_password" type="password" class="login_03_password" v-model="member.password" :placeholder="getStaticText('inputPwd') ? getStaticText('inputPwd') : '请输入密码'"/>
       <span class="el-input__prefix">
         <i class="fa fa-lock" aria-hidden="true"></i>
       </span>
@@ -90,12 +90,21 @@ export default {
   },
 
   mounted () {
+    let _self = this;
     this.saveReffer();
     if (this.getShowItem('code')) {
       this.createCode();
     }
-    
-
+    $('#user_name').on('keyup',function(event){
+      if(event.keyCode == 13){
+        $('#user_password').focus();
+      }
+    });
+    $('#user_password').on('keyup',function(event){
+      if(event.keyCode == 13){
+        _self.login();
+      }
+    })
   },
 
   methods: {
@@ -163,9 +172,8 @@ export default {
                 message: this.getStaticText('accountFrozenInfo') ? this.getStaticText('accountFrozenInfo') : "账号已被冻结，请联系管理员"
               });
             } else {
-              console.log(document.referrer)
+              let resp = rep.data.data;
               if (!document.referrer) {
-                let resp = rep.data.data;
                 // 微信授权
                 if(this.CONFIG.platformType === "wxShop"){
                   let wxUrl = resp.authorizeUrl
@@ -182,17 +190,22 @@ export default {
                 let item = this.CONFIG.disBacks[i];
                 if (referrName == item) {
                   // 微信授权
-                if(this.CONFIG.platformType === "wxShop"){
-                  let wxUrl = resp.authorizeUrl
-                  window.location.href = wxUrl;
-                }else{
-                  window.location.href = this.CONFIG.indexPath ? this.CONFIG.indexPath : './index.html'
-                }
+                  if(this.CONFIG.platformType === "wxShop"){
+                    let wxUrl = resp.authorizeUrl
+                    window.location.href = wxUrl;
+                  }else{
+                    window.location.href = this.CONFIG.indexPath ? this.CONFIG.indexPath : './index.html'
+                  }
                   return false
                 }
               }
-              window.location.href = document.referrer;
-
+              // 微信授权wxShopOpenId
+              if(this.CONFIG.platformType === "wxShop"){
+                let wxUrl = resp.authorizeUrl
+                window.location.href = wxUrl;
+              }else{
+                window.location.href = document.referrer;
+              }
             }
           }else {
             this.$message({

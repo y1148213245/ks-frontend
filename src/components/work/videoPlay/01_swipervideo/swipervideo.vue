@@ -2,7 +2,7 @@
  * @Author: song
  * @Date: 2018-07-03 10:52:51
  * @Last Modified by: yancm
- * @Last Modified time: 2018-11-26 15:48:16
+ * @Last Modified time: 2018-11-28 15:25:35
  * 视频播放组件 列表是轮播图形式的
  */
 
@@ -319,14 +319,6 @@ export default {
         startparam: "start",
         events: {
           onTime: function() {
-            console.log("1111");
-            // if (thePlayer.getPosition() < 0) {
-            //   thePlayer.seek(begin);
-            // }
-            // if (thePlayer.getPosition() > 0) {
-            //   var last = thePlayer.getDuration() - 0.001;
-            //   thePlayer.seek(last);
-            // }
           }
         }
       };

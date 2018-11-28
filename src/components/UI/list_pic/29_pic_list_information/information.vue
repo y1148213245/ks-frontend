@@ -365,9 +365,9 @@ export default {
         }
       } else if (config.method == "sourceUrl") {
         if(config.target == "blank"){
-          window.open(item[this.keys.sourceUrl]);
+          window.open(item[this.keys.sourceUrl] ? item[this.keys.sourceUrl] : toOtherPage(item, this.CONFIG.toDetail, keys));
         }else{
-          window.location.href=item[this.keys.sourceUrl];
+          window.location.href = item[this.keys.sourceUrl] ? item[this.keys.sourceUrl] : toOtherPage(item, this.CONFIG.toDetail, keys);
         }
         return false;
       } else if (config.method == "downloadUrl") {

@@ -100,7 +100,7 @@
                 <i v-bind="{class: config.className}"></i>{{config.display}}</label>
               <label class="work_bookdetail_04_like_label" v-else-if="config.name == 'like'" :class="{work_bookdetail_04_like_active: resourceDetail[keys.isLike] == '1'}">
                 <i v-bind="{class: config.className}"></i>{{config.display}}</label>
-              <div class="bdsharebuttonbox" data-tag="share_1" v-else-if="config.name == 'share'">
+              <div data-tag="share_1" v-else-if="config.name == 'share'">
                 <!--<a href="#" class="work_bookdetail_04_share_more" data-cmd="more" v-bind="{class: config.className}">-->
                 <!--<span class="work_bookdetail_04_share_label">{{config.display}}</span>-->
                 <!--</a>-->
